@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = 'Contact';
+const description = 'Contact TintBrew: feedback, feature requests, and bug reports are all welcome.';
+---
+
+<BaseLayout title={`${title} | ${SITE.name}`} description={description} path="/contact">
+  <section class="hero">
+    <h1>Contact</h1>
+    <p class="lead">
+      Found a bug, a wrong mix value, or a color pair we should cover? We read everything.
+    </p>
+  </section>
+
+  <section class="prose">
+    <h2>Email</h2>
+    <p>
+      <a href="mailto:hello@tintbrew.com">hello@tintbrew.com</a> — for feedback, feature requests,
+      and corrections. Please include the page URL and the values you expected if you're reporting
+      a mix or conversion.
+    </p>
+    <h2>Before you write</h2>
+    <p>
+      If a mix looks different from what you get with paint, check the “Paint vs. screen” section
+      on that mix page — screens add light while pigments subtract it, and both answers are
+      correct in their own medium.
+    </p>
+  </section>
+</BaseLayout>

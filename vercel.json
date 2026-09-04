@@ -1,0 +1,137 @@
+{
+  "trailingSlash": false,
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/mix/blue-red",
+      "destination": "/mix/red-blue",
+      "permanent": true
+    },
+    {
+      "source": "/mix/yellow-blue",
+      "destination": "/mix/blue-yellow",
+      "permanent": true
+    },
+    {
+      "source": "/mix/yellow-red",
+      "destination": "/mix/red-yellow",
+      "permanent": true
+    },
+    {
+      "source": "/mix/green-red",
+      "destination": "/mix/red-green",
+      "permanent": true
+    },
+    {
+      "source": "/mix/green-blue",
+      "destination": "/mix/blue-green",
+      "permanent": true
+    },
+    {
+      "source": "/mix/green-yellow",
+      "destination": "/mix/yellow-green",
+      "permanent": true
+    },
+    {
+      "source": "/mix/pink-purple",
+      "destination": "/mix/purple-pink",
+      "permanent": true
+    },
+    {
+      "source": "/mix/pink-red",
+      "destination": "/mix/red-pink",
+      "permanent": true
+    },
+    {
+      "source": "/mix/purple-blue",
+      "destination": "/mix/blue-purple",
+      "permanent": true
+    },
+    {
+      "source": "/mix/white-black",
+      "destination": "/mix/black-white",
+      "permanent": true
+    },
+    {
+      "source": "/mix/white-red",
+      "destination": "/mix/red-white",
+      "permanent": true
+    },
+    {
+      "source": "/mix/white-blue",
+      "destination": "/mix/blue-white",
+      "permanent": true
+    },
+    {
+      "source": "/mix/white-yellow",
+      "destination": "/mix/yellow-white",
+      "permanent": true
+    },
+    {
+      "source": "/mix/yellow-orange",
+      "destination": "/mix/orange-yellow",
+      "permanent": true
+    },
+    {
+      "source": "/mix/red-orange",
+      "destination": "/mix/orange-red",
+      "permanent": true
+    },
+    {
+      "source": "/mix/white-pink",
+      "destination": "/mix/pink-white",
+      "permanent": true
+    },
+    {
+      "source": "/mix/white-brown",
+      "destination": "/mix/brown-white",
+      "permanent": true
+    },
+    {
+      "source": "/mix/white-green",
+      "destination": "/mix/green-white",
+      "permanent": true
+    },
+    {
+      "source": "/mix/red-black",
+      "destination": "/mix/black-red",
+      "permanent": true
+    },
+    {
+      "source": "/mix/black-blue",
+      "destination": "/mix/blue-black",
+      "permanent": true
+    },
+    {
+      "source": "/mix/white-orange",
+      "destination": "/mix/orange-white",
+      "permanent": true
+    },
+    {
+      "source": "/mix/red-purple",
+      "destination": "/mix/purple-red",
+      "permanent": true
+    },
+    {
+      "source": "/mix/black-yellow",
+      "destination": "/mix/yellow-black",
+      "permanent": true
+    },
+    {
+      "source": "/mix/black-green",
+      "destination": "/mix/green-black",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = 'About TintBrew';
+const description =
+  'TintBrew is a free color toolbox: a perceptual (Oklab) color mixer, a four-format converter, and honest answers to every classic “what two colors make” question.';
+---
+
+<BaseLayout title={`${title} | ${SITE.name}`} description={description} path="/about">
+  <section class="hero">
+    <h1>About TintBrew</h1>
+    <p class="lead">{description}</p>
+  </section>
+
+  <section class="prose">
+    <h2>Why another color tool?</h2>
+    <p>
+      Most online color mixers average raw red, green and blue values. That is how a screen adds
+      light — but it is not how mixing <em>looks</em>. TintBrew blends in <strong>Oklab</strong>, a
+      color space designed to match human perception, so a 50/50 mix lands on the shade your eye
+      treats as the true midpoint. The same math now powers CSS <code>color-mix()</code> in modern
+      browsers.
+    </p>
+
+    <h2>What you'll find here</h2>
+    <ul>
+      <li>
+        A <a href="/color-mixer">color mixer</a> for 2–5 colors with ratio sliders, HEX/RGB/HSL/CMYK
+        output and a copy-ready CSS snippet.
+      </li>
+      <li>
+        A <a href="/color-converter">color converter</a> that keeps all four formats in sync as you
+        type.
+      </li>
+      <li>
+        A <a href="/mix">library of mix answers</a> — every classic pair, with exact codes, ratio
+        tables, tints and shades, and an explanation of what changes between paint and screens.
+      </li>
+    </ul>
+
+    <h2>Principles</h2>
+    <p>
+      Everything runs in your browser — no accounts, no uploads, no tracking beyond cookieless
+      aggregate page-view counts. Tools are free and will stay free. Questions or suggestions?
+      <a href="/contact">Get in touch</a>.
+    </p>
+  </section>
+</BaseLayout>

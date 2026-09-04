@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = 'Page Not Found';
+const description = 'That page does not exist. Here are the color tools you were probably looking for.';
+---
+
+<BaseLayout title={`404 — ${title} | ${SITE.name}`} description={description} path="/404" noindex>
+  <section class="hero">
+    <h1>404 — not found</h1>
+    <p class="lead">
+      That page doesn't exist — but these do:
+    </p>
+  </section>
+
+  <section class="prose">
+    <ul>
+      <li><a href="/color-mixer">Color Mixer</a> — blend 2–5 colors with exact ratios</li>
+      <li><a href="/color-converter">Color Converter</a> — HEX, RGB, HSL, CMYK in sync</li>
+      <li><a href="/mix">All color mixes</a> — what any two colors make</li>
+      <li>
+        Or start with a classic: <a href="/mix/red-blue">what red and blue make</a>,
+        <a href="/mix/blue-yellow">what blue and yellow make</a>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>
