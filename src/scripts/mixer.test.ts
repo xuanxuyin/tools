@@ -22,7 +22,9 @@ async function loadPage(search = '') {
   (globalThis as Record<string, unknown>).history = window.history;
   vi.resetModules(); // fresh import so init() runs against this document
   await import('./mixer');
-  return { window, document };
+  // happy-dom's Document is structurally compatible but nominally distinct
+  // from lib.dom's — cast once at this boundary.
+  return { window, document: document as unknown as Document };
 }
 
 function fire(el: Element, type: 'input' | 'change' | 'click') {

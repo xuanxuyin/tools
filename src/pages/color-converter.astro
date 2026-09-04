@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Converter from '../components/Converter.astro';
+import { SITE } from '../consts';
+
+const title = 'Color Converter — HEX to RGB, HSL & CMYK (Both Ways) | TintBrew';
+const description =
+  'Convert any color between HEX, RGB, HSL and CMYK instantly. Type in one format and every other format updates live, with one-click copy.';
+
+const faqs = [
+  {
+    q: 'How do I convert a HEX code to RGB?',
+    a: 'Paste the HEX code (like #6d28d9, with or without #) into the HEX field. The RGB, HSL and CMYK rows update instantly. HEX stores each channel as two hexadecimal digits: 6d = 109 red, 28 = 40 green, d9 = 217 blue.',
+  },
+  {
+    q: 'When do I need HSL instead of RGB?',
+    a: 'RGB says exactly what a screen emits; HSL says how a color feels — hue (position on the color wheel), saturation (intensity) and lightness. HSL is the practical choice when you want “the same color but lighter” or “more muted”: keep hue, raise lightness or lower saturation.',
+  },
+  {
+    q: 'Is CMYK conversion print-accurate?',
+    a: 'It is a mathematical conversion, not a print proof. Real printing depends on inks and paper, so treat the CMYK values as a close reference and let your printer driver or design software do the final conversion if color accuracy is critical.',
+  },
+  {
+    q: 'What is the closest color name?',
+    a: 'TintBrew compares your color against a palette of well-known named colors and shows the nearest one in perceptual (Oklab) distance — the same “how different do they look” math browsers now use for CSS color-mix().',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TintBrew Color Converter',
+    url: `${SITE.url}/color-converter`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Color Converter', item: `${SITE.url}/color-converter` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/color-converter" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>Color Converter</h1>
+    <p class="lead">
+      One color, four formats. Type or paste a value in HEX, RGB, HSL or CMYK — every other format
+      updates as you type, each with a one-click copy button.
+    </p>
+  </section>
+
+  <Converter syncUrl />
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2>Which color format do you need?</h2>
+    <p>
+      <strong>HEX</strong> (<code>#6d28d9</code>) is the web default — compact, copy-paste friendly,
+      and what CSS expects most often. <strong>RGB</strong> (<code>rgb(109, 40, 217)</code>) is the
+      same color spelled as red, green and blue light, the format screens physically speak.
+      <strong>HSL</strong> (<code>hsl(263, 70%, 50%)</code>) describes hue, saturation and lightness —
+      the easiest format for humans to tweak. <strong>CMYK</strong> is how printers mix ink.
+    </p>
+    <p>
+      Every row updates live and the closest named color appears under the preview, so you can
+      sanity-check a code against a name like “Violet” before shipping it.
+    </p>
+    <p>
+      Need to blend two colors instead? Use the <a href="/color-mixer">color mixer</a> for ratio-based
+      mixing with CSS <code>color-mix()</code> output.
+    </p>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

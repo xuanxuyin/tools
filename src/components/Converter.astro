@@ -1,0 +1,231 @@
+---
+import {
+  formatCss,
+  hexToRgb,
+  normalizeHex,
+  readableLabel,
+  rgbToCmyk,
+  rgbToHex,
+  rgbToHsl,
+} from '../lib/color';
+import { nearestColorName } from '../lib/colorName';
+import CopyButton from './CopyButton.astro';
+
+/**
+ * Color Converter — SSR shell with every format precomputed; scripts/converter.ts
+ * keeps the four formats in sync as the user edits any of them.
+ */
+interface Props {
+  initialColor?: string;
+  syncUrl?: boolean;
+}
+
+const { initialColor = '#6d28d9', syncUrl = false } = Astro.props;
+
+const hex = normalizeHex(initialColor) ?? '#6d28d9';
+const rgb = hexToRgb(hex);
+const hsl = rgbToHsl(rgb);
+const cmyk = rgbToCmyk(rgb);
+const hexCss = rgbToHex(rgb);
+const rgbCss = formatCss('rgb', rgb);
+const hslCss = formatCss('hsl', rgb);
+const cmykCss = formatCss('cmyk', rgb);
+const labelColor = readableLabel(rgb);
+const nearest = nearestColorName(rgb);
+---
+
+<section class="converter" data-converter data-color={hex} data-sync-url={syncUrl ? 'true' : 'false'} aria-label="Color converter">
+  <div class="converter-grid">
+    <div class="converter-preview">
+      <div class="c-swatch" data-c-swatch style={`background:${hexCss}`}>
+        <span class="c-label" data-c-label style={`color:${labelColor}`}>{hexCss}</span>
+      </div>
+      <label class="c-picker-row">
+        <span class="c-picker-swatch" data-c-picker-swatch style={`background:${hexCss}`} aria-hidden="true"></span>
+        <input type="color" data-c-picker value={hexCss} aria-label="Pick a color" />
+        <span>Pick visually</span>
+      </label>
+      <p class="c-name">
+        Closest name: <strong data-c-name>{nearest.name}</strong>
+        <span class="c-name-swatch" data-c-name-swatch style={`background:${nearest.hex}`} aria-hidden="true"></span>
+      </p>
+    </div>
+
+    <div class="converter-formats">
+      <div class="f-block" data-f-block="hex">
+        <span class="f-name">HEX</span>
+        <input
+          class="text-input"
+          type="text"
+          data-f-hex
+          value={hexCss}
+          maxlength="7"
+          spellcheck="false"
+          autocomplete="off"
+          aria-label="HEX color code"
+        />
+        <CopyButton value={hexCss} label="HEX code" />
+      </div>
+
+      <div class="f-block" data-f-block="rgb">
+        <span class="f-name">RGB</span>
+        <span class="f-inputs">
+          <input class="text-input" type="number" min="0" max="255" step="1" data-f-rgb-r value={rgb.r} aria-label="Red channel" />
+          <input class="text-input" type="number" min="0" max="255" step="1" data-f-rgb-g value={rgb.g} aria-label="Green channel" />
+          <input class="text-input" type="number" min="0" max="255" step="1" data-f-rgb-b value={rgb.b} aria-label="Blue channel" />
+        </span>
+        <CopyButton value={rgbCss} label="RGB value" />
+      </div>
+
+      <div class="f-block" data-f-block="hsl">
+        <span class="f-name">HSL</span>
+        <span class="f-inputs">
+          <input class="text-input" type="number" min="0" max="360" step="1" data-f-hsl-h value={hsl.h} aria-label="Hue in degrees" />
+          <input class="text-input" type="number" min="0" max="100" step="1" data-f-hsl-s value={hsl.s} aria-label="Saturation percent" />
+          <input class="text-input" type="number" min="0" max="100" step="1" data-f-hsl-l value={hsl.l} aria-label="Lightness percent" />
+        </span>
+        <CopyButton value={hslCss} label="HSL value" />
+      </div>
+
+      <div class="f-block" data-f-block="cmyk">
+        <span class="f-name">CMYK</span>
+        <span class="f-inputs">
+          <input class="text-input" type="number" min="0" max="100" step="1" data-f-cmyk-c value={cmyk.c} aria-label="Cyan percent" />
+          <input class="text-input" type="number" min="0" max="100" step="1" data-f-cmyk-m value={cmyk.m} aria-label="Magenta percent" />
+          <input class="text-input" type="number" min="0" max="100" step="1" data-f-cmyk-y value={cmyk.y} aria-label="Yellow percent" />
+          <input class="text-input" type="number" min="0" max="100" step="1" data-f-cmyk-k value={cmyk.k} aria-label="Key (black) percent" />
+        </span>
+        <CopyButton value={cmykCss} label="CMYK value" />
+      </div>
+
+      <p class="c-hint" data-c-hint>Type or paste a value in any format — the others update as you go.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/converter';
+</script>
+
+<style>
+  .converter-grid {
+    display: grid;
+    gap: var(--sp-4);
+    margin-top: var(--sp-3);
+  }
+
+  @media (min-width: 48rem) {
+    .converter-grid {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+      align-items: start;
+    }
+  }
+
+  .c-swatch {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    min-height: 11rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: var(--sp-3);
+    transition: background-color 0.12s ease;
+  }
+
+  .c-label {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .c-picker-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin-top: var(--sp-2);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .c-picker-row input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    position: absolute;
+  }
+
+  .c-picker-swatch {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  .c-name {
+    margin-top: var(--sp-2);
+    color: var(--muted);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+
+  .c-name-swatch {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .converter-formats {
+    display: grid;
+    gap: var(--sp-2);
+  }
+
+  .f-block {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+    gap: var(--sp-2);
+    align-items: center;
+  }
+
+  .f-name {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .f-inputs {
+    display: grid;
+    grid-auto-flow: column;
+    gap: var(--sp-1);
+  }
+
+  .f-inputs .text-input {
+    min-width: 0;
+    text-align: center;
+    -moz-appearance: textfield;
+  }
+
+  .f-inputs .text-input::-webkit-outer-spin-button,
+  .f-inputs .text-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .f-inputs .text-input[aria-invalid='true'] {
+    border-color: #dc2626;
+  }
+
+  .text-input[aria-invalid='true'] {
+    border-color: #dc2626;
+  }
+
+  .c-hint {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>
