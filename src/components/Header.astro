@@ -1,0 +1,34 @@
+---
+import { SITE } from '../consts';
+
+const nav = [
+  { href: '/color-mixer', label: 'Color Mixer' },
+  { href: '/color-converter', label: 'Color Converter' },
+  { href: '/mix', label: 'Color Mixes' },
+];
+
+const normalize = (p: string) => p.replace(/\/+$/, '') || '/';
+const current = normalize(Astro.url.pathname);
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label={`${SITE.name} — home`}>
+      <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#6d28d9"></rect>
+        <circle cx="25" cy="34" r="13" fill="#fb7185"></circle>
+        <circle cx="39" cy="34" r="13" fill="#38bdf8" opacity="0.82"></circle>
+      </svg>
+      <span>TintBrew</span>
+    </a>
+    <nav aria-label="Main navigation">
+      {
+        nav.map((item) => (
+          <a href={item.href} aria-current={current === normalize(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>

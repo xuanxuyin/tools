@@ -1,0 +1,46 @@
+---
+import { SITE } from '../consts';
+
+// Popular mixes — varied anchor text on purpose (internal-link diversity).
+const popularMixes = [
+  { href: '/mix/red-blue', label: 'What red and blue make' },
+  { href: '/mix/blue-yellow', label: 'Blue + yellow result' },
+  { href: '/mix/red-green', label: 'Red and green mixed' },
+  { href: '/mix/black-white', label: 'Mixing black and white' },
+  { href: '/mix/red-yellow', label: 'Red plus yellow' },
+];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3>Tools</h3>
+        <ul>
+          <li><a href="/color-mixer">Color Mixer</a></li>
+          <li><a href="/color-converter">Color Converter</a></li>
+          <li><a href="/mix">All Color Mixes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Popular mixes</h3>
+        <ul>
+          {popularMixes.map((m) => <li><a href={m.href}>{m.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h3>Site</h3>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {year} {SITE.name}. All rights reserved.</span>
+      <span>Mix colors perceptually — powered by Oklab.</span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = 'TintBrew — Mix Colors Online & Convert HEX, RGB, HSL, CMYK';
+const description =
+  'Free online color mixer that blends colors perceptually (Oklab), plus a HEX/RGB/HSL/CMYK converter. See exactly what two colors make — with live ratios and code snippets.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+};
+---
+
+<BaseLayout title={title} description={description} path="/" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>Brew colors, precisely.</h1>
+    <p class="lead">
+      Mix any colors online in a perceptual color space, convert between every format, and get copy-ready
+      CSS code. Free, instant, and private — everything runs in your browser.
+    </p>
+  </section>
+
+  <section aria-label="Color tools" class="tool-grid">
+    <a class="tool-card" href="/color-mixer">
+      <h2>Color Mixer</h2>
+      <p>
+        Blend 2–5 colors with ratio sliders. Perceptual Oklab mixing matches how paint behaves, and every
+        result ships with HEX, RGB, HSL, CMYK and a CSS <code>color-mix()</code> snippet.
+      </p>
+      <div class="swatch-strip" aria-hidden="true">
+        <span style="background:#ef4444"></span>
+        <span style="background:#8b5cf6"></span>
+        <span style="background:#3b82f6"></span>
+      </div>
+    </a>
+    <a class="tool-card" href="/color-converter">
+      <h2>Color Converter</h2>
+      <p>
+        Paste a HEX code or dial in RGB, HSL or CMYK — every other format updates as you type, with
+        one-click copy for each.
+      </p>
+      <div class="swatch-strip" aria-hidden="true">
+        <span style="background:#f59e0b"></span>
+        <span style="background:#fbbf24"></span>
+        <span style="background:#fde68a"></span>
+      </div>
+    </a>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2>What two colors make?</h2>
+    <p>
+      Mixing colors isn't one question — screens blend light (additive) while paint blends pigments
+      (subtractive), and the results differ. Our mix guides answer the classic combinations with live
+      examples, exact HEX codes, and ratio tables:
+    </p>
+    <ul>
+      <li><a href="/mix/red-blue">What color does red and blue make?</a></li>
+      <li><a href="/mix/blue-yellow">What color does blue and yellow make?</a></li>
+      <li><a href="/mix/red-green">What color does red and green make?</a></li>
+      <li><a href="/mix/red-yellow">What color does red and yellow make?</a></li>
+      <li><a href="/mix/black-white">What color does black and white make?</a></li>
+    </ul>
+    <p>Browse <a href="/mix">all color mixes</a> for the full list.</p>
+  </section>
+</BaseLayout>
