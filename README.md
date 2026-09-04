@@ -31,30 +31,96 @@
 
 ---
 
-## 首次部署全记录（已完成，重配时照抄）
+## 从 0 到部署：完整流程实录（✅ 已全部完成；新项目照此复刻）
 
-1. ✅ 网站代码完成，推送 GitHub `main`
-2. ✅ Cloudflare 账号（免手机验证）
-3. ✅ Cloudflare → Add a domain → `tintbrew.com` → Free 计划；
-   删掉旧的 Vercel A/CNAME 记录，保留 GSC TXT
-4. ✅ Spaceship → Nameservers → Custom → `chin.ns.cloudflare.com` + `rocco.ns.cloudflare.com`
-5. ✅ GSC 验证 + 提交 `https://tintbrew.com/sitemap-index.xml`
-6. ✅ Pages 建项目：Workers & Pages → Create → Pages → Import Git → `tools` 仓库
-7. ✅ 绑域名：Custom domains → `tintbrew.com` + `www.tintbrew.com`（同账号 DNS，自动激活）
-8. ✅ Web Analytics 自动注入（token `a6abcb30a8034b84b7d619bd6e67bd29` 备用：
-   若日后关自动注入，填进 `tintbrew/src/consts.ts` 的 `cfBeaconToken`）
-9. ✅ www 跳主域：Rules → Redirect Rules → 表达式 `(http.host eq "www.tintbrew.com")` →
-   Dynamic → `concat("https://tintbrew.com", http.request.uri.path)` → 301
+> 每一步标注了在哪个网站操作。做第二个项目时从第 1 步换成新域名，其余照抄。
 
-### Pages 项目配置（照抄）
+### 第 1 步 · 买域名 —— Spaceship
+
+- spaceship.com → 搜索域名 → 购买（本站 `tintbrew.com`，$9.98/年）
+- 刚买完默认用 Spaceship 自带 DNS，后面第 4 步会整体迁到 Cloudflare
+
+### 第 2 步 · 写代码 —— 本地 + GitHub
+
+- 在仓库子文件夹（`tintbrew/`）里开发；发布前 `npm run build`（32 页）+
+  `npx vitest run`（70 测试）全绿
+- `git push origin main` 推上去
+
+### 第 3 步 · 注册托管账号 —— Cloudflare
+
+- dash.cloudflare.com → 邮箱注册，免手机验证
+- （先试过 Vercel，被手机验证封号卡死，遂切换 —— 详见"踩过的坑"第 1 条）
+
+### 第 4 步 · 域名 DNS 搬进 Cloudflare（一次性）
+
+- Cloudflare 首页 → **Add a domain** → `tintbrew.com` → **Free** 计划
+- 检查扫描出的记录：**删掉指向旧托管商的**（Vercel 的 A `76.76.21.21`、
+  CNAME `cname.vercel-dns.com`）；TXT 验证记录保留（没扫到就手动 Add record 补，见第 6 步）
+- Cloudflare 分配 2 个 nameserver（本站：`chin.ns.cloudflare.com` / `rocco.ns.cloudflare.com`）
+- **Spaceship** → Domains → tintbrew.com → **Nameservers** → Custom →
+  填入两个新 NS（替换 launch1/launch2.spaceship.net）→ Save
+- 回 Cloudflare 点 **I updated my nameservers** → 等激活（几分钟~几小时，有邮件）
+- ⚠️ 从此 Spaceship 只管续费；**所有 DNS 记录都在
+  Cloudflare → tintbrew.com → DNS → Records 里管理**（Spaceship 的 DNS 面板清空是正常的）
+
+### 第 5 步 · 部署网站 —— Cloudflare Pages
+
+- **Workers & Pages** → Create → **Pages** 标签 → Connect to Git →
+  授权 GitHub → 选 `tools` 仓库，配置照抄：
 
 | 配置项 | 值 |
 |---|---|
 | Project name | `tintbrew` |
 | Production branch | `main` |
-| **Root directory** | **`tintbrew`** ⚠️ 必填（站点在子文件夹里） |
+| **Root directory** | **`tintbrew`** ⚠️ 站点在子文件夹必填 |
 | Build command | `npm run build` |
 | Build output directory | `dist` |
+
+- Save and Deploy → 得到 `tintbrew.pages.dev` 临时域名（国内打不开≠失败）
+
+### 第 6 步 · Google 收录基础 —— GSC
+
+- search.google.com/search-console → **Add Property → Domain 类型** → `tintbrew.com`
+- 复制 TXT 值（`google-site-verification=...`）→ **Cloudflare → DNS → Add record**：
+  Type `TXT` / Name `@` / Value 整串粘贴 / TTL Auto
+- 回 GSC 点 **Verify**（DNS 生效后即过）
+- **Sitemaps** → 输入**完整 URL**：`https://tintbrew.com/sitemap-index.xml` → Submit
+  （⚠️ Domain 属性的输入框不带预填域名，必须带 `https://` 全称，只填路径会报"地址无效"）
+
+### 第 7 步 · 绑主域名 —— Pages Custom domains
+
+- Pages 项目 → **Custom domains** → Set up a custom domain → `tintbrew.com` → Activate
+  （DNS 在同一家 Cloudflare → **自动创建解析记录、自动激活，无需手动加任何 DNS**）
+- 同法再加 `www.tintbrew.com`
+- 注：Production 部署卡片上显示的 Domains 是 pages.dev，正常；自定义域名在 Custom domains 标签页
+
+### 第 8 步 · www 跳主域 —— 新增 Redirect Rule
+
+- **Rules → Redirect Rules → Create**（可选 "Redirect from WWW to root" 模板）
+- If 条件（点 `</>` Edit expression 切表达式模式）：
+
+  ```
+  (http.host eq "www.tintbrew.com")
+  ```
+
+- Then：Dynamic redirect → 目标填**表达式**（直接粘纯网址会报 parse error）：
+
+  ```
+  concat("https://tintbrew.com", http.request.uri.path)
+  ```
+
+- Status `301`，勾选保留查询串 → Deploy → 已验证：路径和查询串完整保留
+
+### 第 9 步 · 访问统计 —— Web Analytics
+
+- **Web Analytics → Add a site** → `tintbrew.com` → 开**自动注入**
+  （Cloudflare 在边缘给真实浏览器请求自动插脚本，代码零改动）
+- 备用 token 见顶部"当前状态"第 4 条
+
+### 第 10 步 · 上线验证 + 收尾
+
+- 跑下节"验证清单"的 curl 命令（全 200/301 即通过）
+- 按"上线后操作清单"做今天的 3 个 Request indexing
 
 ---
 
