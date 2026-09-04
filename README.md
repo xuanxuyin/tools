@@ -316,6 +316,16 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 | color converter | /color-converter/ |
 | hex to rgb converter / rgb to hsl | /color-converter/ |
 
+### V2.1 场景词（W1 已上线 2026-09-05 · KD 14~38 · 预期 1~3 个月起曝光，变体词先动）
+
+| 搜索词 | 目标页 |
+|---|---|
+| what colors make brown | /what-colors-make-brown/（头词 US 49.5K/KD38，磨页龄；two/2 colors 变体走 FAQ 段） |
+| how to make black frosting | /how-to-make-black-frosting/（Halloween 季词） |
+| how to make brown icing | /how-to-make-brown-icing/ |
+| icing color chart | /icing-color-chart/ |
+| buttercream color chart | /buttercream-color-chart/ |
+
 ### 搜索技巧
 
 - `site:tintbrew.com` —— 看多少页已进 Google 索引（收录进度最快验证法）
