@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { scenarioContents } from '../lib/scenarioContent';
+import { SITE } from '../consts';
+
+const title = 'Color Guides — Frosting, Icing & Paint Recipes | TintBrew';
+const description =
+  'Practical color guides with computed swatches: how to make black frosting, brown icing, and full gel-color charts for icing and buttercream.';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Color Guides', item: `${SITE.url}/color-guides/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: scenarioContents.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.def.h1,
+      item: `${SITE.url}/${c.def.slug}/`,
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/color-guides" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>Color guides</h1>
+    <p class="lead">
+      Recipe-style answers for real-world color mixing: frosting, icing and paint. Every guide
+      shows computed swatches with HEX codes — no photographed approximations — plus the practical
+      facts (drop counts, ratios, rest times) that make the color land.
+    </p>
+  </section>
+
+  <section class="tool-grid" aria-label="Color guides">
+    {scenarioContents.map((c) => (
+      <a class="tool-card" href={`/${c.def.slug}`}>
+        <h2>{c.def.h1}</h2>
+        <p>{c.def.metaDescription}</p>
+        <div class="swatch-strip" aria-hidden="true">
+          <span style={`background:${c.heroHex}`}></span>
+          <span style={`background:${c.def.mixerColors[0]}`}></span>
+          <span style={`background:${c.def.mixerColors[1] ?? c.def.mixerColors[0]}`}></span>
+        </div>
+      </a>
+    ))}
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2>How these are built</h2>
+    <p>
+      Each swatch is a perceptual (Oklab) blend computed from the actual recipe: base frosting or
+      paint plus gel or pigment at the stated amount. That is why two guides can promise the same
+      "brown" and show honestly different results. Want to run your own numbers? The
+      <a href="/color-mixer">color mixer</a> does the same arithmetic live, and the
+      <a href="/mix">color mixes directory</a> covers the classic two-color questions.
+    </p>
+  </section>
+</BaseLayout>

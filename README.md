@@ -23,9 +23,9 @@
 
 ## 当前状态：✅ 2026-09-04 全部上线完成
 
-- 网站线上地址：**https://tintbrew.com**（32 页，HTTP/2 + HTTPS + 全球 CDN）
+- 网站线上地址：**https://tintbrew.com**（38 页，HTTP/2 + HTTPS + 全球 CDN）
 - 域名：Spaceship 注册，NS 已指向 `chin.ns.cloudflare.com` / `rocco.ns.cloudflare.com`
-- GSC：Domain 属性已验证（TXT 记录），站点地图已提交（31 个 URL）
+- GSC：Domain 属性已验证（TXT 记录），站点地图已提交（37 个 URL）
 - 访问统计：Cloudflare Web Analytics **自动注入模式**（已收到真实访问数据）
 - 域名邮箱：`hello@tintbrew.com` 经 Cloudflare Email Routing 免费转发到真实邮箱（已实测）
 - URL 体系：尾斜杠规范 + www→主域 301 + 反向 slug 301，全部验证通过
@@ -63,8 +63,8 @@
 
 ### 第 2 步 · 写代码 —— 本地 + GitHub
 
-- 在仓库子文件夹（`tintbrew/`）里开发；发布前 `npm run build`（32 页）+
-  `npx vitest run`（70 测试）全绿
+- 在仓库子文件夹（`tintbrew/`）里开发；发布前 `npm run build`（38 页）+
+  `npx vitest run`（81 测试）全绿
 - `git push origin main` 推上去
 
 ### 第 3 步 · 注册托管账号 —— Cloudflare
@@ -160,8 +160,8 @@
 
 ```bash
 cd tintbrew
-npm run build        # 本地验证构建（32 页）
-npx vitest run       # 70 个测试全过再发布
+npm run build        # 本地验证构建（38 页）
+npx vitest run       # 81 个测试全过再发布
 git add -A && git commit -m "feat: 改了什么" && git push origin main
 ```
 
@@ -204,6 +204,8 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 | `src/data/colors.ts` | 颜色定义表 |
 | `src/lib/color.ts` | Oklab 混色引擎（纯函数 + 测试） |
 | `src/lib/mixContent.ts` | 矩阵页内容生成（meta/答案/FAQ/变体文案） |
+| `src/data/scenarios.ts` | V2.1 场景页数据（手写事实 + 引擎混合配比；加场景页从这加） |
+| `src/lib/scenarioContent.ts` | 场景页内容生成（方法落点色/整张色卡/meta/JSON-LD） |
 | `src/components/SeoHead.astro` | canonical/OG/结构化数据（尾斜杠规则在这） |
 | `public/_redirects` | 反向 slug 301 |
 | `public/_headers` | 静态资源缓存规则 |
@@ -241,10 +243,18 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 
 ### 本周
 
-3. **明天看站点地图状态**：GSC → Sitemaps → 应从"无法抓取"变"成功"；
-   没变就重新提交一次。
-4. **拿首批外链**：提交 2~3 个免费工具目录站（收录加速器）。
-   要提交清单找 Claude 要。
+3. ~~明天看站点地图状态~~ **已完成（2026-09-04）**：GSC → Sitemaps 显示"成功"，站点地图抓取通过。
+4. **拿首批外链**：提交 2~3 个免费工具目录站（收录加速器）。推荐起步：
+   - ✅ **Uneed**（uneed.best）：已提交（2026-09-04）
+   - **Peerlist Launchpad**（peerlist.io）：免费。入口：右上角登录注册 →
+     打开 peerlist.io/launchpad → **Launch your product** 按钮（登录后才显示）
+   - **AlternativeTo**（alternativeto.net）：免费。作为竞品 alternative 提交：
+     搜一个同类颜色工具 → 进它的页面 → **Suggest an alternative** → 填 tintbrew.com；
+     审核数周，不急
+   - ⚠️ MicroLaunch（microlaunch.net）2026-09 已改**付费发布**（/submit 跳付费墙），弃用
+   - 进阶可选：Product Hunt 正式发布（外链权重最高，单独准备）；SaaSHub（审核慢）
+   - ❌ 不要提交"350+ 高 DA"批量 SEO 目录 —— 外链农场，违反本仓 SEO 纪律
+   - 提交文案（英文）见下方「外链提交文案」，联系邮箱 hello@tintbrew.com
 
 ### 每周例行（5 分钟，固定动作）
 
@@ -257,6 +267,15 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 - 想启动 V2 内容批次 / 加新工具（见下）
 - GSC 出现异常（收录下降、报错、流量突变）
 - 想分析哪些词开始有排名、下一步写什么
+
+### 外链提交文案（目录站直接复制，英文）
+
+- **Name**: Tintbrew
+- **URL**: https://tintbrew.com/
+- **Tagline**: Free color mixer and converter that runs right in your browser.
+- **Short description**: Mix two colors and get the exact result, convert between HEX, RGB, and HSL, and find plain-English answers to common color questions. Free, no sign-up.
+- **Long description**: Tintbrew is a free color toolkit for designers, painters, and anyone who works with color. The mixer blends colors in Oklab space, so results look the way a real mix would instead of turning muddy like plain RGB blending. Convert between HEX, RGB, HSL, and other formats, and browse a growing set of "what does red and blue make" pages with exact values, shades, and tints. Everything runs in your browser — no account, nothing to install.
+- **Contact**: hello@tintbrew.com
 
 ---
 
@@ -327,6 +346,15 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 每页结构：场景科普 + 调色原理 + 色卡/比例表（引擎现算）+ 内链相关 `/mix/` 页 + FAQ。
 执行流程：Claude 做词簇调研（搜索量+KD）→ 确认 top 20 → 复用 mixContent 模式批量生成。
 
+**筛选结论（2026-09-05，全 18 词数据见 `research/tintbrew-v21-keywords.md`）**：
+烘焙 4 页 + 通用头词 1 页（/what-colors-make-brown/，US 49.5K）+ 颜料 3 页（W2）+ 木器 2 页（W3）共 10 页锁定，分波上线；
+死词（tan icing/肤色/墙面子词）收容进相关页 FAQ 段落。
+**W1 已构建（5 页 + hub）**：烘焙 4 页（/how-to-make-black-frosting/ · /how-to-make-brown-icing/ ·
+/icing-color-chart/ · /buttercream-color-chart/）+ **/what-colors-make-brown/**
+（US 49.5K/月 · KD 38 · 词族 196K 的全场头词，2026-09-05 补测锁定）+ /color-guides/ hub 页；
+架构 = `data/scenarios.ts`（手写事实+配比）→ `lib/scenarioContent.ts`（引擎算色卡）
+→ `components/ScenarioPage.astro` + 每页一个扁平 URL 薄包装；footer 自动带出全部场景页链接。
+
 ### V2.2 第二批配色对（+20~30 页，低成本高确定性）
 
 扩展 `colors.ts`（gray、cyan、magenta、gold、navy、turquoise、lavender、beige…）+
@@ -344,10 +372,20 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 
 - 每个新工具/新批次上线 → 提交一轮工具目录站
 - Reddit（r/DIY、r/painting，先读版规）、Pinterest 场景图分发
-
+1
 ### 节奏与指标
 
 - **启动条件**：GSC 显示首批页面已索引（预计上线后 1~2 周）→ 启动 V2.1
 - **节奏**：每批上线后观察 3~4 周再上下一批（新站别一次堆太多页）
 - **北极星指标**：GSC 每 28 天曝光数（impressions）环比增长
 - **变现节点**：自然流量稳定过 ~300 次访问/天 后接入广告（当前零广告代码）
+
+### 已评估暂缓的方向（备忘）
+
+- **穿搭/选色决策词**（what colors go with X / what color should I paint my X）：
+  2026-09-04 评估过。SERP 实测全是 Pinterest 画板 + 小博客 + Reddit，无巨头，能打；
+  但意图是"配色"不是"混色"，需要新页面模板（并排色板 + harmony 计算）+ 每色手写搭配事实，
+  且量未验证。**决定：收录期不分心，先跑已调研的 V2.1 场景词。**
+  重启条件：V2.1 见效后想扩受众时，先拉 6 个代表词的数据再定。
+  （第二流量引擎 Pinterest 的价值当时也认可——新域名熬 Google 排名期间图钉可并行起量。）
+

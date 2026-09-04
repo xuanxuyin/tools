@@ -1,0 +1,8 @@
+---
+import ScenarioPage from '../components/ScenarioPage.astro';
+import { scenarioContentBySlug } from '../lib/scenarioContent';
+
+const c = scenarioContentBySlug('icing-color-chart')!;
+---
+
+<ScenarioPage c={c} />

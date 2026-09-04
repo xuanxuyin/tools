@@ -1,5 +1,9 @@
 ---
 import { SITE } from '../consts';
+import { scenarioContents } from '../lib/scenarioContent';
+
+// V2.1 scenario pages — data-driven so later waves appear here automatically.
+const guides = scenarioContents.map((s) => s.def);
 
 // Popular mixes — varied anchor text on purpose (internal-link diversity).
 const popularMixes = [
@@ -27,6 +31,13 @@ const year = new Date().getFullYear();
         <h3>Popular mixes</h3>
         <ul>
           {popularMixes.map((m) => <li><a href={m.href}>{m.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h3>Color guides</h3>
+        <ul>
+          {guides.map((g) => <li><a href={`/${g.slug}`}>{g.h1}</a></li>)}
+          <li><a href="/color-guides">All guides</a></li>
         </ul>
       </div>
       <div>

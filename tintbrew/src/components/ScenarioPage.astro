@@ -1,0 +1,448 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Mixer from './Mixer.astro';
+import { scenarioJsonLd, type ScenarioContent } from '../lib/scenarioContent';
+
+/**
+ * Shared template for V2.1 scenario pages. All color values arrive computed
+ * from lib/scenarioContent.ts; the shell is server-rendered so the answer is
+ * complete without JS (scripts/mixer.ts only takes over interaction).
+ */
+interface Props {
+  c: ScenarioContent;
+}
+
+const { c } = Astro.props;
+const { def } = c;
+
+const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
+---
+
+<BaseLayout title={def.metaTitle} description={def.metaDescription} path={`/${def.slug}`} jsonLd={scenarioJsonLd(c)}>
+  <section class="hero">
+    <p class="crumbs">
+      <a href="/">Home</a> <span aria-hidden="true">›</span>
+      <a href="/color-guides">Color Guides</a> <span aria-hidden="true">›</span>
+      <span>{def.h1}</span>
+    </p>
+    <h1>{def.h1}</h1>
+    <p class="lead">{def.lead}</p>
+
+    <div class="hero-answer" aria-label="The answer at a glance">
+      <span class="hero-swatches" aria-hidden="true">
+        {heroMix ? (
+          heroMix.map((m) => <span style={`background:${m.hex}`} title={m.label}></span>)
+        ) : (
+          <span style={`background:${c.chart?.baseHex}`}></span>
+        )}
+        <span class="hero-arrow">→</span>
+        <span class="hero-result" style={`background:${c.heroHex}`}></span>
+      </span>
+      <strong>{c.heroLabel}</strong>
+      <code>{c.heroHex}</code>
+    </div>
+  </section>
+
+  <Mixer initialColors={def.mixerColors} compact title="Try the blend yourself" />
+
+  {def.intro.length > 0 && (
+    <section class="prose" style="margin-top: var(--sp-6);">
+      <h2>{def.introHeading}</h2>
+      {def.intro.map((p) => <p>{p}</p>)}
+    </section>
+  )}
+
+  {c.methods.length > 0 && (
+    <section class="prose" style="margin-top: var(--sp-6);">
+      <h2>{def.listHeading}</h2>
+      <p>
+        Every result below is computed in a perceptual color space: the swatch is the blend your
+        eye sees, with the HEX code next to it. Click any code to copy it.
+      </p>
+      <div class="methods">
+        {c.methods.map((m) => (
+          <article class="method">
+            <h3>{m.name}</h3>
+            <p>{m.summary}</p>
+            <div class="method-strip">
+              {m.mix.map((part) => (
+                <span class="method-chip" title={part.label}>
+                  <span class="chip-swatch" style={`background:${part.hex}`} aria-hidden="true"></span>
+                  <span class="chip-label">{part.label}</span>
+                </span>
+              ))}
+              <span class="method-arrow" aria-hidden="true">→</span>
+              <span class="method-result">
+                <span class="result-swatch-sm" style={`background:${m.resultHex}`} aria-hidden="true"></span>
+                <span class="result-meta">
+                  <strong>{m.resultName}</strong>
+                  <button
+                    type="button"
+                    class="btn btn-copy method-hex"
+                    data-copy={m.resultHex}
+                    aria-label={`Copy ${m.name} result hex code`}
+                  >
+                    {m.resultHex}
+                  </button>
+                </span>
+              </span>
+            </div>
+            <p class="method-note">{m.note}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {c.chart && (
+    <section style="margin-top: var(--sp-6);">
+      <h2>{def.listHeading}</h2>
+      <div class="chart-notes prose">
+        {def.chartIntro.map((p) => <p>{p}</p>)}
+        <p class="chart-base">
+          <span class="base-swatch" style={`background:${c.chart.baseHex}`} aria-hidden="true"></span>
+          <span>
+            <strong>{c.chart.baseName}</strong> — {c.chart.baseBlurb}
+          </span>
+        </p>
+      </div>
+
+      <div class="chart">
+        {c.chart.rows.map((row) => (
+          <div class="chart-row">
+            <div class="chart-gel">
+              <span class="gel-dot" style={`background:${row.gel.hex}`} aria-hidden="true"></span>
+              <div>
+                <strong>{row.gel.name} gel</strong>
+                <span class="gel-brand">{row.gel.brand}</span>
+                <p>{row.gel.note}</p>
+              </div>
+            </div>
+            <div class="chart-cells">
+              {row.cells.map((cell) => (
+                <div class="chart-cell">
+                  <span class="cell-swatch" style={`background:${cell.hex}`} aria-hidden="true"></span>
+                  <span class="cell-drops">{cell.drops === 0 ? 'base' : cell.drops === 1 ? '1 drop' : `${cell.drops} drops`}</span>
+                  <button
+                    type="button"
+                    class="btn btn-copy cell-hex"
+                    data-copy={cell.hex}
+                    aria-label={`Copy ${row.gel.name} ${cell.drops === 0 ? 'base' : `${cell.drops} drops`} hex code`}
+                  >
+                    {cell.hex}
+                  </button>
+                  <span class="cell-name">{cell.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Practical tips</h2>
+    <ul class="tips">
+      {def.tips.map((t) => (
+        <li>
+          <strong>{t.title}.</strong> {t.body}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      {def.faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Keep reading</h2>
+    <ul class="keep-reading">
+      {def.related.map((r) => (
+        <li><a href={r.href}>{r.label}</a></li>
+      ))}
+      <li><a href="/color-guides">All color guides</a></li>
+      <li><a href="/mix">All color mixes</a></li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: var(--sp-2);
+  }
+
+  .crumbs a {
+    color: var(--muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--accent);
+  }
+
+  .hero-answer {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-top: var(--sp-3);
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: color-mix(in oklab, var(--accent) 4%, transparent);
+  }
+
+  .hero-answer code {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+  }
+
+  .hero-swatches {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .hero-swatches > span {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .hero-arrow {
+    width: auto !important;
+    height: auto !important;
+    border: 0 !important;
+    background: none !important;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .hero-result {
+    box-shadow: 0 0 0 2px var(--accent-soft);
+  }
+
+  /* --- method cards --- */
+  .methods {
+    display: grid;
+    gap: var(--sp-4);
+    margin-top: var(--sp-3);
+  }
+
+  .method {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--sp-3) var(--sp-4);
+    background: var(--surface);
+  }
+
+  .method h3 {
+    margin-bottom: var(--sp-1);
+  }
+
+  .method-strip {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+    margin-top: var(--sp-3);
+    padding: var(--sp-2);
+    border-radius: var(--radius-sm);
+    background: color-mix(in oklab, var(--accent) 4%, transparent);
+  }
+
+  .method-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    font-size: 0.85rem;
+  }
+
+  .chip-swatch {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    flex: none;
+  }
+
+  .method-arrow {
+    color: var(--muted);
+  }
+
+  .method-result {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .result-swatch-sm {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 0 2px var(--accent-soft);
+  }
+
+  .result-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    align-items: flex-start;
+  }
+
+  .method-hex {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 0.15rem 0.5rem;
+  }
+
+  .method-note {
+    margin-top: var(--sp-2);
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  /* --- chart --- */
+  .chart-notes {
+    margin-bottom: var(--sp-4);
+  }
+
+  .chart-base {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-2);
+  }
+
+  .base-swatch {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    flex: none;
+  }
+
+  .chart {
+    display: grid;
+    gap: var(--sp-3);
+  }
+
+  .chart-row {
+    display: grid;
+    gap: var(--sp-2);
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  @media (min-width: 48rem) {
+    .chart-row {
+      grid-template-columns: 13rem minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
+  .chart-gel {
+    display: flex;
+    gap: var(--sp-2);
+    align-items: flex-start;
+  }
+
+  .chart-gel strong {
+    display: block;
+  }
+
+  .gel-dot {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    flex: none;
+    margin-top: 0.15rem;
+  }
+
+  .gel-brand {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .chart-gel p {
+    margin: 0.35rem 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .chart-cells {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5.6rem, 1fr));
+    gap: var(--sp-2);
+  }
+
+  .chart-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    text-align: center;
+  }
+
+  .cell-swatch {
+    width: 100%;
+    height: 3.4rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  .cell-drops {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .cell-hex {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .cell-name {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* --- tips / reading --- */
+  .tips {
+    display: grid;
+    gap: var(--sp-2);
+    padding-left: 1.1rem;
+  }
+
+  .keep-reading {
+    display: grid;
+    gap: var(--sp-1);
+  }
+</style>
