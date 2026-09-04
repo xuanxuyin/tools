@@ -27,6 +27,7 @@
 - 域名：Spaceship 注册，NS 已指向 `chin.ns.cloudflare.com` / `rocco.ns.cloudflare.com`
 - GSC：Domain 属性已验证（TXT 记录），站点地图已提交（31 个 URL）
 - 访问统计：Cloudflare Web Analytics **自动注入模式**（已收到真实访问数据）
+- 域名邮箱：`hello@tintbrew.com` 经 Cloudflare Email Routing 免费转发到真实邮箱（已实测）
 - URL 体系：尾斜杠规范 + www→主域 301 + 反向 slug 301，全部验证通过
 
 ---
@@ -136,6 +137,17 @@
 - **Web Analytics → Add a site** → `tintbrew.com` → 开**自动注入**
   （Cloudflare 在边缘给真实浏览器请求自动插脚本，代码零改动）
 - 备用 token 见顶部"当前状态"第 4 条
+
+### 第 9.5 步 · 域名邮箱 —— Email Routing（免费，2026-09-04 已验证可用）
+
+- Cloudflare → tintbrew.com → **Email → Email Routing** → 启用
+  （自动往 DNS 加 MX/SPF 记录，一键）
+- **Destination addresses** → 添加真实邮箱（QQ/163/Gmail 均可）→ 收确认邮件点验证
+- **Routing rules** → Create → Custom address 填 `hello` → 动作选转发到真实邮箱
+- 效果：`hello@tintbrew.com` 的来信自动转发到真实邮箱，零维护、零费用，
+  站内 Contact/Privacy 页引用的地址即真实可用
+- 注意：Cloudflare 会拒收无 SPF/DKIM 认证的直连裸投邮件（防伪造），属正常保护；
+  首封转发信可能进垃圾箱，标记一次即可
 
 ### 第 10 步 · 上线验证 + 收尾
 
