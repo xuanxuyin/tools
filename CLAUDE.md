@@ -14,6 +14,15 @@
 
 先 KD 调研再动手：0~10 长尾做内容矩阵起步 / 20~30 做工具页 / 40+ 新站不碰。用 Ahrefs 或浏览器 AITDK 插件拉量和 SERP 竞品 DR。数据说话再买域名（Spaceship 买，DNS 托管 Cloudflare）。
 
+### 语言与受众规则（硬约束）
+
+目标市场是**美国/海外**，一切面向用户的语言和用法遵循**美式习惯**：
+
+- **美式拼写**：color（非 colour）、gray（非 grey）、center、optimize、favorite；关键词调研也用美式拼法
+- **美式度量与文化语境**：英制单位（inches/feet/oz/°F）、math（非 maths）、US 常见品牌/节日/场景类比；涉及地理的例子用美国语境
+- **语气**：直接、利益先行、口语化可读，符合美国 web 用户习惯；避免英式/中式表达直译
+- **SERP 以 google.com 美国区为准**：验收排名、看竞品、拉关键词都用 US 视角（无痕 + 美国代理，或工具默认 US 数据源）
+
 ### 技术栈模板（tintbrew 验证过，直接复用）
 
 Astro 5 纯静态 SSG + 原生 TS islands（无框架）+ 原生 CSS tokens + 系统字体（零字体请求）。
