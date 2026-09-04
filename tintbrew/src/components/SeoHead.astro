@@ -18,7 +18,8 @@ interface Props {
 
 const { title, description, path, jsonLd, noindex = false, ogImage = '/og-default.png' } = Astro.props;
 
-const canonical = new URL(path, SITE.url).href;
+// trailing slash matches Cloudflare Pages URL normalization (clean URL 308s to slashed)
+const canonical = path === '/' ? `${SITE.url}/` : `${SITE.url}${path}/`;
 const ogImageAbs = new URL(ogImage, SITE.url).href;
 const jsonLdItems: Record<string, unknown>[] = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const gsc = import.meta.env.PUBLIC_GSC_VERIFICATION ?? SITE.gscVerification;

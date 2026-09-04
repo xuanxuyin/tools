@@ -79,7 +79,6 @@ push 之后 1~2 分钟，Cloudflare 自动完成部署，**不需要手动上传
 | `public/_headers` | 静态资源永久缓存 |
 | `public/robots.txt` | 指向站点地图 |
 | `scripts/generate-og.mjs` | 重新生成分享卡片图 `npm run og` |
-| `scripts/fix-sitemap.mjs` | 构建后修正 sitemap 尾斜杠（已挂进 build） |
 | `vercel.json` | Vercel 时代的遗留配置，在 Cloudflare 上不生效，留作备用 |
 
 ---
