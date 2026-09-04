@@ -1,0 +1,15 @@
+---
+/** Copy button. `data-copy` is read at click time by scripts/copy.ts, so the
+ *  island can update the attribute when a value changes — no rewiring. */
+interface Props {
+  value: string;
+  /** Accessible description of what is copied */
+  label?: string;
+}
+
+const { value, label } = Astro.props;
+---
+
+<button type="button" class="btn btn-copy" data-copy={value} aria-label={`Copy ${label ?? 'value'}`}>
+  Copy
+</button>

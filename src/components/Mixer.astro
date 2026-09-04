@@ -1,0 +1,354 @@
+---
+import {
+  colorMixSnippet,
+  formatCss,
+  hexToRgb,
+  mixSteps,
+  normalizeHex,
+  normalizeWeights,
+  oklabMix,
+  readableLabel,
+  rgbToHex,
+} from '../lib/color';
+import CopyButton from './CopyButton.astro';
+
+/**
+ * Color Mixer — one component, two contexts:
+ *  - flagship /color-mixer (syncUrl + mode toggle + URL sharing)
+ *  - matrix pages (preloaded pair, compact, no URL writing)
+ *
+ * The shell is server-rendered with real computed values, so the answer is in
+ * the static HTML; scripts/mixer.ts only takes over interaction.
+ */
+interface Props {
+  initialColors?: string[];
+  initialRatios?: number[];
+  syncUrl?: boolean;
+  showModeToggle?: boolean;
+  /** Optional section heading (matrix pages use the page h1 for the question) */
+  title?: string;
+  compact?: boolean;
+}
+
+const {
+  initialColors = ['#ff0000', '#3b82f6'],
+  initialRatios,
+  syncUrl = false,
+  showModeToggle = true,
+  title,
+  compact = false,
+} = Astro.props;
+
+// --- validate state (mirrors the island's guards) ---
+let colors = initialColors
+  .slice(0, 5)
+  .map((c) => normalizeHex(c))
+  .filter((c): c is string => c !== null);
+while (colors.length < 2) colors = [...colors, colors[0] ?? '#ff0000'];
+
+let ratios = (initialRatios ?? [])
+  .slice(0, colors.length)
+  .map((r) => (Number.isFinite(r) && r >= 0 ? Math.round(r) : 1));
+while (ratios.length < colors.length) ratios = [...ratios, 1];
+
+// --- compute the static answer ---
+const rgbs = colors.map(hexToRgb);
+const result = oklabMix(rgbs, ratios);
+const resultHex = rgbToHex(result);
+const resultRgbCss = formatCss('rgb', result);
+const resultHslCss = formatCss('hsl', result);
+const resultCmykCss = formatCss('cmyk', result);
+const labelColor = readableLabel(result);
+const steps = mixSteps(rgbs, 9).map(rgbToHex);
+const weights = normalizeWeights(ratios);
+const pctA = Math.round((weights[0]! / (weights[0]! + (weights[1] ?? 0))) * 100);
+const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
+---
+
+<section
+  class:list={['mixer', compact && 'mixer--compact']}
+  data-mixer
+  data-colors={JSON.stringify(colors)}
+  data-ratios={JSON.stringify(ratios)}
+  data-mode="oklab"
+  data-sync-url={syncUrl ? 'true' : 'false'}
+  aria-label="Color mixer"
+>
+  {title && <h2 class="mixer-title">{title}</h2>}
+
+  <div class="mixer-grid">
+    <div class="mixer-controls">
+      <div class="mixer-rows" data-rows>
+        {
+          colors.map((hex, i) => (
+            <div class="mixer-row" data-row>
+              <label class="mixer-swatch" data-swatch style={`background:${hex}`}>
+                <input type="color" data-color value={hex} aria-label={`Pick color ${i + 1}`} />
+              </label>
+              <input
+                class="text-input mixer-hex"
+                type="text"
+                data-hex
+                value={hex}
+                maxlength="7"
+                spellcheck="false"
+                autocomplete="off"
+                aria-label={`Hex value for color ${i + 1}`}
+              />
+              <input
+                type="range"
+                min="0"
+                max="10"
+                step="1"
+                value={ratios[i]}
+                data-ratio
+                aria-label={`Mixing ratio for color ${i + 1}`}
+              />
+              <button
+                type="button"
+                class="btn btn-remove"
+                data-remove
+                aria-label={`Remove color ${i + 1}`}
+                disabled={colors.length <= 2}
+              >
+                ✕
+              </button>
+            </div>
+          ))
+        }
+      </div>
+      <div class="mixer-actions">
+        <button type="button" class="btn" data-add disabled={colors.length >= 5}>
+          + Add color
+        </button>
+        {
+          showModeToggle && (
+            <div class="mode-toggle" role="group" aria-label="Mixing mode">
+              <button type="button" class="btn" data-mode-btn data-mode-value="oklab" aria-pressed="true">
+                Perceptual (Oklab)
+              </button>
+              <button type="button" class="btn" data-mode-btn data-mode-value="rgb" aria-pressed="false">
+                Average (RGB)
+              </button>
+            </div>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="mixer-result">
+      <div class="result-swatch" data-result-swatch style={`background:${resultHex}`}>
+        <span class="result-label" data-result-label style={`color:${labelColor}`}>{resultHex}</span>
+      </div>
+
+      <dl class="result-values">
+        <div class="value-row">
+          <dt>HEX</dt>
+          <dd>
+            <span data-v-hex>{resultHex}</span>
+            <CopyButton value={resultHex} label="hex code" />
+          </dd>
+        </div>
+        <div class="value-row">
+          <dt>RGB</dt>
+          <dd>
+            <span data-v-rgb>{resultRgbCss}</span>
+            <CopyButton value={resultRgbCss} label="RGB value" />
+          </dd>
+        </div>
+        <div class="value-row">
+          <dt>HSL</dt>
+          <dd>
+            <span data-v-hsl>{resultHslCss}</span>
+            <CopyButton value={resultHslCss} label="HSL value" />
+          </dd>
+        </div>
+        <div class="value-row">
+          <dt>CMYK</dt>
+          <dd>
+            <span data-v-cmyk>{resultCmykCss}</span>
+            <CopyButton value={resultCmykCss} label="CMYK value" />
+          </dd>
+        </div>
+      </dl>
+
+      <div class="steps-strip" data-steps aria-hidden="true">
+        {steps.map((s) => <span style={`background:${s}`} />)}
+      </div>
+
+      <div class="snippet-block" data-snippet-block>
+        <code class="code-block" data-snippet>{snippet}</code>
+        <CopyButton value={snippet} label="CSS snippet" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<template data-row-template>
+  <div class="mixer-row" data-row>
+    <label class="mixer-swatch" data-swatch>
+      <input type="color" data-color value="#00aa55" aria-label="Pick color" />
+    </label>
+    <input
+      class="text-input mixer-hex"
+      type="text"
+      data-hex
+      value="#00aa55"
+      maxlength="7"
+      spellcheck="false"
+      autocomplete="off"
+      aria-label="Hex value"
+    />
+    <input type="range" min="0" max="10" step="1" value="1" data-ratio aria-label="Mixing ratio" />
+    <button type="button" class="btn btn-remove" data-remove aria-label="Remove this color">✕</button>
+  </div>
+</template>
+
+<script>
+  import '../scripts/mixer';
+</script>
+
+<style>
+  .mixer-grid {
+    display: grid;
+    gap: var(--sp-4);
+    margin-top: var(--sp-3);
+  }
+
+  @media (min-width: 48rem) {
+    .mixer-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
+  .mixer-title {
+    margin-top: var(--sp-4);
+  }
+
+  .mixer--compact .mixer-title {
+    margin-top: var(--sp-3);
+  }
+
+  /* --- controls --- */
+  .mixer-rows {
+    display: grid;
+    gap: var(--sp-2);
+  }
+
+  .mixer-row {
+    display: grid;
+    grid-template-columns: 2.6rem minmax(6rem, 1fr) minmax(5rem, 1.4fr) auto;
+    gap: var(--sp-2);
+    align-items: center;
+  }
+
+  @media (max-width: 26rem) {
+    .mixer-row {
+      grid-template-columns: 2.6rem minmax(5rem, 1fr) auto;
+      grid-template-areas:
+        'swatch hex remove'
+        'swatch ratio ratio';
+    }
+  }
+
+  .mixer-swatch {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .mixer-swatch input {
+    width: 200%;
+    height: 200%;
+    transform: translate(-25%, -25%);
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .mixer-hex {
+    font-family: var(--mono);
+    text-transform: lowercase;
+  }
+
+  .btn-remove {
+    padding: 0.35rem 0.6rem;
+  }
+
+  .mixer-actions {
+    display: flex;
+    gap: var(--sp-2);
+    margin-top: var(--sp-3);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .mode-toggle {
+    display: inline-flex;
+    gap: var(--sp-1);
+  }
+
+  .mode-toggle .btn[aria-pressed='true'] {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* --- result --- */
+  .result-swatch {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    min-height: 9rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: var(--sp-3);
+    transition: background-color 0.12s ease;
+  }
+
+  .result-label {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .result-values {
+    margin-top: var(--sp-3);
+  }
+
+  .steps-strip {
+    display: flex;
+    height: 2.4rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-top: var(--sp-3);
+  }
+
+  .steps-strip > span {
+    flex: 1;
+  }
+
+  .snippet-block {
+    margin-top: var(--sp-3);
+    display: flex;
+    gap: var(--sp-2);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .snippet-block .code-block {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    font-size: 0.85rem;
+  }
+
+  .snippet-block[hidden] {
+    display: none;
+  }
+</style>

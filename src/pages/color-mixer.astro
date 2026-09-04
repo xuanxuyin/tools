@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Mixer from '../components/Mixer.astro';
+import { SITE } from '../consts';
+
+const title = 'Color Mixer — Mix Colors Online with Exact Ratios | TintBrew';
+const description =
+  'Mix 2–5 colors online with ratio sliders. Perceptual Oklab blending, live HEX/RGB/HSL/CMYK results and a copy-ready CSS color-mix() snippet. Free, no signup.';
+
+const faqs = [
+  {
+    q: 'What is the difference between Perceptual (Oklab) and Average (RGB)?',
+    a: 'Average (RGB) adds the red, green and blue channels of your colors mathematically — the same way screens dim two lights together. Perceptual (Oklab) blends colors in a color space designed to match human vision, so midpoints look like evenly stepped shades, the way paint or ink behaves. Try black + white in both modes to see the difference.',
+  },
+  {
+    q: 'How many colors can I mix at once?',
+    a: 'Between 2 and 5. Add a color with “+ Add color”, remove one with the ✕ button, and set how much of each color contributes with the ratio slider (0–10). The result updates instantly.',
+  },
+  {
+    q: 'Can I share or save my mix?',
+    a: 'Yes. This page writes your colors and ratios into the URL as you work (look at the address bar). Copy the full URL and anyone who opens it sees your exact mix — no account needed.',
+  },
+  {
+    q: 'What is the color-mix() snippet for?',
+    a: 'It is a native CSS function that reproduces your mix in any stylesheet. Copy the snippet from the result panel and paste it into your CSS — modern browsers compute the same blend directly, no preprocessor required.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TintBrew Color Mixer',
+    url: `${SITE.url}/color-mixer`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Color Mixer', item: `${SITE.url}/color-mixer` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/color-mixer" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>Online Color Mixer</h1>
+    <p class="lead">
+      Blend 2–5 colors with exact ratios and get the result in HEX, RGB, HSL and CMYK — plus a
+      copy-ready CSS <code>color-mix()</code> snippet. Mixing happens perceptually (Oklab), so
+      blends look like real paint, not muddy screen math.
+    </p>
+  </section>
+
+  <Mixer syncUrl showModeToggle />
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2>How this color mixer works</h2>
+    <p>
+      Most online mixers average the raw red, green and blue channel values. That is how a screen
+      mixes light — but it is not how <em>you</em> see color. A 50/50 RGB blend of black and white
+      lands on the sRGB midpoint (128), which still looks closer to black than to white, and
+      saturated pairs can turn muddy brown.
+    </p>
+    <p>
+      This mixer defaults to <strong>Oklab</strong>, a perceptual color space that matches how
+      human vision weighs lightness and hue. Blends step evenly, midpoints stay vivid, and the
+      result matches what you would expect from mixing paint or ink. The
+      <strong>Average (RGB)</strong> toggle shows the naive math for comparison — try both on
+      black + white or red + blue.
+    </p>
+    <p>
+      Each color has a ratio slider (0–10). Ratios are relative: 5 : 5 is the same as 1 : 1, and
+      9 : 1 pulls the result strongly toward the first color. The gradient strip under the result
+      previews the full blend path between your colors.
+    </p>
+
+    <h2>Popular mixes</h2>
+    <ul>
+      <li><a href="/mix/red-blue">What red and blue make</a> — the classic violet</li>
+      <li><a href="/mix/blue-yellow">Blue plus yellow</a> — and why screens say green</li>
+      <li><a href="/mix/red-green">Red and green mixed</a> — light vs. paint</li>
+      <li><a href="/mix/black-white">Black and white</a> — grays, perceptually spaced</li>
+    </ul>
+    <p>See the <a href="/mix">full list of color mixes</a> or convert a code in the <a href="/color-converter">color converter</a>.</p>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
