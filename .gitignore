@@ -21,3 +21,6 @@ pnpm-debug.log*
 .DS_Store
 .idea/
 *.log
+
+# 关键词调研原始截图（体积大；提炼后的数据在 research/*.md，需提交）
+research/**/*.png
