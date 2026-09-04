@@ -1,0 +1,69 @@
+---
+import type { MixContent } from '../lib/mixContent';
+
+interface Props {
+  steps: MixContent['tintsShades'];
+}
+
+const { steps } = Astro.props;
+---
+
+<div class="tints">
+  <div class="tints-strip" aria-hidden="true">
+    {steps.map((s) => <span style={`background:${s.hex}`}></span>)}
+  </div>
+  <div class="tints-labels">
+    {steps.map((s) => (
+      <span>
+        <span class="tints-dot" style={`background:${s.hex}`} aria-hidden="true"></span>
+        {s.label} <code>{s.hex}</code>
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .tints {
+    margin-top: var(--sp-3);
+  }
+
+  .tints-strip {
+    display: flex;
+    height: 3rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .tints-strip > span {
+    flex: 1;
+  }
+
+  .tints-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-1) var(--sp-3);
+    margin-top: var(--sp-2);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .tints-labels > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .tints-dot {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .tints-labels code {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+  }
+</style>

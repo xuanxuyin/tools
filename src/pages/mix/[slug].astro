@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Mixer from '../../components/Mixer.astro';
+import MixTable from '../../components/MixTable.astro';
+import TintsShades from '../../components/TintsShades.astro';
+import RelatedMixes from '../../components/RelatedMixes.astro';
+import { buildMixContent } from '../../lib/mixContent';
+import { mixes } from '../../data/mixes';
+import { SITE } from '../../consts';
+
+export function getStaticPaths() {
+  return mixes.map((def) => ({
+    params: { slug: `${def.a}-${def.b}` },
+    props: { def },
+  }));
+}
+
+const { def } = Astro.props;
+const c = buildMixContent(def);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Color Mixes', item: `${SITE.url}/mix` },
+      { '@type': 'ListItem', position: 3, name: c.question, item: `${SITE.url}/mix/${c.slug}` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: c.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={c.metaTitle} description={c.metaDescription} path={`/mix/${c.slug}`} jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>{c.question[0]!.toUpperCase() + c.question.slice(1)}</h1>
+    <p class="lead">{c.answer}</p>
+    <div class="hero-answer" aria-label="The answer at a glance">
+      <span class="hero-swatches" aria-hidden="true">
+        <span style={`background:${c.a.hex}`}></span>
+        <span style={`background:${c.b.hex}`}></span>
+        <span class="hero-plus">+</span>
+        <span style={`background:${c.resultHex}`}></span>
+      </span>
+      <strong>{c.a.name} + {c.b.name} = {c.resultName}</strong>
+      <code>{c.resultHex}</code>
+    </div>
+  </section>
+
+  <Mixer initialColors={[c.first.hex, c.second.hex]} showModeToggle compact />
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>{c.first.name} to {c.second.name}: every ratio</h2>
+    <p>
+      How much of each color you use moves the answer along the blend path. The perceptual midpoint
+      is the 50/50 row; the others show what a 3:1 ratio does in either direction.
+    </p>
+    <MixTable rows={c.ratioRows} a={c.first} b={c.second} />
+
+    <h2>Lighter and darker versions</h2>
+    <p>
+      Tint the mix toward white or shade it toward black and you get a small palette that all
+      clearly belongs to the same family:
+    </p>
+    <TintsShades steps={c.tintsShades} />
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Paint vs. screen: why the medium matters</h2>
+    {def.additiveNote ? <p>{def.additiveNote}</p> : <p>{c.faqs[2]!.a}</p>}
+
+    <h2>About these two colors</h2>
+    <p>
+      <strong>{c.a.name}</strong> <span class="mono-chip">{c.a.hex}</span> — {c.a.blurb}
+    </p>
+    <p>
+      <strong>{c.b.name}</strong> <span class="mono-chip">{c.b.hex}</span> — {c.b.blurb}
+    </p>
+    <p>
+      Want to blend these with different colors entirely? Open the <a href="/color-mixer">full
+      color mixer</a>, or <a href="/color-converter">convert {c.resultHex}</a> to RGB, HSL or CMYK.
+    </p>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Related mixes</h2>
+    <RelatedMixes related={c.related} />
+    <p style="margin-top: var(--sp-3);">
+      See <a href="/mix">all color mixes</a> for the full directory.
+    </p>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      {c.faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-answer {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-top: var(--sp-3);
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: color-mix(in oklab, var(--accent) 4%, transparent);
+  }
+
+  .hero-swatches {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .hero-swatches > span {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .hero-plus {
+    width: auto !important;
+    height: auto !important;
+    border: 0 !important;
+    background: none !important;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .hero-answer code {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+  }
+
+  .mono-chip {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    padding: 0.1rem 0.4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+</style>

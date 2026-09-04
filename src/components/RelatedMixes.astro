@@ -1,0 +1,76 @@
+---
+import type { MixContent } from '../lib/mixContent';
+
+interface Props {
+  related: MixContent['related'];
+}
+
+const { related } = Astro.props;
+---
+
+<nav class="related" aria-label="Related color mixes">
+  <ul>
+    {related.map((r) => (
+      <li>
+        <a href={`/mix/${r.slug}`}>
+          <span class="related-swatches" aria-hidden="true">
+            <span style={`background:${r.a.hex}`}></span>
+            <span style={`background:${r.b.hex}`}></span>
+            <span class="related-arrow">→</span>
+            <span style={`background:${r.resultHex}`}></span>
+          </span>
+          {r.text}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .related ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--sp-2) 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: var(--sp-2);
+  }
+
+  .related a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+    padding: var(--sp-2) var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .related a:hover {
+    border-color: var(--accent);
+  }
+
+  .related-swatches {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .related-swatches > span {
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .related-arrow {
+    width: auto !important;
+    height: auto !important;
+    border: 0 !important;
+    background: none !important;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+</style>

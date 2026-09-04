@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { mixes } from '../../data/mixes';
+import { buildMixContent } from '../../lib/mixContent';
+import { SITE } from '../../consts';
+
+const title = 'All Color Mixes — What Two Colors Make, With HEX Codes | TintBrew';
+const description =
+  'Every classic color combination answered with live values: what red and blue, blue and yellow, black and white and 21 more mixes make — HEX codes, ratio tables and a mixer for each.';
+
+const items = mixes.map(buildMixContent);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+    { '@type': 'ListItem', position: 2, name: 'Color Mixes', item: `${SITE.url}/mix` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} path="/mix" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>What do two colors make?</h1>
+    <p class="lead">
+      Every mix below opens with the answer already computed — the 50/50 blend, its HEX code, ratio
+      tables from 75/25 to 25/75, tints, shades, and a live mixer preloaded with that pair.
+    </p>
+  </section>
+
+  <div class="mix-directory">
+    {
+      items
+        .sort((x, y) => Number(y.def.popular ?? false) - Number(x.def.popular ?? false))
+        .map((c) => (
+          <a class="mix-card" href={`/mix/${c.slug}`}>
+            <span class="mix-card-swatches" aria-hidden="true">
+              <span style={`background:${c.a.hex}`} />
+              <span style={`background:${c.b.hex}`} />
+              <span class="mix-card-arrow">→</span>
+              <span class="mix-card-result" style={`background:${c.resultHex}`} />
+            </span>
+            <span class="mix-card-q">What does {c.a.name.toLowerCase()} and {c.b.name.toLowerCase()} make?</span>
+            <span class="mix-card-a">
+              {c.resultName} <code>{c.resultHex}</code>
+            </span>
+            {c.def.popular && <span class="mix-card-pop">Popular</span>}
+          </a>
+        ))
+    }
+  </div>
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2>Why mixes differ between screens and paint</h2>
+    <p>
+      Screens mix light: combining wavelengths <em>adds</em> brightness, which is why red plus green
+      light makes yellow. Paint mixes pigments: each pigment absorbs light, so combining them
+      <em>subtracts</em> brightness — red plus green paint makes brown. Every mix page here shows
+      the perceptual blend and explains what changes between the two worlds.
+    </p>
+    <p>
+      Need a pair that isn't listed? Blend any colors yourself in the <a href="/color-mixer">color
+      mixer</a>, or look up a specific code in the <a href="/color-converter">color converter</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .mix-directory {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: var(--sp-3);
+    margin-top: var(--sp-4);
+  }
+
+  .mix-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-decoration: none;
+  }
+
+  .mix-card:hover {
+    border-color: var(--accent);
+  }
+
+  .mix-card-swatches {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: var(--sp-1);
+  }
+
+  .mix-card-swatches > span {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .mix-card-arrow {
+    width: auto !important;
+    height: auto !important;
+    border: 0 !important;
+    background: none !important;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .mix-card-q {
+    font-weight: 600;
+  }
+
+  .mix-card-a {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .mix-card-a code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+  }
+
+  .mix-card-pop {
+    position: absolute;
+    top: var(--sp-2);
+    right: var(--sp-2);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+  }
+</style>
