@@ -130,11 +130,83 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 
 ---
 
-## 上线后的 SEO 节奏
+## 上线后操作清单（按时间顺序做）
 
-- **明天**：看 GSC 站点地图是否变"成功"（站点已可抓取，最迟一两天）；没变就重新提交。
-- **每周**：GSC → Pages（收录数，31 页起步）/ Performance（曝光与排名）。
-  新域名收录 2~7 天开始有效果，排名 1~3 个月起量，**前期没数据是正常的**。
-- **增长手段**：第二批配色对（加 `mixes.ts` + `colors.ts` 即自动生成全套页面）、
-  新工具页（对比色生成器、调色板导出等）、外链（工具目录站提交）。
-- Google 会自动重抓；重大更新可在 GSC 里手动提交 URL。
+### 今天 · 一次性（约 10 分钟）
+
+1. **GSC 手动请求索引**（每个网址只请求一次，勿重复）：
+   GSC 顶部搜索框 → 粘贴网址 → 回车 → **Request indexing** → 等它跑完，依次做这三个：
+   - `https://tintbrew.com/`
+   - `https://tintbrew.com/color-mixer/`
+   - `https://tintbrew.com/mix/red-blue/`
+2. 剩下 28 个页面**不用动** —— Google 会顺着站点地图和内链自己发现。
+
+### 本周
+
+3. **明天看站点地图状态**：GSC → Sitemaps → 应从"无法抓取"变"成功"；
+   没变就重新提交一次。
+4. **拿首批外链**：提交 2~3 个免费工具目录站（收录加速器）。
+   要提交清单找 Claude 要。
+
+### 每周例行（5 分钟，固定动作）
+
+5. GSC → **Pages**：已索引页面数（目标 0 → 31）。
+6. GSC → **Performance**：曝光/点击/出现的查询词（前 1~2 个月纯观察，没数据正常）。
+7. Cloudflare → **Web Analytics**：访问量曲线。
+
+### 什么时候找 Claude
+
+- 想启动 V2 内容批次 / 加新工具（见下）
+- GSC 出现异常（收录下降、报错、流量突变）
+- 想分析哪些词开始有排名、下一步写什么
+
+---
+
+## V2 增长计划
+
+### 核心洞察（2026-09-04 发现）
+
+"How to Make Coffee Wood Stain" 这类**颜色 × 生活场景**的长尾词：竞争极低（KD≈0）、
+搜索意图明确、总量巨大，而且与现有 24 个 `/mix/` 页面构成**天然内链漏斗** ——
+场景页回答"为什么/怎么做"，混色工具页承接"动手试"。
+
+### V2.1 场景长尾页（第一批 15~20 页）— 优先级最高
+
+候选方向（上线前先批量拉搜索量/难度筛选 top 20）：
+
+| 场景 | 例词 |
+|---|---|
+| 木器/DIY 染色 | how to make coffee wood stain、gray wash、weathered wood look |
+| 肤色调色 | what colors make skin tone |
+| 绘画颜料 | what colors make brown paint、how to darken acrylic paint |
+| 烘焙糖霜 | icing color chart、how to make brown icing、fondant colors |
+| 手工材料 | how to color slime、polymer clay colors |
+| 家装墙面 | how to darken wall paint、paint tinting guide |
+
+每页结构：场景科普 + 调色原理 + 色卡/比例表（引擎现算）+ 内链相关 `/mix/` 页 + FAQ。
+执行流程：Claude 做词簇调研（搜索量+KD）→ 确认 top 20 → 复用 mixContent 模式批量生成。
+
+### V2.2 第二批配色对（+20~30 页，低成本高确定性）
+
+扩展 `colors.ts`（gray、cyan、magenta、gold、navy、turquoise、lavender、beige…）+
+`mixes.ts` 配对 —— 现有架构**自动**生成全套：页面、目录、301、sitemap、内链。
+
+### V2.3 新工具页
+
+| 工具 | 备注 |
+|---|---|
+| 互补色/对比色生成器 | 引擎已有 `contrastRatio`，顺手加 WCAG 对比度检查 |
+| 图片取色/调色板导出 | 流量入口型工具 |
+| Oklab 渐变生成器 | 差异化（别人都是 sRGB 渐变） |
+
+### V2.4 外链与分发
+
+- 每个新工具/新批次上线 → 提交一轮工具目录站
+- Reddit（r/DIY、r/painting，先读版规）、Pinterest 场景图分发
+
+### 节奏与指标
+
+- **启动条件**：GSC 显示首批页面已索引（预计上线后 1~2 周）→ 启动 V2.1
+- **节奏**：每批上线后观察 3~4 周再上下一批（新站别一次堆太多页）
+- **北极星指标**：GSC 每 28 天曝光数（impressions）环比增长
+- **变现节点**：自然流量稳定过 ~300 次访问/天 后接入广告（当前零广告代码）
