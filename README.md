@@ -260,7 +260,50 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 
 ---
 
-## V2 增长计划
+## 目标关键词清单（过几天去 Google 验收用）
+
+搜索时用**无痕窗口**（避免个性化干扰）；更准的进度数据永远在 GSC → 效果 里。
+
+### 第一梯队 · 品牌词（最先出现，约 2~7 天）
+
+| 关键词 | 目标页 |
+|---|---|
+| `tintbrew` | 首页 |
+| `tintbrew color mixer` | /color-mixer/ |
+
+### 第二梯队 · 长尾矩阵词（KD≈0，2~4 周开始有曝光，1~2 个月冲首页）
+
+| 搜索词 | 目标页 |
+|---|---|
+| what color does red and blue make | /mix/red-blue/ |
+| what does blue and yellow make | /mix/blue-yellow/ |
+| what do red and yellow make | /mix/red-yellow/ |
+| what does red and green make | /mix/red-green/ |
+| what colors make purple | /mix/red-blue/（+blue-purple/） |
+| what colors make orange | /mix/red-yellow/（+orange-red/） |
+| what colors make green | /mix/blue-yellow/（+yellow-green/） |
+| what colors make pink | /mix/red-white/（+red-pink/） |
+| what colors make gray / grey | /mix/black-white/ |
+| what do black and white make | /mix/black-white/ |
+| what does blue and white make | /mix/blue-white/ |
+| what does red and white make | /mix/red-white/ |
+
+### 第三梯队 · 工具头部词（KD≈27，3~6 个月，靠工具页+外链慢慢磨）
+
+| 搜索词 | 目标页 |
+|---|---|
+| color mixer / online color mixer | /color-mixer/ |
+| mix colors online | /color-mixer/ |
+| color converter | /color-converter/ |
+| hex to rgb converter / rgb to hsl | /color-converter/ |
+
+### 搜索技巧
+
+- `site:tintbrew.com` —— 看多少页已进 Google 索引（收录进度最快验证法）
+- 直接搜完整问题（如 "what color does red and blue make"）—— 看我们的页排第几
+- 新站前期排第 2~5 页都算健康，进了前 10 页说明已参与竞争
+
+
 
 ### 核心洞察（2026-09-04 发现）
 
