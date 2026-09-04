@@ -21,7 +21,7 @@ const { title, description, path, jsonLd, noindex = false, ogImage = '/og-defaul
 const canonical = new URL(path, SITE.url).href;
 const ogImageAbs = new URL(ogImage, SITE.url).href;
 const jsonLdItems: Record<string, unknown>[] = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
-const gsc = import.meta.env.PUBLIC_GSC_VERIFICATION;
+const gsc = import.meta.env.PUBLIC_GSC_VERIFICATION ?? SITE.gscVerification;
 ---
 
 <title>{title}</title>
