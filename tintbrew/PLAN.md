@@ -37,6 +37,20 @@
 
 > 数字依据：KD 0 词 SERP 实勘全是弱内容（进 top 30 是新站合理预期）；头部词按外链进度保守估。**到点没达 → 回到 §6 表格执行对应动作，不硬扛。**
 
+**Request indexing 9 个 URL 清单（2026-09-06 用，粘一个做一个）：**
+
+```
+https://tintbrew.com/what-colors-make-brown/
+https://tintbrew.com/how-to-make-black-frosting/
+https://tintbrew.com/how-to-make-brown-icing/
+https://tintbrew.com/icing-color-chart/
+https://tintbrew.com/buttercream-color-chart/
+https://tintbrew.com/color-guides/
+https://tintbrew.com/what-colors-make-purple/
+https://tintbrew.com/what-colors-make-green/
+https://tintbrew.com/what-colors-make-orange/
+```
+
 ## 1. 已完成（时间线）
 
 | 日期 | 里程碑 |
@@ -65,10 +79,10 @@
 
 | # | 任务 | 谁 | 验收标准 | 期限 |
 |---|---|---|---|---|
-| 1 | Request indexing 9 个新 URL（W1+W2，清单在根 README） | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
-| 2 | 外链：Peerlist Launchpad + AlternativeTo（文案抄 README） | 👤 | 两个平台提交成功 | 2026-09-07 |
+| 1 | Request indexing 9 个新 URL（W1+W2，**清单见下方代码块**） | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
+| 2 | 外链：Peerlist Launchpad + AlternativeTo（**步骤+文案见 [DISTRIBUTION.md](./DISTRIBUTION.md)**） | 👤 | 两个平台提交成功 | 2026-09-07 |
 | 3 | GSC 首查：效果→查询（28 天），看 W1/W2 词有没有曝光 | 👤+Claude | 截图记录，更新本文档 §2 状态 | 2026-09-10 |
-| 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩 8 色 → mixes.ts 配对 → 全自动出页 | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
+| 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工 | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
 | 5 | W3 木器染色 2 页（coffee wood stain 等，已锁定未建） | Claude | 2 页上线 | 跟 V2.2 同批或下批 |
 | 6 | per-page OG 图：场景页用引擎生成对应色卡图（替代全站共用卡） | Claude | 场景页 og:image 唯一 | 2026-09 下旬 |
 | 7 | V2.3 工具页：互补色/对比色生成器（`contrastRatio` 引擎已有） | Claude | 1 页 + WCAG 检查 | 2026-10 |
@@ -77,7 +91,7 @@
 
 **每日（≤10 分钟，两站共用，chartglade 见其 PLAN.md）**：
 
-- [ ] GSC → 效果：有没有新冒头的查询词（2 分钟）
+- [ ] GSC → 效果：有没有新冒头的查询词（2 分钟，**界面怎么点见根 README「每周数据检查 SOP」**）
 - [ ] Cloudflare → Web Analytics：访问曲线异常否（1 分钟）
 - [ ] 新词/异动随手记到本文档 §2 表格（不展开分析）
 

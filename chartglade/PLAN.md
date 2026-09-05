@@ -59,7 +59,7 @@
 
 **每日（≤10 分钟，两站共用，tintbrew 见其 PLAN.md）**：
 
-- [ ] GSC → 效果：有没有新冒头的查询词（2 分钟）
+- [ ] GSC → 效果：有没有新冒头的查询词（2 分钟，**界面怎么点见根 README「每周数据检查 SOP」**）
 - [ ] Cloudflare → Web Analytics：访问曲线（1 分钟）
 - [ ] 新词/异动记到本文档 §2（不展开分析）
 
@@ -73,7 +73,7 @@
 
 1. **V1.5** worksheet generator 交互工具页（cursive 文本→练习页；MyCursive 已验证此形态在 worksheet 意图下有排名）
 2. **矩阵扩容候选**（按验收结果挑）：multiplication 1-100 等变体页 / sight words 按年级细分裂变页 / alphabet chart 场景变体
-3. **季节窗**：秋季开学季（8~9 月）已过一半赶不上，**万圣节/感恩节 printable（10 月中前必须上线）**、圣诞 winter printable（11 月上线）—— printables 赛道季节词是大流量脉冲
+3. **季节窗**：秋季开学季（8~9 月）已过一半赶不上，**万圣节/感恩节 printable（10 月中前必须上线）**、圣诞 winter printable（11 月上线）—— printables 赛道季节词是大流量脉冲。候选池（10 月初拉量筛选后定稿）：halloween word search / halloween coloring math facts / thanksgiving gratitude tree / thankful ABC list / halloween cursive practice（复用字母矩阵架构）/ pumpkin math chart
 4. **外链与分发**：Pinterest 常态化（每周 pin）、教师社区（r/Teachers r/homeschool，先读版规）、TPT 形态研究（商城不做，引流可）
 5. **变现**：~300 访问/天 → 接广告
 6. **第二曲线**（本仓第三个站候选）：excel shortcuts / sql cheat sheet 等高 CPC 打印工具 —— chartglade 验收数据出来后再定
