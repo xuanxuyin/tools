@@ -5,6 +5,7 @@
 | 项目 | 是什么 | 技术 | 托管 |
 |---|---|---|---|
 | [tintbrew/](./tintbrew) | [tintbrew.com](https://tintbrew.com) — 免费颜色工具站（Oklab 混色器、格式转换、"两种颜色混成什么"24 页答案矩阵） | Astro 5 静态生成 + 原生 TS islands | Cloudflare Pages |
+| [chartglade/](./chartglade) | [chartglade.com](https://chartglade.com) — 免费教学打印图表站（place value / 乘法表 / 高频词 / 草书字母，27 页） | Astro 5 静态生成 + @media print 打印系统 | Cloudflare Pages（待部署） |
 
 ---
 
@@ -29,6 +30,25 @@
 - 访问统计：Cloudflare Web Analytics **自动注入模式**（已收到真实访问数据）
 - 域名邮箱：`hello@tintbrew.com` 经 Cloudflare Email Routing 免费转发到真实邮箱（已实测）
 - URL 体系：尾斜杠规范 + www→主域 301 + 反向 slug 301，全部验证通过
+
+---
+
+## chartglade — 第二个站（2026-09-05 代码完成，待部署）
+
+- **域名**：chartglade.com 已购（Spaceship CN¥60.94），DNS 还在 Spaceship 默认，部署时照第 4 步搬进 Cloudflare
+- **形态**：页面即打印件 —— `@media print` 把页面剥成一张干净的 letter 纸，打印按钮一键输出；宽表格（乘法 1-15/1-20、数轴）自动横版
+- **27 页**：place value 簇 4 + multiplication 簇 4 + sight words 阶梯 5 + cursive 主页 1 + 散页 5（fraction/hundred/number line/addition/alphabet）+ 3 个 hub + 首页 + about/privacy/contact/404
+- **关键词池 251K US/月（4 支柱）**：cursive alphabet 201K（裸词 SERP 已实勘：软）、place value chart 27.1K、kindergarten sight words 12.1K、multiplication chart printable 12.1K；调研全档在 `research/cheat-sheet-data.md`
+- **本地验证**：`npm run build` 27 页 ✓ · `npx vitest run` 17/17 ✓ · `npx astro check` 0 错误 ✓
+
+### 部署差异点（相对下面的 tintbrew 11 步，其余照抄）
+
+1. 第 4 步：chartglade.com 加入 Cloudflare 后**会分配新的 NS 对**（不一定还是 chin/rocco，以界面显示为准），回 Spaceship 改这条 NS
+2. 第 5 步：CF Pages 新建项目时 **Root directory 填 `chartglade`**
+3. 第 6 步：GSC 新建 Domain 属性 `chartglade.com` → TXT 验证后，把 content 值填进 `chartglade/src/consts.ts` 的 `gscVerification`（空字符串）→ push 一次让 meta 上线 → 再提交 `sitemap-index.xml`
+4. 第 9 步：Web Analytics 用 CF 自动注入模式即可（consts 里 `cfBeaconToken` 留空，勿双重计数）
+5. 第 9.5 步：Email Routing 开 `hello@chartglade.com` 转发
+6. 验收关键词（2~4 周后看 GSC）：place value chart printable / multiplication chart 1-12 / kindergarten sight words list / cursive alphabet chart
 
 ---
 

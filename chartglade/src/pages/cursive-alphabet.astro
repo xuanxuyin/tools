@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import CursiveAlphabet from '../components/printables/CursiveAlphabet.astro';
+import { cursivePages } from '../data/cursive';
+
+const def = cursivePages.find((p) => p.slug === 'cursive-alphabet')!;
+---
+
+<ChartPage def={def}>
+  <CursiveAlphabet title="Cursive Alphabet Chart" />
+</ChartPage>

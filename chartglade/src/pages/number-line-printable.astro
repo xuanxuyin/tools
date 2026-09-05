@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import NumberLine from '../components/printables/NumberLine.astro';
+import { loosePages } from '../data/loose';
+
+const def = loosePages.find((p) => p.slug === 'number-line-printable')!;
+---
+
+<ChartPage def={def}>
+  <NumberLine min={0} max={20} title="Number Line 0-20" />
+</ChartPage>

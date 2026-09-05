@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../consts';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+  ogImage?: string;
+}
+
+const { title, description, path, jsonLd, noindex, ogImage } = Astro.props;
+// Cloudflare Web Analytics beacon token (public by design); empty = render nothing.
+// Prod uses CF automatic injection — this is a manual fallback only.
+const cfToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN ?? SITE.cfBeaconToken;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#2f7d4f" />
+    <SeoHead {title} {description} {path} {jsonLd} {noindex} {ogImage} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main" class="container">
+      <slot />
+    </main>
+    <Footer />
+    <!-- Global delegated handlers: print button + printable table interactivity -->
+    <script>
+      import '../scripts/interact';
+    </script>
+    {
+      cfToken && (
+        <!-- Cloudflare Web Analytics: cookieless, aggregate page views only -->
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: cfToken })}></script>
+      )
+    }
+  </body>
+</html>

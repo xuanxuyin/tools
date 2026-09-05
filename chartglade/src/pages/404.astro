@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page Not Found | ChartGlade"
+  description="That page doesn't exist — here are the charts that do."
+  path="/404"
+  noindex
+>
+  <section class="hero">
+    <h1>Page not found</h1>
+    <p class="lead">That page doesn't exist — but the charts are all still here.</p>
+  </section>
+
+  <section class="section">
+    <ul class="related-list">
+      <li><a href="/">Home</a></li>
+      <li><a href="/charts/">Math charts</a></li>
+      <li><a href="/sight-words/">Sight words by grade</a></li>
+      <li><a href="/cursive/">Cursive</a></li>
+      <li><a href="/place-value-chart/">Place value chart</a></li>
+      <li><a href="/multiplication-chart/">Multiplication chart</a></li>
+      <li><a href="/cursive-alphabet/">Cursive alphabet</a></li>
+    </ul>
+  </section>
+</BaseLayout>

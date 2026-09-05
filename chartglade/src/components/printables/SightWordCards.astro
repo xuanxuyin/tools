@@ -1,0 +1,18 @@
+---
+import { wordsFor, type DolchLevel } from '../../lib/sightWords';
+
+interface Props {
+  level: DolchLevel;
+  title?: string;
+}
+
+const { level, title } = Astro.props;
+const words = wordsFor(level);
+---
+
+{title && <p class="sheet-title">{title} ({words.length} words)</p>}
+<div class="word-cards">
+  {words.map((w) => (
+    <div class:list={['word-card', { lower: w === w.toLowerCase() }]}>{w}</div>
+  ))}
+</div>

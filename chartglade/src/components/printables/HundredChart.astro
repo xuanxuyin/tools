@@ -1,0 +1,22 @@
+---
+import { hundredNumbers } from '../../lib/mathCharts';
+import { chunk } from '../../lib/sightWords';
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+const rows = chunk(hundredNumbers(), 10);
+---
+
+{title && <p class="sheet-title">{title}</p>}
+<table class="chart-table hundred">
+  <tbody>
+    {rows.map((row) => (
+      <tr>
+        {row.map((n) => <td>{n}</td>)}
+      </tr>
+    ))}
+  </tbody>
+</table>

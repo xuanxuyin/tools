@@ -1,0 +1,28 @@
+{
+  "name": "chartglade",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Free printable K-5 teaching charts: place value, multiplication, sight words, cursive alphabet and more.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.0",
+    "astro": "^5.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "happy-dom": "^20.14.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

@@ -1,0 +1,47 @@
+---
+interface Props {
+  min?: number;
+  max?: number;
+  title?: string;
+}
+
+const { min = 0, max = 20, title } = Astro.props;
+
+const W = 1000;
+const H = 150;
+const PAD = 34;
+const Y = 72;
+const step = (W - PAD * 2) / (max - min);
+const x = (n: number) => PAD + (n - min) * step;
+const ticks = Array.from({ length: max - min + 1 }, (_, i) => min + i);
+---
+
+{title && <p class="sheet-title">{title}</p>}
+<svg
+  class="number-line"
+  viewBox={`0 0 ${W} ${H}`}
+  role="img"
+  aria-label={`Number line from ${min} to ${max}, one tick per whole number`}
+>
+  <defs>
+    <marker id="nl-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#000"></path>
+    </marker>
+  </defs>
+  <line
+    x1={x(min) - 16}
+    y1={Y}
+    x2={x(max) + 16}
+    y2={Y}
+    stroke="#000"
+    stroke-width="3.5"
+    marker-start="url(#nl-arrow)"
+    marker-end="url(#nl-arrow)"
+  ></line>
+  {ticks.map((n) => (
+    <g>
+      <line x1={x(n)} y1={Y - 11} x2={x(n)} y2={Y + 11} stroke="#000" stroke-width={n % 5 === 0 ? 3.5 : 2.5}></line>
+      <text x={x(n)} y={Y + 38} text-anchor="middle" font-size="24" font-family="Georgia, 'Times New Roman', serif" fill="#000">{n}</text>
+    </g>
+  ))}
+</svg>

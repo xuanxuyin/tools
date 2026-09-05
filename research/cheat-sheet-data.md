@@ -176,7 +176,7 @@ K-5：number chart 1 100 · cursive alphabet · alphabet chart · roman numerals
 
 | 词 | US 量/月 | KD | CPC | 终审 |
 |---|---|---|---|---|
-| **cursive alphabet** | **201,000** | 43 | $0.32 | ⚠️ **全组合量王**（= brown 的 4 倍）。实勘（带修饰词）：K5 Learning + Superstar worksheets 巨头 + **mycursive.com / suryascursive.com 两个 cursive 专科站** + canva/TPT/Pinterest/Etsy。头词硬（KD 43 属实，专科站+巨头在位），按磨页处理；但 201K 体量第 4~10 位 = 2~6K 访问/月，簇价值经变体兑现（chart · 大写/小写 · D'Nealian/Zaner-Bloser 样式词）。裸词 SERP 建议 Ahrefs 复核一次再终定 |
+| **cursive alphabet** | **201,000** | 43 | $0.32 | ⚠️ **全组合量王**（= brown 的 4 倍）。实勘（带修饰词）：K5 Learning + Superstar worksheets 巨头 + **mycursive.com / suryascursive.com 两个 cursive 专科站** + canva/TPT/Pinterest/Etsy。头词硬（KD 43 属实，专科站+巨头在位），按磨页处理；但 201K 体量第 4~10 位 = 2~6K 访问/月，簇价值经变体兑现（chart · 大写/小写 · D'Nealian/Zaner-Bloser 样式词）。裸词 SERP 已复核（2026-09-05 Ahrefs，见下节）——**软，升级为确认支柱** |
 | roman numerals chart | 49,500 | 64 | $0.48 | ❌ RapidTables + Wikipedia + Britannica + DadsWorksheets 一字排开，KD 64 属实，死 |
 | place value（裸） | 14,800 | 35 | $0.56 | 并入 place value 簇：chart 27.1K 主词 + 裸词 14.8K 同一页吃 |
 | states and capitals quiz | 12,100 | 48 | $0.84 | ❌ Britannica / Seterra / Sporcle / Sheppard 全是交互 quiz 巨头——产品即 SERP，死（printable 变体仅 390） |
@@ -194,8 +194,31 @@ K-5：number chart 1 100 · cursive alphabet · alphabet chart · roman numerals
 1. **place value chart 27.1K**——已实勘，全项目最软万级词，头号支柱
 2. **kindergarten sight words 12.1K**——已实勘
 3. **multiplication chart printable 12.1K**——中危（专业户在位，预期 4~10 位）
-4. **cursive alphabet 201K**——量王硬骨，磨页 + 变体群兑现（簇内 alphabet chart 6.6K/15 顺手带走）
+4. **cursive alphabet 201K**——裸词 SERP 复核过（2026-09-05）：入口 = 裸词 + chart 同一张主页（chart 6.6K/KD26 与裸词 SERP 重叠）+ alphabet chart 6.6K/KD15 + capital 单字母族（量待拉）；practice sheets/worksheet 两变体实勘为 worksheet 库站主场（见下节），降级为主页内承接，201K 裸词当页龄天花板
 
 死词增补：roman numerals · states quiz · periodic table · vscode · javascript · number chart。
+
+### 裸词 cursive alphabet Ahrefs 复核（2026-09-05 · 截图 2 张归档 research/cheat-sheet/）
+
+**关键词概览**：US 201K / KD43 / $0.32 确认；全球 283.4K（US 占 71%，PH 27.1K + IN 22.2K 为海外英语长尾）。词族 3.6K 变体 / 417.6K。**变体梯子**：practice sheets 9.9K/KD18 · worksheet 6.6K/KD21 · chart 6.6K/KD26（三个子-30 KD 变体合计 23.1K）→ alphabet in cursive 12.1K/KD41 → 裸词 201K/KD43。问题词全 how-to 型（KD 45~56，不做）。聚类面板浮出 **capital cursive i 单字母族**（大写字母逐字母页 = 天然程序化矩阵，同 tintbrew /mix/ 打法）。
+
+**裸词 SERP 前 10**：
+
+| # | 页面 | UR | 引荐域 | 外链 | 月流量 |
+|---|---|---|---|---|---|
+| 1 | mycursive.com/cursive-alphabet | 19 | 376 | 844 | 35.7K |
+| 2 | **Pinterest 图钉** | 29 | **1** | 16 | 20.2K |
+| 3 | YouTube 视频 | 23 | 2 | 2 | 12.0K |
+| 4 | k5learning.com | 48 | 243 | 540 | 30.3K |
+| 5 | newamericancursive.com | 15 | 252 | 525 | 13.1K |
+| 6 | wikipedia.org/Cursive | 55 | 366 | 1.7K | 34.8K |
+| 7 | **Reddit 帖** | 24 | **1** | 8 | 458 |
+| 8 | **TPT 商城内部搜索 URL** | **0** | 0 | 0 | 460 |
+| 9 | **Shutterstock 内部搜索页** | **0** | 0 | 0 | 0 |
+| 10 | **cursivealphabet.net（精确匹配域微站）** | **1** | **5** | 34 | **4.9K** |
+
+**判定：KD 43 虚标，页面级竞争软。** KD 是被 #1/#4/#5/#6 的域名外链（243~376 引荐域）撑起来的；后 5 位全是弱链页——1 引荐域的 Pinterest 钉、1 引荐域的 Reddit 帖、2 个 UR0 内部搜索页、5 引荐域的 EMD 微站。**cursivealphabet.net（UR1、30 个词）月入 4.9K = 我们要建的站已在前排被验证**。打法定稿：不先打 201K 裸词，从三个低 KD 变体进（23.1K ≈ 2 个万级支柱的量），页龄和内链起来后自然爬裸词。AIO 在 #1 前（信息词），但 printables 意图 AI 给不出可打印文件（同 place value 逻辑，排名页照样 6~35K）；image pack 挂 #1/#4/#5——SSR 内联图表 + 免下载即打正是抢 image pack 的形态。**cursive 从"硬骨磨页"升级为确认支柱 + 软入口。**
+
+**变体实勘补记（2026-09-05 · WebSearch 美区，practice sheets + worksheet 两词第一页）**：两词 SERP 几乎同构，worksheet 库站六连主场——K5 **同一页**两词都 #1（裸词里只 #4，worksheet 意图把它拉上头名）· Canva 模板库 · Super Teacher Worksheets · SuryasCursive PDF 库 · **MyCursive worksheet 生成器页 #5** · TPT 商城页 #6；中后位是打印件小博客专页（Paper Trail Design "33 options" 清单页 · Bright Sprout 单页 #7）。**"multiplication worksheets" 禁区模式半成立**：KD 18/21 对应的是可进的小博客页，但那是"清单页/库页"形态的赛道。梯子修正：practice sheets/worksheet 从主攻入口降级为主页内 trace 段承接；入口改走裸词+chart 同页 + alphabet chart 6.6K/KD15 + capital 单字母族（量待拉）。MyCursive 生成器排位 = 交互生成器形态在此意图下被验证 → 我方 V1.5 候选杀器：cursive 文本→生成可打印练习页（OFL 字体 + print CSS + 零登录）。支柱判定不变（锚 = 裸词 SERP 页面级软 + 201K 体量）。
 **开发/办公轨终局**：万级头词全灭（git 官方墙 · excel ExcelJet · 键盘词官方墙 · js 590），只剩高 CPC 支撑页（google sheets 4.4K/$2.72 · sql 3.6K/$2.44，CPC 是 K-5 词的 3~8 倍）——降为 RPM 调剂侧翼，"dev 入口"叙事正式作废。
 **站点定位定稿**：K-5 打印件主干（charts 数学阶梯 + sight words 词表阶梯 + cursive 三簇）+ 高 CPC 办公/开发支撑 + 学生轨季节页（python 12 月窗口照旧）。

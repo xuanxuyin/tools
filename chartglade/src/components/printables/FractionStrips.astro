@@ -1,0 +1,34 @@
+---
+import { fractionDenominators } from '../../lib/mathCharts';
+
+interface Props {
+  /** largest denominator row (strip starts at 1 whole) */
+  max?: number;
+  title?: string;
+}
+
+const { max = 12, title } = Astro.props;
+const dens = fractionDenominators(max);
+---
+
+{title && <p class="sheet-title">{title}</p>}
+<div class="fraction-rows">
+  <div class="fraction-row">
+    <span class="frac-label">1</span>
+    <div class="fraction-bar" role="img" aria-label="One whole bar">
+      <span class="filled"></span>
+    </div>
+  </div>
+  {dens.map((d) => (
+    <div class="fraction-row">
+      <span class="frac-label">1/{d}</span>
+      <div
+        class="fraction-bar"
+        role="img"
+        aria-label={`One whole bar divided into ${d} equal parts, showing ${d} ${d === 2 ? 'halves' : d === 3 ? 'thirds' : d === 4 ? 'fourths' : `one-${d}ths`}`}
+      >
+        {Array.from({ length: d }, () => <span></span>)}
+      </div>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,14 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import PlaceValueChart from '../components/printables/PlaceValueChart.astro';
+import { placeValuePages } from '../data/placeValue';
+
+const def = placeValuePages.find((p) => p.slug === 'place-value-chart-printable')!;
+---
+
+<ChartPage def={def}>
+  <PlaceValueChart whole={7} example="4302175" title="Place Value Chart (filled reference)" />
+  <div class="sheet-break">
+    <PlaceValueChart whole={7} title="Place Value Chart (blank — write your number in)" />
+  </div>
+</ChartPage>

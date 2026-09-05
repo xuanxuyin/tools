@@ -1,0 +1,875 @@
+/* ============================================================
+   ChartGlade — design tokens + base styles
+   Paper-and-classroom palette; serif display for print warmth.
+   ============================================================ */
+
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/dancing-script-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/dancing-script-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/caveat-500.woff2') format('woff2');
+}
+
+:root {
+  --ink: #212b26;
+  --ink-soft: #55645b;
+  --paper: #faf9f5;
+  --card: #ffffff;
+  --line: #e4e1d7;
+  --line-strong: #c9c5b8;
+
+  --green: #2f7d4f;
+  --green-deep: #1f5c39;
+  --green-tint: #e9f3ec;
+  --amber: #a86a14;
+  --amber-tint: #faf2e2;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', Times, serif;
+  --font-script: 'Dancing Script', 'Segoe Script', 'Brush Script MT', cursive;
+  --font-hand: 'Caveat', 'Segoe Script', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  line-height: 1.2;
+  margin: 0 0 var(--sp-3);
+  color: var(--ink);
+}
+
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+}
+
+p {
+  margin: 0 0 var(--sp-3);
+}
+
+a {
+  color: var(--green-deep);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--green);
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--green-deep);
+  color: #fff;
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: 0 0 var(--radius-sm) 0;
+  z-index: 10;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* ---------- header ---------- */
+
+.site-header {
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.site-header nav a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-weight: 500;
+  padding: var(--sp-1) 0;
+  border-bottom: 2px solid transparent;
+}
+
+.site-header nav a:hover {
+  color: var(--green-deep);
+}
+
+.site-header nav a[aria-current='page'] {
+  color: var(--green-deep);
+  border-bottom-color: var(--green);
+}
+
+/* ---------- footer ---------- */
+
+.site-footer {
+  margin-top: var(--sp-8);
+  border-top: 1px solid var(--line);
+  background: var(--card);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--sp-5);
+  padding: var(--sp-6) 0 var(--sp-4);
+}
+
+.site-footer h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+.site-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer li {
+  margin-bottom: var(--sp-1);
+}
+
+.site-footer a {
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.site-footer a:hover {
+  color: var(--green-deep);
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3) 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- page scaffolding ---------- */
+
+.breadcrumb {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: var(--sp-4) 0 0;
+}
+
+.breadcrumb a {
+  color: var(--ink-soft);
+}
+
+.hero {
+  margin: var(--sp-4) 0 var(--sp-5);
+}
+
+.hero .lead {
+  font-size: 1.08rem;
+  color: var(--ink-soft);
+  max-width: 68ch;
+}
+
+.prose {
+  max-width: 72ch;
+}
+
+.prose h2 {
+  margin-top: var(--sp-6);
+}
+
+.section {
+  margin-top: var(--sp-6);
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--card);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--green);
+  color: var(--green-deep);
+}
+
+.btn-primary {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: #fff;
+}
+
+/* ============================================================
+   Printable area — the product. Everything inside prints clean.
+   ============================================================ */
+
+.printable-wrap {
+  margin: var(--sp-4) 0 var(--sp-5);
+}
+
+.printable-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-2);
+}
+
+.print-note {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.printable {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--sp-5);
+  overflow-x: auto;
+}
+
+.sheet-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  margin: 0 0 var(--sp-3);
+  text-align: center;
+}
+
+/* Generic data tables (mult, addition, hundred, place value) */
+
+.chart-table {
+  border-collapse: collapse;
+  margin: 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-table th,
+.chart-table td {
+  border: 1px solid var(--line-strong);
+  text-align: center;
+  padding: 0.28em 0.3em;
+  min-width: 2em;
+}
+
+.chart-table thead th,
+.chart-table tbody th {
+  background: var(--green-tint);
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+.chart-table td {
+  font-size: 0.92rem;
+}
+
+/* highlighted diagonal (perfect squares) etc. */
+.chart-table td.diag {
+  background: var(--amber-tint);
+  font-weight: 700;
+}
+
+.chart-table.clickable th[role='button'],
+.chart-table.clickable td {
+  cursor: pointer;
+}
+
+.chart-table .is-active {
+  background: var(--amber-tint);
+  outline: 2px solid var(--amber);
+  outline-offset: -2px;
+}
+
+.fact-line {
+  margin: var(--sp-3) auto 0;
+  max-width: 46ch;
+  text-align: center;
+  font-size: 1.02rem;
+  min-height: 1.6em;
+  color: var(--ink);
+}
+
+.fact-line strong {
+  color: var(--green-deep);
+}
+
+/* Place value table specifics */
+
+.pv-table {
+  width: 100%;
+}
+
+.pv-table th {
+  font-size: 0.72rem;
+  line-height: 1.25;
+  padding: 0.5em 0.25em;
+  vertical-align: bottom;
+}
+
+.pv-table td {
+  font-size: 1.35rem;
+  font-family: var(--font-serif);
+  padding: 0.3em 0.25em;
+}
+
+.pv-table .period-sep {
+  border-left: 3px double var(--line-strong);
+}
+
+.pv-table .decimal-point {
+  border: none;
+  background: none;
+  font-size: 1.6rem;
+  padding: 0 0.05em;
+  min-width: 0.6em;
+  font-family: var(--font-serif);
+}
+
+/* Sight word cards */
+
+.word-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: var(--sp-2);
+}
+
+.word-card {
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  padding: var(--sp-3) var(--sp-1);
+  font-size: 1.15rem;
+  font-weight: 600;
+  background: #fff;
+}
+
+.word-card.lower {
+  text-transform: lowercase;
+}
+
+/* Cursive letters */
+
+.letter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: var(--sp-2);
+}
+
+.letter-cell {
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  padding: var(--sp-2) var(--sp-1) var(--sp-1);
+  background: #fff;
+}
+
+.letter-cell .glyph {
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: 2.1rem;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.letter-cell .glyph .lower-glyph {
+  font-size: 1.7rem;
+}
+
+.letter-cell .print-form {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+}
+
+.trace-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.trace-cell {
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  padding: var(--sp-1) 0 0;
+}
+
+.trace-cell .glyph {
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  color: #b9b5a8;
+  line-height: 1.3;
+}
+
+.trace-cell .baseline {
+  border-bottom: 2px dotted var(--line-strong);
+  margin: 0 var(--sp-2) var(--sp-1);
+}
+
+/* Fraction strips */
+
+.fraction-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.fraction-row {
+  display: grid;
+  grid-template-columns: 3.4em 1fr;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.fraction-row .frac-label {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.fraction-bar {
+  display: flex;
+  height: 1.7rem;
+}
+
+.fraction-bar span {
+  flex: 1;
+  border: 1px solid var(--line-strong);
+  border-left: none;
+}
+
+.fraction-bar span:first-child {
+  border-left: 1px solid var(--line-strong);
+}
+
+.fraction-bar span.filled {
+  background: var(--green-tint);
+}
+
+/* Number line */
+
+.number-line {
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- cards / grids used by hubs & related ---------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--sp-4);
+}
+
+.card {
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.card:hover {
+  border-color: var(--green);
+}
+
+.card h2,
+.card h3 {
+  margin-bottom: var(--sp-1);
+  font-size: 1.08rem;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ---------- tips ---------- */
+
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--sp-3);
+}
+
+.tip {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--green);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.tip h3 {
+  margin-bottom: var(--sp-1);
+  font-size: 0.98rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+.tip p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- FAQ ---------- */
+
+.faq {
+  max-width: 72ch;
+}
+
+.faq details {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  margin-bottom: var(--sp-2);
+}
+
+.faq summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: var(--sp-3) var(--sp-4);
+  list-style-position: outside;
+}
+
+.faq details p {
+  padding: 0 var(--sp-4) var(--sp-3);
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* ---------- related ---------- */
+
+.related-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--sp-2);
+}
+
+.related-list a {
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.related-list a:hover {
+  border-color: var(--green);
+}
+
+/* ---------- per-sheet extras ---------- */
+
+.chart-table.dense th,
+.chart-table.dense td {
+  font-size: 0.74rem;
+  min-width: 1.5em;
+  padding: 0.14em 0.16em;
+}
+
+.chart-table td.fill-in {
+  padding: 0.6em 0.3em;
+}
+
+.trace-heading {
+  margin: var(--sp-6) 0 var(--sp-2);
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.letter-cell.plain .glyph {
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+.letter-cell.plain .glyph .low {
+  font-size: 1.7rem;
+  color: var(--ink-soft);
+}
+
+.letter-cell .word {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-top: var(--sp-1);
+}
+
+.letter-grid[data-fact-table] .letter-cell {
+  cursor: pointer;
+}
+
+.letter-cell.is-active {
+  outline: 2px solid var(--amber);
+  outline-offset: -2px;
+}
+
+/* second sheet of a multi-sheet printable starts on a fresh page */
+.sheet-break {
+  break-before: page;
+  margin-top: var(--sp-6);
+}
+
+.sheet-break .sheet-title {
+  margin-top: var(--sp-6);
+}
+
+/* ============================================================
+   PRINT — the page IS the printable. Everything that is not
+   the sheet disappears; the sheet fills one letter page.
+   ============================================================ */
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 0.45in;
+  }
+
+  @page landscape-sheet {
+    size: letter landscape;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  .site-header,
+  .site-footer,
+  .skip-link,
+  .breadcrumb,
+  .hero,
+  .printable-toolbar,
+  .no-print,
+  .prose,
+  .tips,
+  .faq,
+  .related,
+  .section {
+    display: none !important;
+  }
+
+  main {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .printable-wrap {
+    margin: 0;
+  }
+
+  .printable {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .printable.landscape {
+    page: landscape-sheet;
+  }
+
+  .print-only {
+    display: block;
+    font-size: 8pt;
+    color: #555;
+    margin-top: 8pt;
+    text-align: center;
+  }
+
+  .chart-table {
+    width: 100%;
+  }
+
+  .chart-table th,
+  .chart-table td {
+    border: 1px solid #000 !important;
+    background: #fff !important;
+    color: #000 !important;
+    outline: none !important;
+  }
+
+  .word-card,
+  .letter-cell,
+  .trace-cell {
+    border-color: #000 !important;
+  }
+
+  .fraction-bar span {
+    border-color: #000 !important;
+  }
+
+  .fact-line {
+    display: none;
+  }
+
+  .letter-cell .glyph,
+  .trace-cell .glyph {
+    color: #000;
+  }
+
+  .trace-cell .glyph {
+    color: #999 !important;
+  }
+
+  .letter-grid,
+  .trace-strip,
+  .word-cards {
+    gap: 4pt;
+  }
+
+  .chart-table.dense th,
+  .chart-table.dense td {
+    font-size: 7.5pt;
+    padding: 1.5pt 2pt;
+  }
+
+  .pv-table td {
+    font-size: 15pt;
+  }
+
+  .sheet-break {
+    margin-top: 0;
+  }
+
+  .sheet-break .sheet-title {
+    margin-top: 0;
+  }
+
+  .trace-heading {
+    margin-top: 10pt;
+    margin-bottom: 5pt;
+    font-size: 9pt;
+    color: #000;
+  }
+}

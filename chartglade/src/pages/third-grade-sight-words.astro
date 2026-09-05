@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import SightWordCards from '../components/printables/SightWordCards.astro';
+import { sightWordPages } from '../data/sightWordsContent';
+
+const def = sightWordPages.find((p) => p.slug === 'third-grade-sight-words')!;
+---
+
+<ChartPage def={def}>
+  <SightWordCards level="third" title="Third Grade Sight Words — Dolch Third Grade" />
+</ChartPage>

@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const hubs = [
+  {
+    href: '/charts/',
+    title: 'Math Charts',
+    body: 'Place value, multiplication, fractions, hundred chart, number lines, addition — every K-8 wall and desk chart, printable on letter paper.',
+  },
+  {
+    href: '/sight-words/',
+    title: 'Sight Words',
+    body: 'All 220 Dolch words by grade, preschool through third, as printable word cards with teaching notes for each level.',
+  },
+  {
+    href: '/cursive/',
+    title: 'Cursive',
+    body: 'The full cursive alphabet chart with a tracing strip, and how the letters are actually taught — stroke families, not A-to-Z.',
+  },
+];
+
+const popular = [
+  { href: '/place-value-chart/', label: 'Place value chart' },
+  { href: '/multiplication-chart/', label: 'Multiplication chart 1-12' },
+  { href: '/kindergarten-sight-words/', label: 'Kindergarten sight words' },
+  { href: '/cursive-alphabet/', label: 'Cursive alphabet' },
+  { href: '/alphabet-chart/', label: 'Alphabet chart' },
+  { href: '/hundred-chart/', label: 'Hundred chart' },
+  { href: '/fraction-chart/', label: 'Fraction chart' },
+  { href: '/number-line-printable/', label: 'Number line 0-20' },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: `${SITE.url}/`,
+  },
+];
+---
+
+<BaseLayout
+  title="Free Printable Teaching Charts — Math, Sight Words, Cursive | ChartGlade"
+  description="Free printable charts for teachers and parents: place value, multiplication, fractions, sight words by grade, and the cursive alphabet. No sign-up — print and go."
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <h1>Free printable charts for teaching</h1>
+    <p class="lead">
+      ChartGlade is a small library of classroom charts that print straight from your browser onto letter paper:
+      math references for K-8, the complete Dolch sight word lists, and the cursive alphabet. No accounts, no
+      downloads, no paywalls — hit print and hang it up.
+    </p>
+    <a class="btn btn-primary" href="/charts/">Browse the charts</a>
+  </section>
+
+  <section class="section">
+    <div class="card-grid">
+      {hubs.map((h) => (
+        <a class="card" href={h.href}>
+          <h2>{h.title}</h2>
+          <p>{h.body}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Most printed</h2>
+    <ul class="related-list">
+      {popular.map((p) => (
+        <li><a href={p.href}>{p.label}</a></li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="prose section">
+    <h2>Why another printables site?</h2>
+    <p>
+      Most printable charts online come wrapped in sign-up walls, watermarks, or PDF downloads that print at the
+      wrong size. These pages are the chart: the sheet you see is the sheet that prints, on one letter page,
+      black lines on white, with a print button that strips everything else off the page.
+    </p>
+    <p>
+      Every chart ships with the teaching notes that make it work — the order facts are memorized in, the routine
+      that turns a hundred chart into a year of warm-ups, why fraction strips beat circles. A chart without a
+      routine is decoration; the notes are half the product.
+    </p>
+  </section>
+</BaseLayout>

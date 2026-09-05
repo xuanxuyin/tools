@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+import { sightWordPages } from '../../data/sightWordsContent';
+import { dolchLevels, dolchTotal, wordsFor } from '../../lib/sightWords';
+
+const blurbs: Record<string, string> = {
+  'preschool-sight-words': 'The 40 Dolch pre-primer words — the first words children recognize before kindergarten.',
+  'kindergarten-sight-words': 'The 52-word Dolch primer list: the pillar of kindergarten reading.',
+  'first-grade-sight-words': '41 words that push the running total to 133 — the connective tissue of early chapter books.',
+  'second-grade-sight-words': '46 longer, abstract words (running total 179) plus the fluency work that matters this year.',
+  'third-grade-sight-words': 'The final 41 Dolch words, completing all 220 — and the handoff to word-part reading.',
+};
+
+let running = 0;
+const levels = dolchLevels.map((l) => {
+  running += wordsFor(l.key).length;
+  return { ...l, count: wordsFor(l.key).length, total: running };
+});
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Sight Words', item: `${SITE.url}/sight-words/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What are sight words?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'High-frequency words children learn to recognize instantly rather than sound out — either because they are phonically irregular (said, one, was) or so common that instant recognition is faster than decoding.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is the difference between Dolch and Fry sight words?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Dolch (1936) is 220 words from children\'s books of the era, in five levels; Fry (1990s) is 1,000 words in ten lists of 100. They overlap heavily at the early levels, so either list works — match the one your school sends home.',
+        },
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Sight Words by Grade (Dolch Lists, Free Printables) | ChartGlade"
+  description="All five Dolch sight word lists by grade — preschool through third grade, 220 words total — as free printable word cards, with how to teach each level."
+  path="/sight-words"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Sight Words</span>
+  </nav>
+
+  <section class="hero">
+    <h1>Sight Words by Grade</h1>
+    <p class="lead">
+      The complete Dolch list — {dolchTotal} words across five levels, preschool through third grade — as printable
+      word cards. Each page also explains what the words are doing at that age and how to practice them without
+      turning reading into drilling.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="card-grid">
+      {sightWordPages.map((p) => (
+        <a class="card" href={`/${p.slug}/`}>
+          <h2>{p.h1}</h2>
+          <p>{blurbs[p.slug]}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="prose section">
+    <h2>The five Dolch levels at a glance</h2>
+    <table class="chart-table">
+      <thead>
+        <tr><th scope="col">Level</th><th scope="col">Words</th><th scope="col">Running total</th></tr>
+      </thead>
+      <tbody>
+        {levels.map((l) => (
+          <tr>
+            <td><a href={`/${l.slug}/`}>{l.label}</a></td>
+            <td>{l.count}</td>
+            <td>{l.total}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      The lists build on each other: a kindergartner is still responsible for the preschool 40, and a third grader
+      for everything below. If a child has holes, close the earlier lists first — the highest-frequency words do
+      the most work.
+    </p>
+  </section>
+</BaseLayout>

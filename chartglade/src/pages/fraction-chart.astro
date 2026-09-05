@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import FractionStrips from '../components/printables/FractionStrips.astro';
+import { loosePages } from '../data/loose';
+
+const def = loosePages.find((p) => p.slug === 'fraction-chart')!;
+---
+
+<ChartPage def={def}>
+  <FractionStrips max={12} title="Fraction Chart — Strips to 1/12" />
+</ChartPage>

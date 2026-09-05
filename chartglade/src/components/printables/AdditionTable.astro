@@ -1,0 +1,40 @@
+---
+import { additionTable } from '../../lib/mathCharts';
+
+interface Props {
+  /** max addend (grid runs 0..size both axes) */
+  size?: number;
+  title?: string;
+}
+
+const { size = 12, title } = Astro.props;
+const grid = additionTable(size);
+const headers = Array.from({ length: size + 1 }, (_, i) => i);
+const DEFAULT_FACT = 'Click any cell to hear the fact read back.';
+---
+
+{title && <p class="sheet-title">{title}</p>}
+<table class="chart-table clickable" data-fact-table="" data-fact-default={DEFAULT_FACT}>
+  <thead>
+    <tr>
+      <th scope="col" aria-label="plus">+</th>
+      {headers.map((h) => <th scope="col">{h}</th>)}
+    </tr>
+  </thead>
+  <tbody>
+    {grid.map((row, r) => (
+      <tr>
+        <th scope="row">{headers[r]}</th>
+        {row.map((v, c) => (
+          <td
+            class:list={[{ diag: r === c }]}
+            data-fact={`${headers[r]} + ${c} = ${v}`}
+          >
+            {v}
+          </td>
+        ))}
+      </tr>
+    ))}
+  </tbody>
+</table>
+<p class="fact-line">{DEFAULT_FACT}</p>

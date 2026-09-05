@@ -1,0 +1,62 @@
+---
+import { placeValuePages } from '../data/placeValue';
+import { multiplicationPages } from '../data/multiplication';
+import { sightWordPages } from '../data/sightWordsContent';
+import { cursivePages } from '../data/cursive';
+import { loosePages } from '../data/loose';
+
+const link = (slug: string, label: string) => ({ href: `/${slug}/`, label });
+
+const columns = [
+  {
+    heading: 'Math Charts',
+    links: [
+      ...placeValuePages.map((p) => link(p.slug, p.h1)),
+      ...multiplicationPages.map((p) => link(p.slug, p.h1)),
+      ...loosePages.filter((p) => p.slug !== 'alphabet-chart').map((p) => link(p.slug, p.h1)),
+    ],
+  },
+  {
+    heading: 'Reading & Letters',
+    links: [
+      ...sightWordPages.map((p) => link(p.slug, p.h1)),
+      ...cursivePages.map((p) => link(p.slug, p.h1)),
+      link('alphabet-chart', 'Alphabet Chart'),
+    ],
+  },
+  {
+    heading: 'ChartGlade',
+    links: [
+      { href: '/charts/', label: 'All charts' },
+      { href: '/sight-words/', label: 'All sight words' },
+      { href: '/cursive/', label: 'Cursive' },
+      { href: '/about/', label: 'About' },
+      { href: '/contact/', label: 'Contact' },
+      { href: '/privacy/', label: 'Privacy' },
+    ],
+  },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      {columns.map((col) => (
+        <div>
+          <h3>{col.heading}</h3>
+          <ul>
+            {col.links.map((l) => (
+              <li><a href={l.href}>{l.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <div class="footer-bottom">
+      <span>© {year} ChartGlade. Free printable teaching charts.</span>
+      <span>No sign-up. No watermark. Print and go.</span>
+    </div>
+  </div>
+</footer>

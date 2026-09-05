@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import AdditionTable from '../components/printables/AdditionTable.astro';
+import { loosePages } from '../data/loose';
+
+const def = loosePages.find((p) => p.slug === 'addition-chart')!;
+---
+
+<ChartPage def={def}>
+  <AdditionTable size={12} title="Addition Chart 0-12" />
+</ChartPage>

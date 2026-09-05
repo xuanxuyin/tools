@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import HundredChart from '../components/printables/HundredChart.astro';
+import { loosePages } from '../data/loose';
+
+const def = loosePages.find((p) => p.slug === 'hundred-chart')!;
+---
+
+<ChartPage def={def}>
+  <HundredChart title="Hundred Chart 1-100" />
+</ChartPage>

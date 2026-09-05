@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import PlaceValueChart from '../components/printables/PlaceValueChart.astro';
+import { placeValuePages } from '../data/placeValue';
+
+const def = placeValuePages.find((p) => p.slug === 'place-value-anchor-chart')!;
+---
+
+<ChartPage def={def}>
+  <PlaceValueChart whole={7} example="4302175" showValues title="Place Value Anchor Chart — 4,302,175" />
+</ChartPage>

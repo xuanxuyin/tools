@@ -1,0 +1,101 @@
+---
+import {
+  placeValueColumns,
+  decimalPlaceColumns,
+  placeFact,
+  formatUs,
+} from '../../lib/mathCharts';
+
+interface Props {
+  /** whole-number columns, counting up from ones */
+  whole?: number;
+  /** decimal columns after the point */
+  dec?: number;
+  /** example number rendered into the columns, e.g. '4302175' or '42.607'; omit for blank */
+  example?: string;
+  title?: string;
+  /** value row: digit-worths when an example is given, place values otherwise */
+  showValues?: boolean;
+  /** clickable digits with the worth sentence */
+  interactive?: boolean;
+}
+
+const { whole = 7, dec = 0, example, title, showValues = false, interactive = false } = Astro.props;
+
+// left-to-right = highest whole place first
+const cols = placeValueColumns(whole).slice().reverse();
+const decCols = decimalPlaceColumns(dec);
+
+let digits: (number | null)[] = cols.map(() => null);
+let decDigits: (number | null)[] = decCols.map(() => null);
+if (example) {
+  const [w, d = ''] = example.split('.');
+  const arr = [...w].map(Number);
+  digits = cols.map((_, i) => arr[i] ?? null);
+  const dArr = [...d].map(Number);
+  decDigits = decCols.map((_, i) => dArr[i] ?? null);
+}
+
+// comma period starts: the highest column of each 3-digit group
+const periodStart = (name: string) => name === 'thousands' || name === 'millions' || name === 'billions';
+
+const wholeFact = (d: number, name: string, power: number) => placeFact(d, name, power);
+const decFact = (d: number, name: string, power: number) =>
+  `The ${d} is in the ${name} place — it is worth ${(d * 10 ** power).toFixed(-power)}.`;
+
+const valueCell = (d: number | null, power: number) =>
+  d === null ? '' : power >= 0 ? formatUs(d * 10 ** power) : (d * 10 ** power).toFixed(-power);
+
+const DEFAULT_FACT = 'Click any digit to see what it is worth.';
+---
+
+{title && <p class="sheet-title">{title}</p>}
+<table
+  class:list={['chart-table', 'pv-table', { clickable: interactive }]}
+  data-fact-table={interactive ? '' : undefined}
+  data-fact-default={interactive ? DEFAULT_FACT : undefined}
+>
+  <thead>
+    <tr>
+      {cols.map((c) => (
+        <th scope="col" class:list={[{ 'period-sep': periodStart(c.name) }]}>{c.name}</th>
+      ))}
+      {decCols.length > 0 && <th class="decimal-point" aria-label="decimal point">.</th>}
+      {decCols.map((c) => <th scope="col">{c.name}</th>)}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {cols.map((c, i) => (
+        <td
+          class:list={[{ 'period-sep': periodStart(c.name) }]}
+          data-fact={interactive && digits[i] !== null ? wholeFact(digits[i]!, c.name, c.power) : undefined}
+        >
+          {digits[i] ?? ''}
+        </td>
+      ))}
+      {decCols.length > 0 && <td class="decimal-point">.</td>}
+      {decCols.map((c, i) => (
+        <td
+          data-fact={interactive && decDigits[i] !== null ? decFact(decDigits[i]!, c.name, c.power) : undefined}
+        >
+          {decDigits[i] ?? ''}
+        </td>
+      ))}
+    </tr>
+    {showValues && (
+      <tr>
+        {cols.map((c, i) => (
+          <td class:list={[{ 'period-sep': periodStart(c.name) }]}>
+            {example ? valueCell(digits[i], c.power) : c.valueLabel}
+          </td>
+        ))}
+        {decCols.length > 0 && <td class="decimal-point"></td>}
+        {decCols.map((c, i) => (
+          <td>{example ? valueCell(decDigits[i], c.power) : c.valueLabel}</td>
+        ))}
+      </tr>
+    )}
+  </tbody>
+</table>
+{interactive && <p class="fact-line">{DEFAULT_FACT}</p>}

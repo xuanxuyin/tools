@@ -1,0 +1,46 @@
+---
+import { SITE } from '../consts';
+
+interface Props {
+  /** Full <title> content (page-level caller composes brand suffix) */
+  title: string;
+  /** Meta description, ≤155 chars */
+  description: string;
+  /** Canonical path only, e.g. '/place-value-chart' — never a query string */
+  path: string;
+  /** JSON-LD object(s) to emit in <head> */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** true only for 404 */
+  noindex?: boolean;
+  /** Site-rooted path, e.g. '/og-default.png'; omit to skip og:image entirely */
+  ogImage?: string;
+}
+
+const { title, description, path, jsonLd, noindex = false, ogImage } = Astro.props;
+
+// trailing slash matches Cloudflare Pages URL normalization (clean URL 308s to slashed)
+const canonical = path === '/' ? `${SITE.url}/` : `${SITE.url}${path}/`;
+const ogImageAbs = ogImage ? new URL(ogImage, SITE.url).href : undefined;
+const jsonLdItems: Record<string, unknown>[] = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const gsc = import.meta.env.PUBLIC_GSC_VERIFICATION ?? SITE.gscVerification;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
+
+{gsc && <meta name="google-site-verification" content={gsc} />}
+{jsonLdItems.map((obj) => <script is:inline type="application/ld+json" set:html={JSON.stringify(obj)} />)}

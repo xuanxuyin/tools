@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import MultTable from '../components/printables/MultTable.astro';
+import { multiplicationPages } from '../data/multiplication';
+
+const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart-1-15')!;
+---
+
+<ChartPage def={def}>
+  <MultTable size={15} title="Multiplication Table 1-15" />
+</ChartPage>

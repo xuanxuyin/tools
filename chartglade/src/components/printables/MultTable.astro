@@ -1,0 +1,47 @@
+---
+import { multTable, isDiagonal } from '../../lib/mathCharts';
+
+interface Props {
+  /** grid size (1-based both axes) */
+  size?: number;
+  /** empty products — the practice version */
+  blank?: boolean;
+  title?: string;
+}
+
+const { size = 12, blank = false, title } = Astro.props;
+const grid = multTable(size);
+const headers = Array.from({ length: size }, (_, i) => i + 1);
+const dense = size > 12;
+const DEFAULT_FACT = 'Click any cell to hear the fact read back.';
+---
+
+{title && <p class="sheet-title">{title}</p>}
+<table
+  class:list={['chart-table', { clickable: !blank, dense }]}
+  data-fact-table={blank ? undefined : ''}
+  data-fact-default={blank ? undefined : DEFAULT_FACT}
+>
+  <thead>
+    <tr>
+      <th scope="col" aria-label="multiply by">×</th>
+      {headers.map((h) => <th scope="col">{h}</th>)}
+    </tr>
+  </thead>
+  <tbody>
+    {grid.map((row, r) => (
+      <tr>
+        <th scope="row">{headers[r]}</th>
+        {row.map((v, c) => (
+          <td
+            class:list={[{ diag: isDiagonal(r + 1, c + 1), 'fill-in': blank }]}
+            data-fact={blank ? undefined : `${headers[r]} × ${c + 1} = ${v}`}
+          >
+            {blank ? '' : v}
+          </td>
+        ))}
+      </tr>
+    ))}
+  </tbody>
+</table>
+{!blank && <p class="fact-line">{DEFAULT_FACT}</p>}

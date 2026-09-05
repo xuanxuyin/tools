@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import AlphabetChart from '../components/printables/AlphabetChart.astro';
+import { loosePages } from '../data/loose';
+
+const def = loosePages.find((p) => p.slug === 'alphabet-chart')!;
+---
+
+<ChartPage def={def}>
+  <AlphabetChart title="Alphabet Chart — Letters and Key Words" />
+</ChartPage>

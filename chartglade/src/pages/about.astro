@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://chartglade.com/' },
+      { '@type': 'ListItem', position: 2, name: 'About', item: 'https://chartglade.com/about/' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="About ChartGlade"
+  description="ChartGlade makes free printable teaching charts — math, sight words and cursive — that print cleanly from the browser with no sign-up."
+  path="/about"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <h1>About ChartGlade</h1>
+  </section>
+
+  <section class="prose">
+    <p>
+      ChartGlade started the way most teaching resources do: a parent staring at a multiplication table at 9 p.m.,
+      finding fourteen versions online, and discovering that every single one wanted an email address, a download,
+      or both — and then printed with a watermark diagonally across the 7s.
+    </p>
+    <p>
+      So we built the version we wanted: charts that render as plain web pages and print as plain letter paper.
+      The page is the printable. There is no account, no PDF, no "premium tier," and the print button strips the
+      page down to the chart itself before your printer sees it.
+    </p>
+    <p>
+      Every chart comes with notes on how it is actually used in classrooms — which facts get memorized first,
+      what a good alphabet key word looks like, why cursive is taught in stroke families. We would rather explain
+      the teaching than just hand you a grid, because a chart without a routine is decoration.
+    </p>
+    <p>
+      Something missing or printing wrong? <a href="/contact/">Tell us</a> — chart requests are how the library grows.
+    </p>
+  </section>
+</BaseLayout>

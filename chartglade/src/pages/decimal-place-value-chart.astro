@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import PlaceValueChart from '../components/printables/PlaceValueChart.astro';
+import { placeValuePages } from '../data/placeValue';
+
+const def = placeValuePages.find((p) => p.slug === 'decimal-place-value-chart')!;
+---
+
+<ChartPage def={def}>
+  <PlaceValueChart whole={6} dec={3} example="42.607" title="Decimal Place Value Chart — 42.607" interactive />
+</ChartPage>

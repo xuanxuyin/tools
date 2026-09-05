@@ -1,0 +1,51 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+
+const caps = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
+const lows = [...'abcdefghijklmnopqrstuvwxyz'];
+
+// Stroke families — the grouping nearly all American cursive programs share.
+const FAMILIES = {
+  curve: 'the curve family (c, a, d, g, q — all begin with the same over-curve)',
+  line: 'the straight-line family (i, t, u, w — downstrokes that retrace)',
+  loop: 'the loop family (l, h, b, k, f — tall loops that climb and return)',
+  hill: 'the hill family (n, m, v, x, y, z — over-and-back humps)',
+} as const;
+
+const famOf: Record<string, keyof typeof FAMILIES> = {
+  c: 'curve', a: 'curve', d: 'curve', g: 'curve', q: 'curve',
+  i: 'line', t: 'line', u: 'line', w: 'line',
+  l: 'loop', h: 'loop', b: 'loop', k: 'loop', f: 'loop',
+  n: 'hill', m: 'hill', v: 'hill', x: 'hill', y: 'hill', z: 'hill',
+};
+
+const fact = (cap: string, low: string) =>
+  `Capital ${cap} starts names, places and sentences. Lowercase ${low} belongs to ${FAMILIES[famOf[low]]}.`;
+
+const DEFAULT_FACT = 'Click a letter pair to see its stroke family.';
+---
+
+{title && <p class="sheet-title">{title}</p>}
+<div class="letter-grid" data-fact-table="" data-fact-default={DEFAULT_FACT}>
+  {caps.map((c, i) => (
+    <div class="letter-cell" data-fact={fact(c, lows[i])}>
+      <div class="glyph">{c}<span class="lower-glyph">{lows[i]}</span></div>
+      <div class="print-form">{c} {lows[i]}</div>
+    </div>
+  ))}
+</div>
+<p class="fact-line">{DEFAULT_FACT}</p>
+
+<h3 class="trace-heading">Tracing strip — lowercase, stroke families in order</h3>
+<div class="trace-strip">
+  {[...'cadgq', ...'ituvw', ...'lhbkf', ...'nmvxyz'].map((l) => (
+    <div class="trace-cell">
+      <div class="glyph">{l}</div>
+      <div class="baseline"></div>
+    </div>
+  ))}
+</div>

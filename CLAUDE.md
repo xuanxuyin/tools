@@ -48,6 +48,17 @@ Astro 5 纯静态 SSG + 原生 TS islands（无框架）+ 原生 CSS tokens + �
 
 ## 项目档案
 
+### chartglade/ — chartglade.com（2026-09-05 代码完成，待部署）
+
+免费教学打印图表站（printables）：4 支柱簇 + 散页 + 3 hubs = 27 页，17 测试全绿。关键词池 251K US/月（cursive alphabet 201K 量王 / place value chart 27.1K / kindergarten sight words 12.1K / multiplication chart 12.1K），调研档在 `research/cheat-sheet-data.md`。
+
+- **页面即打印件**：`@media print` 剥成一张 letter 纸（`.printable` 系统、landscape 子页给宽表格、`.sheet-break` 双页套打）；`[data-print]` → `window.print()`
+- **数据驱动**：`src/data/*.ts` 每页一条 PageDef（内容/SEO/FAQ/tips 全在数据里）→ `ChartPage.astro` 唯一模板 + `components/printables/*` 渲染；加图表页 = 数据文件加一条 + 一个 find-by-slug wrapper，Footer/hub 自动带出
+- **引擎纯函数在 `src/lib/`**：`mathCharts.ts`（乘法表/位值列/formatUs）+ `sightWords.ts`（Dolch 220 逐字 + Fry first 100 含第 49 位 their，曾漏）
+- **交互只是文本替换**：SSR 把 data-fact 句子预写在单元格，`scripts/interact.ts` 全局委托只换 `.fact-line` 的 textContent
+- **字体自托管**：Dancing Script 700（草书展示）+ Caveat 500（描红）woff2，仅 cursive 页加载；其余页零字体请求
+- **部署差异**：CF Pages Root directory = `chartglade`；GSC 验证值填 `src/consts.ts` gscVerification；CF 统计自动注入（beacon 留空）
+
 ### tintbrew/ — tintbrew.com（2026-09-04 上线）
 
 颜色工具站：Oklab 混色器 + 格式转换器 + 24 个"两种颜色混成什么"矩阵页 + 8 个场景/头词页（what-colors-make-{brown,purple,green,orange} + 烘焙 2 + 色卡 2）+ /color-guides/ hub，41 页，81 测试。
