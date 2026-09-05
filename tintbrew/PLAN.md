@@ -84,7 +84,7 @@
 **每周（~30 分钟）**：
 
 - [ ] 周一：GSC 索引数（0→N 页）+ 效果 28 天环比，记入本文档
-- [ ] 周三：1 个外链/分发动作（目录站、Reddit r/DIY r/painting、Pinterest 图钉）
+- [ ] 周三：1 个外链/分发动作（目录站、Reddit r/DIY r/painting、Pinterest 图钉）—— 提交文案抄根 README「外链提交文案」节；目录站清单 Peerlist → AlternativeTo（Uneed 已提交）
 - [ ] 周五：批次决策 —— 看数据定下周上不上 V2.2（对照 §6 条件）
 
 ## 5. 远期规划（V2.x 全景）
