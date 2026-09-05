@@ -56,4 +56,4 @@ Astro 5 纯静态 SSG + 原生 TS islands（无框架）+ 原生 CSS tokens + �
 - **数据驱动矩阵页**：`data/colors.ts` + `data/mixes.ts` → `lib/mixContent.ts` 生成全部内容（meta/答案/FAQ/3 变体按 slug hash）。**加一对配色 = 改这两个文件，其余全自动；改了 mixes.ts 必须重新生成 `public/_redirects`**（反向 slug 301）
 - **测试基准**：红+蓝 50/50 = `#8c53a2`；DOM 测试加载真实 `dist/` HTML + `vi.resetModules()`
 - **统计**：CF Web Analytics 边缘自动注入 —— **不要**往 `consts.ts` 填 beacon token（双重计数）
-- **V2.1 进度**：W1 烘焙 4 页 + brown 头词页 + hub 已上线（2026-09-05）；W2 三色头词页（purple/green/orange，合计 58.4K/月）已构建待 push——**等 W1 观察窗（3~4 周）结束后随下次提交上线**；后续波次计划在 README
+- **V2.1 进度**：W1 烘焙 4 页 + brown 头词页 + hub（2026-09-05）与 W2 三色头词页 purple/green/orange（合计 58.4K/月，2026-09-05）均已上线，共 41 页；后续波次计划在 README

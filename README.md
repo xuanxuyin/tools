@@ -326,7 +326,7 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 | icing color chart | /icing-color-chart/ |
 | buttercream color chart | /buttercream-color-chart/ |
 
-**W2 三色头词页（已构建 2026-09-05，随下次 push 上线）**：
+**W2 三色头词页（已上线 2026-09-05，commit 52cfa81）**：
 
 | 搜索词 | 目标页 |
 |---|---|
@@ -372,12 +372,13 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 （US 49.5K/月 · KD 38 · 词族 196K 的全场头词，2026-09-05 补测锁定）+ /color-guides/ hub 页；
 架构 = `data/scenarios.ts`（手写事实+配比）→ `lib/scenarioContent.ts`（引擎算色卡）
 → `components/ScenarioPage.astro` + 每页一个扁平 URL 薄包装；footer 自动带出全部场景页链接。
-**W2 已构建（3 页，2026-09-05，41 页全绿后待 push）**：/what-colors-make-purple/（22.2K/KD26）·
+**W2 已上线（3 页，2026-09-05，线上 200 + sitemap 收录验证通过）**：/what-colors-make-purple/（22.2K/KD26）·
 /what-colors-make-green/（18.1K/KD28）· /what-colors-make-orange/（18.1K/KD37）——
 三色头词合计 58.4K/月，是 26 词批量终审后的最高 ROI 批次（color-first 问法，与 V1 24 页
 pair-first 矩阵互补）。绿页因引擎是屏幕混色（蓝+黄光加起来趋白），全部路线按画家打法重写：
 蓝入黄基 + green 家族起步走 chartreuse/teal/forest/sage，并在正文交代 paint-vs-screen 差异
-（互链 /mix/blue-yellow/）。上线节奏：W1 观察窗（3~4 周）后再 push。
+（互链 /mix/blue-yellow/）。决策记录：3 页小批次 + 架构已被 W1 验证，选择不等观察窗直接上线，
+页龄优先；3~4 周隔波纪律保留给 V2.2 的大批次（+20~30 页）。
 
 ### V2.2 第二批配色对（+20~30 页，低成本高确定性）
 
