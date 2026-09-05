@@ -7,7 +7,7 @@
 
 **GSC 28 天曝光数（impressions）环比增长**。变现节点：自然流量稳定 ~300 访问/天 → 接广告（当前零广告代码）。
 
-一句话现状：**上线当天（2026-09-05）完成全部上线动作并扩容到 53 页**（27 基础页 + cursive 单字母矩阵 26 页），22 测试全绿，GSC 已收录 26 条 sitemap URL，进入「等收录」阶段。
+一句话现状：**上线当天（2026-09-05）完成全部上线动作并扩容到 53 页**（27 基础页 + cursive 单字母矩阵 26 页），22 测试全绿，GSC 已收录 26 条 sitemap URL，进入「等收录」阶段。上线时点正落在美国**开学使用高峰**（8 月中~10 月，老师全年搜打印件最凶的窗口）—— 不是错过开学季，是正在其中。
 
 ### 目标阶梯（预测值，到点对照 §6 验收）
 
@@ -73,10 +73,26 @@
 
 1. **V1.5** worksheet generator 交互工具页（cursive 文本→练习页；MyCursive 已验证此形态在 worksheet 意图下有排名）
 2. **矩阵扩容候选**（按验收结果挑）：multiplication 1-100 等变体页 / sight words 按年级细分裂变页 / alphabet chart 场景变体
-3. **季节窗**：秋季开学季（8~9 月）已过一半赶不上，**万圣节/感恩节 printable（10 月中前必须上线）**、圣诞 winter printable（11 月上线）—— printables 赛道季节词是大流量脉冲。候选池（10 月初拉量筛选后定稿）：halloween word search / halloween coloring math facts / thanksgiving gratitude tree / thankful ABC list / halloween cursive practice（复用字母矩阵架构）/ pumpkin math chart
+3. **季节窗（排期唯一依据 = 美国校历，准则见根 [CLAUDE.md](../CLAUDE.md)「美国日历准则」+ 下方 §5.1 日历表）**：printables 赛道季节词是大流量脉冲，每个节点**提前 4~6 周上线**（Google 收录+爬排名要时间）。候选池（节点前 1 个月拉量筛选定稿）：halloween word search / halloween coloring math facts / thanksgiving gratitude tree / thankful ABC list / halloween cursive practice（复用字母矩阵架构）/ pumpkin math chart
 4. **外链与分发**：Pinterest 常态化（每周 pin）、教师社区（r/Teachers r/homeschool，先读版规）、TPT 形态研究（商城不做，引流可）
 5. **变现**：~300 访问/天 → 接广告
 6. **第二曲线**（本仓第三个站候选）：excel shortcuts / sql cheat sheet 等高 CPC 打印工具 —— chartglade 验收数据出来后再定
+
+### 5.1 美国教育内容日历（季节排期唯一依据）
+
+> 2026-09-05 修正一个错误判断：美国学校 **8 月中下旬**开学（不是 9/1）—— 9 月初不是"开学季已过"，而是**开学使用高峰正当时**，53 页全部在吃这波红利，10/17 验收正落在窗口内。以下日历按节点倒排上线期限。
+
+| 节点 | 美国时间 | 内容方向 | 上线期限 |
+|---|---|---|---|
+| 开学使用高峰（**现在**） | 8 月中~10 月 | 已有 53 页 + 持续分发 | 已在窗口内 |
+| 万圣节 Halloween | **10/31** | word search / coloring math / cursive practice | **2026-10-05 前** |
+| 感恩节 Thanksgiving | **11 月第 4 个周四**（2026=11/26） | gratitude tree / thankful ABC | 2026-10-25 前 |
+| 圣诞·寒假 | 12/25，寒假 12 月中~1 月初 | winter / holiday printable | 2026-11-15 前 |
+| 100th Day of School | 1 月底~2 月初（K-2 大日子） | 100 chart 玩法 / 100th day 活动 | 2026-12-20 前 |
+| 情人节 Valentine's | **2/14**（教室交换卡刚需） | valentine 词卡 / cursive | 2027-01-10 前 |
+| 春季 | 3~4 月（Easter 2027=3/28） | spring math / earth day | 2027-02-15 前 |
+| 学年收尾 | 5~6 月 | end-of-year keepsake / summer slide packet | 2027-04-15 前 |
+| **2027 开学季 Back-to-School** | 7 月备课~8 月中开学 | **全站大盘词冲排名黄金窗**（cursive alphabet 201K 峰值在此） | 2027-06-30 前内容全就位 |
 
 ## 6. 决策点（数据说话，到点执行）
 

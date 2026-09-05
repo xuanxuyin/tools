@@ -5,7 +5,7 @@
 | 项目 | 是什么 | 技术 | 托管 |
 |---|---|---|---|
 | [tintbrew/](./tintbrew) | [tintbrew.com](https://tintbrew.com) — 免费颜色工具站（Oklab 混色器、格式转换、"两种颜色混成什么"24 页答案矩阵） | Astro 5 静态生成 + 原生 TS islands | Cloudflare Pages |
-| [chartglade/](./chartglade) | [chartglade.com](https://chartglade.com) — 免费教学打印图表站（place value / 乘法表 / 高频词 / 草书字母，27 页） | Astro 5 静态生成 + @media print 打印系统 | Cloudflare Pages |
+| [chartglade/](./chartglade) | [chartglade.com](https://chartglade.com) — 免费教学打印图表站（place value / 乘法表 / 高频词 / 草书字母，53 页） | Astro 5 静态生成 + @media print 打印系统 | Cloudflare Pages |
 
 ---
 
