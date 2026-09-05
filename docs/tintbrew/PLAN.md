@@ -1,6 +1,6 @@
 # tintbrew 作战文档
 
-> 本项目唯一计划文档 · 更新 2026-09-05 · 部署/运维细节见仓库根 [README.md](../README.md)
+> 本项目唯一计划文档 · 更新 2026-09-05 · 部署/运维细节见仓库根 [README.md](../../README.md)
 > 原则：本文档没写的 = 没计划；做完的立刻勾掉并写日期。
 
 ## 0. 北极星
@@ -61,6 +61,7 @@ https://tintbrew.com/what-colors-make-orange/
 | 2026-09-05 | **V2.1 W1**：烘焙 4 页 + /what-colors-make-brown/（49.5K/月）+ /color-guides/ hub |
 | 2026-09-05 | **V2.1 W2**：三色头词页 purple(22.2K)/green(18.1K)/orange(18.1K)，绿页按画家打法重写 |
 | 2026-09-05 | GSC 效果页出现首批数据（说明已被索引参与排名） |
+| 2026-09-05 | 作战文档体系定稿：PLAN/DISTRIBUTION 迁入 `docs/tintbrew/`，每日工作当天更新进 PLAN；万圣节分发窗写入 §5（10 月第 1 周 frosting/icing pin） |
 
 ## 2. 关键词资产表
 
@@ -108,7 +109,7 @@ https://tintbrew.com/what-colors-make-orange/
 3. **V2.4** 分发：每批次上线 → 提交一轮目录站；Product Hunt 正式发布（外链权重最高，单独准备）；Pinterest 场景图分发（第二流量引擎）
 4. **变现**：~300 访问/天 → 接广告网络（AdSense/Ezoic 评估）
 5. **重启候选**：穿搭配色词（what colors go with X）——V2.1 见效后先拉 6 个代表词数据再定
-6. **季节窗（美国日历，准则见根 [CLAUDE.md](../CLAUDE.md)）**：万圣节 frosting/icing 搜索 **10 月**起脉冲 —— 页面 9 月已在位，只欠分发：**10 月第 1 周把 /how-to-make-black-frosting/ + /icing-color-chart/ 的色卡 pin 发一轮**（[DISTRIBUTION.md](./DISTRIBUTION.md) §3 流程），Reddit 烘焙角度帖同周跟上
+6. **季节窗（美国日历，准则见根 [CLAUDE.md](../../CLAUDE.md)）**：万圣节 frosting/icing 搜索 **10 月**起脉冲 —— 页面 9 月已在位，只欠分发：**10 月第 1 周把 /how-to-make-black-frosting/ + /icing-color-chart/ 的色卡 pin 发一轮**（[DISTRIBUTION.md](./DISTRIBUTION.md) §3 流程），Reddit 烘焙角度帖同周跟上
 
 ## 6. 决策点（数据说话，到点执行）
 

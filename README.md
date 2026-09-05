@@ -24,13 +24,13 @@
 
 ## 每周数据检查 SOP（两站共用，5 分钟/站）
 
-> 计划与验收在各站 `PLAN.md`；这一节只讲**在 GSC 界面里怎么点**。左上角属性切换器选对应域名（tintbrew.com / chartglade.com）再开始。
+> 计划与验收在各站 `docs/<项目名>/PLAN.md`（tintbrew / chartglade）；这一节只讲**在 GSC 界面里怎么点**。左上角属性切换器选对应域名（tintbrew.com / chartglade.com）再开始。
 
 ### ① 收录进度（周一例行）
 
 1. GSC 左侧菜单 → **索引（Indexing）→ 网页索引编制（Pages）**：看"已编入索引"页数（目标 41 / 53）
 2. 无痕窗口 Google 搜 `site:tintbrew.com`（chartglade 同理）—— 结果数是收录的粗略快照，**比 GSC 报告慢几天，两个数字不一致以 GSC 为准**
-3. 数字记到各站 PLAN.md 的 §2 或时间线
+3. 数字记到各站 `docs/<项目名>/PLAN.md` 的 §2 或时间线
 
 ### ② 关键词曝光（每日 2 分钟 / 每周细看）
 

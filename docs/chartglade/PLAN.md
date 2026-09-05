@@ -1,6 +1,6 @@
 # chartglade 作战文档
 
-> 本项目唯一计划文档 · 更新 2026-09-05 · 部署/运维细节见仓库根 [README.md](../README.md)
+> 本项目唯一计划文档 · 更新 2026-09-05 · 部署/运维细节见仓库根 [README.md](../../README.md)
 > 原则：本文档没写的 = 没计划；做完的立刻勾掉并写日期。
 
 ## 0. 北极星
@@ -30,6 +30,7 @@
 | 2026-09-05 | Email Routing：hello@chartglade.com 转发可用 |
 | 2026-09-05 | **OG 品牌卡**全站接入（`scripts/generate-og.mjs`，`npm run og` 重生成） |
 | 2026-09-05 | **cursive 单字母矩阵 26 页上线**（/cursive/a/~/z/，SERP 实勘名词型词可打）→ 53 页 |
+| 2026-09-05 | **美国日历准则**入库（根 CLAUDE.md）+ 本文档 §5.1 美国教育内容日历（修正"开学季已过"误判：8 月中开学，9 月正在高峰）；文档迁入 `docs/chartglade/` |
 
 ## 2. 关键词资产表
 
@@ -73,7 +74,7 @@
 
 1. **V1.5** worksheet generator 交互工具页（cursive 文本→练习页；MyCursive 已验证此形态在 worksheet 意图下有排名）
 2. **矩阵扩容候选**（按验收结果挑）：multiplication 1-100 等变体页 / sight words 按年级细分裂变页 / alphabet chart 场景变体
-3. **季节窗（排期唯一依据 = 美国校历，准则见根 [CLAUDE.md](../CLAUDE.md)「美国日历准则」+ 下方 §5.1 日历表）**：printables 赛道季节词是大流量脉冲，每个节点**提前 4~6 周上线**（Google 收录+爬排名要时间）。候选池（节点前 1 个月拉量筛选定稿）：halloween word search / halloween coloring math facts / thanksgiving gratitude tree / thankful ABC list / halloween cursive practice（复用字母矩阵架构）/ pumpkin math chart
+3. **季节窗（排期唯一依据 = 美国校历，准则见根 [CLAUDE.md](../../CLAUDE.md)「美国日历准则」+ 下方 §5.1 日历表）**：printables 赛道季节词是大流量脉冲，每个节点**提前 4~6 周上线**（Google 收录+爬排名要时间）。候选池（节点前 1 个月拉量筛选定稿）：halloween word search / halloween coloring math facts / thanksgiving gratitude tree / thankful ABC list / halloween cursive practice（复用字母矩阵架构）/ pumpkin math chart
 4. **外链与分发**：Pinterest 常态化（每周 pin）、教师社区（r/Teachers r/homeschool，先读版规）、TPT 形态研究（商城不做，引流可）
 5. **变现**：~300 访问/天 → 接广告
 6. **第二曲线**（本仓第三个站候选）：excel shortcuts / sql cheat sheet 等高 CPC 打印工具 —— chartglade 验收数据出来后再定
