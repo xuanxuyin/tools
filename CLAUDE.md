@@ -48,7 +48,7 @@ Astro 5 纯静态 SSG + 原生 TS islands（无框架）+ 原生 CSS tokens + �
 
 ## 项目档案
 
-### chartglade/ — chartglade.com（2026-09-05 代码完成，待部署）
+### chartglade/ — chartglade.com（2026-09-05 上线）
 
 免费教学打印图表站（printables）：4 支柱簇 + 散页 + 3 hubs = 27 页，17 测试全绿。关键词池 251K US/月（cursive alphabet 201K 量王 / place value chart 27.1K / kindergarten sight words 12.1K / multiplication chart 12.1K），调研档在 `research/cheat-sheet-data.md`。
 

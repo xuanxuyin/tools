@@ -5,7 +5,7 @@
 | 项目 | 是什么 | 技术 | 托管 |
 |---|---|---|---|
 | [tintbrew/](./tintbrew) | [tintbrew.com](https://tintbrew.com) — 免费颜色工具站（Oklab 混色器、格式转换、"两种颜色混成什么"24 页答案矩阵） | Astro 5 静态生成 + 原生 TS islands | Cloudflare Pages |
-| [chartglade/](./chartglade) | [chartglade.com](https://chartglade.com) — 免费教学打印图表站（place value / 乘法表 / 高频词 / 草书字母，27 页） | Astro 5 静态生成 + @media print 打印系统 | Cloudflare Pages（待部署） |
+| [chartglade/](./chartglade) | [chartglade.com](https://chartglade.com) — 免费教学打印图表站（place value / 乘法表 / 高频词 / 草书字母，27 页） | Astro 5 静态生成 + @media print 打印系统 | Cloudflare Pages |
 
 ---
 
@@ -33,22 +33,38 @@
 
 ---
 
-## chartglade — 第二个站（2026-09-05 代码完成，待部署）
+## chartglade — 第二个站（2026-09-05 上线）
 
-- **域名**：chartglade.com 已购（Spaceship CN¥60.94），DNS 还在 Spaceship 默认，部署时照第 4 步搬进 Cloudflare
+- **域名**：chartglade.com 已购（Spaceship CN¥60.94），NS 已搬 Cloudflare，主域已绑 Pages
 - **形态**：页面即打印件 —— `@media print` 把页面剥成一张干净的 letter 纸，打印按钮一键输出；宽表格（乘法 1-15/1-20、数轴）自动横版
 - **27 页**：place value 簇 4 + multiplication 簇 4 + sight words 阶梯 5 + cursive 主页 1 + 散页 5（fraction/hundred/number line/addition/alphabet）+ 3 个 hub + 首页 + about/privacy/contact/404
 - **关键词池 251K US/月（4 支柱）**：cursive alphabet 201K（裸词 SERP 已实勘：软）、place value chart 27.1K、kindergarten sight words 12.1K、multiplication chart printable 12.1K；调研全档在 `research/cheat-sheet-data.md`
 - **本地验证**：`npm run build` 27 页 ✓ · `npx vitest run` 17/17 ✓ · `npx astro check` 0 错误 ✓
+- **线上验证（2026-09-05）**：主域 200 ✓ · www 301 带路径 ✓ · sitemap/robots ✓ · 国内直连可开 ✓
 
-### 部署差异点（相对下面的 tintbrew 11 步，其余照抄）
+### chartglade 部署实录（2026-09-05，含每个坑 —— 第三个站照此抄）
 
-1. 第 4 步：chartglade.com 加入 Cloudflare 后**会分配新的 NS 对**（不一定还是 chin/rocco，以界面显示为准），回 Spaceship 改这条 NS
-2. 第 5 步：CF Pages 新建项目时 **Root directory 填 `chartglade`**
-3. 第 6 步：GSC 新建 Domain 属性 `chartglade.com` → TXT 验证后，把 content 值填进 `chartglade/src/consts.ts` 的 `gscVerification`（空字符串）→ push 一次让 meta 上线 → 再提交 `sitemap-index.xml`
-4. 第 9 步：Web Analytics 用 CF 自动注入模式即可（consts 里 `cfBeaconToken` 留空，勿双重计数）
-5. 第 9.5 步：Email Routing 开 `hello@chartglade.com` 转发
-6. 验收关键词（2~4 周后看 GSC）：place value chart printable / multiplication chart 1-12 / kindergarten sight words list / cursive alphabet chart
+1. **加入 Cloudflare**：Add a domain → chartglade.com → 选 Free。问"要不要现在配 DNS 记录"时点 **Add records later**（空域名没有可迁记录，真记录后面全由 Pages 自动加）
+2. **改 NS**：CF 会分配**新的 NS 对**（不一定和 tintbrew 的 chin/rocco 相同，以界面显示为准）→ Spaceship → Domains → Nameservers → Custom DNS 填这两个 → 等 CF 邮件确认 Active
+3. **建 Pages 项目（⚠️ 最大的坑）**：Workers & Pages 只有 **Create application** 按钮 → 进去后顶部有 **Workers | Pages** 两个标签，**必须切到 Pages**；找不到标签就把地址栏结尾 `/create/workers` 手动改成 `/create/pages`
+   - **建错成 Workers 的症状**：Build configuration 里出现 `Deploy command: npx wrangler deploy` 和 `Version command` —— 纯静态站没有 wrangler 配置必失败。发现建错就 Settings → 拉到底 Delete project，回第 3 步重来（改成 Pages 后这几个字段消失，只剩 Build command / Output directory / Root directory）
+4. **Root directory（⚠️ 第二个坑）**：第一屏只有 Project name，**Root directory 在第二屏"Set up builds and deployments"里**（可能要点开 Advanced）。填 `chartglade`
+   - **忘填的症状**：构建日志 `Could not read package.json: /opt/buildhome/repo/package.json`（它在仓库根找）。补救：项目 Settings → Builds & deployments → Build configuration → Edit → Root directory=`chartglade` → Save → Deployments → Retry deployment
+   - 最终配置：Framework preset **Astro** / Build command `npm run build` / Build output directory `dist` / Root directory `chartglade`
+5. **绑主域**：Pages 项目 → **Custom domains** 标签 → Set up a custom domain → `chartglade.com` → CF 识别到同账号 zone 自动配 DNS → **Activate domain**（zone 必须已 Active，否则一直转圈）
+6. **www 301 跳主域**（⚠️ 表单语法坑）：
+   - zone → DNS → 加 `www` CNAME → `chartglade.pages.dev`，**橙云 Proxied 开着**（流量先进 CF 规则才能接管）
+   - zone → **Rules → Redirect Rules → Create rule** → 模板选 **Redirect from WWW to root**；匹配方式三选一里选 **Wildcard pattern**
+   - Wildcard pattern：`https://www.chartglade.com/*`（必须带协议头，否则报 "Please include the protocol"）
+   - Status **301**，Target URL：`https://chartglade.com/${1}` —— **必须花括号 `${1}`**，写 `$1` 会报 "Error in the replacement syntax"
+7. **robots.txt 惊吓（正常）**：CF 会自动在静态 robots.txt 前面加一段 Content-Signal / AI 爬虫拦截（GPTBot、ClaudeBot 等 Disallow），**Google 搜索不受影响**（search=yes + Allow / 保留），对我们有利，不用管
+
+### chartglade 还差的两步
+
+- [ ] **GSC**：新建 Domain 属性 `chartglade.com` → TXT 记录加在 CF DNS → 验证后把 content 值填进 `chartglade/src/consts.ts` 的 `gscVerification`（现为空字符串）→ push → 提交 `sitemap-index.xml`
+- [ ] **Email Routing**：开 `hello@chartglade.com` 免费转发（照 9.5 步）
+
+验收关键词（2~4 周后看 GSC）：place value chart printable / multiplication chart 1-12 / kindergarten sight words list / cursive alphabet chart
 
 ---
 
