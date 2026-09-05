@@ -12,11 +12,11 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   /** true only for 404 */
   noindex?: boolean;
-  /** Site-rooted path, e.g. '/og-default.png'; omit to skip og:image entirely */
+  /** Site-rooted path of the share image; defaults to the brand OG card */
   ogImage?: string;
 }
 
-const { title, description, path, jsonLd, noindex = false, ogImage } = Astro.props;
+const { title, description, path, jsonLd, noindex = false, ogImage = '/og-default.png' } = Astro.props;
 
 // trailing slash matches Cloudflare Pages URL normalization (clean URL 308s to slashed)
 const canonical = path === '/' ? `${SITE.url}/` : `${SITE.url}${path}/`;
