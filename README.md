@@ -74,7 +74,7 @@
   4. 弹窗自动跑"网址是否可编入索引"检查（1~2 分钟，**别关别刷新**）
   5. 显示绿色 **已提交网址，并请求将其编入索引** = 成功，关掉弹窗换下一个网址
   - 注意：每个网址只请求一次；提交 ≠ 立即收录（几小时~几天），进度用无痕窗口搜 `site:chartglade.com`
-- [ ] **Email Routing**（约 5 分钟，tintbrew 2026-09-04 验证过可用）：
+- [x] **Email Routing（2026-09-05 完成）** —— `hello@chartglade.com` 已可收信（步骤留档，第三个站照抄）：
   1. dash.cloudflare.com → 域名列表点进 **chartglade.com** → 左侧菜单 **Email → Email Routing** → 点 **Get started**
   2. 界面提示需要加 DNS 记录（MX/SPF）→ 点 **Add records and enable**（一键，CF 自动加好）→ 状态变 **Active/已启用**
   3. 上方切到 **Destination addresses** 标签 → **Add destination address** → 填真实邮箱（tintbrew 用过的那个）→ Save → 去该邮箱收 Cloudflare 确认信（可能进垃圾箱）→ 点信里的 **Verify** → 状态变 **Verified**
