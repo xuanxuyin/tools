@@ -64,6 +64,16 @@
 ### chartglade 还差的两步
 
 - [x] **GSC（2026-09-05 完成）**：Domain 属性已验证（TXT）→ 验证值已进 `consts.ts` 并上线 → 站点地图 `sitemap-index.xml` 已提交成功
+- [ ] **Request indexing（3 个 URL，约 5 分钟）**：
+  1. 打开 search.google.com/search-console，左上角属性下拉框确认选的是 **chartglade.com**（不是 tintbrew）
+  2. 顶部搜索框（"在此输入网址…"）粘第一个网址 → 回车：
+     - `https://chartglade.com/`
+     - `https://chartglade.com/place-value-chart/`
+     - `https://chartglade.com/cursive-alphabet/`
+  3. 等报告加载几秒，看右侧：有蓝色按钮**请求编入索引**直接点；只看到**测试实际网址**就先点它（跑 30~60 秒），旁边会变出**请求编入索引**再点
+  4. 弹窗自动跑"网址是否可编入索引"检查（1~2 分钟，**别关别刷新**）
+  5. 显示绿色 **已提交网址，并请求将其编入索引** = 成功，关掉弹窗换下一个网址
+  - 注意：每个网址只请求一次；提交 ≠ 立即收录（几小时~几天），进度用无痕窗口搜 `site:chartglade.com`
 - [ ] **Email Routing**：开 `hello@chartglade.com` 免费转发（照 9.5 步）
 
 验收关键词（2~4 周后看 GSC）：place value chart printable / multiplication chart 1-12 / kindergarten sight words list / cursive alphabet chart
