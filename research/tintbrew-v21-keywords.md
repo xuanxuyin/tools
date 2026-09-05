@@ -85,6 +85,31 @@
 | 波 | 页面 | 理由 |
 |---|---|---|
 | **W1 现在** | 烘焙 4 页 + **/what-colors-make-brown/**（头词，见补测节） | KD 14~19 最软 + Halloween（~8 周）→ 圣诞 cookie 季接棒；头词页龄越早起越好 |
-| **W2 3~4 周后** | 颜料 3 页：/what-colors-make-brown-paint/ · /what-colors-make-beige/ · /how-to-make-dark-brown-paint/ | 量最大但 KD 25~32，等权重 |
-| **W3 再后** | 木器 2 页：/weathered-wood-stain/ · /gray-wash-wood-stain/ | 小而软，顺手 |
+| **W2 3~4 周后（2026-09-05 修订）** | **颜色先行 3 页**：/what-colors-make-purple/ · /what-colors-make-green/ · /what-colors-make-orange/（复用 brown 的 method 页模板） | 批量补测定案：purple 22.2K/26 · green 18.1K/28 · orange 18.1K/37 合计 **58.4K**，全站第二大头词群，比颜料 3 页（3.8K）大 15 倍 |
+| **W3 再后** | 颜料 3 页：/what-colors-make-brown-paint/ · /what-colors-make-beige/ · /how-to-make-dark-brown-paint/ | 原排期顺延（量 3.8K 但意图近 /mix/，低成本） |
+| **W4** | 木器 2 页：/weathered-wood-stain/ · /gray-wash-wood-stain/ | 小而软，顺手 |
 | 待测 | how to make brown food coloring（两词聚类共现，可能是第 10 页） | 下次免费额度刷新拉一下 |
+
+## 枚举盲区自查（2026-09-05 · 用户新门槛"头词 US ≥1 万"套 tintbrew）
+
+brown 暴露的筛选口径问题在 tintbrew 内部同样存在：**矩阵 24 词和工具头词从来没单独拉过量**（当初只看了 KD 0 / KD 27 就开建）。已知过线的只有 brown 49.5K + its 变体 12.1K。待 Semrush 批量：what colors make purple/orange/green/pink/gray · red and blue · blue and yellow · color mixer · mix colors online · color converter · hex to rgb · rgb to hex（12 词）。若矩阵里再出 1 万+ 词：支柱池扩容 + V2.2 扩对优先级按量重排。
+
+实勘备注：brown SERP 软已验证（6 视频位 + 零反链博客，第一页无"现算数据+工具"形态页）；color mixer 9/5 补搜被工具本地化污染（返回中文结果），但站名与原始调研一致（colorffy/colormagic，DR 39~62），定性不变 = 阵地战非空子。站级预期：1 万 PV/月 可达，时间线 6~12 个月（2~3 个月摸第 5~6 页 + 外链 + 变体先行）。
+
+## 12 词批量结果（2026-09-05）——支柱池从 1 张变 4 张
+
+| 词 | US 量/月 | KD | 判定 |
+|---|---|---|---|
+| **what colors make purple** | **22,200** | 26 | ✅ 支柱 #2 |
+| **what colors make green** | **18,100** | 28 | ✅ 支柱 #3 |
+| **what colors make orange** | **18,100** | 37 | ✅ 支柱 #4（KD 偏高，同模板顺手做） |
+| color mixer | 14,800 | 42 | ⚠️ 量过线但 KD 42（**修正**：当初调研记 27），工具页继续养 |
+| what color does red and blue make | 9,900 | 26 | 差 0.1K，/mix/red-blue/ 吃 |
+| what colors make pink | 9,900 | 28 | /mix/red-white/ + /mix/red-pink/ 吃 |
+| what colors make gray | 2,400 | 32 | 支撑 |
+| what does blue and yellow make | 2,400 | 26 | 支撑 |
+| color converter / rgb↔hex / mix colors online | 720~1,000 | 42~46 | 工具页长期磨（已上线养页龄） |
+
+支柱池合计 ≈ **120K US/月**（brown 49.5 + purple 22.2 + green 18.1 + orange 18.1 + two-colors-brown 12.1）。
+
+**关键形态发现：三个新支柱全是"颜色先行式"问题（what colors make X），而 V1 矩阵 24 页全是"配对先行式"（X and Y make）**——brown 当初就是为头词单开 method 页拿到入场券的；purple/green/orange 同理需要专页，复用 brown 页模板（`data/scenarios.ts` 加三个 entry + 薄包装页）。58.4K 新增量词群 → W2 排期已重排（见上表）。

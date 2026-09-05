@@ -23,7 +23,7 @@
 
 ## 当前状态：✅ 2026-09-04 全部上线完成
 
-- 网站线上地址：**https://tintbrew.com**（38 页，HTTP/2 + HTTPS + 全球 CDN）
+- 网站线上地址：**https://tintbrew.com**（41 页，HTTP/2 + HTTPS + 全球 CDN）
 - 域名：Spaceship 注册，NS 已指向 `chin.ns.cloudflare.com` / `rocco.ns.cloudflare.com`
 - GSC：Domain 属性已验证（TXT 记录），站点地图已提交（37 个 URL）
 - 访问统计：Cloudflare Web Analytics **自动注入模式**（已收到真实访问数据）
@@ -63,7 +63,7 @@
 
 ### 第 2 步 · 写代码 —— 本地 + GitHub
 
-- 在仓库子文件夹（`tintbrew/`）里开发；发布前 `npm run build`（38 页）+
+- 在仓库子文件夹（`tintbrew/`）里开发；发布前 `npm run build`（41 页）+
   `npx vitest run`（81 测试）全绿
 - `git push origin main` 推上去
 
@@ -160,7 +160,7 @@
 
 ```bash
 cd tintbrew
-npm run build        # 本地验证构建（38 页）
+npm run build        # 本地验证构建（41 页）
 npx vitest run       # 81 个测试全过再发布
 git add -A && git commit -m "feat: 改了什么" && git push origin main
 ```
@@ -326,6 +326,14 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 | icing color chart | /icing-color-chart/ |
 | buttercream color chart | /buttercream-color-chart/ |
 
+**W2 三色头词页（已构建 2026-09-05，随下次 push 上线）**：
+
+| 搜索词 | 目标页 |
+|---|---|
+| what colors make purple | /what-colors-make-purple/（US 22.2K/KD26） |
+| what colors make green | /what-colors-make-green/（US 18.1K/KD28） |
+| what colors make orange | /what-colors-make-orange/（US 18.1K/KD37） |
+
 ### 搜索技巧
 
 - `site:tintbrew.com` —— 看多少页已进 Google 索引（收录进度最快验证法）
@@ -364,6 +372,12 @@ curl -s --resolve tintbrew.com:443:104.21.41.71 https://tintbrew.com/sitemap-ind
 （US 49.5K/月 · KD 38 · 词族 196K 的全场头词，2026-09-05 补测锁定）+ /color-guides/ hub 页；
 架构 = `data/scenarios.ts`（手写事实+配比）→ `lib/scenarioContent.ts`（引擎算色卡）
 → `components/ScenarioPage.astro` + 每页一个扁平 URL 薄包装；footer 自动带出全部场景页链接。
+**W2 已构建（3 页，2026-09-05，41 页全绿后待 push）**：/what-colors-make-purple/（22.2K/KD26）·
+/what-colors-make-green/（18.1K/KD28）· /what-colors-make-orange/（18.1K/KD37）——
+三色头词合计 58.4K/月，是 26 词批量终审后的最高 ROI 批次（color-first 问法，与 V1 24 页
+pair-first 矩阵互补）。绿页因引擎是屏幕混色（蓝+黄光加起来趋白），全部路线按画家打法重写：
+蓝入黄基 + green 家族起步走 chartreuse/teal/forest/sage，并在正文交代 paint-vs-screen 差异
+（互链 /mix/blue-yellow/）。上线节奏：W1 观察窗（3~4 周）后再 push。
 
 ### V2.2 第二批配色对（+20~30 页，低成本高确定性）
 
