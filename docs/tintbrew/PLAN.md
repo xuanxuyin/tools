@@ -67,6 +67,8 @@ https://tintbrew.com/what-colors-make-orange/
 | 2026-09-05 | GSC 效果页出现首批数据（说明已被索引参与排名） |
 | 2026-09-05 | 作战文档体系定稿：PLAN/DISTRIBUTION 迁入 `docs/tintbrew/`，每日工作当天更新进 PLAN；万圣节分发窗写入 §5（10 月第 1 周 frosting/icing pin） |
 | 2026-09-05 | **目标阶梯按基率校准**（用户质疑"太理想"成立）：改三档情景表 + 认基率（多数站一年无成果是中位数）+ **2027-01-31 止损线** |
+| 2026-09-05 | **探测工具边界确认**：AITDK 官网 = AI 写作工具集，无查量 API → 拉量固定走用户插件（分工入根 CLAUDE.md）；Google 补全接口三条管道全堵（WebFetch 域名校验 / webReader 拒 query 串 / 本机 curl 无代理），变体枚举继续走自动搜索 |
+| 2026-09-05 | **短词机会实勘（用户提问"有没有在短词里找机会"触发）**：`color mixing chart` SERP 极软 → 新页候选入 §2（量 9/8 拉）；gold/teal 扩色预勘可打；同批 `multiplication chart`（chartglade）硬、`cursive alphabet` 探针区域污染作废 —— 证据分级规则入根 CLAUDE.md |
 
 ## 2. 关键词资产表
 
@@ -78,7 +80,8 @@ https://tintbrew.com/what-colors-make-orange/
 | V2.1 三色 | purple / green / orange | 58.4K 合计 | /what-colors-make-*/ | 已上线 |
 | V2.1 烘焙 | black frosting / brown icing / icing chart / buttercream chart | 含万圣季节词 | 4 页 | 已上线 |
 | 工具头词 | color mixer / converter / hex to rgb | KD 27 档 | /color-mixer/ /color-converter/ | 3~6 个月长跑 |
-| V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | 待拉 | /mix/* | 未启动 |
+| V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | 待拉 | /mix/* | 未启动；gold/teal 已 SERP 预勘【实勘 2026-09-05】：gold 前 5 = 内设博客 J Fisher Interiors + 艺术博客 Ettavee（软✅）；teal 前 5 = trycolors 工具站 + Quora（弱✅） |
+| **V2.2 新页候选** | **color mixing chart**（短词，用户提问触发的探测发现） | **量待 AITDK（9/8 批）** | /color-mixing-chart/（打印版混色总表） | 【实勘 2026-09-05】SERP 极软：①Pinterest ②YouTube ③Facebook ④Facebook ⑤Visual Arts Passage 博客 ⑦MyModernMet ⑧Daniel Smith —— UGC+小博客占满，无巨头无工具站 |
 | 已评估暂缓 | what colors go with X（穿搭配色） | 未验证 | — | 见 §6 |
 
 ## 3. 接下来要做（优先级排序）
@@ -92,6 +95,17 @@ https://tintbrew.com/what-colors-make-orange/
 | 5 | W3 木器染色 2 页（coffee wood stain 等，已锁定未建） | Claude | 2 页上线 | 跟 V2.2 同批或下批 |
 | 6 | per-page OG 图：场景页用引擎生成对应色卡图（替代全站共用卡） | Claude | 场景页 og:image 唯一 | 2026-09 下旬 |
 | 7 | V2.3 工具页：互补色/对比色生成器（`contrastRatio` 引擎已有） | Claude | 1 页 + WCAG 检查 | 2026-10 |
+
+**V2.2 启动时 AITDK 顺带拉量（并入 9/8 补测批，4 词，~2 分钟）**：
+
+```
+color mixing chart
+acrylic color mixing chart
+what colors make gold
+what colors make teal
+```
+
+判定规则（拉完自动落位）：`color mixing chart` ≥2,000 US/月 → /color-mixing-chart/ 打印版总表页进 V2.2 首批（引擎现算全部色值 + print CSS，打通 /mix/ 矩阵 ↔ color-guides hub 内链）；<2,000 但 ≥500 → 并入 V2.2 顺带建；gold/teal 按原筛选规则（≥500/月 + SERP 无 DR60+ 巨头，SERP 已预勘可打）。
 
 ## 4. 每日 / 每周例行
 

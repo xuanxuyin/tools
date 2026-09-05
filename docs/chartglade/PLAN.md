@@ -37,6 +37,7 @@
 | 2026-09-05 | **美国日历准则**入库（根 CLAUDE.md）+ 本文档 §5.1 美国教育内容日历（修正"开学季已过"误判：8 月中开学，9 月正在高峰）；文档迁入 `docs/chartglade/` |
 | 2026-09-05 | **目标阶梯按基率校准**（用户质疑"太理想"成立）：改三档情景表 + 认基率 + **2027-01-31 止损线** |
 | 2026-09-05 | **单字母族 SERP 实勘 4 词**（名词型全弱✅ / worksheet 型硬❌）；AITDK 量补测词表 + 判定规则入 §3 #7；**关键词验证纪律**入根 CLAUDE.md（brown 漏词教训：最大词是用户找到的） |
+| 2026-09-05 | 短词补充实勘：`multiplication chart` 裸词 US SERP 硬（①Mometrix ②Dad's Worksheets ③Suncatcher ④Good&Beautiful ⑤Math Salamanders + Twinkl 在位）→ 头部词维持页龄策略，不加码；`cursive alphabet` 自动探针返回非美区结果（剑桥词典+翻译站）**作废**，以 2026-09-04 人工 US 实勘（软）为准 |
 
 ## 2. 关键词资产表
 
