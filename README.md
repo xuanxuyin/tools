@@ -58,10 +58,12 @@
    - Wildcard pattern：`https://www.chartglade.com/*`（必须带协议头，否则报 "Please include the protocol"）
    - Status **301**，Target URL：`https://chartglade.com/${1}` —— **必须花括号 `${1}`**，写 `$1` 会报 "Error in the replacement syntax"
 7. **robots.txt 惊吓（正常）**：CF 会自动在静态 robots.txt 前面加一段 Content-Signal / AI 爬虫拦截（GPTBot、ClaudeBot 等 Disallow），**Google 搜索不受影响**（search=yes + Allow / 保留），对我们有利，不用管
+8. **⚠️ DNS 里 Pages 自动生成的 CNAME 永远不要手动改（本站踩过，站挂了）**：绑主域时 CF 自动加的 apex CNAME 指向的是项目**真实子域名** —— 本项目创建时自动用了仓库名，真名是 `tools-6hx.pages.dev`（tools 被全球占用加了后缀），**不是** `chartglade.pages.dev`。手动改成猜的名字 → 全站 `error code: 1014`（CNAME Cross-User Banned）。判断项目真名：Pages 项目列表 → 项目名那一栏
+9. **GSC 提交站点地图（⚠️ 输入框前面自带域名）**：Sitemaps 页的输入框**左侧已经印着你的域名**，框里只填 `sitemap-index.xml`（不带 https://、不带域名、不带斜杠）。填完整 URL 或带域名会报"站点地图地址无效 请输入一个指向您网站中的站点地图的有效路径"—— 查半天 DNS/robots 都是白查，其实就是多填了前缀
 
 ### chartglade 还差的两步
 
-- [ ] **GSC**：新建 Domain 属性 `chartglade.com` → TXT 记录加在 CF DNS → 验证后把 content 值填进 `chartglade/src/consts.ts` 的 `gscVerification`（现为空字符串）→ push → 提交 `sitemap-index.xml`
+- [x] **GSC（2026-09-05 完成）**：Domain 属性已验证（TXT）→ 验证值已进 `consts.ts` 并上线 → 站点地图 `sitemap-index.xml` 已提交成功
 - [ ] **Email Routing**：开 `hello@chartglade.com` 免费转发（照 9.5 步）
 
 验收关键词（2~4 周后看 GSC）：place value chart printable / multiplication chart 1-12 / kindergarten sight words list / cursive alphabet chart
