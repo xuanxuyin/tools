@@ -36,19 +36,31 @@
 | 2026-09-05 | **cursive 单字母矩阵 26 页上线**（/cursive/a/~/z/，SERP 实勘名词型词可打）→ 53 页 |
 | 2026-09-05 | **美国日历准则**入库（根 CLAUDE.md）+ 本文档 §5.1 美国教育内容日历（修正"开学季已过"误判：8 月中开学，9 月正在高峰）；文档迁入 `docs/chartglade/` |
 | 2026-09-05 | **目标阶梯按基率校准**（用户质疑"太理想"成立）：改三档情景表 + 认基率 + **2027-01-31 止损线** |
+| 2026-09-05 | **单字母族 SERP 实勘 4 词**（名词型全弱✅ / worksheet 型硬❌）；AITDK 量补测词表 + 判定规则入 §3 #7；**关键词验证纪律**入根 CLAUDE.md（brown 漏词教训：最大词是用户找到的） |
 
 ## 2. 关键词资产表
 
 | 梯队 | 词/词族 | 量(US/月) | 目标页 | 状态 |
 |---|---|---|---|---|
 | 量王 | cursive alphabet（裸词） | 201K/KD43 | /cursive-alphabet/ | 磨页龄，别指望 3 个月 |
-| 量王变体 | cursive chart / capital cursive X / cursive X worksheet | 单字母族量待拉 | **/cursive/a/~/z/ 26 页** | 已上线，主战场 |
+| 量王变体 | cursive X / cursive capital X（名词型） | 单字母族量**待 AITDK 补测**（词表见 §3 #7） | **/cursive/a/~/z/ 26 页** | SERP 实勘 ✅（见下）；量未实测 |
 | 支柱 2 | place value chart（+printable/4th grade 变体） | 27.1K | /place-value-chart/ 等 4 页 | 已上线 |
 | 支柱 3 | kindergarten sight words（+dolch/fry 变体） | 12.1K | 5 阶梯页 | 已上线 |
 | 支柱 4 | multiplication chart（+1-12/1-100 变体） | 12.1K | 4 页 | 已上线 |
 | 软词 | alphabet chart | 6.6K/KD15 | /alphabet-chart/ | 全站最软词，先动 |
 | 禁区 | states and capitals quiz / multiplication worksheets | 12K+/KD48 | 不做 | SERP 巨头，已标注 |
 | V1.5 候选 | cursive worksheet generator | 待拉 | 交互工具页 | MyCursive 生成器 SERP #5 验证过形态 |
+
+**单字母族 SERP 实勘（2026-09-05，google.com US 区，4 词抽样）**：
+
+| 查询 | 前 5 实况 | 判定 |
+|---|---|---|
+| cursive capital f | ①MyCursive ②brush calligraphy 视频教程 ③**Reddit 帖** ④Superstar ⑤Facebook 视频 | 弱 ✅（UGC 占 3/5） |
+| capital i in cursive | ①**Pinterest pin** ②**Reddit** ③YouTube Short ④SuryasCursive ⑤YouTube | 极弱 ✅，且 **Pinterest pin 能直接排 Google #1** —— 分发手册的 Pinterest 策略双重确认 |
+| cursive b | ①MyCursive ②K5 ③**Quora** ④fancy-text 字体站（意图不符）⑤**Pinterest** | 弱 ✅ |
+| cursive f worksheet | 前 7 = K5 / Superstar / BrightSprout / Itsy Bitsy Fun / SplashLearn / Canva / Teach Prints | **硬 ❌ —— worksheet 后缀词不打**：大厂垄断，我们页面里 FAQ 接住即可，不当目标词 |
+
+> 结论：**名词型**（cursive X / capital X in cursive）SERP 全弱可打；**worksheet 修饰型**放弃竞争。剩下唯一未知 = 量（§3 #7 补测）。
 
 ## 3. 接下来要做（优先级排序）
 
@@ -60,6 +72,32 @@
 | 4 | GSC 收录复查：`site:chartglade.com` 数 + 索引覆盖报告 | 👤 | 记录数字入本文档 | 2026-09-12 |
 | 5 | **6 周长尾验收**（§6 决策点） | 👤+Claude | 变体词排名截图 | **2026-10-17** |
 | 6 | V1.5 cursive worksheet generator（文本→可打印练习页，OFL 字体+print CSS+零登录） | Claude | 1 交互页 | 10 月，视 §6 结果 |
+| 7 | **单字母族量补测（AITDK 插件拉 US 月搜，~10 分钟）** —— 词表：见下方代码块；拉完把数字贴回来 | 👤 | 12 个词的量+KD 记入 §2 | **2026-09-08** |
+
+**AITDK 拉数词表（#7 用，逐词查 US 月搜 + KD）**：
+
+```
+cursive f
+cursive b
+cursive a
+cursive k
+cursive z
+cursive x
+cursive capital f
+capital i in cursive
+cursive capital b
+cursive chart
+cursive letters a to z
+cursive f worksheet
+```
+
+**补测后判定规则（拉完数字自动落位，不用再讨论）**：
+
+| 6 个裸词（f/b/a/k/z/x）均值 | 结论 → 动作 |
+|---|---|
+| ≥1,000 US/月 | 论点成立 → 矩阵加码（每字母页补 "capital cursive X" 变体段），10/17 按原计划验收字母族 |
+| 200~1,000 | 矩阵保留（已建零边际成本）但**不扩张**；10/17 验收主看 place value 变体 + 万圣节 |
+| <200 | 空池 → 字母页只留 26 页躺页龄；主战场转向支柱变体页 + 季节页，§6 的 B 计划概率大增 |
 
 ## 4. 每日 / 每周例行
 
