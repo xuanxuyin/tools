@@ -37,9 +37,9 @@
 
 - **域名**：chartglade.com 已购（Spaceship CN¥60.94），NS 已搬 Cloudflare，主域已绑 Pages
 - **形态**：页面即打印件 —— `@media print` 把页面剥成一张干净的 letter 纸，打印按钮一键输出；宽表格（乘法 1-15/1-20、数轴）自动横版
-- **27 页**：place value 簇 4 + multiplication 簇 4 + sight words 阶梯 5 + cursive 主页 1 + 散页 5（fraction/hundred/number line/addition/alphabet）+ 3 个 hub + 首页 + about/privacy/contact/404
-- **关键词池 251K US/月（4 支柱）**：cursive alphabet 201K（裸词 SERP 已实勘：软）、place value chart 27.1K、kindergarten sight words 12.1K、multiplication chart printable 12.1K；调研全档在 `research/cheat-sheet-data.md`
-- **本地验证**：`npm run build` 27 页 ✓ · `npx vitest run` 17/17 ✓ · `npx astro check` 0 错误 ✓
+- **53 页**（2026-09-05 晚扩容）：原 27 页 + **cursive 单字母矩阵 26 页**（/cursive/a/ ~ /cursive/z/，名词型词 "cursive capital f / cursive f worksheet"；每字母手写笔画分解/头号错误/FAQ，数据在 `src/data/cursiveLetters.ts`，动态路由 `[letter].astro`，SERP 实勘：MyCursive/Superstar/SuryasCursive 三家在位但全是博客+PDF 下载形态，我们是打开即打印）
+- **关键词池 251K US/月（4 支柱）**：cursive alphabet 201K（裸词 SERP 已实勘：软）、place value chart 27.1K、kindergarten sight words 12.1K、multiplication chart printable 12.1K；单字母族量为待拉状态（Ahrefs 聚类面板浮出 "capital cursive i" 族），赌的是矩阵成本近零 + 页龄
+- **本地验证**：`npm run build` 53 页 ✓ · `npx vitest run` 22/22 ✓ · `npx astro check` 0 错误 ✓
 - **线上验证（2026-09-05）**：主域 200 ✓ · www 301 带路径 ✓ · sitemap/robots ✓ · 国内直连可开 ✓
 
 ### chartglade 部署实录（2026-09-05，含每个坑 —— 第三个站照此抄）
@@ -64,12 +64,14 @@
 ### chartglade 还差的两步
 
 - [x] **GSC（2026-09-05 完成）**：Domain 属性已验证（TXT）→ 验证值已进 `consts.ts` 并上线 → 站点地图 `sitemap-index.xml` 已提交成功
-- [ ] **Request indexing（3 个 URL，约 5 分钟）**：
+- [ ] **Request indexing（5 个 URL，约 8 分钟）**：
   1. 打开 search.google.com/search-console，左上角属性下拉框确认选的是 **chartglade.com**（不是 tintbrew）
   2. 顶部搜索框（"在此输入网址…"）粘第一个网址 → 回车：
      - `https://chartglade.com/`
      - `https://chartglade.com/place-value-chart/`
      - `https://chartglade.com/cursive-alphabet/`
+     - `https://chartglade.com/cursive/f/`（单字母矩阵热搜页：f/i 难度热搜）
+     - `https://chartglade.com/cursive/a/`
   3. 等报告加载几秒，看右侧：有蓝色按钮**请求编入索引**直接点；只看到**测试实际网址**就先点它（跑 30~60 秒），旁边会变出**请求编入索引**再点
   4. 弹窗自动跑"网址是否可编入索引"检查（1~2 分钟，**别关别刷新**）
   5. 显示绿色 **已提交网址，并请求将其编入索引** = 成功，关掉弹窗换下一个网址

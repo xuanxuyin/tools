@@ -50,10 +50,10 @@ Astro 5 纯静态 SSG + 原生 TS islands（无框架）+ 原生 CSS tokens + �
 
 ### chartglade/ — chartglade.com（2026-09-05 上线）
 
-免费教学打印图表站（printables）：4 支柱簇 + 散页 + 3 hubs = 27 页，17 测试全绿。关键词池 251K US/月（cursive alphabet 201K 量王 / place value chart 27.1K / kindergarten sight words 12.1K / multiplication chart 12.1K），调研档在 `research/cheat-sheet-data.md`。
+免费教学打印图表站（printables）：4 支柱簇 + 散页 + 3 hubs + **cursive 单字母矩阵 26 页（/cursive/a/~/z/）= 53 页**，22 测试全绿。关键词池 251K US/月（cursive alphabet 201K 量王 / place value chart 27.1K / kindergarten sight words 12.1K / multiplication chart 12.1K），调研档在 `research/cheat-sheet-data.md`。
 
 - **页面即打印件**：`@media print` 剥成一张 letter 纸（`.printable` 系统、landscape 子页给宽表格、`.sheet-break` 双页套打）；`[data-print]` → `window.print()`
-- **数据驱动**：`src/data/*.ts` 每页一条 PageDef（内容/SEO/FAQ/tips 全在数据里）→ `ChartPage.astro` 唯一模板 + `components/printables/*` 渲染；加图表页 = 数据文件加一条 + 一个 find-by-slug wrapper，Footer/hub 自动带出
+- **数据驱动**：`src/data/*.ts` 每页一条 PageDef（内容/SEO/FAQ/tips 全在数据里）→ `ChartPage.astro` 唯一模板 + `components/printables/*` 渲染；加图表页 = 数据文件加一条 + 一个 find-by-slug wrapper，Footer/hub 自动带出。**单字母矩阵走动态路由** `pages/cursive/[letter].astro`（getStaticPaths 遍历 `cursiveLetters.ts`，LetterSheet 扩展字段给打印组件：capitalSteps/lowerSteps/pitfall）
 - **引擎纯函数在 `src/lib/`**：`mathCharts.ts`（乘法表/位值列/formatUs）+ `sightWords.ts`（Dolch 220 逐字 + Fry first 100 含第 49 位 their，曾漏）
 - **交互只是文本替换**：SSR 把 data-fact 句子预写在单元格，`scripts/interact.ts` 全局委托只换 `.fact-line` 的 textContent
 - **字体自托管**：Dancing Script 700（草书展示）+ Caveat 500（描红）woff2，仅 cursive 页加载；其余页零字体请求
