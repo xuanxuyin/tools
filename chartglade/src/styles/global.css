@@ -517,6 +517,95 @@ svg {
   margin: 0 var(--sp-2) var(--sp-1);
 }
 
+/* Cursive single-letter practice sheet */
+
+.big-glyphs {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--sp-4);
+  padding: var(--sp-2) 0;
+}
+
+.big-glyphs .big-cap,
+.big-glyphs .big-low {
+  font-family: var(--font-script);
+  line-height: 1.05;
+}
+
+.big-glyphs .big-cap {
+  font-size: 6rem;
+}
+
+.big-glyphs .big-low {
+  font-size: 4.5rem;
+  color: var(--ink-soft);
+}
+
+.stroke-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  margin-top: var(--sp-3);
+}
+
+.stroke-steps h3 {
+  font-size: 1.05rem;
+  margin-bottom: var(--sp-2);
+}
+
+.stroke-steps ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: var(--sp-1);
+}
+
+.stroke-steps li {
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.pitfall {
+  margin-top: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-left: 3px solid var(--accent, #2f7d4f);
+  background: rgba(47, 125, 79, 0.06);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Cursive hub — letter link grid */
+.letter-grid-plain {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.letter-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--sp-2) var(--sp-1);
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+.letter-link-glyph {
+  font-family: var(--font-script);
+  font-size: 1.9rem;
+  line-height: 1.15;
+}
+
+.letter-link-name {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+
 /* Fraction strips */
 
 .fraction-rows {

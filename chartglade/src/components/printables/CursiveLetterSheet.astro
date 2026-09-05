@@ -1,0 +1,61 @@
+---
+import type { LetterSheet } from '../../data/cursiveLetters';
+
+interface Props {
+  sheet: LetterSheet;
+}
+
+const { sheet } = Astro.props;
+---
+
+<div class="letter-sheet">
+  <div class="big-glyphs" aria-hidden="true">
+    <span class="big-cap">{sheet.capital}</span>
+    <span class="big-low">{sheet.lower}</span>
+  </div>
+
+  <div class="stroke-steps">
+    <div>
+      <h3>Capital {sheet.capital}</h3>
+      <ol>
+        {sheet.capitalSteps.map((s) => <li>{s}</li>)}
+      </ol>
+    </div>
+    <div>
+      <h3>Lowercase {sheet.lower}</h3>
+      <ol>
+        {sheet.lowerSteps.map((s) => <li>{s}</li>)}
+      </ol>
+    </div>
+  </div>
+
+  <p class="pitfall"><strong>Watch for:</strong> {sheet.pitfall}</p>
+
+  <h3 class="trace-heading">Trace and write — {sheet.lower}{sheet.lower}{sheet.lower}{sheet.lower}{sheet.lower}</h3>
+  <div class="trace-strip">
+    {[...Array(6)].map(() => (
+      <div class="trace-cell">
+        <div class="glyph">{sheet.lower}</div>
+        <div class="baseline"></div>
+      </div>
+    ))}
+  </div>
+  <h3 class="trace-heading">Capital practice — {sheet.capital}{sheet.capital}{sheet.capital}</h3>
+  <div class="trace-strip">
+    {[...Array(6)].map(() => (
+      <div class="trace-cell">
+        <div class="glyph">{sheet.capital}</div>
+        <div class="baseline"></div>
+      </div>
+    ))}
+  </div>
+  <h3 class="trace-heading">Write on your own</h3>
+  <div class="trace-strip">
+    {[...Array(6)].map(() => (
+      <div class="trace-cell">
+        <div class="glyph"></div>
+        <div class="baseline"></div>
+      </div>
+    ))}
+  </div>
+</div>

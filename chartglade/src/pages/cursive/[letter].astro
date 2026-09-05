@@ -1,0 +1,18 @@
+---
+import ChartPage from '../../components/ChartPage.astro';
+import CursiveLetterSheet from '../../components/printables/CursiveLetterSheet.astro';
+import { cursiveLetters } from '../../data/cursiveLetters';
+
+export function getStaticPaths() {
+  return cursiveLetters.map((def) => ({
+    params: { letter: def.slug },
+    props: { def },
+  }));
+}
+
+const { def } = Astro.props;
+---
+
+<ChartPage def={def}>
+  <CursiveLetterSheet sheet={def.sheet} />
+</ChartPage>

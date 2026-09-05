@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../consts';
 import { cursivePages } from '../../data/cursive';
+import { cursiveLetters } from '../../data/cursiveLetters';
 
 const jsonLd = [
   {
@@ -41,6 +42,22 @@ const jsonLd = [
         <a class="card" href={`/${p.slug}/`}>
           <h2>{p.h1}</h2>
           <p>Uppercase and lowercase A-Z in one continuous script, with a light-gray tracing strip and the stroke families letters are taught in.</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Every letter, its own page</h2>
+    <p>
+      One page per letter — capital and lowercase stroke by stroke, the #1 mistake to watch for, and a
+      trace-and-write practice sheet that prints on one letter page:
+    </p>
+    <div class="letter-grid letter-grid-plain">
+      {cursiveLetters.map((l) => (
+        <a class="letter-link" href={`/cursive/${l.slug}/`}>
+          <span class="letter-link-glyph">{l.sheet.capital}{l.sheet.lower}</span>
+          <span class="letter-link-name">Cursive {l.sheet.capital}</span>
         </a>
       ))}
     </div>
