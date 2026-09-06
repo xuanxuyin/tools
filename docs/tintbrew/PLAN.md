@@ -72,6 +72,7 @@ https://tintbrew.com/what-colors-make-orange/
 | 2026-09-06 | **GSC 基线（day 2）**：2 点击 / 29 曝光，疑自搜/自点污染 → **手动搜站禁令**入 §4。判读：上线第 2 天属正常区间（预期锚：1~2 周收录爬完、2~6 周曝光爬升、2~3 月长尾进前两页），裁决窗口 = 10-01（§6 已有），中途不动盘 |
 | 2026-09-06 | **AI 截流分级**入根 CLAUDE.md 选词纪律（用户观察"SERP 第一被 AI Overview 挡"触发）：what-colors-make 族 = 答案型，截流风险最高，已建 9 页躺页龄不加码；工具页 = 交互型，AI 替代不了，词池重心逐波移向工具型（分级备注入 §2） |
 | 2026-09-06 | **收录基线：GSC 40/41（98%）**，上线第 2 天近全量 —— 正常偏快；缺的 1 页周一例行查「索引覆盖」，不处理。Request indexing 9 URL 已完成（用户） |
+| 2026-09-07 | **9/6 调研批四词拉量落位**（用户 AITDK + Claude SERP 复勘）：color mixing chart 6.600K/KD27 触发 ≥2K 规则 → /color-mixing-chart/ 锁 V2.2 首批；gold 3.6K、teal 1.9K 双门槛过 → 配对进扩色池；acrylic 390<500 不单独建页、由 chart 页覆盖。复勘 4 词全软无区域污染。开建仍等 §6 的 10-01 决策点 |
 
 ## 2. 关键词资产表
 
@@ -83,8 +84,8 @@ https://tintbrew.com/what-colors-make-orange/
 | V2.1 三色 | purple / green / orange | 58.4K 合计 | /what-colors-make-*/ | 已上线 |
 | V2.1 烘焙 | black frosting / brown icing / icing chart / buttercream chart | 含万圣季节词 | 4 页 | 已上线 |
 | 工具头词 | color mixer / converter / hex to rgb | KD 27 档 | /color-mixer/ /color-converter/ | 3~6 个月长跑 |
-| V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | 待拉 | /mix/* | 未启动；gold/teal 已 SERP 预勘【实勘 2026-09-05】：gold 前 5 = 内设博客 J Fisher Interiors + 艺术博客 Ettavee（软✅）；teal 前 5 = trycolors 工具站 + Quora（弱✅） |
-| **V2.2 新页候选** | **color mixing chart**（短词，用户提问触发的探测发现） | **量待 AITDK（9/8 批）** | /color-mixing-chart/（打印版混色总表） | 【实勘 2026-09-05】SERP 极软：①Pinterest ②YouTube ③Facebook ④Facebook ⑤Visual Arts Passage 博客 ⑦MyModernMet ⑧Daniel Smith —— UGC+小博客占满，无巨头无工具站 |
+| V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | gold 3.6K / teal 1.9K【实测 2026-09-07】，其余待拉 | /mix/* | 未启动；gold/teal 双门槛过（≥500 + SERP 无 DR60+）：gold 前 5 = J Fisher Interiors 博客 + EttaVee + Quora/UGC【实勘 09-05 复勘 09-07】；teal = trycolors 工具站 + Facebook 群组 + 小博客。**走配对页不走头词页**（AI 截流纪律：答案型头词不再加码） |
+| **V2.2 首批锁定** | **color mixing chart** | **6.6K / KD 27【实测 2026-09-07】** | /color-mixing-chart/（打印版混色总表） | **三样齐全**：SERP 实勘 2 次一致（09-05/09-07）——①Visual Arts Passage ②MyModernMet ③Pinterest ④⑤YouTube ⑥Daniel Smith，UGC+小博客，无工具站无巨头；chart 型 = 打印/参考件，AI 截流低。acrylic 变体（390/KD24，SERP 有 Golden+Liquitex 颜料厂）不单独建页，本页 acrylic 段覆盖 |
 | 已评估暂缓 | what colors go with X（穿搭配色） | 未验证 | — | 见 §6 |
 
 **AI 截流分级（2026-09-06 立，选词维度）**：what colors make X 族 = **答案型**（AI Overview 一句答完，点击截流风险最高）—— 已建 9 页躺页龄，不加码；/mix/ 矩阵 = 半答案型，意图偏"看表对照"，风险居中；工具页（mixer / converter / V2.3 生成器族）= **交互型，AI 替代不了**，词池重心逐波移向这里。实锤指标：曝光涨 + 排名进 top 10 + 点击仍零 → 确认截流，加速移仓。
@@ -101,16 +102,16 @@ https://tintbrew.com/what-colors-make-orange/
 | 6 | per-page OG 图：场景页用引擎生成对应色卡图（替代全站共用卡） | Claude | 场景页 og:image 唯一 | 2026-09 下旬 |
 | 7 | V2.3 工具页：互补色/对比色生成器（`contrastRatio` 引擎已有） | Claude | 1 页 + WCAG 检查 | 2026-10 |
 
-**V2.2 启动时 AITDK 顺带拉量（并入 9/8 补测批，4 词，~2 分钟）**：
+**9/6 调研批四词已拉量落位（2026-09-07，量 = 用户 AITDK【实测】，SERP = Claude 复勘【实勘】）**：
 
-```
-color mixing chart
-acrylic color mixing chart
-what colors make gold
-what colors make teal
-```
+| 词 | 量 / KD | SERP 复勘（09-07） | 落位 |
+|---|---|---|---|
+| color mixing chart | 6.6K / 27 | 软，同 9/5：Visual Arts Passage、MyModernMet、Pinterest、YouTube、Daniel Smith | **≥2K 规则触发 → /color-mixing-chart/ 进 V2.2 首批**（引擎现算全部色值 + print CSS，打通 /mix/ ↔ color-guides 内链） |
+| what colors make gold | 3.6K / 33 | J Fisher、EttaVee、Quora/TikTok UGC，无巨头 | 过双门槛 → gold（yellow+brown）配对进扩色池 |
+| what colors make teal | 1.9K / 33 | trycolors、Facebook 群组、小博客 | 过双门槛 → teal（blue+green）配对进扩色池 |
+| acrylic color mixing chart | 390 / 24 | Golden Artist Colors + Liquitex 颜料厂在列 | <500 不单独建页；chart 页 acrylic 段覆盖 |
 
-判定规则（拉完自动落位）：`color mixing chart` ≥2,000 US/月 → /color-mixing-chart/ 打印版总表页进 V2.2 首批（引擎现算全部色值 + print CSS，打通 /mix/ 矩阵 ↔ color-guides hub 内链）；<2,000 但 ≥500 → 并入 V2.2 顺带建；gold/teal 按原筛选规则（≥500/月 + SERP 无 DR60+ 巨头，SERP 已预勘可打）。
+开建时点不变：等 §6 的 10-01 决策点（/mix/ 有词进 top 30 → 启动 V2.2），不破「在此之前不加页」纪律。
 
 ## 4. 每日 / 每周例行
 
