@@ -46,6 +46,8 @@
 | 2026-09-06 | **sign in sheet 族判定 → V1.8 成立**（起源：用户发现 Edusign 签到 SaaS 流量大，实勘+Serp+10 词实测）：**教师场景族 ≈10.7K/月，4~5 页，KD 4~31**——open house 3.6K/KD20 头名 + template/printable 6.7K 通用页（教师角度）+ PT conference 390/KD12 + field trip/volunteer 变体接住；SERP 混合可打（eForms #1、Spreadsheet123、InkPx、Visit-Us 四个独立站在排）。habit tracker printable **双杀不进**（2.4K<5K 未过线 + 成人人群漂出教师主题）；**主题聚焦护栏**立入根 CLAUDE.md（人群+场景判"杂"，孤岛页禁令）；对标站 InkPx / Printabulls 待拆解。Edusign 本体不学（B2B SaaS + FERPA/COPPA，非我们打法），它证实痛点存在，纸质长尾归我们 |
 | 2026-09-06 | **单字母族量补测提前完成（原 9/8 任务）→ 论点成立，矩阵转正**：6 裸词均值 **33,033/月**（门槛 1K 的 **33 倍**），f 60.5K / z 40.5K / a 33.1K / b 27.1K / k 27.1K / x 9.9K，KD 15~35；capital 变体 3 词 17.6K（capital i 8.1K/KD25、capital f 6.6K/KD31、capital b 2.9K/KD27）；cursive chart 2.4K/KD21 → 主页措辞接住。**词池重估 251K → 500K 级**。触发加码 §3 #13（capital 变体段并入 10/05 批）；维持弃：worksheet 型（cursive f worksheet 210，SERP 实勘大厂垄断优先于 KD22）、a to z（KD43）。10/17 字母族验收概率上移，阶梯数字不动 |
 | 2026-09-07 | **V1.6 + #13 预开发完成（分支 `v1.6-predev`，不推 main——推 main 即自动部署，会破坏 10/05 批次门）**：graph paper 簇 7 页（/graph-paper/ hub + 1/4″、1/2″、1cm、5mm、dot、iso 六变体 + hub 上自定义 island，几何引擎 `lib/graphPaper.ts` 以 1/100in 单位画 SVG，打印物理尺寸精确）+ /name-tracing/ 交互页（SSR 默认 Emma 无 JS 可打印，print/cursive 双字体：Patrick Hand 新自托管 woff2）+ 26 字母页 capital 变体措辞（#13）+ cursive hub 面包屑改 "Cursive & Handwriting" + Header/Footer 第 4 栏。**61 页，47 测试全绿，sitemap 60 条含全部 8 个新 URL**。合并 main = 9/19 检查点过门后、与万圣节页同批（10/05 前） |
+| 2026-09-07 | **美国口算/计算题卡赛道判定（用户问"100以内混合加减/两位数乘除需求大吗"触发，5 词 SERP 实勘）**：需求真实且制度化（mad minute = 全美课堂计时口算，Common Core 2.NBT.B.5/4.NBT.B.5 原文），**但静态 worksheets 词 SERP 全锁死**（4 词前 5 = K5/Math-Drills/Math-Aids/SuperTeacher/CommonCoreSheets/TPT，同 KD48 禁区守门员）——与国内"题卡生态弱家长狂搜"相反，美国免费题库站在位 20 年。唯一缝隙：`mad minute math printable` #1 = webmathminute 独立小 generator 站 → **题卡生成器 island 打法**进赌注批次（§2，量 9/7 批 AITDK 补，判定规则已挂） |
+| 2026-09-07 | **口算赛道判定落位（12 词实测回填，long division 补勘共 6 词实勘）**：worksheets 静态词 9K+ 量全判死（long division 6.6K/KD35 补勘 = K5 #1+HomeschoolMath+Math-Drills+Dad's+Math-Aids；**2-digit mult worksheets 1.9K/KD18 = KD 过线 SERP 不过线第 2 实例**）；math worksheet generator 1.3K/KD46 弃（>35 线+商务意图）；**数学练习 island 成立**（§3 #14，池合计 ≈1,670/月过 generator 族线，排 10/25 批）；mad minute 主词 480 差 4% 到 500 线按家族合计放行进 island 池不独立建页 |
 
 ## 2. 关键词资产表
 
@@ -61,7 +63,7 @@
 | V1.5 候选 | cursive worksheet generator | 1K/KD29【实测 9/6】 | cursive 簇 island 升级（长尾打法） | MyCursive SERP #1【实勘 9/6】；KD29 不独立硬打，并入 cursive 簇吃 26 页内链 |
 | **V1.6 正式** | printable graph paper（变体：1/4″、1/2″、1cm、dot grid、isometric） | 12.1K/KD30【实测 9/6】 | /graph-paper/ hub + 变体矩阵 + 自定义 island | SERP 实勘弱✅（EMD 小站霸 top5：GraphPaperGenerator/Gridzzly/Mathpolate）；generator/maker 710 长尾同簇吸收 |
 | **V1.6 正式** | name tracing generator（free / cursive 变体同页吃） | 合计 1.74K/KD13【实测 9/6】 | /name-tracing/ 交互工具页 | SERP 全小站✅（CreatePrintables/InkPx/EMD nametracingworksheets）；V2 放大器 = top100 宝宝名矩阵 |
-| V1.6 长尾 | multiplication worksheet generator | 480/KD15【实测 9/6】 | 乘法簇 island | mathCharts.ts 纯函数现成 |
+| V1.6 长尾 | multiplication worksheet generator | 480/KD15【实测 9/6】 | 并入 §3 #14 数学练习 island（mad minute 族同池） | mathCharts.ts 纯函数现成 |
 | 弃 | word search maker | 27.1K/KD72【实测 9/6】 | — | KD72 大厂垄断（Canva/Education.com/Discovery Puzzlemaker 实勘在位） |
 | 暂缓 | sight word worksheet generator | 90/KD10【实测 9/6】 | — | 量太小，V2 复查 |
 | **V1.7 候选** | geometry formula sheet | 2.9K/KD23【实测 9/6】 | /geometry-formula-sheet/ | 三样齐全✅：实勘软（MathWords #2/Scribd #4/Pinterest #7）；矩阵长尾 = 州考变体（Regents/STAAR/Keystone，量未勘） |
@@ -69,6 +71,8 @@
 | 弃 | physics / chemistry formula/reference sheet | 4.4K / 590【实测 9/6】 | — | #1 = College Board / NYSED 官方 PDF，意图被官方直接满足 |
 | **V1.8 正式** | sign in sheet 教师场景族（open house 头名 + template/printable 通用页 + PT conference/field trip/volunteer 变体） | ≈10.7K 合计/KD 4~31【实测 9/6】 | /sign-in-sheets/ hub + 4~5 页 | SERP 混合可打【实勘 9/6】：eForms #1 / Spreadsheet123 / InkPx / Visit-Us 独立站在排；visitor（办公人群）不做目标词 |
 | 第三站候选池 | habit tracker printable（2.4K/KD30，成人 planner 人群漂出教师主题） | — | — | 双杀：量未过线 + 主题护栏；归未来 planner 站或第三站，10/17 后议 |
+| **数学练习 island（成立）** | **mad minute 族 + worksheet generator 族**：mad minute math 480/KD18 + mad minute multiplication 480/KD17【实测 9/7】+ multiplication worksheet generator 480/KD15 + addition/subtraction worksheet generator 230【实测 9/7】，**合计 ≈1,670/月** 过 generator 族 500 合计线 | 乘法簇 island（挑运算/范围/题量 → 打印 mad-minute 题卡） | 【实勘 2026-09-07】`mad minute math printable` 前 5 = ①webmathminute.com **独立小 generator 站** ②SuperTeacher ③TPT ④EdHelper ⑤Rudolph Academy + Pinterest/Etsy 混排 —— DR0 能进的工具站形态✅；**10/25 批**（V1.7 同批，不挤 10/05） |
+| 弃（实勘+实测） | 100以内混合加减 / 两位数乘除 worksheets 族（6 词全勘：long division 6.6K/KD35、double digit mult 2.9K/KD31、2-digit mult worksheets 1.9K/**KD18**、2-digit regrouping 1.3K/KD32、mixed 320、within 100 210）【实测 9/7】 | — | — | 【实勘 2026-09-07】前 5 全为 K5/Math-Drills/Math-Aids/HomeschoolMath/SuperTeacher/TPT（long division 单独补勘：K5 #1 + HomeschoolMath + Math-Drills + Dad's + Math-Aids）—— worksheets 后缀词 9K+ 量全判死，"需求大≠能做"；**KD18 的 2-digit mult worksheets = KD 过线 SERP 不过线第 2 实例**（第 1 例 physics KD24），KD 估计与实勘冲突时实勘赢；需求真实（Common Core 2.NBT.B.5/4.NBT.B.5 原文）但静态词死路 |
 
 **单字母族 SERP 实勘（2026-09-05，google.com US 区，4 词抽样）**：
 
@@ -98,6 +102,7 @@
 | 11 | **V1.8 sign in sheet 族**：/sign-in-sheets/ hub + /open-house-sign-in-sheet/（3.6K 头名）+ /sign-in-sheet/（template+printable 6.7K 教师角度通用页）+ PT conference / field trip 变体页；visitor/attendance 只做 FAQ 接住 | Claude | hub + 4~5 页，print 剥纸验证，测试全绿 | **2026-11 月批**（10 月批次已满）；家长会页赶 10~11 月 PT conference 季 |
 | 12 | 对标站拆解：InkPx（name tracing #5 + sign in sheet #3 跨词族排名的纯打印站）+ Printabulls（合集页吃大词模式）——词池结构/页面形态/内链策略各出一份笔记 | Claude | 拆解笔记入 docs/chartglade/ | 2026-09 下旬（V1.6 开发前，给 hub 结构参考） |
 | 13 | **字母矩阵加码**：cursiveLetters.ts 每字母补 "capital cursive X" 变体段（capitalSteps 字段已有，capital 变体词 3 个合计 17.6K：capital i 8.1K / capital f 6.6K / capital b 2.9K）；/cursive-alphabet/ 主页 SEO 措辞补 "cursive chart"（2.4K/KD21） | Claude | **✅ 预开发完成 2026-09-07（v1.6-predev：26 页标题/trace 措辞 + 主页 cursive chart FAQ）**；上线 = 合并 main | **10/05 批次**（V1.6 同批） |
+| 14 | **数学练习生成器 island**（mad minute 族 960 + mult/add/sub worksheet generator 710，合计 ≈1,670/月【实测 9/7】）：挂乘法 chart 页，选运算/范围/题量 → 打印 mad-minute 计时题卡（30/60 题+答案行），SSR 预渲染默认一套 | Claude | island 上线 + 无 JS 可打印 + 测试绿 | **10/25 批次**（V1.7 同批顺手，不挤 10/05） |
 
 **AITDK 拉数词表（#7 用，逐词查 US 月搜 + KD）**：
 
