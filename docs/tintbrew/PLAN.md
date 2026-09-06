@@ -1,6 +1,6 @@
 # tintbrew 作战文档
 
-> 本项目唯一计划文档 · 更新 2026-09-05 · 部署/运维细节见仓库根 [README.md](../../README.md)
+> 本项目唯一计划文档 · 更新 2026-09-06 · 部署/运维细节见仓库根 [README.md](../../README.md)
 > 原则：本文档没写的 = 没计划；做完的立刻勾掉并写日期。
 
 ## 0. 北极星
@@ -69,6 +69,9 @@ https://tintbrew.com/what-colors-make-orange/
 | 2026-09-05 | **目标阶梯按基率校准**（用户质疑"太理想"成立）：改三档情景表 + 认基率（多数站一年无成果是中位数）+ **2027-01-31 止损线** |
 | 2026-09-05 | **探测工具边界确认**：AITDK 官网 = AI 写作工具集，无查量 API → 拉量固定走用户插件（分工入根 CLAUDE.md）；Google 补全接口三条管道全堵（WebFetch 域名校验 / webReader 拒 query 串 / 本机 curl 无代理），变体枚举继续走自动搜索 |
 | 2026-09-05 | **短词机会实勘（用户提问"有没有在短词里找机会"触发）**：`color mixing chart` SERP 极软 → 新页候选入 §2（量 9/8 拉）；gold/teal 扩色预勘可打；同批 `multiplication chart`（chartglade）硬、`cursive alphabet` 探针区域污染作废 —— 证据分级规则入根 CLAUDE.md |
+| 2026-09-06 | **GSC 基线（day 2）**：2 点击 / 29 曝光，疑自搜/自点污染 → **手动搜站禁令**入 §4。判读：上线第 2 天属正常区间（预期锚：1~2 周收录爬完、2~6 周曝光爬升、2~3 月长尾进前两页），裁决窗口 = 10-01（§6 已有），中途不动盘 |
+| 2026-09-06 | **AI 截流分级**入根 CLAUDE.md 选词纪律（用户观察"SERP 第一被 AI Overview 挡"触发）：what-colors-make 族 = 答案型，截流风险最高，已建 9 页躺页龄不加码；工具页 = 交互型，AI 替代不了，词池重心逐波移向工具型（分级备注入 §2） |
+| 2026-09-06 | **收录基线：GSC 40/41（98%）**，上线第 2 天近全量 —— 正常偏快；缺的 1 页周一例行查「索引覆盖」，不处理。Request indexing 9 URL 已完成（用户） |
 
 ## 2. 关键词资产表
 
@@ -83,6 +86,8 @@ https://tintbrew.com/what-colors-make-orange/
 | V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | 待拉 | /mix/* | 未启动；gold/teal 已 SERP 预勘【实勘 2026-09-05】：gold 前 5 = 内设博客 J Fisher Interiors + 艺术博客 Ettavee（软✅）；teal 前 5 = trycolors 工具站 + Quora（弱✅） |
 | **V2.2 新页候选** | **color mixing chart**（短词，用户提问触发的探测发现） | **量待 AITDK（9/8 批）** | /color-mixing-chart/（打印版混色总表） | 【实勘 2026-09-05】SERP 极软：①Pinterest ②YouTube ③Facebook ④Facebook ⑤Visual Arts Passage 博客 ⑦MyModernMet ⑧Daniel Smith —— UGC+小博客占满，无巨头无工具站 |
 | 已评估暂缓 | what colors go with X（穿搭配色） | 未验证 | — | 见 §6 |
+
+**AI 截流分级（2026-09-06 立，选词维度）**：what colors make X 族 = **答案型**（AI Overview 一句答完，点击截流风险最高）—— 已建 9 页躺页龄，不加码；/mix/ 矩阵 = 半答案型，意图偏"看表对照"，风险居中；工具页（mixer / converter / V2.3 生成器族）= **交互型，AI 替代不了**，词池重心逐波移向这里。实锤指标：曝光涨 + 排名进 top 10 + 点击仍零 → 确认截流，加速移仓。
 
 ## 3. 接下来要做（优先级排序）
 
@@ -114,6 +119,7 @@ what colors make teal
 - [ ] GSC → 效果：有没有新冒头的查询词（2 分钟，**界面怎么点见根 README「每周数据检查 SOP」**）
 - [ ] Cloudflare → Web Analytics：访问曲线异常否（1 分钟）
 - [ ] 新词/异动随手记到本文档 §2 表格（不展开分析）
+- [ ] **禁令（2026-09-06 立）**：不手动 google 搜自己的站看排名 —— 自搜/自点污染 GSC（day2 基线 2 点击/29 曝光疑全是自己的），且国内直连非美区 SERP。看收录用 GSC「索引」报告，看排名等周一例行
 
 **每周（~30 分钟）**：
 
