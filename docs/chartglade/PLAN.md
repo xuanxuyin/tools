@@ -1,6 +1,6 @@
 # chartglade 作战文档
 
-> 本项目唯一计划文档 · 更新 2026-09-05 · 部署/运维细节见仓库根 [README.md](../../README.md)
+> 本项目唯一计划文档 · 更新 2026-09-06 · 部署/运维细节见仓库根 [README.md](../../README.md)
 > 原则：本文档没写的 = 没计划；做完的立刻勾掉并写日期。
 
 ## 0. 北极星
@@ -38,19 +38,37 @@
 | 2026-09-05 | **目标阶梯按基率校准**（用户质疑"太理想"成立）：改三档情景表 + 认基率 + **2027-01-31 止损线** |
 | 2026-09-05 | **单字母族 SERP 实勘 4 词**（名词型全弱✅ / worksheet 型硬❌）；AITDK 量补测词表 + 判定规则入 §3 #7；**关键词验证纪律**入根 CLAUDE.md（brown 漏词教训：最大词是用户找到的） |
 | 2026-09-05 | 短词补充实勘：`multiplication chart` 裸词 US SERP 硬（①Mometrix ②Dad's Worksheets ③Suncatcher ④Good&Beautiful ⑤Math Salamanders + Twinkl 在位）→ 头部词维持页龄策略，不加码；`cursive alphabet` 自动探针返回非美区结果（剑桥词典+翻译站）**作废**，以 2026-09-04 人工 US 实勘（软）为准 |
+| 2026-09-06 | **generator 家族判定完成**（8 词 SERP 实勘 + 11 词 AITDK 实测，起源"要不要绑 generator"）：核心发现 **generator 是功能不是关键词** —— printable graph paper 12.1K/KD30 vs graph paper generator 390/KD38（17 倍量差 + 更低 KD）。graph paper 簇 + name tracing generator 进 V1.6（§3 #8/#9）；word search maker 弃（27.1K 但 KD72，Canva/Education.com/Discovery 实勘在位）；cursive / multiplication worksheet generator 降长尾 island；sight word worksheet generator 暂缓（90/月）。新增词池 ≈16K/月 |
+| 2026-09-06 | **手动搜站禁令**入 §4（tintbrew day2 基线 2 点击/29 曝光疑全是自搜：污染 GSC + 国内直连非美区 SERP）；**AI 截流分级**入根 CLAUDE.md —— 本站整站打印/工具型 = AI 吃不掉，是护城河不是风险 |
+| 2026-09-06 | **高中学科公式赛道判定**（用户质疑"只做 a-z 和乘法表太简单"触发，5 词 SERP 实勘 + 8 词 AITDK 实测）：数学家族 ≈4.5K/月进 **V1.7 候选**（geometry formula sheet 2.9K/KD23 三样齐全✅ + algebra 三变体并页 1.66K/KD13~19）；physics 4.4K 但 #1 College Board 官方 PDF（量过线 KD 过线 SERP 不过线的活例子）❌、chemistry 官方垄断❌。结构性结论：高中公式表 = 残余需求（老师发+官方配发表替代了主路径），8 词合计 12.4K ≈ K-5 词池的 1/20 —— "简单内容"市场反而大 |
+| 2026-09-06 | **收录基线：GSC 26/51（day 1）**，恰好 = 9/5 首批进管道数；本地 dist sitemap 自查 51 条 URL 含全部 26 个 /cursive/ 字母页 —— 排除 sitemap 缺页事故，剩余 ~25 页正常分批爬。预期 9/12 复查 45+、9/19 近全量。Request indexing 5 URL 已完成（用户）；批次日历定稿：**10/05 批 = 万圣节 + V1.6（graph paper 簇 + name tracing）**、**10/25 批 = 感恩节 + V1.7（数学公式表 2 页）** |
+| 2026-09-06 | **大学论文模板提案评估否决**（用户提议"加论文模板"，4 词 SERP 实勘）：APA/MLA = Purdue OWL + Microsoft 官方 + Scribbr 权威锁死；research outline = .edu libguides 垄断；且三重结构性否决——意图错位（大学生要 docx 不打印，打印工程差异化解不了）、AI 截流正中（essay outline 答案型 × ChatGPT 采用率最高人群，根本不搜了）、主题稀释（K-5 教师站装不下大学生内容）。真缝隙 = K-12 outline worksheet / graphic organizer（TPT #3 / Pinterest #4 软信号，教师打印意图）→ 入远期候选池；"大学生高价值人群"归第三站候选（§5.6），10/17 后议 |
+| 2026-09-06 | **sign in sheet 族判定 → V1.8 成立**（起源：用户发现 Edusign 签到 SaaS 流量大，实勘+Serp+10 词实测）：**教师场景族 ≈10.7K/月，4~5 页，KD 4~31**——open house 3.6K/KD20 头名 + template/printable 6.7K 通用页（教师角度）+ PT conference 390/KD12 + field trip/volunteer 变体接住；SERP 混合可打（eForms #1、Spreadsheet123、InkPx、Visit-Us 四个独立站在排）。habit tracker printable **双杀不进**（2.4K<5K 未过线 + 成人人群漂出教师主题）；**主题聚焦护栏**立入根 CLAUDE.md（人群+场景判"杂"，孤岛页禁令）；对标站 InkPx / Printabulls 待拆解。Edusign 本体不学（B2B SaaS + FERPA/COPPA，非我们打法），它证实痛点存在，纸质长尾归我们 |
+| 2026-09-06 | **单字母族量补测提前完成（原 9/8 任务）→ 论点成立，矩阵转正**：6 裸词均值 **33,033/月**（门槛 1K 的 **33 倍**），f 60.5K / z 40.5K / a 33.1K / b 27.1K / k 27.1K / x 9.9K，KD 15~35；capital 变体 3 词 17.6K（capital i 8.1K/KD25、capital f 6.6K/KD31、capital b 2.9K/KD27）；cursive chart 2.4K/KD21 → 主页措辞接住。**词池重估 251K → 500K 级**。触发加码 §3 #13（capital 变体段并入 10/05 批）；维持弃：worksheet 型（cursive f worksheet 210，SERP 实勘大厂垄断优先于 KD22）、a to z（KD43）。10/17 字母族验收概率上移，阶梯数字不动 |
+| 2026-09-07 | **V1.6 + #13 预开发完成（分支 `v1.6-predev`，不推 main——推 main 即自动部署，会破坏 10/05 批次门）**：graph paper 簇 7 页（/graph-paper/ hub + 1/4″、1/2″、1cm、5mm、dot、iso 六变体 + hub 上自定义 island，几何引擎 `lib/graphPaper.ts` 以 1/100in 单位画 SVG，打印物理尺寸精确）+ /name-tracing/ 交互页（SSR 默认 Emma 无 JS 可打印，print/cursive 双字体：Patrick Hand 新自托管 woff2）+ 26 字母页 capital 变体措辞（#13）+ cursive hub 面包屑改 "Cursive & Handwriting" + Header/Footer 第 4 栏。**61 页，47 测试全绿，sitemap 60 条含全部 8 个新 URL**。合并 main = 9/19 检查点过门后、与万圣节页同批（10/05 前） |
 
 ## 2. 关键词资产表
 
 | 梯队 | 词/词族 | 量(US/月) | 目标页 | 状态 |
 |---|---|---|---|---|
 | 量王 | cursive alphabet（裸词） | 201K/KD43 | /cursive-alphabet/ | 磨页龄，别指望 3 个月 |
-| 量王变体 | cursive X / cursive capital X（名词型） | 单字母族量**待 AITDK 补测**（词表见 §3 #7） | **/cursive/a/~/z/ 26 页** | SERP 实勘 ✅（见下）；量未实测 |
+| 量王变体 | cursive X / cursive capital X（名词型） | **6 裸词均值 33K、合计 198K + capital 变体 17.6K【实测 9/6】** | **/cursive/a/~/z/ 26 页** | **矩阵转正**（赌注→实测资产）；论点成立触发加码 → §3 #13 |
 | 支柱 2 | place value chart（+printable/4th grade 变体） | 27.1K | /place-value-chart/ 等 4 页 | 已上线 |
 | 支柱 3 | kindergarten sight words（+dolch/fry 变体） | 12.1K | 5 阶梯页 | 已上线 |
 | 支柱 4 | multiplication chart（+1-12/1-100 变体） | 12.1K | 4 页 | 已上线 |
 | 软词 | alphabet chart | 6.6K/KD15 | /alphabet-chart/ | 全站最软词，先动 |
 | 禁区 | states and capitals quiz / multiplication worksheets | 12K+/KD48 | 不做 | SERP 巨头，已标注 |
-| V1.5 候选 | cursive worksheet generator | 待拉 | 交互工具页 | MyCursive 生成器 SERP #5 验证过形态 |
+| V1.5 候选 | cursive worksheet generator | 1K/KD29【实测 9/6】 | cursive 簇 island 升级（长尾打法） | MyCursive SERP #1【实勘 9/6】；KD29 不独立硬打，并入 cursive 簇吃 26 页内链 |
+| **V1.6 正式** | printable graph paper（变体：1/4″、1/2″、1cm、dot grid、isometric） | 12.1K/KD30【实测 9/6】 | /graph-paper/ hub + 变体矩阵 + 自定义 island | SERP 实勘弱✅（EMD 小站霸 top5：GraphPaperGenerator/Gridzzly/Mathpolate）；generator/maker 710 长尾同簇吸收 |
+| **V1.6 正式** | name tracing generator（free / cursive 变体同页吃） | 合计 1.74K/KD13【实测 9/6】 | /name-tracing/ 交互工具页 | SERP 全小站✅（CreatePrintables/InkPx/EMD nametracingworksheets）；V2 放大器 = top100 宝宝名矩阵 |
+| V1.6 长尾 | multiplication worksheet generator | 480/KD15【实测 9/6】 | 乘法簇 island | mathCharts.ts 纯函数现成 |
+| 弃 | word search maker | 27.1K/KD72【实测 9/6】 | — | KD72 大厂垄断（Canva/Education.com/Discovery Puzzlemaker 实勘在位） |
+| 暂缓 | sight word worksheet generator | 90/KD10【实测 9/6】 | — | 量太小，V2 复查 |
+| **V1.7 候选** | geometry formula sheet | 2.9K/KD23【实测 9/6】 | /geometry-formula-sheet/ | 三样齐全✅：实勘软（MathWords #2/Scribd #4/Pinterest #7）；矩阵长尾 = 州考变体（Regents/STAAR/Keystone，量未勘） |
+| **V1.7 候选** | algebra formula sheet（cheat/reference 三变体并页吃） | 合计 1.66K/KD13~19【实测 9/6】 | /algebra-formula-sheet/ | 实勘软（Pinterest #5/Reddit #6）；与数学簇内链互通 |
+| 弃 | physics / chemistry formula/reference sheet | 4.4K / 590【实测 9/6】 | — | #1 = College Board / NYSED 官方 PDF，意图被官方直接满足 |
+| **V1.8 正式** | sign in sheet 教师场景族（open house 头名 + template/printable 通用页 + PT conference/field trip/volunteer 变体） | ≈10.7K 合计/KD 4~31【实测 9/6】 | /sign-in-sheets/ hub + 4~5 页 | SERP 混合可打【实勘 9/6】：eForms #1 / Spreadsheet123 / InkPx / Visit-Us 独立站在排；visitor（办公人群）不做目标词 |
+| 第三站候选池 | habit tracker printable（2.4K/KD30，成人 planner 人群漂出教师主题） | — | — | 双杀：量未过线 + 主题护栏；归未来 planner 站或第三站，10/17 后议 |
 
 **单字母族 SERP 实勘（2026-09-05，google.com US 区，4 词抽样）**：
 
@@ -73,7 +91,13 @@
 | 4 | GSC 收录复查：`site:chartglade.com` 数 + 索引覆盖报告 | 👤 | 记录数字入本文档 | 2026-09-12 |
 | 5 | **6 周长尾验收**（§6 决策点） | 👤+Claude | 变体词排名截图 | **2026-10-17** |
 | 6 | V1.5 cursive worksheet generator（文本→可打印练习页，OFL 字体+print CSS+零登录） | Claude | 1 交互页 | 10 月，视 §6 结果 |
-| 7 | **单字母族量补测（AITDK 插件拉 US 月搜，~10 分钟）** —— 词表：见下方代码块；拉完把数字贴回来 | 👤 | 12 个词的量+KD 记入 §2 | **2026-09-08** |
+| 7 | ~~单字母族量补测~~ **✅ 完成（2026-09-06，提前 2 天）**：6 裸词均值 33,033 = 门槛 1K 的 33 倍 → 论点成立，矩阵转正 + 加码授权，数字记入 §2 | 👤 | — | 完成 |
+| 8 | **V1.6 graph paper 簇**：/graph-paper/ hub + 静态变体页（1/4″、1/2″、1cm、5mm、dot grid、isometric —— 纯 print CSS 网格，零新引擎）+ 自定义 island（间距/线色/纸型 → `window.print()`），同簇吸收 graph paper generator/maker 710 长尾 | Claude | **✅ 预开发完成 2026-09-07（v1.6-predev 分支，hub+6 页+island，47 测试绿）**；上线 = 合并 main | **10/05 批次**（合并门 = 9/19 检查点收录正常） |
+| 9 | **V1.6 name tracing generator**：输入名字 → Caveat 描红页 → print；SSR 预渲染默认示例名（无 JS 完整）+ WebApplication JSON-LD；同页吃 free name tracing generator / cursive name tracing | Claude | **✅ 预开发完成 2026-09-07（v1.6-predev 分支，SSR Emma + print/cursive 双样式）**；上线 = 合并 main | **10/05 批次**（与 #8 同批） |
+| 10 | **V1.7 数学公式表 2 页**：/geometry-formula-sheet/（2.9K/KD23）+ /algebra-formula-sheet/（三变体并页 1.66K），公式表 = print CSS 表格 + 与数学簇互链 | Claude | 2 页上线，公式排版打印验证 | **10/25 批次**（与感恩节季节页同批） |
+| 11 | **V1.8 sign in sheet 族**：/sign-in-sheets/ hub + /open-house-sign-in-sheet/（3.6K 头名）+ /sign-in-sheet/（template+printable 6.7K 教师角度通用页）+ PT conference / field trip 变体页；visitor/attendance 只做 FAQ 接住 | Claude | hub + 4~5 页，print 剥纸验证，测试全绿 | **2026-11 月批**（10 月批次已满）；家长会页赶 10~11 月 PT conference 季 |
+| 12 | 对标站拆解：InkPx（name tracing #5 + sign in sheet #3 跨词族排名的纯打印站）+ Printabulls（合集页吃大词模式）——词池结构/页面形态/内链策略各出一份笔记 | Claude | 拆解笔记入 docs/chartglade/ | 2026-09 下旬（V1.6 开发前，给 hub 结构参考） |
+| 13 | **字母矩阵加码**：cursiveLetters.ts 每字母补 "capital cursive X" 变体段（capitalSteps 字段已有，capital 变体词 3 个合计 17.6K：capital i 8.1K / capital f 6.6K / capital b 2.9K）；/cursive-alphabet/ 主页 SEO 措辞补 "cursive chart"（2.4K/KD21） | Claude | **✅ 预开发完成 2026-09-07（v1.6-predev：26 页标题/trace 措辞 + 主页 cursive chart FAQ）**；上线 = 合并 main | **10/05 批次**（V1.6 同批） |
 
 **AITDK 拉数词表（#7 用，逐词查 US 月搜 + KD）**：
 
@@ -107,6 +131,7 @@ cursive f worksheet
 - [ ] GSC → 效果：有没有新冒头的查询词（2 分钟，**界面怎么点见根 README「每周数据检查 SOP」**）
 - [ ] Cloudflare → Web Analytics：访问曲线（1 分钟）
 - [ ] 新词/异动记到本文档 §2（不展开分析）
+- [ ] **禁令（2026-09-06 立）**：不手动 google 搜自己的站 —— 自搜/自点污染 GSC 数据，国内直连非美区 SERP；看收录用 GSC「索引」→「页面」，看排名等周一例行
 
 **每周（~30 分钟）**：
 
@@ -122,6 +147,7 @@ cursive f worksheet
 4. **外链与分发**：Pinterest 常态化（每周 pin）、教师社区（r/Teachers r/homeschool，先读版规）、TPT 形态研究（商城不做，引流可）
 5. **变现**：~300 访问/天 → 接广告
 6. **第二曲线**（本仓第三个站候选）：excel shortcuts / sql cheat sheet 等高 CPC 打印工具 —— chartglade 验收数据出来后再定
+7. **V1.6**（2026-09-06 判定入排期）：graph paper 簇（12.1K 头名，品牌契合 chart≈graph，SERP 奖励独立小工具站）+ name tracing generator（KD13 全场最软，V2 放大器 = top100 宝宝名矩阵）—— 定性结论：**generator 是功能不是关键词策略**（generator 词 710 合计 vs 静态词 12.1K，17 倍差距），交互化本身是 AI 截流护城河
 
 ### 5.1 美国教育内容日历（季节排期唯一依据）
 
@@ -155,4 +181,4 @@ cursive f worksheet
 - GSC sitemap 输入框自带域名前缀，只填 `sitemap-index.xml`
 - 加图表页 = `src/data/*.ts` 加 PageDef + find-by-slug wrapper（Footer/hub 自动带出）；**字母级矩阵走动态路由** `pages/cursive/[letter].astro`
 - Dolch 220 逐字 / Fry first 100（含 #49 their）在 `src/lib/sightWords.ts` —— 改动必跑测试
-- 字体仅 cursive 页按需加载（Dancing Script + Caveat woff2 自托管）
+- 字体仅 cursive 页按需加载（Dancing Script + Caveat woff2 自托管）；name-tracing 页另有 Patrick Hand woff2（print 样式），graph paper 引擎在 `lib/graphPaper.ts`（1/100in 单位，改间距只动 GRAPH_PAPER_VARIANTS）

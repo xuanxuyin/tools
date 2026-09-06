@@ -20,7 +20,7 @@ export const cursivePages: PageDef[] = [
     metaDescription:
       'The full cursive alphabet — uppercase and lowercase A-Z in one printable chart, with a tracing strip and the stroke groups teachers use to teach it.',
     lead:
-      'The whole cursive alphabet on one sheet: capitals and lowercase together, in a continuous script with a consistent slant, plus a light-gray tracing strip below for practice. Print it for the wall or the desk — and read how the letters are actually taught, in stroke families rather than A-to-Z order.',
+      'One printable cursive chart with the whole alphabet on it: capitals and lowercase together, in a continuous script with a consistent slant, plus a light-gray tracing strip below for practice. Print it for the wall or the desk — and read how the letters are actually taught, in stroke families rather than A-to-Z order.',
     introHeading: 'How the cursive alphabet is actually taught',
     intro: [
       'Cursive is taught in stroke families, not alphabetical order. The lowercase letters that start with the same curve — c, a, d, g, q — are learned together as one motion; then the straight-line letters (i, t, u, w); then the loop letters (l, h, b, k, f); then the hill letters (n, m, v, x, y, z). A group learned once carries five letters. Capitals come after lowercase, and only the letters a child actually uses — the I, the first letter of their name — get real mileage at first.',
@@ -71,6 +71,10 @@ export const cursivePages: PageDef[] = [
       {
         q: 'Can I print this as a practice sheet?',
         a: 'Yes — the chart and the gray tracing strip print on one letter page. For repeated practice, print several copies or slide one into a dry-erase pocket and trace with a marker.',
+      },
+      {
+        q: 'Where can I get a free cursive chart to print?',
+        a: 'This page is one: the cursive chart above prints straight from your browser on a single letter sheet — no download, no sign-up, no watermark. For letter-by-letter practice, every letter also has its own sheet at /cursive/a/ through /cursive/z/.',
       },
     ],
     related: [

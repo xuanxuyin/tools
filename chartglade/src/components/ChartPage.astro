@@ -17,7 +17,8 @@ const { def } = Astro.props;
 const HUBS: Record<PageDef['hub'], { href: string; label: string }> = {
   charts: { href: '/charts/', label: 'Math Charts' },
   'sight-words': { href: '/sight-words/', label: 'Sight Words' },
-  cursive: { href: '/cursive/', label: 'Cursive' },
+  cursive: { href: '/cursive/', label: 'Cursive & Handwriting' },
+  'graph-paper': { href: '/graph-paper/', label: 'Graph Paper' },
 };
 const hub = HUBS[def.hub];
 

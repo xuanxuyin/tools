@@ -3,7 +3,7 @@ export interface PageDef {
   /** Flat URL slug, e.g. 'place-value-chart' -> /place-value-chart/ */
   slug: string;
   /** Which hub owns the page (drives breadcrumb + footer grouping). */
-  hub: 'charts' | 'sight-words' | 'cursive';
+  hub: 'charts' | 'sight-words' | 'cursive' | 'graph-paper';
   h1: string;
   metaTitle: string;
   metaDescription: string;

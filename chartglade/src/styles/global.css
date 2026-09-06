@@ -24,6 +24,13 @@
   font-display: swap;
   src: url('/fonts/caveat-500.woff2') format('woff2');
 }
+@font-face {
+  font-family: 'Patrick Hand';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/patrick-hand-400.woff2') format('woff2');
+}
 
 :root {
   --ink: #212b26;
@@ -653,6 +660,143 @@ svg {
   height: auto;
 }
 
+/* Graph paper sheets + hub customizer */
+
+.graph-sheet-wrap {
+  overflow-x: auto;
+}
+
+.graph-sheet {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.gp-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.gp-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.gp-controls select {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--ink);
+}
+
+.gp-controls select:disabled {
+  opacity: 0.5;
+}
+
+/* Name tracing sheet */
+
+.name-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.name-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.name-controls input,
+.name-controls select {
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--ink);
+}
+
+.name-controls input {
+  min-width: 12ch;
+}
+
+.name-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 10pt;
+}
+
+.name-row {
+  display: grid;
+  gap: 8pt;
+}
+
+.name-cell {
+  position: relative;
+  height: 52pt;
+  border-top: 1pt solid var(--line-strong);
+  border-bottom: 1.5pt solid var(--line-strong);
+  display: flex;
+  align-items: flex-end;
+  padding: 0 4pt 7pt;
+}
+
+.name-cell::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 55%;
+  border-top: 1pt dashed var(--line);
+}
+
+.name-cell .glyph {
+  font-size: 30pt;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.name-sheet-print .glyph {
+  font-family: 'Patrick Hand', var(--font-hand);
+}
+
+.name-sheet-cursive .glyph {
+  font-family: 'Caveat', var(--font-script);
+}
+
+.name-row.model .glyph {
+  color: var(--ink);
+}
+
+.name-row.trace .glyph {
+  color: #b5b1a4;
+}
+
 /* ---------- cards / grids used by hubs & related ---------- */
 
 .card-grid {
@@ -928,6 +1072,22 @@ svg {
   }
 
   .trace-cell .glyph {
+    color: #999 !important;
+  }
+
+  .name-cell {
+    border-color: #000 !important;
+  }
+
+  .name-cell::before {
+    border-color: #999 !important;
+  }
+
+  .name-row.model .glyph {
+    color: #000 !important;
+  }
+
+  .name-row.trace .glyph {
     color: #999 !important;
   }
 

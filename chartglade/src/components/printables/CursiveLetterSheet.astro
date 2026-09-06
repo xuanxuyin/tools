@@ -16,13 +16,13 @@ const { sheet } = Astro.props;
 
   <div class="stroke-steps">
     <div>
-      <h3>Capital {sheet.capital}</h3>
+      <h3>Cursive capital {sheet.capital}</h3>
       <ol>
         {sheet.capitalSteps.map((s) => <li>{s}</li>)}
       </ol>
     </div>
     <div>
-      <h3>Lowercase {sheet.lower}</h3>
+      <h3>Lowercase {sheet.lower} in cursive</h3>
       <ol>
         {sheet.lowerSteps.map((s) => <li>{s}</li>)}
       </ol>
@@ -40,7 +40,7 @@ const { sheet } = Astro.props;
       </div>
     ))}
   </div>
-  <h3 class="trace-heading">Capital practice — {sheet.capital}{sheet.capital}{sheet.capital}</h3>
+  <h3 class="trace-heading">Cursive capital {sheet.capital} trace — {sheet.capital}{sheet.capital}{sheet.capital}</h3>
   <div class="trace-strip">
     {[...Array(6)].map(() => (
       <div class="trace-cell">
