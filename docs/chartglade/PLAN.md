@@ -48,6 +48,8 @@
 | 2026-09-07 | **V1.6 + #13 预开发完成（分支 `v1.6-predev`，不推 main——推 main 即自动部署，会破坏 10/05 批次门）**：graph paper 簇 7 页（/graph-paper/ hub + 1/4″、1/2″、1cm、5mm、dot、iso 六变体 + hub 上自定义 island，几何引擎 `lib/graphPaper.ts` 以 1/100in 单位画 SVG，打印物理尺寸精确）+ /name-tracing/ 交互页（SSR 默认 Emma 无 JS 可打印，print/cursive 双字体：Patrick Hand 新自托管 woff2）+ 26 字母页 capital 变体措辞（#13）+ cursive hub 面包屑改 "Cursive & Handwriting" + Header/Footer 第 4 栏。**61 页，47 测试全绿，sitemap 60 条含全部 8 个新 URL**。合并 main = 9/19 检查点过门后、与万圣节页同批（10/05 前） |
 | 2026-09-07 | **美国口算/计算题卡赛道判定（用户问"100以内混合加减/两位数乘除需求大吗"触发，5 词 SERP 实勘）**：需求真实且制度化（mad minute = 全美课堂计时口算，Common Core 2.NBT.B.5/4.NBT.B.5 原文），**但静态 worksheets 词 SERP 全锁死**（4 词前 5 = K5/Math-Drills/Math-Aids/SuperTeacher/CommonCoreSheets/TPT，同 KD48 禁区守门员）——与国内"题卡生态弱家长狂搜"相反，美国免费题库站在位 20 年。唯一缝隙：`mad minute math printable` #1 = webmathminute 独立小 generator 站 → **题卡生成器 island 打法**进赌注批次（§2，量 9/7 批 AITDK 补，判定规则已挂） |
 | 2026-09-07 | **口算赛道判定落位（12 词实测回填，long division 补勘共 6 词实勘）**：worksheets 静态词 9K+ 量全判死（long division 6.6K/KD35 补勘 = K5 #1+HomeschoolMath+Math-Drills+Dad's+Math-Aids；**2-digit mult worksheets 1.9K/KD18 = KD 过线 SERP 不过线第 2 实例**）；math worksheet generator 1.3K/KD46 弃（>35 线+商务意图）；**数学练习 island 成立**（§3 #14，池合计 ≈1,670/月过 generator 族线，排 10/25 批）；mad minute 主词 480 差 4% 到 500 线按家族合计放行进 island 池不独立建页 |
+| 2026-09-07 | **周一例行（首次，数字全部【实测】GSC）**：GSC 编入 26 / 页面报告 30 条（重定向 1 = 尾斜杠/www 规范化，正常勿动；已抓取未索引 3 = 新站分批爬常态）—— 与 9/6 基线 26/51 持平，day 3 在轨道（锚 = 9/12 复查 45+、9/19 近全量）；效果报告暂无数据（<1 周，正常）。**site: 修正归因**：用户 site: 查询走美区外网（非国内直连），chartglade 仅回 3 条 = site: 对新站显示滞后/抽样，**周一判定一律以 GSC 为准，site: 只当粗信号**（tintbrew 侧同日确认"约 N 条"是估算值） |
+| 2026-09-07 | **分发文案包两件交付**（任务 #2/#3 Claude 侧清零）：26 字母 pin 文案全表入 DISTRIBUTION.md §1.4（钩子句逐条取自每页 "#1 mistake" 实文 = pin 与落地页首屏一致）；目录站三家（Uneed/Peerlist/AlternativeTo）提交字段对照 + AlternativeTo 一句话文案补入 §2，剩用户侧提交 |
 
 ## 2. 关键词资产表
 
@@ -89,9 +91,9 @@
 
 | # | 任务 | 谁 | 验收标准 | 期限 |
 |---|---|---|---|---|
-| 1 | **Request indexing 5 个 URL**（今天推迟，明天做）：`/` `/place-value-chart/` `/cursive-alphabet/` `/cursive/f/` `/cursive/a/` | 👤 | GSC 逐个"已请求"（每天配额 ~10，勿超） | **2026-09-06** |
-| 2 | Pinterest 分享包：26 字母页 + 4 大页的 pin 标题/描述文案（printables 赛道第二流量引擎） | Claude | 文案表落 PLAN 附录或独立文件 | 2026-09-06 |
-| 3 | 目录站提交文案（照 tintbrew 模式：Uneed/Peerlist/AlternativeTo） | Claude+👤 | 首批 1~2 个提交成功 | 2026-09-08 |
+| 1 | ~~Request indexing 5 个 URL~~ **✅ 完成 2026-09-06（用户执行，见时间线）** | 👤 | — | 完成 |
+| 2 | ~~Pinterest 分享包~~ **✅ 完成 2026-09-07**：4 大页 + f 首批文案在 [DISTRIBUTION.md](./DISTRIBUTION.md) §1.3，**26 字母全表在 §1.4**（钩子逐条取自页面 pitfall 实文） | Claude | — | 完成 |
+| 3 | 目录站提交：**文案已齐（§2 三家字段对照 + AlternativeTo 一句话）**，剩提交动作 | 👤 | 首批 1~2 个提交成功 | 2026-09-08 |
 | 4 | GSC 收录复查：`site:chartglade.com` 数 + 索引覆盖报告 | 👤 | 记录数字入本文档 | 2026-09-12 |
 | 5 | **6 周长尾验收**（§6 决策点） | 👤+Claude | 变体词排名截图 | **2026-10-17** |
 | 6 | V1.5 cursive worksheet generator（文本→可打印练习页，OFL 字体+print CSS+零登录） | Claude | 1 交互页 | 10 月，视 §6 结果 |
@@ -140,7 +142,7 @@ cursive f worksheet
 
 **每周（~30 分钟）**：
 
-- [ ] 周一：`site:chartglade.com` 收录数 + GSC 索引覆盖 + 效果 28 天环比，记入本文档
+- [ ] 周一：`site:chartglade.com`（粗信号：新站显示滞后 + "约 N 条"是估算值，不作判定）+ **GSC 索引覆盖（判定准据）** + 效果 28 天环比，记入本文档
 - [ ] 周三：1 个分发动作 —— **详细步骤+现成文案见 [DISTRIBUTION.md](./DISTRIBUTION.md)**（Pinterest 每周 3~5 pin、目录站顺序表、Reddit 发帖模板全在里面）
 - [ ] 周五：无批次在跑时保持不动（新站隔 3~4 周上批次，别一次堆页）
 

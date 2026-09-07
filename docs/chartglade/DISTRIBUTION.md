@@ -1,6 +1,6 @@
 # chartglade 分发操作手册
 
-> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-05
+> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-07（新增 §1.4 字母矩阵 26 条 pin 文案包）
 > 三大渠道按投入产出排序：**Pinterest（主战场）→ 目录站（外链）→ 教师社区（真实用户）**
 
 ---
@@ -49,9 +49,44 @@
 
 **红线**：新号一周别超过 5 个 pin（限流）；不重复 pin 同一 URL 到同一 board；被限流就停一周。
 
+### 1.4 字母矩阵完整文案包（26 页，每周三 3~5 个按序发，约 6 周发完）
+
+> 4 大页 + cursive f 的首批文案见 §1.3。下表补齐全部 26 个字母页；**钩子句全部取自每页的 "#1 mistake" 实文**（与落地页首屏一致，点进来的老师看到的第一个板块就是它，转化不脱节）。pin 图统一模板换字母即可（大字公式：`FREE Cursive X — Trace & Write Sheet`，描述里的钩子句可选做图上小字副标）。**全部发到 Cursive Alphabet & Handwriting board**。f 在首批已发，跳过或换图重发。
+
+| 字母 | 标题 | 描述（复制整段） |
+|---|---|---|
+| a | How to Write a Cursive A (Free Practice Sheet) | The starter curve — c, d, g and q all grow from it. Watch the classic slip: an open downstroke turns a into u. https://chartglade.com/cursive/a/ #cursive #handwriting |
+| b | Cursive B — Capital & Lowercase (Free Printable) | Finish the bowl: the #1 b mistake is stopping early, and an unfinished b reads as an h with a stutter. https://chartglade.com/cursive/b/ #cursive #handwritingpractice |
+| c | How to Write a Cursive C (Free Practice Sheet) | The mother curve of cursive — a, d, g, q all borrow its motion. Don't close it shut, or your c becomes an o. https://chartglade.com/cursive/c/ #cursive #printables |
+| d | Cursive D Practice Sheet (Free Printable) | Tall stem, then the slide — stop the stroke at the middle line and d quietly turns into a. https://chartglade.com/cursive/d/ #cursive #handwriting |
+| e | How to Write a Cursive E (Free Practice Sheet) | Keep the loop lean: a fat e-loop reads as a leaning l and swamps the line's rhythm. https://chartglade.com/cursive/e/ #cursive #teaching |
+| f | —（首批 §1.3 #5 已发） | — |
+| g | Cursive G — How to Write It (Free Sheet) | The dive below the baseline is what makes a g — skip it and you've written an a. https://chartglade.com/cursive/g/ #cursive #handwritingpractice |
+| h | How to Write a Cursive H (Free Practice Sheet) | Hump to the middle line, then slide — quit early and h collapses into r. https://chartglade.com/cursive/h/ #cursive #printables |
+| i | Cursive I — Dot Placement Fix (Free Printable) | The dot goes directly overhead, on the slant line — not drifting off to the right. https://chartglade.com/cursive/i/ #cursive #teaching |
+| j | Cursive J — How to Write It (Free Sheet) | Sweep the tail all the way through: a timid capital J reads as a capital I. https://chartglade.com/cursive/j/ #cursive #handwriting |
+| k | How to Write a Cursive K (Free Practice Sheet) | Keep the inner knot small — inflated, it turns k into a capital R. https://chartglade.com/cursive/k/ #cursive #handwritingpractice |
+| l | Cursive L Practice Sheet (Free Printable) | The fastest letter to write and the easiest to ruin: keep the loop narrow or it crowds every word it joins. https://chartglade.com/cursive/l/ #cursive #printables |
+| m | Cursive M — Fix the Uneven Humps (Free Sheet) | Two even humps — an uneven m is the most-flagged letter on school papers. https://chartglade.com/cursive/m/ #cursive #teaching |
+| n | How to Write a Cursive N (Free Practice Sheet) | One full hump to the middle line, or n collapses into r. https://chartglade.com/cursive/n/ #cursive #handwriting |
+| o | Cursive O — Direction Matters (Free Printable) | Counterclockwise, always — a reversed o breaks every connection after it. https://chartglade.com/cursive/o/ #cursive #printables |
+| p | How to Write a Cursive P (Free Practice Sheet) | Full dive before the hill, or p reads as n on a stick. https://chartglade.com/cursive/p/ #cursive #handwriting |
+| q | Cursive Q — How to Write It (Free Sheet) | Cross the tail back: without the cross-back, q is just a g with stage fright. https://chartglade.com/cursive/q/ #cursive #handwritingpractice |
+| r | How to Write a Cursive R (Free Practice Sheet) | Small and exact: let the shoulder climb to a full hump and r dresses up as n. https://chartglade.com/cursive/r/ #cursive #teaching |
+| s | Cursive S Practice Sheet (Free Printable) | Keep the waist hollow and the exit on its hinge — an oversized s loses its shape. https://chartglade.com/cursive/s/ #cursive #printables |
+| t | Cursive T — The Crossbar Rule (Free Sheet) | Crossbar: middle line, level, last. Everywhere else it's just a stray mark. https://chartglade.com/cursive/t/ #cursive #handwriting |
+| u | How to Write a Cursive U (Free Practice Sheet) | Two straight walls, one cup — round the second wall and you've made a w nobody ordered. https://chartglade.com/cursive/u/ #cursive #handwritingpractice |
+| v | Cursive V Practice Sheet (Free Printable) | The valley needs its point — without it, v is just u with posture problems. https://chartglade.com/cursive/v/ #cursive #printables |
+| w | How to Write a Cursive W (Free Practice Sheet) | Twin valleys, even height: a shrinking second valley is the beginner tell. https://chartglade.com/cursive/w/ #cursive #handwriting |
+| x | Cursive X — How to Write It (Free Sheet) | Flow out of the crossing — stop dead and cursive x is just print. https://chartglade.com/cursive/x/ #cursive #teaching |
+| y | How to Write a Cursive Y (Free Practice Sheet) | The tail must dive: a y stopped at the baseline is only half a letter. https://chartglade.com/cursive/y/ #cursive #handwriting |
+| z | Cursive Z — How to Write It (Free Sheet) | Corner to corner, no kink — the rarest letter in cursive and the easiest to rush. https://chartglade.com/cursive/z/ #cursive #handwritingpractice |
+
 ---
 
 ## 二、目录站（首批外链，顺序执行）
+
+**现状**：⬜ Uneed ｜ ⬜ Peerlist ｜ ⬜ AlternativeTo（文案已齐，2026-09-08 前提交 1~2 个）
 
 | 平台 | 入口 | 动作 | 备注 |
 |---|---|---|---|
@@ -67,6 +102,14 @@
 - **Short description**: Free printable charts for K-5 — place value, multiplication, sight words and the cursive alphabet. No download, no sign-up, no email wall: open the page and hit print.
 - **Long description**: ChartGlade is a free printables site for K-5 teachers, homeschool parents, and tutors. Every page IS the printable: place value charts to the millions, multiplication tables 1-12 through 1-20 (filled and blank), hundred charts, number lines, fraction strips, the full Dolch and Fry sight word lists by grade, and a 26-letter cursive alphabet section with letter-by-letter stroke breakdowns and practice sheets. Pages print on one clean letter sheet — landscape automatically for wide charts. Everything runs in the browser, free forever, with no accounts and no PDF downloads to manage.
 - **Contact**: hello@chartglade.com
+
+**提交字段对照（照 tintbrew 走通的三家）**：
+
+| 平台 | 表单要点 | 用上面哪段文案 |
+|---|---|---|
+| Uneed | Name / URL / Tagline / Description / Tags | Tagline 用短句；Tags 填 `education, printables, teachers, k5` |
+| Peerlist Launchpad | 登录后 Launch your product，Tagline ≤60 字符 + 简介 + 链接 | Tagline + Short description |
+| AlternativeTo | 搜竞品 → 进它页面 → Suggest an alternative（只需一句话） | `Free printable K-5 teaching charts — place value, multiplication, sight words and cursive — that print straight from the browser with no sign-up.` |
 
 **红线**：不提交"350+ 高 DA"批量目录（外链农场，反噬）。
 
