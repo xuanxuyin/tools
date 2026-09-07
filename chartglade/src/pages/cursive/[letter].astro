@@ -11,8 +11,10 @@ export function getStaticPaths() {
 }
 
 const { def } = Astro.props;
+// slug stays flat ('a') for find-by-slug lookups; the route nests under /cursive/
+const pageDef = { ...def, path: `/cursive/${def.slug}` };
 ---
 
-<ChartPage def={def}>
+<ChartPage def={pageDef}>
   <CursiveLetterSheet sheet={def.sheet} />
 </ChartPage>
