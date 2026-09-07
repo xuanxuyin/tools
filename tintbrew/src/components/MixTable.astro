@@ -82,4 +82,22 @@ const { rows, a, b } = Astro.props;
     font-family: var(--mono);
     font-size: 0.9rem;
   }
+
+  /* Phones: shrink the fixed columns so the color name keeps real width */
+  @media (max-width: 30rem) {
+    .mix-tr {
+      grid-template-columns: 2.75rem 2.75rem minmax(0, 1fr) auto auto;
+      gap: var(--sp-1);
+      padding: var(--sp-1);
+    }
+
+    .mix-cell-hex {
+      font-size: 0.8rem;
+    }
+
+    .mix-swatch {
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+  }
 </style>

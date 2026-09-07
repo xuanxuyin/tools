@@ -562,3 +562,10 @@ input[type='range']::-moz-range-thumb {
     font-size: 0.8rem;
   }
 }
+
+/* Phones: tighten the desktop-sized hero padding */
+@media (max-width: 40rem) {
+  .hero {
+    padding-block: var(--sp-6) var(--sp-4);
+  }
+}
