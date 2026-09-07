@@ -2,6 +2,8 @@
 export interface PageDef {
   /** Flat URL slug, e.g. 'place-value-chart' -> /place-value-chart/ */
   slug: string;
+  /** Full route path when it is not `/${slug}` — cursive letters live at /cursive/<slug>/. */
+  path?: string;
   /** Which hub owns the page (drives breadcrumb + footer grouping). */
   hub: 'charts' | 'sight-words' | 'cursive' | 'graph-paper';
   h1: string;

@@ -13,6 +13,7 @@ interface Props {
 }
 
 const { def } = Astro.props;
+const pagePath = def.path ?? `/${def.slug}`;
 
 const HUBS: Record<PageDef['hub'], { href: string; label: string }> = {
   charts: { href: '/charts/', label: 'Math Charts' },
@@ -29,7 +30,7 @@ const jsonLd: Record<string, unknown>[] = [
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
       { '@type': 'ListItem', position: 2, name: hub.label, item: `${SITE.url}${hub.href}` },
-      { '@type': 'ListItem', position: 3, name: def.h1, item: `${SITE.url}/${def.slug}/` },
+      { '@type': 'ListItem', position: 3, name: def.h1, item: `${SITE.url}${pagePath}/` },
     ],
   },
   {
@@ -48,7 +49,7 @@ if (def.interactive) {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: def.h1,
-    url: `${SITE.url}/${def.slug}/`,
+    url: `${SITE.url}${pagePath}/`,
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
@@ -56,7 +57,7 @@ if (def.interactive) {
 }
 ---
 
-<BaseLayout title={def.metaTitle} description={def.metaDescription} path={`/${def.slug}`} jsonLd={jsonLd}>
+<BaseLayout title={def.metaTitle} description={def.metaDescription} path={pagePath} jsonLd={jsonLd}>
   <nav class="breadcrumb no-print" aria-label="Breadcrumb">
     <a href="/">Home</a> <span aria-hidden="true">›</span>
     <a href={hub.href}>{hub.label}</a> <span aria-hidden="true">›</span>
