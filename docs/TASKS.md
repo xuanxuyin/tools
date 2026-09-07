@@ -24,7 +24,7 @@
 | 9/9（周三） | 👤 **chartglade Pinterest 一次性设置**（15 分钟：Business 账号 + 认领 chartglade.com + 建 3 个 board）→ **认领给的 `<meta name="p:domain_verify">` 标签发给 Claude 接代码** | [chartglade/DISTRIBUTION.md §1.1](./chartglade/DISTRIBUTION.md) |
 | 9/9（周三） | 👤 设置完顺手**发首批 5 个 pin**（图用 Canva 1000×1500，文案直接抄表） | [chartglade/DISTRIBUTION.md §1.2 + §1.3](./chartglade/DISTRIBUTION.md) |
 | 9/10（周四） | 👤 **tintbrew GSC 首查**：效果→查询（28 天），看 W1/W2 词有没有曝光 —— 数字发给 Claude 记录（09-07 已提前看过矩阵层：10 词 14 展示起跑，周四重点补 brown/purple/green/orange/烘焙头词） | 根 README「每周数据检查 SOP」 |
-| 9/12（周六） | 👤 **chartglade GSC 收录复查**：索引覆盖报告（预期 45+；不达标也先等 9/19 门，不动盘）—— 数字发给 Claude 记录 | GSC → 索引 → 页面（sitemap 视图） |
+| 9/12（周六） | 👤 **chartglade GSC 收录复查**：索引覆盖报告（预期 45+；不达标也先等 9/19 门，不动盘）—— 数字发给 Claude 记录 | GSC → 索引 → 页面（sitemap 视图；**读数前清筛选、不点原因行**——09-07 踩过切片坑把全站读成 0，URL 检查验证实际正常） |
 
 > 下周三（9/16）换 tintbrew：Pinterest 设置（§3.1）+ 首批 5 个色卡 pin（§3.3）。
 
