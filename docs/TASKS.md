@@ -8,9 +8,9 @@
 
 ## 今天 · 2026-09-07（周一）
 
-- [ ] 👤 **tintbrew 外链：Peerlist Launchpad + AlternativeTo 提交**（**今天到期**）—— 步骤+文案：[tintbrew/DISTRIBUTION.md §一](./tintbrew/DISTRIBUTION.md)，Peerlist 表单文案抄根 README「外链提交文案」节
-- [ ] 👤 **手机复查两站移动端**（修复已部署，30 秒）：tintbrew 开 `/color-mixer/` + 任一 `/mix/` 页、chartglade 开 `/multiplication-chart/` —— 还有别扭就报「页面 + 现象」给 Claude 精修
-- [ ] 👤 每日例行（3 分钟，见底部小抄）：GSC 效果看新词 + Cloudflare 曲线
+- [x] 👤 **tintbrew 外链：Peerlist + AlternativeTo 双提交完成**（Peerlist 卡片 09-07 上线；AlternativeTo 09-07 已交、审核数周）—— 余项：Peerlist workplace 验证通过后提交周榜（可选加分）
+- [x] 👤 **手机复查两站移动端**（09-07 复查通过，无新问题报告）
+- [x] 👤 每日例行（3 分钟）：GSC 效果看新词 + Cloudflare 曲线 —— 09-07 查完，无异常上报
 
 **今天 🤖 已完成**：周一例行数字入双站 PLAN ｜ chartglade 26 字母 pin 文案包（§1.4）｜ 目录站三家提交字段对照（§2）｜ **双站移动端修复上线**（chartglade 全站 ≤40rem 断点热修 + tintbrew mix 比例表压缩/hero 打磨，均 main 直推部署）
 
@@ -23,7 +23,7 @@
 | 9/8（周二） | 👤 **chartglade 目录站提交 1~2 个**（Uneed 先做）—— 现状/文案/表单字段对照全在 §二 | [chartglade/DISTRIBUTION.md §二](./chartglade/DISTRIBUTION.md) |
 | 9/9（周三） | 👤 **chartglade Pinterest 一次性设置**（15 分钟：Business 账号 + 认领 chartglade.com + 建 3 个 board）→ **认领给的 `<meta name="p:domain_verify">` 标签发给 Claude 接代码** | [chartglade/DISTRIBUTION.md §1.1](./chartglade/DISTRIBUTION.md) |
 | 9/9（周三） | 👤 设置完顺手**发首批 5 个 pin**（图用 Canva 1000×1500，文案直接抄表） | [chartglade/DISTRIBUTION.md §1.2 + §1.3](./chartglade/DISTRIBUTION.md) |
-| 9/10（周四） | 👤 **tintbrew GSC 首查**：效果→查询（28 天），看 W1/W2 词有没有曝光 —— 数字发给 Claude 记录 | 根 README「每周数据检查 SOP」 |
+| 9/10（周四） | 👤 **tintbrew GSC 首查**：效果→查询（28 天），看 W1/W2 词有没有曝光 —— 数字发给 Claude 记录（09-07 已提前看过矩阵层：10 词 14 展示起跑，周四重点补 brown/purple/green/orange/烘焙头词） | 根 README「每周数据检查 SOP」 |
 | 9/12（周六） | 👤 **chartglade GSC 收录复查**：索引覆盖报告（预期 45+；不达标也先等 9/19 门，不动盘）—— 数字发给 Claude 记录 | GSC → 索引 → 页面（sitemap 视图） |
 
 > 下周三（9/16）换 tintbrew：Pinterest 设置（§3.1）+ 首批 5 个色卡 pin（§3.3）。

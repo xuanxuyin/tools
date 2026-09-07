@@ -91,7 +91,7 @@
 | 平台 | 入口 | 动作 | 备注 |
 |---|---|---|---|
 | Uneed | uneed.best | Submit（tintbrew 走通过同流程） | 先做 |
-| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | 免费 |
+| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | 免费但**账号需验证才 launch**（tintbrew 同一账号已走 workplace 免费验证在审，通过后两站通用；identity 付费不碰） |
 | AlternativeTo | alternativeto.net | 搜竞品（"K5 Learning" 或 "MyCursive"）→ 进它页面 → **Suggest an alternative** → 填 chartglade.com | 审核数周，不急 |
 
 **提交文案包（英文，直接复制）**：
