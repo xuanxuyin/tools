@@ -50,6 +50,7 @@
 | 2026-09-07 | **口算赛道判定落位（12 词实测回填，long division 补勘共 6 词实勘）**：worksheets 静态词 9K+ 量全判死（long division 6.6K/KD35 补勘 = K5 #1+HomeschoolMath+Math-Drills+Dad's+Math-Aids；**2-digit mult worksheets 1.9K/KD18 = KD 过线 SERP 不过线第 2 实例**）；math worksheet generator 1.3K/KD46 弃（>35 线+商务意图）；**数学练习 island 成立**（§3 #14，池合计 ≈1,670/月过 generator 族线，排 10/25 批）；mad minute 主词 480 差 4% 到 500 线按家族合计放行进 island 池不独立建页 |
 | 2026-09-07 | **周一例行（首次，数字全部【实测】GSC）**：GSC 编入 26 / 页面报告 30 条（重定向 1 = 尾斜杠/www 规范化，正常勿动；已抓取未索引 3 = 新站分批爬常态）—— 与 9/6 基线 26/51 持平，day 3 在轨道（锚 = 9/12 复查 45+、9/19 近全量）；效果报告暂无数据（<1 周，正常）。**site: 修正归因**：用户 site: 查询走美区外网（非国内直连），chartglade 仅回 3 条 = site: 对新站显示滞后/抽样，**周一判定一律以 GSC 为准，site: 只当粗信号**（tintbrew 侧同日确认"约 N 条"是估算值） |
 | 2026-09-07 | **分发文案包两件交付**（任务 #2/#3 Claude 侧清零）：26 字母 pin 文案全表入 DISTRIBUTION.md §1.4（钩子句逐条取自每页 "#1 mistake" 实文 = pin 与落地页首屏一致）；目录站三家（Uneed/Peerlist/AlternativeTo）提交字段对照 + AlternativeTo 一句话文案补入 §2，剩用户侧提交 |
+| 2026-09-07 | **移动端响应式热修上线（main 直推，用户拍板）**：用户手机实测反馈"不适配"触发 —— 审计发现全站 **0 个屏幕断点**（唯一 @media 是 print），13 列乘法表/位值表/双栏 stroke-steps 靠横向滚动硬撑。加 ≤40rem 断点（表格缩字号压到 ~25px/列、stroke-steps 单栏、大字形缩小、头部收紧），cherry-pick 热修推 main 即时部署。**纯 CSS 零加页，不破 10/05 批纪律**；动机 = Google mobile-first 索引正在评估手机版 + Pinterest 流量 9 成手机。v1.6-predev 已 merge main 同步 |
 
 ## 2. 关键词资产表
 

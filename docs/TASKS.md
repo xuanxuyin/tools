@@ -9,9 +9,10 @@
 ## 今天 · 2026-09-07（周一）
 
 - [ ] 👤 **tintbrew 外链：Peerlist Launchpad + AlternativeTo 提交**（**今天到期**）—— 步骤+文案：[tintbrew/DISTRIBUTION.md §一](./tintbrew/DISTRIBUTION.md)，Peerlist 表单文案抄根 README「外链提交文案」节
+- [ ] 👤 **手机复查两站移动端**（修复已部署，30 秒）：tintbrew 开 `/color-mixer/` + 任一 `/mix/` 页、chartglade 开 `/multiplication-chart/` —— 还有别扭就报「页面 + 现象」给 Claude 精修
 - [ ] 👤 每日例行（3 分钟，见底部小抄）：GSC 效果看新词 + Cloudflare 曲线
 
-**今天 🤖 已完成**：周一例行数字入双站 PLAN ｜ chartglade 26 字母 pin 文案包（§1.4）｜ 目录站三家提交字段对照（§2）
+**今天 🤖 已完成**：周一例行数字入双站 PLAN ｜ chartglade 26 字母 pin 文案包（§1.4）｜ 目录站三家提交字段对照（§2）｜ **双站移动端修复上线**（chartglade 全站 ≤40rem 断点热修 + tintbrew mix 比例表压缩/hero 打磨，均 main 直推部署）
 
 ---
 
