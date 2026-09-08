@@ -44,6 +44,8 @@
 | 2026-09-09 | 竞品页实勘（用户担心 K5 体量触发）：K5 letter-f 页 = 正文一句话 + 5 个 PDF 下载链接 + 会员墙（2019 年页龄），零"怎么写"答案内容 → worksheet 下载意图我们不打（原判不变）、名词答案意图 K5 不认真服务（主攻不变）；与量实测互相印证：池是真的 + 缝隙是真的 |
 | 2026-09-09 | GSC 曝光首记：累计 **13**【实测 GSC，上线以来】—— 量级噪音级且疑含自操作查询；查排名纪律同 tintbrew：只用 GSC 查询报告，不手动 Google 搜词 |
 | 2026-09-09 | **字母页变体段上线（§3 #8，commit `3cbf225`）**：26 字母页各增 "Capital X in cursive" 深读段（每字母 2 段手写非模板）+ 大写专属 FAQ；/cursive-alphabet/ 增 chart↔字母页接客段 + 2 FAQ + /cursive/f/ 内链；实现走 PageDef 可选 `extraSection`（模板通用，打印输出零影响——`@media print` 不打 .prose）；53 页 build + **23 测试绿**（含新增变体段断言测试），push 自动部署 CF Pages |
+| 2026-09-09 | GSC 索引报告疑问（用户报）：已编入 **0** / 未编入 **4** —— 与效果报告矛盾（9/5 起有曝光 = 有页面实际在 Google 服务中）。判定：**索引覆盖报告快照滞后**（新站 4 天常见，报告顶部"上次更新"可证）+ 本地源码核查排除技术原因（仅 404 noindex，canonical 全站规范）。以单条网址检查 + site: 为准，9/12 §3 #4 对数 |
+| 2026-09-09 | 目录站三渠道提交完成（用户操作）：Uneed + Peerlist + AlternativeTo，全部进入审核期（AlternativeTo 审核数周常态）—— 两站外链均从 0 → 3 提交在途 |
 
 ## 2. 关键词资产表
 
@@ -88,7 +90,7 @@
 |---|---|---|---|---|
 | 1 | ~~Request indexing 5 个 URL~~ **✅ 完成 2026-09-08**（`/` `/place-value-chart/` `/cursive-alphabet/` `/cursive/f/` `/cursive/a/` GSC 逐个已请求） | 👤 | GSC 逐个"已请求" | **2026-09-06** |
 | 2 | ~~Pinterest 分享包：26 字母页 + 4 大页 pin 文案~~ **✅ 完成 2026-09-08** → [PINTEREST-PINS.md](./PINTEREST-PINS.md)（30 条 + 7 周排期） | Claude | 文案表落独立文件 | 2026-09-06 |
-| 3 | 目录站提交：**文案就绪 2026-09-08**（DISTRIBUTION.md §2.1 逐平台表单级）→ 👤 动作 = 先提 Uneed，再 Peerlist | Claude+👤 | 首批 1~2 个提交成功 | 2026-09-08 |
+| 3 | ~~目录站提交~~ **✅ 完成 2026-09-09**（用户提交三渠道：Uneed + Peerlist + AlternativeTo，均审核期未确认收录；文案 = DISTRIBUTION.md §2.1） | Claude+👤 | 首批 1~2 个提交成功 | 2026-09-08 |
 | 4 | GSC 收录复查：`site:chartglade.com` 数 + 索引覆盖报告 | 👤 | 记录数字入本文档 | 2026-09-12 |
 | 5 | **6 周长尾验收**（§6 决策点） | 👤+Claude | 变体词排名截图 | **2026-10-17** |
 | 6 | V1.5 cursive worksheet generator（文本→可打印练习页，OFL 字体+print CSS+零登录） | Claude | 1 交互页 | 10 月，视 §6 结果 |
