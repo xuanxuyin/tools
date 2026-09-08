@@ -1,18 +1,18 @@
 # tintbrew 分发操作手册
 
-> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-05
+> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-09
 > 渠道顺序：**目录站（外链，最急）→ Reddit（真实用户）→ Pinterest 色卡 pin → Product Hunt（10 月择日）**
 
 ---
 
 ## 一、目录站（外链，当前最大缺口）
 
-**现状**：✅ Uneed 已提交（2026-09-04）｜⬜ Peerlist ｜⬜ AlternativeTo
+**现状**：✅ Uneed（2026-09-04）｜✅ Peerlist（2026-09-09）｜✅ AlternativeTo（2026-09-09，审核数周）
 
 | 平台 | 步骤 | 状态 |
 |---|---|---|
-| Peerlist Launchpad | peerlist.io → 右上角注册登录 → 打开 peerlist.io/launchpad → **Launch your product**（登录后才显示）→ 表单文案抄根 README「外链提交文案」 | ⬜ |
-| AlternativeTo | alternativeto.net → 搜一个同类颜色工具（如 "color mixer"）→ 进它的页面 → **Suggest an alternative** → 填 tintbrew.com + 一句话描述 | ⬜ 审核数周不急 |
+| Peerlist Launchpad | peerlist.io → 右上角注册登录 → 打开 peerlist.io/launchpad → **Launch your product**（登录后才显示）→ 表单文案抄根 README「外链提交文案」 | ✅ 2026-09-09 |
+| AlternativeTo | alternativeto.net → 搜一个同类颜色工具（如 "color mixer"）→ 进它的页面 → **Suggest an alternative** → 填 tintbrew.com + 一句话描述 | ✅ 2026-09-09，审核期数周不急 |
 | Product Hunt | 见本手册 §四（要预备，不是随手提） | ⬜ |
 
 **红线**：不提交批量 SEO 目录（外链农场）。

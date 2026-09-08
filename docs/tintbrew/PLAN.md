@@ -21,7 +21,7 @@
 
 **短板与风险（按杀伤力排序）**
 
-1. **外链接近零** —— 当前最大杠杆缺口。只有 Uneed 一个提交（未确认收录）。DR 0 域名在 KD 38 的 brown 这类词上，没有外链就是磨十年页龄也难进前 5。
+1. **外链接近零** —— 当前最大杠杆缺口。已提交 3 个：Uneed（9/4）+ Peerlist + AlternativeTo（9/9 用户提交，审核期未确认收录）。DR 0 域名在 KD 38 的 brown 这类词上，没有外链就是磨十年页龄也难进前 5。
 2. **站龄 1 天**，新站沙盒期（前 1~3 个月排名系统性压制）是常态，此期间数据差 ≠ 策略错。
 3. **单一流量引擎**：全押 Google，Pinterest 第二引擎一直认可但没启动。
 4. **回访钩子弱**：纯工具无账号无收藏提醒，访问质量靠 SEO 净新增。
@@ -60,6 +60,7 @@
 | 2026-09-09 | **AITDK 补测批（tintbrew 4 词）实测落位**：color mixing chart **6,600/KD27** ✅≥2,000 → /color-mixing-chart/ 总表页锁定 V2.2 首批；gold **3,600** / teal **1,900** ✅过筛（≥500 + SERP 预勘可打）进 V2.2 扩色；acrylic chart **390** ❌并入总表页 FAQ 不单独建。V2.2 启动仍守 §6 的 10/01 门 |
 | 2026-09-09 | Request indexing 9 个 URL 全部完成（用户 GSC 操作，剩 3 条色卡/hub 今日补齐） |
 | 2026-09-09 | **GSC 曝光首查：累计 650**【实测 GSC，上线以来】—— 疑混自操作查询（手动 Google 搜词验排名、翻到看到自己站 = 计入曝光；site: 查询与 GSC 界面内操作**不计入**）；待查询明细拆分真实/污染。**新纪律：查排名只用 GSC 查询报告（被动记录含平均排名列），不再手动 Google 搜词** |
+| 2026-09-09 | 外链 Peerlist + AlternativeTo 提交完成（用户操作）→ 目录站三渠道全提交（Uneed 9/4 + Peerlist + AlternativeTo 9/9），进入等审核收录期 |
 
 ## 2. 关键词资产表
 
@@ -80,7 +81,7 @@
 | # | 任务 | 谁 | 验收标准 | 期限 |
 |---|---|---|---|---|
 | 1 | ~~Request indexing 9 个新 URL（W1+W2）~~ **✅ 完成 2026-09-09** | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
-| 2 | 外链：Peerlist Launchpad + AlternativeTo（**步骤+文案见 [DISTRIBUTION.md](./DISTRIBUTION.md)**） | 👤 | 两个平台提交成功 | 2026-09-07 |
+| 2 | ~~外链：Peerlist Launchpad + AlternativeTo~~ **✅ 完成 2026-09-09（用户提交；AlternativeTo 审核期数周）** —— 步骤见 [DISTRIBUTION.md](./DISTRIBUTION.md) | 👤 | 两个平台提交成功 | 2026-09-07 |
 | 3 | GSC 首查：效果→查询（28 天），看 W1/W2 词有没有曝光 | 👤+Claude | 截图记录，更新本文档 §2 状态 | 2026-09-10 |
 | 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工。**gold 3,600 / teal 1,900 已实测过筛（2026-09-09），color mixing chart 总表页（6,600/KD27）进首批** | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
 | 5 | W3 木器染色 2 页（coffee wood stain 等，已锁定未建） | Claude | 2 页上线 | 跟 V2.2 同批或下批 |
