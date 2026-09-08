@@ -100,19 +100,7 @@
 | 7 | ~~单字母族量补测~~ **✅ 完成 2026-09-09**：12 词量+KD 实测落位 §2（6 裸词均值 ~33K → 第一档论点成立） | 👤 | 12 个词的量+KD 记入 §2 | **2026-09-08** |
 | 8 | ~~字母页加码：每字母页补 "capital cursive X / capital X in cursive" 变体段 + 对应 FAQ~~ **✅ 完成 2026-09-09**（26 页变体段 + /cursive-alphabet/ 接客段 + PINTEREST-PINS.md 重排，53 页 build + 23 测试绿，`3cbf225` 已部署） | Claude | 26 页变体段上线，build + 测试全绿 | **2026-09-14** |
 
-**Request indexing 第二批（9 条，✅ 2026-09-09 用户已全部请求，原定 9/10 提前完成；已排除 9/8 首批 5 条）：**
-
-```
-https://chartglade.com/cursive/z/
-https://chartglade.com/cursive/b/
-https://chartglade.com/cursive/k/
-https://chartglade.com/cursive/x/
-https://chartglade.com/cursive/i/
-https://chartglade.com/alphabet-chart/
-https://chartglade.com/multiplication-chart/
-https://chartglade.com/kindergarten-sight-words/
-https://chartglade.com/place-value-chart-printable/
-```
+**（Request indexing 两批共 14/53 已全部请求完毕，勿重复：9/8 首批 5 条 + 9/9 第二批 9 条 —— 明细见时间线 9/9 行；下一批候选 = 余下字母页，配额闲置时再做）**
 
 **（#7 的 AITDK 拉数词表与三档判定规则已于 2026-09-09 执行完毕并清理，勿重复拉取 —— 产出见 §2 实测表 + 判定落位：6 裸词均值 ~33K → 第一档加码）**
 
