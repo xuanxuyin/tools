@@ -114,30 +114,7 @@ https://chartglade.com/kindergarten-sight-words/
 https://chartglade.com/place-value-chart-printable/
 ```
 
-**AITDK 拉数词表（#7 用，逐词查 US 月搜 + KD）**：
-
-```
-cursive f
-cursive b
-cursive a
-cursive k
-cursive z
-cursive x
-cursive capital f
-capital i in cursive
-cursive capital b
-cursive chart
-cursive letters a to z
-cursive f worksheet
-```
-
-**补测后判定规则（拉完数字自动落位，不用再讨论）**：
-
-| 6 个裸词（f/b/a/k/z/x）均值 | 结论 → 动作 |
-|---|---|
-| ≥1,000 US/月 | 论点成立 → 矩阵加码（每字母页补 "capital cursive X" 变体段），10/17 按原计划验收字母族 |
-| 200~1,000 | 矩阵保留（已建零边际成本）但**不扩张**；10/17 验收主看 place value 变体 + 万圣节 |
-| <200 | 空池 → 字母页只留 26 页躺页龄；主战场转向支柱变体页 + 季节页，§6 的 B 计划概率大增 |
+**（#7 的 AITDK 拉数词表与三档判定规则已于 2026-09-09 执行完毕并清理，勿重复拉取 —— 产出见 §2 实测表 + 判定落位：6 裸词均值 ~33K → 第一档加码）**
 
 ## 4. 每日 / 每周例行
 
