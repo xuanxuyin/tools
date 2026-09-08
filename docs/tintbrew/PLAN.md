@@ -71,8 +71,8 @@
 | V2.1 三色 | purple / green / orange | 58.4K 合计 | /what-colors-make-*/ | 已上线 |
 | V2.1 烘焙 | black frosting / brown icing / icing chart / buttercream chart | 含万圣季节词 | 4 页 | 已上线 |
 | 工具头词 | color mixer / converter / hex to rgb | KD 27 档 | /color-mixer/ /color-converter/ | 3~6 个月长跑 |
-| V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | 待拉 | /mix/* | 未启动；gold/teal 已 SERP 预勘【实勘 2026-09-05】：gold 前 5 = 内设博客 J Fisher Interiors + 艺术博客 Ettavee（软✅）；teal 前 5 = trycolors 工具站 + Quora（弱✅） |
-| **V2.2 新页候选** | **color mixing chart**（短词，用户提问触发的探测发现） | **量待 AITDK（9/8 批）** | /color-mixing-chart/（打印版混色总表） | 【实勘 2026-09-05】SERP 极软：①Pinterest ②YouTube ③Facebook ④Facebook ⑤Visual Arts Passage 博客 ⑦MyModernMet ⑧Daniel Smith —— UGC+小博客占满，无巨头无工具站 |
+| V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | **gold 3,600 / teal 1,900**【实测 2026-09-09】✅ 过筛；其余候选启动时拉 | /mix/* | 未启动（V2.2）；SERP 预勘【实勘 2026-09-05】：gold 前 5 = 内设博客 J Fisher Interiors + 艺术博客 Ettavee（软✅）；teal 前 5 = trycolors 工具站 + Quora（弱✅） |
+| **V2.2 新页候选** | **color mixing chart**（短词，用户提问触发的探测发现） | **6,600 / KD27**【实测 2026-09-09】✅ ≥2,000 | /color-mixing-chart/（打印版混色总表） | **V2.2 首批锁定**（启动仍守 §6 的 10/01 门）；acrylic chart 390 ❌ 并入该页 FAQ 不单独建；SERP 极软【实勘 2026-09-05】：①Pinterest ②YouTube ③Facebook ④Facebook ⑤Visual Arts Passage 博客 ⑦MyModernMet ⑧Daniel Smith —— UGC+小博客占满，无巨头无工具站 |
 | 已评估暂缓 | what colors go with X（穿搭配色） | 未验证 | — | 见 §6 |
 
 ## 3. 接下来要做（优先级排序）
@@ -82,21 +82,12 @@
 | 1 | ~~Request indexing 9 个新 URL（W1+W2）~~ **✅ 完成 2026-09-09** | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
 | 2 | 外链：Peerlist Launchpad + AlternativeTo（**步骤+文案见 [DISTRIBUTION.md](./DISTRIBUTION.md)**） | 👤 | 两个平台提交成功 | 2026-09-07 |
 | 3 | GSC 首查：效果→查询（28 天），看 W1/W2 词有没有曝光 | 👤+Claude | 截图记录，更新本文档 §2 状态 | 2026-09-10 |
-| 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工 | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
+| 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工。**gold 3,600 / teal 1,900 已实测过筛（2026-09-09），color mixing chart 总表页（6,600/KD27）进首批** | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
 | 5 | W3 木器染色 2 页（coffee wood stain 等，已锁定未建） | Claude | 2 页上线 | 跟 V2.2 同批或下批 |
 | 6 | per-page OG 图：场景页用引擎生成对应色卡图（替代全站共用卡） | Claude | 场景页 og:image 唯一 | 2026-09 下旬 |
 | 7 | V2.3 工具页：互补色/对比色生成器（`contrastRatio` 引擎已有） | Claude | 1 页 + WCAG 检查 | 2026-10 |
 
-**V2.2 启动时 AITDK 顺带拉量（并入 9/8 补测批，4 词，~2 分钟）**：
-
-```
-color mixing chart
-acrylic color mixing chart
-what colors make gold
-what colors make teal
-```
-
-判定规则（拉完自动落位）：`color mixing chart` ≥2,000 US/月 → /color-mixing-chart/ 打印版总表页进 V2.2 首批（引擎现算全部色值 + print CSS，打通 /mix/ 矩阵 ↔ color-guides hub 内链）；<2,000 但 ≥500 → 并入 V2.2 顺带建；gold/teal 按原筛选规则（≥500/月 + SERP 无 DR60+ 巨头，SERP 已预勘可打）。
+**V2.2 预拉量 4 词 ✅ 已拉完（2026-09-09 AITDK 实测，判定规则自动落位）**：color mixing chart **6,600/KD27** ≥2,000 → /color-mixing-chart/ 打印版总表页 **V2.2 首批锁定**（引擎现算全部色值 + print CSS，打通 /mix/ 矩阵 ↔ color-guides hub 内链）；gold **3,600** / teal **1,900** ✅ 过筛进 V2.2 扩色；acrylic color mixing chart **390** ❌ 并入总表页 FAQ 不单独建。V2.2 启动仍守 §6 的 10/01 门。
 
 ## 4. 每日 / 每周例行
 
