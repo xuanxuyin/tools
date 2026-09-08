@@ -126,7 +126,7 @@
 3. **季节窗（排期唯一依据 = 美国校历，准则见根 [CLAUDE.md](../../CLAUDE.md)「美国日历准则」+ 下方 §5.1 日历表）**：printables 赛道季节词是大流量脉冲，每个节点**提前 4~6 周上线**（Google 收录+爬排名要时间）。候选池（节点前 1 个月拉量筛选定稿）：halloween word search / halloween coloring math facts / thanksgiving gratitude tree / thankful ABC list / halloween cursive practice（复用字母矩阵架构）/ pumpkin math chart
 4. **外链与分发**：Pinterest 常态化（每周 pin）、教师社区（r/Teachers r/homeschool，先读版规）、TPT 形态研究（商城不做，引流可）
 5. **变现**：~300 访问/天 → 接广告
-6. **第二曲线**（本仓第三个站候选）：excel shortcuts / sql cheat sheet 等高 CPC 打印工具 —— chartglade 验收数据出来后再定
+6. **第二曲线**（本仓第三个站候选）：技术/办公打印件（excel shortcuts 110K/KD38 量王 + sql cheat sheet 3.6K/CPC$2.44 高 CPC）—— 调研档落 [research/third-site.md](../../research/third-site.md)（2026-09-09 量实测+SERP 实勘三样齐全；SERP 中等非软区，打法 = 变体长尾切入+头词磨页龄）—— **10/17 验收后再定立项，此前零动作**
 
 ### 5.1 美国教育内容日历（季节排期唯一依据）
 
