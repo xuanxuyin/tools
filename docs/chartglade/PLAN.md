@@ -48,6 +48,7 @@
 | 2026-09-09 | 目录站三渠道提交完成（用户操作）：Uneed + Peerlist + AlternativeTo，全部进入审核期（AlternativeTo 审核数周常态）—— 两站外链均从 0 → 3 提交在途 |
 | 2026-09-09 | **site: 实查 = 5 条**【实勘 用户查】—— 高度疑 = 9/8 手动请求的 5 条优先编入（哪 5 条待确认）；其余 ~48 页处「已发现/已抓取-未编入」= DR0 新站第 4 天常态，非故障。加速手段：每日 request indexing 配额 ~10 条，按量优先请求 z(40.5K)/b(27.1K)/k(27.1K)/x(9.9K) 等高量字母页；根本解仍是页龄 + 外链。9/12 §3 #4、9/19 §6 节点看趋势 |
 | 2026-09-09 | GSC 未编入 4 条原因明细【实勘 用户查】：自动重定向 **1**（= www/http 变体 301 归主域，设计内不用动）+ 已抓取-尚未编入索引 **3**（Google 已爬未收 = 新站信任门；列表无 noindex/重复/服务器错误类）→ **无技术故障**。3 条 URL 明细新 UI 暂不可见（数据滞后），不阻塞：明日请求批次按量选页顺带覆盖 |
+| 2026-09-09 | Request indexing 第二批 9 条完成（用户 GSC 操作，原定 9/10 提前当日完成）→ **累计已请求 14/53**（9/8 首批 5 + 本批 9；已请求字母页 f/a/z/b/k/x/i = 实测高量 7 词全覆盖）。若明日配额闲置，余下字母页 g/h/l 等可续批；9/12 §3 #4 对数 |
 
 ## 2. 关键词资产表
 
@@ -98,6 +99,20 @@
 | 6 | V1.5 cursive worksheet generator（文本→可打印练习页，OFL 字体+print CSS+零登录） | Claude | 1 交互页 | 10 月，视 §6 结果 |
 | 7 | ~~单字母族量补测~~ **✅ 完成 2026-09-09**：12 词量+KD 实测落位 §2（6 裸词均值 ~33K → 第一档论点成立） | 👤 | 12 个词的量+KD 记入 §2 | **2026-09-08** |
 | 8 | ~~字母页加码：每字母页补 "capital cursive X / capital X in cursive" 变体段 + 对应 FAQ~~ **✅ 完成 2026-09-09**（26 页变体段 + /cursive-alphabet/ 接客段 + PINTEREST-PINS.md 重排，53 页 build + 23 测试绿，`3cbf225` 已部署） | Claude | 26 页变体段上线，build + 测试全绿 | **2026-09-14** |
+
+**Request indexing 第二批（9 条，✅ 2026-09-09 用户已全部请求，原定 9/10 提前完成；已排除 9/8 首批 5 条）：**
+
+```
+https://chartglade.com/cursive/z/
+https://chartglade.com/cursive/b/
+https://chartglade.com/cursive/k/
+https://chartglade.com/cursive/x/
+https://chartglade.com/cursive/i/
+https://chartglade.com/alphabet-chart/
+https://chartglade.com/multiplication-chart/
+https://chartglade.com/kindergarten-sight-words/
+https://chartglade.com/place-value-chart-printable/
+```
 
 **AITDK 拉数词表（#7 用，逐词查 US 月搜 + KD）**：
 
