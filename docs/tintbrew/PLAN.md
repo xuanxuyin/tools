@@ -1,13 +1,13 @@
 # tintbrew 作战文档
 
-> 本项目唯一计划文档 · 更新 2026-09-05 · 部署/运维细节见仓库根 [README.md](../../README.md)
+> 本项目唯一计划文档 · 更新 2026-09-09 · 部署/运维细节见仓库根 [README.md](../../README.md)
 > 原则：本文档没写的 = 没计划；做完的立刻勾掉并写日期。
 
 ## 0. 北极星
 
 **GSC 28 天曝光数（impressions）环比增长**。变现节点：自然流量稳定 ~300 访问/天 → 接广告（当前零广告代码）。
 
-一句话现状：41 页上线（V1 33 + V2.1 W1/W2 共 8 页），81 测试全绿，GSC 效果数据已出现，进入「等收录 + 攒外链」阶段。
+一句话现状：41 页上线（V1 33 + V2.1 W1/W2 共 8 页），81 测试全绿，GSC 效果数据已出现（9/9 首查累计曝光 **650**【实测 GSC】，疑混自操作查询待拆分），进入「等收录 + 攒外链」阶段。
 
 ## 0.5 当前状况深度分析（2026-09-05）
 
@@ -41,19 +41,7 @@
 
 **凭什么和多数站不一样（当假设看，不是事实）**：① KD 0 词是 SERP 逐个实勘的弱结果 —— 但 SERP 里能看见的都是幸存者，"弱"不等于轮得到我们；② Oklab 工具差异化真实存在；③ 分发计划具体到文案。三条只是降险，DR0+零外链的墙还在。
 
-**Request indexing 9 个 URL 清单（2026-09-06 用，粘一个做一个）：**
-
-```
-https://tintbrew.com/what-colors-make-brown/
-https://tintbrew.com/how-to-make-black-frosting/
-https://tintbrew.com/how-to-make-brown-icing/
-https://tintbrew.com/icing-color-chart/
-https://tintbrew.com/buttercream-color-chart/
-https://tintbrew.com/color-guides/
-https://tintbrew.com/what-colors-make-purple/
-https://tintbrew.com/what-colors-make-green/
-https://tintbrew.com/what-colors-make-orange/
-```
+**Request indexing 9 个 URL：✅ 全部完成 2026-09-09（用户 GSC 操作；6 条 how-to/what-colors 页 + icing/buttercream 色卡页 + color-guides hub）**
 
 ## 1. 已完成（时间线）
 
@@ -69,6 +57,9 @@ https://tintbrew.com/what-colors-make-orange/
 | 2026-09-05 | **目标阶梯按基率校准**（用户质疑"太理想"成立）：改三档情景表 + 认基率（多数站一年无成果是中位数）+ **2027-01-31 止损线** |
 | 2026-09-05 | **探测工具边界确认**：AITDK 官网 = AI 写作工具集，无查量 API → 拉量固定走用户插件（分工入根 CLAUDE.md）；Google 补全接口三条管道全堵（WebFetch 域名校验 / webReader 拒 query 串 / 本机 curl 无代理），变体枚举继续走自动搜索 |
 | 2026-09-05 | **短词机会实勘（用户提问"有没有在短词里找机会"触发）**：`color mixing chart` SERP 极软 → 新页候选入 §2（量 9/8 拉）；gold/teal 扩色预勘可打；同批 `multiplication chart`（chartglade）硬、`cursive alphabet` 探针区域污染作废 —— 证据分级规则入根 CLAUDE.md |
+| 2026-09-09 | **AITDK 补测批（tintbrew 4 词）实测落位**：color mixing chart **6,600/KD27** ✅≥2,000 → /color-mixing-chart/ 总表页锁定 V2.2 首批；gold **3,600** / teal **1,900** ✅过筛（≥500 + SERP 预勘可打）进 V2.2 扩色；acrylic chart **390** ❌并入总表页 FAQ 不单独建。V2.2 启动仍守 §6 的 10/01 门 |
+| 2026-09-09 | Request indexing 9 个 URL 全部完成（用户 GSC 操作，剩 3 条色卡/hub 今日补齐） |
+| 2026-09-09 | **GSC 曝光首查：累计 650**【实测 GSC，上线以来】—— 疑混自操作查询（手动 Google 搜词验排名、翻到看到自己站 = 计入曝光；site: 查询与 GSC 界面内操作**不计入**）；待查询明细拆分真实/污染。**新纪律：查排名只用 GSC 查询报告（被动记录含平均排名列），不再手动 Google 搜词** |
 
 ## 2. 关键词资产表
 
@@ -88,7 +79,7 @@ https://tintbrew.com/what-colors-make-orange/
 
 | # | 任务 | 谁 | 验收标准 | 期限 |
 |---|---|---|---|---|
-| 1 | Request indexing 9 个新 URL（W1+W2，**清单见下方代码块**） | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
+| 1 | ~~Request indexing 9 个新 URL（W1+W2）~~ **✅ 完成 2026-09-09** | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
 | 2 | 外链：Peerlist Launchpad + AlternativeTo（**步骤+文案见 [DISTRIBUTION.md](./DISTRIBUTION.md)**） | 👤 | 两个平台提交成功 | 2026-09-07 |
 | 3 | GSC 首查：效果→查询（28 天），看 W1/W2 词有没有曝光 | 👤+Claude | 截图记录，更新本文档 §2 状态 | 2026-09-10 |
 | 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工 | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |

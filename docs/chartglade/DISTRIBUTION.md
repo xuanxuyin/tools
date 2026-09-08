@@ -1,6 +1,6 @@
 # chartglade 分发操作手册
 
-> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-05
+> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-08
 > 三大渠道按投入产出排序：**Pinterest（主战场）→ 目录站（外链）→ 教师社区（真实用户）**
 
 ---
@@ -39,6 +39,8 @@
 
 ### 1.3 首批 5 个 pin（文案直接抄）
 
+> **全量 30 条**（4 大页 + 26 字母页逐字母钩子 + 7 周排期）见 [PINTEREST-PINS.md](./PINTEREST-PINS.md)；首批 5 条已含在全量包里，后续每周三照排期发，勿对同 board 重复发同 URL。
+
 | # | pin 图大字 | 目标 URL | 标题 | 描述 |
 |---|---|---|---|---|
 | 1 | FREE Cursive Alphabet Chart — Print in One Click | /cursive-alphabet/ | Free Printable Cursive Alphabet Chart (A-Z) | All 26 letters, uppercase and lowercase, with a tracing strip — print straight from your browser, no download. https://chartglade.com/cursive-alphabet/ #cursive #handwriting #printables |
@@ -52,6 +54,8 @@
 ---
 
 ## 二、目录站（首批外链，顺序执行）
+
+**现状（2026-09-08）**：⬜ Uneed（文案就绪，先做）｜⬜ Peerlist ｜⬜ AlternativeTo
 
 | 平台 | 入口 | 动作 | 备注 |
 |---|---|---|---|
@@ -67,6 +71,33 @@
 - **Short description**: Free printable charts for K-5 — place value, multiplication, sight words and the cursive alphabet. No download, no sign-up, no email wall: open the page and hit print.
 - **Long description**: ChartGlade is a free printables site for K-5 teachers, homeschool parents, and tutors. Every page IS the printable: place value charts to the millions, multiplication tables 1-12 through 1-20 (filled and blank), hundred charts, number lines, fraction strips, the full Dolch and Fry sight word lists by grade, and a 26-letter cursive alphabet section with letter-by-letter stroke breakdowns and practice sheets. Pages print on one clean letter sheet — landscape automatically for wide charts. Everything runs in the browser, free forever, with no accounts and no PDF downloads to manage.
 - **Contact**: hello@chartglade.com
+
+### 2.1 逐平台表单对照（2026-09-08 补，照此填即可）
+
+**Uneed**（先做；tintbrew 2026-09-04 走通过同流程）：
+- Logo / 封面图：用首页 OG 卡（`npm run og` 产物，1200×630，平台自动裁）
+- Name / Tagline / Description：抄上方文案包（Description 填 **Short description**，进阶介绍再贴 Long）
+- 分类 / Tags：Education、Free
+- 其余字段照 tintbrew 当时填法
+
+**Peerlist Launchpad**（登录后 Launch your product 才显示）。Launch 帖用"发布"口吻，别用目录腔，直接抄：
+
+```
+Title: ChartGlade — free printable teaching charts that print straight from the browser
+
+Body: Every page IS the printable. Place value charts to the millions, multiplication
+tables, hundred charts, number lines, fraction strips, the full Dolch & Fry sight word
+lists by grade, and a 26-letter cursive alphabet section with stroke-by-stroke
+breakdowns. No accounts, no PDF downloads, no email wall — open the page and hit print.
+```
+
+**AlternativeTo**（Suggest an alternative；三个竞品位各用不同一句话，别一条贴三家）：
+
+| 竞品位 | 填这句话 |
+|---|---|
+| K5 Learning 页 | ChartGlade — free printable K-5 charts (place value, multiplication, sight words, cursive) that print straight from the browser. No download, no sign-up. |
+| MyCursive 页 | ChartGlade — free cursive alphabet charts and letter-by-letter practice sheets you can print instantly. No PDF, no email wall. |
+| Superstar Worksheets 页 | ChartGlade — free printable math and literacy charts for K-5; every page prints on one clean letter sheet, no account needed. |
 
 **红线**：不提交"350+ 高 DA"批量目录（外链农场，反噬）。
 

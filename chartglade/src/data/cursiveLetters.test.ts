@@ -29,6 +29,21 @@ describe('cursive single-letter matrix', () => {
     }
   });
 
+  it('gives every letter a capital-variant section (the "capital X in cursive" target)', () => {
+    for (const def of cursiveLetters) {
+      expect(def.extraSection.heading).toBe(`Capital ${def.sheet.capital} in cursive`);
+      expect(def.extraSection.paras.length).toBeGreaterThanOrEqual(2);
+      for (const p of def.extraSection.paras) {
+        expect(p.length).toBeGreaterThan(80);
+      }
+      // the second capital FAQ: a letter-specific capital question beyond the how-to
+      const capitalFaqs = def.faqs.filter((f) => f.q.toLowerCase().includes('capital'));
+      expect(capitalFaqs.length).toBeGreaterThanOrEqual(2);
+    }
+    const headings = new Set(cursiveLetters.map((l) => l.extraSection.heading));
+    expect(headings.size).toBe(26);
+  });
+
   it('has unique meta titles/descriptions across all 26 pages', () => {
     const titles = new Set(cursiveLetters.map((l) => l.metaTitle));
     const descs = new Set(cursiveLetters.map((l) => l.metaDescription));
