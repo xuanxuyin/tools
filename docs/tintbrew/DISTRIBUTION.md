@@ -1,6 +1,6 @@
 # tintbrew 分发操作手册
 
-> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-07
+> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-09
 > 渠道顺序：**目录站（外链，最急）→ Reddit（真实用户）→ Pinterest 色卡 pin → Product Hunt（10 月择日）**
 
 ---

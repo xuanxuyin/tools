@@ -24,6 +24,11 @@ export interface LetterSheet {
 }
 
 export interface CursiveLetterDef extends PageDef {
+  /**
+   * "Capital X in cursive" deep-dive — the capital-variant query target
+   * (measured 2026-09-09: capital forms run 2.9K–8.1K US/mo per letter).
+   */
+  extraSection: { heading: string; paras: string[] };
   sheet: LetterSheet;
 }
 
@@ -74,6 +79,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Does a capital A connect to the next letter?',
         a: 'No — in standard American cursive, capitals never connect. The lowercase that follows starts fresh with its own entry stroke.',
       },
+      {
+        q: 'Does a cursive capital A have a crossbar?',
+        a: 'No — that is the print reflex. The cursive capital A is a slanted peak with a small loop at the top and a sweeping tail; adding a crossbar mixes styles and is one of the first things teachers flag.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -81,6 +90,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/d/', label: 'Cursive D — same opening stroke' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital A in cursive',
+      paras: [
+        'The capital A in cursive is a tall tent with a looped peak: the stroke slants up from the baseline to the top line, turns a small leftward loop at the summit, slants back down parallel to the entry, and sweeps right into its tail. It shares nothing with a print A — no crossbar, no flat apex — and that missing crossbar is the single biggest tell that a writer is still thinking in print. Some teachers describe the peak as a fish head or a tent flap; whatever the picture, the loop stays small and the two slants stay parallel.',
+        'Where the capital A goes wrong: the loop fattens until the peak looks like a balloon animal (it should be a sliver), or the downstroke drifts away from the entry slant and the letter fans open. It is taught early among capitals because it is structurally simple — two strokes and a tail — and like every capital it never connects to the letter that follows; the sweep-out is tradition, not a join. Names give it mileage fast: Adam, Ava and Austin all open with it.',
+      ],
+    },
     sheet: {
       capital: 'A',
       lower: 'a',
@@ -146,6 +162,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Is cursive b written in one stroke?',
         a: 'Yes — one continuous motion without lifting the pencil: loop down, retrace, bowl, down, tail. Lifting after the loop is the habit that breaks the letter\'s rhythm.',
       },
+      {
+        q: 'Why does my cursive capital B look like the number 3?',
+        a: 'The two bowls came out the same width. Make the top bowl roughly two-thirds the size of the bottom one — unequal bowls read as B, equal bowls read as 3 wearing a loop.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -153,6 +173,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/l/', label: 'Cursive L — the pure tall loop' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital B in cursive',
+      paras: [
+        'The cursive capital B is a stem wearing two stacked bowls: an up-and-over loop at the top line, a stroke down to the baseline, then two rounded loops closing back against the stem — the top bowl smaller, the bottom bowl wider. Unlike print B, the letter is drawn in one continuous run (loop, down, bowl, bowl) with no pencil lift, and the whole left side is that single looped entry stroke rather than a straight vertical.',
+        'Its identity crisis is the numeral 3: when both bowls come out the same size, the eye reads a 3 with a loop on it. Keep the top bowl about two-thirds the width of the bottom and the letter snaps back to B. Loopier styles like D\'Nealian close the bowls with extra flourish; rounder, more upright Zaner-Bloser keeps the letter plainer — but the uneven-bowl rule holds in both, and it is the difference between a B and a costume.',
+      ],
+    },
     sheet: {
       capital: 'B',
       lower: 'b',
@@ -218,6 +245,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'What is the difference between cursive c and o?',
         a: 'The door. Cursive c ends open, with an exit stroke ready to connect; cursive o closes its circle at the top before exiting. If your c is closing, slow down the ending.',
       },
+      {
+        q: 'Is a cursive capital C just a bigger lowercase c?',
+        a: 'Essentially yes — same counterclockwise swing, same open door — plus one upgrade: the capital finishes with a small inward curl at the baseline. If you own the lowercase, you already own the capital.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -225,6 +256,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/g/', label: 'Cursive G — c with a tail' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital C in cursive',
+      paras: [
+        'The cursive capital C is the lowercase c at full height, and that is not laziness — it is design. The same counterclockwise swing (up and over to the left first, then down and around) builds both sizes, so the capital costs a learner nothing new once the lowercase is owned. The capital\'s one addition is a small inward curl where the stroke finishes at the baseline — a formal little tail the lowercase does not carry.',
+        'Direction is where self-taught writers go wrong: a clockwise C is a print habit, and it will fight every connection and every letter in the curve family that shares the opening. Keep the door open, too — a capital C that curls closed at the bottom is an O in costume. Say the same stroke words at both sizes ("over, around, open") and the two versions of the letter teach each other.',
+      ],
+    },
     sheet: {
       capital: 'C',
       lower: 'c',
@@ -290,6 +328,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does my d look like a printed d?',
         a: 'The ball-and-stick habit — drawing the bowl and stem as separate pieces. Slow the entry down and think "c that keeps climbing": one motion, no pencil lift.',
       },
+      {
+        q: 'How is cursive capital D different from print D?',
+        a: 'The cursive D has no straight vertical side: the left is a looped entry stroke and the right is one wide closing bowl, drawn without lifting the pencil. Print D\'s flat-sided, two-piece construction is exactly the habit cursive replaces.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -297,6 +339,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/g/', label: 'Cursive G — the family\'s tailed member' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital D in cursive',
+      paras: [
+        'A cursive capital D opens like a C that changes its mind: the stroke swings up and over at the top line, drops to the baseline, and instead of staying open, sweeps up and around into one wide bowl that closes exactly where the entry began. Compared with print D, the cursive version has no straight vertical side at all — the stem is the looped entry stroke, and the letter\'s entire right side is one proud curve.',
+        'Two things check a capital D\'s health: the bowl should sit on the baseline, not sag past it (a drooping D reads as a lowercase g from across the room), and it should be widest in its lower half, giving the letter a settled, grounded look. Because the entry stroke and the bowl meet at the same point, a D with a gap there looks unfinished — close it deliberately and let the curve do the rest.',
+      ],
+    },
     sheet: {
       capital: 'D',
       lower: 'd',
@@ -362,6 +411,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Does cursive capital E have a crossbar?',
         a: 'No — that is the print habit. The cursive E is a loop-and-retrace shape ending in an open tail; adding a crossbar is a mixed-style error teachers flag.',
       },
+      {
+        q: 'Why does cursive capital E look like a backwards 6?',
+        a: 'Because it is one — the top loop and the descending curve mirror the numeral almost exactly. That is the intended shape, not a mistake; the open tail at the baseline is what turns the mirror-image 6 back into an E.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -369,6 +422,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/f/', label: 'Cursive F — loops at both extremes' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital E in cursive',
+      paras: [
+        'The cursive capital E is the alphabet\'s best party trick: it looks like a backwards 6 with an open tail. The stroke swings up and over at the top line, turns a small loop downward, retraces past it, curves down to the baseline, and sweeps out to the right in an open curl. There is no crossbar and none of the print E\'s three arms — first-time viewers genuinely need to be told what they are looking at.',
+        'The error to watch for is the print reflex: hands that have written thousands of printed E\'s try to sneak a crossbar or a middle arm into the shape, and the cursive E wants neither. Trace it next to a written 6 once — seeing the mirror relationship locks the shape into memory faster than any verbal description, which is why that pairing shows up in classroom after classroom.',
+      ],
+    },
     sheet: {
       capital: 'E',
       lower: 'e',
@@ -434,6 +494,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why is cursive f considered hard?',
         a: 'It is the only lowercase that exceeds the space both above (tall loop) and below (descender tail) while adding a crossbar — three extremes in one continuous stroke. Slow tracing of the loop-tail rhythm sorts it out fast.',
       },
+      {
+        q: 'How do you tell cursive capital F from capital T?',
+        a: 'Architecture: capital F is a stem that gets crossed high near the top, while capital T is a wide top sweep with the stem hanging beneath it. The crossing stroke\'s high position is F\'s signature — a low cross reads as an error on both letters.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -441,6 +505,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/l/', label: 'Cursive L — the simple tall loop' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital F in cursive',
+      paras: [
+        'The cursive capital F runs on three moves: a small curl at the top line turning left, a straight sweep down the full height of the letter to the baseline, and a crossing stroke back to the right through the upper part of the stem, curving up into the exit. That crossbar is the letter\'s identity and its trap — it sits near the top of the stem, not the middle, and it is a curved crossing stroke, not the flat horizontal bar of print.',
+        'Tell capital F from capital T by the architecture: T\'s top is one wide sweep that the rest of the letter hangs beneath, while F is a stem that gets crossed high. Leave the crossbar off entirely and F collapses into an anonymous curl-stemmed squiggle — one of the three capitals (with G and S) teachers most often redraw on student work. Like every capital it connects to nothing, so the curved exit is pure flourish; enjoy it.',
+      ],
+    },
     sheet: {
       capital: 'F',
       lower: 'f',
@@ -506,6 +577,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does my g look like an a?',
         a: 'The downstroke stopped at the baseline instead of passing through it. Re-trace with the cue "through the line, then out" — the tail is just the stroke\'s momentum continuing.',
       },
+      {
+        q: 'How is cursive capital G different from capital C?',
+        a: 'The inward hook: capital C ends its curve with an open curl, while capital G hooks inward at the baseline and rises like a small j (some styles add a short bar through it). No hook, no G — that stroke is the whole letter.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -513,6 +588,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/q/', label: 'Cursive Q — the family\'s crossed tail' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital G in cursive',
+      paras: [
+        'The capital G in cursive is a C with a handshake: the same big counterclockwise curve as the capital C, and then, at the baseline where C would finish, the stroke hooks inward and rises like a small j. Some styles close with a short horizontal bar through that hook; others leave it bare. The hook is not decoration — in fast reading it is the only thing separating G from C.',
+        'Give the hook real height, rising at least to the letter\'s middle — a lazy nub of a hook leaves G looking like a C wearing a costume. And unlike print G, there is no enclosed bowl with a little spur; the cursive G stays open, its identity living entirely in that inward hook. Trace C and G side by side and the lesson teaches itself: one extra stroke, two different letters.',
+      ],
+    },
     sheet: {
       capital: 'G',
       lower: 'g',
@@ -578,6 +660,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does my h look like an l?',
         a: 'The hump is missing or too shallow to read — usually the downstroke went straight into the exit. Retrace the sequence: loop, down, UP to the middle line, over, down, tail.',
       },
+      {
+        q: 'Does the crossbar on cursive capital H connect into the second leg?',
+        a: 'In most American styles, yes — the level crossbar flows straight into the right downstroke as one continuous movement. Drawing two uprights and inserting a bar afterward is the print habit, not cursive.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -585,6 +671,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/b/', label: 'Cursive B — loop family, bowl ending' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital H in cursive',
+      paras: [
+        'The cursive capital H is a top loop, a leg, and a crossbar: swing up and over into the loop at the top line, come down to the baseline, cross at the middle line with a level bar, then make the second downstroke and exit. In the one-stroke tradition — the one most American programs teach — the crossbar flows directly into that right leg, so bar and leg are one continuous movement rather than two separate marks.',
+        'Its failure mode is a crossbar that climbs: the bar runs level, and a rising bar makes the whole letter look like it is shrugging. The print reflex is the other enemy — hands that learned H as three separate pieces (upright, upright, bar) tend to draw a stick H with a loop stapled on. H is a workhorse capital — Henry, Helen, Houston — and its top loop follows the universal loop rule: narrow as a sliver, never a hoop.',
+      ],
+    },
     sheet: {
       capital: 'H',
       lower: 'h',
@@ -650,6 +743,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Where does the dot on cursive i go?',
         a: 'Directly above the downstroke, on the slant line — not hovering to the right, not slashed. Traditional pedagogy adds dots in a single pass after writing the word.',
       },
+      {
+        q: 'Is a cursive capital I just a straight line?',
+        a: 'No — it is a top curl, a straight stem, and a small underhook at the baseline. The bare vertical stick is the print habit; the cursive I just keeps its hook much shallower than a J.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -657,6 +754,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/t/', label: 'Cursive T — the other dot-and-cross partner' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital I in cursive',
+      paras: [
+        'The cursive capital I is a curl, a stem, and a small underhook: a curl at the top line, a straight vertical drop to the baseline, and a restrained hook underneath toward the right. It is the most-used capital in the English language — every sentence-starting I pronoun is one — which makes it simultaneously the most practiced and one of the most frequently mangled.',
+        'Proportion is the entire letter. The hook is a nub that barely lifts off the baseline; depth belongs to J, which sweeps fully underneath. And a bare vertical stick with no curl and no hook is not a cursive I — it is print leaning over. Because I appears in nearly every line a writer produces, a sloppy one multiplies fast; a slow, deliberate half-dozen on tracing rows pays for itself immediately.',
+      ],
+    },
     sheet: {
       capital: 'I',
       lower: 'i',
@@ -722,6 +826,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'How is cursive j different from g?',
         a: 'j has no bowl — it is a bare stroke with a tail and a dot, while g wraps its tail beneath a closed a-bowl. Straight dive vs curve-then-dive is the visual tell.',
       },
+      {
+        q: 'How deep should the sweep on a cursive capital J go?',
+        a: 'Clearly below the baseline before it hooks left — if the curve stops at the line, you have written an I. Let the sweep own the descender lane without touching the writing line beneath, then rise back to the right for the exit.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -729,6 +837,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/i/', label: 'Cursive I — j without the dive' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital J in cursive',
+      paras: [
+        'The cursive capital J is the grandest single gesture in the alphabet: a curl at the top line, then one continuous sweep down the full height of the letter, past the baseline, hooking left beneath, and finishing with an exit stroke rising back to the right above the hook. No other capital commits so much ink below the line.',
+        'Its error is timidity. Writers brake at the baseline — as every capital-I instinct tells them to — and produce a shallow, apologetic letter. The J\'s sweep should pass clearly below the baseline before it hooks; trace it with the row beneath visible and check the depth against it. The capital earns its drama through use: January, June and July put it at the head of half the school year\'s calendar, so give the sweep room to breathe.',
+      ],
+    },
     sheet: {
       capital: 'J',
       lower: 'j',
@@ -794,6 +909,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Is cursive k one stroke or two?',
         a: 'One, without lifting: loop down, retrace, knot, exit. The knot feels like a separate motion at first, but keep the pencil down — lifting is what makes the knot clumsy.',
       },
+      {
+        q: 'Is cursive capital K written like a print K?',
+        a: 'No — after the looped stem, the middle of the letter is a small inward loop that kicks out into the leg. Two straight diagonals off a stem is the print reflex; the little loop is what makes the capital cursive.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -801,6 +920,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/b/', label: 'Cursive B — loop plus bowl' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital K in cursive',
+      paras: [
+        'The cursive capital K shares its opening with half the alphabet — a loop at the top line, a stroke down to the baseline — and then goes its own way: a small inward loop at the middle line that kicks out into a diagonal leg. That little inward loop is the letter\'s cursive credential. Hands trained on print K try to skip it and draw two straight diagonals off the stem, which produces fine handwriting but not cursive.',
+        'Keep the inward loop on the same diet as every other loop in the script — small, a sliver, barely closing — because a loop that grows turns the letter into a crowded R. And that is the practical comparison: capital R closes a round bowl against its stem before kicking into its leg, while K ties an open little knot and kicks straight out of it. Kevin, Kate and kindergartners\' own names keep this capital in weekly rotation.',
+      ],
+    },
     sheet: {
       capital: 'K',
       lower: 'k',
@@ -866,6 +992,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Which letters are built from the l stroke?',
         a: 'h (loop + hump), b (loop + bowl), k (loop + knot) and f (loop + descender + crossbar) all begin with the identical tall loop — mastering l pre-loads the whole loop family.',
       },
+      {
+        q: 'Why does cursive capital L have such a long tail?',
+        a: 'It is the letter\'s signature — the widest exit stroke of any capital, roughly as wide as the letter is tall and rising slightly at the end. Capitals never connect, so the sweep is pure flourish: long enough to declare itself, short enough to let the next word breathe.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -873,6 +1003,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/f/', label: 'Cursive F — l at both extremes' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital L in cursive',
+      paras: [
+        'The cursive capital L is a loop that becomes a wave: the same top loop as the lowercase l, a retrace down to the baseline, and then the widest exit stroke of any capital — a horizontal sweep roughly as wide as the letter is tall, rising slightly at its end. Compared with print L there are no corners and no foot; the whole letter is one flowing gesture from loop to wave.',
+        'The tail is the calibration. Too short and the capital reads as a grown-up lowercase l; too long and it invades the next word\'s space on the line. Aim for letter-width, ending with the slight upward lift that keeps the stroke looking intentional. Library, Love and Luck keep this capital in front of classrooms all year — it is one of the first capitals children actually want to write, because it signs so many good words.',
+      ],
+    },
     sheet: {
       capital: 'L',
       lower: 'l',
@@ -938,6 +1075,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'How many strokes is cursive m?',
         a: 'One continuous stroke: down, up-over (hump one), up-over (hump two), tail. No pencil lift — retracing the same line is what keeps the humps connected.',
       },
+      {
+        q: 'How many humps does a cursive capital M have?',
+        a: 'Exactly two, same as the lowercase — a third hump is autopilot drift, not a style choice. Counting aloud while tracing ("one, two, out") is the standard classroom fix.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -945,6 +1086,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/w/', label: 'Cursive W — valleys instead of hills' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital M in cursive',
+      paras: [
+        'The cursive capital M is the lowercase m at full scale: a curve in at the top line, a stem down to the baseline, then two retrace-and-hump sequences exactly like the small letter\'s, finishing with the exit tail. It is among the easiest capitals to teach precisely because it invents nothing — a child who owns lowercase m already owns the motion and only needs to stretch it.',
+        'The letter\'s whole discipline is the count: exactly two humps. On autopilot the hand drifts into a third, and a three-humped M is one of the most common capital errors on classroom walls. Say "one, two, out" while tracing and the count installs itself. Compared with print M there are no separate peaks drawn as pieces — the cursive M is one continuous road, loop to tail, without lifting the pencil.',
+      ],
+    },
     sheet: {
       capital: 'M',
       lower: 'm',
@@ -1010,6 +1158,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'What\'s the difference between cursive n and m?',
         a: 'Hump count: n has one, m has two. They share the same entry, the same retrace, the same ceiling — m is just n asked to repeat itself.',
       },
+      {
+        q: 'Is cursive capital N one stroke?',
+        a: 'Yes — curve in, stem down, retrace up and over one hump, then down and out: one continuous stroke with no pencil lift. The three-piece print N (two uprights plus a diagonal) is exactly the habit cursive replaces.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1017,6 +1169,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/r/', label: 'Cursive R — the half-hump sibling' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital N in cursive',
+      paras: [
+        'The cursive capital N is its lowercase stretched to full height: curve in at the top line, stem down to the baseline, one retrace-hump rising to the letter\'s middle, then down and out into the exit tail. Like M, it is a free capital — the only new skill is scale, and most learners write a serviceable one within minutes of mastering the small letter.',
+        'The enemy is the print reflex: two separate uprights with a diagonal inserted between them, drawn as three pieces. The cursive N is one continuous road — entry, down, up-and-over, down, tail — and when the pieces are drawn separately the letter visibly loses its flow. Noah, Natalie and November give it steady work; so does every "No" ever written at the head of a sentence.',
+      ],
+    },
     sheet: {
       capital: 'N',
       lower: 'n',
@@ -1082,6 +1241,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does my o look disconnected from the next letter?',
         a: 'The exit left from the baseline instead of the top. Cursive o closes its circle and departs from the summit — a small rightward tail at the middle line.',
       },
+      {
+        q: 'How do you keep cursive capital O and capital Q straight?',
+        a: 'The tail decides: a bare closed oval is O, while Q sweeps a tail from its right side down past the baseline before curling. If the letter carries a tail, it is a Q — O never has one.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1089,6 +1252,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/a/', label: 'Cursive A — the family\'s workhorse' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital O in cursive',
+      paras: [
+        'The cursive capital O is a full-height oval closed at the top, with its exit tail flicking right from the summit — the same departure quirk as the lowercase, at scale. And it obeys the family\'s direction law: counterclockwise, up and over to the left first, the identical opening that builds c, a, d and g. The capital is not a new letter to learn; it is the family\'s curve drawn at full height.',
+        'Most adults draw a print O clockwise without ever noticing, and that habit is the capital\'s one real trap — a clockwise cursive O fights the slant and looks subtly wrong next to its family. Trace it big and slow, watching the direction, then check its neighbors: the letter it most gets confused with is Q, which is an O that grew a tail from its right shoulder. No tail, no Q.',
+      ],
+    },
     sheet: {
       capital: 'O',
       lower: 'o',
@@ -1154,6 +1324,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does my p look like an n on a stick?',
         a: 'The stem is too short — barely clearing the baseline. Give the stem its full dive before retracing; the hill needs its signpost.',
       },
+      {
+        q: 'Why does my cursive capital P look like an F?',
+        a: 'The bowl is not closing. Capital P\'s bowl must curve all the way back to touch the stem near the middle of the letter; capital F crosses high with an open stroke instead. Finish the curve and the letter reads as P instantly.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1161,6 +1335,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/q/', label: 'Cursive Q — the other straight diver' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital P in cursive',
+      paras: [
+        'The cursive capital P is a loop, a stem, and a bowl that comes home: swing up and over into the loop at the top line, come down to the baseline, then retrace up and bowl around to the right, closing back against the stem near the letter\'s middle. Unlike print P — a stick with a hat lowered onto it — the cursive bowl grows out of the retrace stroke itself, and the letter is drawn without lifting the pencil.',
+        'Its reading risk is with capital F: both are loop-plus-stem letters, and the difference is what happens at the middle. P\'s bowl closes fully, meeting the stem again before the letter ends; F crosses high with an open, flourishy stroke and never closes. If a traced P keeps drifting toward F, the bowl is quitting early — finish the curve until it touches home. P also opens Please, which makes it one of the first capitals with social obligations.',
+      ],
+    },
     sheet: {
       capital: 'P',
       lower: 'p',
@@ -1226,6 +1407,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does cursive q look like an 8?',
         a: 'The bowl plus the round-trip tail form two stacked closed shapes — many American styles teach it as "a small 8 that starts like a." The description sticks because the shape is honest.',
       },
+      {
+        q: 'Does cursive capital Q look like the number 2?',
+        a: 'In several American styles, yes — the right-side tail curls in a way that mirrors a 2, and Zaner-Bloser\'s print Q is famous for the same shape. The form is correct; just make sure the tail clearly leaves the oval so the letter reads as Q rather than O.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1233,6 +1418,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/a/', label: 'Cursive A — the shared opening' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital Q in cursive',
+      paras: [
+        'The cursive capital Q is a big counterclockwise oval — drawn exactly like the capital O, closed at the top — with a tail that sweeps from the oval\'s right side down past the baseline, finishing in an open curl. Loopier styles close that sweep into a figure-8 flourish; plainer styles leave the curl open. Both are standard American forms; pick the one the school\'s program uses and stay consistent.',
+        'Of all the capitals, Q collects the most "wait, that\'s a Q?" reactions — the tail\'s rightward curl genuinely resembles a numeral 2 in several styles, and Zaner-Bloser\'s print Q is famous for exactly that shape. The resemblance is not an error. The one real rule is commitment: the tail must leave the oval decisively and clear it before curling, because a tail that hugs the oval leaves the letter reading as an O in costume.',
+      ],
+    },
     sheet: {
       capital: 'Q',
       lower: 'q',
@@ -1298,6 +1490,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'How do you connect r to other letters?',
         a: 'Its exit tail is short and high, so r links cleanly into vowels (ri, re, ra) with a shallow join — one reason "are," "red" and "run" are standard early connected words.',
       },
+      {
+        q: 'Where does the leg start on a cursive capital R?',
+        a: 'At the bowl\'s closing point against the stem — mid-letter, not at the baseline. Launching the kick from the floor is the stumble that makes the letter look broken; begin it the moment the bowl closes.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1305,6 +1501,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/p/', label: 'Cursive P — the capital minus the kick' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital R in cursive',
+      paras: [
+        'The cursive capital R is a P that learned to kick: the same top loop, the same stem, the same bowl closing against the stem — and then, from exactly that closing point, a diagonal leg launches out to the right. Everything elegant about the letter lives in that launch: the kick leaves from mid-letter, where bowl meets stem, not from the baseline.',
+        'A leg that starts too low drags the whole letter into a stumble — the classic capital R error — so trace the sequence as loop, stem, bowl, then kick, and let the kick begin the moment the bowl closes. Compared with print R, nothing is assembled from pieces: the cursive letter flows loop into stem into bowl into leg without a pencil lift. Ryan, Rachel and every Thursday keep it in heavy rotation.',
+      ],
+    },
     sheet: {
       capital: 'R',
       lower: 'r',
@@ -1370,6 +1573,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Does cursive s connect to t and h?',
         a: 'Constantly — st, sh, sk and sp are English workhorses. The s exit tail is deliberately flat and low, the perfect hinge for letters that start with a downstroke.',
       },
+      {
+        q: 'Is cursive capital S just a bigger lowercase s?',
+        a: 'The skeleton is the same swan in profile — the capital adds scale, a more open entry swing, and the full two-line height. Writing it too small is the classic error; give the letter its whole height and slow the stroke.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1377,6 +1584,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/g/', label: 'Cursive G — the other red-pen capital' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital S in cursive',
+      paras: [
+        'The cursive capital S keeps the print letter\'s skeleton and teaches it to flow: a swing in at the top line, one big S-bend sweeping down through the middle, and an open curl out at the baseline to the right. Drawn at full height in a single gesture, it is less a new shape than the old one with entry and exit strokes grafted on.',
+        'It is also, with G and F, one of the three capitals teachers most often redraw on student work — the alphabet\'s prima donna. The error is almost always size: a half-height capital S looks cramped and juvenile, while the letter wants its full two-line height and a slower stroke. Trace it large several times before attempting it in words; Sunday, Saturday and September will thank you.',
+      ],
+    },
     sheet: {
       capital: 'S',
       lower: 's',
@@ -1442,6 +1656,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does cursive t start from the top?',
         a: 'Its entry stroke arrives from above — a small curl over the top — so the letter flows into downstroke letters like no baseline-entry letter can. That curl is also what keeps t distinct from a short l.',
       },
+      {
+        q: 'How is cursive capital T different from print T?',
+        a: 'Print T assembles a horizontal bar and a separate upright; the cursive T curls in and makes its whole top in one sweeping gesture before dropping to the baseline. No separate crossbar exists — and no second stroke is needed.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1449,6 +1667,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/f/', label: 'Cursive F — the other crossed letter' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital T in cursive',
+      paras: [
+        'The cursive capital T makes its entire top in one horizontal gesture: the stroke curls in at the top line, sweeps left into a wide loop or wave, and only then drops to the baseline and runs out into the rightward tail. There is no separate crossbar to add afterward — the sweep at the top is the crossbar, built into the letter\'s first movement.',
+        'That construction is the difference from print T, which assembles a bar and a stem as two pieces. The cursive letter\'s calibration is width: the top should run about as wide as the letter is tall — a gate, not a fence. Too small and the capital reads as a bare stem with ideas; too big and it bullies the next word. Tuesday, Thursday and Thank you keep it in constant classroom service.',
+      ],
+    },
     sheet: {
       capital: 'T',
       lower: 't',
@@ -1514,6 +1739,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does my u look like a saucer?',
         a: 'The walls leaned inward — usually the slant drifting between strokes. Trace over marked slant lines until both walls stand at the same angle; the cup does the curving, not the walls.',
       },
+      {
+        q: 'Why are there two ways to write cursive capital U?',
+        a: 'Both are standard in American classrooms: the traditional bowl version sweeps under in one continuous curve, and a plainer twin-stem version stays closer to print. Neither is wrong — match the school\'s style and stay consistent.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1521,6 +1750,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/v/', label: 'Cursive V — the cup\'s sharp cousin' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital U in cursive',
+      paras: [
+        'The cursive capital U legitimately comes in two versions, and both appear in American classrooms. The cursive-traditional bowl runs curve in at the top line, down to the baseline, sweep under and back up to the top, then down again into the exit tail — a continuous road with a valley. The plainer twin-stem version keeps two uprights joined by the under-curve, closer to print but still drawn without lifting.',
+        'Either way, the letter is one road, which is the real difference from print U\'s stick-stick-curve assembly. The version worth checking in student work is the second wall: it must mirror the first in height and slant, or the letter lists to one side. Trace against marked slant lines until both walls stand at the same angle — the valley does the curving, never the walls.',
+      ],
+    },
     sheet: {
       capital: 'U',
       lower: 'u',
@@ -1586,6 +1822,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does my v look like a u?',
         a: 'The valley rounded off — the turn needs a corner. Slow the downstroke\'s ending so the change of direction is a decision, not a drift.',
       },
+      {
+        q: 'Why does cursive capital V have curls at the top?',
+        a: 'They are the standard cursive entry and exit gestures — the same little swing every lowercase letter opens with, scaled up. Without the curls the letter is just two printed diagonals; with them it belongs to the script.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1593,6 +1833,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/y/', label: 'Cursive Y — the valley that dives' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital V in cursive',
+      paras: [
+        'The cursive capital V is a top curl, a sharp diagonal down to a point at the baseline, a climb back up to the top line, and a small finishing curl into the exit tail. The point is the entire letter: where capital U rounds its floor into a valley curve, V turns on a corner — same two walls, completely different basement.',
+        'Those top curls are not optional decoration; they are the standard cursive entry gesture on capitals that begin with a slant stroke, the same way every lowercase opens with its little swing. The letter\'s one health check is the floor: the point must touch the baseline exactly. A valley that floats above the line drifts back toward a shallow, apologetic U — trace with the baseline visible and land the corner on it every time.',
+      ],
+    },
     sheet: {
       capital: 'V',
       lower: 'v',
@@ -1658,6 +1905,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Is cursive w just two v\'s?',
         a: 'Exactly — same point turn, same ceiling, written twice in one stroke. Every fix that works on v installs on w for free.',
       },
+      {
+        q: 'How is cursive capital W different from capital M?',
+        a: 'Floor versus ceiling: M\'s two humps are retraced arches rising to the letter\'s middle from a stem, while W\'s zigzag runs full height — valley points on the baseline, peaks on the top line. If the letter touches the floor twice, it is a W.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1665,6 +1916,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/u/', label: 'Cursive U — the cupped contrast' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital W in cursive',
+      paras: [
+        'The cursive capital W is the capital V written twice without stopping: curl in at the top, down to a valley point, up, down to a second valley point, then up and out into the exit tail. It is one of the widest capitals in the alphabet and needs every bit of that width — a compressed W crams its two valleys until the letter reads as a stack of slashes.',
+        'The distinction that matters in practice is W versus capital M, its upside-down neighbor. M\'s two humps are retraced arches rising from a stem to only the letter\'s middle; W\'s zigzag runs the full height, valley points touching the baseline and peaks touching the top line. Count the floor-touches — W has exactly two — and keep both valleys and both peaks matched, because symmetry is the entire job.',
+      ],
+    },
     sheet: {
       capital: 'W',
       lower: 'w',
@@ -1730,6 +1988,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why does my cursive x look printed?',
         a: 'Missing exit tail, missing top curls. Cursive x flows out of its crossing — add the tail on the lowercase and the curls on the capital and the letter rejoins the script.',
       },
+      {
+        q: 'Is cursive capital X one stroke or two?',
+        a: 'Two, each opening with a top curl: the first slants down-right, the second slants down-left through it near the middle and continues into the exit tail. The crossing plus the curls is the whole letter — bare sticks are print.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1737,6 +1999,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/y/', label: 'Cursive Y — the other hill descender' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital X in cursive',
+      paras: [
+        'The cursive capital X is one of the few capitals honest about being two strokes: curl in at the top line and slant down to the baseline; then curl in at the top again and slant down-left, crossing the first stroke near the middle, continuing into the exit tail. What separates it from a printed X is entirely in the trim — the mirrored curls opening both strokes and the tail that flows out of the crossing.',
+        'Bare crossing diagonals are the print reflex, and they are the habit to drop: without its curls the letter stops matching anything around it on the page. X earns its keep outside of words more than in them — signatures, "X the box," the occasional Xylophone — which makes it a low-pressure letter to teach slowly and trace large. Get the crossing at the middle of both strokes and the curls at both tops, and the letter is done.',
+      ],
+    },
     sheet: {
       capital: 'X',
       lower: 'x',
@@ -1802,6 +2071,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'How does y connect to the next letter?',
         a: 'Its tail swings left below the baseline, then the exit rises right back to the baseline to meet the next letter — the same hook-and-return rhythm as g and j.',
       },
+      {
+        q: 'Why does cursive capital Y sometimes have a loop at the bottom?',
+        a: 'Fancier one-stroke styles swing the tail into a descender loop beneath the letter, while the common two-stroke classroom version keeps a plain tail. Both are standard — what matters is that either one passes below the baseline before exiting.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1809,6 +2082,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/g/', label: 'Cursive G — the dive from a bowl' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital Y in cursive',
+      paras: [
+        'The cursive capital Y that most American programs teach is the two-stroke version: a small top loop and a slant down to the baseline, then a second slant from the top line that crosses the first and keeps going — past the baseline, into a tail, and out to the right. The letter\'s center of gravity lives below the line, exactly like its lowercase.',
+        'Ornamental one-stroke variants swing that descent into a full loop beneath the letter, and both forms are legitimate; what neither forgives is a tail that loses its nerve at the baseline. A capital Y that stops at the line is an unfinished, V-adjacent thing. Trace it beside the lowercase y and let the shared dive rule do the teaching — through the line, then out.',
+      ],
+    },
     sheet: {
       capital: 'Y',
       lower: 'y',
@@ -1874,6 +2154,10 @@ export const cursiveLetters: CursiveLetterDef[] = [
         q: 'Why is z taught last?',
         a: 'It is rare in words and adds no new skill — by the time a learner reaches it, everything z does has been learned twice over. Programs keep it for the finish line.',
       },
+      {
+        q: 'How is cursive capital Z different from print Z?',
+        a: 'Same zigzag skeleton, different grammar: the cursive Z opens with a looped or waved top swing, runs its diagonal corner to corner with rounded corners, and finishes with an exit tail along the baseline. The shape is familiar; the entry and exit strokes are what make it cursive.',
+      },
     ],
     related: [
       { href: '/cursive-alphabet/', label: 'Full cursive alphabet chart (all 26 letters)' },
@@ -1881,6 +2165,13 @@ export const cursiveLetters: CursiveLetterDef[] = [
       { href: '/cursive/y/', label: 'Cursive Y — the hill that dives' },
       { href: '/cursive/', label: 'Cursive hub' },
     ],
+    extraSection: {
+      heading: 'Capital Z in cursive',
+      paras: [
+        'The cursive capital Z keeps the print letter\'s zigzag skeleton and wraps it in the script\'s grammar: a swing in at the top line with a loop or wave, a diagonal running corner to corner down to the baseline, then a sweep right along the line into the exit tail. Loopier styles make the top a little ticket-scroll; plainer styles keep it a soft wave — both are standard American forms.',
+        'The diagonal is the letter\'s spine and the place it goes soft: it should run at the letter\'s full height, corner to corner, without sagging into the middle. Z is the traditional finish line of the alphabet — most programs teach it last, which makes it the letter that gets the ceremony. Finish with real words (jazz, buzz, zebra, zip) rather than one final row of lonely letters, and the whole alphabet lands.',
+      ],
+    },
     sheet: {
       capital: 'Z',
       lower: 'z',

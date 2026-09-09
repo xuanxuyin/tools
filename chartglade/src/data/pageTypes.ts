@@ -13,6 +13,8 @@ export interface PageDef {
   introHeading: string;
   /** Hand-written teaching facts — the anti-thin-content layer. */
   intro: string[];
+  /** Optional second prose block (cursive letters: the "capital X in cursive" deep-dive). */
+  extraSection?: { heading: string; paras: string[] };
   /** Small print hint above the sheet, e.g. 'Fits one letter page, portrait.' */
   printNote: string;
   tips: { title: string; body: string }[];

@@ -67,7 +67,7 @@ Astro 5 纯静态 SSG + 原生 TS islands（无框架）+ 原生 CSS tokens + �
 
 > 作战计划 `docs/chartglade/PLAN.md` · 分发手册 `docs/chartglade/DISTRIBUTION.md`（每日工作当天更新进 PLAN）
 
-免费教学打印图表站（printables）：4 支柱簇 + 散页 + 3 hubs + **cursive 单字母矩阵 26 页（/cursive/a/~/z/）= 53 页**，22 测试全绿。关键词池 251K US/月（cursive alphabet 201K 量王 / place value chart 27.1K / kindergarten sight words 12.1K / multiplication chart 12.1K），调研档在 `research/cheat-sheet-data.md`。
+免费教学打印图表站（printables）：4 支柱簇 + 散页 + 3 hubs + **cursive 单字母矩阵 26 页（/cursive/a/~/z/，每页含 "Capital X in cursive" 变体段）= 53 页**，23 测试全绿。关键词池 251K US/月（cursive alphabet 201K 量王 / place value chart 27.1K / kindergarten sight words 12.1K / multiplication chart 12.1K）+ 单字母族实测 12 词 219K，调研档在 `research/cheat-sheet-data.md`。
 
 - **页面即打印件**：`@media print` 剥成一张 letter 纸（`.printable` 系统、landscape 子页给宽表格、`.sheet-break` 双页套打）；`[data-print]` → `window.print()`
 - **数据驱动**：`src/data/*.ts` 每页一条 PageDef（内容/SEO/FAQ/tips 全在数据里）→ `ChartPage.astro` 唯一模板 + `components/printables/*` 渲染；加图表页 = 数据文件加一条 + 一个 find-by-slug wrapper，Footer/hub 自动带出。**单字母矩阵走动态路由** `pages/cursive/[letter].astro`（getStaticPaths 遍历 `cursiveLetters.ts`，LetterSheet 扩展字段给打印组件：capitalSteps/lowerSteps/pitfall）

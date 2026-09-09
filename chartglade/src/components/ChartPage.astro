@@ -92,6 +92,13 @@ if (def.interactive) {
     {def.intro.map((p) => <p>{p}</p>)}
   </section>
 
+  {def.extraSection && (
+    <section class="prose">
+      <h2>{def.extraSection.heading}</h2>
+      {def.extraSection.paras.map((p) => <p>{p}</p>)}
+    </section>
+  )}
+
   <section class="section tips">
     <h2>Teaching tips</h2>
     <div class="tip-grid">

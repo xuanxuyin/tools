@@ -1,17 +1,17 @@
 # chartglade 作战文档
 
-> 本项目唯一计划文档 · 更新 2026-09-06 · 部署/运维细节见仓库根 [README.md](../../README.md)
+> 本项目唯一计划文档 · 更新 2026-09-09 · 部署/运维细节见仓库根 [README.md](../../README.md)
 > 原则：本文档没写的 = 没计划；做完的立刻勾掉并写日期。
 
 ## 0. 北极星
 
 **GSC 28 天曝光数（impressions）环比增长**。变现节点：自然流量稳定 ~300 访问/天 → 接广告（当前零广告代码）。
 
-一句话现状：**上线当天（2026-09-05）完成全部上线动作并扩容到 53 页**（27 基础页 + cursive 单字母矩阵 26 页），22 测试全绿，GSC 已收录 26 条 sitemap URL，进入「等收录」阶段。上线时点正落在美国**开学使用高峰**（8 月中~10 月，老师全年搜打印件最凶的窗口）—— 不是错过开学季，是正在其中。
+一句话现状：**上线当天（2026-09-05）完成全部上线动作并扩容到 53 页**（27 基础页 + cursive 单字母矩阵 26 页），9/9 变体段加码后 23 测试全绿，sitemap 53 条已提交（9/5 首提时 26 条被发现），**实际编入 ~5 条**（9/9 site: 实查）；9/8 GSC 官方邮件确认曝光数据 **9/5 起已在收集**（部分查询已展示本站页）；9/9 首查累计曝光 **13**【实测 GSC】（疑似多为自操作查询，噪音级，9/12 §3 #4 复查时一并看查询明细）—— 进入「等曝光冒头」阶段。上线时点正落在美国**开学使用高峰**（8 月中~10 月，老师全年搜打印件最凶的窗口）—— 不是错过开学季，是正在其中。
 
 ### 目标阶梯（三档情景，2026-09-05 按基率校准 —— 不是预测承诺）
 
-> **先认基率**：printables 赛道同样多数新站一年无声无息；且**单字母族搜索量还没实测**（26 页矩阵是赌注不是数据）。下表 = "论点成立时的路径"；**真正管用的是三档判定 + 止损线**，到点落哪档执行 §6 对应动作。
+> **先认基率**：printables 赛道同样多数新站一年无声无息。~~单字母族搜索量还没实测~~ **已实测（2026-09-06）：6 裸词均值 ~33K/月 = 阈值 33 倍，论点成立档（§2 落位）**。下表 = "论点成立时的路径"；**真正管用的是三档判定 + 止损线**，到点落哪档执行 §6 对应动作。
 
 | 时点 | 悲观（多数站的命） | 基准（论点成立） | 乐观 |
 |---|---|---|---|
@@ -22,7 +22,7 @@
 
 **止损线**：**2027-01-31 复盘**，28 天曝光 <3K **且** 单字母族零词进 top 30 → 停止新增投入（站保留零成本），主力转下一站；在此之前不加页、不花钱。
 
-> 与 tintbrew 的差别：词池更大（251K）但 SERP 更硬（教育站在位）、单字母族量未实测；起量更依赖矩阵页数与季节脉冲；变现线同 300 访问/天。
+> 与 tintbrew 的差别：词池更大（基础 251K + 单字母族实测 12 词 219K）但 SERP 更硬（教育站在位）；起量更依赖矩阵页数与季节脉冲；变现线同 300 访问/天。
 
 ## 1. 已完成（时间线）
 
@@ -52,15 +52,25 @@
 | 2026-09-07 | **分发文案包两件交付**（任务 #2/#3 Claude 侧清零）：26 字母 pin 文案全表入 DISTRIBUTION.md §1.4（钩子句逐条取自每页 "#1 mistake" 实文 = pin 与落地页首屏一致）；目录站三家（Uneed/Peerlist/AlternativeTo）提交字段对照 + AlternativeTo 一句话文案补入 §2，剩用户侧提交 |
 | 2026-09-07 | **移动端响应式热修上线（main 直推，用户拍板）**：用户手机实测反馈"不适配"触发 —— 审计发现全站 **0 个屏幕断点**（唯一 @media 是 print），13 列乘法表/位值表/双栏 stroke-steps 靠横向滚动硬撑。加 ≤40rem 断点（表格缩字号压到 ~25px/列、stroke-steps 单栏、大字形缩小、头部收紧），cherry-pick 热修推 main 即时部署。**纯 CSS 零加页，不破 10/05 批纪律**；动机 = Google mobile-first 索引正在评估手机版 + Pinterest 流量 9 成手机。v1.6-predev 已 merge main 同步 |
 | 2026-09-07 | **cursive 26 字母页 canonical 事故热修上线（main 直推 `3bc1efd`）**：用户 GSC 收录数疑问触发线上全面体检——发现 /cursive/a/~/z/ 的 canonical/og:url/面包屑 JSON-LD **全指向不存在的 /a/ 类 404 URL**【实勘 curl】，根因 = ChartPage 拼 `/${def.slug}` 而字母页真实路径是 /cursive/<slug>/（sitemap 一直正确，页面自声明错 = 半个站告诉 Google"我的规范地址是死链"）。修法：PageDef 增可选 `path` 覆盖位 + ChartPage 统一取 `pagePath` + [letter].astro 注入 `/cursive/${slug}`。47 测试绿，dist 抽查 a/z 自指，部署后线上实测自指✅。**归因【推断】**：收录停在 26/51 且两日走平（9/6→9/7），26 恰≈非字母页数——字母页被 canonical 指死链压在管道外是最大嫌疑。**后果修正**：9/12 复查 45+ 预期作废（bug 影响窗口 09-05~09-07），9/19 收录门判定计入此事故；用户侧补 request indexing 26 页加速重抓（TASKS 9/8） |
-
+| 2026-09-08 | GSC 官方邮件确认：**9/5 起已开始收集搜索曝光数据**（网页已在部分查询中展示）—— 上线→被展示链路走通，效果报告开始积累数据；邮件本身不带数字，有价值的是效果报告里冒出的查询词（每日例行盯） |
+| 2026-09-08 | Request indexing 5 个 URL 全部完成（用户 GSC 操作）；**Pinterest 全量 30 条 pin 文案包**落盘 [PINTEREST-PINS.md](./PINTEREST-PINS.md)（26 字母逐字母钩子，基于 cursiveLetters.ts 真实内容非模板；7 周排期，AITDK 量落地后按量重排）；DISTRIBUTION.md §2.1 目录站文案升级为逐平台表单级（Uneed / Peerlist launch 帖 / AlternativeTo 三竞品位一句话）—— 只剩 👤 提交动作 |
 | 2026-09-08 | **GSC"0 已编入索引"排查（用户报告触发，site: 仅 4 条）**：线上体检全绿【实勘 curl】—— 主域 200 / www 301 / robots Googlebot 放行（CF 托管段只封 AI 爬虫，Google-Extended ≠ Googlebot 不影响搜索索引）/ sitemap 52 条含全部字母页 / 首页 + /cursive/a/ + /cursive/z/ + /cursive-alphabet/ canonical 全自指 / 旧死链 /a/ 维持 404。**判定：技术侧不存在任何可致全站掉索引的因子**，"0"最大嫌疑 = 9/7 同款切片读数坑 + 索引报告 1~2 天数据延迟；site: 3→4 条 = 滞后粗信号微涨非下跌。**已实锤【实测 9/8】：URL 检查工具抽查首页 / /cursive-alphabet/ / /place-value-chart/ 三条全部"网页已编入索引" → 报告读到的"0"确认为切片读数坑/数据延迟，非真实掉索引**；9/12 复查照旧走 sitemap 视图。收录慢的结构性原因之一 = 零外链（Pinterest/目录站均未落地），本周分发任务同时是收录加速器。**request indexing 当日启动，配额提前耗尽，余量 9/9 起从断点接续**（配额 PT 午夜重置 ≈ 北京 15:00，不影响 9/12 复查判定——复查看爬取恢复趋势，不要求全量提交完）。**CF Analytics 首基线【实测 9/8】：visits 42 / page views 57 / load 678ms —— 搜索/外链/社媒渠道全部为 0 的阶段，42 大概率=自访计数（同 tintbrew 自搜教训），非用户信号；678ms 为真实健康技术指标；后续真实流量以 GSC 曝光先行，CF 曲线用于对减此基线** |
+| 2026-09-09 | 竞品页实勘（用户担心 K5 体量触发）：K5 letter-f 页 = 正文一句话 + 5 个 PDF 下载链接 + 会员墙（2019 年页龄），零"怎么写"答案内容 → worksheet 下载意图我们不打（原判不变）、名词答案意图 K5 不认真服务（主攻不变）；与量实测互相印证：池是真的 + 缝隙是真的 |
+| 2026-09-09 | GSC 曝光首记：累计 **13**【实测 GSC，上线以来】—— 量级噪音级且疑含自操作查询；查排名纪律同 tintbrew：只用 GSC 查询报告，不手动 Google 搜词 |
+| 2026-09-09 | **字母页变体段上线（§3 #13 同任务，commit `3cbf225`，main 直推）**：26 字母页各增 "Capital X in cursive" 深读段（每字母 2 段手写非模板）+ 大写专属 FAQ；/cursive-alphabet/ 增 chart↔字母页接客段 + 2 FAQ + /cursive/f/ 内链；实现走 PageDef 可选 `extraSection`（模板通用，打印输出零影响——`@media print` 不打 .prose）；53 页 build + **23 测试绿**（含新增变体段断言测试），push 自动部署 CF Pages。**注：与 v1.6-predev 的 #13 措辞改动同源不同实现，两分支合并时需去重核对** |
+| 2026-09-09 | GSC 索引报告疑问（用户报）：已编入 **0** / 未编入 **4** —— 与效果报告矛盾（9/5 起有曝光 = 有页面实际在 Google 服务中）。判定：**索引覆盖报告快照滞后**（新站 4 天常见，报告顶部"上次更新"可证）+ 本地源码核查排除技术原因（仅 404 noindex，canonical 全站规范）。以单条网址检查 + site: 为准，9/12 §3 #4 对数（9/8 已用 URL 检查实锤切片读数坑，见上） |
+| 2026-09-09 | 目录站三渠道提交完成（用户操作）：Uneed + Peerlist + AlternativeTo，全部进入审核期（AlternativeTo 审核数周常态；其中 AlternativeTo 含 9/8 已做的双向挂竞品）—— 两站外链均从 0 → 3 提交在途 |
+| 2026-09-09 | **site: 实查 = 5 条**【实勘 用户查】—— 高度疑 = 9/8 手动请求的 5 条优先编入（哪 5 条待确认）；其余 ~48 页处「已发现/已抓取-未编入」= DR0 新站第 4 天常态，非故障。加速手段：每日 request indexing 配额 ~10 条，按量优先请求 z(40.5K)/b(27.1K)/k(27.1K)/x(9.9K) 等高量字母页；根本解仍是页龄 + 外链。9/12 §3 #4、9/19 §6 节点看趋势 |
+| 2026-09-09 | GSC 未编入 4 条原因明细【实勘 用户查】：自动重定向 **1**（= www/http 变体 301 归主域，设计内不用动）+ 已抓取-尚未编入索引 **3**（Google 已爬未收 = 新站信任门；列表无 noindex/重复/服务器错误类）→ **无技术故障**。3 条 URL 明细新 UI 暂不可见（数据滞后），不阻塞：明日请求批次按量选页顺带覆盖 |
+| 2026-09-09 | **计算机打印件方向实勘（用户问"要不要跟 K5 扩科目"触发）**：①`computer shortcuts for kids classroom poster` **硬 ❌**——TPT×2 + Twinkl + Amazon 占位（教师 poster 是教育市场主场，同 worksheet 禁区逻辑）；②`keyboard shortcuts chart printable` **软 ✅**——前 10 = 大学随机 PDF / 内华达 DMV 挂的 PDF / Pinterest×2 / Wikipedia / Etsy，零专业 printables 站 → 判定：**chartglade 不扩计算机科目**（主题聚焦 + 课堂词被占），软的成人/通用图表词**并入第三站候选**（§5.6 第二曲线，high CPC），10/17 chartglade 验收后再评估 |
+| 2026-09-09 | Request indexing 第二批 9 条完成（用户 GSC 操作，原定 9/10 提前当日完成）→ **累计已请求 14/53**（9/8 首批 5 + 本批 9；已请求字母页 f/a/z/b/k/x/i = 实测高量 7 词全覆盖）。若明日配额闲置，余下字母页 g/h/l 等可续批；9/12 §3 #4 对数 |
 
 ## 2. 关键词资产表
 
 | 梯队 | 词/词族 | 量(US/月) | 目标页 | 状态 |
 |---|---|---|---|---|
 | 量王 | cursive alphabet（裸词） | 201K/KD43 | /cursive-alphabet/ | 磨页龄，别指望 3 个月 |
-| 量王变体 | cursive X / cursive capital X（名词型） | **6 裸词均值 33K、合计 198K + capital 变体 17.6K【实测 9/6】** | **/cursive/a/~/z/ 26 页** | **矩阵转正**（赌注→实测资产）；论点成立触发加码 → §3 #13 |
+| 量王变体 | cursive X / cursive capital X（名词型） | **6 裸词均值 33K、合计 198K + capital 变体 17.6K【实测 9/6，12 词明细见下块】** | **/cursive/a/~/z/ 26 页** | **矩阵转正**（赌注→实测资产）；论点成立触发加码 → §3 #13 —— **变体段已上线（main `3cbf225` 09-09）**，v1.6-predev 措辞版待合并去重 |
 | 支柱 2 | place value chart（+printable/4th grade 变体） | 27.1K | /place-value-chart/ 等 4 页 | 已上线 |
 | 支柱 3 | kindergarten sight words（+dolch/fry 变体） | 12.1K | 5 阶梯页 | 已上线 |
 | 支柱 4 | multiplication chart（+1-12/1-100 变体） | 12.1K | 4 页 | 已上线 |
@@ -89,51 +99,43 @@
 | cursive b | ①MyCursive ②K5 ③**Quora** ④fancy-text 字体站（意图不符）⑤**Pinterest** | 弱 ✅ |
 | cursive f worksheet | 前 7 = K5 / Superstar / BrightSprout / Itsy Bitsy Fun / SplashLearn / Canva / Teach Prints | **硬 ❌ —— worksheet 后缀词不打**：大厂垄断，我们页面里 FAQ 接住即可，不当目标词 |
 
-> 结论：**名词型**（cursive X / capital X in cursive）SERP 全弱可打；**worksheet 修饰型**放弃竞争。剩下唯一未知 = 量（§3 #7 补测）。
+> 结论：**名词型**（cursive X / capital X in cursive）SERP 全弱可打；**worksheet 修饰型**放弃竞争。~~剩下唯一未知 = 量~~ 量已实测 ✅（下表）。
+
+**单字母族量实测（AITDK，2026-09-06，US/月 + KD%）**：
+
+| 词 | 量 | KD | 词 | 量 | KD |
+|---|---|---|---|---|---|
+| cursive f | 60,500 | 29 | capital i in cursive | 8,100 | 25 |
+| cursive z | 40,500 | 35 | cursive capital f | 6,600 | 31 |
+| cursive a | 33,100 | 30 | cursive capital b | 2,900 | 27 |
+| cursive b | 27,100 | 24 | cursive chart | 2,400 | 21 |
+| cursive k | 27,100 | 15 | cursive letters a to z | 1,000 | 43 |
+| cursive x | 9,900 | 16 | cursive f worksheet | 210 | 22 |
+
+**判定落位（2026-09-06 实测当日，按 §3 预定规则自动执行）**：6 裸词均值 **~33,000/月 = ≥1,000 档的 33 倍 → 第一档，论点成立 → 矩阵加码**（每字母页补 capital 变体段，§3 #13）；10/17 按原计划验收字母族。三条注：① 量级偏乐观（单词 f 60.5K，AITDK 可能含词族聚合）—— **10/17 排名实测才是真验收，不因量高改节奏**；② KD 15~35 全在可打带，k(15)/x(16)/b(24) 最软；③ worksheet 型仅 210/月 —— 双重确认放弃 worksheet 后缀。cursive chart 2.4K/KD21 与 cursive letters a to z 1K/KD43 由 /cursive-alphabet/ 顺带接住（FAQ/变体段），不单独建页。
 
 ## 3. 接下来要做（优先级排序）
 
 | # | 任务 | 谁 | 验收标准 | 期限 |
 |---|---|---|---|---|
-| 1 | ~~Request indexing 5 个 URL~~ **✅ 完成 2026-09-06（用户执行，见时间线）** | 👤 | — | 完成 |
-| 2 | ~~Pinterest 分享包~~ **✅ 完成 2026-09-07**：4 大页 + f 首批文案在 [DISTRIBUTION.md](./DISTRIBUTION.md) §1.3，**26 字母全表在 §1.4**（钩子逐条取自页面 pitfall 实文） | Claude | — | 完成 |
-| 3 | 目录站提交：**文案已齐（§2 三家字段对照 + AlternativeTo 一句话）**，剩提交动作 | 👤 | 首批 1~2 个提交成功 | 2026-09-08 |
+| 1 | ~~Request indexing~~ **✅ 两波完成（勿重复）**：9/6 首批 5 条 + 9/8 canonical 修复后重提 5 条（`/` `/place-value-chart/` `/cursive-alphabet/` `/cursive/f/` `/cursive/a/`）+ 9/9 第二批 9 条 → **累计已请求 14/53**（明细见时间线与表格下方说明） | 👤 | — | 完成 |
+| 2 | ~~Pinterest 分享包~~ **✅ 完成 2026-09-08**：全量 30 条 + 7 周排期 → [PINTEREST-PINS.md](./PINTEREST-PINS.md)（26 字母逐字母钩子；DISTRIBUTION §1.3/§1.4 存首批与节选） | Claude | — | 完成 |
+| 3 | ~~目录站提交~~ **✅ 完成 2026-09-09**（用户提交三渠道：Uneed + Peerlist + AlternativeTo，均审核期未确认收录；AlternativeTo 含 9/8 双向挂竞品；文案 = DISTRIBUTION.md §2.1） | Claude+👤 | — | 完成 |
 | 4 | GSC 收录复查：`site:chartglade.com` 数 + 索引覆盖报告 | 👤 | 记录数字入本文档 | 2026-09-12 |
 | 5 | **6 周长尾验收**（§6 决策点） | 👤+Claude | 变体词排名截图 | **2026-10-17** |
 | 6 | V1.5 cursive worksheet generator（文本→可打印练习页，OFL 字体+print CSS+零登录） | Claude | 1 交互页 | 10 月，视 §6 结果 |
-| 7 | ~~单字母族量补测~~ **✅ 完成（2026-09-06，提前 2 天）**：6 裸词均值 33,033 = 门槛 1K 的 33 倍 → 论点成立，矩阵转正 + 加码授权，数字记入 §2 | 👤 | — | 完成 |
+| 7 | ~~单字母族量补测~~ **✅ 完成（2026-09-06，提前 2 天）**：6 裸词均值 33,033 = 门槛 1K 的 33 倍 → 论点成立，矩阵转正 + 加码授权，12 词量+KD 记入 §2 | 👤 | — | 完成 |
 | 8 | **V1.6 graph paper 簇**：/graph-paper/ hub + 静态变体页（1/4″、1/2″、1cm、5mm、dot grid、isometric —— 纯 print CSS 网格，零新引擎）+ 自定义 island（间距/线色/纸型 → `window.print()`），同簇吸收 graph paper generator/maker 710 长尾 | Claude | **✅ 预开发完成 2026-09-07（v1.6-predev 分支，hub+6 页+island，47 测试绿）**；上线 = 合并 main | **10/05 批次**（合并门 = 9/19 检查点收录正常） |
 | 9 | **V1.6 name tracing generator**：输入名字 → Caveat 描红页 → print；SSR 预渲染默认示例名（无 JS 完整）+ WebApplication JSON-LD；同页吃 free name tracing generator / cursive name tracing | Claude | **✅ 预开发完成 2026-09-07（v1.6-predev 分支，SSR Emma + print/cursive 双样式）**；上线 = 合并 main | **10/05 批次**（与 #8 同批） |
 | 10 | **V1.7 数学公式表 2 页**：/geometry-formula-sheet/（2.9K/KD23）+ /algebra-formula-sheet/（三变体并页 1.66K），公式表 = print CSS 表格 + 与数学簇互链 | Claude | 2 页上线，公式排版打印验证 | **10/25 批次**（与感恩节季节页同批） |
 | 11 | **V1.8 sign in sheet 族**：/sign-in-sheets/ hub + /open-house-sign-in-sheet/（3.6K 头名）+ /sign-in-sheet/（template+printable 6.7K 教师角度通用页）+ PT conference / field trip 变体页；visitor/attendance 只做 FAQ 接住 | Claude | hub + 4~5 页，print 剥纸验证，测试全绿 | **2026-11 月批**（10 月批次已满）；家长会页赶 10~11 月 PT conference 季 |
 | 12 | 对标站拆解：InkPx（name tracing #5 + sign in sheet #3 跨词族排名的纯打印站）+ Printabulls（合集页吃大词模式）——词池结构/页面形态/内链策略各出一份笔记 | Claude | 拆解笔记入 docs/chartglade/ | 2026-09 下旬（V1.6 开发前，给 hub 结构参考） |
-| 13 | **字母矩阵加码**：cursiveLetters.ts 每字母补 "capital cursive X" 变体段（capitalSteps 字段已有，capital 变体词 3 个合计 17.6K：capital i 8.1K / capital f 6.6K / capital b 2.9K）；/cursive-alphabet/ 主页 SEO 措辞补 "cursive chart"（2.4K/KD21） | Claude | **✅ 预开发完成 2026-09-07（v1.6-predev：26 页标题/trace 措辞 + 主页 cursive chart FAQ）**；上线 = 合并 main | **10/05 批次**（V1.6 同批） |
+| 13 | **字母矩阵加码**：每字母补 "capital cursive X / capital X in cursive" 变体段（capitalSteps 字段已有，capital 变体词 3 个合计 17.6K：capital i 8.1K / capital f 6.6K / capital b 2.9K）；/cursive-alphabet/ 主页 SEO 措辞补 "cursive chart"（2.4K/KD21） | Claude | **变体段已上线（main `3cbf225` 2026-09-09：26 页 Capital X 深读段 + 大写 FAQ + 接客段，53 页 build + 23 测试绿）**；v1.6-predev 的 26 页措辞/主页 FAQ 版**合并时与 3cbf225 去重后收尾** | 原 **10/05 批次**（变体段部分已提前上线，只加内容不加新页不破止损线） |
 | 14 | **数学练习生成器 island**（mad minute 族 960 + mult/add/sub worksheet generator 710，合计 ≈1,670/月【实测 9/7】）：挂乘法 chart 页，选运算/范围/题量 → 打印 mad-minute 计时题卡（30/60 题+答案行），SSR 预渲染默认一套 | Claude | island 上线 + 无 JS 可打印 + 测试绿 | **10/25 批次**（V1.7 同批顺手，不挤 10/05） |
 
-**AITDK 拉数词表（#7 用，逐词查 US 月搜 + KD）**：
+**（Request indexing 两批共 14/53 已全部请求完毕，勿重复：9/8 首批 5 条 + 9/9 第二批 9 条 —— 明细见时间线 9/9 行；下一批候选 = 余下字母页，配额闲置时再做）**
 
-```
-cursive f
-cursive b
-cursive a
-cursive k
-cursive z
-cursive x
-cursive capital f
-capital i in cursive
-cursive capital b
-cursive chart
-cursive letters a to z
-cursive f worksheet
-```
-
-**补测后判定规则（拉完数字自动落位，不用再讨论）**：
-
-| 6 个裸词（f/b/a/k/z/x）均值 | 结论 → 动作 |
-|---|---|
-| ≥1,000 US/月 | 论点成立 → 矩阵加码（每字母页补 "capital cursive X" 变体段），10/17 按原计划验收字母族 |
-| 200~1,000 | 矩阵保留（已建零边际成本）但**不扩张**；10/17 验收主看 place value 变体 + 万圣节 |
-| <200 | 空池 → 字母页只留 26 页躺页龄；主战场转向支柱变体页 + 季节页，§6 的 B 计划概率大增 |
+**（#7 的 AITDK 拉数词表与三档判定规则已于 2026-09-09 执行完毕并清理，勿重复拉取 —— 产出见 §2 实测表 + 判定落位：6 裸词均值 ~33K → 第一档加码）**
 
 ## 4. 每日 / 每周例行
 
@@ -157,7 +159,7 @@ cursive f worksheet
 3. **季节窗（排期唯一依据 = 美国校历，准则见根 [CLAUDE.md](../../CLAUDE.md)「美国日历准则」+ 下方 §5.1 日历表）**：printables 赛道季节词是大流量脉冲，每个节点**提前 4~6 周上线**（Google 收录+爬排名要时间）。候选池（节点前 1 个月拉量筛选定稿）：halloween word search / halloween coloring math facts / thanksgiving gratitude tree / thankful ABC list / halloween cursive practice（复用字母矩阵架构）/ pumpkin math chart
 4. **外链与分发**：Pinterest 常态化（每周 pin）、教师社区（r/Teachers r/homeschool，先读版规）、TPT 形态研究（商城不做，引流可）
 5. **变现**：~300 访问/天 → 接广告
-6. **第二曲线**（本仓第三个站候选）：excel shortcuts / sql cheat sheet 等高 CPC 打印工具 —— chartglade 验收数据出来后再定
+6. **第二曲线**（本仓第三个站候选）：技术/办公打印件（excel shortcuts 110K/KD38 量王 + sql cheat sheet 3.6K/CPC$2.44 高 CPC）—— 调研档落 [research/third-site.md](../../research/third-site.md)（2026-09-09 量实测+SERP 实勘三样齐全；SERP 中等非软区，打法 = 变体长尾切入+头词磨页龄）—— **10/17 验收后再定立项，此前零动作**
 7. **V1.6**（2026-09-06 判定入排期）：graph paper 簇（12.1K 头名，品牌契合 chart≈graph，SERP 奖励独立小工具站）+ name tracing generator（KD13 全场最软，V2 放大器 = top100 宝宝名矩阵）—— 定性结论：**generator 是功能不是关键词策略**（generator 词 710 合计 vs 静态词 12.1K，17 倍差距），交互化本身是 AI 截流护城河
 
 ### 5.1 美国教育内容日历（季节排期唯一依据）

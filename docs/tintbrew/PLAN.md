@@ -1,13 +1,13 @@
 # tintbrew 作战文档
 
-> 本项目唯一计划文档 · 更新 2026-09-06 · 部署/运维细节见仓库根 [README.md](../../README.md)
+> 本项目唯一计划文档 · 更新 2026-09-09 · 部署/运维细节见仓库根 [README.md](../../README.md)
 > 原则：本文档没写的 = 没计划；做完的立刻勾掉并写日期。
 
 ## 0. 北极星
 
 **GSC 28 天曝光数（impressions）环比增长**。变现节点：自然流量稳定 ~300 访问/天 → 接广告（当前零广告代码）。
 
-一句话现状：41 页上线（V1 33 + V2.1 W1/W2 共 8 页），81 测试全绿，GSC 效果数据已出现，进入「等收录 + 攒外链」阶段。
+一句话现状：41 页上线（V1 33 + V2.1 W1/W2 共 8 页），81 测试全绿，GSC 效果数据已出现（9/9 首查累计曝光 **650**【实测 GSC】，疑混自操作查询待拆分），进入「等收录 + 攒外链」阶段。
 
 ## 0.5 当前状况深度分析（2026-09-05）
 
@@ -21,7 +21,7 @@
 
 **短板与风险（按杀伤力排序）**
 
-1. **外链接近零** —— 当前最大杠杆缺口。只有 Uneed 一个提交（未确认收录）。DR 0 域名在 KD 38 的 brown 这类词上，没有外链就是磨十年页龄也难进前 5。
+1. **外链接近零** —— 当前最大杠杆缺口。已提交 3 个：Uneed（9/4）+ Peerlist + AlternativeTo（9/9 用户提交，审核期未确认收录）。DR 0 域名在 KD 38 的 brown 这类词上，没有外链就是磨十年页龄也难进前 5。
 2. **站龄 1 天**，新站沙盒期（前 1~3 个月排名系统性压制）是常态，此期间数据差 ≠ 策略错。
 3. **单一流量引擎**：全押 Google，Pinterest 第二引擎一直认可但没启动。
 4. **回访钩子弱**：纯工具无账号无收藏提醒，访问质量靠 SEO 净新增。
@@ -41,19 +41,7 @@
 
 **凭什么和多数站不一样（当假设看，不是事实）**：① KD 0 词是 SERP 逐个实勘的弱结果 —— 但 SERP 里能看见的都是幸存者，"弱"不等于轮得到我们；② Oklab 工具差异化真实存在；③ 分发计划具体到文案。三条只是降险，DR0+零外链的墙还在。
 
-**Request indexing 9 个 URL 清单（2026-09-06 用，粘一个做一个）：**
-
-```
-https://tintbrew.com/what-colors-make-brown/
-https://tintbrew.com/how-to-make-black-frosting/
-https://tintbrew.com/how-to-make-brown-icing/
-https://tintbrew.com/icing-color-chart/
-https://tintbrew.com/buttercream-color-chart/
-https://tintbrew.com/color-guides/
-https://tintbrew.com/what-colors-make-purple/
-https://tintbrew.com/what-colors-make-green/
-https://tintbrew.com/what-colors-make-orange/
-```
+**Request indexing 9 个 URL：✅ 全部完成 2026-09-09（用户 GSC 操作；6 条 how-to/what-colors 页 + icing/buttercream 色卡页 + color-guides hub）**
 
 ## 1. 已完成（时间线）
 
@@ -78,6 +66,8 @@ https://tintbrew.com/what-colors-make-orange/
 | 2026-09-07 | **Peerlist 项目卡上线（外链 #2，Uneed 后第二根）**：peerlist.io/xuanxuyin，Design Resources 类目，visit 链接 `?ref=peerlist&utm_source=peerlist` 实测通 —— canonical 自指无重复 URL 之忧，utm 参数后续在 CF Analytics 按 source=peerlist 归因真实引流。挂着 = 外链已生效；**流量入口是周榜 feed，但 launch 有验证门**（官方 help：verified 账号才进 Launchpad）—— 已走 workplace 免费验证（09-07 交，Under Review），通过即解锁；identity 付费不买（PLAN 止损纪律：不买任何付费东西）。cover 用现成 og-default.png（1200×630 正中推荐） |
 | 2026-09-07 | **AlternativeTo 提交（外链 #3）**：用户走 "color mixer" 竞品页 → Suggest an alternative 路径提交 tintbrew.com；审核数周，收录与否 10 月初周例行顺手查。**当日外链格局：Uneed(09-04) + Peerlist 卡片(09-07) + AlternativeTo(09-07) 三根齐**，后续增量看周榜（等 workplace 验证）与 PH（10 月） |
 | 2026-09-07 | **GSC 首查提前（用户拉热门查询）**：10 词 14 展示 0 点击【实测】—— 矩阵层全面起跑（blue plus yellow 34.0 最接近 10-01 的 top 30 门）；**what two colors make yellow? 3.0**（1 展示小样本，答案型词、后续盯"位次进 top10 + 点击仍零"的截流指标）；工具头词 color mixer 62.7（3 展示，KD27 词 day 5 有名次是好信号）；0 点击与位次匹配非截流证据；用户手搜样本混在 blue and yellow make what color（43.0）里。判读：day 5 属预期轨道偏快，不动盘 |
+| 2026-09-09 | Request indexing 9 个 URL 全部完成（用户 GSC 操作，剩 3 条色卡/hub 今日补齐） |
+| 2026-09-09 | **GSC 曝光首查：累计 650**【实测 GSC，上线以来】—— 疑混自操作查询（手动 Google 搜词验排名、翻到看到自己站 = 计入曝光；site: 查询与 GSC 界面内操作**不计入**）；待查询明细拆分真实/污染。**新纪律：查排名只用 GSC 查询报告（被动记录含平均排名列），不再手动 Google 搜词** |
 
 ## 2. 关键词资产表
 
@@ -99,10 +89,10 @@ https://tintbrew.com/what-colors-make-orange/
 
 | # | 任务 | 谁 | 验收标准 | 期限 |
 |---|---|---|---|---|
-| 1 | Request indexing 9 个新 URL（W1+W2，**清单见下方代码块**） | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
-| 2 | ✅ 外链：Peerlist 卡片上线 + AlternativeTo 已提交（均 2026-09-07，详见时间线与 [DISTRIBUTION.md](./DISTRIBUTION.md)） | 👤 | 完成 | 2026-09-07 |
+| 1 | ~~Request indexing 9 个新 URL（W1+W2，清单原见下方代码块）~~ **✅ 完成 2026-09-09**（当日补齐剩 3 条色卡/hub，明细见时间线） | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
+| 2 | ~~外链：Peerlist Launchpad + AlternativeTo~~ **✅ 完成 2026-09-07**（Peerlist 项目卡上线 + AlternativeTo 已提交、审核期数周 —— 详见时间线与 [DISTRIBUTION.md](./DISTRIBUTION.md)） | 👤 | 两个平台提交成功 | 2026-09-07 |
 | 3 | GSC 首查：效果→查询（28 天），看 W1/W2 词有没有曝光（09-07 已提前拉了矩阵层数据入 §2；周四重点补 **W1/W2 头词**：brown/purple/green/orange/烘焙族有没有展示；拉数一律加筛选**国家/地区=美国**，已见荷兰语杂词混入） | 👤+Claude | 截图记录，更新本文档 §2 状态 | 2026-09-10 |
-| 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工 | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
+| 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工。**gold 3,600 / teal 1,900 已实测过筛（2026-09-07），color mixing chart 总表页（6,600/KD27）进首批** | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
 | 5 | W3 木器染色 2 页（coffee wood stain 等，已锁定未建） | Claude | 2 页上线 | 跟 V2.2 同批或下批 |
 | 6 | per-page OG 图：场景页用引擎生成对应色卡图（替代全站共用卡） | Claude | 场景页 og:image 唯一 | 2026-09 下旬 |
 | 7 | V2.3 工具页：互补色/对比色生成器（`contrastRatio` 引擎已有） | Claude | 1 页 + WCAG 检查 | 2026-10 |

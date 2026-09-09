@@ -1,6 +1,6 @@
 # chartglade 分发操作手册
 
-> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-07（新增 §1.4 字母矩阵 26 条 pin 文案包）
+> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-09
 > 三大渠道按投入产出排序：**Pinterest（主战场）→ 目录站（外链）→ 教师社区（真实用户）**
 
 ---
@@ -38,6 +38,8 @@
 **链接**：指向**具体页面**（绝不发首页链接）
 
 ### 1.3 首批 5 个 pin（文案直接抄）
+
+> **全量 30 条**（4 大页 + 26 字母页逐字母钩子 + 7 周排期）见 [PINTEREST-PINS.md](./PINTEREST-PINS.md)；首批 5 条已含在全量包里，后续每周三照排期发，勿对同 board 重复发同 URL。
 
 | # | pin 图大字 | 目标 URL | 标题 | 描述 |
 |---|---|---|---|---|
@@ -86,13 +88,13 @@
 
 ## 二、目录站（首批外链，顺序执行）
 
-**现状**：⏸ Uneed（**2026-09-08 转收费**：免费账户同时只能排 1 个产品，tintbrew 占着名额；不付 Pro，等 tintbrew 上线释放名额后再免费提交 chartglade）｜ ⬜ Peerlist（先做）｜ ⬜ AlternativeTo（Peerlist 验证没过时的兜底）
+**现状（2026-09-09）**：✅ AlternativeTo（9/8 提交 + 双向挂竞品）｜ ✅ Uneed + Peerlist（9/9 补齐）—— **三渠道全提交、均审核期**（AlternativeTo 审核数周常态；Uneed 曾于 9/8 因转收费定暂缓，9/9 随批提交）
 
 | 平台 | 入口 | 动作 | 备注 |
 |---|---|---|---|
-| Uneed | uneed.best | Submit（tintbrew 走通过同流程） | **暂缓（转收费/名额占用）**，tintbrew 上线释放名额后免费再排 |
-| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | 免费但**账号需验证才 launch**（workplace 验证免费且足以解锁 Launchpad，付费 identity 是可选项不碰；2026-09-08 官方政策已核，gate 页的 Pro 功能列表是营销话术）。tintbrew 账号的 workplace 验证 **在审**，通过前 Launchpad 一直 gate —— 异步等，状态在 profile → Resume → Experience 里看 |
-| AlternativeTo | alternativeto.net | 搜竞品（"K5 Learning" 或 "MyCursive"）→ 进它页面 → **Suggest an alternative** → 填 chartglade.com | 审核数周，不急；**提交后两步跟进修 visibility**（2026-09-08 官方提示：无 alternatives 的 app 站内几乎不可见）：① ChartGlade 自身页面挂 3~4 个真实竞品为 alternatives（K5 Learning / Education.com / Superstar Worksheets / MyCursive）② 反向再挑 2~3 个竞品页各自挂 ChartGlade —— 别刷超过 4 家 |
+| Uneed | uneed.best | Submit（tintbrew 走通过同流程） | **9/9 已提交**（9/8 曾因转收费定暂缓：免费账户同时只排 1 个产品、tintbrew 占名额 —— 后续若需重提，等 tintbrew 名额释放再免费排，不付 Pro） |
+| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | **9/9 已提交**。背景：launch 有验证门（workplace 验证免费且足以解锁 Launchpad，付费 identity 是可选项不碰；2026-09-08 官方政策已核，gate 页的 Pro 功能列表是营销话术）。tintbrew 账号的 workplace 验证在审期间 Launchpad 一直 gate —— 状态在 profile → Resume → Experience 里看 |
+| AlternativeTo | alternativeto.net | 搜竞品（"K5 Learning" 或 "MyCursive"）→ 进它页面 → **Suggest an alternative** → 填 chartglade.com | **9/8 已提交**，等审核（数周）。visibility 两步跟进**已完成 9/8**（官方提示：无 alternatives 的 app 站内几乎不可见）：① ChartGlade 自身页面挂真实竞品为 alternatives（K5 Learning / Education.com / Superstar Worksheets / MyCursive）② 反向在竞品页挂 ChartGlade —— 不超过 4 家 |
 
 **提交文案包（英文，直接复制）**：
 
@@ -103,13 +105,33 @@
 - **Long description**: ChartGlade is a free printables site for K-5 teachers, homeschool parents, and tutors. Every page IS the printable: place value charts to the millions, multiplication tables 1-12 through 1-20 (filled and blank), hundred charts, number lines, fraction strips, the full Dolch and Fry sight word lists by grade, and a 26-letter cursive alphabet section with letter-by-letter stroke breakdowns and practice sheets. Pages print on one clean letter sheet — landscape automatically for wide charts. Everything runs in the browser, free forever, with no accounts and no PDF downloads to manage.
 - **Contact**: hello@chartglade.com
 
-**提交字段对照（照 tintbrew 走通的三家）**：
+### 2.1 逐平台表单对照（2026-09-08 补，照此填即可）
 
-| 平台 | 表单要点 | 用上面哪段文案 |
-|---|---|---|
-| Uneed | Name / URL / Tagline / Description / Tags | Tagline 用短句；Tags 填 `education, printables, teachers, k5` |
-| Peerlist Launchpad | 登录后 Launch your product，Tagline ≤60 字符 + 简介 + 链接 | Tagline + Short description |
-| AlternativeTo | 搜竞品 → 进它页面 → Suggest an alternative（只需一句话） | `Free printable K-5 teaching charts — place value, multiplication, sight words and cursive — that print straight from the browser with no sign-up.` |
+**Uneed**（tintbrew 2026-09-04 走通过同流程）：
+- Logo / 封面图：用首页 OG 卡（`npm run og` 产物，1200×630，平台自动裁）
+- Name / Tagline / Description：抄上方文案包（Description 填 **Short description**，进阶介绍再贴 Long）
+- 分类 / Tags：Education、Free；Tags 填 `education, printables, teachers, k5`
+- 其余字段照 tintbrew 当时填法
+
+**Peerlist Launchpad**（登录后 Launch your product 才显示）。Launch 帖用"发布"口吻，别用目录腔，直接抄：
+
+```
+Title: ChartGlade — free printable teaching charts that print straight from the browser
+
+Body: Every page IS the printable. Place value charts to the millions, multiplication
+tables, hundred charts, number lines, fraction strips, the full Dolch & Fry sight word
+lists by grade, and a 26-letter cursive alphabet section with stroke-by-stroke
+breakdowns. No accounts, no PDF downloads, no email wall — open the page and hit print.
+```
+
+**AlternativeTo**（Suggest an alternative；三个竞品位各用不同一句话，别一条贴三家）：
+
+| 竞品位 | 填这句话 |
+|---|---|
+| K5 Learning 页 | ChartGlade — free printable K-5 charts (place value, multiplication, sight words, cursive) that print straight from the browser. No download, no sign-up. |
+| MyCursive 页 | ChartGlade — free cursive alphabet charts and letter-by-letter practice sheets you can print instantly. No PDF, no email wall. |
+| Superstar Worksheets 页 | ChartGlade — free printable math and literacy charts for K-5; every page prints on one clean letter sheet, no account needed. |
+| （备用通用一句话） | Free printable K-5 teaching charts — place value, multiplication, sight words and cursive — that print straight from the browser with no sign-up. |
 
 **红线**：不提交"350+ 高 DA"批量目录（外链农场，反噬）。
 

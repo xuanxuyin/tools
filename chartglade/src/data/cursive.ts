@@ -27,6 +27,13 @@ export const cursivePages: PageDef[] = [
       'Two habits decide whether cursive looks like cursive: consistent slant and consistent height. Every downstroke should lean the same direction, and every lowercase letter should sit between the baseline and the same top line. The chart above keeps both uniform on purpose — when tracing, match the slant exactly, and speed is never the goal. Legible-and-steady beats fast-and-shaky every time, and shaky speed is the habit that takes months to unlearn.',
       'One honest note on styles: American schools teach different cursive styles — Zaner-Bloser letters are rounder and more upright, D\'Nealian letters slant with looping tails — and your child\'s school may ask for a specific one. The chart here is a clean, continuous script in the general American tradition; the letterforms a child traces at school may differ in small strokes. The stroke families above are common to nearly all of them, which is why this chart teaches the families explicitly.',
     ],
+    extraSection: {
+      heading: 'Every cursive letter, A to Z — the chart and the letter pages',
+      paras: [
+        'This cursive chart is the one-page overview: all 52 forms — 26 capitals and 26 lowercase letters — on a single printable sheet for the wall or the desk. When one letter needs more than a glance, every letter also has its own page here, from /cursive/a/ through /cursive/z/. Each letter page breaks the capital and the lowercase into numbered strokes, prints as a trace-and-write practice sheet, names the single most common mistake for that specific letter, and answers the questions people actually ask (how to write the capital, why it looks wrong, whether it connects).',
+        'The chart and the letter pages serve two different moments. Searching for a "cursive chart" usually means the overview moment — one sheet, every letter, hang it up and go. Searching for one cursive letter usually means the stuck moment — a capital that keeps coming out wrong, a child who needs tonight\'s homework letter explained. Print the chart once for reference, then jump straight to the letter page you are stuck on; start with the family letters (c, a, d) and the rest arrive faster than the alphabet order suggests.',
+      ],
+    },
     printNote: 'Chart + tracing strip fit one letter page, portrait.',
     interactive: true,
     tips: [
@@ -76,8 +83,17 @@ export const cursivePages: PageDef[] = [
         q: 'Where can I get a free cursive chart to print?',
         a: 'This page is one: the cursive chart above prints straight from your browser on a single letter sheet — no download, no sign-up, no watermark. For letter-by-letter practice, every letter also has its own sheet at /cursive/a/ through /cursive/z/.',
       },
+      {
+        q: 'Do you have every cursive letter from A to Z?',
+        a: 'Yes — the chart above shows all 26 at once, and each letter has its own page at /cursive/a/ through /cursive/z/ with numbered strokes for both forms, a printable practice sheet, that letter\'s most common mistake, and letter-specific teaching tips.',
+      },
+      {
+        q: 'What\'s the difference between a cursive alphabet chart and cursive worksheets?',
+        a: 'A chart is the one-page reference — every letterform visible together for the wall or a quick check. Worksheets are for repeated practice of one letter at a time. The letter pages here combine both: the explanation a chart can\'t give, plus trace-and-write rows that print like a worksheet.',
+      },
     ],
     related: [
+      { href: '/cursive/f/', label: 'Cursive F — a full stroke-by-stroke letter page' },
       { href: '/alphabet-chart/', label: 'Print alphabet chart (the pre-cursive step)' },
       { href: '/third-grade-sight-words/', label: 'Third grade sight words (same age, reading side)' },
       { href: '/cursive/', label: 'Cursive hub' },
