@@ -6,13 +6,14 @@
 
 ---
 
-## 今天 · 2026-09-07（周一）
+## 今天 · 2026-09-08（周二）
 
-- [x] 👤 **tintbrew 外链：Peerlist + AlternativeTo 双提交完成**（Peerlist 卡片 09-07 上线；AlternativeTo 09-07 已交、审核数周）—— 余项：Peerlist workplace 验证通过后提交周榜（可选加分）
-- [x] 👤 **手机复查两站移动端**（09-07 复查通过，无新问题报告）
-- [x] 👤 每日例行（3 分钟）：GSC 效果看新词 + Cloudflare 曲线 —— 09-07 查完，无异常上报
+- [x] 👤 **chartglade GSC：URL 检查工具抽查 3 条 ✅ 完成（9/8）**：首页 / /cursive-alphabet/ / /place-value-chart/ 全部"网页已编入索引" → 早上报告读到的"0"实锤为切片读数坑，非真实掉索引
+- [x] 👤 **request indexing 已启动，今日配额耗尽**：剩余字母从断点接续（明天起每天按实际配额提交直到 u~z 完成）—— **配额按太平洋时间午夜重置 ≈ 北京时间下午 3~4 点刷新，明天下午就能继续，不用等晚上**
+- [x] 👤 **chartglade 目录站：AlternativeTo 全部完成（9/8）**—— 提交进队列 + 自身页挂竞品 alternatives + 反向竞品页挂 ChartGlade，剩等审核（数周，不用盯）。Uneed 转收费暂缓（等 tintbrew 释放名额）；Peerlist workplace 验证免费但在审（gate 到通过为止，异步等；若被拒用 hello@tintbrew.com 域名邮箱重走，不碰付费 identity）
+- [x] 👤 每日例行（3 分钟）：GSC 效果看新词 + Cloudflare 曲线 —— 9/8 完成（CF 首基线 42 visits/678ms 入 PLAN）
 
-**今天 🤖 已完成**：周一例行数字入双站 PLAN ｜ chartglade 26 字母 pin 文案包（§1.4）｜ 目录站三家提交字段对照（§2）｜ **双站移动端修复上线**（chartglade 全站 ≤40rem 断点热修 + tintbrew mix 比例表压缩/hero 打磨，均 main 直推部署）
+**9/7 已完成归档**：tintbrew 双目录站提交 ｜ 移动端复查 ｜ 周一例行数字入双站 PLAN ｜ 26 字母 pin 文案包（§1.4）｜ 目录站字段对照（§2）｜ 双站移动端修复上线 ｜ **canonical 事故热修上线**
 
 ---
 
@@ -21,7 +22,7 @@
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
 | 9/8（周二） | 👤 **chartglade 目录站提交 1~2 个**（Uneed 先做）—— 现状/文案/表单字段对照全在 §二 | [chartglade/DISTRIBUTION.md §二](./chartglade/DISTRIBUTION.md) |
-| 9/8（周二）起 3 天 | 👤 **chartglade GSC：26 个字母页 request indexing**（canonical 事故 09-07 已修复部署，推 Google 重抓；配额约 10 条/天：9/8 提交 a~j、9/9 k~t、9/10 u~z，顺手先重提一次 sitemap） | GSC 顶部搜索栏逐个粘 `https://chartglade.com/cursive/x/` → 请求编入索引 |
+| 9/8 起 ~9/11 | 👤 **chartglade GSC：26 个字母页 request indexing**（canonical 事故 09-07 已修复部署；9/8 已启动但配额提前耗尽 → **从断点字母接续，每天按实际配额提交直到 u~z 完成**，配额 ≈ 北京时间下午 3~4 点刷新） | GSC 顶部搜索栏逐个粘 `https://chartglade.com/cursive/x/` → 请求编入索引 |
 | 9/9（周三） | 👤 **chartglade Pinterest 一次性设置**（15 分钟：Business 账号 + 认领 chartglade.com + 建 3 个 board）→ **认领给的 `<meta name="p:domain_verify">` 标签发给 Claude 接代码** | [chartglade/DISTRIBUTION.md §1.1](./chartglade/DISTRIBUTION.md) |
 | 9/9（周三） | 👤 设置完顺手**发首批 5 个 pin**（图用 Canva 1000×1500，文案直接抄表） | [chartglade/DISTRIBUTION.md §1.2 + §1.3](./chartglade/DISTRIBUTION.md) |
 | 9/10（周四） | 👤 **tintbrew GSC 首查**：效果→查询（28 天），看 W1/W2 词有没有曝光 —— 数字发给 Claude 记录（09-07 已提前看过矩阵层：10 词 14 展示起跑，周四重点补 brown/purple/green/orange/烘焙头词） | 根 README「每周数据检查 SOP」 |

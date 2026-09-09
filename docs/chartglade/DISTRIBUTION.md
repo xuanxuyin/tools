@@ -86,13 +86,13 @@
 
 ## 二、目录站（首批外链，顺序执行）
 
-**现状**：⬜ Uneed ｜ ⬜ Peerlist ｜ ⬜ AlternativeTo（文案已齐，2026-09-08 前提交 1~2 个）
+**现状**：⏸ Uneed（**2026-09-08 转收费**：免费账户同时只能排 1 个产品，tintbrew 占着名额；不付 Pro，等 tintbrew 上线释放名额后再免费提交 chartglade）｜ ⬜ Peerlist（先做）｜ ⬜ AlternativeTo（Peerlist 验证没过时的兜底）
 
 | 平台 | 入口 | 动作 | 备注 |
 |---|---|---|---|
-| Uneed | uneed.best | Submit（tintbrew 走通过同流程） | 先做 |
-| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | 免费但**账号需验证才 launch**（tintbrew 同一账号已走 workplace 免费验证在审，通过后两站通用；identity 付费不碰） |
-| AlternativeTo | alternativeto.net | 搜竞品（"K5 Learning" 或 "MyCursive"）→ 进它页面 → **Suggest an alternative** → 填 chartglade.com | 审核数周，不急 |
+| Uneed | uneed.best | Submit（tintbrew 走通过同流程） | **暂缓（转收费/名额占用）**，tintbrew 上线释放名额后免费再排 |
+| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | 免费但**账号需验证才 launch**（workplace 验证免费且足以解锁 Launchpad，付费 identity 是可选项不碰；2026-09-08 官方政策已核，gate 页的 Pro 功能列表是营销话术）。tintbrew 账号的 workplace 验证 **在审**，通过前 Launchpad 一直 gate —— 异步等，状态在 profile → Resume → Experience 里看 |
+| AlternativeTo | alternativeto.net | 搜竞品（"K5 Learning" 或 "MyCursive"）→ 进它页面 → **Suggest an alternative** → 填 chartglade.com | 审核数周，不急；**提交后两步跟进修 visibility**（2026-09-08 官方提示：无 alternatives 的 app 站内几乎不可见）：① ChartGlade 自身页面挂 3~4 个真实竞品为 alternatives（K5 Learning / Education.com / Superstar Worksheets / MyCursive）② 反向再挑 2~3 个竞品页各自挂 ChartGlade —— 别刷超过 4 家 |
 
 **提交文案包（英文，直接复制）**：
 

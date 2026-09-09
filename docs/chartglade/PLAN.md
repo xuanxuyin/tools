@@ -53,6 +53,8 @@
 | 2026-09-07 | **移动端响应式热修上线（main 直推，用户拍板）**：用户手机实测反馈"不适配"触发 —— 审计发现全站 **0 个屏幕断点**（唯一 @media 是 print），13 列乘法表/位值表/双栏 stroke-steps 靠横向滚动硬撑。加 ≤40rem 断点（表格缩字号压到 ~25px/列、stroke-steps 单栏、大字形缩小、头部收紧），cherry-pick 热修推 main 即时部署。**纯 CSS 零加页，不破 10/05 批纪律**；动机 = Google mobile-first 索引正在评估手机版 + Pinterest 流量 9 成手机。v1.6-predev 已 merge main 同步 |
 | 2026-09-07 | **cursive 26 字母页 canonical 事故热修上线（main 直推 `3bc1efd`）**：用户 GSC 收录数疑问触发线上全面体检——发现 /cursive/a/~/z/ 的 canonical/og:url/面包屑 JSON-LD **全指向不存在的 /a/ 类 404 URL**【实勘 curl】，根因 = ChartPage 拼 `/${def.slug}` 而字母页真实路径是 /cursive/<slug>/（sitemap 一直正确，页面自声明错 = 半个站告诉 Google"我的规范地址是死链"）。修法：PageDef 增可选 `path` 覆盖位 + ChartPage 统一取 `pagePath` + [letter].astro 注入 `/cursive/${slug}`。47 测试绿，dist 抽查 a/z 自指，部署后线上实测自指✅。**归因【推断】**：收录停在 26/51 且两日走平（9/6→9/7），26 恰≈非字母页数——字母页被 canonical 指死链压在管道外是最大嫌疑。**后果修正**：9/12 复查 45+ 预期作废（bug 影响窗口 09-05~09-07），9/19 收录门判定计入此事故；用户侧补 request indexing 26 页加速重抓（TASKS 9/8） |
 
+| 2026-09-08 | **GSC"0 已编入索引"排查（用户报告触发，site: 仅 4 条）**：线上体检全绿【实勘 curl】—— 主域 200 / www 301 / robots Googlebot 放行（CF 托管段只封 AI 爬虫，Google-Extended ≠ Googlebot 不影响搜索索引）/ sitemap 52 条含全部字母页 / 首页 + /cursive/a/ + /cursive/z/ + /cursive-alphabet/ canonical 全自指 / 旧死链 /a/ 维持 404。**判定：技术侧不存在任何可致全站掉索引的因子**，"0"最大嫌疑 = 9/7 同款切片读数坑 + 索引报告 1~2 天数据延迟；site: 3→4 条 = 滞后粗信号微涨非下跌。**已实锤【实测 9/8】：URL 检查工具抽查首页 / /cursive-alphabet/ / /place-value-chart/ 三条全部"网页已编入索引" → 报告读到的"0"确认为切片读数坑/数据延迟，非真实掉索引**；9/12 复查照旧走 sitemap 视图。收录慢的结构性原因之一 = 零外链（Pinterest/目录站均未落地），本周分发任务同时是收录加速器。**request indexing 当日启动，配额提前耗尽，余量 9/9 起从断点接续**（配额 PT 午夜重置 ≈ 北京 15:00，不影响 9/12 复查判定——复查看爬取恢复趋势，不要求全量提交完）。**CF Analytics 首基线【实测 9/8】：visits 42 / page views 57 / load 678ms —— 搜索/外链/社媒渠道全部为 0 的阶段，42 大概率=自访计数（同 tintbrew 自搜教训），非用户信号；678ms 为真实健康技术指标；后续真实流量以 GSC 曝光先行，CF 曲线用于对减此基线** |
+
 ## 2. 关键词资产表
 
 | 梯队 | 词/词族 | 量(US/月) | 目标页 | 状态 |
@@ -187,7 +189,8 @@ cursive f worksheet
 ## 7. 技术备忘（改动前必读）
 
 - Pages 项目真名 **tools-6hx**（仓库名自动命名）；**CF 自动生成的 CNAME 永不手改**（改了全站 1014）
-- GSC sitemap 输入框自带域名前缀，只填 `sitemap-index.xml`
+- GSC sitemap 输入框自带域名前缀，只填 `sitemap-index.xml`；**新版 GSC 已砍掉 sitemap 的"重新提交/移除"按钮**（2026-09-08 实勘：⋮ 菜单只剩网页/视频索引编制报告跳转）—— sitemap Google 自动定期重读（≈每天），无需也无法手动重提；输入框重复提交同 URL = 无害刷新，不会堆重复行
 - 加图表页 = `src/data/*.ts` 加 PageDef + find-by-slug wrapper（Footer/hub 自动带出）；**字母级矩阵走动态路由** `pages/cursive/[letter].astro`
 - Dolch 220 逐字 / Fry first 100（含 #49 their）在 `src/lib/sightWords.ts` —— 改动必跑测试
 - 字体仅 cursive 页按需加载（Dancing Script + Caveat woff2 自托管）；name-tracing 页另有 Patrick Hand woff2（print 样式），graph paper 引擎在 `lib/graphPaper.ts`（1/100in 单位，改间距只动 GRAPH_PAPER_VARIANTS）
+- **AITDK 报 "sitemap.xml missing" = 误报**（2026-09-08 定性）：工具只探测默认路径 /sitemap.xml，本站是 Astro 命名 sitemap-index.xml，且 robots.txt 声明 + GSC 提交双覆盖（52 条已发现为证）。**可选消音项待办**：`_redirects` 加 301 `/sitemap.xml → /sitemap-index.xml`，搭下次 main 部署车，不单独发
