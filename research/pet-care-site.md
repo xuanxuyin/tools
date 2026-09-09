@@ -1,6 +1,6 @@
 # 第三站候选 B 调研档 —— 宠物饲养（小宠/后院鸡垂直）
 
-> 2026-09-09 建 · 用户定位（当天定）：**独立新站**（新子文件夹 + 新域名），宠物内容一律不并入 chartglade / tintbrew · 与 [third-site.md](./third-site.md)（候选 A：cheat sheet 高 CPC）为竞争候选，立项节奏仍挂 **2026-10-17 chartglade 六周验收门**
+> 2026-09-09 建 · 用户定位（当天定）：**独立新站**（新子文件夹 + 新域名），宠物内容一律不并入 chartglade / tintbrew · 候选 A（cheat sheet）2026-09-10 数据判死、候选 C（挂牌平台）同日停 → **本档为第三站唯一存活候选**，立项节奏挂 **2026-10-17 chartglade 六周验收门**
 > 纪律：同候选 A —— 每批词三样齐全（量 + KD + SERP 实勘），带证据等级；分工 = 用户 AITDK 拉量 / Claude SERP 实勘
 
 ## 一、站型定位（2026-09-09 讨论定，同日用户明确产品形态）
@@ -121,13 +121,29 @@ why is my chicken losing feathers
 dog eating grass
 ```
 
+H 目录/挂牌意图（§五 发布平台第一二阶段，2026-09-10 补；directory 词打 state 级页面，"for sale" 词测挂牌意图量和在位者）：
+
+```
+chicken hatcheries
+chicken hatcheries in texas
+dog breeders near me
+reptile breeders near me
+chickens for sale near me
+axolotl for sale
+bearded dragon for sale
+```
+
 ## 四、不碰清单（只当对手参照，不拉量不投产）
 
 - `can dogs eat X` 簇：兽医署名墙（PetMD/AKC/Purina）
 - 狗/猫症状·疾病·用药词：YMYL，无 vet reviewer 前禁碰
 - 狗/猫头部工具词（dog age calculator 等）：PEDIGREE/Chewy/PetMD/Omni 在位
 
-## 五、下一步
+## 五、分支记录：宠物发布平台 ≠ 本项目（2026-09-10，用户两次澄清后更正）
+
+用户 2026-09-10 提出"宠物付费挂牌平台（只发布不参与交易，品种关联饲养手册）"，**已确认为全新独立项目，单独立档：[pet-listing-platform.md](./pet-listing-platform.md)**。本档此前"三层同域名/directory 演进"记录作废。两项目的唯一交点 = 挂牌页按品种链接手册内容（形态待定：同域内容层或跨域链接）。§三 H 簇词保留——目录/挂牌意图数据对两边判断都有用。
+
+## 六、下一步
 
 - **用户**：AITDK 拉上表 A–D 簇量 + KD → 回填 §三
 - **Claude**：`dog age calculator` 探针重勘（区域污染作废）；C/D 簇其余词补 SERP 实勘
