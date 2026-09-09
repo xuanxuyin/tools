@@ -30,4 +30,4 @@
 - 2026-10-17：chartglade 六周验收 → 数据说话定是否立项第三站
 - 若立项：首批候选词拉量（用户 AITDK）+ 变体词 SERP 实勘（Claude）：
   `mysql cheat sheet` / `postgresql cheat sheet` / `excel shortcuts mac` / `excel formulas cheat sheet` / `git cheat sheet` / `python cheat sheet`
-- 候选清单回链：chartglade PLAN §5.6、根 CLAUDE.md「第二曲线」
+- 候选清单回链：chartglade PLAN §5.6、根 CLAUDE.md「第二曲线」；**2026-09-09 出现竞争候选 B（宠物饲养站）**，调研档见 [pet-care-site.md](./pet-care-site.md)，10/17 一同比数据
