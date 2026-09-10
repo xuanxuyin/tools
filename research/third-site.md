@@ -25,9 +25,21 @@
 2. **但 SERP 不是软区**：这不是 Pinterest/Quora 占位的 UGC 软场，是 DataCamp/WSP/官方文档的专业内容场。教育站打法的"名词答案 + 软 SERP"不能平移，打法要换：**打印件形态**（LearnSQL 专门提供 A4/Letter 下载 = 打印需求真实）+ **方言/功能变体长尾切入**（mysql cheat sheet / postgresql cheat sheet / excel shortcuts mac / paste special shortcut 这类），头词当支柱页磨页龄。
 3. **竞品普遍不做"页面即打印件"**：在位者全是 PDF 下载按钮或长文档，与我们 chartglade 架构（浏览器一键打印、零下载零登录）正交——这是可检验的差异化假设，立项前用变体词 SERP 验证。
 
-## 四、下一步（挂 10/17 门后）
+## 四、变体词实测与判死（2026-09-10，用户 AITDK 提前拉量）
 
-- 2026-10-17：chartglade 六周验收 → 数据说话定是否立项第三站
-- 若立项：首批候选词拉量（用户 AITDK）+ 变体词 SERP 实勘（Claude）：
-  `mysql cheat sheet` / `postgresql cheat sheet` / `excel shortcuts mac` / `excel formulas cheat sheet` / `git cheat sheet` / `python cheat sheet`
+| 词 | 量 | KD | CPC | 判定 |
+|---|---|---|---|---|
+| excel formulas cheat sheet | 3,600 | 30 | $1.23 | 中等 KD 中等量，回报平庸 |
+| python cheat sheet | 3,600 | 27 | $2.38 | 同上 |
+| git cheat sheet | 2,400 | **43** | $2.63 | 越线（40+ 不碰） |
+| postgresql cheat sheet | 480 | 32 | $2.37 | 量太小 |
+| mysql cheat sheet | 390 | 28 | **$4.65** | CPC 最高但量 390 |
+| excel shortcuts mac | 260 | **15** | $1.17 | 唯一低 KD，量仅 260 |
+
+**裁决：候选 A 判死（2026-09-10）**。入口假设被证伪：变体带总量 ~10.7K/月（比 chartglade 起步池 251K 小一个量级）；KD 无 0-15 软带词（最低 15 配 260 量）；SF 普遍 100+（SERP features 堆满）。高 CPC 论点成立（mysql 4.65/python 2.38）但回报池撑不起中等 SERP 的获取成本——**死于入口，不是死于判断**。头词 110K/KD38 从来不是首批目标，入口一断全线无解。
+
+## 五、下一步（2026-09-10 更新）
+
+- **候选 A 已死（数据判）**；候选 C（宠物挂牌平台）用户 2026-09-10 已停——第三站唯一存活候选 = **B 宠物手册站**（[pet-care-site.md](./pet-care-site.md)，71 词待拉量，不急）
+- 2026-10-17 chartglade 六周验收门**不变**：验收失败 = 打法未验证 = 无第三站（任何候选）；验收通过再拉 B 词定立项
 - 候选清单回链：chartglade PLAN §5.6、根 CLAUDE.md「第二曲线」
