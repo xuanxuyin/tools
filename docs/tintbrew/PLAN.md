@@ -61,6 +61,7 @@
 | 2026-09-09 | Request indexing 9 个 URL 全部完成（用户 GSC 操作，剩 3 条色卡/hub 今日补齐） |
 | 2026-09-09 | **GSC 曝光首查：累计 650**【实测 GSC，上线以来】—— 疑混自操作查询（手动 Google 搜词验排名、翻到看到自己站 = 计入曝光；site: 查询与 GSC 界面内操作**不计入**）；待查询明细拆分真实/污染。**新纪律：查排名只用 GSC 查询报告（被动记录含平均排名列），不再手动 Google 搜词** |
 | 2026-09-09 | 外链 Peerlist + AlternativeTo 提交完成（用户操作）→ 目录站三渠道全提交（Uneed 9/4 + Peerlist + AlternativeTo 9/9），进入等审核收录期 |
+| 2026-09-10 | **GSC 头词首查（9/10 周四固定任务）**【实测 GSC】：what colors make brown 展示 1 / purple 2 / green 1 / orange 0 —— 4 词合计 108K/月池，展示 4 次 = 噪音级刚冒头；长尾矩阵词（orange+white/pink+purple 等）排名 6~7 但展示 1~2 = 样本太小不判。**判读：day 6 DR0 零外链正常表现，不动盘，裁决窗 10-01** |
 
 ## 2. 关键词资产表
 
