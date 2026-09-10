@@ -16,7 +16,7 @@
    - 名字：`ChartGlade`
    - 简介（照抄）：`Free printable teaching charts for K-5 — place value, multiplication, sight words and cursive. No download, no sign-up: open and print.`
    - Website：`https://chartglade.com`
-3. **认领域名**（让 pin 统计归到我们）：Settings → Claimed accounts → Claim a website → 选 HTML tag 方式 → 把给出的 `<meta name="p:domain_verify" ...>` 标签发给 Claude，接进 `SeoHead.astro` push 即可（同 GSC 验证的做法）
+3. **认领域名**（**发 pin 的前置条件，不是可选项** —— 2026-09-09 实测：未认领新域发带链接 pin 被 Pinterest 以 "may lead to spam" 拦截；RDAP 实锤域名 2026-09-05 当天新注册、无前身污点，拦的就是"新 + 未认领"两个信号叠加）：Settings → Claimed accounts → Claim a website → 选 HTML tag 方式 → 把给出的 `<meta name="p:domain_verify" ...>` 标签发给 Claude，接进 `SeoHead.astro` push 即可（同 GSC 验证的做法）→ 部署后回 Pinterest 点 Verify，**认领成功再发首批 pin**。若认领后仍被拦：等 1~2 周域名信任自然增长（GSC 收录起来后）重试，或走 Pinterest 域名申诉
 4. **建 3 个 Board**（Create board）：
 
 | Board 名 | 描述（照抄） |
@@ -27,11 +27,11 @@
 
 ### 1.2 每周发 pin（15 分钟，3~5 个，固定节奏 > 一次轰炸）
 
-**pin 图怎么做**（零设计基础版）：
-1. 用 Canva（免费）→ 创建 1000×1500 竖版设计（Pinterest 最优比例 2:3）
-2. 背景：站内绿色 `#2f7d4f` 或白底
-3. 内容：**大字标题**（手机信息流 95% 的展现场景，字要占图 1/3）+ 打开对应页面截图打印件区域贴上去
-4. 导出 PNG
+**pin 图怎么做**（代码生成版，2026-09-09 起，替代 Canva —— 国内注册被引流 Pro 试用要海外卡，弃）：
+1. `cd chartglade && npm run build`（保证 dist 新鲜 —— 脚本从本地 build 截打印件）
+2. `npm run pins` → `chartglade/pins-output/` 出 2000×3000 PNG（1000×1500 @2x，Pinterest 直传）
+3. 版式自动：品牌绿渐变底 + Arial Black 大字 + 白卡内嵌页面打印件真图（无头 Edge 渲染，复用 `playwright-core`）
+4. 改文案/加字母页 pin → 编辑 `scripts/generate-pins.mjs` 的 `PINS` 数组（每条 = 文件名/页面路径/标题行/副标），重跑即出 —— 26 字母批量就是往数组加条目
 
 **标题公式**：`FREE + 打印件名 + Printable +（年级/数量钩子）`
 **描述公式**：一句话价值 + 网址 + 话题标签（3~5 个：`#printables #teacherresources #homeschool #kindergarten #freeresources` 里挑）
@@ -40,14 +40,15 @@
 ### 1.3 首批 5 个 pin（文案直接抄）
 
 > **全量 30 条**（4 大页 + 26 字母页逐字母钩子 + 7 周排期）见 [PINTEREST-PINS.md](./PINTEREST-PINS.md)；首批 5 条已含在全量包里，后续每周三照排期发，勿对同 board 重复发同 URL。
+> **首批 5 张图已生成**（2026-09-09，`chartglade/pins-output/pin-1~5-*.png`）：上传时图传 pins-output 里的对应文件，标题/描述/链接全从下表直接复制粘贴，无需再拼。
 
 | # | pin 图大字 | 目标 URL | 标题 | 描述 |
 |---|---|---|---|---|
-| 1 | FREE Cursive Alphabet Chart — Print in One Click | /cursive-alphabet/ | Free Printable Cursive Alphabet Chart (A-Z) | All 26 letters, uppercase and lowercase, with a tracing strip — print straight from your browser, no download. https://chartglade.com/cursive-alphabet/ #cursive #handwriting #printables |
-| 2 | FREE Place Value Chart (to Millions) | /place-value-chart/ | Free Printable Place Value Chart — Ones to Millions | Every grade 2-5 place value lesson starts here. Print it, use the interactive version in class. https://chartglade.com/place-value-chart/ #placevalue #mathprintables #teacherresources |
-| 3 | Multiplication Chart 1-12 — Free & Printable | /multiplication-chart/ | Free Multiplication Chart 1-12 (Printable) | The classic 1-12 times table, print-ready. Diagonal highlighted, blank version included. https://chartglade.com/multiplication-chart/ #multiplication #timestables #3rdgrade |
-| 4 | Kindergarten Sight Words — Full List Printable | /kindergarten-sight-words/ | Kindergarten Sight Words List (Free Printable) | The complete kindergarten word list in printable cards — click any card to hear how it's taught. https://chartglade.com/kindergarten-sight-words/ #sightwords #kindergarten #printables |
-| 5 | Cursive F — How to Write It (Free Practice Sheet) | /cursive/f/ | How to Write a Cursive F (Free Practice Sheet) | The trickiest letter, stroke by stroke, with a trace-and-write sheet. https://chartglade.com/cursive/f/ #cursive #handwritingpractice #teaching |
+| 1 | FREE Cursive Alphabet Chart — Print in One Click | https://chartglade.com/cursive-alphabet/ | Free Printable Cursive Alphabet Chart (A-Z) | All 26 letters, uppercase and lowercase, with a tracing strip — print straight from your browser, no download. https://chartglade.com/cursive-alphabet/ #cursive #handwriting #printables |
+| 2 | FREE Place Value Chart (to Millions) | https://chartglade.com/place-value-chart/ | Free Printable Place Value Chart — Ones to Millions | Every grade 2-5 place value lesson starts here. Print it, use the interactive version in class. https://chartglade.com/place-value-chart/ #placevalue #mathprintables #teacherresources |
+| 3 | Multiplication Chart 1-12 — Free & Printable | https://chartglade.com/multiplication-chart/ | Free Multiplication Chart 1-12 (Printable) | The classic 1-12 times table, print-ready. Diagonal highlighted, blank version included. https://chartglade.com/multiplication-chart/ #multiplication #timestables #3rdgrade |
+| 4 | Kindergarten Sight Words — Full List Printable | https://chartglade.com/kindergarten-sight-words/ | Kindergarten Sight Words List (Free Printable) | The complete kindergarten word list in printable cards — click any card to hear how it's taught. https://chartglade.com/kindergarten-sight-words/ #sightwords #kindergarten #printables |
+| 5 | Cursive F — How to Write It (Free Practice Sheet) | https://chartglade.com/cursive/f/ | How to Write a Cursive F (Free Practice Sheet) | The trickiest letter, stroke by stroke, with a trace-and-write sheet. https://chartglade.com/cursive/f/ #cursive #handwritingpractice #teaching |
 
 **红线**：新号一周别超过 5 个 pin（限流）；不重复 pin 同一 URL 到同一 board；被限流就停一周。
 
@@ -145,12 +146,14 @@ breakdowns. No accounts, no PDF downloads, no email wall — open the page and h
 
 | 版块 | 规模/特点 | 发帖角度 |
 |---|---|---|
-| r/Teachers | 最大教师社区 | "免费工具分享"角度 |
+| r/Teachers | 最大教师社区 | **只答帖、禁主帖**——版规强禁一切自我推广（个人站/TPT 店/链接帖，违规删+标记）。打法 = 版内搜 "free printable" / "cursive" 找提问帖，认真回答顺带提站 |
 | r/Kindergarten | 幼师，printable 重度用户 | sight words / alphabet chart |
 | r/homeschool | 在家教育家长，采购决策人 | 全科角度 |
 | r/3rdGrade 或 r/teaching | cursive 正是 3 年级内容 | cursive 字母页 |
 
 **发帖前必做**：读版规（Sidebar Rules）—— 多数版禁纯链接帖，违规会被删+标记，号就废了。
+
+**r/Teachers 实勘（2026-09-09，搜索快照）**：版规明禁 GoFundMe / Amazon wishlist / TPT 店 / 个人产品类内容，2021-09 官方专门开了 spin-off 版收推广帖（公告 pipb4l，spin-off 版名搜索没确认到——发帖意图先到 Sidebar 核对，别按印象投）。Reddit 全站另有 90/10 惯例（自有项目相关内容 ≤10%）。**结论：主帖打 r/homeschool / r/Kindergarten / r/3rdGrade（§3.2 模板），r/Teachers 只做答帖攒声誉**。
 
 ### 3.2 发帖模板（英文，改年级词复用）
 

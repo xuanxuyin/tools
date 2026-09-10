@@ -14,6 +14,7 @@
     "check": "astro check",
     "test": "vitest run",
     "og": "node scripts/generate-og.mjs",
+    "pins": "node scripts/generate-pins.mjs",
     "astro": "astro"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "happy-dom": "^20.14.0",
+    "playwright-core": "^1.63.0",
     "pngjs": "^7.0.0",
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"

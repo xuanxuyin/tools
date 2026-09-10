@@ -8,8 +8,8 @@
 
 ## 今天 · 2026-09-09（周三）
 
-- [ ] 👤 **chartglade Pinterest 一次性设置**（15 分钟：Business 账号 + 认领 chartglade.com + 建 3 个 board）→ **认领给的 `<meta name="p:domain_verify">` 标签发给 Claude 接代码** —— [DISTRIBUTION.md §1.1](./chartglade/DISTRIBUTION.md)
-- [ ] 👤 设置完顺手**发首批 5 个 pin**（图用 Canva 1000×1500，文案直接抄表；全量 30 条 + 7 周排期在 [PINTEREST-PINS.md](./chartglade/PINTEREST-PINS.md)）
+- [ ] 👤 **chartglade Pinterest 一次性设置**（15 分钟：Business 账号 + 认领 chartglade.com + 建 3 个 board）→ **认领给的 `<meta name="p:domain_verify">` 标签发给 Claude 接代码** ⚠️ 9/9 实测：**未认领先发 pin 会被 Pinterest 以 spam 拦截**（域名 4 天新），所以顺序是 认领→Verify 通过→再发 pin —— [DISTRIBUTION.md §1.1](./chartglade/DISTRIBUTION.md)
+- [ ] 👤 设置完顺手**发首批 5 个 pin** —— **图已生成**（`chartglade/pins-output/pin-1~5-*.png`，2000×3000；Canva 国内被引流 Pro 已弃，改 `npm run pins` 代码出图，见 [DISTRIBUTION.md §1.2](./chartglade/DISTRIBUTION.md)）；标题/描述/链接照 §1.3 表直接复制（URL 已补全）；全量 30 条 + 7 周排期在 [PINTEREST-PINS.md](./chartglade/PINTEREST-PINS.md)
 - [x] 👤 **目录站三渠道全部提交完成（9/9）**：Uneed + Peerlist 补齐（AlternativeTo 9/8 已完成含双向挂竞品）—— 均审核期，AlternativeTo 数周常态，不用盯
 - [x] 👤 **request indexing 第二批 9 条完成（9/9，提前）**：累计 **14/53**，实测高量字母页 f/a/z/b/k/x/i 全覆盖 —— 配额闲置时余下字母页（g/h/l 等）续批即可，9/12 复查对数
 - [x] 👤 每日例行（3 分钟）—— 9/9 完成：GSC 曝光累计 13（噪音级、疑含自操作查询；新纪律：查排名只用 GSC 查询报告，不手动 Google 搜词）；site: 实查 5 条（疑 = 9/8 请求的 5 条优先编入）

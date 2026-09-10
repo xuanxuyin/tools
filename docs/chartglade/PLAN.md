@@ -64,6 +64,7 @@
 | 2026-09-09 | GSC 未编入 4 条原因明细【实勘 用户查】：自动重定向 **1**（= www/http 变体 301 归主域，设计内不用动）+ 已抓取-尚未编入索引 **3**（Google 已爬未收 = 新站信任门；列表无 noindex/重复/服务器错误类）→ **无技术故障**。3 条 URL 明细新 UI 暂不可见（数据滞后），不阻塞：明日请求批次按量选页顺带覆盖 |
 | 2026-09-09 | **计算机打印件方向实勘（用户问"要不要跟 K5 扩科目"触发）**：①`computer shortcuts for kids classroom poster` **硬 ❌**——TPT×2 + Twinkl + Amazon 占位（教师 poster 是教育市场主场，同 worksheet 禁区逻辑）；②`keyboard shortcuts chart printable` **软 ✅**——前 10 = 大学随机 PDF / 内华达 DMV 挂的 PDF / Pinterest×2 / Wikipedia / Etsy，零专业 printables 站 → 判定：**chartglade 不扩计算机科目**（主题聚焦 + 课堂词被占），软的成人/通用图表词**并入第三站候选**（§5.6 第二曲线，high CPC），10/17 chartglade 验收后再评估 |
 | 2026-09-09 | Request indexing 第二批 9 条完成（用户 GSC 操作，原定 9/10 提前当日完成）→ **累计已请求 14/53**（9/8 首批 5 + 本批 9；已请求字母页 f/a/z/b/k/x/i = 实测高量 7 词全覆盖）。若明日配额闲置，余下字母页 g/h/l 等可续批；9/12 §3 #4 对数 |
+| 2026-09-09 | 用户再报「CF Analytics 空 + GSC 0 已编入」→ 双查均判**非故障**：① **beacon 注入实测正常**【实勘 curl：带浏览器 UA + Accept: text/html 头请求线上首页，cloudflareinsights 脚本在响应 HTML 里；裸 curl 头被 CF 自动注入跳过——**线上体检必带浏览器头，否则误判 beacon 掉线**（方法论坑，记档）】；CF 数据管道通（9/8 基线 42 visits 在档），面板空 = 时间切片当天无访问（新站真实状态）或看错站点。② GSC 0 = 索引报告快照滞后（9/8 URL 检查抽查 3 条全过实锤 + site: 5 条在涨 + 效果报告 9/5 起收曝光），维持以 URL 检查/site: 为准、9/12 §3 #4 对数，无需任何修复 |
 
 ## 2. 关键词资产表
 
