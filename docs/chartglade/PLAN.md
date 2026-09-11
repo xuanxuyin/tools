@@ -1,6 +1,6 @@
 # chartglade 作战文档
 
-> 本项目唯一计划文档 · 更新 2026-09-09 · 部署/运维细节见仓库根 [README.md](../../README.md)
+> 本项目唯一计划文档 · 更新 2026-09-11 · 部署/运维细节见仓库根 [README.md](../../README.md)
 > 原则：本文档没写的 = 没计划；做完的立刻勾掉并写日期。
 
 ## 0. 北极星
@@ -66,6 +66,8 @@
 | 2026-09-09 | Request indexing 第二批 9 条完成（用户 GSC 操作，原定 9/10 提前当日完成）→ **累计已请求 14/53**（9/8 首批 5 + 本批 9；已请求字母页 f/a/z/b/k/x/i = 实测高量 7 词全覆盖）。若明日配额闲置，余下字母页 g/h/l 等可续批；9/12 §3 #4 对数 |
 | 2026-09-09 | 用户再报「CF Analytics 空 + GSC 0 已编入」→ 双查均判**非故障**：① **beacon 注入实测正常**【实勘 curl：带浏览器 UA + Accept: text/html 头请求线上首页，cloudflareinsights 脚本在响应 HTML 里；裸 curl 头被 CF 自动注入跳过——**线上体检必带浏览器头，否则误判 beacon 掉线**（方法论坑，记档）】；CF 数据管道通（9/8 基线 42 visits 在档），面板空 = 时间切片当天无访问（新站真实状态）或看错站点。② GSC 0 = 索引报告快照滞后（9/8 URL 检查抽查 3 条全过实锤 + site: 5 条在涨 + 效果报告 9/5 起收曝光），维持以 URL 检查/site: 为准、9/12 §3 #4 对数，无需任何修复 |
 | 2026-09-11 | 用户报 **site: 38 (9/10) → 25 (9/11)**，全站体检判**非故障**【实勘 curl 权威 NS+CF IP】：首页/cursive 页 200 / robots 200（Sitemap 指向 sitemap-index.xml，200，52 条）/ 非尾斜杠 308→尾斜杠 / www 301→裸域 —— **无任何可致掉索引的技术因子**（重复版本被合并的空间也已排除）。site: 完整轨迹 4 (9/8) → 5 (9/9) → 38 (9/10) → 25 (9/11) = 新站试探期采样波动的标准形状：`site:` 条数是 Google 采样估计值非精确计数，DR0 新域头 2~4 周上蹿下跳属常态。**权威判定源 = GSC 索引覆盖报告的 Indexed 数（不受采样影响）+ 单条 URL 检查**；警惕阈值 = GSC Indexed 数同步下跌且 Crawled-not-indexed/Duplicate 变多（现无此象）。9/12 §3 #4 对数照旧 |
+| 2026-09-11 | **视力表词族实测落位（👤 晚 AITDK 7 词 + 裸词 SERP 补勘 2 词）**：合计 24.8K/月【实测】（eye exam chart 14.8K/KD57 + snellen eye chart 8.1K/KD65 + printable eye chart 1.3K/KD40 + tumbling e chart 480/KD24 + 长尾）—— 量过 5K 判定线 5 倍但主力词 KD 全超 35，预设三档套不上；裸词补勘【实勘】：snellen / eye exam 两词 top3 均为裸 PDF（HVES #1 ×2）+ 地方诊所博客/小非营利（Cincinnati Vision Group、Safe Eyes America）在排，权威（AAO/Wikipedia/Cleveland Clinic）在场未锁死前三 = 混合 SERP 非禁区。**判定：规则外第四情态 → 折中 2 页小簇**（§2 落位 + §3 #15）：可打意图 ≈1.9K、裸词 22.9K 当页龄期权（同 cursive alphabet 201K 先例：磨页龄不进 6 周验收），11 月批 V1.8 同期 |
+| 2026-09-11 | **视力/色盲在线测试赛道判定（用户问"在线测视力/色盲需求"触发，3 组 SERP 实勘）**：**色盲卡不进本站**双杀——① 打印色准硬伤：Ishihara 有效性 100% 依赖色相/饱和度精度，家用打印机未校准即失效（SERP 自标 "official printed book recommended"），YMYL 下给用户无效筛查结果比没有更糟（视力表黑白字母无此问题，此为两类内容本质分界）；② 人群漂移：色盲主力人群 = 成年自查 + 职业体检备考者（FAA 2025-01 新规只认计算机化色觉测试 = 新练习需求缝隙），非教师/家长，且美国学校常规查视力**不查色觉** → 在线交互色盲测试 + FAA 练习词归第三站候选池（§5.6）。**视力表打印件（printable eye chart 族）护栏三问全过**：人群 = 家长/学校护士 K-5 筛查 = 本站核心人群 ✅；场景 = 打印挂墙使用，同现有打印件 ✅；可自建 Vision Screening 小 hub 收口 ✅。【实勘 9/11】`printable eye chart` SERP = 眼科诊所裸 PDF（Coastal Eye Group 等）+ 医疗信息站附下载（Vision Source / All About Vision / AAO），**零 printables 垂直站认真占位且页面 SEO 糙**；tumbling E 侧证 = Printablee 在排 + Etsy 付费 bundle 在卖（形态可排 + 变现先例）。**7 词未实测 → 赌注批次入 §2，👤 9/11 晚 AITDK 补测，判定规则已挂** |
 | 2026-09-11 | **Pinterest 域名认领完成**（用户操作 + Claude 部署）：token `9e2c0ccd...` 接入 `consts.ts` + `SeoHead.astro`（同 GSC 模式，main `71774cc` 全站 head），CF Pages 部署后用户 Verify 一次过。**两个入档坑**：① 认领入口改名 —— 新 UI 左侧导航叫 **「Link to Pinterest」**，旧名 Claimed accounts 的直达 URL `/settings/claimed-accounts` 已死（跳 `?show_error=true` 实测）；用户首次 Verify 报 "No relevant meta tag found" = 标签未部署前的预期报错，非故障。② **Pinterest tag（广告转化像素）不装** —— 纯自然流量零广告投放，装了白加第三方脚本。**后续实测（同日）：认领生效（Websites 列表确认）+ 3 board 建好后，发链接 pin 仍被 spam 拦** —— 判定：拦截器与认领状态是两套系统，缓存未同步（认领生效 <1h）；处置 = 当日停止尝试（防新号负信号积累），9/12 发 1 条测试，仍拦则按 §1.1 预案等 1~2 周信任增长或申诉。原判"认领即解除拦截"修正为"认领是必要非充分条件，拦截解除有时滞" |
 
 ## 2. 关键词资产表
@@ -91,6 +93,7 @@
 | **V1.8 正式** | sign in sheet 教师场景族（open house 头名 + template/printable 通用页 + PT conference/field trip/volunteer 变体） | ≈10.7K 合计/KD 4~31【实测 9/6】 | /sign-in-sheets/ hub + 4~5 页 | SERP 混合可打【实勘 9/6】：eForms #1 / Spreadsheet123 / InkPx / Visit-Us 独立站在排；visitor（办公人群）不做目标词 |
 | 第三站候选池 | habit tracker printable（2.4K/KD30，成人 planner 人群漂出教师主题） | — | — | 双杀：量未过线 + 主题护栏；归未来 planner 站或第三站，10/17 后议 |
 | **数学练习 island（成立）** | **mad minute 族 + worksheet generator 族**：mad minute math 480/KD18 + mad minute multiplication 480/KD17【实测 9/7】+ multiplication worksheet generator 480/KD15 + addition/subtraction worksheet generator 230【实测 9/7】，**合计 ≈1,670/月** 过 generator 族 500 合计线 | 乘法簇 island（挑运算/范围/题量 → 打印 mad-minute 题卡） | 【实勘 2026-09-07】`mad minute math printable` 前 5 = ①webmathminute.com **独立小 generator 站** ②SuperTeacher ③TPT ④EdHelper ⑤Rudolph Academy + Pinterest/Etsy 混排 —— DR0 能进的工具站形态✅；**10/25 批**（V1.7 同批，不挤 10/05） |
+| **V1.9 小簇（判定 9/11 晚落位）** | printable eye chart 1.3K/KD40 + tumbling e chart 480/KD24 + 变体长尾（chart printable 70 等）≈ **1.9K 可打主战场**；裸词 snellen eye chart 8.1K/KD65 + eye exam chart 14.8K/KD57 = **22.9K 页龄期权不计验收**；vision screening chart 50/KD50 弃、printable eye chart for kids 0 量弃（FAQ 接住） | 合计 24.8K【实测 9/11】 | /printable-eye-chart/（Snellen 10ft 家用版 + 筛查记录表 + 距离标尺同页）+ /tumbling-e-chart/（学龄前）共 **2 页**，2 页不建 hub（V2 扩容再收口） | 【实勘 9/11 晚】两裸词 top3 均有裸 PDF（HVES #1 ×2）/地方诊所博客/小非营利在排，权威（AAO/Wikipedia/Cleveland）在场未锁死前三 = 混合 SERP 非禁区；判定 = **规则外第四情态**（量过线 5 倍 + KD 全超 35 + 实勘混合）→ 折中 2 页小簇，**11 月批（V1.8 同期）**；YMYL：每页"筛查非诊断"免责 + 引 AAO 来源；色盲卡不随批（色准硬伤，见时间线 9/11） |
 | 弃（实勘+实测） | 100以内混合加减 / 两位数乘除 worksheets 族（6 词全勘：long division 6.6K/KD35、double digit mult 2.9K/KD31、2-digit mult worksheets 1.9K/**KD18**、2-digit regrouping 1.3K/KD32、mixed 320、within 100 210）【实测 9/7】 | — | — | 【实勘 2026-09-07】前 5 全为 K5/Math-Drills/Math-Aids/HomeschoolMath/SuperTeacher/TPT（long division 单独补勘：K5 #1 + HomeschoolMath + Math-Drills + Dad's + Math-Aids）—— worksheets 后缀词 9K+ 量全判死，"需求大≠能做"；**KD18 的 2-digit mult worksheets = KD 过线 SERP 不过线第 2 实例**（第 1 例 physics KD24），KD 估计与实勘冲突时实勘赢；需求真实（Common Core 2.NBT.B.5/4.NBT.B.5 原文）但静态词死路 |
 
 **单字母族 SERP 实勘（2026-09-05，google.com US 区，4 词抽样）**：
@@ -135,6 +138,7 @@
 | 12 | 对标站拆解：InkPx（name tracing #5 + sign in sheet #3 跨词族排名的纯打印站）+ Printabulls（合集页吃大词模式）——词池结构/页面形态/内链策略各出一份笔记 | Claude | 拆解笔记入 docs/chartglade/ | 2026-09 下旬（V1.6 开发前，给 hub 结构参考） |
 | 13 | **字母矩阵加码**：每字母补 "capital cursive X / capital X in cursive" 变体段（capitalSteps 字段已有，capital 变体词 3 个合计 17.6K：capital i 8.1K / capital f 6.6K / capital b 2.9K）；/cursive-alphabet/ 主页 SEO 措辞补 "cursive chart"（2.4K/KD21） | Claude | **变体段已上线（main `3cbf225` 2026-09-09：26 页 Capital X 深读段 + 大写 FAQ + 接客段，53 页 build + 23 测试绿）**；v1.6-predev 的 26 页措辞/主页 FAQ 版**合并时与 3cbf225 去重后收尾** | 原 **10/05 批次**（变体段部分已提前上线，只加内容不加新页不破止损线） |
 | 14 | **数学练习生成器 island**（mad minute 族 960 + mult/add/sub worksheet generator 710，合计 ≈1,670/月【实测 9/7】）：挂乘法 chart 页，选运算/范围/题量 → 打印 mad-minute 计时题卡（30/60 题+答案行），SSR 预渲染默认一套 | Claude | island 上线 + 无 JS 可打印 + 测试绿 | **10/25 批次**（V1.7 同批顺手，不挤 10/05） |
+| 15 | **V1.9 视力表 2 页**：/printable-eye-chart/（Snellen 10ft 家用版 8.5×11 + 筛查记录表 + 同页距离标尺；标题吃 printable eye chart，正文并吃 snellen chart printable / chart printable 变体）+ /tumbling-e-chart/（学龄前 E 表）；每页"筛查非诊断"免责 + AAO 来源引用（YMYL 纪律）；Snellen 视标按 10ft 标准物理尺寸渲染（打印后拿尺可验） | Claude | 2 页 build + 测试绿 + print 剥纸物理尺寸验证 | **2026-11 月批**（V1.8 同期） |
 
 **（Request indexing 两批共 14/53 已全部请求完毕，勿重复：9/8 首批 5 条 + 9/9 第二批 9 条 —— 明细见时间线 9/9 行；下一批候选 = 余下字母页，配额闲置时再做）**
 
@@ -162,7 +166,7 @@
 3. **季节窗（排期唯一依据 = 美国校历，准则见根 [CLAUDE.md](../../CLAUDE.md)「美国日历准则」+ 下方 §5.1 日历表）**：printables 赛道季节词是大流量脉冲，每个节点**提前 4~6 周上线**（Google 收录+爬排名要时间）。候选池（节点前 1 个月拉量筛选定稿）：halloween word search / halloween coloring math facts / thanksgiving gratitude tree / thankful ABC list / halloween cursive practice（复用字母矩阵架构）/ pumpkin math chart
 4. **外链与分发**：Pinterest 常态化（每周 pin）、教师社区（r/Teachers r/homeschool，先读版规）、TPT 形态研究（商城不做，引流可）
 5. **变现**：~300 访问/天 → 接广告
-6. **第二曲线**（本仓第三个站候选）：技术/办公打印件（excel shortcuts 110K/KD38 量王 + sql cheat sheet 3.6K/CPC$2.44 高 CPC）—— 调研档落 [research/third-site.md](../../research/third-site.md)（2026-09-09 量实测+SERP 实勘三样齐全；SERP 中等非软区，打法 = 变体长尾切入+头词磨页龄）—— **10/17 验收后再定立项，此前零动作**
+6. **第二曲线**（本仓第三个站候选）：技术/办公打印件（excel shortcuts 110K/KD38 量王 + sql cheat sheet 3.6K/CPC$2.44 高 CPC）—— 调研档落 [research/third-site.md](../../research/third-site.md)（2026-09-09 量实测+SERP 实勘三样齐全；SERP 中等非软区，打法 = 变体长尾切入+头词磨页龄）—— **10/17 验收后再定立项，此前零动作**。候选池新增方向（2026-09-11 实勘入档）：**健康筛查交互工具站**（在线色盲测试词族：SERP 无基建巨头、ColorBlindnessTest.org/Colblindor 等中小独立站在排、EnChroma/Pilestone 眼镜公司拿测试当获客漏斗 = 商业价值背书；纯前端 Canvas/SVG 可做零后端；FAA 计算机化色觉练习 2025 新规缝隙词）—— 同 10/17 后议，不与 chartglade 混站
 7. **V1.6**（2026-09-06 判定入排期）：graph paper 簇（12.1K 头名，品牌契合 chart≈graph，SERP 奖励独立小工具站）+ name tracing generator（KD13 全场最软，V2 放大器 = top100 宝宝名矩阵）—— 定性结论：**generator 是功能不是关键词策略**（generator 词 710 合计 vs 静态词 12.1K，17 倍差距），交互化本身是 AI 截流护城河
 
 ### 5.1 美国教育内容日历（季节排期唯一依据）
