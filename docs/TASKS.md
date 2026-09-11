@@ -10,7 +10,8 @@
 
 - [ ] 👤 **每日例行（3 分钟）**：GSC 效果有没有新冒头词 ｜ CF Analytics 曲线异常否 ｜ ⚠️ 不手动 Google 搜自己站
 - [x] 👤 ~~chartglade Pinterest 一次性设置~~ **认领 ✅ 2026-09-11 完成**：meta 标签 main `71774cc` 全站上线 → Verify 一次过。认领入口修正存档：Settings → 左侧 **「Link to Pinterest」**（新 UI 名，旧名 Claimed accounts / 旧 URL 已死）。Pinterest tag（广告像素）**不装** —— 纯自然流量，零广告
-- [ ] 👤 **建 3 个 board + 发首批 5 个 pin**（认领已完成，spam 拦截解除；board 名/desc 照 [DISTRIBUTION.md §1.1](./chartglade/DISTRIBUTION.md)，pin 图 `chartglade/pins-output/pin-1~5-*.png` + 文案 §1.3 直接复制）⚠️ 新号红线：本周 ≤5 个，发完即停，下周三续
+- [x] 👤 **3 个 board 建好（9/11）+ 认领已生效**（Websites 列表确认）——但发链接 pin 仍被 spam 拦（认领生效 <1h 拦截器缓存未同步，判非故障），**今日停止尝试防账号负信号**
+- [ ] 👤 **明日（9/12）发 1 条测试 pin**（cursive-alphabet，文案 [DISTRIBUTION.md §1.3](./chartglade/DISTRIBUTION.md) #1）：拦截解除 → 剩余 4 条发完（本周红线 ≤5）；仍拦 → 预案：等 1~2 周信任增长重试或申诉，不硬试
 - [ ] 👤（不强制）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
 - [ ] 👀 **明天 9/12 有收录复查大节点**（见本周表）——今天不用动，明早 GSC 索引覆盖报告 sitemap 视图读数发 Claude
 
