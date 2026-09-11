@@ -23,6 +23,7 @@ const canonical = path === '/' ? `${SITE.url}/` : `${SITE.url}${path}/`;
 const ogImageAbs = ogImage ? new URL(ogImage, SITE.url).href : undefined;
 const jsonLdItems: Record<string, unknown>[] = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const gsc = import.meta.env.PUBLIC_GSC_VERIFICATION ?? SITE.gscVerification;
+const pinterest = import.meta.env.PUBLIC_PINTEREST_VERIFICATION ?? SITE.pinterestVerification;
 ---
 
 <title>{title}</title>
@@ -43,4 +44,5 @@ const gsc = import.meta.env.PUBLIC_GSC_VERIFICATION ?? SITE.gscVerification;
 {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
 
 {gsc && <meta name="google-site-verification" content={gsc} />}
+{pinterest && <meta name="p:domain_verify" content={pinterest} />}
 {jsonLdItems.map((obj) => <script is:inline type="application/ld+json" set:html={JSON.stringify(obj)} />)}
