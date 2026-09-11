@@ -57,7 +57,15 @@
 | 2026-09-05 | **目标阶梯按基率校准**（用户质疑"太理想"成立）：改三档情景表 + 认基率（多数站一年无成果是中位数）+ **2027-01-31 止损线** |
 | 2026-09-05 | **探测工具边界确认**：AITDK 官网 = AI 写作工具集，无查量 API → 拉量固定走用户插件（分工入根 CLAUDE.md）；Google 补全接口三条管道全堵（WebFetch 域名校验 / webReader 拒 query 串 / 本机 curl 无代理），变体枚举继续走自动搜索 |
 | 2026-09-05 | **短词机会实勘（用户提问"有没有在短词里找机会"触发）**：`color mixing chart` SERP 极软 → 新页候选入 §2（量 9/8 拉）；gold/teal 扩色预勘可打；同批 `multiplication chart`（chartglade）硬、`cursive alphabet` 探针区域污染作废 —— 证据分级规则入根 CLAUDE.md |
-| 2026-09-09 | **AITDK 补测批（tintbrew 4 词）实测落位**：color mixing chart **6,600/KD27** ✅≥2,000 → /color-mixing-chart/ 总表页锁定 V2.2 首批；gold **3,600** / teal **1,900** ✅过筛（≥500 + SERP 预勘可打）进 V2.2 扩色；acrylic chart **390** ❌并入总表页 FAQ 不单独建。V2.2 启动仍守 §6 的 10/01 门 |
+| 2026-09-06 | **GSC 基线（day 2）**：2 点击 / 29 曝光，疑自搜/自点污染 → **手动搜站禁令**入 §4。判读：上线第 2 天属正常区间（预期锚：1~2 周收录爬完、2~6 周曝光爬升、2~3 月长尾进前两页），裁决窗口 = 10-01（§6 已有），中途不动盘 |
+| 2026-09-06 | **AI 截流分级**入根 CLAUDE.md 选词纪律（用户观察"SERP 第一被 AI Overview 挡"触发）：what-colors-make 族 = 答案型，截流风险最高，已建 9 页躺页龄不加码；工具页 = 交互型，AI 替代不了，词池重心逐波移向工具型（分级备注入 §2） |
+| 2026-09-06 | **收录基线：GSC 40/41（98%）**，上线第 2 天近全量 —— 正常偏快；缺的 1 页周一例行查「索引覆盖」，不处理。Request indexing 9 URL 已完成（用户） |
+| 2026-09-07 | **9/6 调研批四词拉量落位**（用户 AITDK + Claude SERP 复勘）：color mixing chart 6.600K/KD27 触发 ≥2K 规则 → /color-mixing-chart/ 锁 V2.2 首批；gold 3.6K、teal 1.9K 双门槛过 → 配对进扩色池；acrylic 390<500 不单独建页、由 chart 页覆盖。复勘 4 词全软无区域污染。开建仍等 §6 的 10-01 决策点 |
+| 2026-09-07 | **周一例行（首次，数字全部【实测】GSC）**：编入索引 52 / 未收录 14（重定向 2 + 已抓取未索引 8 + 已发现未索引 4）—— **52 > 站内 41 页**：全站视图含 sitemap 外 URL 变体，与上周 40/41（sitemap 口径）不可直接环比，9/14 复核固定用「网页索引编制」的 sitemap 视图；效果 28 天 = 2 点击 / 29 曝光无新增（day 4 自搜污染基线，裁决窗 10-01 不动盘）。**site: 修正归因**：用户查询走美区外网（非国内直连），"约 153 条" = Google 估算值（翻到最后一页才是实数），仅粗信号、判定以 GSC 为准。**判读：全部正常，无一项需要动作** |
+| 2026-09-07 | **移动端小屏打磨上线（用户反馈"感觉不像手机站"触发）**：审计确认组件本有完整断点（Mixer/Converter/Scenario 均为 48rem 桌面双栏塌手机单栏，26rem 还有微调）—— 实修两处观感：MixTable 比例行固定列压缩（≤30rem，**24 个 mix 页**名称列从 ~60px 回 ~130px）+ hero 间距收紧（≤40rem）。41 页/81 测试绿，main 直推部署，与 chartglade 移动端热修同批（见其 PLAN） |
+| 2026-09-07 | **Peerlist 项目卡上线（外链 #2，Uneed 后第二根）**：peerlist.io/xuanxuyin，Design Resources 类目，visit 链接 `?ref=peerlist&utm_source=peerlist` 实测通 —— canonical 自指无重复 URL 之忧，utm 参数后续在 CF Analytics 按 source=peerlist 归因真实引流。挂着 = 外链已生效；**流量入口是周榜 feed，但 launch 有验证门**（官方 help：verified 账号才进 Launchpad）—— 已走 workplace 免费验证（09-07 交，Under Review），通过即解锁；identity 付费不买（PLAN 止损纪律：不买任何付费东西）。cover 用现成 og-default.png（1200×630 正中推荐） |
+| 2026-09-07 | **AlternativeTo 提交（外链 #3）**：用户走 "color mixer" 竞品页 → Suggest an alternative 路径提交 tintbrew.com；审核数周，收录与否 10 月初周例行顺手查。**当日外链格局：Uneed(09-04) + Peerlist 卡片(09-07) + AlternativeTo(09-07) 三根齐**，后续增量看周榜（等 workplace 验证）与 PH（10 月） |
+| 2026-09-07 | **GSC 首查提前（用户拉热门查询）**：10 词 14 展示 0 点击【实测】—— 矩阵层全面起跑（blue plus yellow 34.0 最接近 10-01 的 top 30 门）；**what two colors make yellow? 3.0**（1 展示小样本，答案型词、后续盯"位次进 top10 + 点击仍零"的截流指标）；工具头词 color mixer 62.7（3 展示，KD27 词 day 5 有名次是好信号）；0 点击与位次匹配非截流证据；用户手搜样本混在 blue and yellow make what color（43.0）里。判读：day 5 属预期轨道偏快，不动盘 |
 | 2026-09-09 | Request indexing 9 个 URL 全部完成（用户 GSC 操作，剩 3 条色卡/hub 今日补齐） |
 | 2026-09-09 | **GSC 曝光首查：累计 650**【实测 GSC，上线以来】—— 疑混自操作查询（手动 Google 搜词验排名、翻到看到自己站 = 计入曝光；site: 查询与 GSC 界面内操作**不计入**）；待查询明细拆分真实/污染。**新纪律：查排名只用 GSC 查询报告（被动记录含平均排名列），不再手动 Google 搜词** |
 | 2026-09-09 | 外链 Peerlist + AlternativeTo 提交完成（用户操作）→ 目录站三渠道全提交（Uneed 9/4 + Peerlist + AlternativeTo 9/9），进入等审核收录期 |
@@ -68,28 +76,39 @@
 | 梯队 | 词/词族 | 量(US/月) | 目标页 | 状态 |
 |---|---|---|---|---|
 | 品牌 | tintbrew / tintbrew color mixer | — | 首页 / /color-mixer/ | 等 2~7 天出现 |
-| 长尾矩阵 | what color does X and Y make（24 对） | KD≈0 | /mix/* | 已上线，等曝光 |
+| 长尾矩阵 | what color does X and Y make（24 对） | KD≈0 | /mix/* | 已上线；**GSC 实测起跑（09-07，day 5）**：矩阵词批量 18~52 名（blue plus yellow 34.0 / black and white mix 18.0 / mix col 20.0 / red blue make 52.0 / blue-and-yellow 族 40~49），what two colors make yellow? **3.0**（1 展示小样本）；手搜"第 8 页"的权威读数 = 43.0。10 词合计 14 展示 0 点击（位次 34 名外无人点，正常） |
 | V2.1 头词 | what colors make brown | 49.5K/KD38 | /what-colors-make-brown/ | 已上线，磨页龄 |
 | V2.1 三色 | purple / green / orange | 58.4K 合计 | /what-colors-make-*/ | 已上线 |
 | V2.1 烘焙 | black frosting / brown icing / icing chart / buttercream chart | 含万圣季节词 | 4 页 | 已上线 |
-| 工具头词 | color mixer / converter / hex to rgb | KD 27 档 | /color-mixer/ /color-converter/ | 3~6 个月长跑 |
-| V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | **gold 3,600 / teal 1,900**【实测 2026-09-09】✅ 过筛；其余候选启动时拉 | /mix/* | 未启动（V2.2）；SERP 预勘【实勘 2026-09-05】：gold 前 5 = 内设博客 J Fisher Interiors + 艺术博客 Ettavee（软✅）；teal 前 5 = trycolors 工具站 + Quora（弱✅） |
-| **V2.2 新页候选** | **color mixing chart**（短词，用户提问触发的探测发现） | **6,600 / KD27**【实测 2026-09-09】✅ ≥2,000 | /color-mixing-chart/（打印版混色总表） | **V2.2 首批锁定**（启动仍守 §6 的 10/01 门）；acrylic chart 390 ❌ 并入该页 FAQ 不单独建；SERP 极软【实勘 2026-09-05】：①Pinterest ②YouTube ③Facebook ④Facebook ⑤Visual Arts Passage 博客 ⑦MyModernMet ⑧Daniel Smith —— UGC+小博客占满，无巨头无工具站 |
+| 工具头词 | color mixer / converter / hex to rgb | KD 27 档 | /color-mixer/ /color-converter/ | 3~6 个月长跑；GSC 首现（09-07）：online/digital color mixer 族 67~81 名有展示【实测】 |
+| V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | gold 3.6K / teal 1.9K【实测 2026-09-07】，其余待拉 | /mix/* | 未启动；gold/teal 双门槛过（≥500 + SERP 无 DR60+）：gold 前 5 = J Fisher Interiors 博客 + EttaVee + Quora/UGC【实勘 09-05 复勘 09-07】；teal = trycolors 工具站 + Facebook 群组 + 小博客。**走配对页不走头词页**（AI 截流纪律：答案型头词不再加码） |
+| **V2.2 首批锁定** | **color mixing chart** | **6.6K / KD 27【实测 2026-09-07】** | /color-mixing-chart/（打印版混色总表） | **三样齐全**：SERP 实勘 2 次一致（09-05/09-07）——①Visual Arts Passage ②MyModernMet ③Pinterest ④⑤YouTube ⑥Daniel Smith，UGC+小博客，无工具站无巨头；chart 型 = 打印/参考件，AI 截流低。acrylic 变体（390/KD24，SERP 有 Golden+Liquitex 颜料厂）不单独建页，本页 acrylic 段覆盖 |
 | 已评估暂缓 | what colors go with X（穿搭配色） | 未验证 | — | 见 §6 |
+
+**AI 截流分级（2026-09-06 立，选词维度）**：what colors make X 族 = **答案型**（AI Overview 一句答完，点击截流风险最高）—— 已建 9 页躺页龄，不加码；/mix/ 矩阵 = 半答案型，意图偏"看表对照"，风险居中；工具页（mixer / converter / V2.3 生成器族）= **交互型，AI 替代不了**，词池重心逐波移向这里。实锤指标：曝光涨 + 排名进 top 10 + 点击仍零 → 确认截流，加速移仓。
 
 ## 3. 接下来要做（优先级排序）
 
 | # | 任务 | 谁 | 验收标准 | 期限 |
 |---|---|---|---|---|
-| 1 | ~~Request indexing 9 个新 URL（W1+W2）~~ **✅ 完成 2026-09-09** | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
-| 2 | ~~外链：Peerlist Launchpad + AlternativeTo~~ **✅ 完成 2026-09-09（用户提交；AlternativeTo 审核期数周）** —— 步骤见 [DISTRIBUTION.md](./DISTRIBUTION.md) | 👤 | 两个平台提交成功 | 2026-09-07 |
-| 3 | GSC 首查：效果→查询（28 天），看 W1/W2 词有没有曝光 | 👤+Claude | 截图记录，更新本文档 §2 状态 | 2026-09-10 |
-| 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工。**gold 3,600 / teal 1,900 已实测过筛（2026-09-09），color mixing chart 总表页（6,600/KD27）进首批** | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
+| 1 | ~~Request indexing 9 个新 URL（W1+W2，清单原见下方代码块）~~ **✅ 完成 2026-09-09**（当日补齐剩 3 条色卡/hub，明细见时间线） | 👤 | GSC 逐个显示"已请求" | 2026-09-06 |
+| 2 | ~~外链：Peerlist Launchpad + AlternativeTo~~ **✅ 完成 2026-09-07**（Peerlist 项目卡上线 + AlternativeTo 已提交、审核期数周 —— 详见时间线与 [DISTRIBUTION.md](./DISTRIBUTION.md)） | 👤 | 两个平台提交成功 | 2026-09-07 |
+| 3 | GSC 首查：效果→查询（28 天），看 W1/W2 词有没有曝光（09-07 已提前拉了矩阵层数据入 §2；周四重点补 **W1/W2 头词**：brown/purple/green/orange/烘焙族有没有展示；拉数一律加筛选**国家/地区=美国**，已见荷兰语杂词混入） | 👤+Claude | 截图记录，更新本文档 §2 状态 | 2026-09-10 |
+| 4 | **V2.2 第二批配色对（+20~30 页）**：colors.ts 扩色 → mixes.ts 配对 → 全自动出页。**筛选规则**：候选色池 gray/cyan/magenta/gold/navy/turquoise/lavender/beige/silver/maroon/teal/coral，启动时逐对拉 AITDK/Ahrefs 数据，**只保留 搜索量≥500/月 + SERP 前 10 无 DR60+ 巨头** 的配对，凑满 24~30 对收工。**gold 3,600 / teal 1,900 已实测过筛（2026-09-07），color mixing chart 总表页（6,600/KD27）进首批** | Claude | 61~71 页，`_redirects` 重新生成，测试全绿 | 启动条件见 §6 |
 | 5 | W3 木器染色 2 页（coffee wood stain 等，已锁定未建） | Claude | 2 页上线 | 跟 V2.2 同批或下批 |
 | 6 | per-page OG 图：场景页用引擎生成对应色卡图（替代全站共用卡） | Claude | 场景页 og:image 唯一 | 2026-09 下旬 |
 | 7 | V2.3 工具页：互补色/对比色生成器（`contrastRatio` 引擎已有） | Claude | 1 页 + WCAG 检查 | 2026-10 |
 
-**V2.2 预拉量 4 词 ✅ 已拉完（2026-09-09 AITDK 实测，判定规则自动落位）**：color mixing chart **6,600/KD27** ≥2,000 → /color-mixing-chart/ 打印版总表页 **V2.2 首批锁定**（引擎现算全部色值 + print CSS，打通 /mix/ 矩阵 ↔ color-guides hub 内链）；gold **3,600** / teal **1,900** ✅ 过筛进 V2.2 扩色；acrylic color mixing chart **390** ❌ 并入总表页 FAQ 不单独建。V2.2 启动仍守 §6 的 10/01 门。
+**9/6 调研批四词已拉量落位（2026-09-07，量 = 用户 AITDK【实测】，SERP = Claude 复勘【实勘】）**：
+
+| 词 | 量 / KD | SERP 复勘（09-07） | 落位 |
+|---|---|---|---|
+| color mixing chart | 6.6K / 27 | 软，同 9/5：Visual Arts Passage、MyModernMet、Pinterest、YouTube、Daniel Smith | **≥2K 规则触发 → /color-mixing-chart/ 进 V2.2 首批**（引擎现算全部色值 + print CSS，打通 /mix/ ↔ color-guides 内链） |
+| what colors make gold | 3.6K / 33 | J Fisher、EttaVee、Quora/TikTok UGC，无巨头 | 过双门槛 → gold（yellow+brown）配对进扩色池 |
+| what colors make teal | 1.9K / 33 | trycolors、Facebook 群组、小博客 | 过双门槛 → teal（blue+green）配对进扩色池 |
+| acrylic color mixing chart | 390 / 24 | Golden Artist Colors + Liquitex 颜料厂在列 | <500 不单独建页；chart 页 acrylic 段覆盖 |
+
+开建时点不变：等 §6 的 10-01 决策点（/mix/ 有词进 top 30 → 启动 V2.2），不破「在此之前不加页」纪律。
 
 ## 4. 每日 / 每周例行
 
@@ -98,6 +117,7 @@
 - [ ] GSC → 效果：有没有新冒头的查询词（2 分钟，**界面怎么点见根 README「每周数据检查 SOP」**）
 - [ ] Cloudflare → Web Analytics：访问曲线异常否（1 分钟）
 - [ ] 新词/异动随手记到本文档 §2 表格（不展开分析）
+- [ ] **禁令（2026-09-06 立）**：不手动 google 搜自己的站看排名 —— 自搜/自点污染 GSC（day2 基线 2 点击/29 曝光疑全是自己的），且国内直连非美区 SERP。看收录用 GSC「索引」报告，看排名等周一例行
 
 **每周（~30 分钟）**：
 

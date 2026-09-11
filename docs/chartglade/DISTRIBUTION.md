@@ -1,6 +1,6 @@
 # chartglade 分发操作手册
 
-> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-08
+> 配合 [PLAN.md](./PLAN.md) 每周三例行使用 · 更新 2026-09-09
 > 三大渠道按投入产出排序：**Pinterest（主战场）→ 目录站（外链）→ 教师社区（真实用户）**
 
 ---
@@ -16,7 +16,7 @@
    - 名字：`ChartGlade`
    - 简介（照抄）：`Free printable teaching charts for K-5 — place value, multiplication, sight words and cursive. No download, no sign-up: open and print.`
    - Website：`https://chartglade.com`
-3. **认领域名**（让 pin 统计归到我们）：Settings → Claimed accounts → Claim a website → 选 HTML tag 方式 → 把给出的 `<meta name="p:domain_verify" ...>` 标签发给 Claude，接进 `SeoHead.astro` push 即可（同 GSC 验证的做法）
+3. **认领域名**（**发 pin 的前置条件，不是可选项** —— 2026-09-09 实测：未认领新域发带链接 pin 被 Pinterest 以 "may lead to spam" 拦截；RDAP 实锤域名 2026-09-05 当天新注册、无前身污点，拦的就是"新 + 未认领"两个信号叠加）：选 HTML tag 方式 → 把给出的 `<meta name="p:domain_verify" ...>` 标签发给 Claude，接进 `SeoHead.astro` push 即可（同 GSC 验证的做法）→ 部署后回 Pinterest 点 Verify，**认领成功再发首批 pin**。若认领后仍被拦：等 1~2 周域名信任自然增长（GSC 收录起来后）重试，或走 Pinterest 域名申诉。**入口路径（9/11 修正，官方帮助文档现行版实勘）**：右上 chevron ⌄ → Settings → 左侧导航 **「Link to Pinterest」**（新 UI 名，旧名 "Claimed accounts" 已被替换——旧直达 URL `/settings/claimed-accounts` 实测跳错误页）→ Websites 旁 **Claim**。候选直达 URL `pinterest.com/settings/claim`（搜索索引为现行 Claim Settings 页，未亲测）。前提三件：Business 账号（个人号入口不全，转换 `pinterest.com/business/convert`）+ 桌面网页版（App 无完整入口）+ 界面语言 English (US)（中文界面 = 账号区域挂非美区，顺手改掉）
 4. **建 3 个 Board**（Create board）：
 
 | Board 名 | 描述（照抄） |
@@ -27,11 +27,11 @@
 
 ### 1.2 每周发 pin（15 分钟，3~5 个，固定节奏 > 一次轰炸）
 
-**pin 图怎么做**（零设计基础版）：
-1. 用 Canva（免费）→ 创建 1000×1500 竖版设计（Pinterest 最优比例 2:3）
-2. 背景：站内绿色 `#2f7d4f` 或白底
-3. 内容：**大字标题**（手机信息流 95% 的展现场景，字要占图 1/3）+ 打开对应页面截图打印件区域贴上去
-4. 导出 PNG
+**pin 图怎么做**（代码生成版，2026-09-09 起，替代 Canva —— 国内注册被引流 Pro 试用要海外卡，弃）：
+1. `cd chartglade && npm run build`（保证 dist 新鲜 —— 脚本从本地 build 截打印件）
+2. `npm run pins` → `chartglade/pins-output/` 出 2000×3000 PNG（1000×1500 @2x，Pinterest 直传）
+3. 版式自动：品牌绿渐变底 + Arial Black 大字 + 白卡内嵌页面打印件真图（无头 Edge 渲染，复用 `playwright-core`）
+4. 改文案/加字母页 pin → 编辑 `scripts/generate-pins.mjs` 的 `PINS` 数组（每条 = 文件名/页面路径/标题行/副标），重跑即出 —— 26 字母批量就是往数组加条目
 
 **标题公式**：`FREE + 打印件名 + Printable +（年级/数量钩子）`
 **描述公式**：一句话价值 + 网址 + 话题标签（3~5 个：`#printables #teacherresources #homeschool #kindergarten #freeresources` 里挑）
@@ -40,28 +40,62 @@
 ### 1.3 首批 5 个 pin（文案直接抄）
 
 > **全量 30 条**（4 大页 + 26 字母页逐字母钩子 + 7 周排期）见 [PINTEREST-PINS.md](./PINTEREST-PINS.md)；首批 5 条已含在全量包里，后续每周三照排期发，勿对同 board 重复发同 URL。
+> **首批 5 张图已生成**（2026-09-09，`chartglade/pins-output/pin-1~5-*.png`）：上传时图传 pins-output 里的对应文件，标题/描述/链接全从下表直接复制粘贴，无需再拼。
 
 | # | pin 图大字 | 目标 URL | 标题 | 描述 |
 |---|---|---|---|---|
-| 1 | FREE Cursive Alphabet Chart — Print in One Click | /cursive-alphabet/ | Free Printable Cursive Alphabet Chart (A-Z) | All 26 letters, uppercase and lowercase, with a tracing strip — print straight from your browser, no download. https://chartglade.com/cursive-alphabet/ #cursive #handwriting #printables |
-| 2 | FREE Place Value Chart (to Millions) | /place-value-chart/ | Free Printable Place Value Chart — Ones to Millions | Every grade 2-5 place value lesson starts here. Print it, use the interactive version in class. https://chartglade.com/place-value-chart/ #placevalue #mathprintables #teacherresources |
-| 3 | Multiplication Chart 1-12 — Free & Printable | /multiplication-chart/ | Free Multiplication Chart 1-12 (Printable) | The classic 1-12 times table, print-ready. Diagonal highlighted, blank version included. https://chartglade.com/multiplication-chart/ #multiplication #timestables #3rdgrade |
-| 4 | Kindergarten Sight Words — Full List Printable | /kindergarten-sight-words/ | Kindergarten Sight Words List (Free Printable) | The complete kindergarten word list in printable cards — click any card to hear how it's taught. https://chartglade.com/kindergarten-sight-words/ #sightwords #kindergarten #printables |
-| 5 | Cursive F — How to Write It (Free Practice Sheet) | /cursive/f/ | How to Write a Cursive F (Free Practice Sheet) | The trickiest letter, stroke by stroke, with a trace-and-write sheet. https://chartglade.com/cursive/f/ #cursive #handwritingpractice #teaching |
+| 1 | FREE Cursive Alphabet Chart — Print in One Click | https://chartglade.com/cursive-alphabet/ | Free Printable Cursive Alphabet Chart (A-Z) | All 26 letters, uppercase and lowercase, with a tracing strip — print straight from your browser, no download. https://chartglade.com/cursive-alphabet/ #cursive #handwriting #printables |
+| 2 | FREE Place Value Chart (to Millions) | https://chartglade.com/place-value-chart/ | Free Printable Place Value Chart — Ones to Millions | Every grade 2-5 place value lesson starts here. Print it, use the interactive version in class. https://chartglade.com/place-value-chart/ #placevalue #mathprintables #teacherresources |
+| 3 | Multiplication Chart 1-12 — Free & Printable | https://chartglade.com/multiplication-chart/ | Free Multiplication Chart 1-12 (Printable) | The classic 1-12 times table, print-ready. Diagonal highlighted, blank version included. https://chartglade.com/multiplication-chart/ #multiplication #timestables #3rdgrade |
+| 4 | Kindergarten Sight Words — Full List Printable | https://chartglade.com/kindergarten-sight-words/ | Kindergarten Sight Words List (Free Printable) | The complete kindergarten word list in printable cards — click any card to hear how it's taught. https://chartglade.com/kindergarten-sight-words/ #sightwords #kindergarten #printables |
+| 5 | Cursive F — How to Write It (Free Practice Sheet) | https://chartglade.com/cursive/f/ | How to Write a Cursive F (Free Practice Sheet) | The trickiest letter, stroke by stroke, with a trace-and-write sheet. https://chartglade.com/cursive/f/ #cursive #handwritingpractice #teaching |
 
 **红线**：新号一周别超过 5 个 pin（限流）；不重复 pin 同一 URL 到同一 board；被限流就停一周。
+
+### 1.4 字母矩阵完整文案包（26 页，每周三 3~5 个按序发，约 6 周发完）
+
+> 4 大页 + cursive f 的首批文案见 §1.3。下表补齐全部 26 个字母页；**钩子句全部取自每页的 "#1 mistake" 实文**（与落地页首屏一致，点进来的老师看到的第一个板块就是它，转化不脱节）。pin 图统一模板换字母即可（大字公式：`FREE Cursive X — Trace & Write Sheet`，描述里的钩子句可选做图上小字副标）。**全部发到 Cursive Alphabet & Handwriting board**。f 在首批已发，跳过或换图重发。
+
+| 字母 | 标题 | 描述（复制整段） |
+|---|---|---|
+| a | How to Write a Cursive A (Free Practice Sheet) | The starter curve — c, d, g and q all grow from it. Watch the classic slip: an open downstroke turns a into u. https://chartglade.com/cursive/a/ #cursive #handwriting |
+| b | Cursive B — Capital & Lowercase (Free Printable) | Finish the bowl: the #1 b mistake is stopping early, and an unfinished b reads as an h with a stutter. https://chartglade.com/cursive/b/ #cursive #handwritingpractice |
+| c | How to Write a Cursive C (Free Practice Sheet) | The mother curve of cursive — a, d, g, q all borrow its motion. Don't close it shut, or your c becomes an o. https://chartglade.com/cursive/c/ #cursive #printables |
+| d | Cursive D Practice Sheet (Free Printable) | Tall stem, then the slide — stop the stroke at the middle line and d quietly turns into a. https://chartglade.com/cursive/d/ #cursive #handwriting |
+| e | How to Write a Cursive E (Free Practice Sheet) | Keep the loop lean: a fat e-loop reads as a leaning l and swamps the line's rhythm. https://chartglade.com/cursive/e/ #cursive #teaching |
+| f | —（首批 §1.3 #5 已发） | — |
+| g | Cursive G — How to Write It (Free Sheet) | The dive below the baseline is what makes a g — skip it and you've written an a. https://chartglade.com/cursive/g/ #cursive #handwritingpractice |
+| h | How to Write a Cursive H (Free Practice Sheet) | Hump to the middle line, then slide — quit early and h collapses into r. https://chartglade.com/cursive/h/ #cursive #printables |
+| i | Cursive I — Dot Placement Fix (Free Printable) | The dot goes directly overhead, on the slant line — not drifting off to the right. https://chartglade.com/cursive/i/ #cursive #teaching |
+| j | Cursive J — How to Write It (Free Sheet) | Sweep the tail all the way through: a timid capital J reads as a capital I. https://chartglade.com/cursive/j/ #cursive #handwriting |
+| k | How to Write a Cursive K (Free Practice Sheet) | Keep the inner knot small — inflated, it turns k into a capital R. https://chartglade.com/cursive/k/ #cursive #handwritingpractice |
+| l | Cursive L Practice Sheet (Free Printable) | The fastest letter to write and the easiest to ruin: keep the loop narrow or it crowds every word it joins. https://chartglade.com/cursive/l/ #cursive #printables |
+| m | Cursive M — Fix the Uneven Humps (Free Sheet) | Two even humps — an uneven m is the most-flagged letter on school papers. https://chartglade.com/cursive/m/ #cursive #teaching |
+| n | How to Write a Cursive N (Free Practice Sheet) | One full hump to the middle line, or n collapses into r. https://chartglade.com/cursive/n/ #cursive #handwriting |
+| o | Cursive O — Direction Matters (Free Printable) | Counterclockwise, always — a reversed o breaks every connection after it. https://chartglade.com/cursive/o/ #cursive #printables |
+| p | How to Write a Cursive P (Free Practice Sheet) | Full dive before the hill, or p reads as n on a stick. https://chartglade.com/cursive/p/ #cursive #handwriting |
+| q | Cursive Q — How to Write It (Free Sheet) | Cross the tail back: without the cross-back, q is just a g with stage fright. https://chartglade.com/cursive/q/ #cursive #handwritingpractice |
+| r | How to Write a Cursive R (Free Practice Sheet) | Small and exact: let the shoulder climb to a full hump and r dresses up as n. https://chartglade.com/cursive/r/ #cursive #teaching |
+| s | Cursive S Practice Sheet (Free Printable) | Keep the waist hollow and the exit on its hinge — an oversized s loses its shape. https://chartglade.com/cursive/s/ #cursive #printables |
+| t | Cursive T — The Crossbar Rule (Free Sheet) | Crossbar: middle line, level, last. Everywhere else it's just a stray mark. https://chartglade.com/cursive/t/ #cursive #handwriting |
+| u | How to Write a Cursive U (Free Practice Sheet) | Two straight walls, one cup — round the second wall and you've made a w nobody ordered. https://chartglade.com/cursive/u/ #cursive #handwritingpractice |
+| v | Cursive V Practice Sheet (Free Printable) | The valley needs its point — without it, v is just u with posture problems. https://chartglade.com/cursive/v/ #cursive #printables |
+| w | How to Write a Cursive W (Free Practice Sheet) | Twin valleys, even height: a shrinking second valley is the beginner tell. https://chartglade.com/cursive/w/ #cursive #handwriting |
+| x | Cursive X — How to Write It (Free Sheet) | Flow out of the crossing — stop dead and cursive x is just print. https://chartglade.com/cursive/x/ #cursive #teaching |
+| y | How to Write a Cursive Y (Free Practice Sheet) | The tail must dive: a y stopped at the baseline is only half a letter. https://chartglade.com/cursive/y/ #cursive #handwriting |
+| z | Cursive Z — How to Write It (Free Sheet) | Corner to corner, no kink — the rarest letter in cursive and the easiest to rush. https://chartglade.com/cursive/z/ #cursive #handwritingpractice |
 
 ---
 
 ## 二、目录站（首批外链，顺序执行）
 
-**现状（2026-09-08）**：⬜ Uneed（文案就绪，先做）｜⬜ Peerlist ｜⬜ AlternativeTo
+**现状（2026-09-09）**：✅ AlternativeTo（9/8 提交 + 双向挂竞品）｜ ✅ Uneed + Peerlist（9/9 补齐）—— **三渠道全提交、均审核期**（AlternativeTo 审核数周常态；Uneed 曾于 9/8 因转收费定暂缓，9/9 随批提交）
 
 | 平台 | 入口 | 动作 | 备注 |
 |---|---|---|---|
-| Uneed | uneed.best | Submit（tintbrew 走通过同流程） | 先做 |
-| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | 免费 |
-| AlternativeTo | alternativeto.net | 搜竞品（"K5 Learning" 或 "MyCursive"）→ 进它页面 → **Suggest an alternative** → 填 chartglade.com | 审核数周，不急 |
+| Uneed | uneed.best | Submit（tintbrew 走通过同流程） | **9/9 已提交**（9/8 曾因转收费定暂缓：免费账户同时只排 1 个产品、tintbrew 占名额 —— 后续若需重提，等 tintbrew 名额释放再免费排，不付 Pro） |
+| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | **9/9 已提交**。背景：launch 有验证门（workplace 验证免费且足以解锁 Launchpad，付费 identity 是可选项不碰；2026-09-08 官方政策已核，gate 页的 Pro 功能列表是营销话术）。tintbrew 账号的 workplace 验证在审期间 Launchpad 一直 gate —— 状态在 profile → Resume → Experience 里看 |
+| AlternativeTo | alternativeto.net | 搜竞品（"K5 Learning" 或 "MyCursive"）→ 进它页面 → **Suggest an alternative** → 填 chartglade.com | **9/8 已提交**，等审核（数周）。visibility 两步跟进**已完成 9/8**（官方提示：无 alternatives 的 app 站内几乎不可见）：① ChartGlade 自身页面挂真实竞品为 alternatives（K5 Learning / Education.com / Superstar Worksheets / MyCursive）② 反向在竞品页挂 ChartGlade —— 不超过 4 家 |
 
 **提交文案包（英文，直接复制）**：
 
@@ -74,10 +108,10 @@
 
 ### 2.1 逐平台表单对照（2026-09-08 补，照此填即可）
 
-**Uneed**（先做；tintbrew 2026-09-04 走通过同流程）：
+**Uneed**（tintbrew 2026-09-04 走通过同流程）：
 - Logo / 封面图：用首页 OG 卡（`npm run og` 产物，1200×630，平台自动裁）
 - Name / Tagline / Description：抄上方文案包（Description 填 **Short description**，进阶介绍再贴 Long）
-- 分类 / Tags：Education、Free
+- 分类 / Tags：Education、Free；Tags 填 `education, printables, teachers, k5`
 - 其余字段照 tintbrew 当时填法
 
 **Peerlist Launchpad**（登录后 Launch your product 才显示）。Launch 帖用"发布"口吻，别用目录腔，直接抄：
@@ -98,6 +132,7 @@ breakdowns. No accounts, no PDF downloads, no email wall — open the page and h
 | K5 Learning 页 | ChartGlade — free printable K-5 charts (place value, multiplication, sight words, cursive) that print straight from the browser. No download, no sign-up. |
 | MyCursive 页 | ChartGlade — free cursive alphabet charts and letter-by-letter practice sheets you can print instantly. No PDF, no email wall. |
 | Superstar Worksheets 页 | ChartGlade — free printable math and literacy charts for K-5; every page prints on one clean letter sheet, no account needed. |
+| （备用通用一句话） | Free printable K-5 teaching charts — place value, multiplication, sight words and cursive — that print straight from the browser with no sign-up. |
 
 **红线**：不提交"350+ 高 DA"批量目录（外链农场，反噬）。
 
@@ -111,12 +146,14 @@ breakdowns. No accounts, no PDF downloads, no email wall — open the page and h
 
 | 版块 | 规模/特点 | 发帖角度 |
 |---|---|---|
-| r/Teachers | 最大教师社区 | "免费工具分享"角度 |
+| r/Teachers | 最大教师社区 | **只答帖、禁主帖**——版规强禁一切自我推广（个人站/TPT 店/链接帖，违规删+标记）。打法 = 版内搜 "free printable" / "cursive" 找提问帖，认真回答顺带提站 |
 | r/Kindergarten | 幼师，printable 重度用户 | sight words / alphabet chart |
 | r/homeschool | 在家教育家长，采购决策人 | 全科角度 |
 | r/3rdGrade 或 r/teaching | cursive 正是 3 年级内容 | cursive 字母页 |
 
 **发帖前必做**：读版规（Sidebar Rules）—— 多数版禁纯链接帖，违规会被删+标记，号就废了。
+
+**r/Teachers 实勘（2026-09-09，搜索快照）**：版规明禁 GoFundMe / Amazon wishlist / TPT 店 / 个人产品类内容，2021-09 官方专门开了 spin-off 版收推广帖（公告 pipb4l，spin-off 版名搜索没确认到——发帖意图先到 Sidebar 核对，别按印象投）。Reddit 全站另有 90/10 惯例（自有项目相关内容 ≤10%）。**结论：主帖打 r/homeschool / r/Kindergarten / r/3rdGrade（§3.2 模板），r/Teachers 只做答帖攒声誉**。
 
 ### 3.2 发帖模板（英文，改年级词复用）
 
