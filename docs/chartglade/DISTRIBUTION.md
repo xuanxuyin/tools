@@ -16,7 +16,7 @@
    - 名字：`ChartGlade`
    - 简介（照抄）：`Free printable teaching charts for K-5 — place value, multiplication, sight words and cursive. No download, no sign-up: open and print.`
    - Website：`https://chartglade.com`
-3. **认领域名**（**发 pin 的前置条件，不是可选项** —— 2026-09-09 实测：未认领新域发带链接 pin 被 Pinterest 以 "may lead to spam" 拦截；RDAP 实锤域名 2026-09-05 当天新注册、无前身污点，拦的就是"新 + 未认领"两个信号叠加）：Settings → Claimed accounts → Claim a website → 选 HTML tag 方式 → 把给出的 `<meta name="p:domain_verify" ...>` 标签发给 Claude，接进 `SeoHead.astro` push 即可（同 GSC 验证的做法）→ 部署后回 Pinterest 点 Verify，**认领成功再发首批 pin**。若认领后仍被拦：等 1~2 周域名信任自然增长（GSC 收录起来后）重试，或走 Pinterest 域名申诉
+3. **认领域名**（**发 pin 的前置条件，不是可选项** —— 2026-09-09 实测：未认领新域发带链接 pin 被 Pinterest 以 "may lead to spam" 拦截；RDAP 实锤域名 2026-09-05 当天新注册、无前身污点，拦的就是"新 + 未认领"两个信号叠加）：选 HTML tag 方式 → 把给出的 `<meta name="p:domain_verify" ...>` 标签发给 Claude，接进 `SeoHead.astro` push 即可（同 GSC 验证的做法）→ 部署后回 Pinterest 点 Verify，**认领成功再发首批 pin**。若认领后仍被拦：等 1~2 周域名信任自然增长（GSC 收录起来后）重试，或走 Pinterest 域名申诉。**入口路径（9/11 修正，官方帮助文档现行版实勘）**：右上 chevron ⌄ → Settings → 左侧导航 **「Link to Pinterest」**（新 UI 名，旧名 "Claimed accounts" 已被替换——旧直达 URL `/settings/claimed-accounts` 实测跳错误页）→ Websites 旁 **Claim**。候选直达 URL `pinterest.com/settings/claim`（搜索索引为现行 Claim Settings 页，未亲测）。前提三件：Business 账号（个人号入口不全，转换 `pinterest.com/business/convert`）+ 桌面网页版（App 无完整入口）+ 界面语言 English (US)（中文界面 = 账号区域挂非美区，顺手改掉）
 4. **建 3 个 Board**（Create board）：
 
 | Board 名 | 描述（照抄） |
