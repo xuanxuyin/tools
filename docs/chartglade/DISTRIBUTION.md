@@ -150,6 +150,7 @@ breakdowns. No accounts, no PDF downloads, no email wall — open the page and h
 | r/Kindergarten | 幼师，printable 重度用户 | sight words / alphabet chart |
 | r/homeschool | 在家教育家长，采购决策人 | 全科角度 |
 | r/3rdGrade 或 r/teaching | cursive 正是 3 年级内容 | cursive 字母页 |
+| **r/Handwriting**（9/14 竞品逆向补，原表漏） | 草书学习者聚集地（成人自学+家长，非教师）—— MyCursive 被推荐的真实发生地 | **只答帖**：版内搜 "worksheets" / "learning cursive" 找求资源帖；学习者口吻（去教师视角），同 §3.2 答帖纪律 |
 
 **发帖前必做**：读版规（Sidebar Rules）—— 多数版禁纯链接帖，违规会被删+标记，号就废了。
 
@@ -183,11 +184,68 @@ Everything is free and I'm not selling anything — if a mod wants this formatte
 - **TPT（Teachers Pay Teachers）**：商城形态，不做卖家；只当竞品研究对象
 - **X/Twitter 教师圈**：投入产出低，放弃
 
-## 五、节奏总表
+## 五、竞品外链逆向（2026-09-14 实探，全免费渠道）
+
+> 方法：四竞品（Superstar Worksheets / Math-Salamanders / MyCursive / K5）域名精确反查"谁在推荐/引用它们"，筛掉付费与不可操作项【实勘 第三方搜索快照 2026-09-14，全美源无区域污染】。与 §2 目录站（已提交、审核中）互补：目录站是"提交即得"的底线外链，本章是竞品验证过的**真实生态位**。
+
+### 5.1 外链图谱
+
+| 来源类型 | 竞品实证 | chartglade 可否复制 |
+|---|---|---|
+| **新闻权威引用** | MyCursive 的「哪些州要求教草书」州立法追踪页被 **EdWeek / Snopes / LiveNow Fox / CNN（FB 帖）/ Spokesman-Review（报纸）**当数据源引用 | ✅✅ **本轮最大发现**：同款数据页自建（5.2 #1） |
+| 育儿媒体 round-up 文 | Tinybeans「15 Free Math Worksheets」收 Math-Salamanders；Mommy Poppins 草书教学文收 MyCursive（与 Learning Without Tears 并列） | ✅ 作者 pitch 邮件（5.2 #4） |
+| 权威指南/评测站 | homeschool.com Resource Guide 给 Superstar Worksheets 单独专页；Cathy Duffy Reviews（1984 年至今 homeschool 评测权威）收 Super Teacher Worksheets | ✅ 邮件提议，编辑选品**不收费**（5.2 #3） |
+| 大学 LibGuides | Centennial College 图书馆 guide 挂 MyCursive 当练习资源 | ✅ 给 guide 维护馆员发推荐邮件（5.2 #5） |
+| Reddit 答帖 | r/Handwriting 求资源帖里 MyCursive 被推荐（"Best books or websites for learning cursive?" 等）；r/ClassOf2037 家长问 worksheet 来源 | ✅ §3 打法现成，r/Handwriting 已补进 §3.1 |
+| Scribd 文档站 | 竞品 worksheet 被用户上传 | ❌ 不做（二手文档站，价值低） |
+| YouTube 频道 | MyCursive 自营频道（@mycursivepro） | ❌ 暂不做（投入产出同 §四 X/Twitter 结论） |
+
+### 5.2 行动清单（优先级序，全免费）
+
+**#1 州立法追踪页（链接诱饵）—— 🤖 Claude 建页，PLAN #16**
+MyCursive 全国媒体引用的根 = 一页数据。它的版本停在 2023 年 21 州，2026/2 宾州立法后全美已过半 —— **数据过时 = 我们的缝隙**。做 `/states-that-require-cursive/`：50 州表格（州 / 要求与否 / 立法年份 / 州 DOE 来源链接）+ 页面署"数据更新于 2026 年 X 月"。新闻编辑与教育博主写此话题时要的正是"一页看全 + 可引用"的源。非流量页（外链优先），states require cursive 词量 👤 顺手 AITDK 记录即可。
+
+**#2 Reddit r/Handwriting 答帖 —— 👤 零成本，本周可做**
+学习者聚集地（非教师），与 cursive 矩阵完全对口。打法同 §3 纪律：只答帖。可直接答的老帖："Free cursive worksheets"（r/Handwriting）、"Best books or websites for learning cursive?"（r/Handwriting）；另版内搜 "worksheets" 找新帖。学习者口吻，去教师视角。
+
+**#3 权威指南 pitch 两封 —— 👤 各 10 分钟**
+- **homeschool.com**：无公开提交表单，走联系页提议 Resource Guide 收录（先例：Superstar 有专页、免费课程 Easy Peasy 也在指南内 = 免费站有位）
+- **Cathy Duffy Reviews**（cathyduffyreviews.com）：编辑部选品制、无付费收录（独立性是它的招牌）；走站内联系表单提议评测，免费资源也收（Freedom Homeschooling 列过它评的免费品）
+
+**#4 育儿媒体 round-up pitch —— 👤 邮件**
+Tinybeans（roundup 文）/ Mommy Poppins（草书教学文）两家都写过竞品所在题材 → 文中找作者署名/联系页，发 §5.3 模板邮件。
+
+**#5 LibGuides 馆员推荐 —— 👤 批量低成本**
+community.libguides.com 搜 "cursive worksheets" / "free printable worksheets" → 命中的教育类 guide → 页脚维护馆员邮箱 → 短邮件推荐补充资源。馆员对免费教学资源建议接受度高（竞品先例：Centennial College 挂 MyCursive）。
+
+### 5.3 pitch 邮件模板（#3/#4/#5 通用，改 [ ] 处）
+
+```
+Subject: Free printable resource for your [resource guide / article]
+
+Hi [Name],
+
+I run ChartGlade (chartglade.com) — a free printables site for K-5: place value
+charts, multiplication tables, Dolch & Fry sight word lists, and a full cursive
+alphabet section with letter-by-letter stroke breakdowns. Every page prints
+straight from the browser — no download, no sign-up, no email wall.
+
+I saw your ["15 Free Math Worksheets" roundup / resource guide] and thought
+ChartGlade might be a good fit next to [resource already listed]. Happy to send
+anything you need — screenshots, printable samples, or specific pages relevant
+to your readers.
+
+Thanks for considering it,
+[Your name]
+```
+
+---
+
+## 六、节奏总表
 
 | 频率 | 动作 | 时长 |
 |---|---|---|
 | 每周三 | 发 3~5 个 pin（§1.2） | 15 分钟 |
-| 每月第 1 周 | 1 个社区帖（§3，换版块） | 15 分钟 |
+| 每月第 1 周 | 1 个社区帖（§3，换版块）+ 外链 pitch 3 封（§5.2 #3~#5 轮转，LibGuides 批 3~5 封） | 30 分钟 |
 | 每月 | 1 个目录站提交（§2 顺序往下走） | 10 分钟 |
 | 随时 | 有 mod 要求/p:domain_verify 标签 → 找 Claude 接代码 | — |
