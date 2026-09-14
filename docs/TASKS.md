@@ -6,16 +6,16 @@
 
 ---
 
-## 今天 · 2026-09-11（周五）
+## 今天 · 2026-09-14（周一）
 
-- [ ] 👤 **每日例行（3 分钟）**：GSC 效果有没有新冒头词 ｜ CF Analytics 曲线异常否 ｜ ⚠️ 不手动 Google 搜自己站
-- [x] 👤 ~~chartglade Pinterest 一次性设置~~ **认领 ✅ 2026-09-11 完成**：meta 标签 main `71774cc` 全站上线 → Verify 一次过。认领入口修正存档：Settings → 左侧 **「Link to Pinterest」**（新 UI 名，旧名 Claimed accounts / 旧 URL 已死）。Pinterest tag（广告像素）**不装** —— 纯自然流量，零广告
-- [x] 👤 **3 个 board 建好（9/11）+ 认领已生效**（Websites 列表确认）——但发链接 pin 仍被 spam 拦（认领生效 <1h 拦截器缓存未同步，判非故障），**今日停止尝试防账号负信号**
-- [ ] 👤 **明日（9/12）发 1 条测试 pin**（cursive-alphabet，文案 [DISTRIBUTION.md §1.3](./chartglade/DISTRIBUTION.md) #1）：拦截解除 → 剩余 4 条发完（本周红线 ≤5）；仍拦 → 预案：等 1~2 周信任增长重试或申诉，不硬试
+- [ ] 👤 **GA 数据验证（5 分钟，今日新增）**：两站 GA4 已 push main 部署 → 无痕窗各开一次站 → GA 后台「报告 → 实时」见活跃用户即通（tintbrew `G-5V4P4ZYYZH` / chartglade `G-EKH9T22FDT`）
+- [ ] 👤 **周一例行两站**：GSC 索引覆盖（**固定 sitemap 视图 + 读数前清筛选**）+ 效果 28 天环比 → 数字发 Claude 记录。今天的 best/worst 榜单已把"冒头词"半边看完，**还差索引数**（顺带补 9/12 滑档的收录复查节点）
+- [ ] 👤 **Pinterest 测试 pin（9/12 滑档顺延）**：发 1 条 cursive-alphabet（文案 [DISTRIBUTION.md §1.3](./chartglade/DISTRIBUTION.md) #1）—— 拦截解除 → 本周内发剩余 4 条（红线 ≤5/周）；仍拦 → 不硬试，等 1~2 周信任期或申诉
 - [ ] 👤（不强制）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
-- [x] 👤 ~~今晚 AITDK 拉视力表词族 7 词~~ **✅ 9/11 晚完成，判定已出**：合计 24.8K 过量线但主力 KD 全超 35 + 裸词实勘混合非锁死 → **折中 2 页小簇**（/printable-eye-chart/ + /tumbling-e-chart/）进 **11 月批**（V1.8 同期，PLAN §3 #15）；裸词 22.9K 页龄长跑不进 6 周验收；kids 变体 0 量 / vision screening 50 不建页
-- [ ] 👀 **明天 9/12 有收录复查大节点**（见本周表）——今天不用动，明早 GSC 索引覆盖报告 sitemap 视图读数发 Claude
+- [x] 🤖 **GA4 双站上线**（今日）：consts + BaseLayout `<head>` + **隐私页合规修正**（GA 种 `_ga` cookie，原 no-cookies 声明改为如实披露）；41/61 页全带，测试全绿（main `2b71a80` / `d4b814a`）
+- [x] 🤖 **GSC 四榜单体检**（今日）：两站 best/worst 各 10 词 —— **判双站未偏航**（tintbrew 矩阵 5~8 位 / chartglade cursive 22~40 位，均快于新站锚点）；产出 3 个挂起项：preschool 页认领 pre-k 变体（搭下次部署车）、fondant 拉量（9/18）、词级 cursive 拉量（10/17 后）
 
+**9/11~9/13 已完成归档**：Pinterest 域名认领 ✅（meta 上线 main `71774cc`，Verify 一次过；广告像素不装）｜ 3 board 建好但发 pin 被 spam 拦（判缓存时滞非故障）｜ 视力表词族 7 词实测 24.8K → 折中 2 页小簇进 11 月批（PLAN §3 #15）｜ 9/12 排的两项（Pinterest 测试 pin + GSC 收录复查）滑档 → 顺延至今日清
 **9/10 已完成归档**：tintbrew GSC 首查（brown 1/purple 2/green 1/orange 0 = 噪音级冒头，不动盘，裁决窗 10-01）｜ 第三站候选调研完结（B 宠物手册站唯一存活，挂 10/17 门）｜ 订阅方向冻结（"订阅×SEO 量=空集"，改走同域订阅试验）
 **9/9 已完成归档**：目录站三渠道全部提交 ｜ request indexing 第二批 9 条（累计 14/53）｜ GSC 曝光累计 13 / site: 5 条 ｜ 🤖 字母页变体段上线（main `3cbf225`）
 **9/8 已完成归档**：GSC "0 已编入"排查（URL 检查抽查 3 条全过，实锤切片读数坑）｜ CF 首基线 42 visits/678ms ｜ AlternativeTo 提交 + 双向挂竞品 ｜ request indexing 启动（首批 5 条）
@@ -26,10 +26,8 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
-| 9/9 余量（周三~周五） | 👤 **request indexing 续批**：累计已 14/53、高量 7 字母词全覆盖 —— 配额闲置时余下字母页（g/h/l 等）按量续提，不强制 | GSC 顶部搜索栏逐个粘 `https://chartglade.com/cursive/x/` → 请求编入索引 |
-| 9/12（周六） | 👤 **chartglade GSC 收录复查**：索引覆盖报告 —— **原 45+ 预期作废**（09-05~07 canonical 事故压住 26 字母页、09-07 已修复部署），本轮看修复后爬取恢复 + 字母页是否转入管道（site: 轨迹 4→5→38→25 波动已判非故障 9/11 入档，以 GSC Indexed 数为准），数字发 Claude 记录 | GSC → 索引 → 页面（sitemap 视图；**读数前清筛选、不点原因行**——09-07 踩过切片坑把全站读成 0） |
-
-> 下周三（9/16）换 tintbrew：Pinterest 设置（§3.1）+ 首批 5 个色卡 pin（§3.3）。
+| 9/16（周三） | 👤 tintbrew Pinterest 设置 + 首批 5 个色卡 pin | [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3 |
+| 9/18（周四） | 👤 tintbrew 周四例行 GSC 头词查 + **顺手 AITDK 拉 fondant 族量**（9/14 体检观察项：how to make brown fondant / fondant color chart，≥500/月 才进烘焙簇扩展） | AITDK 插件 |
 
 ---
 
