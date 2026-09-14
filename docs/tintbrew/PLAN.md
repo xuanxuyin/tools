@@ -71,6 +71,7 @@
 | 2026-09-09 | 外链 Peerlist + AlternativeTo 提交完成（用户操作）→ 目录站三渠道全提交（Uneed 9/4 + Peerlist + AlternativeTo 9/9），进入等审核收录期 |
 | 2026-09-10 | **GSC 头词首查（9/10 周四固定任务）**【实测 GSC】：what colors make brown 展示 1 / purple 2 / green 1 / orange 0 —— 4 词合计 108K/月池，展示 4 次 = 噪音级刚冒头；长尾矩阵词（orange+white/pink+purple 等）排名 6~7 但展示 1~2 = 样本太小不判。**判读：day 6 DR0 零外链正常表现，不动盘，裁决窗 10-01** |
 | 2026-09-14 | **GA4 gtag.js 上线（G-5V4P4ZYYZH，用户建账号触发）**：ID 进 consts.ts `gaMeasurementId`，脚本挂 BaseLayout `<head>`（`is:inline` + `define:vars`），41 页全带（含 404）；与 CF Web Analytics 双跑（CF 防双计数的告诫只管它自家 beacon，GA 是独立体系）。**连带合规修正**：/privacy/ 原文案 "sets no cookies" 只提 CF cookieless —— GA 会种 `_ga`/`_ga_*`，已改为如实披露两套统计 + GA cookie 用途（否则虚假声明）。41 页构建 + 81 测试绿，待 push main 部署后 GA 后台验证实时报告 |
+| 2026-09-14 | **GSC 最差 10 词体检（用户拉热门查询按排名倒序，问"是否偏航"）**【实测 GSC】：全部 0 点击 / 1 展示 / 排名 73~96 —— **判读：未偏航，上榜结构与站架构对位**。分布：头词变体 1（what color makes brown 80.0，49.5K 头词 day 10 深位 = 预期轨道）+ 工具词 2（rgb color mixing online 73.0 爬坡中；rgb color mixing formula 73.0 = 无公式内容，V2.2 建页顺带收）+ 未建页相邻需求 2（**color mixing chart online 83.0 = V2.2 /color-mixing-chart/ 需求侧证，建页带 online 交互角度**；how to make brown fondant 74.0 = 烘焙簇 fondant 缺口，入观察池 9/18 周四例行顺手 AITDK 拉量再判）+ 噪音 5（colour ×2 = **非美区展示直接证据**，看 GSC 必须加美国筛选；orange color 泛意图；purple pigments 画材人群）。**基本盘反向确认：矩阵词无一上榜**（9/7 实测排名 6~7）—— 若偏航该集体沉底，实际相反。单一曝光的排名均值无统计意义（Google 试探派词）。裁决窗 10-01 不动盘 |
 
 ## 2. 关键词资产表
 
