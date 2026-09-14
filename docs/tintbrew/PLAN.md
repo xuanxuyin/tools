@@ -70,6 +70,7 @@
 | 2026-09-09 | **GSC 曝光首查：累计 650**【实测 GSC，上线以来】—— 疑混自操作查询（手动 Google 搜词验排名、翻到看到自己站 = 计入曝光；site: 查询与 GSC 界面内操作**不计入**）；待查询明细拆分真实/污染。**新纪律：查排名只用 GSC 查询报告（被动记录含平均排名列），不再手动 Google 搜词** |
 | 2026-09-09 | 外链 Peerlist + AlternativeTo 提交完成（用户操作）→ 目录站三渠道全提交（Uneed 9/4 + Peerlist + AlternativeTo 9/9），进入等审核收录期 |
 | 2026-09-10 | **GSC 头词首查（9/10 周四固定任务）**【实测 GSC】：what colors make brown 展示 1 / purple 2 / green 1 / orange 0 —— 4 词合计 108K/月池，展示 4 次 = 噪音级刚冒头；长尾矩阵词（orange+white/pink+purple 等）排名 6~7 但展示 1~2 = 样本太小不判。**判读：day 6 DR0 零外链正常表现，不动盘，裁决窗 10-01** |
+| 2026-09-14 | **GA4 gtag.js 上线（G-5V4P4ZYYZH，用户建账号触发）**：ID 进 consts.ts `gaMeasurementId`，脚本挂 BaseLayout `<head>`（`is:inline` + `define:vars`），41 页全带（含 404）；与 CF Web Analytics 双跑（CF 防双计数的告诫只管它自家 beacon，GA 是独立体系）。**连带合规修正**：/privacy/ 原文案 "sets no cookies" 只提 CF cookieless —— GA 会种 `_ga`/`_ga_*`，已改为如实披露两套统计 + GA cookie 用途（否则虚假声明）。41 页构建 + 81 测试绿，待 push main 部署后 GA 后台验证实时报告 |
 
 ## 2. 关键词资产表
 
@@ -150,3 +151,4 @@
 - 引擎基准：红+蓝 50/50 = `#8c53a2`（回归测试锚点）
 - DOM 测试要加载真实 `dist/` + `vi.resetModules()`
 - CF 统计自动注入 —— consts.ts 的 beacon 留空（防双计数）
+- GA4 在 BaseLayout `<head>` 直出（ID 在 consts.ts `gaMeasurementId`，与 CF beacon 同款"空值不渲染"守卫）；/privacy/ 已披露 GA cookie —— 若未来加广告脚本需再改隐私页 |

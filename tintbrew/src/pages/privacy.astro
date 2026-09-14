@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../consts';
 
 const title = 'Privacy Policy';
-const description = 'TintBrew privacy policy: no accounts, no cookies, no personal data collection.';
+const description = 'TintBrew privacy policy: no accounts, aggregate analytics only, no personal data collection.';
 ---
 
 <BaseLayout title={`${title} | ${SITE.name}`} description={description} path="/privacy">
@@ -15,16 +15,19 @@ const description = 'TintBrew privacy policy: no accounts, no cookies, no person
   <section class="prose">
     <h2>What we collect</h2>
     <p>
-      Nothing that identifies you. TintBrew uses <strong>Cloudflare Web Analytics</strong>, a
-      cookieless service that reports aggregate page views and referrers. It does not set cookies,
-      does not build user profiles, and cannot identify individual visitors. Your mixes, converted
-      colors and everything else you do on this site never leave your browser.
+      Nothing that identifies you. TintBrew uses two aggregate analytics services:
+      <strong>Cloudflare Web Analytics</strong>, a cookieless service that reports aggregate page
+      views and referrers, and <strong>Google Analytics 4</strong>, which measures traffic and which
+      pages get used. Neither builds user profiles or sells your data. Your mixes, converted colors
+      and everything else you do on this site never leave your browser.
     </p>
 
     <h2>Cookies</h2>
     <p>
-      TintBrew sets no cookies. If advertising is added in the future, this policy will be updated
-      before any ad script goes live.
+      Google Analytics sets first-party cookies (<code>_ga</code> and <code>_ga_*</code>) to tell
+      returning visitors apart in aggregate reports. That is the only cookie use on this site — no
+      advertising or tracking cookies. If advertising is added in the future, this policy will be
+      updated before any ad script goes live.
     </p>
 
     <h2>Third parties</h2>
