@@ -12,4 +12,6 @@ export const SITE = {
    * automatic-inject mode at the edge (same as tintbrew prod, avoids double counting).
    */
   cfBeaconToken: '',
+  /** Google Analytics 4 measurement ID — public by design (rendered into gtag.js URL) */
+  gaMeasurementId: 'G-EKH9T22FDT',
 } as const;

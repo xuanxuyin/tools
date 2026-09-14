@@ -18,6 +18,8 @@ const { title, description, path, jsonLd, noindex, ogImage } = Astro.props;
 // Cloudflare Web Analytics beacon token (public by design); empty = render nothing.
 // Prod uses CF automatic injection — this is a manual fallback only.
 const cfToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN ?? SITE.cfBeaconToken;
+// Google Analytics 4 measurement ID; empty = render nothing
+const gaId = SITE.gaMeasurementId;
 ---
 
 <!doctype html>
@@ -28,6 +30,20 @@ const cfToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN ?? SITE.cfBeaconToken;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#2f7d4f" />
     <SeoHead {title} {description} {path} {jsonLd} {noindex} {ogImage} />
+    {
+      gaId && (
+        <!-- Google Analytics 4 (gtag.js) -->
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+        <script is:inline define:vars={{ gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      )
+    }
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="Privacy Policy | ChartGlade"
-  description="ChartGlade's privacy policy: we don't collect personal information, we don't use tracking cookies, and we run no advertising."
+  description="ChartGlade's privacy policy: we don't collect personal information, analytics stays aggregate, and we run no advertising."
   path="/privacy"
 >
   <section class="hero">
@@ -22,9 +22,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <h2>Analytics</h2>
     <p>
-      The site uses Cloudflare Web Analytics, which measures aggregate page views without cookies and without
-      collecting or storing personal information. It cannot identify you, and it is not shared with advertising
-      networks — there are none.
+      The site uses two aggregate analytics services: Cloudflare Web Analytics, which measures page views
+      without cookies and cannot identify you, and Google Analytics 4, which measures traffic and which
+      printables get used. Neither is used for advertising or profiling, and neither is shared with
+      advertising networks — there are none.
+    </p>
+
+    <h2>Cookies</h2>
+    <p>
+      Google Analytics sets first-party cookies (<code>_ga</code> and <code>_ga_*</code>) to tell
+      returning visitors apart in aggregate reports. That is the only cookie use on this site — no
+      advertising or cross-site tracking cookies. The site is made for teachers and parents; children
+      using printed charts never interact with these cookies.
     </p>
 
     <h2>Children</h2>
