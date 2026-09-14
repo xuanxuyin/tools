@@ -14,6 +14,7 @@
 - [ ] 👤（不强制）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
 - [x] 🤖 **GA4 双站上线**（今日）：consts + BaseLayout `<head>` + **隐私页合规修正**（GA 种 `_ga` cookie，原 no-cookies 声明改为如实披露）；41/61 页全带，测试全绿（main `2b71a80` / `d4b814a`）
 - [x] 🤖 **GSC 四榜单体检**（今日）：两站 best/worst 各 10 词 —— **判双站未偏航**（tintbrew 矩阵 5~8 位 / chartglade cursive 22~40 位，均快于新站锚点）；产出 3 个挂起项：preschool 页认领 pre-k 变体（搭下次部署车）、fondant 拉量（9/18）、词级 cursive 拉量（10/17 后）
+- [x] 🤖 **chartglade 竞品外链逆向实探**（用户求免费外链渠道）：**最大发现 = MyCursive 靠一页「州立法追踪数据页」引来 EdWeek/Snopes/Fox/CNN 引用**【实勘】→ 立 PLAN #16 复制此打法（其数据停在 2023，2026 已过半 = 缝隙）；另筛出 4 类免费渠道（权威指南 pitch ×2 / 育儿媒体 round-up pitch / LibGuides 馆员推荐 / r/Handwriting 答帖——原版块表漏的草书发生地），行动清单 + pitch 邮件模板入 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md) §5
 
 **9/11~9/13 已完成归档**：Pinterest 域名认领 ✅（meta 上线 main `71774cc`，Verify 一次过；广告像素不装）｜ 3 board 建好但发 pin 被 spam 拦（判缓存时滞非故障）｜ 视力表词族 7 词实测 24.8K → 折中 2 页小簇进 11 月批（PLAN §3 #15）｜ 9/12 排的两项（Pinterest 测试 pin + GSC 收录复查）滑档 → 顺延至今日清
 **9/10 已完成归档**：tintbrew GSC 首查（brown 1/purple 2/green 1/orange 0 = 噪音级冒头，不动盘，裁决窗 10-01）｜ 第三站候选调研完结（B 宠物手册站唯一存活，挂 10/17 门）｜ 订阅方向冻结（"订阅×SEO 量=空集"，改走同域订阅试验）
@@ -27,7 +28,8 @@
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
 | 9/16（周三） | 👤 tintbrew Pinterest 设置 + 首批 5 个色卡 pin | [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3 |
-| 9/18（周四） | 👤 tintbrew 周四例行 GSC 头词查 + **顺手 AITDK 拉 fondant 族量**（9/14 体检观察项：how to make brown fondant / fondant color chart，≥500/月 才进烘焙簇扩展） | AITDK 插件 |
+| 9/17（周四） | 👤 **chartglade 外链首发**：pitch 邮件 2 封（homeschool.com + Cathy Duffy Reviews）+ Reddit r/Handwriting 答帖 1 个（模板照抄） | [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md) §5.2 / §5.3 |
+| 9/18（周五） | 👤 tintbrew 周五例行 GSC 头词查 + **顺手 AITDK 拉 fondant 族量**（9/14 体检观察项：how to make brown fondant / fondant color chart，≥500/月 才进烘焙簇扩展）；同场顺手拉 states require cursive 量（PLAN #16 词记录） | AITDK 插件 |
 
 ---
 
