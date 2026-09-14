@@ -10,7 +10,7 @@
 
 - [ ] 👤 **GA 数据验证（5 分钟，今日新增）**：两站 GA4 已 push main 部署 → 无痕窗各开一次站 → GA 后台「报告 → 实时」见活跃用户即通（tintbrew `G-5V4P4ZYYZH` / chartglade `G-EKH9T22FDT`）
 - [x] 👤 ~~周一例行两站~~ **✅ 9/14 闭环**：效果侧四榜单体检入档；收录侧 sitemap 52/40 满格 0 错误 + site: 38/57；聚合索引报告读出 0/14 引发虚惊 → 定性**过期快照**（报表上次更新 9/4 停在上线日，PLAN 已入档 + 例行纪律修正：聚合数只在快照日期推进后环比）
-- [ ] 👤 **Pinterest 测试 pin（9/12 滑档顺延）**：发 1 条 cursive-alphabet（文案 [DISTRIBUTION.md §1.3](./chartglade/DISTRIBUTION.md) #1）—— 拦截解除 → 本周内发剩余 4 条（红线 ≤5/周）；仍拦 → 不硬试，等 1~2 周信任期或申诉
+- [x] 👤 ~~Pinterest 测试 pin（9/12 滑档顺延）~~ **✅ 9/14 已试仍被拦** → 走预案"仍拦"分支：**停止尝试进信任期**（复试 9/21，再拦申诉）。信任期纪律：账号保温（浏览/save 他人 pin/关注 board）零链接 pin；（可选）美区浏览器 web.archive.org 查 chartglade.com / tintbrew.com 有无前世
 - [ ] 👤（不强制）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
 - [x] 🤖 **GA4 双站上线**（今日）：consts + BaseLayout `<head>` + **隐私页合规修正**（GA 种 `_ga` cookie，原 no-cookies 声明改为如实披露）；41/61 页全带，测试全绿（main `2b71a80` / `d4b814a`）
 - [x] 🤖 **GSC 四榜单体检**（今日）：两站 best/worst 各 10 词 —— **判双站未偏航**（tintbrew 矩阵 5~8 位 / chartglade cursive 22~40 位，均快于新站锚点）；产出 3 个挂起项：preschool 页认领 pre-k 变体（搭下次部署车）、fondant 拉量（9/18）、词级 cursive 拉量（10/17 后）
