@@ -79,6 +79,7 @@
 
 | 2026-09-14 | **竞品外链逆向实探（用户求免费外链渠道触发）**：四竞品（Superstar/Math-Salamanders/MyCursive/K5）域名反查谁在引用【实勘 搜索快照，全美源无区域污染】—— **最大发现：MyCursive 一页「states that require cursive」州立法追踪数据页换来 EdWeek/Snopes/Fox/CNN/报纸引用**（其数据停在 2023 年 21 州，2026/2 宾州立法后已过半 = 缝隙），DR0 新站可整体复制此打法 → 立 §3 #16 建页。筛出 5 类免费渠道：州立法数据页 / 权威指南 pitch（homeschool.com + Cathy Duffy，编辑选品不收费）/ 育儿媒体 round-up pitch（Tinybeans / Mommy Poppins）/ LibGuides 馆员推荐（先例 Centennial College 挂 MyCursive）/ **r/Handwriting 答帖**（草书被推荐的真实发生地，原 §3 版块表漏，已补 DISTRIBUTION §3.1）；Scribd（二手文档）/ YouTube 自营频道判不做。行动清单 + pitch 邮件模板入 DISTRIBUTION §5；r/Handwriting 答帖与 3 封 pitch 邮件挂 TASKS 本周 |
 | 2026-09-14 | **GA「今日 4 活跃用户/12 事件」数量级疑虑定性（用户问"和预期差太多"）**：判读 = **如期非故障**。三因叠加：① GA 当日装机（9/14）+ 用户实时验证自访 = 大头是自访（~3 事件/用户的单页短会话形态吻合，【推断】）；② 北极星是 GSC 28 天曝光非 GA 用户数（§0），当下正处"曝光冒头、排名爬坡"段（cursive 簇 22~40 位 = 第 3~4 页物理零点击）；③ 对照目标阶梯**基准档 1 个月预期 0.5~3 访问/天**，day 9 的 4（含自访）贴基准档不落后——251K~500K 词池是排名成熟后的天花板非第 10 天预期。服务端复核【实勘 curl 权威 NS+CF IP】：**200 正常**，"本地打不开"仍是国内网络老问题。流量真口径 = CF Web Analytics（对减 9/8 自访基线 42）+ GSC 曝光；GA 标准报表 9/16 后才有可读数据。无动作，判定点不变（9/19 收录门 → 10/17 验收） |
+| 2026-09-15 | **Bing/DDG 收录洞排查 + IndexNow 主动推送上线（tintbrew 同日先例复制，用户指令"chartglade 也看下"触发）**：DDG site: 探针两次空 + 对照组 tintbrew 亦空（anomaly 验证码页实锤）→ **DDG 对本机代理 IP 渐进限流，本站 Bing 系收录现状无定论，不纠结**——tintbrew 当日已实锤同款新站 11 天 Bing 系只收首页 1 条（同 CF Pages / 同新域 / 同部署模式，【推断】本站大概率同病），IndexNow 推送无论现状如何均正收益 → 当日落地：key 文件入 public/（`cadecee` 部署验证 200）+ api.indexnow.org 批量 POST 全 52 URL，单测 202 / 批量 200【实测】。**⚠️ 补推钩子**：本轮推的是 main 当前 52 URL；v1.6-predev 的 9 张新页（graph paper 簇 + sight words 扩展）9/19 合并 main 后**必须补推一轮 IndexNow**（新 URL 不会自动进 Bing 队列的加速通道，自然爬在 Bing 系对 DR0 新站极慢） |
 
 ## 2. 关键词资产表
 
@@ -167,6 +168,7 @@
 **每周（~30 分钟）**：
 
 - [ ] 周一：`site:chartglade.com`（粗信号：新站显示滞后 + "约 N 条"是估算值，不作判定）+ **GSC 索引覆盖（判定准据）** + 效果 28 天环比，记入本文档
+- [ ] 周一：DDG `site:chartglade.com` 复核 Bing 系收录（IndexNow 2026-09-15 推 52 URL 后新增；走代理美区口径，DDG 限流时换时段）
 - [ ] 周三：1 个分发动作 —— **详细步骤+现成文案见 [DISTRIBUTION.md](./DISTRIBUTION.md)**（Pinterest 每周 3~5 pin、目录站顺序表、Reddit 发帖模板全在里面）
 - [ ] 周五：无批次在跑时保持不动（新站隔 3~4 周上批次，别一次堆页）
 
