@@ -1180,3 +1180,243 @@ svg {
     color: #000;
   }
 }
+
+/* ===== Halloween cluster (word search / color by number / cursive words) ===== */
+
+.ws-sheet,
+.cbn-sheet,
+.cw-sheet {
+  break-inside: avoid;
+}
+
+.ws-head,
+.cbn-head,
+.cw-head {
+  margin-bottom: var(--sp-2);
+}
+
+.ws-head h2,
+.cbn-head h2,
+.cw-head h2 {
+  font-size: 1.15rem;
+  margin: 0 0 var(--sp-1);
+}
+
+.ws-head p,
+.cbn-head p,
+.cw-head p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* Word search: grid + word list side by side */
+
+.ws-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px;
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.ws-grid {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.ws-grid td {
+  border: 1px solid var(--line-strong);
+  text-align: center;
+  font-family: ui-monospace, 'Cascadia Mono', Menlo, monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.28em 0;
+  aspect-ratio: 1;
+}
+
+.ws-words h3 {
+  font-size: 0.9rem;
+  margin: 0 0 var(--sp-1);
+}
+
+.ws-words ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 2;
+  column-gap: var(--sp-3);
+  font-size: 0.85rem;
+}
+
+.ws-words li {
+  margin: 0 0 0.2em;
+  break-inside: avoid;
+}
+
+.ws-count {
+  margin: var(--sp-1) 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.ws-name,
+.cbn-name,
+.cw-name {
+  margin-top: var(--sp-3);
+  font-size: 0.9rem;
+}
+
+/* Color by number: legend + cell grid */
+
+.cbn-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  margin-bottom: var(--sp-3);
+  font-size: 0.9rem;
+}
+
+.cbn-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.cbn-swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.cbn-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cbn-cols), 1fr);
+  gap: 1px;
+  background: var(--line-strong);
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.cbn-cell {
+  aspect-ratio: 1;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cbn-cell.cbn-blank {
+  background: #fff;
+  border: none;
+}
+
+.cbn-fact {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Halloween cursive words: label + trace/write cells */
+
+.cw-group {
+  margin-bottom: var(--sp-4);
+}
+
+.cw-row {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: var(--sp-3);
+  align-items: center;
+  margin-bottom: var(--sp-2);
+}
+
+.cw-word-label {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.cw-cells {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.cw-cell {
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.cw-model {
+  font-family: var(--font-hand);
+  font-size: 1.55rem;
+  line-height: 1.1;
+  color: #b9b5a8;
+  text-align: center;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.cw-model-sm {
+  font-size: 1.2rem;
+}
+
+.cw-baseline {
+  border-bottom: 2px dotted var(--line-strong);
+  margin: 0 var(--sp-1);
+  flex: 1;
+}
+
+/* Print pass for the Halloween sheets */
+
+@media print {
+  .ws-grid td {
+    font-size: 13pt;
+    padding: 0.16em 0;
+  }
+
+  .ws-words ul {
+    font-size: 11pt;
+  }
+
+  .ws-name,
+  .cbn-name,
+  .cw-name {
+    font-size: 11pt;
+  }
+
+  .cbn-grid {
+    max-width: 7.4in;
+  }
+
+  .cbn-fact {
+    font-size: 9pt;
+  }
+
+  .cbn-swatch {
+    width: 12pt;
+    height: 12pt;
+  }
+
+  .cw-cell {
+    min-height: 40pt;
+  }
+
+  .cw-model {
+    font-size: 20pt;
+  }
+
+  .cw-model-sm {
+    font-size: 15pt;
+  }
+}

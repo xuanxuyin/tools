@@ -1,0 +1,81 @@
+---
+import { generateWordSearch } from '../../lib/wordSearch';
+import { HALLOWEEN_WORDS_EASY, HALLOWEEN_WORDS_HARD } from '../../data/halloween';
+
+interface PuzzleSpec {
+  title: string;
+  audience: string;
+  words: string[];
+  rows: number;
+  cols: number;
+  seed: number;
+  hard?: boolean;
+}
+
+/**
+ * Fixed seeds: the printed puzzle is part of the page's content, so it must
+ * be identical on every build (and match what a teacher printed last week).
+ */
+const PUZZLES: PuzzleSpec[] = [
+  {
+    title: 'Easy Halloween Word Search',
+    audience: 'Kindergarten – Grade 2 · words run right, down, and diagonally',
+    words: HALLOWEEN_WORDS_EASY,
+    rows: 12,
+    cols: 12,
+    seed: 20261031,
+  },
+  {
+    title: 'Hard Halloween Word Search',
+    audience: 'Grades 3–5 · words run in all eight directions, backwards too',
+    words: HALLOWEEN_WORDS_HARD,
+    rows: 13,
+    cols: 13,
+    seed: 20261032,
+    hard: true,
+  },
+];
+
+const sheets = PUZZLES.map((spec) => ({
+  ...spec,
+  puzzle: generateWordSearch(spec.words, {
+    rows: spec.rows,
+    cols: spec.cols,
+    seed: spec.seed,
+    hard: spec.hard,
+  }),
+}));
+---
+
+<div class="word-search-sheets">
+  {sheets.map(({ title, audience, puzzle }, i) => (
+    <section class:list={['ws-sheet', { 'sheet-break': i > 0 }]} aria-label={title}>
+      <header class="ws-head">
+        <h2>{title}</h2>
+        <p>{audience}</p>
+      </header>
+      <div class="ws-body">
+        <table class="ws-grid" aria-label={`${title} letter grid`}>
+          <tbody>
+            {puzzle.grid.map((row) => (
+              <tr>
+                {row.map((cell) => <td>{cell}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div class="ws-words">
+          <h3>Words to find</h3>
+          <ul>
+            {puzzle.placements
+              .slice()
+              .sort((a, b) => a.word.localeCompare(b.word))
+              .map((p) => <li>{p.word.toLowerCase()}</li>)}
+          </ul>
+          <p class="ws-count">{puzzle.placements.length} words</p>
+        </div>
+      </div>
+      <p class="ws-name">Name: ______________________ &nbsp;&nbsp; Date: ____________</p>
+    </section>
+  ))}
+</div>

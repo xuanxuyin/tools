@@ -1,0 +1,86 @@
+---
+import {
+  GHOST_MULTIPLICATION,
+  PUMPKIN_ADDITION,
+  factsFor,
+  type PaintArt,
+} from '../../data/halloween';
+
+interface EditionSpec {
+  title: string;
+  audience: string;
+  art: PaintArt;
+  mode: 'add' | 'mul';
+  factLabel: string;
+}
+
+const EDITIONS: EditionSpec[] = [
+  {
+    title: 'Jack-o’-lantern — Color by Addition',
+    audience: 'Grades 1–2 · add, then match the sum to a color',
+    art: PUMPKIN_ADDITION,
+    mode: 'add',
+    factLabel: 'sum',
+  },
+  {
+    title: 'Friendly Ghost — Color by Multiplication',
+    audience: 'Grades 3–4 · multiply, then match the product to a color',
+    art: GHOST_MULTIPLICATION,
+    mode: 'mul',
+    factLabel: 'product',
+  },
+];
+
+const sheets = EDITIONS.map((spec) => {
+  const { art, mode } = spec;
+  const used = new Set(art.cells.flat().filter((k) => k !== 0));
+  const keys = Object.keys(art.legend)
+    .map(Number)
+    .filter((k) => used.has(k))
+    .sort((a, b) => a - b);
+  const cols = art.cells[0]?.length ?? 0;
+  // Same cell index picks the same fact every build — printed pages stay stable.
+  const factGrid = art.cells.map((row, r) =>
+    row.map((key, c) => {
+      if (key === 0) return null;
+      const pool = factsFor(key, mode);
+      const fact = pool[(r * cols + c) % pool.length]!;
+      return { key, fact };
+    }),
+  );
+  return { ...spec, keys, factGrid, op: mode === 'mul' ? '×' : '+' };
+});
+---
+
+<div class="cbn-sheets">
+  {sheets.map(({ title, audience, art, keys, factGrid, factLabel, op }, i) => (
+    <section class:list={['cbn-sheet', { 'sheet-break': i > 0 }]} aria-label={title}>
+      <header class="cbn-head">
+        <h2>{title}</h2>
+        <p>{audience}</p>
+      </header>
+      <div class="cbn-legend">
+        {keys.map((key) => (
+          <span class="cbn-key">
+            <span class="cbn-swatch" style={`background:${art.palette[key]}`}></span>
+            {factLabel} <strong>{key}</strong> = {art.legend[key]}
+          </span>
+        ))}
+      </div>
+      <div class="cbn-grid" style={`--cbn-cols:${art.cells[0]?.length ?? 0}`}>
+        {factGrid.map((row) =>
+          row.map((cell, idx) =>
+            cell ? (
+              <span class="cbn-cell">
+                <span class="cbn-fact">{cell.fact.a}{op}{cell.fact.b}</span>
+              </span>
+            ) : (
+              <span class="cbn-cell cbn-blank" aria-hidden="true"></span>
+            ),
+          ),
+        )}
+      </div>
+      <p class="cbn-name">Name: ______________________ &nbsp;&nbsp; Date: ____________</p>
+    </section>
+  ))}
+</div>
