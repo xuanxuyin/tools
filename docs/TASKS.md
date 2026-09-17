@@ -6,12 +6,16 @@
 
 ---
 
-## 今天 · 2026-09-15（周二）
+## 今天 · 2026-09-17（周四）
 
-- [x] 🤖 **双站 IndexNow 上线（Bing/DDG 收录加速）**（用户触发）：tintbrew DDG 实勘仅首页 1 条进 Bing 系（Google 侧满格无恙）→ key 部署 + 批量推 40 URL；chartglade 同款照上 52 URL（DDG 限流无定论，按 tintbrew 先例判同病）。双站单测 202 / 批量 200【实测】，两 PLAN 已入档。**⚠️ 9/19 v1.6 合并 main 后 chartglade 9 张新页必须补推一轮**
+- [x] 👤 **chartglade 外链首发 pitch ×2 ✅ 9/17 已提交**（homeschool.com 表单 Partner 位 + Cathy Duffy 表单精简版）—— 等回复，10 月第 1 周例行零回音则 follow-up
+- [x] 👤 Reddit r/Handwriting 答帖 ✅ 9/17 已发（求建议帖：真建议在前 + 链接以"我用过"一句带过；帖内链接只发一次，有回复正常跟）—— **外链首发 3/3 收工**
+- [ ] 👤（若 9/16 未做则顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
 - [ ] 👤（不强制，顺延）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
-- [x] 🤖 ~~**chartglade 万圣节页开发**~~ **✅ 9/15 完成**（`f2be941` 分支上）：word search 双难度 / color by number 真算式 / cursive 词表描红 + hub = 4 URL，65 页 55 测试绿，9/19 门后随 V1.6 上 main
 - [ ] 🤖（可选）#12 InkPx/Printabulls 对标拆解（9 月下旬窗口内）
+- ⏰ 明天 9/18：AITDK 拉词三件（fondant 族 / states require cursive / halloween 三词）—— halloween 词量按三档规则定万圣节簇加码或缩簇；9/19（周六）收录门（GSC 数字发 Claude）
+
+**9/15 已完成归档**：双站 IndexNow 上线（tintbrew 40 / chartglade 52 URL 推送 202/200【实测】；⚠️ 9/19 合并 main 后 chartglade 9 张新页补推一轮）｜ 🤖 万圣节簇开发完成 `f2be941`（word search 双难度 / color by number / cursive 词表 + hub = 4 URL，65 页 55 测试绿，9/19 门后随 V1.6 上 main）
 
 **9/14 已完成归档**：GA 双站实时验证通过 ｜ 周一例行闭环（四榜单体检 + sitemap 满格 + 索引报告"0/14"虚惊定性过期快照）｜ Pinterest 复试仍拦 → 停止尝试进信任期（复试 9/21）｜ GA4 双站上线（`2b71a80`/`d4b814a`）｜ GSC 四榜单判双站未偏航 ｜ 竞品外链逆向（MyCursive 州立法页打法 → PLAN #16 + DISTRIBUTION §5）
 
@@ -26,8 +30,6 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
-| 9/16（周三） | 👤 tintbrew Pinterest 设置 + 首批 5 个色卡 pin | [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3 |
-| 9/17（周四） | 👤 **chartglade 外链首发**：pitch 邮件 2 封（homeschool.com + Cathy Duffy Reviews）+ Reddit r/Handwriting 答帖 1 个（模板照抄） | [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md) §5.2 / §5.3 |
 | 9/18（周五） | 👤 tintbrew 周五例行 GSC 头词查 + **顺手 AITDK 拉 fondant 族量**（9/14 体检观察项：how to make brown fondant / fondant color chart，≥500/月 才进烘焙簇扩展）；同场顺手拉 states require cursive 量（PLAN #16 词记录）+ **halloween 三词**（word search / color by number / cursive，万圣节簇 9/15 开发完成的量级补测，按三档规则判加码或缩簇） | AITDK 插件 |
 
 ---

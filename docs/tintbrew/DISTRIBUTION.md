@@ -7,11 +7,11 @@
 
 ## 一、目录站（外链，当前最大缺口）
 
-**现状**：✅ Uneed 已提交（2026-09-04）｜✅ Peerlist 项目卡上线（2026-09-07，Design Resources 类目，visit 链接实测通）｜✅ AlternativeTo 已提交（2026-09-07，审核数周）
+**现状（2026-09-17 更新）**：✅ Uneed 已提交（2026-09-04）｜✅ Peerlist 项目卡上线（2026-09-07，Design Resources 类目，visit 链接实测通；**launch 搁置** —— 实测卡付费 "Verify Identity" 门，免费 workplace 验证不解锁，不买）｜✅ AlternativeTo 已提交（2026-09-07，审核数周）
 
 | 平台 | 步骤 | 状态 |
 |---|---|---|
-| Peerlist Launchpad | peerlist.io → 右上角注册登录 → 打开 peerlist.io/launchpad → **Launch your product**（登录后才显示）→ 表单文案抄根 README「外链提交文案」 | ✅ 2026-09-07 卡片上线：类目 Design Resources，外链自动挂 `?ref=peerlist&utm_source=peerlist`（canonical 自指无重复 URL，CF Analytics 可按 utm 归因）。**launch 有验证门（官方 help 实锤，09-07 撞墙实测）**：点 Launch 弹 "Get verified to Launch" —— 账号需 verified 才进 Launchpad；workplace/教育/bootcamp 验证**免费**、identity 收费。本账号 workplace 验证 09-07 已交（Under Review），通过即解锁 launch，identity 付费路径不走。**可选加分**：profile headline 改 "Building Tintbrew — ..."、到项目编辑确认 tagline 存的是全文（卡片在 60 字符截断属显示行为）、cover 图用现成 og-default.png（1200×630 正中推荐尺寸） |
+| Peerlist Launchpad | peerlist.io → 右上角注册登录 → 打开 peerlist.io/launchpad → **Launch your product**（登录后才显示）→ 表单文案抄根 README「外链提交文案」 | ✅ 2026-09-07 卡片上线：类目 Design Resources，外链自动挂 `?ref=peerlist&utm_source=peerlist`（canonical 自指无重复 URL，CF Analytics 可按 utm 归因）。**launch 有验证门（09-07 撞墙；9/17 定论）**：点 Launch 弹 "Get verified to Launch" → 实际要走的 "Verify Identity" **收费**，免费 workplace 验证（09-07 已交）通过也**不解锁** launch —— 早前"通过即解锁"的判断作废。止损纪律不买 → **launch 搁置**，项目卡外链不受影响。**可选加分**：profile headline 改 "Building Tintbrew — ..."、到项目编辑确认 tagline 存的是全文（卡片在 60 字符截断属显示行为）、cover 图用现成 og-default.png（1200×630 正中推荐尺寸） |
 | AlternativeTo | alternativeto.net → 搜一个同类颜色工具（如 "color mixer"）→ 进它的页面 → **Suggest an alternative** → 填 tintbrew.com + 一句话描述 | ✅ 已提交 2026-09-07，等审核（收录与否 10 月初查） |
 | Product Hunt | 见本手册 §四（要预备，不是随手提） | ⬜ |
 
