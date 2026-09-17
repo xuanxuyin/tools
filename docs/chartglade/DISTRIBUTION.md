@@ -89,12 +89,12 @@
 
 ## 二、目录站（首批外链，顺序执行）
 
-**现状（2026-09-09）**：✅ AlternativeTo（9/8 提交 + 双向挂竞品）｜ ✅ Uneed + Peerlist（9/9 补齐）—— **三渠道全提交、均审核期**（AlternativeTo 审核数周常态；Uneed 曾于 9/8 因转收费定暂缓，9/9 随批提交）
+**现状（2026-09-17 更新）**：✅ AlternativeTo（9/8 提交 + 双向挂竞品，审核数周常态）｜ ✅ Uneed（9/9 补齐）｜ ⚠️ Peerlist **launch 搁置** —— 实测点 Launch 被付费 "Verify Identity" 门拦（免费 workplace 验证不解锁；此前"workplace 足以解锁"的判断作废），止损纪律不买
 
 | 平台 | 入口 | 动作 | 备注 |
 |---|---|---|---|
 | Uneed | uneed.best | Submit（tintbrew 走通过同流程） | **9/9 已提交**（9/8 曾因转收费定暂缓：免费账户同时只排 1 个产品、tintbrew 占名额 —— 后续若需重提，等 tintbrew 名额释放再免费排，不付 Pro） |
-| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | **9/9 已提交**。背景：launch 有验证门（workplace 验证免费且足以解锁 Launchpad，付费 identity 是可选项不碰；2026-09-08 官方政策已核，gate 页的 Pro 功能列表是营销话术）。tintbrew 账号的 workplace 验证在审期间 Launchpad 一直 gate —— 状态在 profile → Resume → Experience 里看 |
+| Peerlist Launchpad | peerlist.io/launchpad | 登录后点 Launch your product | **9/9 项目已提交；launch ❌ 搁置（9/17 定论）**：实测点 Launch 弹的是 "Verify Identity"，此验证**收费**，免费 workplace 验证通过也不解锁（tintbrew 期已撞过同一堵墙；9/8 档案"workplace 足以解锁、付费是可选项"的判断被实测推翻作废）。止损纪律：不买 → launch 不做，项目卡留着当外链 |
 | AlternativeTo | alternativeto.net | 搜竞品（"K5 Learning" 或 "MyCursive"）→ 进它页面 → **Suggest an alternative** → 填 chartglade.com | **9/8 已提交**，等审核（数周）。visibility 两步跟进**已完成 9/8**（官方提示：无 alternatives 的 app 站内几乎不可见）：① ChartGlade 自身页面挂真实竞品为 alternatives（K5 Learning / Education.com / Superstar Worksheets / MyCursive）② 反向在竞品页挂 ChartGlade —— 不超过 4 家 |
 
 **提交文案包（英文，直接复制）**：
@@ -114,7 +114,7 @@
 - 分类 / Tags：Education、Free；Tags 填 `education, printables, teachers, k5`
 - 其余字段照 tintbrew 当时填法
 
-**Peerlist Launchpad**（登录后 Launch your product 才显示）。Launch 帖用"发布"口吻，别用目录腔，直接抄：
+**Peerlist Launchpad**（**⚠️ 搁置 9/17：launch 卡付费 Verify Identity 门，见 §2 表 —— 模板留存，哪天解锁了才用**。登录后 Launch your product 才显示）。Launch 帖用"发布"口吻，别用目录腔，直接抄：
 
 ```
 Title: ChartGlade — free printable teaching charts that print straight from the browser
@@ -205,12 +205,12 @@ Everything is free and I'm not selling anything — if a mod wants this formatte
 **#1 州立法追踪页（链接诱饵）—— 🤖 Claude 建页，PLAN #16**
 MyCursive 全国媒体引用的根 = 一页数据。它的版本停在 2023 年 21 州，2026/2 宾州立法后全美已过半 —— **数据过时 = 我们的缝隙**。做 `/states-that-require-cursive/`：50 州表格（州 / 要求与否 / 立法年份 / 州 DOE 来源链接）+ 页面署"数据更新于 2026 年 X 月"。新闻编辑与教育博主写此话题时要的正是"一页看全 + 可引用"的源。非流量页（外链优先），states require cursive 词量 👤 顺手 AITDK 记录即可。
 
-**#2 Reddit r/Handwriting 答帖 —— 👤 零成本，本周可做**
-学习者聚集地（非教师），与 cursive 矩阵完全对口。打法同 §3 纪律：只答帖。可直接答的老帖："Free cursive worksheets"（r/Handwriting）、"Best books or websites for learning cursive?"（r/Handwriting）；另版内搜 "worksheets" 找新帖。学习者口吻，去教师视角。
+**#2 Reddit r/Handwriting 答帖 —— ✅ 9/17 首帖已发**
+学习者聚集地（非教师），与 cursive 矩阵完全对口。打法同 §3 纪律：只答帖。**打猎实勘（9/17）：别用 Reddit 搜索**（按相关度只给几年前的存量帖），直接蹲 `r/Handwriting/new/` feed；目标帖 = 求资源帖 + **求建议帖**（"how to improve" 类同样算）。发帖公式 = **真建议在前 + 链接以"我用过"一句带过**（9/17 首帖：放慢/风格统一/逐字母 drill/倾斜与尺寸一致 四条建议 + cursive-alphabet 链接嵌第三条），帖内链接只发一次，回复正常跟聊。老帖 "Free cursive worksheets" / "Best books or websites for learning cursive?" 几年旧，答了没人看，弃。
 
-**#3 权威指南 pitch 两封 —— 👤 各 10 分钟**
-- **homeschool.com**：无公开提交表单，走联系页提议 Resource Guide 收录（先例：Superstar 有专页、免费课程 Easy Peasy 也在指南内 = 免费站有位）
-- **Cathy Duffy Reviews**（cathyduffyreviews.com）：编辑部选品制、无付费收录（独立性是它的招牌）；走站内联系表单提议评测，免费资源也收（Freedom Homeschooling 列过它评的免费品）
+**#3 权威指南 pitch 两封 —— 👤 各 10 分钟（入口实勘 2026-09-17）**
+- **homeschool.com**：**✅ 9/17 表单已提交**（Reasons=Partner/Advertise With Us，Comments 版）。联系页 `https://www.homeschool.com/contact-us/` 底部表单（实勘字段 9/17：First Name* / Last Name / Email* / Comments / Reasons for Your Inquiry* 三选一）。**Reasons 勾 Partner/Advertise With Us**（General Homeschooling 是家长答疑、Marketplace 是商城售后，都不对口；Resource Guide 收录归 partner 通道，Superstar 专页即此性质），Comments 贴 §5.3 表单版并写明 not advertising。表单提交失败才走邮件 **info@homeschool.com**（Subject：`Free printable resource for your Resource Guide`；⚠️ help@homeschool.com 是答疑邮箱，别投这）。pitch 论据：先例 Superstar 有专页、免费课程 Easy Peasy 也在指南（`homeschool.com/resource-guide/`）内 = 免费站有位
+- **Cathy Duffy Reviews**（cathyduffyreviews.com）：**✅ 9/17 表单已提交（Message 精简版）**。**无公开邮箱**，只有联系表单 `https://cathyduffyreviews.com/contact-us`（First Name / Last Name / Email / Message 四栏，Message 贴 §5.3 精简版）。**提交前官方必读**她的 PDF `cathyduffyreviews.com/images/How-to-Improve-Your-Chances-of-Getting-a-Good-Review.pdf`（2026-09-17 已读，要点：产品必须成型才提、别塞宣传长文她只扫 URL 自己上手、评测不收费但挑品、别顺带要改进意见——那是付费 consultation）。对口点（pitch 里点名）：站内有 **Handwriting 分类**（含 Slant Print or Simplified Cursive 子类）和 **Free Homeschooling Resources** 专区
 
 **#4 育儿媒体 round-up pitch —— 👤 邮件**
 Tinybeans（roundup 文）/ Mommy Poppins（草书教学文）两家都写过竞品所在题材 → 文中找作者署名/联系页，发 §5.3 模板邮件。
@@ -237,6 +237,37 @@ to your readers.
 
 Thanks for considering it,
 [Your name]
+```
+
+**homeschool.com 表单 Comments 版**（表单无 Subject 栏，首句直给事由；Reasons 勾 Partner/Advertise With Us）：
+```
+Hi — I run ChartGlade (chartglade.com), a free printables site for K-5: place
+value charts, multiplication tables, Dolch & Fry sight word lists, and a full
+cursive alphabet section with letter-by-letter stroke breakdowns. Every page
+prints straight from the browser — no download, no sign-up, no email wall.
+
+I'm not advertising or selling anything — I thought ChartGlade might be a good
+fit for your Resource Guide next to the free resources already listed (Easy
+Peasy, Superstar Worksheets). Happy to send screenshots or printable samples.
+Thanks for considering it!
+```
+
+**Cathy Duffy 表单精简版**（她的 PDF 明说"别用信息淹死评审"，Message 栏用这版短文案，不用上面通用版）：
+```
+Hi,
+
+I run ChartGlade (chartglade.com) — a free printables site for K-5. Every page
+is the printable itself: place value charts, multiplication tables, Dolch & Fry
+sight word lists, and a 26-letter cursive alphabet section with stroke-by-stroke
+breakdowns. Everything works in the browser — no sign-up, no downloads, no email
+wall.
+
+The site is complete and live with 50+ pages. I thought it might fit your
+Handwriting category or the Free Homeschooling Resources section — happy to
+answer any questions.
+
+Thanks for considering it,
+[你的名字]
 ```
 
 ---
