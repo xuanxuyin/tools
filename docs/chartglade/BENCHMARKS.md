@@ -49,3 +49,48 @@ Miridih 公司的韩国版 Canva【实勘官网 9/18】：月活 200 万+ / 服�
 | InkPx | —（SPA，sitemap 不可读，CF 盾） | 待 #12 拆解补 | 延后 |
 
 **结论三条**：① 图片 SEO 是 printables 赛道结构性流量机器（Superstar 23 图/页）→ #17 从"参考 MiriCanvas"升级为"竞品实锤"，已当日落地首期；② 季节+日历是独立站的量支柱（Printabulls 一半页面在 calendars/coloring/holidays）→ 万圣节簇按计划上，2027 日历簇入 V2 候选；③ 页数不是唯一解（MyCursive 63 页在位）→ 外链诱饵页 #16 优先级维持。
+
+---
+
+## 3. Suncatcher Studio — 支柱页形态拆解 — 2026-09-18
+
+> 起因：用户指令"上 Google 拉同类站找提升点"。Suncatcher = `multiplication chart` SERP 常年在位（9/5 实勘 #3）的独立 printables 站。方法：页面渲染文实勘【实勘 9/18】。
+
+### 3.1 它是什么
+
+WordPress + Mediavine 广告的独立站；范围比我们宽（printables + lettering + SVG files + planners/calendars + apps）—— K-5 头词 SERP 前排常客。
+
+### 3.2 乘法表页形态（/multiplication-charts/，SERP #3 级在位页）
+
+1. **一页 16 个变体**：1-12 与 1-10 两大节 ×（完整 / 空白 / 对角线高亮 / 横版 / 竖版 / 缺答案）—— 实体×变体枚举做到极致；**每变体一张真图直接进正文**（全部可进 Google Images）+ **PDF/PNG 双下载按钮** + "Edit / Save" 换色（可设 3000px）
+2. **16 张图 alt 一模一样**（同一串关键词 "…times table, sheet, pdf, blank, empty, 3rd grade…"）照样排进前 3 —— **alt 句式不是胜负手，变体图片覆盖密度才是**（与 §1 MiriCanvas 程序化描述句 alt 互为对照：我们 #17 手写 alt 只强不弱；#17 扩容方向 = 加变体图数量，非打磨 alt 文案）
+3. 页尾 4 段朴素 SEO 文案 + 大量相关内链（lined paper / graph paper / planners / math drills）
+4. robots meta 显式 `max-image-preview:large`；页尾 Pinterest "Pin for later" 按钮主动索取
+
+### 3.3 chartglade 落位
+
+- ⭐ **下载按钮进排期（PLAN §3 #18，10/05 批）**：PNG/PDF 下载是 printables 行业标配（Suncatcher / classweekly / InkPx 全有）。我们 #17 已产出 2016px PNG（≈219dpi letter），页面加 download 链接成本≈0 —— 手机用户（Pinterest 流量 9 成手机）没有 Ctrl+P，"下载再打印"是真实路径，补上它反而**强化** print-first 闭环。PDF 可后置（sheet-images 管线加 page.pdf() 再评估）
+- **变体密度记为新页默认形态**：存量乘法 4 页按变体分页不动（已各有排名）；今后支柱页正文给"变体预览条"（每变体一图 + 链接各自页）—— graph paper 簇已是此结构
+- **不学**：Edit/Save 换色编辑器（SaaS 化超纯静态边界）；Mediavine 广告（未到变现线）；planner/lettering 范围扩张（漂出 K-5 主题）
+
+---
+
+## 4. ClassWeekly — 9,101 URL 结构机器 — 2026-09-18
+
+> 方法：sitemap 抓取分类统计 + /standards/1-ESS1-1 页面渲染文实勘【实勘 9/18】。
+
+### 4.1 它是什么
+
+Next.js + Supabase（worksheet 缩略图托管）+ Stripe freemium（30 天免费试用后 $14/月）的 worksheet 站；自带 worksheet maker 生成器。sitemap 9,101 URL 分类：math 2,352 / social studies 2,153 / grammar 1,124 / reading 929 / **event 776** / blog 380 / **teaching-wiki 360** / **standards 292** / workbooks 243 / vocabulary 156 / science 51 / posters 29。
+
+### 4.2 三台我们没有的结构机器
+
+1. **standards 矩阵（292 页）**：Common Core/NGSS 标准码一码一页（如 /standards/1-ESS1-1 = 一年级科学标准），聚合挂对应 worksheet —— 吃"教师按码搜"长尾；页面本体极薄（标题 + 7 张缩略图），纯结构驱动
+2. **teaching-wiki（360 页）**：A–Z 教学术语定义页 + 按学科浏览
+3. **event 季节矩阵（776 页）+ Teaching Calendar hub**：按月份浏览全部节日/季节页，季节流量内链全网收口
+
+### 4.3 chartglade 落位
+
+- **Teaching Calendar hub（1 页）进 11 月批候选**：感恩节簇上线后有 2+ 季节簇，做按月季节打印件索引页 —— classweekly 776 页季节矩阵的"1 页静态版"，顺带接 "october printables" 类词
+- **standards 矩阵 = 远期候选池记档不动**：打的是标准码长尾（与"worksheets 词 SERP 锁死"判断不冲突，词形不同），但 292 薄聚合页撞反薄内容纪律 + DR0 阶段先打透 65 页 —— 10/17 验收后再议
+- **freemium/付费墙/workbook 不学**（零账号 print-first 是反向差异化）；worksheet maker 与我们 V1.5 generator / #14 mad minute island 同形态 = 方向再验证

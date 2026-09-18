@@ -79,6 +79,7 @@
 | 2026-09-14 | **域名前世诊断：wayback 零快照**（👤 美区浏览器查，同 chartglade 当日）—— tintbrew.com 全新域名无历史，**9/16 Pinterest 设置时链接 pin 预期同被拦**（新域+新号双新组合信誉制，chartglade 先例 9/11/9/14 两拦）；处置同预案：账号保温零链接 pin，等信誉自然涨，不硬试不申诉 |
 | 2026-09-14 | **GA「今日 7 活跃用户/22 事件」数量级疑虑定性（用户问"和预期差太多"，同 chartglade 当日）**：判读 = **如期非故障** —— ① GA 当日装机（9/14 `2b71a80`）+ 实时验证自访为大头（~3 事件/用户单页短会话形态吻合，【推断】）；② 北极星 = GSC 曝光（§0），矩阵词 5~8 位但展示仅 1~3 = 词未被广泛派发，非排名问题；③ §0.6 基准档 1 个月预期 0.5~3 访问/天，day 10 的 7（含自访）不落后。服务端复核【实勘 curl 权威 NS+CF IP】**200 正常**。流量真口径 = CF Web Analytics + GSC 曝光；GA 标准报表 9/16 后可读。无动作，裁决窗 10-01 不变 |
 | 2026-09-15 | **Bing/DDG 收录洞实勘 + IndexNow 主动推送上线（用户质疑"别总依赖 GSC，数据停 9/4"触发，数据源纪律已修正入长期记忆）**：DDG `site:` 实勘【实勘 10808 代理美区，Bing 生态口径】= **仅首页 1 条**——Google 侧 40/41 满格（9/6 已档）无恙，洞只在 Bing 系。当日补：IndexNow key 文件入 public/（`0d754f5` 部署）+ api.indexnow.org 批量 POST 全 40 URL，单测 202 / 批量 200【实测】。**SERP 竞品实勘顺带**：orange+red top10 全小站（color-meanings / paintlogs / artincontext 级，零大厂零 Reddit 位）；black frosting top10 全中小烘焙博客（chelsweets / cakewhiz / wikiHow / Wilton blog）—— V2.2 扩量再添可打性侧证。判读：Google 路线不动（矩阵词 5~8 位等派发，裁决窗 10-01）；Bing 路线从 1 页启动，9/22 周一例行加查 DDG site: 复核 |
+| 2026-09-18 | **同类站竞扫（用户指令，与 chartglade 同批）**【实勘 页面渲染文】：trycolors.com（混色 SaaS：目标色→自动配方 / 250+ 品牌库 / PRO Kubelka-Munk / B2B API，teal SERP 在位）+ colordesigner.io（多色 mixer + 数量权重；CF 盾 sitemap 不可读）+ what-colors-make 内容 SERP 在位者（Golden / Will Kemp / Homedit / 烘焙博客群）→ 拆解入新建 [BENCHMARKS.md](./BENCHMARKS.md)。**产出：V2.3 候选重排 —— 反向配色计算器升首位（目标色→基色比例，交互型 AI 免疫）+ mixer 多色升级**，开建全等 10-01 门；内容侧零新增动作（现路线即他们的核心形态） |
 
 ## 2. 关键词资产表
 
@@ -138,7 +139,7 @@
 ## 5. 远期规划（V2.x 全景）
 
 1. **V2.2** 扩色矩阵 +20~30 页（架构零改动，纯数据）
-2. **V2.3** 工具页三件：互补色生成器（顺手）、图片取色/调色板导出（流量入口）、Oklab 渐变生成器（差异化）
+2. **V2.3** 工具页五件（9/18 竞扫重排，前两件新增，详见 [BENCHMARKS.md](./BENCHMARKS.md)）：**反向配色计算器（目标色→基色比例配方，trycolors 拆解产出，首位）**、mixer 多色升级（3~5 色+数量权重，colordesigner 产出）、互补色生成器（顺手）、图片取色/调色板导出（流量入口）、Oklab 渐变生成器（差异化）
 3. **V2.4** 分发：每批次上线 → 提交一轮目录站；Product Hunt 正式发布（外链权重最高，单独准备）；Pinterest 场景图分发（第二流量引擎）
 4. **变现**：~300 访问/天 → 接广告网络（AdSense/Ezoic 评估）
 5. **重启候选**：穿搭配色词（what colors go with X）——V2.1 见效后先拉 6 个代表词数据再定
