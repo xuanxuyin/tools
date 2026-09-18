@@ -6,14 +6,15 @@
 
 ---
 
-## 今天 · 2026-09-17（周四）
+## 今天 · 2026-09-18（周五）
 
-- [x] 👤 **chartglade 外链首发 pitch ×2 ✅ 9/17 已提交**（homeschool.com 表单 Partner 位 + Cathy Duffy 表单精简版）—— 等回复，10 月第 1 周例行零回音则 follow-up
-- [x] 👤 Reddit r/Handwriting 答帖 ✅ 9/17 已发（求建议帖：真建议在前 + 链接以"我用过"一句带过；帖内链接只发一次，有回复正常跟）—— **外链首发 3/3 收工**
-- [ ] 👤（若 9/16 未做则顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
+- [ ] 👤 **AITDK 拉词三件**：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣节簇量级补测，按三档规则定加码或缩簇）
+- [ ] 👤（顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
 - [ ] 👤（不强制，顺延）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
-- [ ] 🤖（可选）#12 InkPx/Printabulls 对标拆解（9 月下旬窗口内）
-- ⏰ 明天 9/18：AITDK 拉词三件（fondant 族 / states require cursive / halloween 三词）—— halloween 词量按三档规则定万圣节簇加码或缩簇；9/19（周六）收录门（GSC 数字发 Claude）
+- [ ] 🤖（可选）#12 InkPx/Printabulls 对标拆解（9 月下旬窗口内；对标笔记新家 [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md)）
+- ⏰ **明天 9/19（周六）收录门**：👤 GSC 收录数发 Claude → 近全量则合并 v1.6-predev 上 main + 补推 IndexNow 9 新页
+
+**9/17 已完成归档**：👤 chartglade 外链首发 3/3 收工（homeschool.com + Cathy Duffy pitch ×2 提交，10 月第 1 周零回音各补 follow-up ｜ Reddit r/Handwriting 答帖已发）｜ 🤖 Peerlist launch 付费门定论更正（Verify Identity 收费，workplace 不解锁 → 搁置）
 
 **9/15 已完成归档**：双站 IndexNow 上线（tintbrew 40 / chartglade 52 URL 推送 202/200【实测】；⚠️ 9/19 合并 main 后 chartglade 9 张新页补推一轮）｜ 🤖 万圣节簇开发完成 `f2be941`（word search 双难度 / color by number / cursive 词表 + hub = 4 URL，65 页 55 测试绿，9/19 门后随 V1.6 上 main）
 
@@ -30,7 +31,7 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
-| 9/18（周五） | 👤 tintbrew 周五例行 GSC 头词查 + **顺手 AITDK 拉 fondant 族量**（9/14 体检观察项：how to make brown fondant / fondant color chart，≥500/月 才进烘焙簇扩展）；同场顺手拉 states require cursive 量（PLAN #16 词记录）+ **halloween 三词**（word search / color by number / cursive，万圣节簇 9/15 开发完成的量级补测，按三档规则判加码或缩簇） | AITDK 插件 |
+| （9/18 任务已上移"今天"；本周无余项） | | |
 
 ---
 
