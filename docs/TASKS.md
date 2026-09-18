@@ -8,7 +8,7 @@
 
 ## 今天 · 2026-09-18（周五）
 
-- [x] 🤖 **MiriCanvas + 竞品 sitemap 对标拆解 + #17 图片 SEO 当日上线**（新建 [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md)；Superstar 930 页 21K 图声明 = 图片 SEO 实锤 → 5 支柱页内容图已提交 main `c91c5ac`，**待 push 部署**；新纪律"大站做法先行"入 CLAUDE.md）
+- [x] 🤖 **MiriCanvas + 竞品 sitemap 对标拆解 + #17 图片 SEO 当日上线**（新建 [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md)；Superstar 930 页 21K 图声明 = 图片 SEO 实锤 → 5 支柱页内容图**已上线验证 ✅**：push 后 lock 未同步致 CF 构建连败，`bcba67a` 补 lock 修复，5 PNG + 5 页 figure 全 200；新纪律"大站做法先行"入 CLAUDE.md）
 - [ ] 👤 **AITDK 拉词三件**：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣节簇量级补测，按三档规则定加码或缩簇）
 - [ ] 👤（顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
 - [ ] 👤（不强制，顺延）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
