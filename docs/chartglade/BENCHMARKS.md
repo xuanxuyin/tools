@@ -33,3 +33,19 @@ Miridih 公司的韩国版 Canva【实勘官网 9/18】：月活 200 万+ / 服�
 **不抄**：编辑器 SaaS / AI 功能 / 视频模板 / 多语言（US-only 纪律）/ UGC 账号系统 / 53 万体量（DR0 先 65 页打透）。
 
 **一句话**：MiriCanvas 验证矩阵化+季节轮换路线正确；增量启发只有一个实招 —— 打开 Google Images 流量口，其余是"别做什么"的确认。
+
+---
+
+## 2. SERP 在位者 sitemap 逆向 — 2026-09-18
+
+> 起因：用户批评"调研从没研究过大站为什么量大"。方法：sitemap_index/post-sitemap 直接抓取（curl + 10808 代理过 CF 盾），统计 URL 分类法与图片声明【实勘】。**纪律已入根 CLAUDE.md：选品固定加这步。**
+
+| 站 | 页数 | 结构拆解 | 对我们的含义 |
+|---|---|---|---|
+| K5 Learning | **~10,000 URL**（分页 sitemap ×2） | free-math-worksheets 1,829 + grammar 824 + preschool/K 647 + reading comprehension 437 + vocabulary 280 + science 188 + **cursive-writing 91**；**blog 1,059** = 内容营销第二引擎 | 量与内容双巨墙；不拼量，拼单页质量 + 矩阵聚焦（cursive 91 页 vs 我们 27 页但逐字母深读） |
+| **Superstar Worksheets** | **930 页** | **21,118 条 `<image:image>` sitemap 声明 = 均值 ~23 图/页**；目录：math 164 / coloring 101 / **templates 100** / science 53 / cursive 33 / tracing 32 / holiday 30 | **#17 图片 SEO 的直接实锤**——在位者把每个 worksheet 变体都做成独立图片喂 Google Images；我们 5 支柱页已上线内容图（main `c91c5ac`），字母/变体页分批跟 |
+| Printabulls | 522 页 | **calendars 154 / coloring-pages 141 / holidays 67** = 季节+日历量引擎；halloween 词 URL 已 22 条 | 季节页是独立站的量支柱——万圣节簇（分支就绪）+ 日历类（V2 候选：2027 calendars 12 月批）值得按此加码 |
+| MyCursive | **仅 63 页**（post-sitemap） | 小站；外链靠州立法数据页（EdWeek/CNN 引用）；另有 web-story sitemap（Google Web Stories 尝试）+ local-sitemap | **63 页也能立在位**：小站路径 = 外链诱饵 + 单页深度，不靠页数——我们 #16 州立法页同款打法已在排 |
+| InkPx | —（SPA，sitemap 不可读，CF 盾） | 待 #12 拆解补 | 延后 |
+
+**结论三条**：① 图片 SEO 是 printables 赛道结构性流量机器（Superstar 23 图/页）→ #17 从"参考 MiriCanvas"升级为"竞品实锤"，已当日落地首期；② 季节+日历是独立站的量支柱（Printabulls 一半页面在 calendars/coloring/holidays）→ 万圣节簇按计划上，2027 日历簇入 V2 候选；③ 页数不是唯一解（MyCursive 63 页在位）→ 外链诱饵页 #16 优先级维持。
