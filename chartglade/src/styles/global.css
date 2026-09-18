@@ -281,6 +281,29 @@ svg {
   margin-top: var(--sp-6);
 }
 
+/* ---------- sheet preview (in-content image for Google Images; never prints) ---------- */
+
+.sheet-preview {
+  margin: var(--sp-5) auto 0;
+  max-width: 26rem;
+}
+
+.sheet-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+}
+
+.sheet-preview figcaption {
+  margin-top: var(--sp-2);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
 /* ---------- buttons ---------- */
 
 .btn {

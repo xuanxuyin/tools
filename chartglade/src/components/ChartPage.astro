@@ -88,6 +88,19 @@ if (def.interactive) {
     </div>
   </section>
 
+  {def.sheetImage && (
+    <figure class="sheet-preview no-print">
+      <img
+        src={def.sheetImage.src}
+        alt={def.sheetImage.alt}
+        width={def.sheetImage.width}
+        height={def.sheetImage.height}
+        loading="lazy"
+      />
+      {def.sheetImage.caption && <figcaption>{def.sheetImage.caption}</figcaption>}
+    </figure>
+  )}
+
   <section class="prose">
     <h2>{def.introHeading}</h2>
     {def.intro.map((p) => <p>{p}</p>)}

@@ -22,6 +22,13 @@ export const placeValuePages: PageDef[] = [
       'The commas matter too. In American notation, commas split a number into three-digit groups called periods: the ones period, the thousands period, the millions period. The chart above colors each period separately because kids who see the periods stop reading 4,302,175 as a string of seven digits and start reading it as "four million, three hundred two thousand, one hundred seventy-five" — three small numbers inside one big one.',
     ],
     printNote: 'Fits one letter page, portrait. Prints black and white.',
+    sheetImage: {
+      src: '/images/place-value-chart-to-millions-printable.png',
+      alt: 'Free printable place value chart from ones to millions — labeled columns grouped into comma periods on one letter-size page.',
+      width: 2016,
+      height: 434,
+      caption: 'The chart exactly as it prints — one letter page, black and white.',
+    },
     interactive: true,
     tips: [
       {

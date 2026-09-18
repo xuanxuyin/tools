@@ -15,6 +15,7 @@
     "test": "vitest run",
     "og": "node scripts/generate-og.mjs",
     "pins": "node scripts/generate-pins.mjs",
+    "sheet-images": "node scripts/generate-sheet-images.mjs",
     "astro": "astro"
   },
   "dependencies": {

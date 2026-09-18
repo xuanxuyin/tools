@@ -257,6 +257,13 @@ export const loosePages: PageDef[] = [
       'The chant is how the chart gets used: point, say the letter name, say its sound, say the key word — "A, /a/, apple," three beats, next square. Twenty-six squares at about four seconds each is a two-minute routine, and it is the highest-yield two minutes in early literacy. The key words matter more than they look: they are the retrieval cue. A child who forgets a sound but remembers "apple" can walk back to it.',
     ],
     printNote: 'One letter page, portrait. Key words in plain text.',
+    sheetImage: {
+      src: '/images/alphabet-chart-printable.png',
+      alt: 'Free printable alphabet chart for preschool and kindergarten — 26 uppercase and lowercase letter pairs with key words, on one letter-size page.',
+      width: 2016,
+      height: 690,
+      caption: 'The alphabet chart exactly as it prints — one letter page, free.',
+    },
     tips: [
       {
         title: 'Point at one row, not the whole chart',
