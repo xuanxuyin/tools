@@ -35,6 +35,13 @@ export const cursivePages: PageDef[] = [
       ],
     },
     printNote: 'Chart + tracing strip fit one letter page, portrait.',
+    sheetImage: {
+      src: '/images/cursive-alphabet-chart-printable.png',
+      alt: 'Free printable cursive alphabet chart — uppercase and lowercase A to Z in one continuous slant with a tracing strip, on one letter-size page.',
+      width: 2016,
+      height: 1088,
+      caption: 'The cursive chart exactly as it prints — one letter page, free.',
+    },
     interactive: true,
     tips: [
       {

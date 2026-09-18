@@ -22,6 +22,13 @@ export const multiplicationPages: PageDef[] = [
       'Grade 3 is when multiplication facts get serious in US schools — fluency within the 1-10 grid is a grade 3 standard — but the 11s and 12s on this chart earn their keep for telling time (12 hours, 60 minutes) and for the dozen-based arithmetic that still shows up everywhere. Most curricula sequence the facts 2s, 5s and 10s first (they have the friendliest patterns), then 9s and 4s, and save 6s, 7s and 8s for last.',
     ],
     printNote: 'Fits one letter page, portrait. Diagonal prints as light gray.',
+    sheetImage: {
+      src: '/images/multiplication-chart-1-12-printable.png',
+      alt: 'Free printable multiplication chart 1-12 — a filled 12 by 12 grid with the perfect-square diagonal shaded, on one letter-size page.',
+      width: 2016,
+      height: 1136,
+      caption: 'The 1-12 chart exactly as it prints — one letter page, free.',
+    },
     interactive: true,
     tips: [
       {

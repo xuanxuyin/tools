@@ -14,6 +14,7 @@
     "check": "astro check",
     "test": "vitest run",
     "og": "node scripts/generate-og.mjs",
+    "sheet-images": "node scripts/generate-sheet-images.mjs",
     "astro": "astro"
   },
   "dependencies": {

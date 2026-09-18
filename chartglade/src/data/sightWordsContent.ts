@@ -80,6 +80,13 @@ export const sightWordPages: PageDef[] = [
       'That is why sight words and phonics are teammates, not rivals. Decodable words get sounded out; these 52 get recognized — and together they cover the overwhelming majority of words in a kindergarten reader. By the end of the year, the usual benchmark is the pre-primer 40 plus the primer 52 (92 words), read instantly in connected text: not on a flashcard, but inside a sentence.',
     ],
     printNote: '52 cards across one letter page, portrait. Black outlines.',
+    sheetImage: {
+      src: '/images/kindergarten-sight-words-printable.png',
+      alt: 'Free printable kindergarten sight words — all 52 Dolch primer words as cut-out word cards on one letter-size page.',
+      width: 2016,
+      height: 1072,
+      caption: 'The 52 primer word cards exactly as they print — one letter page, free.',
+    },
     tips: [
       {
         title: 'Read them in phrases, not one by one',
