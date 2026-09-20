@@ -12,7 +12,7 @@
   ① **GA4 Realtime 自测**：无痕窗口（关广告拦截）开 `tintbrew.com/mixes/red-blue/` + `chartglade.com/cursive/a/` 各一次 → analytics.google.com 对应 property（tintbrew `G-5V4P4ZYYZH` / chartglade `G-EKH9T22FDT`）→ 实时报告，30 秒内见自己 = 管道通
   ② **拉宽日期找 9/14 尖峰**：报告日期改 **9/13~今天**：tintbrew 9/14 应有 ~7 用户/22 事件、chartglade ~4/12（装机日自访基线）。有尖峰 + 近几日 0 = 管道完好、流量真≈0；连尖峰都没有 = 看错 property/账号，回 9/14 验证用的那个看
   ③ **CF Web Analytics 断流核实**：dash.cloudflare.com → Web Analytics → 两站徽章是否 "Receiving data"、曲线 9/14 后是否归零；断 → 同页或 Pages 项目 Settings → Web Analytics 重新启用（手动 token 进 consts 是备选，与自动注入**二选一**防双计）。三步结果发 Claude → 定性收尾
-- [ ] ⏰ **9/19 收录门已过期（今天就报）**：👤 GSC 固定 sitemap 视图收录数发 Claude → 达标即 🤖 合并 v1.6-predev 上 main + IndexNow 补推 9 新页 —— 万圣分发窗口（提前 4~6 周 = 9 月底开始）已开，每拖一天少一天爬坡。**9/20 已报全站视图 14 编入/41 未编入 —— 撞本档第三次过期快照陷阱前科（chartglade 9/9 "0/4"、9/14 "0/4"、tintbrew 9/14 "14/52"），与旁证全矛盾（site: 9/14=38↑ / 9/11 sitemap 52 发现 0 错 / 曝光持续），待补：报告顶部「上次更新」日期 + sitemap 视图已编入数（可比基线 9/7=52）+ URL 检查抽查 2 页**
+- [x] ⏰ **9/19 收录门已执行（9/20，用户授权"你干活吧"）**：👤 报的全站视图 14/41 判过期快照（14+41=55≠52 非口径 + 旁证全绿，前科三次）→ 证据覆盖执行：docs `ebdc70a` + v1.6-predev 合并 `e0e8983` 上 main（65 页 build + 61 测试绿，#13 去重核对过，npm ci 模拟 CI 过），新页抽查 3 条全 200，sitemap 52→64（graph paper 7 + name tracing 1 + 万圣 4），**IndexNow 补推 12 URL 返 200**；正式 sitemap 口径 👤 周一例行追认。详见 chartglade PLAN 9/20 行
 
 **9/18 存量**（已完成两条在下，其余顺延）：
 
@@ -21,7 +21,7 @@
 - [ ] 👤 **AITDK 拉词三件**：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣节簇量级补测，按三档规则定加码或缩簇）
 - [ ] 👤（顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
 - [ ] 👤（不强制，顺延）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
-- [ ] 🤖（可选）#12 InkPx/Printabulls 对标拆解（9 月下旬窗口内；对标笔记新家 [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md)）
+- [x] 🤖 **#12 InkPx/Printabulls 对标拆解完成**（→ [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md) §5/§6：词族胜负规律 = 集合型墙赢/参考图表型深读赢；图片密度标尺 38.7 图/页；**#18 PDF 升格 10/25 正式项**；两站在 cursive/sight words 全缺位。10/05 批维持零新增）
 - ⏰ **明天 9/21（周一）**：👤 周一例行两站 GSC（索引覆盖 sitemap 视图 + 效果 28 天环比 —— 收录数没报的话同页顺手一起）｜ **chartglade Pinterest 复试**（首拦 9/11 +10 天信任期到）→ **通过当天即发首批 pin**（文案在 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md)）
 
 **9/17 已完成归档**：👤 chartglade 外链首发 3/3 收工（homeschool.com + Cathy Duffy pitch ×2 提交，10 月第 1 周零回音各补 follow-up ｜ Reddit r/Handwriting 答帖已发）｜ 🤖 Peerlist launch 付费门定论更正（Verify Identity 收费，workplace 不解锁 → 搁置）
