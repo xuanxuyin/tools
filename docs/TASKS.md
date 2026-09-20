@@ -8,10 +8,9 @@
 
 ## 今天 · 2026-09-20（周日）
 
-- [ ] 👤 **统计"全 0"裁决三步（10 分钟；🤖 今日实勘定性在先：GA4 gtag 双站完好在线，CF beacon 双站 4 页全缺 = CF Web Analytics 疑断流，证据入两 PLAN 9/20 行）**：
-  ① **GA4 Realtime 自测**：无痕窗口（关广告拦截）开 `tintbrew.com/mix/red-blue/` + `chartglade.com/cursive/a/` 各一次 → analytics.google.com 对应 property（tintbrew `G-5V4P4ZYYZH` / chartglade `G-EKH9T22FDT`）→ 实时报告，30 秒内见自己 = 管道通
-  ② **拉宽日期找 9/14 尖峰**：报告日期改 **9/13~今天**：tintbrew 9/14 应有 ~7 用户/22 事件、chartglade ~4/12（装机日自访基线）。有尖峰 + 近几日 0 = 管道完好、流量真≈0；连尖峰都没有 = 看错 property/账号，回 9/14 验证用的那个看
-  ③ **CF Web Analytics 断流核实**：dash.cloudflare.com → Web Analytics → 两站徽章是否 "Receiving data"、曲线 9/14 后是否归零；断 → 同页或 Pages 项目 Settings → Web Analytics 重新启用（手动 token 进 consts 是备选，与自动注入**二选一**防双计）。三步结果发 Claude → 定性收尾
+- [ ] 👤 **统计"全 0"裁决收官（只剩 tintbrew token 一件）** —— 9/20 裁决已定：GA 双站无恙（Realtime 自测各见 1 ✅）｜ **chartglade CF WA 活**（截图 39 visits/7d + 真浏览器探针 beacon 在位；早间 curl 判断流作废 = CF 注入改按客户端指纹过滤，curl 看不见 ≠ 死）｜ **tintbrew CF WA 真死**（真浏览器探针 2 URL beacon 全缺 = 注入从未生效）→ 剩这件：
+  **拿 tintbrew beacon token（2 分钟）**：dash.cloudflare.com → 左侧 **Web Analytics** → tintbrew.com → Settings / Manage site → **Get site tag** 复制 token（`data-cf-beacon` 属性里那串，public by design）→ **发 Claude**，进 consts 部署后探针复验。列表里没有 tintbrew 站点就先同页 "Add a site" 建一个；手动 token 与自动注入二选一，本站现无自动注入、无双计风险
+  （可选 10 秒盖章：GA 报告日期拉 9/13~今天，9/14 装机日自访尖峰在 = 全链路终证）
 - [x] ⏰ **9/19 收录门已执行（9/20，用户授权"你干活吧"）**：👤 报的全站视图 14/41 判过期快照（14+41=55≠52 非口径 + 旁证全绿，前科三次）→ 证据覆盖执行：docs `ebdc70a` + v1.6-predev 合并 `e0e8983` 上 main（65 页 build + 61 测试绿，#13 去重核对过，npm ci 模拟 CI 过），新页抽查 3 条全 200，sitemap 52→64（graph paper 7 + name tracing 1 + 万圣 4），**IndexNow 补推 12 URL 返 200**；正式 sitemap 口径 👤 周一例行追认。详见 chartglade PLAN 9/20 行
 
 **9/18 存量**（已完成两条在下，其余顺延）：
@@ -62,7 +61,7 @@
 
 ## 例行小抄
 
-**每天（≤3 分钟）**：GSC → 效果：有没有新冒头查询词 ｜ Cloudflare → Web Analytics：曲线异常否（**⚠️ 9/20 定性疑断流，修复入档前该检查跳过**）｜ ⚠️ 禁令：不手动 google 搜自己的站（污染 GSC；看收录用 GSC 索引报告）
+**每天（≤3 分钟）**：GSC → 效果：有没有新冒头查询词 ｜ Cloudflare → Web Analytics：曲线异常否（chartglade 正常看；tintbrew 修复前恒 0 属已知，勿当异常）｜ ⚠️ 禁令：不手动 google 搜自己的站（污染 GSC；看收录用 GSC 索引报告）
 
 **周一**：GSC 索引覆盖 + 效果 28 天环比 → 数字发 Claude（site: 只当粗信号，判定以 GSC 为准）
 **周三**：1 个分发动作（pin / 目录站 / 社区帖，文案都在两份 DISTRIBUTION）
