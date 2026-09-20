@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../consts';
 import { cursivePages } from '../../data/cursive';
+import { nameTracingPage } from '../../data/nameTracing';
 import { cursiveLetters } from '../../data/cursiveLetters';
 
 const jsonLd = [
@@ -44,6 +45,10 @@ const jsonLd = [
           <p>Uppercase and lowercase A-Z in one continuous script, with a light-gray tracing strip and the stroke families letters are taught in.</p>
         </a>
       ))}
+      <a class="card" href={`/${nameTracingPage.slug}/`}>
+        <h2>{nameTracingPage.h1}</h2>
+        <p>Type any name and print a tracing worksheet — print or cursive lettering, with model, trace and blank rows on one letter page.</p>
+      </a>
     </div>
   </section>
 

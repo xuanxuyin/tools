@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import GraphPaperSheet from '../components/printables/GraphPaperSheet.astro';
+import { graphPaperPages } from '../data/graphPaper';
+
+const def = graphPaperPages.find((p) => p.slug === 'isometric-graph-paper')!;
+---
+
+<ChartPage def={def}>
+  <GraphPaperSheet def={def} />
+</ChartPage>

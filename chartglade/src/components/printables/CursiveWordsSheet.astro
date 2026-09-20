@@ -1,0 +1,56 @@
+---
+import { HALLOWEEN_WORDS_EASY, HALLOWEEN_WORDS_HARD } from '../../data/halloween';
+
+interface WordGroup {
+  title: string;
+  audience: string;
+  words: string[];
+}
+
+const GROUPS: WordGroup[] = [
+  {
+    title: 'Warm-up words',
+    audience: 'short words, easy joins',
+    words: HALLOWEEN_WORDS_EASY.slice(0, 8),
+  },
+  {
+    title: 'Challenge words',
+    audience: 'long words, descenders and connectors',
+    words: HALLOWEEN_WORDS_HARD.slice(0, 8),
+  },
+];
+
+// Trace twice, write three times — same rhythm as the letter sheets.
+const TRACED = 2;
+const BLANK = 3;
+---
+
+<div class="cw-sheet">
+  {GROUPS.map((group) => (
+    <section class="cw-group" aria-label={group.title}>
+      <header class="cw-head">
+        <h2>{group.title}</h2>
+        <p>{group.audience}</p>
+      </header>
+      {group.words.map((word) => (
+        <div class="cw-row">
+          <span class="cw-word-label">{word}</span>
+          <div class="cw-cells">
+            {[...Array(TRACED)].map(() => (
+              <span class="cw-cell">
+                <span class:list={['cw-model', { 'cw-model-sm': word.length > 5 }]}>{word}</span>
+                <span class="cw-baseline"></span>
+              </span>
+            ))}
+            {[...Array(BLANK)].map(() => (
+              <span class="cw-cell">
+                <span class="cw-baseline"></span>
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+  ))}
+  <p class="cw-name">Name: ______________________ &nbsp;&nbsp; Date: ____________</p>
+</div>

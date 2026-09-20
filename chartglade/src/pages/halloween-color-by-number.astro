@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import ColorByNumberSheet from '../components/printables/ColorByNumberSheet.astro';
+import { halloweenPages } from '../data/halloween';
+
+const def = halloweenPages.find((p) => p.slug === 'halloween-color-by-number')!;
+---
+
+<ChartPage def={def}>
+  <ColorByNumberSheet />
+</ChartPage>

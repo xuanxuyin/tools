@@ -1,0 +1,43 @@
+---
+/**
+ * Name tracing sheet. SSR renders the full default sheet ("Emma", print
+ * style) so the page is printable with JavaScript off; the island below
+ * re-renders rows from the shared pure functions as the user types.
+ */
+import { DEFAULT_NAME, renderNameSheetHtml } from '../../lib/nameTracing';
+
+const rows = renderNameSheetHtml(DEFAULT_NAME, 'print');
+---
+
+<div class="name-controls no-print">
+  <label>
+    Name
+    <input id="name-input" type="text" maxlength="12" value={DEFAULT_NAME} autocomplete="off" spellcheck="false" placeholder="Type a name…" />
+  </label>
+  <label>
+    Letter style
+    <select id="name-style">
+      <option value="print" selected>Print (Zaner-Bloser style)</option>
+      <option value="cursive">Cursive</option>
+    </select>
+  </label>
+</div>
+<div class="name-sheet name-sheet-print" id="name-sheet" aria-label="Name tracing practice sheet" set:html={rows} />
+
+<script>
+  import { renderNameSheetHtml, sanitizeName, type TraceStyle } from '../../lib/nameTracing';
+
+  const input = document.getElementById('name-input') as HTMLInputElement;
+  const style = document.getElementById('name-style') as HTMLSelectElement;
+  const sheet = document.getElementById('name-sheet') as HTMLElement;
+
+  function update(): void {
+    const styleVal: TraceStyle = style.value === 'cursive' ? 'cursive' : 'print';
+    const name = sanitizeName(input.value);
+    sheet.className = `name-sheet name-sheet-${styleVal}`;
+    sheet.innerHTML = renderNameSheetHtml(name, styleVal);
+  }
+
+  input.addEventListener('input', update);
+  style.addEventListener('change', update);
+</script>

@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+
+const pages = [
+  {
+    href: '/halloween-word-search/',
+    h2: 'Halloween Word Search',
+    blurb:
+      'Two printable puzzles — easy (K-2, forwards only) and hard (3-5, all eight directions) — with word lists that double as October vocabulary.',
+  },
+  {
+    href: '/halloween-color-by-number/',
+    h2: 'Halloween Color by Number',
+    blurb:
+      'A jack-o’-lantern addition sheet and a ghost multiplication sheet: solve the fact in every cell, match the answer to the color key, reveal the picture.',
+  },
+  {
+    href: '/halloween-cursive-practice/',
+    h2: 'Halloween Cursive Practice',
+    blurb:
+      'Trace and write the words kids actually want in October — pumpkin, ghost, skeleton — in the same trace-then-write rows as our A-Z letter sheets.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Halloween', item: `${SITE.url}/halloween/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Halloween Printables (Free, No Sign-Up) | ChartGlade"
+  description="Free printable Halloween activities for K-5: word search in two levels, math-facts color by number, and cursive practice with seasonal words. Print from any browser."
+  path="/halloween"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Halloween</span>
+  </nav>
+
+  <section class="hero">
+    <h1>Halloween Printables</h1>
+    <p class="lead">
+      Three classroom-ready Halloween activities — a word search, a math-facts coloring sheet, and a
+      cursive worksheet — each printable straight from the browser on letter paper. No sign-up, no
+      download, and each one earns its place in the lesson plan, not just the party.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="card-grid">
+      {pages.map((p) => (
+        <a class="card" href={p.href}>
+          <h2>{p.h2}</h2>
+          <p>{p.blurb}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="prose section">
+    <h2>One word list, three ways</h2>
+    <p>
+      The three activities share their vocabulary on purpose: scan the words in the
+      <a href="/halloween-word-search/">word search</a>, compute with the season in the
+      <a href="/halloween-color-by-number/">color by number</a>, then write them by hand in
+      <a href="/halloween-cursive-practice/">cursive</a>. Repetition across formats is how seasonal
+      vocabulary actually sticks past October — and it lets the same class work at three different
+      stations off one printed packet.
+    </p>
+    <p>
+      Every sheet is print-first: plain letter paper, black-and-white friendly (the coloring legend
+      names its colors as well as showing them), and paired with teaching notes on its page. For the
+      rest of the year, the same engine runs our
+      <a href="/charts/">math charts</a>, <a href="/sight-words/">sight words</a> and
+      <a href="/cursive/">cursive worksheets</a> — Halloween is just the seasonal wing.
+    </p>
+  </section>
+</BaseLayout>

@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # 关键词调研原始截图（体积大；提炼后的数据在 research/*.md，需提交）
 research/**/*.png
+
+# pin/og 生成产物（脚本在 scripts/generate-pins.mjs，随时可重出）
+**/pins-output/

@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import NameTracingSheet from '../components/printables/NameTracingSheet.astro';
+import { nameTracingPage } from '../data/nameTracing';
+
+const def = nameTracingPage;
+---
+
+<ChartPage def={def}>
+  <NameTracingSheet />
+</ChartPage>

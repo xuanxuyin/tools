@@ -18,7 +18,9 @@ const pagePath = def.path ?? `/${def.slug}`;
 const HUBS: Record<PageDef['hub'], { href: string; label: string }> = {
   charts: { href: '/charts/', label: 'Math Charts' },
   'sight-words': { href: '/sight-words/', label: 'Sight Words' },
-  cursive: { href: '/cursive/', label: 'Cursive' },
+  cursive: { href: '/cursive/', label: 'Cursive & Handwriting' },
+  'graph-paper': { href: '/graph-paper/', label: 'Graph Paper' },
+  halloween: { href: '/halloween/', label: 'Halloween' },
 };
 const hub = HUBS[def.hub];
 

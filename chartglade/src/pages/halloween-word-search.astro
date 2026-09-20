@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import WordSearchSheet from '../components/printables/WordSearchSheet.astro';
+import { halloweenPages } from '../data/halloween';
+
+const def = halloweenPages.find((p) => p.slug === 'halloween-word-search')!;
+---
+
+<ChartPage def={def}>
+  <WordSearchSheet />
+</ChartPage>

@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import CursiveWordsSheet from '../components/printables/CursiveWordsSheet.astro';
+import { halloweenPages } from '../data/halloween';
+
+const def = halloweenPages.find((p) => p.slug === 'halloween-cursive-practice')!;
+---
+
+<ChartPage def={def}>
+  <CursiveWordsSheet />
+</ChartPage>

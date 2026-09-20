@@ -1,0 +1,19 @@
+---
+/**
+ * Renders one graph-paper sheet as an SVG drawn at true physical size
+ * (viewBox 760×1010 = the letter content box in 1/100in units), so what
+ * prints matches the spacing the page promises. Geometry comes from the
+ * shared engine in src/lib/graphPaper.ts.
+ */
+import type { GraphPaperDef } from '../../data/graphPaper';
+import { renderGraphSvg } from '../../lib/graphPaper';
+
+interface Props {
+  def: GraphPaperDef;
+}
+
+const { def } = Astro.props;
+const svg = renderGraphSvg(def.variant, 'blue');
+---
+
+<div class="graph-sheet-wrap" set:html={svg} />
