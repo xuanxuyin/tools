@@ -20,7 +20,7 @@
 - [x] 🤖 **同类站竞扫第二轮（双站，用户指令）**：Suncatcher（一页 16 变体 + PDF/PNG 下载行业标配）/ ClassWeekly（9,101 URL 结构机器）→ [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md) §3/§4；trycolors / colordesigner → 新建 [tintbrew/BENCHMARKS.md](./tintbrew/BENCHMARKS.md)。产出：chartglade **#18 支柱页下载按钮**（10/05 批，复用 #17 PNG）+ Teaching Calendar hub（11 月候选）；tintbrew V2.3 **反向配色计算器升首位**（10-01 门后）
 - [ ] 👤 **AITDK 拉词三件**：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣节簇量级补测，按三档规则定加码或缩簇）
 - [ ] 👤（顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
-- [ ] 👤（不强制，顺延）request indexing 续批：配额闲置时余下字母页 g/h/l 等按量续提（累计 14/53）
+- [ ] 👤（不强制）request indexing 续批：**9/20 起配额优先 12 张新上页**（halloween 3 页 + /halloween/ hub + graph-paper hub + name tracing 打头——Google 侧加速，IndexNow 只管 Bing 系），余下字母页 g/h/l 顺延其后（累计 14/53）
 - [x] 🤖 **#12 InkPx/Printabulls 对标拆解完成**（→ [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md) §5/§6：词族胜负规律 = 集合型墙赢/参考图表型深读赢；图片密度标尺 38.7 图/页；**#18 PDF 升格 10/25 正式项**；两站在 cursive/sight words 全缺位。10/05 批维持零新增）
 - ⏰ **明天 9/21（周一）**：👤 周一例行两站 GSC（索引覆盖 sitemap 视图 + 效果 28 天环比 —— 收录数没报的话同页顺手一起）｜ **chartglade Pinterest 复试**（首拦 9/11 +10 天信任期到）→ **通过当天即发首批 pin**（文案在 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md)）
 
