@@ -82,6 +82,7 @@
 | 2026-09-18 | **同类站竞扫（用户指令，与 chartglade 同批）**【实勘 页面渲染文】：trycolors.com（混色 SaaS：目标色→自动配方 / 250+ 品牌库 / PRO Kubelka-Munk / B2B API，teal SERP 在位）+ colordesigner.io（多色 mixer + 数量权重；CF 盾 sitemap 不可读）+ what-colors-make 内容 SERP 在位者（Golden / Will Kemp / Homedit / 烘焙博客群）→ 拆解入新建 [BENCHMARKS.md](./BENCHMARKS.md)。**产出：V2.3 候选重排 —— 反向配色计算器升首位（目标色→基色比例，交互型 AI 免疫）+ mixer 多色升级**，开建全等 10-01 门；内容侧零新增动作（现路线即他们的核心形态） |
 | 2026-09-20 | **"GA 全 0"诊断（用户报双站统计归零触发）+ CF Web Analytics 实锤断流**：【实勘 curl 浏览器 UA + Accept: text/html，双站首页+内页 4 URL】GA4 gtag 完好在位（G-5V4P4ZYYZH，9/14 装机未动过）；CF beacon **4/4 全缺** —— chartglade 9/9 同法实测可见（其 PLAN 9/9 行），今日双站全无 = 注入 9/9~9/20 间停了（本站曾工作的证据 = chartglade consts "same as tintbrew prod" 注释【推断】；时点机制不明，疑与 9/14 GA 部署同期【假设】）。判读：GA 管道大概率没坏，"全 0"最可能 = 真实流量≈0（矩阵词 5~8 位但展示 1~3 = 词未被派发 + 答案型疑截流；基准档 0.5~3 访问/天）+ 短日期范围盖掉 9/14 尖峰（7 用户/22 事件）。裁决三步（Realtime 自测 / 拉宽范围找尖峰 / CF dash 徽章）已进 TASKS；CF 修复 = dashboard 重开自动注入或 token 进 consts（**二选一**防双计）。**CF WA 修复前，流量真口径暂以 GSC 曝光/点击为准** |
 | 2026-09-20 | **CF WA 真死实锤 + 修复路径（同日第二翻案）**：真无头 Edge 探针（chartglade `scripts/beacon-probe.mjs`，chartglade 同批对照 beacon 在位）抓本站首页 + /mix/red-blue/ 原始 HTML —— **beacon 2/2 全缺**（gtag 对照在位 = 页面与 GA 无恙，Realtime 自测亦过）→ **CF 注入对本站从未生效**（【推断】WA 站点建了但自动注入没开过：本 PLAN 历史无一条 WA 读数在档，与用户 dashboard 全 0 吻合；非 9/9~9/20 间断流）。**修复（待 👤）**：dash.cloudflare.com → Web Analytics → tintbrew.com → Settings/Get site tag 拿 token 发 Claude → 进 consts.ts `cfBeaconToken`（手动模式，token public by design；本站现无自动注入故无双计风险）→ 部署后真浏览器探针复验；连带 consts 注释与 §7 技术备忘"自动注入留空"条随 token 提交一并更新 |
+| 2026-09-20 | **CF WA 修复当日上线并线上验证 ✅（手动 token 模式）**：👤 选 Enable with JS Snippet 拿 token → consts.ts `cfBeaconToken` 填值（BaseLayout 预埋渲染块当天启用，**零新代码**）→ 41 页 build + 81 测试绿 → push main `5a142b1` 部署 → **线上 curl 实勘 token 在位**（首页 + /mix/red-blue/ 双 URL；手动模式 = 构建时嵌入静态 HTML，curl 直接可见，不再依赖按指纹的边缘注入）。双计数防护：dashboard 只开 JS Snippet 未开 Automatic Setup；数据面验证 = 👤 访问一页后回 dashboard 刷新看曲线冒头 |
 | 2026-09-20 | **GSC 全站视图读数 54 编入/15 未编入**【实测 用户报】：对 9/7 的 52/14 微增，41 页站收录满格状态保持，无动作（未带快照日期，周一例行补 sitemap 口径环比） |
 
 ## 2. 关键词资产表
@@ -163,5 +164,5 @@
 - mixes.ts 加配色后**必须重新生成 `public/_redirects`**（反向 slug 301）
 - 引擎基准：红+蓝 50/50 = `#8c53a2`（回归测试锚点）
 - DOM 测试要加载真实 `dist/` + `vi.resetModules()`
-- CF 统计自动注入 —— consts.ts 的 beacon 留空（防双计数）
+- CF Web Analytics = **手动 token 模式**（consts.ts `cfBeaconToken`，2026-09-20 起 —— 自动注入对本站从未生效，详见当日时间线）；dashboard 勿再开 Automatic Setup（双计数）；线上体检直接 curl 查 token 即可（构建时嵌入，无需真浏览器）
 - GA4 在 BaseLayout `<head>` 直出（ID 在 consts.ts `gaMeasurementId`，与 CF beacon 同款"空值不渲染"守卫）；/privacy/ 已披露 GA cookie —— 若未来加广告脚本需再改隐私页 |
