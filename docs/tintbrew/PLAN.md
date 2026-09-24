@@ -85,6 +85,7 @@
 | 2026-09-20 | **CF WA 真死实锤 + 修复路径（同日第二翻案）**：真无头 Edge 探针（chartglade `scripts/beacon-probe.mjs`，chartglade 同批对照 beacon 在位）抓本站首页 + /mix/red-blue/ 原始 HTML —— **beacon 2/2 全缺**（gtag 对照在位 = 页面与 GA 无恙，Realtime 自测亦过）→ **CF 注入对本站从未生效**（【推断】WA 站点建了但自动注入没开过：本 PLAN 历史无一条 WA 读数在档，与用户 dashboard 全 0 吻合；非 9/9~9/20 间断流）。**修复（待 👤）**：dash.cloudflare.com → Web Analytics → tintbrew.com → Settings/Get site tag 拿 token 发 Claude → 进 consts.ts `cfBeaconToken`（手动模式，token public by design；本站现无自动注入故无双计风险）→ 部署后真浏览器探针复验；连带 consts 注释与 §7 技术备忘"自动注入留空"条随 token 提交一并更新 |
 | 2026-09-20 | **CF WA 修复当日上线并线上验证 ✅（手动 token 模式）**：👤 选 Enable with JS Snippet 拿 token → consts.ts `cfBeaconToken` 填值（BaseLayout 预埋渲染块当天启用，**零新代码**）→ 41 页 build + 81 测试绿 → push main `5a142b1` 部署 → **线上 curl 实勘 token 在位**（首页 + /mix/red-blue/ 双 URL；手动模式 = 构建时嵌入静态 HTML，curl 直接可见，不再依赖按指纹的边缘注入）。双计数防护：dashboard 只开 JS Snippet 未开 Automatic Setup；数据面验证 = 👤 访问一页后回 dashboard 刷新看曲线冒头 |
 | 2026-09-20 | **GSC 全站视图读数 54 编入/15 未编入**【实测 用户报】：对 9/7 的 52/14 微增，41 页站收录满格状态保持，无动作（未带快照日期，周一例行补 sitemap 口径环比） |
+| 2026-09-24 | **索引报告 53 编入/16 未编入【实测 GSC 全站视图，快照 9/21，👤 报】→ 健康，无动作**：对 9/7 52/14、9/20 54/15（无快照日期）均在 ±2 摆动带内，41 页站收录满格保持；原因分布 = 重定向 12（www+URL 变体）/ 已发现-未编 4 / 已抓取-未编 0 / **无 403 无异常**。效果 28 天环比 + sitemap 口径周一例行顺手补 |
 
 ## 2. 关键词资产表
 

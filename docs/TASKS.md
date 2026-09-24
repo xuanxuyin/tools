@@ -10,7 +10,7 @@
 
 > 9/21 周一例行 + Pinterest 复试滑档（9/21~9/23 两站 PLAN 无记录）—— 今日补跑；若其实做过，把数字发 Claude 入档即销项。
 
-- [ ] 👤 **周一例行补跑（滑档 3 天）**：两站 GSC —— ① chartglade 索引覆盖「网页索引编制」sitemap 视图（9/20 v1.6+万圣 12 页上 main 后 sitemap 52→64，读数阶跃属计划内，读数带「上次更新」日期）② 效果 28 天环比 ③ tintbrew 同款两样。数字发 Claude 入档
+- [ ] 👤 **周一例行收尾（索引面 9/24 已录 → 两 PLAN 当日行；剩三小步，≤3 分钟）**：① chartglade **URL 检查抽查 2 条**（/cursive/a/ + /halloween-word-search/）→ "已编入" 即坐实 15/52 为镜像伪读（第 4 次）② 点开 **403 原因行** → 那条 URL 发 Claude（站端已巡检 64/64 全 200，零 403 = 非站问题，只差定位）③ 两站**效果 28 天环比**数字发 Claude；sitemap 视图读数下周一例行再补
 - [ ] 👤 **chartglade Pinterest 复试**（首拦 9/11 +10 天信任期，9/21 到期已过 3 天）→ **通过当天即发首批 pin**（文案在 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md)）；仍被拦 = 再进 7 天信任期，不硬试不申诉
 - [ ] 👤 **AITDK 拉词三件**（9/18 起）：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣簇量级补测，按三档规则定加码或缩簇）
 - [ ] 👤 tintbrew CF WA 数据面收尾（9/20 手动 token 上线后唯一余项）：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
