@@ -40,7 +40,13 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={c.metaTitle} description={c.metaDescription} path={`/mix/${c.slug}`} jsonLd={jsonLd}>
+<BaseLayout
+  title={c.metaTitle}
+  description={c.metaDescription}
+  path={`/mix/${c.slug}`}
+  jsonLd={jsonLd}
+  ogImage={`/og/mix-${c.slug}.png`}
+>
   <section class="hero">
     <h1>{c.question[0]!.toUpperCase() + c.question.slice(1)}</h1>
     <p class="lead">{c.answer}</p>

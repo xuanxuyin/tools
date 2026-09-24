@@ -18,7 +18,13 @@ const { def } = c;
 const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
 ---
 
-<BaseLayout title={def.metaTitle} description={def.metaDescription} path={`/${def.slug}`} jsonLd={scenarioJsonLd(c)}>
+<BaseLayout
+  title={def.metaTitle}
+  description={def.metaDescription}
+  path={`/${def.slug}`}
+  jsonLd={scenarioJsonLd(c)}
+  ogImage={`/og/${def.slug}.png`}
+>
   <section class="hero">
     <p class="crumbs">
       <a href="/">Home</a> <span aria-hidden="true">›</span>
