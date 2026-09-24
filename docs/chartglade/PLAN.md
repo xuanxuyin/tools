@@ -99,6 +99,9 @@
 | 2026-09-24 | **"表单生成 + 二维码收集"提案判定 → 结构性否决（👤 提议自定义表单→生成二维码→扫码填表做统计调研）**：三重不匹配，非 SEO 层面问题 —— ①**架构**：本站 = Astro 纯静态 + CF Pages 零后端零库（技术栈模板的核心优势），表单收集产品 = 后端 + 数据库 + 结果仪表盘 + 滥用防护的 SaaS，等于另起一个生意的工程量，"加个功能"装不下；②**人群/场景**：搜表单生成器/QR 表单的是活动组织者/企业行政/调研人，非 K-5 老师（老师侧表单 = 直接用 Google Forms，免费 + 全员已有账号），聚焦三问①②不过且站内无 hub 可挂；③**合规**：收集调研数据 = PII 处理，教育受众含未成年 → COPPA/隐私政策重写，DR0 个人站不该背这个。**竞品常识**：Google Forms 免费统治 + Jotform/SignUpGenius 锁 QR 表单与教师 signup 位。**两个已接住的碎片**：打印形态的"表单" = V1.8 sign-in sheet 族已排 11 月批（PT conference 季，正是老师的表单场景）；二维码若要只做纯前端 QR 生成器（静态可做）但 \`qr code generator\` SERP 是 SaaS 红海不作 SEO 入口。**在线表单 SaaS 想法 → 第三站候选池极低位**（架构重 + 合规重 + 红海，低于 B 宠物手册站；且同"订阅×SEO=空集"9/10 裁决逻辑：SaaS 要分发不是自然量），10/17 后议 |
 | 2026-09-24 | **V1.8 sign-in sheet 族提前至 10/05 批（👤 指令"11 月太晚了，和 10 月的一起上"，季节复核支持）**：原排 11 月纯因"10 月批次已满"日历原因非季节最优 —— PT conference 10 月中开始 + 新页收录要 2~4 周（当前还在收录门内）→ 10/05 上线正好，11 月会错过头两周。代价两条已知悉：①节奏 9/20→10/05 = 15 天，比 3~4 周纪律紧（季节窗优先接受）；②6 张新页进 49 页未编池 → request indexing 配额 10/05 后把这批打头。**诚实预期**：open house 3.6K 头名今年开学黄金窗（8~9 月）已过，本批吃其长尾 + 6.7K 通用模板常青 + PT conference 当季。10/05 批新构成 = #18 下载按钮 + V1.8 hub+4~5 页；11 月批改为视力表 2 页小簇 |
 | 2026-09-24 | **GSC 效果首报**【实测 用户 GSC 报数，窗口未注明按默认视图】：点击 2 / 曝光 **1,113** / CTR 0.2% / 平均排名 **44.6**。首条曝光基线入档（此前只有 tintbrew 有 9/10 基线）—— 15 页已编页在被真实分发，收录门（15/64）在松动而非死锁；平均排名 44.6 = 第 5 页徘徊，六周验收（10/17）看的就是这个数往 30 以内走。**读数纪律（回应"没参考价值"）**：点击/CTR 排名到位前恒零无信息量，活信号 = 曝光量级 + 平均排名 + 查询明细（新冒头词直接喂选词） |
+| 2026-09-24 | **州考变体词族拉量终局 → 独立变体页否决，改 V1.7 页内变体段吸收**【实测 AITDK US/月，👤 拉】：staar formula sheet 320/KD20 + algebra 1 regents formula sheet 260/KD10 + staar algebra 1 formula chart 170/KD19 + regents formula sheet 30 —— 单词全 <500 线（本日"其他学科公式"行立的门槛）→ 不加页。反向亮点：KD 10~20 极低 + 打印文件型本可做页内变体段吸收，但 **👤 同日定标：新机会词族合计 ≥10K/月才做（780 差一个数量级）→ 变体段撤销不做，数据留档**；定标同日入 CLAUDE.md 选品门槛，已定批次不追溯 |
+| 2026-09-24 | **万圣簇量级补测收官 → 维持现状吃当季（不加码、不缩簇）**【实测 AITDK US/月，👤 拉，9/15 开发行挂测条款兑现】：halloween word search **6,600/KD19**（头词质量好，KD 软）+ halloween color by number 1,600/KD15 + halloween cursive worksheets **0** —— 族合计 ≈8.2K。裁：① 加码否决：<10K 新定标线，不添万圣变体页；② 缩簇否决：4 页已上线 + 收录管道在跑（同日 request indexing 打头）+ 峰值窗口 10 月上中旬就在眼前，拆页 = 烧沉没成本；③ cursive 页 0 量留档不拆（挂 hub 复用词表零维护，AITDK 0 ≠ 绝对零）；④ 头词实测 = 簇存在性从【假设】转【实测】，**10 月 GSC 查询明细盯 word search 冒头 = 10/17 验收的季节脉冲验证点** |
+| 2026-09-24 | **州立法词族拉量收官 → 死**【实测 AITDK，👤 报无量】：states require cursive 四变体全无量级 —— #16 的 MyCursive 州立法页打法在 SEO 量维度无支撑，收档不再以量为由推进 |
 
 ## 2. 关键词资产表
 
@@ -117,7 +120,7 @@
 | V1.6 长尾 | multiplication worksheet generator | 480/KD15【实测 9/6】 | 并入 §3 #14 数学练习 island（mad minute 族同池） | mathCharts.ts 纯函数现成 |
 | 弃 | word search maker | 27.1K/KD72【实测 9/6】 | — | KD72 大厂垄断（Canva/Education.com/Discovery Puzzlemaker 实勘在位） |
 | 暂缓 | sight word worksheet generator | 90/KD10【实测 9/6】 | — | 量太小，V2 复查 |
-| **V1.7 候选** | geometry formula sheet | 2.9K/KD23【实测 9/6】 | /geometry-formula-sheet/ | 三样齐全✅：实勘软（MathWords #2/Scribd #4/Pinterest #7）；矩阵长尾 = 州考变体（Regents/STAAR/Keystone，量未勘） |
+| **V1.7 候选** | geometry formula sheet | 2.9K/KD23【实测 9/6】 | /geometry-formula-sheet/ | 三样齐全✅：实勘软（MathWords #2/Scribd #4/Pinterest #7）；矩阵长尾 = 州考变体【实测 9/24 ≈780 → 弃（9/24 定标：词族 ≥10K/月才做）】 |
 | **V1.7 候选** | algebra formula sheet（cheat/reference 三变体并页吃） | 合计 1.66K/KD13~19【实测 9/6】 | /algebra-formula-sheet/ | 实勘软（Pinterest #5/Reddit #6）；与数学簇内链互通 |
 | 弃 | physics / chemistry formula/reference sheet | 4.4K / 590【实测 9/6】 | — | #1 = College Board / NYSED 官方 PDF，意图被官方直接满足 |
 | **V1.8 正式** | sign in sheet 教师场景族（open house 头名 + template/printable 通用页 + PT conference/field trip/volunteer 变体） | ≈10.7K 合计/KD 4~31【实测 9/6】 | /sign-in-sheets/ hub + 4~5 页 | SERP 混合可打【实勘 9/6】：eForms #1 / Spreadsheet123 / InkPx / Visit-Us 独立站在排；visitor（办公人群）不做目标词 |
