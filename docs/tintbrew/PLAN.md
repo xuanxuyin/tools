@@ -87,6 +87,7 @@
 | 2026-09-20 | **GSC 全站视图读数 54 编入/15 未编入**【实测 用户报】：对 9/7 的 52/14 微增，41 页站收录满格状态保持，无动作（未带快照日期，周一例行补 sitemap 口径环比） |
 | 2026-09-24 | **索引报告 53 编入/16 未编入【实测 GSC 全站视图，快照 9/21，👤 报】→ 健康，无动作**：对 9/7 52/14、9/20 54/15（无快照日期）均在 ±2 摆动带内，41 页站收录满格保持；原因分布 = 重定向 12（www+URL 变体）/ 已发现-未编 4 / 已抓取-未编 0 / **无 403 无异常**。效果 28 天环比 + sitemap 口径周一例行顺手补 |
 | 2026-09-24 | **chartglade Pinterest 三连拦（9/11/9/14/9/24）→ 本站 9/14 "预期同被拦"预判强化 + 万圣分发改道**：同 CF Pages/同新域/同新号组合，本站链接 pin 大概率同门（2~6 周信誉窗）。**10 月第 1 周万圣分发主力改 Reddit 烘焙帖**（DISTRIBUTION §3.4 文案在位），frosting/icing 色卡 pin 降为"10/01 门开则补发"；本站 Pinterest 设置照常做（账号/board/域名认领），链接 pin 不硬试，10/01 与 chartglade 同日首测 |
+| 2026-09-24 | **色盲测试提案判定（👤 "加色盲测试卡，测几轮看是否色盲/色弱"）—— 筛查向否决、敏锐度向新入候选**：① 医疗筛查向（Ishihara 类）双杀 —— 人群漂移（搜者 = 健康自查/职业体检人群 ≠ 调色 DIY 人群，聚焦护栏三问①②不过）+ **YMYL 医疗属性**（E-E-A-T 门槛，SERP 被 EnChroma/视力专业站垄断，DR0 打不动；"仅供参考"标注解不了排名难度与主题代价）；chartglade 9/11 已裁"在线交互色盲测试归第三站候选池"，先例直接适用本站。② **变体提案入候选：色觉敏锐度测试**（color IQ / hue 排序挑战 / 找不同色块）—— 非医疗非 YMYL、设计师趣味挑战形态（X-Rite Color IQ 先例）、人群与 mixer 用户 100% 重合、交互工具型 AI 免疫（与词池重心方向一致），可与 mixer 互导流 → **入 V2.2+ 候选（排 V2.3 反向配色计算器后）**，AITDK 拉量后再判。开建全等 10-01 门 |
 
 ## 2. 关键词资产表
 
@@ -99,6 +100,7 @@
 | V2.1 烘焙 | black frosting / brown icing / icing chart / buttercream chart | 含万圣季节词 | 4 页 | 已上线 |
 | 工具头词 | color mixer / converter / hex to rgb | KD 27 档 | /color-mixer/ /color-converter/ | 3~6 个月长跑；GSC 首现（09-07）：online/digital color mixer 族 67~81 名有展示【实测】 |
 | V2.2 候选 | gray/cyan/gold/navy… 扩色配对 | gold 3.6K / teal 1.9K【实测 2026-09-07】，其余待拉 | /mix/* | 未启动；gold/teal 双门槛过（≥500 + SERP 无 DR60+）：gold 前 5 = J Fisher Interiors 博客 + EttaVee + Quora/UGC【实勘 09-05 复勘 09-07】；teal = trycolors 工具站 + Facebook 群组 + 小博客。**走配对页不走头词页**（AI 截流纪律：答案型头词不再加码） |
+| V2.2+ 候选 | **色觉敏锐度测试**（color IQ / hue 排序 / 找不同色块） | 待拉量（color IQ test / color perception test / how well do you see color） | /color-iq-test/ | 9/24 用户提案变体：非 YMYL 趣味挑战、人群与 mixer 重合、交互型 AI 免疫；排 V2.3 反向配色计算器后，10-01 门 + 拉量双卡 |
 | **V2.2 首批锁定** | **color mixing chart** | **6.6K / KD 27【实测 2026-09-07】** | /color-mixing-chart/（打印版混色总表） | **三样齐全**：SERP 实勘 2 次一致（09-05/09-07）——①Visual Arts Passage ②MyModernMet ③Pinterest ④⑤YouTube ⑥Daniel Smith，UGC+小博客，无工具站无巨头；chart 型 = 打印/参考件，AI 截流低。acrylic 变体（390/KD24，SERP 有 Golden+Liquitex 颜料厂）不单独建页，本页 acrylic 段覆盖 |
 | 已评估暂缓 | what colors go with X（穿搭配色） | 未验证 | — | 见 §6 |
 
