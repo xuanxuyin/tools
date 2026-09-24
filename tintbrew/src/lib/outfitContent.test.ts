@@ -63,11 +63,11 @@ describe('outfitContent computed layer', () => {
 });
 
 describe('outfit pages in real dist markup', () => {
-  it('each page ships all ten computed reads and its figure SVG', () => {
+  it('each page ships all ten computed reads plus the studio card and its figure SVG', () => {
     for (const v of outfitContents) {
       const html = readFileSync(resolve(distRoot, `${v.def.slug}/index.html`), 'utf8');
       const reads = html.match(/Oklab read:/g) ?? [];
-      expect(reads.length, v.def.slug).toBe(10);
+      expect(reads.length, v.def.slug).toBe(11);
       expect(html).toContain('outfit-figure');
       expect(html).toContain('FAQPage');
       expect(html).toContain('BreadcrumbList');
@@ -85,11 +85,15 @@ describe('outfit pages in real dist markup', () => {
         expect(html).toContain(`data-part="${part}"`);
       }
       // chips are real buttons with the per-item hooks apply() reads
+      // (10 combos + the 4-piece "style it yourself" studio card)
       const swaps = html.match(/data-swap/g) ?? [];
       const itemCount = v.combos.reduce((n, c) => n + c.items.length, 0);
-      expect(swaps.length, `${v.def.slug} swap chips`).toBe(itemCount);
+      expect(swaps.length, `${v.def.slug} swap chips`).toBe(itemCount + 4);
       expect(html).toContain('data-index=');
       expect(html).toContain('data-role=');
+      // the free-styling card is wired into the same island
+      expect(html).toContain('data-studio');
+      expect(html).toContain('Style it yourself');
       // the island script itself is bundled, referenced, and is the swap UI
       const srcs = Array.from(html.matchAll(/src="(\/_astro\/[^"]+\.js)"/g), (m) => m[1]!);
       const island = srcs.find((s) => {

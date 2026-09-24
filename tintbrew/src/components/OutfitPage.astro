@@ -3,6 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Mixer from './Mixer.astro';
 import OutfitFigure from './OutfitFigure.astro';
 import { outfitJsonLd, type OutfitView } from '../lib/outfitContent';
+import { comboReadHexes, ladderFrom } from '../lib/pairingRead';
+import { hexToRgb } from '../lib/color';
+import { nearestColorName } from '../lib/colorName';
 
 /**
  * Shared template for V2.2 outfit-pairing pages. All numeric copy (nearest
@@ -22,6 +25,21 @@ const roleLabel: Record<string, string> = {
   shoes: 'shoes',
   accent: 'accent',
 };
+
+// "Style it yourself" starter outfit: the anchor color up top, easy neutrals
+// below. Same card markup as the combos, so the swap island binds to it too.
+const studioHexes: { role: string; label: string; hex: string }[] = [
+  { role: 'top', label: `${def.baseName} top`, hex: def.baseHex },
+  { role: 'pants', label: 'charcoal trousers', hex: '#3b3936' },
+  { role: 'shoes', label: 'ivory sneakers', hex: '#f1ede6' },
+  { role: 'accent', label: 'gold pendant', hex: '#c9a24b' },
+];
+const studioItems = studioHexes.map((it) => ({
+  ...it,
+  name: nearestColorName(hexToRgb(it.hex)).name,
+}));
+const studioRead = comboReadHexes(studioItems);
+const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
 ---
 
 <BaseLayout
@@ -123,6 +141,56 @@ const roleLabel: Record<string, string> = {
         </article>
       ))}
     </div>
+  </section>
+
+  <section class="studio-section no-print" style="margin-top: var(--sp-6);">
+    <h2>Style it yourself</h2>
+    <p style="max-width: 46rem;">
+      Done browsing? Dress the figure your way. Click any round chip to swap that piece — preset
+      colors from this page, or the custom picker for any color you have in mind. The read and the
+      ladder recompute as you go.
+    </p>
+    <article class="combo-card" data-studio style="margin-top: var(--sp-3);">
+      <OutfitFigure items={studioItems} />
+      <div class="combo-body">
+        <h3>Your outfit</h3>
+        <p class="combo-scene">Style it yourself</p>
+        <ul class="combo-swatches">
+          {studioItems.map((it, i) => (
+            <li data-index={i} data-role={it.role} data-label={it.label}>
+              <button
+                type="button"
+                class="combo-swatch"
+                data-swap
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-label={`Swap the ${roleLabel[it.role] ?? it.role} color`}
+                style={`background:${it.hex}`}
+              ></button>
+              <span class="combo-meta">
+                <span class="combo-role">{roleLabel[it.role] ?? it.role}</span>
+                <span class="combo-label">
+                  {it.label}
+                  {!it.label.toLowerCase().includes(it.name.toLowerCase()) && <em> · {it.name}</em>}
+                </span>
+                <button
+                  type="button"
+                  class="btn btn-copy combo-hex"
+                  data-copy={it.hex}
+                  aria-label={`Copy ${it.label} hex code`}
+                >
+                  {it.hex}
+                </button>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p class="combo-read">{studioRead}</p>
+        <div class="combo-ladder" aria-hidden="true">
+          {studioLadder.map((h) => <span style={`background:${h}`}></span>)}
+        </div>
+      </div>
+    </article>
   </section>
 
   <section class="decor-section" style="margin-top: var(--sp-6);">

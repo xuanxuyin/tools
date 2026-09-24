@@ -74,7 +74,8 @@ const PANT_R = 'M90 186 C93 240 92 300 94 349';
   <ellipse cx="80" cy="36" rx="14" ry="17" fill={SKIN} stroke={LINE} />
   <path d="M65 40 C63 10 97 10 95 40 C94 28 88 24 80 24 C72 24 66 28 65 40 Z" fill={HAIR} />
   <circle cx="80" cy="16" r="5" fill={HAIR} />
-  <path d="M74 51 L86 51 L86 62 Q80 67 74 62 Z" fill={SKIN} stroke={LINE} />
+  {/* neck tucks under the torso edge (drawn next) — no gap at the collarbone */}
+  <path d="M74 50 L86 50 L87 74 Q80 80 73 74 Z" fill={SKIN} stroke={LINE} />
   <path
     d="M60 78 Q80 70 100 78 C102 104 99 128 96 152 C98 166 99 176 98 186 Q80 196 62 186 C61 176 62 166 64 152 C61 128 58 104 60 78 Z"
     fill={SKIN}
