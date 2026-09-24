@@ -18,6 +18,7 @@
 - [ ] 👤 **request indexing 提速为每日例行（今日 10 条 = 12 新页打头，今日主任务）** —— 收录门实锤（15/64 编入，49 页"已发现-未编"，PLAN 9/24 更正行）：GSC → URL 检查 → 逐条"请求编入索引"：① /halloween-word-search/ ② /halloween-color-by-number/ ③ /halloween-cursive-practice/ ④ /halloween/ ⑤ /graph-paper/ ⑥ /printable-graph-paper/ ⑦ /dot-grid-paper/ ⑧ /isometric-graph-paper/ ⑨ /half-inch-graph-paper/ ⑩ /name-tracing/（/1-cm-graph-paper/、/5mm-graph-paper/ 明日配额续）；此后每天 ~10 条啃 49 页池（优先支柱页 + 高量字母页 z/b/k），跑完一轮回传数字 Claude 对账；⚠️ 若报"提交索引编制请求时出现问题"= GSC 界面 Google 侧瞬时故障（与站无关，站端已巡检全 200）：等 2~5 分钟刷新重试、重进 URL 检查先跑一遍实时测试再点请求、勿连点，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
 - [ ] 👤（可选，2 分钟）CF 修复 http://www.chartglade.com/ 403：CF dash → chartglade.com → Rules → Redirect Rules → 新建：Hostname equals `www.chartglade.com` → 301 → `https://chartglade.com/${http.request.uri.path}`（保留路径）；顺手对比 tintbrew zone 的 SSL/TLS → Edge Certificates → Always Use HTTPS 状态。不修无实害
 - [ ] 🤖 **#18 支柱页下载按钮**（v1.6-predev 开发，10/05 批，复用 #17 PNG）—— 今日可开工
+- [ ] 🤖 **V1.8 sign-in sheet 族开发**（hub + 4~5 页，9/24 提前并入 10/05 批；#18 完成后开工，词证据 PLAN §2 V1.8 行 10.7K/KD4~31）
 - [ ] 🤖 tintbrew per-page OG 图（9 月下旬排期）
 
 **9/20~9/22 已完成归档**：统计"全 0"案全结案（GA 双站管道 ✅｜chartglade CF WA 活 39 visits/7d｜tintbrew WA 手动 token `5a142b1` 上线 + curl 双 URL 实勘）｜ 9/19 收录门执行（v1.6+万圣 `e0e8983` 上 main：65 页 61 测试绿、新页 3 条 200、sitemap 52→64、IndexNow 补推 12 URL 返 200）｜ MiriCanvas+竞品 sitemap 对标 → **#17 图片 SEO 5 支柱页上线 ✅**（lock 事故 `bcba67a` 复盘，"大站做法先行"入 CLAUDE.md）｜ 双站竞扫第二轮（Suncatcher/ClassWeekly/trycolors/colordesigner → 两 BENCHMARKS；#18 下载按钮 + V2.3 反向配色计算器立项）｜ #12 InkPx/Printabulls 拆解（#18 PDF 升格 10/25 正式项）｜ 9/22 docs 合并冲突裁决回填 `5e14847`（本地旧稿 × 远程 92 提交，e0e8983 核实在 main 历史无丢失）
@@ -50,10 +51,10 @@
 | 9 月下旬 | 🤖 tintbrew per-page OG 图 ｜ 🤖 chartglade #18 支柱页下载按钮（v1.6-predev 开发，10/05 批） |
 | 10/01（周四） | **tintbrew 决策点**：/mix/ 词排名 —— 有词 top 30 → 启动 V2.2 加页；全 50 外 → 转外链强度（PH 提前） |
 | 10 月第 1 周 | 👤 tintbrew 万圣分发：frosting/icing 色卡 pin 一轮 + Reddit 烘焙帖（页面已在位，只欠分发） |
-| 10/05（周一） | **chartglade 10/05 批上线**：万圣节 + V1.6（graph paper 簇 + name tracing；#13 变体段已提前上线 main `3cbf225`，剩余措辞随批收尾）= 分支合并 push main |
+| 10/05（周一） | **chartglade 10/05 批**（9/24 改版）：#18 支柱页下载按钮 + **V1.8 sign-in sheet 族**（hub + 4~5 页，用户指令提前赶 PT conference 季；万圣 + V1.6 已 9/20 提前发掉）= 分支合并 push main |
 | 10/17（周六） | **chartglade 6 周大验收**：变体词排名 → 加码矩阵 或 B 计划 |
 | 10/25（周日） | chartglade 10/25 批：感恩节页 + V1.7 公式表 2 页 + #14 数学练习 island |
-| 11 月 | chartglade V1.8 sign-in sheet 族（赶 PT conference 季） |
+| 11 月 | chartglade 11 月批：视力表 2 页小簇（V1.8 已提前至 10/05） |
 | 2027-01-31 | **双站止损线复盘**（chartglade <3K 且零词 top 30；tintbrew <5K 且零词 top 30 → 停投） |
 
 ---
