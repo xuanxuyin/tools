@@ -1,8 +1,14 @@
 ---
 /**
- * Paper-doll figure for outfit-pairing pages: a flat SVG silhouette whose
- * parts are filled from the combo data (top / pants / shoes, optional outer
- * and accent). Pure presentational — no images, no JS, prints as-is.
+ * Croquis figure for outfit-pairing pages: a flat fashion-illustration
+ * silhouette whose garment parts are filled from the combo data (top /
+ * pants / shoes, optional outer and accent). Pure presentational SVG —
+ * it renders complete without JS; scripts/outfit.ts recolors the parts
+ * marked with data-part when the visitor swaps a swatch.
+ *
+ * Limbs are drawn as round-capped strokes (fashion-flat style), the torso
+ * and garment bodies as smooth bezier silhouettes. Sleeve length and the
+ * accent's shape follow the written label so the figure matches the card.
  */
 interface FigureItem {
   role: string;
@@ -23,21 +29,199 @@ const outer = byRole('outer');
 const accent = byRole('accent');
 
 const SKIN = '#d9c2ab';
-const LINE = 'rgba(0, 0, 0, 0.16)';
+const HAIR = '#453a32';
+const LINE = 'rgba(0, 0, 0, 0.12)';
+
+const LONG_SLEEVE =
+  /(sweater|knit|hoodie|sweatshirt|turtleneck|pullover|cardigan|blouse|shirt|oxford|breton|button-down)/i;
+const longSleeves = top ? LONG_SLEEVE.test(top.label) : false;
+const accentKind = !accent
+  ? 'none'
+  : /jewelry|necklace|chain|pendant|earring/i.test(accent.label)
+    ? 'jewelry'
+    : /scarf|wrap|shawl/i.test(accent.label)
+      ? 'scarf'
+      : /bag|clutch|tote|purse|belt/i.test(accent.label)
+        ? 'bag'
+        : 'scarf';
+
+// shared limb curves — skin underneath, garment strokes drawn over them.
+// Ankles splay to x66/94 so trouser legs read as two, not one wide column.
+const ARM_L = 'M61 80 C52 98 48 130 47 160 C46 182 47 196 49 208';
+const ARM_R = 'M99 80 C108 98 112 130 113 160 C114 182 113 196 111 208';
+const HAND_L = { cx: 49, cy: 209 };
+const HAND_R = { cx: 111, cy: 209 };
+const SLEEVE_LONG_L = 'M61 80 C52 98 48 130 47 158 C46 178 47 190 48 198';
+const SLEEVE_LONG_R = 'M99 80 C108 98 112 130 113 158 C114 178 113 190 112 198';
+const SLEEVE_CAP_L = 'M61 80 C55 89 52 97 51 104';
+const SLEEVE_CAP_R = 'M99 80 C105 89 108 97 109 104';
+const LEG_L = 'M70 186 C67 240 68 300 66 352';
+const LEG_R = 'M90 186 C93 240 92 300 94 352';
+const PANT_L = 'M70 186 C67 240 68 300 66 349';
+const PANT_R = 'M90 186 C93 240 92 300 94 349';
 ---
 
 <svg
-  viewBox="0 0 120 250"
+  viewBox="0 0 160 400"
   class="outfit-figure"
   role="img"
   aria-label={`Outfit figure: ${items.map((i) => i.label).join(', ')}`}
 >
-  {/* legs (pants) */}
+  {/* ground shadow */}
+  <ellipse cx="80" cy="382" rx="30" ry="5" fill="rgba(0, 0, 0, 0.10)" />
+
+  {/* body: head, hair, neck, torso, limbs */}
+  <ellipse cx="80" cy="36" rx="14" ry="17" fill={SKIN} stroke={LINE} />
+  <path d="M65 40 C63 10 97 10 95 40 C94 28 88 24 80 24 C72 24 66 28 65 40 Z" fill={HAIR} />
+  <circle cx="80" cy="16" r="5" fill={HAIR} />
+  <path d="M74 51 L86 51 L86 62 Q80 67 74 62 Z" fill={SKIN} stroke={LINE} />
+  <path
+    d="M60 78 Q80 70 100 78 C102 104 99 128 96 152 C98 166 99 176 98 186 Q80 196 62 186 C61 176 62 166 64 152 C61 128 58 104 60 78 Z"
+    fill={SKIN}
+    stroke={LINE}
+  />
+  <path d={ARM_L} fill="none" stroke={SKIN} stroke-width="8" stroke-linecap="round" />
+  <path d={ARM_R} fill="none" stroke={SKIN} stroke-width="8" stroke-linecap="round" />
+  <circle cx={HAND_L.cx} cy={HAND_L.cy} r="4.5" fill={SKIN} />
+  <circle cx={HAND_R.cx} cy={HAND_R.cy} r="4.5" fill={SKIN} />
+  <path d={LEG_L} fill="none" stroke={SKIN} stroke-width="12" stroke-linecap="round" />
+  <path d={LEG_R} fill="none" stroke={SKIN} stroke-width="12" stroke-linecap="round" />
+
+  {/* pants: hip yoke + legs over the skin */}
   {pants && (
     <g>
       <title>{pants.label}</title>
-      <path d="M44 138 L58 138 L57 222 L45 222 Z" fill={pants.hex} stroke={LINE} />
-      <path d="M62 138 L76 138 L75 222 L63 222 Z" fill={pants.hex} stroke={LINE} />
+      <path
+        data-part="pants"
+        data-attr="fill"
+        d="M63 150 Q80 144 97 150 L99 190 Q80 199 61 190 Z"
+        fill={pants.hex}
+        stroke={LINE}
+      />
+      <path
+        data-part="pants"
+        data-attr="stroke"
+        d={PANT_L}
+        fill="none"
+        stroke={pants.hex}
+        stroke-width="15"
+        stroke-linecap="round"
+      />
+      <path
+        data-part="pants"
+        data-attr="stroke"
+        d={PANT_R}
+        fill="none"
+        stroke={pants.hex}
+        stroke-width="15"
+        stroke-linecap="round"
+      />
+    </g>
+  )}
+
+  {/* top: bodice over the torso, sleeves over the arms */}
+  {top && (
+    <g>
+      <title>{top.label}</title>
+      <path
+        data-part="top"
+        data-attr="fill"
+        d="M59 77 Q80 69 101 77 C103 104 100 130 97 158 Q80 167 63 158 C60 130 57 104 59 77 Z"
+        fill={top.hex}
+        stroke={LINE}
+      />
+      {/* scoop neckline so the bodice reads as a garment, not fused to the neck */}
+      {accentKind !== 'scarf' && (
+        <path
+          d="M69 75 Q80 86 91 75"
+          fill="none"
+          stroke={SKIN}
+          stroke-width="3.5"
+          stroke-linecap="round"
+        />
+      )}
+      {longSleeves ? (
+        <>
+          <path
+            data-part="top"
+            data-attr="stroke"
+            d={SLEEVE_LONG_L}
+            fill="none"
+            stroke={top.hex}
+            stroke-width="13"
+            stroke-linecap="round"
+          />
+          <path
+            data-part="top"
+            data-attr="stroke"
+            d={SLEEVE_LONG_R}
+            fill="none"
+            stroke={top.hex}
+            stroke-width="13"
+            stroke-linecap="round"
+          />
+        </>
+      ) : (
+        <>
+          <path
+            data-part="top"
+            data-attr="stroke"
+            d={SLEEVE_CAP_L}
+            fill="none"
+            stroke={top.hex}
+            stroke-width="13"
+            stroke-linecap="round"
+          />
+          <path
+            data-part="top"
+            data-attr="stroke"
+            d={SLEEVE_CAP_R}
+            fill="none"
+            stroke={top.hex}
+            stroke-width="13"
+            stroke-linecap="round"
+          />
+        </>
+      )}
+    </g>
+  )}
+
+  {/* outer layer: open front panels + full sleeves, hem below the top */}
+  {outer && (
+    <g>
+      <title>{outer.label}</title>
+      <path
+        data-part="outer"
+        data-attr="fill"
+        d="M58 77 Q69 70 77 76 C78 110 77 160 79 200 Q66 203 54 200 C52 192 51 182 51 170 C50 135 52 100 58 77 Z"
+        fill={outer.hex}
+        stroke={LINE}
+      />
+      <path
+        data-part="outer"
+        data-attr="fill"
+        d="M102 77 Q91 70 83 76 C82 110 83 160 81 200 Q94 203 106 200 C108 192 109 182 109 170 C110 135 108 100 102 77 Z"
+        fill={outer.hex}
+        stroke={LINE}
+      />
+      <path
+        data-part="outer"
+        data-attr="stroke"
+        d="M61 80 C53 98 50 130 49 160 C48 182 49 194 50 202"
+        fill="none"
+        stroke={outer.hex}
+        stroke-width="13"
+        stroke-linecap="round"
+      />
+      <path
+        data-part="outer"
+        data-attr="stroke"
+        d="M99 80 C107 98 110 130 111 160 C112 182 111 194 110 202"
+        fill="none"
+        stroke={outer.hex}
+        stroke-width="13"
+        stroke-linecap="round"
+      />
     </g>
   )}
 
@@ -45,48 +229,96 @@ const LINE = 'rgba(0, 0, 0, 0.16)';
   {shoes && (
     <g>
       <title>{shoes.label}</title>
-      <rect x="41" y="224" width="20" height="13" rx="6" fill={shoes.hex} stroke={LINE} />
-      <rect x="59" y="224" width="20" height="13" rx="6" fill={shoes.hex} stroke={LINE} />
+      <path
+        data-part="shoes"
+        data-attr="fill"
+        d="M56 352 Q54 368 60 371 L74 371 Q78 366 76 352 Z"
+        fill={shoes.hex}
+        stroke={LINE}
+      />
+      <path
+        data-part="shoes"
+        data-attr="fill"
+        d="M104 352 Q106 368 100 371 L86 371 Q82 366 84 352 Z"
+        fill={shoes.hex}
+        stroke={LINE}
+      />
     </g>
   )}
 
-  {/* torso (top) */}
-  {top && (
-    <g>
-      <title>{top.label}</title>
-      <path d="M40 44 L80 44 L86 138 L34 138 Z" fill={top.hex} stroke={LINE} />
-    </g>
-  )}
-
-  {/* open outer layer over the torso */}
-  {outer && (
-    <g>
-      <title>{outer.label}</title>
-      <path d="M38 44 L55 44 L50 138 L28 138 Z" fill={outer.hex} stroke={LINE} />
-      <path d="M65 44 L82 44 L92 138 L70 138 Z" fill={outer.hex} stroke={LINE} />
-    </g>
-  )}
-
-  {/* accent: scarf at the neckline + bag at the hip */}
-  {accent && (
+  {/* accent: necklace, scarf, or bag — shape follows the label */}
+  {accent && accentKind !== 'none' && (
     <g>
       <title>{accent.label}</title>
-      <rect x="48" y="40" width="24" height="9" rx="4" fill={accent.hex} stroke={LINE} />
-      <path d="M90 108 Q97 96 104 108" fill="none" stroke={accent.hex} stroke-width="3" />
-      <rect x="88" y="110" width="17" height="21" rx="4" fill={accent.hex} stroke={LINE} />
+      {accentKind === 'jewelry' && (
+        <>
+          <path
+            data-part="accent"
+            data-attr="stroke"
+            d="M69 79 Q80 94 91 79"
+            fill="none"
+            stroke={accent.hex}
+            stroke-width="2.5"
+            stroke-linecap="round"
+          />
+          <circle data-part="accent" data-attr="fill" cx="80" cy="92" r="3" fill={accent.hex} />
+        </>
+      )}
+      {accentKind === 'scarf' && (
+        <>
+          <path
+            data-part="accent"
+            data-attr="stroke"
+            d="M64 72 Q80 85 96 72"
+            fill="none"
+            stroke={accent.hex}
+            stroke-width="7"
+            stroke-linecap="round"
+          />
+          <path
+            data-part="accent"
+            data-attr="stroke"
+            d="M76 82 C74 104 74 128 76 150"
+            fill="none"
+            stroke={accent.hex}
+            stroke-width="7"
+            stroke-linecap="round"
+          />
+        </>
+      )}
+      {accentKind === 'bag' && (
+        <>
+          <path
+            data-part="accent"
+            data-attr="stroke"
+            d="M66 76 C63 102 67 126 73 150"
+            fill="none"
+            stroke={accent.hex}
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+          <rect
+            data-part="accent"
+            data-attr="fill"
+            x="66"
+            y="148"
+            width="20"
+            height="17"
+            rx="4"
+            fill={accent.hex}
+            stroke={LINE}
+          />
+        </>
+      )}
     </g>
   )}
-
-  {/* head + neck, drawn last so layers sit underneath */}
-  <circle cx="60" cy="20" r="13" fill={SKIN} stroke={LINE} />
-  <rect x="54" y="30" width="12" height="9" fill={SKIN} stroke={LINE} />
 </svg>
 
 <style>
   .outfit-figure {
     display: block;
     width: 100%;
-    max-width: 8.5rem;
+    max-width: 9.5rem;
     height: auto;
   }
 </style>

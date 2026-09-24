@@ -22,6 +22,7 @@
 - [x] 🤖 ~~tintbrew per-page OG 图~~ **✅ 9/24 完成**：33 张（24 mix Venn + 8 场景卡 + 默认卡）上线 main 自动部署，Oklab 移植 + 8 条防漂移测试，89 测试全绿（PLAN 9/24 行已档）
 - [x] 🤖 ~~扩容调研六组拉量（👤 AITDK 43 词 + 🤖 SERP 实勘 9 词）~~ **✅ 9/24 全终局**：tintbrew +90.7K（穿搭配色族 31.4K 立项 + make-X 三头 55.1K/三小 4.2K 立项 → V2.2 等 10/01 门；圣季 frosting 3.1K 死）；chartglade +27K（感恩节簇 5 页定稿 10/25 + cursive 深化 2 页 11 月 + name tracing 头词 9.9K 认领 10/25 文案车 + 格式长尾 title 裁决）。两 PLAN 9/24 行 + §2/§3 已档
 - [x] 🤖 ~~tintbrew V2.2 穿搭配色族 4 页~~ **✅ 9/24 用户指令提前开工当日上线**（main `4e9aa06` 自动部署）：/what-colors-go-with-{brown,green,purple,burgundy}/，Oklab 计算层（明度差 why-line/关系分桶/阶梯）+ SVG 人台 + print 可撕色卡 + OG 第四段，112 测试全绿；剩余 6 小词不建（克制线）；make-X 6 页仍等 10-01 门；IndexNow 补推 4 URL
+- [x] 🤖 ~~tintbrew 穿搭页交互升级（👤 两项批评："不能自己换颜色""人台很丑"）~~ **✅ 9/24 当日完成**：换色 island（点色块 → 预设/自定义色，人台+read+阶梯实时重算；`lib/pairingRead.ts` 双端共用 + parity 测试防漂移）+ 人台 croquis 重画 v2（headless Edge 截图 + AI 视觉评审两轮，v1 六缺陷全修）；114 测试全绿（PLAN 9/24 第三行）
 
 **9/20~9/22 已完成归档**：统计"全 0"案全结案（GA 双站管道 ✅｜chartglade CF WA 活 39 visits/7d｜tintbrew WA 手动 token `5a142b1` 上线 + curl 双 URL 实勘）｜ 9/19 收录门执行（v1.6+万圣 `e0e8983` 上 main：65 页 61 测试绿、新页 3 条 200、sitemap 52→64、IndexNow 补推 12 URL 返 200）｜ MiriCanvas+竞品 sitemap 对标 → **#17 图片 SEO 5 支柱页上线 ✅**（lock 事故 `bcba67a` 复盘，"大站做法先行"入 CLAUDE.md）｜ 双站竞扫第二轮（Suncatcher/ClassWeekly/trycolors/colordesigner → 两 BENCHMARKS；#18 下载按钮 + V2.3 反向配色计算器立项）｜ #12 InkPx/Printabulls 拆解（#18 PDF 升格 10/25 正式项）｜ 9/22 docs 合并冲突裁决回填 `5e14847`（本地旧稿 × 远程 92 提交，e0e8983 核实在 main 历史无丢失）
 

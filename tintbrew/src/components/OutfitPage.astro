@@ -66,7 +66,9 @@ const roleLabel: Record<string, string> = {
       <p>
         Each card shows the outfit on a figure, the exact swatches with copyable HEX codes, and a
         computed read-out: the Oklab lightness gap and hue relation between the anchor piece and
-        its strongest partner. Print this page and the cards become tear-off palette sheets.
+        its strongest partner. Click any round swatch chip to swap that piece's color — the
+        figure, the read, and the ladder recompute live. Print this page and the cards become
+        tear-off palette sheets.
       </p>
       <button type="button" class="btn no-print" onclick="window.print()">
         Print the palette cards
@@ -81,9 +83,17 @@ const roleLabel: Record<string, string> = {
             <h3>{c.name}</h3>
             <p class="combo-scene">{c.scene}</p>
             <ul class="combo-swatches">
-              {c.items.map((it) => (
-                <li>
-                  <span class="combo-swatch" style={`background:${it.hex}`} aria-hidden="true"></span>
+              {c.items.map((it, i) => (
+                <li data-index={i} data-role={it.role} data-label={it.label}>
+                  <button
+                    type="button"
+                    class="combo-swatch"
+                    data-swap
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-label={`Swap the ${roleLabel[it.role] ?? it.role} color`}
+                    style={`background:${it.hex}`}
+                  ></button>
                   <span class="combo-meta">
                     <span class="combo-role">{roleLabel[it.role] ?? it.role}</span>
                     <span class="combo-label">
@@ -196,6 +206,10 @@ const roleLabel: Record<string, string> = {
     </ul>
   </section>
 </BaseLayout>
+
+<script>
+  import '../scripts/outfit';
+</script>
 
 <style>
   .crumbs {
@@ -314,6 +328,7 @@ const roleLabel: Record<string, string> = {
     display: flex;
     align-items: center;
     gap: 0.6rem;
+    position: relative;
   }
 
   .combo-swatch {
@@ -322,6 +337,20 @@ const roleLabel: Record<string, string> = {
     flex: none;
     border-radius: 50%;
     border: 1px solid var(--border);
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.12s ease;
+  }
+
+  .combo-swatch:hover,
+  .combo-swatch[aria-expanded='true'] {
+    transform: scale(1.12);
+    border-color: var(--accent);
+  }
+
+  .combo-card > svg.outfit-figure {
+    flex: none;
+    align-self: flex-start;
   }
 
   .combo-meta {
@@ -527,6 +556,67 @@ const roleLabel: Record<string, string> = {
 </style>
 
 <style is:global>
+  /* --- island-built swap picker (JS-created DOM sits outside Astro scoping) --- */
+  .combo-picker {
+    position: absolute;
+    left: 2.4rem;
+    top: -0.45rem;
+    z-index: 6;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: center;
+    max-width: 15rem;
+    padding: 0.45rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  }
+
+  .picker-chip {
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.12s ease;
+  }
+
+  .picker-chip:hover {
+    transform: scale(1.2);
+    border-color: var(--accent);
+  }
+
+  .picker-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .picker-custom input {
+    width: 1.3rem;
+    height: 1.3rem;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+  }
+
+  .picker-custom input::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  .picker-custom input::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+  }
+
   /* --- print: outfit pages become tear-off palette cards --- */
   @media print {
     .site-header,

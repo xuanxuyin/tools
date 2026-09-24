@@ -5,10 +5,11 @@
  * bottom line, same contract as the mix/scenario families).
  */
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { outfitContents } from './outfitContent';
+import { comboReadHexes, ladderFrom } from './pairingRead';
 import { HEX_RE } from './scenarioContent';
 
 const distRoot = resolve(fileURLToPath(import.meta.url), '../../../dist');
@@ -43,6 +44,22 @@ describe('outfitContent computed layer', () => {
       expect(new Set(reads).size).toBe(reads.length);
     }
   });
+
+  it('client-side recompute path matches the server render exactly', () => {
+    // scripts/outfit.ts rebuilds reads/ladders from bare hexes via
+    // pairingRead; if this drifts from buildOutfit the live swap would
+    // show different numbers than the static shell
+    for (const v of outfitContents) {
+      for (const c of v.combos) {
+        const hexes = c.items.map((it) => ({ hex: it.hex }));
+        expect(comboReadHexes(hexes), `${v.def.slug} ${c.name}`).toBe(c.read);
+        expect(ladderFrom(c.items.map((it) => it.hex)), `${v.def.slug} ${c.name}`).toEqual(c.ladder);
+      }
+      for (const d of v.decor) {
+        expect(ladderFrom(d.colors.map((col) => col.hex))).toEqual(d.ladder);
+      }
+    }
+  });
 });
 
 describe('outfit pages in real dist markup', () => {
@@ -57,6 +74,29 @@ describe('outfit pages in real dist markup', () => {
       // print stylesheet is the tear-off payload
       expect(html).toContain('@media print');
       expect(html).toContain('window.print()');
+    }
+  });
+
+  it('swap interaction is wired: role hooks on the figure, chips are buttons, island loads', () => {
+    for (const v of outfitContents) {
+      const html = readFileSync(resolve(distRoot, `${v.def.slug}/index.html`), 'utf8');
+      // every garment part the island recolors is tagged with its role
+      for (const part of ['top', 'pants', 'shoes']) {
+        expect(html).toContain(`data-part="${part}"`);
+      }
+      // chips are real buttons with the per-item hooks apply() reads
+      const swaps = html.match(/data-swap/g) ?? [];
+      const itemCount = v.combos.reduce((n, c) => n + c.items.length, 0);
+      expect(swaps.length, `${v.def.slug} swap chips`).toBe(itemCount);
+      expect(html).toContain('data-index=');
+      expect(html).toContain('data-role=');
+      // the island script itself is bundled, referenced, and is the swap UI
+      const srcs = Array.from(html.matchAll(/src="(\/_astro\/[^"]+\.js)"/g), (m) => m[1]!);
+      const island = srcs.find((s) => {
+        const file = resolve(distRoot, s.slice(1));
+        return existsSync(file) && readFileSync(file, 'utf8').includes('combo-picker');
+      });
+      expect(island, `${v.def.slug} outfit island bundle`).toBeDefined();
     }
   });
 });
