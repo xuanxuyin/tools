@@ -19,7 +19,7 @@
 - [ ] 👤（可选，2 分钟）CF 修复 http://www.chartglade.com/ 403：CF dash → chartglade.com → Rules → Redirect Rules → 新建：Hostname equals `www.chartglade.com` → 301 → `https://chartglade.com/${http.request.uri.path}`（保留路径）；顺手对比 tintbrew zone 的 SSL/TLS → Edge Certificates → Always Use HTTPS 状态。不修无实害
 - [ ] 🤖 **#18 支柱页下载按钮**（v1.6-predev 开发，10/05 批，复用 #17 PNG）—— 今日可开工
 - [ ] 🤖 **V1.8 sign-in sheet 族开发**（hub + 4~5 页，9/24 提前并入 10/05 批；#18 完成后开工，词证据 PLAN §2 V1.8 行 10.7K/KD4~31）
-- [ ] 🤖 tintbrew per-page OG 图（9 月下旬排期）
+- [x] 🤖 ~~tintbrew per-page OG 图~~ **✅ 9/24 完成**：33 张（24 mix Venn + 8 场景卡 + 默认卡）上线 main 自动部署，Oklab 移植 + 8 条防漂移测试，89 测试全绿（PLAN 9/24 行已档）
 
 **9/20~9/22 已完成归档**：统计"全 0"案全结案（GA 双站管道 ✅｜chartglade CF WA 活 39 visits/7d｜tintbrew WA 手动 token `5a142b1` 上线 + curl 双 URL 实勘）｜ 9/19 收录门执行（v1.6+万圣 `e0e8983` 上 main：65 页 61 测试绿、新页 3 条 200、sitemap 52→64、IndexNow 补推 12 URL 返 200）｜ MiriCanvas+竞品 sitemap 对标 → **#17 图片 SEO 5 支柱页上线 ✅**（lock 事故 `bcba67a` 复盘，"大站做法先行"入 CLAUDE.md）｜ 双站竞扫第二轮（Suncatcher/ClassWeekly/trycolors/colordesigner → 两 BENCHMARKS；#18 下载按钮 + V2.3 反向配色计算器立项）｜ #12 InkPx/Printabulls 拆解（#18 PDF 升格 10/25 正式项）｜ 9/22 docs 合并冲突裁决回填 `5e14847`（本地旧稿 × 远程 92 提交，e0e8983 核实在 main 历史无丢失）
 
@@ -48,7 +48,7 @@
 
 | 日期 | 事件 |
 |---|---|
-| 9 月下旬 | 🤖 tintbrew per-page OG 图 ｜ 🤖 chartglade #18 支柱页下载按钮（v1.6-predev 开发，10/05 批） |
+| 9 月下旬 | 🤖 chartglade #18 支柱页下载按钮（v1.6-predev 开发，10/05 批）｜ tintbrew per-page OG 图 ✅ 9/24 |
 | 10/01（周四） | **tintbrew 决策点**：/mix/ 词排名 —— 有词 top 30 → 启动 V2.2 加页；全 50 外 → 转外链强度（PH 提前） |
 | 10 月第 1 周 | 👤 tintbrew 万圣分发：frosting/icing 色卡 pin 一轮 + Reddit 烘焙帖（页面已在位，只欠分发） |
 | 10/05（周一） | **chartglade 10/05 批**（9/24 改版）：#18 支柱页下载按钮 + **V1.8 sign-in sheet 族**（hub + 4~5 页，用户指令提前赶 PT conference 季；万圣 + V1.6 已 9/20 提前发掉）= 分支合并 push main |
