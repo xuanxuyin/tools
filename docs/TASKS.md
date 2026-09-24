@@ -11,10 +11,10 @@
 > 9/21 周一例行 + Pinterest 复试滑档（9/21~9/23 两站 PLAN 无记录）—— 今日补跑；若其实做过，把数字发 Claude 入档即销项。
 
 - [ ] 👤 **周一例行收尾（只剩一步）**：两站**效果 28 天环比**数字发 Claude（chartglade 顺带看查询明细有无新冒头词）。~~URL 抽查~~ ✅ ~~403 定位~~ ✅（= http://www 变体，CF 边缘 www:80 路由缺口，PLAN 9/24 行已档）
-- [ ] 👤 **chartglade Pinterest 复试**（首拦 9/11 +10 天信任期，9/21 到期已过 3 天）→ **通过当天即发首批 pin**（文案在 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md)）；仍被拦 = 再进 7 天信任期，不硬试不申诉
+- [x] 👤 ~~chartglade Pinterest 复试~~ **第三次被拦（9/24）→ 定性新域信誉门，改保温+双复试点**：链接 pin 停发；**隔天发 1 条零链接 pin 养号**（图+文案，不带本域 URL，素材在 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md)）；复试 **10/01**（与 tintbrew 决策点同日）→ 仍拦 **10/15**（信誉窗尾）；外链破口不靠它 = homeschool/Cathy Duffy follow-up（10 月第 1 周）+ Reddit
 - [ ] 👤 **AITDK 拉词三件**（9/18 起）：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣簇量级补测，按三档规则定加码或缩簇）
 - [ ] 👤 tintbrew CF WA 数据面收尾（9/20 手动 token 上线后唯一余项）：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
-- [ ] 👤（顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
+- [ ] 👤（顺延）tintbrew Pinterest **设置照常做**（账号/board/域名认领，[DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1）—— chartglade 三连拦先例：链接 pin 首测定 **10/01** 不硬试，色卡 pin 批（§3.3）改"门开则补"；**10 月第 1 周万圣分发主力 = Reddit 烘焙帖**（§3.4）
 - [ ] 👤 **request indexing 提速为每日例行（今日 10 条 = 12 新页打头，今日主任务）** —— 收录门实锤（15/64 编入，49 页"已发现-未编"，PLAN 9/24 更正行）：GSC → URL 检查 → 逐条"请求编入索引"：① /halloween-word-search/ ② /halloween-color-by-number/ ③ /halloween-cursive-practice/ ④ /halloween/ ⑤ /graph-paper/ ⑥ /printable-graph-paper/ ⑦ /dot-grid-paper/ ⑧ /isometric-graph-paper/ ⑨ /half-inch-graph-paper/ ⑩ /name-tracing/（/1-cm-graph-paper/、/5mm-graph-paper/ 明日配额续）；此后每天 ~10 条啃 49 页池（优先支柱页 + 高量字母页 z/b/k），跑完一轮回传数字 Claude 对账；⚠️ 若报"提交索引编制请求时出现问题"= GSC 界面 Google 侧瞬时故障（与站无关，站端已巡检全 200）：等 2~5 分钟刷新重试、重进 URL 检查先跑一遍实时测试再点请求、勿连点，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
 - [ ] 👤（可选，2 分钟）CF 修复 http://www.chartglade.com/ 403：CF dash → chartglade.com → Rules → Redirect Rules → 新建：Hostname equals `www.chartglade.com` → 301 → `https://chartglade.com/${http.request.uri.path}`（保留路径）；顺手对比 tintbrew zone 的 SSL/TLS → Edge Certificates → Always Use HTTPS 状态。不修无实害
 - [ ] 🤖 **#18 支柱页下载按钮**（v1.6-predev 开发，10/05 批，复用 #17 PNG）—— 今日可开工
