@@ -1,0 +1,17 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import SignInSheet from '../components/printables/SignInSheet.astro';
+import { signInSheetPages, SHEET_LAYOUTS } from '../data/signInSheets';
+
+const def = signInSheetPages.find((p) => p.slug === 'parent-teacher-conference-sign-in-sheet')!;
+const sheet = SHEET_LAYOUTS['parent-teacher-conference-sign-in-sheet'];
+---
+
+<ChartPage def={def}>
+  <SignInSheet
+    title="Parent-Teacher Conference Sign-In Sheet"
+    metaFields={sheet.metaFields}
+    columns={sheet.columns}
+    rows={sheet.rows}
+  />
+</ChartPage>

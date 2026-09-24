@@ -1,0 +1,17 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import SignInSheet from '../components/printables/SignInSheet.astro';
+import { signInSheetPages, SHEET_LAYOUTS } from '../data/signInSheets';
+
+const def = signInSheetPages.find((p) => p.slug === 'volunteer-sign-in-sheet')!;
+const sheet = SHEET_LAYOUTS['volunteer-sign-in-sheet'];
+---
+
+<ChartPage def={def}>
+  <SignInSheet
+    title="Volunteer Sign-In Log"
+    metaFields={sheet.metaFields}
+    columns={sheet.columns}
+    rows={sheet.rows}
+  />
+</ChartPage>

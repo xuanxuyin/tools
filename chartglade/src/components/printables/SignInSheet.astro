@@ -1,0 +1,34 @@
+---
+/**
+ * One component for every sign-in sheet flavor (V1.8): fill-in header
+ * fields (teacher / date / room), then a blank row-per-visitor table with
+ * cells tall enough for adult handwriting. Layout config and copy live in
+ * data/signInSheets.ts; this file only renders.
+ */
+interface Props {
+  title: string;
+  metaFields: string[];
+  columns: string[];
+  rows: number;
+  dense?: boolean;
+}
+
+const { title, metaFields, columns, rows, dense = false } = Astro.props;
+---
+
+<p class="sheet-title">{title}</p>
+<div class="signin-meta">
+  {metaFields.map((f) => (
+    <span class="signin-meta-field">{f}<span class="write-line" aria-hidden="true"></span></span>
+  ))}
+</div>
+<table class:list={['chart-table', 'signin', { dense }]}>
+  <thead>
+    <tr>{columns.map((c) => <th scope="col">{c}</th>)}</tr>
+  </thead>
+  <tbody>
+    {Array.from({ length: rows }).map(() => (
+      <tr>{columns.map(() => <td class="fill-in"></td>)}</tr>
+    ))}
+  </tbody>
+</table>

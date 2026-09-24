@@ -1,0 +1,77 @@
+---
+/**
+ * Sign-in sheets hub (V1.8) — cards for the five teacher-scene variants.
+ * PT-conference season (mid-fall) is this cluster's main traffic window.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+import { signInSheetPages } from '../../data/signInSheets';
+
+const BLURBS: Record<string, string> = {
+  'sign-in-sheet': 'Name, time in, time out, signature — the everyday template for tardy check-in, meetings and visitors.',
+  'open-house-sign-in-sheet': 'Parent, student, email and phone — build your class contact list on meet-the-teacher night.',
+  'parent-teacher-conference-sign-in-sheet': 'Time slots, parents, students and signatures — conference night kept in order.',
+  'field-trip-sign-in-sheet': 'A class roster with emergency contacts and medication notes that rides the clipboard.',
+  'volunteer-sign-in-sheet': 'Date, times and total hours — the log that turns a year of helping into a reportable number.',
+};
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Sign-In Sheets', item: `${SITE.url}/sign-in-sheets/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Sign-In Sheets — Free Printable Classroom Templates | ChartGlade"
+  description="Free printable sign-in sheets for classrooms — open house, parent-teacher conferences, field trips, volunteer hours and the plain template. One letter page, no sign-up."
+  path="/sign-in-sheets"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Sign-In Sheets</span>
+  </nav>
+
+  <section class="hero">
+    <h1>Sign-In Sheets</h1>
+    <p class="lead">
+      Five classroom sign-in sheets that print straight from the browser onto letter paper — the
+      plain template, open house, conferences, field trips and volunteer hours. No accounts, no
+      email wall: the sheet you see is the sheet that prints.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="card-grid">
+      {signInSheetPages.map((p) => (
+        <a class="card" href={`/${p.slug}/`}>
+          <h2>{p.h1}</h2>
+          <p>{BLURBS[p.slug]}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="prose section">
+    <h2>Which sheet do you need?</h2>
+    <p>
+      The plain template covers the everyday cases — tardy check-in, parent visits, tutoring logs —
+      with the classic four columns: name, time in, time out, signature. The event sheets earn
+      their own pages because their columns differ where it matters: open house wants email and
+      phone to build the class contact list, conference night runs on time slots, a field trip
+      roster carries emergency contacts and medication notes, and the volunteer log counts hours
+      all year.
+    </p>
+    <p>
+      They also run on the school calendar. Open house is a start-of-year sheet; conference nights
+      land mid-fall and again in spring; field trips cluster in spring; the volunteer log just runs.
+      Print what the season needs — each sheet is one letter page, portrait, ready for a clipboard.
+    </p>
+  </section>
+</BaseLayout>
