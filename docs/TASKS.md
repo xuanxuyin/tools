@@ -6,20 +6,20 @@
 
 ---
 
-## 今天 · 2026-09-20（周日）
+## 今天 · 2026-09-24（周四）
 
-- [x] 👤 **统计"全 0"裁决收官 —— 全部结案（9/20）**：GA 双站无恙（Realtime 自测各见 1 ✅）｜ chartglade CF WA 活（39 visits/7d + 真浏览器探针在位；早间 curl 判断流作废 = CF 注入按指纹过滤）｜ tintbrew CF WA 真死 → **当日修复上线**：token 进 consts `5a142b1` 部署，线上 curl 双 URL 实勘在位（零新代码，BaseLayout 预埋块启用）；数据面收尾 = 👤 访问 tintbrew 一页 → dashboard 刷新看曲线冒头（几分钟内）
-- [x] ⏰ **9/19 收录门已执行（9/20，用户授权"你干活吧"）**：👤 报的全站视图 14/41 判过期快照（14+41=55≠52 非口径 + 旁证全绿，前科三次）→ 证据覆盖执行：docs `ebdc70a` + v1.6-predev 合并 `e0e8983` 上 main（65 页 build + 61 测试绿，#13 去重核对过，npm ci 模拟 CI 过），新页抽查 3 条全 200，sitemap 52→64（graph paper 7 + name tracing 1 + 万圣 4），**IndexNow 补推 12 URL 返 200**；正式 sitemap 口径 👤 周一例行追认。详见 chartglade PLAN 9/20 行
+> 9/21 周一例行 + Pinterest 复试滑档（9/21~9/23 两站 PLAN 无记录）—— 今日补跑；若其实做过，把数字发 Claude 入档即销项。
 
-**9/18 存量**（已完成两条在下，其余顺延）：
-
-- [x] 🤖 **MiriCanvas + 竞品 sitemap 对标拆解 + #17 图片 SEO 当日上线**（新建 [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md)；Superstar 930 页 21K 图声明 = 图片 SEO 实锤 → 5 支柱页内容图**已上线验证 ✅**：push 后 lock 未同步致 CF 构建连败，`bcba67a` 补 lock 修复，5 PNG + 5 页 figure 全 200；新纪律"大站做法先行"入 CLAUDE.md）
-- [x] 🤖 **同类站竞扫第二轮（双站，用户指令）**：Suncatcher（一页 16 变体 + PDF/PNG 下载行业标配）/ ClassWeekly（9,101 URL 结构机器）→ [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md) §3/§4；trycolors / colordesigner → 新建 [tintbrew/BENCHMARKS.md](./tintbrew/BENCHMARKS.md)。产出：chartglade **#18 支柱页下载按钮**（10/05 批，复用 #17 PNG）+ Teaching Calendar hub（11 月候选）；tintbrew V2.3 **反向配色计算器升首位**（10-01 门后）
-- [ ] 👤 **AITDK 拉词三件**：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣节簇量级补测，按三档规则定加码或缩簇）
+- [ ] 👤 **周一例行补跑（滑档 3 天）**：两站 GSC —— ① chartglade 索引覆盖「网页索引编制」sitemap 视图（9/20 v1.6+万圣 12 页上 main 后 sitemap 52→64，读数阶跃属计划内，读数带「上次更新」日期）② 效果 28 天环比 ③ tintbrew 同款两样。数字发 Claude 入档
+- [ ] 👤 **chartglade Pinterest 复试**（首拦 9/11 +10 天信任期，9/21 到期已过 3 天）→ **通过当天即发首批 pin**（文案在 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md)）；仍被拦 = 再进 7 天信任期，不硬试不申诉
+- [ ] 👤 **AITDK 拉词三件**（9/18 起）：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣簇量级补测，按三档规则定加码或缩簇）
+- [ ] 👤 tintbrew CF WA 数据面收尾（9/20 手动 token 上线后唯一余项）：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
 - [ ] 👤（顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
-- [ ] 👤（不强制）request indexing 续批：**9/20 起配额优先 12 张新上页**（halloween 3 页 + /halloween/ hub + graph-paper hub + name tracing 打头——Google 侧加速，IndexNow 只管 Bing 系），余下字母页 g/h/l 顺延其后（累计 14/53）
-- [x] 🤖 **#12 InkPx/Printabulls 对标拆解完成**（→ [chartglade/BENCHMARKS.md](./chartglade/BENCHMARKS.md) §5/§6：词族胜负规律 = 集合型墙赢/参考图表型深读赢；图片密度标尺 38.7 图/页；**#18 PDF 升格 10/25 正式项**；两站在 cursive/sight words 全缺位。10/05 批维持零新增）
-- ⏰ **明天 9/21（周一）**：👤 周一例行两站 GSC（索引覆盖 sitemap 视图 + 效果 28 天环比 —— 收录数没报的话同页顺手一起）｜ **chartglade Pinterest 复试**（首拦 9/11 +10 天信任期到）→ **通过当天即发首批 pin**（文案在 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md)）
+- [ ] 👤（不强制）request indexing 续批：**配额优先 12 张新上页**（halloween 3 页 + /halloween/ hub + graph-paper hub + name tracing 打头——Google 侧加速，IndexNow 只管 Bing 系），余下字母页 g/h/l 顺延其后（累计 14/53）
+- [ ] 🤖 **#18 支柱页下载按钮**（v1.6-predev 开发，10/05 批，复用 #17 PNG）—— 今日可开工
+- [ ] 🤖 tintbrew per-page OG 图（9 月下旬排期）
+
+**9/20~9/22 已完成归档**：统计"全 0"案全结案（GA 双站管道 ✅｜chartglade CF WA 活 39 visits/7d｜tintbrew WA 手动 token `5a142b1` 上线 + curl 双 URL 实勘）｜ 9/19 收录门执行（v1.6+万圣 `e0e8983` 上 main：65 页 61 测试绿、新页 3 条 200、sitemap 52→64、IndexNow 补推 12 URL 返 200）｜ MiriCanvas+竞品 sitemap 对标 → **#17 图片 SEO 5 支柱页上线 ✅**（lock 事故 `bcba67a` 复盘，"大站做法先行"入 CLAUDE.md）｜ 双站竞扫第二轮（Suncatcher/ClassWeekly/trycolors/colordesigner → 两 BENCHMARKS；#18 下载按钮 + V2.3 反向配色计算器立项）｜ #12 InkPx/Printabulls 拆解（#18 PDF 升格 10/25 正式项）｜ 9/22 docs 合并冲突裁决回填 `5e14847`（本地旧稿 × 远程 92 提交，e0e8983 核实在 main 历史无丢失）
 
 **9/17 已完成归档**：👤 chartglade 外链首发 3/3 收工（homeschool.com + Cathy Duffy pitch ×2 提交，10 月第 1 周零回音各补 follow-up ｜ Reddit r/Handwriting 答帖已发）｜ 🤖 Peerlist launch 付费门定论更正（Verify Identity 收费，workplace 不解锁 → 搁置）
 
@@ -38,7 +38,7 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
-| （9/18 任务已上移"今天"；本周无余项） | | |
+| （本周任务全在"今天"栏；下个节点 10/01 tintbrew 决策） | | |
 
 ---
 
@@ -46,7 +46,7 @@
 
 | 日期 | 事件 |
 |---|---|
-| 9 月下旬 | 🤖 #12 InkPx/Printabulls 对标拆解 ｜ 🤖 tintbrew per-page OG 图 ｜ 🤖 chartglade #18 支柱页下载按钮（v1.6-predev 开发，10/05 批） |
+| 9 月下旬 | 🤖 tintbrew per-page OG 图 ｜ 🤖 chartglade #18 支柱页下载按钮（v1.6-predev 开发，10/05 批） |
 | 10/01（周四） | **tintbrew 决策点**：/mix/ 词排名 —— 有词 top 30 → 启动 V2.2 加页；全 50 外 → 转外链强度（PH 提前） |
 | 10 月第 1 周 | 👤 tintbrew 万圣分发：frosting/icing 色卡 pin 一轮 + Reddit 烘焙帖（页面已在位，只欠分发） |
 | 10/05（周一） | **chartglade 10/05 批上线**：万圣节 + V1.6（graph paper 簇 + name tracing；#13 变体段已提前上线 main `3cbf225`，剩余措辞随批收尾）= 分支合并 push main |
