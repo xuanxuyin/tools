@@ -86,7 +86,12 @@ const roleLabel: Record<string, string> = {
                   <span class="combo-swatch" style={`background:${it.hex}`} aria-hidden="true"></span>
                   <span class="combo-meta">
                     <span class="combo-role">{roleLabel[it.role] ?? it.role}</span>
-                    <span class="combo-label">{it.label} · <em>{it.name}</em></span>
+                    <span class="combo-label">
+                      {it.label}
+                      {!it.label.toLowerCase().includes(it.name.toLowerCase()) && (
+                        <em> · {it.name}</em>
+                      )}
+                    </span>
                     <button
                       type="button"
                       class="btn btn-copy combo-hex"

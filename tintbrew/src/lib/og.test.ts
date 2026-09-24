@@ -19,6 +19,9 @@ import { mixHex } from '../../scripts/og-color.mjs';
 
 const distRoot = resolve(fileURLToPath(import.meta.url), '../../../dist');
 
+// PAIRS arrives untyped from the .mjs snapshot; key it loosely for lookups.
+const OG_COLOR_MAP: Record<string, string> = OG_COLORS;
+
 describe('og-data.mjs snapshot parity', () => {
   it('colors match data/colors.ts', () => {
     expect(OG_COLORS).toEqual(Object.fromEntries(colors.map((c) => [c.id, c.hex])));
@@ -56,9 +59,9 @@ describe('og-color.mjs math parity', () => {
   it('port matches the engine for every pair', () => {
     for (const [a, b] of PAIRS) {
       const engine = rgbToHex(
-        oklabMix([hexToRgb(OG_COLORS[a]), hexToRgb(OG_COLORS[b])], [1, 1]),
+        oklabMix([hexToRgb(OG_COLOR_MAP[a]!), hexToRgb(OG_COLOR_MAP[b]!)], [1, 1]),
       );
-      expect(mixHex(OG_COLORS[a], OG_COLORS[b]), `${a}+${b}`).toBe(engine);
+      expect(mixHex(OG_COLOR_MAP[a]!, OG_COLOR_MAP[b]!), `${a}+${b}`).toBe(engine);
     }
   });
 
