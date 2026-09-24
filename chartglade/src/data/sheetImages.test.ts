@@ -52,3 +52,29 @@ describe('sheetImage (Google Images channel)', () => {
     });
   }
 });
+
+/**
+ * The Download PNG button (PLAN #18): the toolbar anchor is driven purely by
+ * sheetImage, so these dist guards only run after a build (their order in the
+ * release flow is build → vitest). They pin the mobile path — no Ctrl+P on a
+ * phone, download-then-print is the real journey.
+ */
+const DIST = resolve(ROOT, 'dist');
+const pillarDistReady = withImages.every((d) => existsSync(resolve(DIST, d.slug, 'index.html')));
+
+describe.skipIf(!pillarDistReady)('Download PNG button (PLAN #18)', () => {
+  for (const def of withImages) {
+    it(`${def.slug}: built page exposes its sheet PNG as a download`, () => {
+      const html = readFileSync(resolve(DIST, def.slug, 'index.html'), 'utf8');
+      expect(
+        new RegExp(`href="${def.sheetImage!.src.replace(/\//g, '\\/')}"[^>]*\\bdownload\\b`).test(html),
+        'toolbar must carry <a href="…" download> for the sheet PNG',
+      ).toBe(true);
+    });
+  }
+
+  it('a page without a sheet image carries no download anchor', () => {
+    const html = readFileSync(resolve(DIST, 'cursive', 'a', 'index.html'), 'utf8');
+    expect(html).not.toContain('<a class="btn" href="/images/');
+  });
+});

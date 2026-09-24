@@ -29,7 +29,11 @@ const pinterest = import.meta.env.PUBLIC_PINTEREST_VERIFICATION ?? SITE.pinteres
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-{noindex && <meta name="robots" content="noindex, nofollow" />}
+{noindex ? (
+  <meta name="robots" content="noindex, nofollow" />
+) : (
+  <meta name="robots" content="max-image-preview:large" />
+)}
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={SITE.name} />

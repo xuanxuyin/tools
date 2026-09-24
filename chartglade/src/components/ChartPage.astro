@@ -82,6 +82,9 @@ if (def.interactive) {
     <div class="printable-toolbar">
       <span class="print-note">{def.printNote}</span>
       <button type="button" class="btn" data-print>Print</button>
+      {def.sheetImage && (
+        <a class="btn" href={def.sheetImage.src} download>Download PNG</a>
+      )}
     </div>
     <div class:list={['printable', { landscape: def.landscape }]}>
       <slot />
