@@ -1,9 +1,10 @@
 ---
 import { SITE } from '../consts';
 import { scenarioContents } from '../lib/scenarioContent';
+import { outfitContents } from '../lib/outfitContent';
 
-// V2.1 scenario pages — data-driven so later waves appear here automatically.
-const guides = scenarioContents.map((s) => s.def);
+// V2.1 scenario + V2.2 pairing pages — data-driven so later waves appear here automatically.
+const guides = [...scenarioContents, ...outfitContents].map((s) => s.def);
 
 // Popular mixes — varied anchor text on purpose (internal-link diversity).
 const popularMixes = [

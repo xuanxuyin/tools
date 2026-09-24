@@ -57,3 +57,12 @@ export const SCENARIOS = [
   { slug: 'icing-color-chart', swatches: ['#fffbf4', '#d91d3c'], resultHex: '#fed5ce' },
   { slug: 'buttercream-color-chart', swatches: ['#fff2d8', '#1554c0'], resultHex: '#fdcdb8' },
 ];
+
+/** 4 outfit-pairing pages (V2.2): the anchor color + the first combo's
+ *  partners — mirrors outfitContents[].heroStrip. */
+export const OUTFITS = [
+  { slug: 'what-colors-go-with-brown', swatches: ['#6b4423', '#f5f2ec', '#5b3a2e'] },
+  { slug: 'what-colors-go-with-green', swatches: ['#386641', '#f4f2ec', '#b98f56'] },
+  { slug: 'what-colors-go-with-purple', swatches: ['#6f4a8c', '#f4f2ec', '#a7a9b0'] },
+  { slug: 'what-colors-go-with-burgundy', swatches: ['#6d2a35', '#ece3d2', '#5b3a2e'] },
+];

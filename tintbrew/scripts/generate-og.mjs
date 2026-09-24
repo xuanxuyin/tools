@@ -17,7 +17,7 @@ import { PNG } from 'pngjs';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
-import { COLORS, PAIRS, SCENARIOS } from './og-data.mjs';
+import { COLORS, PAIRS, SCENARIOS, OUTFITS } from './og-data.mjs';
 import { mixHex } from './og-color.mjs';
 
 const W = 1200;
@@ -229,4 +229,26 @@ for (const s of SCENARIOS) {
   wordmark(set, 545, 8, 0.75);
 
   write(png, `og/${s.slug}.png`);
+}
+
+// --- 4. outfit-pairing pages: big anchor circle + partner fan ---------------
+
+for (const o of OUTFITS) {
+  const { png, set } = newCard();
+
+  const [anchor, ...partners] = o.swatches;
+  circle(set, 280, 250, 130, hex(anchor), 0.95);
+  hexLabel(set, anchor, 280, 396, 4, 0.82);
+
+  // partners fanned right, centered around x ≈ 810
+  const cx0 = 810 - ((partners.length - 1) * 200) / 2;
+  partners.forEach((p, i) => {
+    const cx = cx0 + i * 200;
+    circle(set, cx, 250, 90, hex(p), 0.92);
+    hexLabel(set, p, cx, 356, 4, 0.82);
+  });
+
+  wordmark(set, 545, 8, 0.75);
+
+  write(png, `og/${o.slug}.png`);
 }

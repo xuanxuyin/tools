@@ -1,0 +1,92 @@
+---
+/**
+ * Paper-doll figure for outfit-pairing pages: a flat SVG silhouette whose
+ * parts are filled from the combo data (top / pants / shoes, optional outer
+ * and accent). Pure presentational — no images, no JS, prints as-is.
+ */
+interface FigureItem {
+  role: string;
+  label: string;
+  hex: string;
+}
+
+interface Props {
+  items: FigureItem[];
+}
+
+const { items } = Astro.props;
+const byRole = (r: string) => items.find((i) => i.role === r);
+const top = byRole('top');
+const pants = byRole('pants');
+const shoes = byRole('shoes');
+const outer = byRole('outer');
+const accent = byRole('accent');
+
+const SKIN = '#d9c2ab';
+const LINE = 'rgba(0, 0, 0, 0.16)';
+---
+
+<svg
+  viewBox="0 0 120 250"
+  class="outfit-figure"
+  role="img"
+  aria-label={`Outfit figure: ${items.map((i) => i.label).join(', ')}`}
+>
+  {/* legs (pants) */}
+  {pants && (
+    <g>
+      <title>{pants.label}</title>
+      <path d="M44 138 L58 138 L57 222 L45 222 Z" fill={pants.hex} stroke={LINE} />
+      <path d="M62 138 L76 138 L75 222 L63 222 Z" fill={pants.hex} stroke={LINE} />
+    </g>
+  )}
+
+  {/* shoes */}
+  {shoes && (
+    <g>
+      <title>{shoes.label}</title>
+      <rect x="41" y="224" width="20" height="13" rx="6" fill={shoes.hex} stroke={LINE} />
+      <rect x="59" y="224" width="20" height="13" rx="6" fill={shoes.hex} stroke={LINE} />
+    </g>
+  )}
+
+  {/* torso (top) */}
+  {top && (
+    <g>
+      <title>{top.label}</title>
+      <path d="M40 44 L80 44 L86 138 L34 138 Z" fill={top.hex} stroke={LINE} />
+    </g>
+  )}
+
+  {/* open outer layer over the torso */}
+  {outer && (
+    <g>
+      <title>{outer.label}</title>
+      <path d="M38 44 L55 44 L50 138 L28 138 Z" fill={outer.hex} stroke={LINE} />
+      <path d="M65 44 L82 44 L92 138 L70 138 Z" fill={outer.hex} stroke={LINE} />
+    </g>
+  )}
+
+  {/* accent: scarf at the neckline + bag at the hip */}
+  {accent && (
+    <g>
+      <title>{accent.label}</title>
+      <rect x="48" y="40" width="24" height="9" rx="4" fill={accent.hex} stroke={LINE} />
+      <path d="M90 108 Q97 96 104 108" fill="none" stroke={accent.hex} stroke-width="3" />
+      <rect x="88" y="110" width="17" height="21" rx="4" fill={accent.hex} stroke={LINE} />
+    </g>
+  )}
+
+  {/* head + neck, drawn last so layers sit underneath */}
+  <circle cx="60" cy="20" r="13" fill={SKIN} stroke={LINE} />
+  <rect x="54" y="30" width="12" height="9" fill={SKIN} stroke={LINE} />
+</svg>
+
+<style>
+  .outfit-figure {
+    display: block;
+    width: 100%;
+    max-width: 8.5rem;
+    height: auto;
+  }
+</style>

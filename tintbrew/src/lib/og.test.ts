@@ -13,7 +13,8 @@ import { colors } from '../data/colors';
 import { mixes } from '../data/mixes';
 import { hexToRgb, oklabMix, rgbToHex } from './color';
 import { scenarioContents } from './scenarioContent';
-import { COLORS as OG_COLORS, PAIRS, SCENARIOS } from '../../scripts/og-data.mjs';
+import { outfitContents } from './outfitContent';
+import { COLORS as OG_COLORS, PAIRS, SCENARIOS, OUTFITS } from '../../scripts/og-data.mjs';
 import { mixHex } from '../../scripts/og-color.mjs';
 
 const distRoot = resolve(fileURLToPath(import.meta.url), '../../../dist');
@@ -39,6 +40,14 @@ describe('og-data.mjs snapshot parity', () => {
         swatches: c.def.mixerColors,
         resultHex: c.heroHex,
       });
+    }
+  });
+
+  it('outfit cards match computed hero strips', () => {
+    expect(OUTFITS).toHaveLength(outfitContents.length);
+    for (let i = 0; i < outfitContents.length; i++) {
+      const o = outfitContents[i]!;
+      expect(OUTFITS[i]).toEqual({ slug: o.def.slug, swatches: o.heroStrip });
     }
   });
 });
@@ -79,6 +88,14 @@ describe('og wiring (real dist markup)', () => {
       const html = readFileSync(resolve(distRoot, `${c.def.slug}/index.html`), 'utf8');
       expect(ogImageOf(html), c.def.slug).toBe(`https://tintbrew.com/og/${c.def.slug}.png`);
       expect(existsSync(resolve(distRoot, `og/${c.def.slug}.png`)), c.def.slug).toBe(true);
+    }
+  });
+
+  it('every outfit page points at its own card and the file exists', () => {
+    for (const o of outfitContents) {
+      const html = readFileSync(resolve(distRoot, `${o.def.slug}/index.html`), 'utf8');
+      expect(ogImageOf(html), o.def.slug).toBe(`https://tintbrew.com/og/${o.def.slug}.png`);
+      expect(existsSync(resolve(distRoot, `og/${o.def.slug}.png`)), o.def.slug).toBe(true);
     }
   });
 
