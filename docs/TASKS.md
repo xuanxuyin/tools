@@ -10,12 +10,13 @@
 
 > 9/21 周一例行 + Pinterest 复试滑档（9/21~9/23 两站 PLAN 无记录）—— 今日补跑；若其实做过，把数字发 Claude 入档即销项。
 
-- [ ] 👤 **周一例行收尾（索引面 9/24 已录 → 两 PLAN 当日行；剩三小步，≤3 分钟）**：① chartglade **URL 检查抽查 2 条**（/cursive/a/ + /halloween-word-search/）→ "已编入" 即坐实 15/52 为镜像伪读（第 4 次）② 点开 **403 原因行** → 那条 URL 发 Claude（站端已巡检 64/64 全 200，零 403 = 非站问题，只差定位）③ 两站**效果 28 天环比**数字发 Claude；sitemap 视图读数下周一例行再补
+- [ ] 👤 **周一例行收尾（只剩一步）**：两站**效果 28 天环比**数字发 Claude（chartglade 顺带看查询明细有无新冒头词）。~~URL 抽查~~ ✅ ~~403 定位~~ ✅（= http://www 变体，CF 边缘 www:80 路由缺口，PLAN 9/24 行已档）
 - [ ] 👤 **chartglade Pinterest 复试**（首拦 9/11 +10 天信任期，9/21 到期已过 3 天）→ **通过当天即发首批 pin**（文案在 [chartglade/DISTRIBUTION.md](./chartglade/DISTRIBUTION.md)）；仍被拦 = 再进 7 天信任期，不硬试不申诉
 - [ ] 👤 **AITDK 拉词三件**（9/18 起）：① fondant 族（how to make brown fondant 等，≥500/月 才进 tintbrew 烘焙簇扩展）② states require cursive（chartglade PLAN #16 词记录）③ **halloween 三词**（word search / color by number / cursive —— 万圣簇量级补测，按三档规则定加码或缩簇）
 - [ ] 👤 tintbrew CF WA 数据面收尾（9/20 手动 token 上线后唯一余项）：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
 - [ ] 👤（顺延）tintbrew Pinterest 设置 + 首批 5 个色卡 pin → [tintbrew/DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1 / §3.3
-- [ ] 👤（不强制）request indexing 续批：**配额优先 12 张新上页**（halloween 3 页 + /halloween/ hub + graph-paper hub + name tracing 打头——Google 侧加速，IndexNow 只管 Bing 系），余下字母页 g/h/l 顺延其后（累计 14/53）
+- [ ] 👤 **request indexing 提速为每日例行（今日 10 条 = 12 新页打头，今日主任务）** —— 收录门实锤（15/64 编入，49 页"已发现-未编"，PLAN 9/24 更正行）：GSC → URL 检查 → 逐条"请求编入索引"：① /halloween-word-search/ ② /halloween-color-by-number/ ③ /halloween-cursive-practice/ ④ /halloween/ ⑤ /graph-paper/ ⑥ /printable-graph-paper/ ⑦ /dot-grid-paper/ ⑧ /isometric-graph-paper/ ⑨ /half-inch-graph-paper/ ⑩ /name-tracing/（/1-cm-graph-paper/、/5mm-graph-paper/ 明日配额续）；此后每天 ~10 条啃 49 页池（优先支柱页 + 高量字母页 z/b/k），跑完一轮回传数字 Claude 对账
+- [ ] 👤（可选，2 分钟）CF 修复 http://www.chartglade.com/ 403：CF dash → chartglade.com → Rules → Redirect Rules → 新建：Hostname equals `www.chartglade.com` → 301 → `https://chartglade.com/${http.request.uri.path}`（保留路径）；顺手对比 tintbrew zone 的 SSL/TLS → Edge Certificates → Always Use HTTPS 状态。不修无实害
 - [ ] 🤖 **#18 支柱页下载按钮**（v1.6-predev 开发，10/05 批，复用 #17 PNG）—— 今日可开工
 - [ ] 🤖 tintbrew per-page OG 图（9 月下旬排期）
 
