@@ -2,9 +2,19 @@
 import { SITE } from '../consts';
 import { scenarioContents } from '../lib/scenarioContent';
 import { outfitContents } from '../lib/outfitContent';
+import { BEAD_CATEGORY_SEO, BEAD_HUB_SEO } from '../data/beadSeo';
 
 // V2.1 scenario + V2.2 pairing pages — data-driven so later waves appear here automatically.
 const guides = [...scenarioContents, ...outfitContents].map((s) => s.def);
+
+// V2.2 bead family — landing pages only; the 46 detail pages hang off these.
+const beadLinks = [
+  BEAD_HUB_SEO,
+  BEAD_CATEGORY_SEO.animals!,
+  BEAD_CATEGORY_SEO.food!,
+  BEAD_CATEGORY_SEO.christmas!,
+  BEAD_CATEGORY_SEO.easy!,
+];
 
 // Popular mixes — varied anchor text on purpose (internal-link diversity).
 const popularMixes = [
@@ -39,6 +49,12 @@ const year = new Date().getFullYear();
         <ul>
           {guides.map((g) => <li><a href={`/${g.slug}`}>{g.h1}</a></li>)}
           <li><a href="/color-guides">All guides</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Bead patterns</h3>
+        <ul>
+          {beadLinks.map((b) => <li><a href={b.path}>{b.h1}</a></li>)}
         </ul>
       </div>
       <div>

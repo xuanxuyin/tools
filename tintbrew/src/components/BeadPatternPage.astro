@@ -1,0 +1,361 @@
+---
+/**
+ * Shared template for every bead pattern detail page. Same deal as the rest
+ * of the site: the reference figure, the zone-divided template, the bead
+ * list and the FAQ are all complete server-rendered; scripts/bead.ts only
+ * adds the recolor play on top.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BeadFigure from './BeadFigure.astro';
+import {
+  CATEGORY_LABEL,
+  categoryCounts,
+  patternFaqs,
+  patternJsonLd,
+  patternsByCategory,
+  totalPatternCount,
+  type PatternView,
+} from '../lib/beadContent';
+
+interface Props {
+  view: PatternView;
+}
+
+const { view } = Astro.props;
+const { def } = view;
+const faqs = patternFaqs(view);
+const related = patternsByCategory(def.category)
+  .filter((p) => p.def.slug !== def.slug)
+  .slice(0, 4);
+const zoneTotal = view.regions.length;
+---
+
+<BaseLayout
+  title={`${def.name} Perler Bead Pattern — Free, Recolorable & Printable`}
+  description={`${def.tagline} ${view.totalBeads} beads, ${zoneTotal} color zones, about ${view.widthIn} wide. Recolor every zone with real bead colors, then print the free template.`}
+  path={view.url.replace(/\/$/, '')}
+  jsonLd={patternJsonLd(view)}
+>
+  <section class="hero">
+    <p class="crumbs">
+      <a href="/">Home</a> <span aria-hidden="true">›</span>
+      <a href="/perler-bead-patterns/">Perler Bead Patterns</a>
+      <span aria-hidden="true">›</span>
+      <a href={`../`}>{CATEGORY_LABEL[def.category]}</a>
+      <span aria-hidden="true">›</span>
+      <span>{def.name}</span>
+    </p>
+    <h1>{def.name} Perler Bead Pattern</h1>
+    <p class="lead">{def.blurb}</p>
+    <p class="stat-row" aria-label="Pattern facts">
+      <span class="stat"><strong>{view.totalBeads}</strong> beads</span>
+      <span class="stat"><strong>{view.widthIn} × {view.heightIn}</strong> finished</span>
+      <span class="stat"><strong>{zoneTotal}</strong> color zones</span>
+      <span class="stat"><strong>{def.difficulty}</strong> level</span>
+    </p>
+  </section>
+
+  <section class="studio" data-bead-studio data-pattern={def.slug}>
+    <div class="studio-grid">
+      <figure class="fig-card">
+        <figcaption>Reference</figcaption>
+        <BeadFigure view={view} mode="reference" />
+      </figure>
+
+      <figure class="fig-card fig-blank">
+        <figcaption>Color it yourself <span class="hint">tap any zone</span></figcaption>
+        <BeadFigure view={view} mode="blank" />
+      </figure>
+    </div>
+
+    <div class="studio-side">
+      <h2>Pick a zone, pick a bead</h2>
+      <p class="side-note">
+        Every zone below is a separate area of the design. Tap one (or tap the template
+        itself), then choose from the 32 standard bead colors — or a custom color, snapped
+        to the bead you'd actually buy.
+      </p>
+      <ul class="zone-list">
+        {view.regions.map((r) => (
+          <li>
+            <button
+              type="button"
+              class="zone-chip"
+              data-zone={r.key}
+              data-hex={r.hex}
+              data-default-hex={r.hex}
+              data-bead-id={r.beadId}
+              data-count={r.count}
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              <span class="zone-swatch" style={`background:${r.hex}`}></span>
+              <span class="zone-meta">
+                <span class="zone-label">{r.label}</span>
+                <span class="zone-bead">{r.beadName}</span>
+              </span>
+              <span class="zone-count">×{r.count}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div class="studio-actions no-print">
+        <button type="button" class="btn" data-reset>Reset to reference</button>
+        <button type="button" class="btn" data-print>Print template</button>
+      </div>
+    </div>
+
+    <div class="studio-list">
+      <h2>Beads you'll need</h2>
+      <p class="side-note">Updates live as you recolor. Counts assume single-sided ironing.</p>
+      <ul class="bead-list" data-bead-list>
+        {view.beadList.map((e) => (
+          <li>
+            <span class="list-swatch" style={`background:${e.bead.hex}`}></span>
+            <span>{e.bead.name} ×{e.count}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>How to make the {def.name}</h2>
+    <ol class="steps">
+      <li>
+        <strong>Print or load the template.</strong> The zone letters in the blank template
+        match the zone list above — every bead knows which zone it belongs to.
+      </li>
+      <li>
+        <strong>Pull the beads.</strong> {view.beadList
+          .map((b) => `${b.bead.name} ×${b.count}`)
+          .join(', ')} — that's {view.totalBeads} beads for the reference colors, plus a
+        few spares if you're customizing.
+      </li>
+      <li>
+        <strong>Place by zone.</strong> Work one zone at a time on a
+        {def.width}×{view.grid.length} area of your pegboard; the letters keep you oriented
+        even if you invent your own palette.
+      </li>
+      <li>
+        <strong>Iron both sides.</strong> Ironing paper over the beads, medium heat, no
+        steam, 20–30 seconds per side, then weight it under a book while it cools.
+      </li>
+    </ol>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>FAQ</h2>
+    {faqs.map((f) => (
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </section>
+
+  {related.length > 0 && (
+    <section style="margin-top: var(--sp-6);">
+      <h2>More {CATEGORY_LABEL[def.category].toLowerCase()} patterns</h2>
+      <p>
+        {categoryCounts[def.category]} designs in this collection —{' '}
+        <a href="../">see all {CATEGORY_LABEL[def.category].toLowerCase()}</a>.
+      </p>
+      <div class="related-grid">
+        {related.map((p) => (
+          <a class="related-card" href={p.url}>
+            <BeadFigure view={p} mode="reference" />
+            <span class="related-name">{p.def.name}</span>
+            <span class="related-meta">{p.totalBeads} beads · {p.def.difficulty}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="prose keep-reading" style="margin-top: var(--sp-6);">
+    <h2>Keep going</h2>
+    <ul>
+      <li><a href="/perler-bead-patterns/">All {totalPatternCount} free perler bead patterns</a></li>
+      <li><a href="/easy-perler-bead-patterns/">Easy perler bead patterns for beginners</a></li>
+      <li><a href="/color-guides/">Color guides home</a></li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../scripts/bead';
+</script>
+
+<style>
+  .studio {
+    margin-top: var(--sp-4);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--sp-4);
+    align-items: start;
+  }
+  .studio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+  }
+  @media (max-width: 900px) {
+    .studio { grid-template-columns: 1fr; }
+    .studio-grid { grid-template-columns: 1fr; }
+  }
+  .fig-card {
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--sp-3);
+    background: var(--bg, #fff);
+  }
+  .fig-card figcaption {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-soft, #666);
+    margin-bottom: var(--sp-2);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-2);
+  }
+  .fig-card .hint { font-weight: 400; font-style: italic; }
+  .studio-side h2, .studio-list h2 { font-size: 1.15rem; margin-bottom: var(--sp-2); }
+  .side-note { font-size: 0.9rem; color: var(--ink-soft, #666); margin: 0 0 var(--sp-3); }
+  .zone-list {
+    list-style: none;
+    margin: 0 0 var(--sp-3);
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .zone-chip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg, #fff);
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+  }
+  .zone-chip:hover, .zone-chip.zone-open { border-color: var(--accent, #b3552e); }
+  .zone-swatch {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.15);
+    flex: none;
+  }
+  .zone-meta { display: grid; line-height: 1.2; flex: 1; min-width: 0; }
+  .zone-label { font-weight: 600; font-size: 0.9rem; }
+  .zone-bead { font-size: 0.8rem; color: var(--ink-soft, #666); }
+  .zone-bead.zone-approx::after { content: ' ≈'; }
+  .zone-count { font-size: 0.85rem; color: var(--ink-soft, #666); font-variant-numeric: tabular-nums; }
+  .studio-actions { display: flex; gap: var(--sp-2); }
+  .studio-list { grid-column: 1 / -1; }
+  .bead-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .bead-list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .list-swatch {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+  .list-approx { font-style: normal; font-size: 0.75rem; color: var(--ink-soft, #666); margin-left: 6px; }
+  .stat-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+  .stat {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .steps { padding-left: 1.2rem; display: grid; gap: var(--sp-2); }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--sp-3);
+    margin-top: var(--sp-3);
+  }
+  .related-card {
+    display: grid;
+    gap: 6px;
+    padding: var(--sp-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .related-card:hover { border-color: var(--accent, #b3552e); }
+  .related-name { font-weight: 600; }
+  .related-meta { font-size: 0.8rem; color: var(--ink-soft, #666); }
+  .keep-reading ul { padding-left: 1.2rem; }
+</style>
+
+<style is:global>
+  /* Picker popover created by scripts/bead.ts lives outside the scoped tree. */
+  .bead-picker {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    z-index: 30;
+    background: var(--bg, #fff);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.14);
+  }
+  .picker-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  .picker-bead {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.18);
+    cursor: pointer;
+  }
+  .picker-bead:hover { transform: scale(1.12); }
+  .picker-custom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--ink-soft, #666);
+  }
+  .picker-custom input { width: 34px; height: 26px; padding: 0; border: 1px solid var(--border); border-radius: 6px; background: none; cursor: pointer; }
+  .picker-hint { font-style: italic; }
+
+  /* The page is the printable: template + bead list on letter paper. */
+  @media print {
+    .site-header, .site-footer, .no-print, .studio-actions, .bead-picker, .keep-reading,
+    .related-grid, .crumbs { display: none !important; }
+    .studio, .studio-grid { display: block; }
+    .fig-card { break-inside: avoid; border: none; padding: 0; page-break-after: always; }
+    .studio-side h2, .studio-list h2 { font-size: 1rem; }
+  }
+</style>

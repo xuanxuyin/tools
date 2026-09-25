@@ -1,0 +1,23 @@
+---
+import BeadCategoryPage from '../components/BeadCategoryPage.astro';
+import { BEAD_CATEGORY_SEO } from '../data/beadSeo';
+import { patternsByCategory } from '../lib/beadContent';
+import type { BeadCategory } from '../lib/beadTypes';
+
+const labels: Record<BeadCategory, string> = {
+  minis: 'Start here — minis',
+  animals: 'Easy animals',
+  food: 'Easy food',
+  christmas: 'Easy Christmas',
+  halloween: 'Easy Halloween',
+};
+const order: BeadCategory[] = ['minis', 'animals', 'food', 'christmas', 'halloween'];
+const groups = order
+  .map((cat) => ({
+    label: labels[cat],
+    patterns: patternsByCategory(cat).filter((p) => p.def.difficulty === 'easy'),
+  }))
+  .filter((g) => g.patterns.length > 0);
+---
+
+<BeadCategoryPage seo={BEAD_CATEGORY_SEO.easy!} groups={groups} />

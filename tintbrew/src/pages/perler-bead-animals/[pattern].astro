@@ -1,0 +1,14 @@
+---
+import BeadPatternPage from '../../components/BeadPatternPage.astro';
+import { patternsByCategory } from '../../lib/beadContent';
+
+export function getStaticPaths() {
+  return patternsByCategory('animals').map((p) => ({
+    params: { pattern: p.def.slug },
+    props: { view: p },
+  }));
+}
+const { view } = Astro.props;
+---
+
+<BeadPatternPage view={view} />
