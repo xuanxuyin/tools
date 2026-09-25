@@ -114,6 +114,8 @@
 
 | 2026-09-25 | **图纸精确率双修（👤 "bunny inner ears 根本没填满耳朵，39/39,3 都是空，类似的还有很多"+追问"难道是特意设计的白色吗"，main `8704b81`）**：拆成两类根因分开修 —— ① **封闭洞引擎级治愈**：两形状斜对角相遇时（寿司海苔 vs 米、蝙蝠翼 vs 身、驯鹿角 vs 头）角落格对两个区都够不着 FILL_MIN → 留下被珠子完全围住的裸洞（用户点的 39,39/39,3 即此类）。引擎加 **enclosed-hole heal pass**（'.' 格 4 邻全满 + 8 邻 ≥6 满 → 归多数邻区；跑在镜像前=单侧洞对称治愈、rim 前=不给已变内部的格子画黑圈；`holesOk` def 级豁免，**unicorn 2 格鬃毛缝冻结字节不变**）—— 全站治愈 13 洞（寿司 8/蝙蝠 3/驯鹿 2），+23 珠。② **bunny 内耳 def 修**：原细尖 banana 在耳内沿整条外缘留白毛夹缝（耳基/耳尖的白边是**设计上的毛色**，夹缝不是）→ 换 cat/fox 同款 leaf（耳基宽底+近耳尖收尖），粉 I 填满每耳 2-17 行无夹白，1096→1106 珠。**回答 👤 追问：白边=设计（毛色留边），裸洞=栅格化伪影（现已引擎治愈）**。验证链：洞审计仅剩 unicorn 冻结 2 格 ｜ 占位镜像审计干净（donut 2 格=既有 mirror:false 淋面偏移非回归）｜ astro check 0 错 / 96 页 / 147 测试绿 ｜ before/after ASCII 逐行核对 ｜ QA 拼图（bunny 前后+寿司/蝙蝠/驯鹿）CDP 截图 + 4.5v 视觉评审三项全过（AFTER 耳内零白缝零洞、三图零封闭洞、不对称均为设计）。线上 bunny/sushi/bat/reindeer md5 与 dist 一致【实测】；IndexNow 51 URL 200【实测】（坑：path.relative 无前导斜杠，拼 URL 必须显式补 `/`，否则 422 host 不匹配） |
 
+| 2026-09-25 | **热门查询前十体检（👤 报 GSC，窗口未注明）—— 10/01 门排名条件已被预演满足**【实测】：前十全部 /mix/ 矩阵词，排名 **3.0~7.0**：what two colors make yellow? **3.0**（1 展示）/ black and white equal 5.0 / pink plus purple equals 5.0 / what colour does pink and white make 5.5 / orange and white makes 6.0 / what color does red and purple make 6.0 / orange combine 6.7 / white plus orange equals 7.0；另 #6d28d9 族 11 展示 6.0~7.0（主题 hex 被搜，9/14 已判无动作）。**判读**：① 门线是 top 30，实际 3~7 位 = **远超线**，10/01 例行核对后 V2.2（make-X 6 页 + chart 页 + gold/teal + hue test）按既定排位启动；② 0 点击 = 1~13 展示的噪声带（位次 3~7 的物理 CTR × 小样本 → 0~1 点击），**非截流证据**，截流判定维持三条件（排名 top10 + 展示放量 + 点击仍 0）；③ colour 拼写 1 条再现 = 非美区展示漏入，读 GSC 加美国筛选纪律再证；④ 矩阵层 = 全站最强排名资产再确认（与 9/14 结论一致），点击随派发放量滞后到账 |
+
 ## 2. 关键词资产表
 
 | 梯队 | 词/词族 | 量(US/月) | 目标页 | 状态 |
