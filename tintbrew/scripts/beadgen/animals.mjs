@@ -104,7 +104,11 @@ export const ANIMALS = [
       for (const m of [1, -1]) {
         const M = (poly) => poly.map(([x, y]) => [m > 0 ? x : 56 - x, y]);
         G.add('W', M(banana([21, 25], [17, 3.5], 3.1, 2.6)));
-        G.add('I', M(banana([21, 23.5], [17.7, 6], 1.8, 1.5)));
+        // leaf, not a skinny lens: the pointed banana left the inner ear a
+        // pink sliver inside a white ear (user report "inner ear never fills
+        // the ear"). Wide base at the ear base, pointed tip near the ear tip
+        // — the same teardrop the cat/fox inner ears use, sized to the ear.
+        G.add('I', M(leaf([18.8, 23.4], [17.4, 5], [22.5, 22.6], 1.7, 1.9)));
       }
       eyeSimple(G, 21, 37, { frame: 'E', shine: 'e' });
       eyeSimple(G, 35, 37, { frame: 'E', shine: 'e' });
@@ -463,6 +467,8 @@ export const ANIMALS = [
     W: 64, H: 50, mirror: true, trim: false, dropSingles: [], singlesOk: ['e', 'N'],
     // mane locks that poke past the silhouette on one side, kept one-sided
     asymOk: [[34, 5], [34, 12], [21, 17]],
+    // frozen v5 pilot: the two mane-stripe gaps ship as-is (byte guard)
+    holesOk: [[9, 37], [54, 37]],
     zones: {
       K: { label: 'outline', color: 'black' },
       S: { label: 'horn', color: 'sunshine' },

@@ -276,6 +276,32 @@ export function rasterize(meta) {
     grid.push(row);
   }
 
+  // Enclosed-hole heal: where two shapes meet on a diagonal (nori against
+  // rice, antler against head), the corner cell can fall short of FILL_MIN
+  // for BOTH zones — a bare hole fully surrounded by beads. Give it to the
+  // zone that owns most of its neighbors. Runs BEFORE the mirror pass so a
+  // one-sided hole heals symmetrically, and before the rim pass so no black
+  // ring gets drawn around what is now interior. Defs opt cells out via
+  // holesOk (the frozen unicorn keeps its mane-lock gaps).
+  const holesOk = new Set((meta.holesOk ?? []).map(([x, y]) => `${x},${y}`));
+  for (let pass = 0; pass < 4; pass++) {
+    let healed = 0;
+    for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) {
+      if (grid[y][x] !== '.' || holesOk.has(`${x},${y}`)) continue;
+      const nb = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]].map(([dx, dy]) => grid[y + dy]?.[x + dx] ?? '.');
+      const n4 = nb[1] !== '.' && nb[3] !== '.' && nb[4] !== '.' && nb[6] !== '.';
+      if (!n4 || nb.filter((v) => v !== '.').length < 6) continue;
+      const tally = new Map();
+      for (const v of nb) if (v !== '.') tally.set(v, (tally.get(v) ?? 0) + 1);
+      let best = '', bn = 0;
+      for (const [z, n] of tally) if (n > bn) { bn = n; best = z; }
+      grid[y] = grid[y].slice(0, x) + best + grid[y].slice(x + 1);
+      counts.set(best, (counts.get(best) ?? 0) + 1);
+      healed++;
+    }
+    if (!healed) break;
+  }
+
   // mirror:true designs must end up exactly mirror-symmetric. Supersample
   // votes on integer-grid boundaries split ~50/50 and can round opposite
   // ways on the two sides (a lone bead sticking out of one cheek, one nori
