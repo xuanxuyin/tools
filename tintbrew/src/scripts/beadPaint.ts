@@ -24,6 +24,7 @@ class PaintCanvas {
   private drawing = false;
   private last: PaintCell | null = null;
   private listQueued = false;
+  private badge: HTMLDivElement | null = null;
 
   constructor(private root: HTMLElement) {
     this.svg = root.querySelector<SVGSVGElement>('[data-bead-canvas]')!;
@@ -42,17 +43,20 @@ class PaintCanvas {
       e.preventDefault();
       this.svg.setPointerCapture?.(e.pointerId);
       this.drawing = true;
+      this.trackCursor(e);
       const cell = this.cellAt(e);
       if (cell) this.paintCell(cell);
       this.last = cell;
     });
     this.svg.addEventListener('pointermove', (e) => {
+      this.trackCursor(e); // hover or drag — the readout follows either way
       if (!this.drawing || !this.last) return;
       const cell = this.cellAt(e);
       if (!cell) return;
       for (const c of paintLine(this.last, cell)) this.paintCell(c);
       this.last = cell;
     });
+    this.svg.addEventListener('pointerleave', () => this.hideBadge());
     const stop = () => {
       this.drawing = false;
       this.last = null;
@@ -125,8 +129,36 @@ class PaintCanvas {
     }
   }
 
-  /** Map a pointer event onto a paintable cell, or null when off-board. */
-  private cellAt(e: PointerEvent): PaintCell | null {
+  /**
+   * Floating readout: the grid cell under the pointer, in the same 1-based
+   * numbers as the printed edge labels, shown while hovering or painting.
+   */
+  private trackCursor(e: PointerEvent) {
+    const pos = this.gridAt(e);
+    if (!pos) {
+      this.hideBadge();
+      return;
+    }
+    if (!this.badge) {
+      this.badge = document.createElement('div');
+      this.badge.className = 'cv-cursor';
+      this.badge.setAttribute('aria-hidden', 'true');
+      this.root.appendChild(this.badge);
+    }
+    this.badge.textContent = `${pos.x + 1}, ${pos.y + 1}`;
+    const r = this.root.getBoundingClientRect();
+    const overRight = e.clientX - r.left > r.width - 64;
+    this.badge.style.left = `${e.clientX - r.left + (overRight ? -58 : 14)}px`;
+    this.badge.style.top = `${e.clientY - r.top - 30}px`;
+    this.badge.classList.add('on');
+  }
+
+  private hideBadge() {
+    this.badge?.classList.remove('on');
+  }
+
+  /** Pointer position → grid coordinates, or null when outside the grid. */
+  private gridAt(e: PointerEvent): PaintCell | null {
     const rect = this.svg.getBoundingClientRect();
     if (!rect.width || !rect.height) return null;
     const cols = Number(this.svg.dataset.cols);
@@ -141,7 +173,15 @@ class PaintCanvas {
     const x = Math.floor(((e.clientX - rect.left) / scale - gutter) / U);
     const y = Math.floor(((e.clientY - rect.top) / scale - gutter) / U);
     if (x < 0 || y < 0 || x >= cols || y >= rows) return null;
-    return this.cells.has(y * cols + x) ? { x, y } : null;
+    return { x, y };
+  }
+
+  /** Map a pointer event onto a paintable cell, or null when off-board. */
+  private cellAt(e: PointerEvent): PaintCell | null {
+    const pos = this.gridAt(e);
+    if (!pos) return null;
+    const cols = Number(this.svg.dataset.cols);
+    return this.cells.has(pos.y * cols + pos.x) ? pos : null;
   }
 
   private paintCell(cell: PaintCell) {

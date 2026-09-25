@@ -127,7 +127,7 @@ export const ANIMALS = [
       M: { label: 'mouth', color: 'black' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['W'], rimAgainst: { W: ['A'] },
+    rim: ['W', 'P'], rimAgainst: { W: ['A'] },
     tagline: 'Black patches on a wide white face — five zones, endless restyles.',
     blurb:
       'The friendliest low-fuss showpiece there is. The tilted eye patches, round ears, nose and mouth are separate regions, so you can go "blue-eyed panda" or "plum patches" without touching the white face.',
@@ -163,7 +163,7 @@ export const ANIMALS = [
       M: { label: 'mouth', color: 'black' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['O', 'I'],
+    rim: ['O', 'I', 'W', 'P'],
     tagline: 'Big pointy ears over a white cheek mask — cheddar and cream.',
     blurb:
       'A sly little fox at scale. The white mask is clipped to the head shape so its top edge sweeps like a real fox cheek, and the wide white inner ears are what keep it reading "fox" rather than "cat" from across the room.',
@@ -200,7 +200,7 @@ export const ANIMALS = [
       C: { label: 'belly', color: 'cream' },
       T: { label: 'feather rows', color: 'tan' },
     },
-    rim: ['B'],
+    rim: ['B', 'D'],
     tagline: 'Huge eye discs, a sunshine beak, cream belly with feather rows.',
     blurb:
       'A round owl with mask-like discs — the white plates plus black pupils do the wide-eyed work. Wings fold in as a darker crescent on each side, and the belly carries two scalloped feather rows you can recolor as one zone.',
@@ -238,7 +238,7 @@ export const ANIMALS = [
       O: { label: 'beak & feet', color: 'cheddar' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['K', 'k', 'O'],
+    rim: ['K', 'k', 'O', 'W'],
     tagline: 'A full-body chick with flippers out and cheddar feet.',
     blurb:
       'The only full-body animal in the set, built as one tall egg with dark-gray flippers folded along the sides. Face and belly are two white patches clipped inside the body, so the silhouette stays perfectly smooth.',
@@ -275,7 +275,7 @@ export const ANIMALS = [
       M: { label: 'mouth', color: 'black' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['F', 'R'], rimAgainst: { F: ['R'] },
+    rim: ['F', 'R', 'P'], rimAgainst: { F: ['R'] },
     tagline: 'Floppy ears around a cream face, one patch over the eye.',
     blurb:
       'A puppy with long ears that drape over the face edges and a light-brown patch over one eye — the asymmetry is the charm. The patch, ears, muzzle and nose are all separate zones, so the "spot pattern" is yours to redesign.',
@@ -312,7 +312,7 @@ export const ANIMALS = [
       M: { label: 'mouth', color: 'black' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['B', 'L'],
+    rim: ['B', 'L', 'o'],
     tagline: 'Round ears, a wide cream muzzle, sit-down-and-stay size.',
     blurb:
       'A chunky bear face that irons flat and fast. The muzzle is a cream panel inside the brown head with a light-brown shading crescent on the right — swap the brown for gray and it is a teddy in a different coat.',
@@ -323,7 +323,10 @@ export const ANIMALS = [
       G.add('B', circle(43.5, 13.5, 5.5));
       G.add('L', circle(12.5, 13.5, 2.9));
       G.add('L', circle(43.5, 13.5, 2.9));
-      G.add('o', eggRingRight(cx, 28, 19.5, 17, 0.08, 2.0));
+      // shading crescent sits a full bead inside the head edge (inset +
+      // clip to B): with its outer curve on the silhouette the right rim
+      // was 'o', which is not a rim zone — half the outline never went black
+      G.add('o', eggRingRight(cx, 28, 18.5, 16.5, 0.08, 2.4), 'B');
       eyeSimple(G, 20.5, 27.5, { frame: 'E', shine: 'e' });
       eyeSimple(G, 35.5, 27.5, { frame: 'E', shine: 'e' });
       G.add('P', ellipse(13.5, 33.5, 2.7, 1.8));
@@ -350,7 +353,7 @@ export const ANIMALS = [
       M: { label: 'smile', color: 'black' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['G', 'J', 'W'],
+    rim: ['G', 'J', 'W', 'P'],
     tagline: 'Eyes perched on crown bumps, a mint chin, a two-ear grin.',
     blurb:
       'The eyes sit on round bumps above the head — that is the whole frog trick. The smile is a single long stroke arc you can recolor or thicken, and the mint chin band keeps the wide face from feeling flat.',
@@ -387,7 +390,7 @@ export const ANIMALS = [
       e: { label: 'eye shine', color: 'white' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['Y'],
+    rim: ['Y', 'y', 'O', 'P'],
     tagline: 'A sunshine puff with folded wings and a cheddar beak.',
     blurb:
       'One round yellow mass, two bead eyes, one beak — the fastest gift in the set, scaled up to a real piece. The cheddar wing crescents and the little sprout on top of the head are what keep it from reading as a plain circle.',
@@ -423,7 +426,7 @@ export const ANIMALS = [
       M: { label: 'smile', color: 'black' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['G', 'S'],
+    rim: ['G', 'S', 'g'],
     tagline: 'Five sunshine spikes, a cream belly, a wide green grin.',
     blurb:
       'A friendly dino face with five spikes along the crown. The belly panel, spikes, nostrils and grin are their own regions — a blue body with orange spikes is two clicks, and the cream belly swaps to any accent you like.',

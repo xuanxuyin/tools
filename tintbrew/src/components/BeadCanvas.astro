@@ -16,7 +16,8 @@ interface Props {
 
 const { view } = Astro.props;
 const U = 10; // viewBox units per bead cell, matches BeadFigure
-const G = 6; // coordinate gutter (viewBox units) above and left of the grid
+const G = 16; // coordinate gutter (viewBox units) above and left of the grid —
+// wide enough for 12-unit bold labels (two digits) to stay legible at screen and print scale
 const { grid, def } = view;
 const w = def.width * U;
 const h = grid.length * U;
@@ -126,16 +127,58 @@ grid.forEach((row, y) => {
 <style>
   .paint-card {
     grid-column: 1;
+    position: relative; /* anchors the island's floating cursor badge */
+  }
+  /* Same figure dressing as the reference/blank cards — the page's .fig-card
+  rules are scoped to its own template and never reach this component's tree. */
+  .fig-card {
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--sp-3);
+    background: var(--bg, #fff);
+  }
+  .fig-card figcaption {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-soft, #666);
+    margin-bottom: var(--sp-2);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-2);
+  }
+  .fig-card .hint { font-weight: 400; font-style: italic; }
+  .fig-card .bead-fig {
+    display: block;
+    width: 100%; /* without this the svg falls back to intrinsic ~416px, shrinking every label */
+    height: auto;
+    background: var(--paper, #fbfaf7);
+    border-radius: 10px;
   }
   .paint-body {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: 1fr;
     gap: var(--sp-4);
     align-items: start;
   }
   .paint-tools h3 {
     font-size: 1.15rem;
     margin-bottom: var(--sp-2);
+  }
+  /* Full-width canvas on top, tools in two columns below — a 320px side column
+     capped the figure at ~416px and shrank the coordinate labels to ~8px. */
+  @media (min-width: 901px) {
+    .paint-tools {
+      display: grid;
+      grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+      gap: var(--sp-2) var(--sp-4);
+      align-items: start;
+    }
+    .paint-tools h3,
+    .paint-tools .side-note,
+    .paint-tools .cv-list {
+      grid-column: 1 / -1;
+    }
   }
   .tool-row {
     display: flex;
@@ -183,8 +226,8 @@ grid.forEach((row, y) => {
     cursor: pointer;
   }
   .cv-custom-hint { font-style: italic; }
-  @media (max-width: 900px) {
-    .paint-body { grid-template-columns: 1fr; }
+  @media print {
+    .paint-card { break-inside: avoid; }
   }
 </style>
 
@@ -199,12 +242,31 @@ grid.forEach((row, y) => {
     pointer-events: none;
   }
   .bead-fig[data-bead-canvas] .cv-label {
-    fill: rgba(0, 0, 0, 0.45);
-    font-size: 4.2px;
+    fill: rgba(0, 0, 0, 0.8);
+    font-size: 12px;
+    font-weight: 700;
     font-family: ui-monospace, monospace;
     text-anchor: middle;
     dominant-baseline: central;
     pointer-events: none;
+  }
+  /* island-created floating readout: current cell under the pointer */
+  .cv-cursor {
+    position: absolute;
+    z-index: 6;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(35, 35, 38, 0.92);
+    color: #fff;
+    font: 600 12px/1.3 ui-monospace, monospace;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    white-space: nowrap;
+  }
+  .cv-cursor.on {
+    opacity: 1;
   }
   .bead-fig[data-bead-canvas] .cv-cell {
     stroke: rgba(0, 0, 0, 0.16);
@@ -214,15 +276,33 @@ grid.forEach((row, y) => {
   .bead-fig[data-bead-canvas] .cv-cell.colored {
     stroke: rgba(0, 0, 0, 0.12);
   }
-  .cv-list { margin: 0; }
-  .cv-empty {
-    border: 1px dashed var(--border);
+  .cv-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cv-list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 8px;
+    border: 1px solid var(--border);
     border-radius: 999px;
-    padding: 6px 12px;
+    background: var(--bg, #fff);
+    font-size: 0.9rem;
+  }
+  .cv-empty {
+    border-style: dashed;
     font-size: 0.85rem;
     color: var(--ink-soft, #666);
   }
   .cv-total {
+    border: none;
+    padding: 0;
+    background: none;
     font-weight: 600;
     font-size: 0.85rem;
     color: var(--ink-soft, #666);

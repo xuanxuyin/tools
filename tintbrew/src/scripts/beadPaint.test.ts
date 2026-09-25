@@ -16,7 +16,7 @@ const htmlPath = resolve(fileURLToPath(import.meta.url), '../../../dist/perler-b
 const COLS = 56; // cat grid width (v5 showpiece scale)
 const ROWS = 40; // cat grid height
 const CELL_PX = 20; // stubbed layout: 56 cols × 20px = 1120px wide board
-const GUTTER = 6; // coordinate gutter in viewBox units (BeadCanvas.astro)
+const GUTTER = 16; // coordinate gutter in viewBox units (BeadCanvas.astro)
 // viewBox is gutter + grid, so one cell spans (10 × PPU) stubbed pixels
 const PPU = (COLS * CELL_PX) / (COLS * 10 + GUTTER);
 
@@ -93,6 +93,25 @@ describe('paint canvas island (real SSR markup)', () => {
     expect(labels).toContain('5');
     expect(labels).toContain('55'); // last top tick on the 56-wide cat
     expect(labels).toContain('40'); // last left tick on the 40-row cat
+  });
+
+  it('a floating badge reads out the cell under the pointer while hovering', () => {
+    const svg = stubBoard(ctx.document);
+    // hover (no button down) over cell (20, 12) → 1-based "21, 13", visible
+    firePointer(ctx.window, svg, 'pointermove', px(20, 12).cx, px(20, 12).cy);
+    const badge = ctx.document.querySelector('[data-bead-paint] .cv-cursor')!;
+    expect(badge.classList.contains('on')).toBe(true);
+    expect(badge.textContent).toBe('21, 13');
+
+    // dragging keeps it live: cross into the next cell band
+    firePointer(ctx.window, svg, 'pointerdown', px(20, 12).cx, px(20, 12).cy);
+    firePointer(ctx.window, svg, 'pointermove', px(30, 12).cx, px(30, 12).cy);
+    expect(badge.textContent).toBe('31, 13');
+
+    // off the grid entirely → hidden
+    const off = (GUTTER + COLS * 10 + 5) * PPU;
+    firePointer(ctx.window, svg, 'pointermove', off, off);
+    expect(badge.classList.contains('on')).toBe(false);
   });
 
   it('tap paints one bead with the selected color', () => {

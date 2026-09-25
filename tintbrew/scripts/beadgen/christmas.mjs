@@ -50,7 +50,7 @@ export const CHRISTMAS = [
       m: { label: 'mouth', color: 'black' },
       R: { label: 'scarf & buttons', color: 'cherry' },
     },
-    rim: ['W'],
+    rim: ['W', 'R'],
     tagline: 'Top hat, carrot nose, cherry scarf and buttons.',
     blurb:
       'Frosty at fridge-door scale. The carrot nose is its own region — recolor it and the whole snowman changes mood — and the scarf with its hanging tail between head and body is where a custom color pops hardest.',
@@ -189,7 +189,7 @@ export const CHRISTMAS = [
       W: { label: 'fur brim', color: 'white' },
       w: { label: 'pom pom', color: 'white' },
     },
-    rim: ['R'],
+    rim: ['R', 'W', 'w'],
     tagline: 'Cherry cone, fur brim, pom pom, light-blue snowflake.',
     blurb:
       'A quick holiday win: a curved cone that leans into the pom pom, one wide fur brim, and a light-blue snowflake decal on the side — swap the decal color for any bead you like.',
@@ -197,8 +197,8 @@ export const CHRISTMAS = [
       G.add('w', circle(17.5, 6, 3.8));
       G.add('R', roundedPoly([[18, 6.5], [39, 28], [14, 28]], 3));
       G.add('W', roundedRect(9, 28, 34, 8.5, 4.2));
-      G.add('F', stroke(arcPts(30, 13, 3.2, 3.6, -90, 90), 1.1));
-      G.add('F', stroke([[26.5, 17], [33.5, 17]], 1.1));
+      G.add('F', stroke(arcPts(26, 22, 3.2, 3.6, -90, 90), 1.1));
+      G.add('F', stroke([[22.3, 22], [29.7, 22]], 1.1));
     },
   },
 
@@ -213,7 +213,7 @@ export const CHRISTMAS = [
       W: { label: 'shine', color: 'white' },
       B: { label: 'rim', color: 'butternut' },
     },
-    rim: ['Y', 'B'],
+    rim: ['Y', 'B', 'h'],
     tagline: 'Sunshine bell, shine streak, butternut rim.',
     blurb:
       'A bell that flares as it goes down, ending in a darker gold rim band. The white shine streak on the left edge is what makes it look round — keep it one bead wide so the flare stays clean.',
@@ -221,7 +221,7 @@ export const CHRISTMAS = [
       const cx = 24;
       G.add('h', roundedRect(cx - 2.2, 2, 4.4, 5, 1.2));
       G.add('Y', roundedPoly([[15.5, 10.5], [32.5, 10.5], [41, 33], [7, 33]], 7));
-      G.add('W', ellipse(14.5, 22, 1.8, 7.5), 'Y');
+      G.add('W', ellipse(16, 22, 1.7, 7.0), 'Y');
       G.add('B', roundedRect(6.5, 32.5, 35, 5.5, 2.5));
     },
   },
@@ -240,7 +240,7 @@ export const CHRISTMAS = [
       W: { label: 'muzzle', color: 'cream' },
       N: { label: 'nose', color: 'cherry' },
     },
-    rim: ['B', 'L', 'A'],
+    rim: ['B', 'L', 'A', 'W'],
     tagline: 'Butternut antlers, brown head, cherry nose.',
     blurb:
       'A friendly reindeer face with broad swept-back branch antlers and a cream muzzle, sized for the mantel. The nose is its own region — keep it cherry for the classic look, or go black-nose for a more realistic doe.',

@@ -33,7 +33,7 @@ export const FOOD = [
       m: { label: 'mouth', color: 'black' },
       P: { label: 'blush', color: 'blush' },
     },
-    rim: ['F', 'T'],
+    rim: ['F', 'T', 'R', 'P'],
     tagline: 'Cherry-topped pink frosting over a wrapper with a tiny face.',
     blurb:
       'Sweetest project in the set, scaled up to real showpiece size — a frosting dome with scalloped drips, white sprinkle beads and a cherry that sits proud of the top. The wrapper has a face (eyes, mouth and blush are separate regions), so you can flavor-swap pink for lavender or mint without touching it.',
@@ -113,7 +113,7 @@ export const FOOD = [
       T: { label: 'cone', color: 'tan' },
       C: { label: 'waffle lines', color: 'cream' },
     },
-    rim: ['F', 'M', 'T'],
+    rim: ['F', 'M', 'T', 'b'],
     tagline: 'Pink scoop with a face, mint scoop, waffle cone.',
     blurb:
       'Two big scoops stacked on a foot-tall waffle cone. The top scoop has the face — eyes, mouth and blush are separate regions — and the waffle crosshatch is drawn as cream lines clipped inside the cone, so the tip stays crisp.',

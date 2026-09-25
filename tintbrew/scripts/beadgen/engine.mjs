@@ -277,27 +277,35 @@ export function rasterize(meta) {
   }
 
   // K rim pass: zones in `rim` get a black rim where they touch empty space,
-  // or where they touch a zone listed in `rimAgainst[z]`.
+  // or where they touch a zone listed in `rimAgainst[z]`. Marks are decided
+  // against the pre-rim grid and applied afterwards — converting cells
+  // in-place mid-scan used to hide the empty neighbor from the next cell
+  // over, leaving scan-order holes in the ring (the bear's ears shipped
+  // without side outlines that way).
   const rimSet = new Set(meta.rim ?? []);
   const rimAgainst = new Map(Object.entries(meta.rimAgainst ?? {}).map(([z, v]) => [z, new Set(v)]));
+  const rimMarks = [];
   for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) {
     const z = grid[y][x];
     if (z === '.' || z === 'K' || !rimSet.has(z)) continue;
     const nb = [[0, -1], [0, 1], [-1, 0], [1, 0]].map(([dx, dy]) => grid[y + dy]?.[x + dx] ?? '.');
     const against = rimAgainst.get(z);
-    if (nb.some((v) => v === '.') || (against && nb.some((v) => against.has(v)))) {
-      grid[y] = grid[y].slice(0, x) + 'K' + grid[y].slice(x + 1);
-      counts.set(z, counts.get(z) - 1);
-      counts.set('K', (counts.get('K') ?? 0) + 1);
-    }
+    if (nb.some((v) => v === '.') || (against && nb.some((v) => against.has(v)))) rimMarks.push([x, y, z]);
+  }
+  for (const [x, y, z] of rimMarks) {
+    grid[y] = grid[y].slice(0, x) + 'K' + grid[y].slice(x + 1);
+    counts.set(z, counts.get(z) - 1);
+    counts.set('K', (counts.get('K') ?? 0) + 1);
   }
 
   // drop isolated single beads of outline-ish zones (rim-pass noise at thin
-  // tips); intentional singles (sprinkles, seeds) are declared in singlesOk
+  // tips); intentional singles (sprinkles, seeds) are declared in singlesOk.
+  // Neighbors include diagonals: outline staircases connect diagonally, and
+  // straight 4-adjacency deleted every corner bead of a diagonal rim.
   for (const z of meta.dropSingles ?? ['K']) {
     for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) {
       if (grid[y][x] !== z) continue;
-      const nb = [[0, -1], [0, 1], [-1, 0], [1, 0]].map(([dx, dy]) => grid[y + dy]?.[x + dx] ?? '.');
+      const nb = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]].map(([dx, dy]) => grid[y + dy]?.[x + dx] ?? '.');
       if (!nb.some((v) => v === z)) {
         grid[y] = grid[y].slice(0, x) + '.' + grid[y].slice(x + 1);
         counts.set(z, counts.get(z) - 1);

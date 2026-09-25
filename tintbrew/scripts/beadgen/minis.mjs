@@ -21,7 +21,7 @@ export const MINIS = [
     rim: ['R'],
     tagline: 'A palm-size heart with a pink glow and a shine bead.',
     blurb:
-      'Still the classic first bead project — now with real curved lobes, a pink inner heart, one white shine bead and an outline. About 190 beads: done before your iron warms up. Make a dozen in swapped colors; they magnetize onto fridges and trade like currency at craft tables.',
+      'Still the classic first bead project — now with real curved lobes, a pink inner heart, one white shine bead and an outline. About 200 beads: done before your iron warms up. Make a dozen in swapped colors; they magnetize onto fridges and trade like currency at craft tables.',
     draw(G) {
       G.add('R', heart(10, 10, 0.58));
       G.add('P', heart(10, 10, 0.33));
@@ -110,7 +110,7 @@ export const MINIS = [
       W: { label: 'spots', color: 'white' },
       C: { label: 'stem', color: 'cream' },
     },
-    rim: ['R', 'C'],
+    rim: ['R', 'C', 'W'],
     tagline: 'Cherry cap, scattered spots, cream stem.',
     blurb:
       'A toadstool in four regions: cap, spots, stem, outline. The spots are placed asymmetrically on purpose — real mushrooms are not symmetrical either — and the domed cap is a true curve now, not a stepped pyramid.',
