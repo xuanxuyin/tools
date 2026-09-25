@@ -62,3 +62,47 @@
 | music composition for kids | 0 | 不可用 | ❌ 死档 |
 
 **终局判定**:打印谱纸族合计 **≈12,640/月**(blank sheet music + staff paper + 3 长尾)过 ≥10K 族线;两头词一个单词过线、一个实勘翻案 → **立项成立**。CPC $0.63~0.94 一般,价值在词池扩容(527K→540K)+ 工具形态卡位,变现预期不拉高。作曲工具岛 = 👤 原始提案,零 SEO 负担随车落地。**排 11 月批**(10/25 批已满:感恩节 5 页 + 公式表 2 页 + 数学 island + PDF 升格,死线不动)。
+
+## 八、竞品拆解(2026-09-25 👤 指令「看他们怎么做的,有什么好的可以采用」,实抓页面)
+
+### 1. BlankSheetMusic.net —— staff paper #1,生成器形态标杆(上古但功能全)
+
+实抓首页 + 内置 tutorial 全文,做法:
+
+- **生成器选项 = 本品功能规格对齐线**:谱号(treble/bass/alto/percussion/六线 tab,可点击循环多格式)· Shrink/Grow 增减每页行数 · 页尺寸(A4/Letter/Legal/自定义,mm/cm/in 三单位)· 边距(含提示语:「上边距留 50mm 给曲名」)· 横竖版 · **调号+拍号+「每行都标 or 只标第一行」** · 线色 · 线宽
+- **Templates 下拉 + Staff Paper Archive**:现成模板分类库,且**任何存档模板可在生成器里打开再调** —— 静态变体(SEO 网)与生成器(工具)双向互通,这就是我们 /blank-sheet-music/(生成器)与 /staff-paper/(变体前门)该抄的架构关系
+- 变现 = **Ezoic + DoubleClick GPT**(ezodn 脚本在 preload 里)—— 纯展示广告
+- **自曝弱点**(tutorial 原文):"responsive 但小屏上部分按钮被隐藏,试试横屏手机" —— 移动端残废;bug 反馈走 X 私信。现代移动 UX + 实时预览即我们的超越位
+
+**采用**:① 生成器选项清单全抄(谱号×行数×页尺寸×边距×横竖×调号拍号×标注位置) ② 模板库↔生成器双向互通架构 ③ 「上边距留曲名位」这类教师视角小文案。**不采用**:Ezoic 广告墙、X 私信当支持渠道。
+
+### 2. Music-Paper.com —— 静态变体库形态标杆(100+ PDF 吃长尾)
+
+- **100+ 静态 PDF 变体矩阵**:行距大小 × 每页行数 × 横竖版 × 大谱表(grand staff)× 单线打击谱 × 钢琴+独奏行 × **三重奏/四重奏谱** × 标题边距版 —— 变体即页面即长尾词
+- **每个变体配真实图片预览**(不是文字链)—— Google Images 流量打法,与 chartglade #17 图片 SEO 通道完全同构
+- 页面带「What is Music Staff Paper?」科普段 + 「How to Write Music」教学区(符头/加线/谱号/休止符/音值/变音记号怎么画)—— PDF 站靠教学内容避免薄页
+- 老站零工具零账号,纯下载
+
+**采用**:① 变体矩阵思路(生成器选项的组合即 SEO 页:grand staff 版/宽行小孩版/横版 6 行/标题版…每变体一页+图) ② 每变体真图预览(#17 管线直接复用) ③ 「What is staff paper」科普段 + 「怎么画音符」教学区(与作曲岛天然配套:学画 → 直接在谱上试) ④ 三重奏/四重奏/钢琴独奏版这些我没列过的变体类目。**注意**:静态 PDF 页只做生成器的入口(可打开再调),不做死下载——这是对两家各取所长的合成。
+
+### 3. PrintablesWorld —— 现代通用打印生态(威胁方 + 架构参照)
+
+Brightscale Labs(英国)通用打印工具站,**Astro 技术栈同款**(源码 /_astro/ 路径),目录 = 数独/单词搜索/数学题/迷宫/手写/计划表/**可打印纸**(含五线打击谱工具)+ Workbook Builder(多页拼册)+ Collections + PWA 安装 + 暗色模式,AdSense 变现。
+
+- **威胁**:通用生态离谱纸只一步之遥(打击谱工具已在),若它扩"staff paper generator"就是正面对撞;速度与音乐垂直深度是护城河
+- **采用**:① **Workbook Builder 思路**(多张拼一本练习册——远期可做「谱纸+作曲练习+识谱卡」拼册) ② 授权话术原文结构好:「personal, classroom, homeschool and tutoring use;禁止转售/再发布」—— 与我们 FAQ 口径一致,措辞可镜 ③ 404 落 popular tools 的漏斗设计
+
+### 4. lbwdm.com —— 反面教材
+
+"Free Staff Paper Generator"新站,实抓 = **Maintenance 页**。证明:入场者有,但光有生成器没有内容网/人群纵深撑不住;同时反证 SERP 没有锁定者,新站能排进来。
+
+### 合成结论(进入 #23 实现方案)
+
+赢家组合 = **BlankSheetMusic 的生成器规格 + Music-Paper 的变体图片长尾网 + 教学内容层 + 谁都没有的作曲试听打印闭环**:
+
+1. /blank-sheet-music/ = 生成器主页面(选项对齐 BlankSheetMusic 全集,现代 UX+实时 SVG 预览+移动端优先)
+2. /staff-paper/ = 变体矩阵前门(6~10 个变体段,每段真图预览+一键在生成器打开),grand staff/宽行小孩版/横版/标题版/三重奏四重奏
+3. 两页各带「What is staff paper / 怎么写音符」教学段(#17 图片管线喂图)
+4. 作曲工具岛 = 差异化闭环(拖音符→乐器试听→打印成品+WAV/MIDI)
+5. 授权/FAQ 措辞镜 PrintablesWorld 结构
+
