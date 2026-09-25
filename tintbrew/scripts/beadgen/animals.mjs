@@ -461,6 +461,8 @@ export const ANIMALS = [
   {
     slug: 'unicorn', name: 'Unicorn', category: 'animals', difficulty: 'medium',
     W: 64, H: 50, mirror: true, trim: false, dropSingles: [], singlesOk: ['e', 'N'],
+    // mane locks that poke past the silhouette on one side, kept one-sided
+    asymOk: [[34, 5], [34, 12], [21, 17]],
     zones: {
       K: { label: 'outline', color: 'black' },
       S: { label: 'horn', color: 'sunshine' },

@@ -179,6 +179,49 @@ describe('paint canvas island (real SSR markup)', () => {
     expect(listText(ctx.document)).toContain('Nothing painted yet');
   });
 
+  it('mirror mode paints the mirrored cell on every stroke and eraser pass', () => {
+    const svg = stubBoard(ctx.document);
+    const btn = ctx.document.querySelector('[data-cv-mirror]')!;
+
+    fireClick(btn);
+    expect(btn.getAttribute('aria-pressed')).toBe('true');
+    expect(btn.classList.contains('active')).toBe(true);
+
+    // one tap lands on both halves: (20,12) + its mirror (35,12)
+    firePointer(ctx.window, svg, 'pointerdown', px(20, 12).cx, px(20, 12).cy);
+    firePointer(ctx.window, svg, 'pointerup', px(20, 12).cx, px(20, 12).cy);
+    expect(fillOf(ctx.document, 20, 12)).toBe('#232326');
+    expect(fillOf(ctx.document, 55 - 20, 12)).toBe('#232326');
+    expect(listText(ctx.document)).toContain('Black ×2');
+
+    // a drag mirrors cell by cell: 21-23 plus mirrors 32-34 on row 13
+    firePointer(ctx.window, svg, 'pointerdown', px(21, 13).cx, px(21, 13).cy);
+    firePointer(ctx.window, svg, 'pointermove', px(23, 13).cx, px(23, 13).cy);
+    firePointer(ctx.window, svg, 'pointerup', px(23, 13).cx, px(23, 13).cy);
+    for (const c of [21, 22, 23, 55 - 23, 55 - 22, 55 - 21]) {
+      expect(fillOf(ctx.document, c, 13)).toBe('#232326');
+    }
+    expect(listText(ctx.document)).toContain('Black ×8');
+
+    // toggle off — strokes go back to one half only
+    fireClick(btn);
+    expect(btn.getAttribute('aria-pressed')).toBe('false');
+    firePointer(ctx.window, svg, 'pointerdown', px(24, 14).cx, px(24, 14).cy);
+    firePointer(ctx.window, svg, 'pointerup', px(24, 14).cx, px(24, 14).cy);
+    expect(fillOf(ctx.document, 24, 14)).toBe('#232326');
+    expect(fillOf(ctx.document, 55 - 24, 14)).toBe('#f5f4ef');
+    expect(listText(ctx.document)).toContain('Black ×9');
+
+    // mirror + eraser wipes both halves in one pass
+    fireClick(btn);
+    fireClick(ctx.document.querySelector('[data-cv-tool="eraser"]')!);
+    firePointer(ctx.window, svg, 'pointerdown', px(20, 12).cx, px(20, 12).cy);
+    firePointer(ctx.window, svg, 'pointerup', px(20, 12).cx, px(20, 12).cy);
+    expect(fillOf(ctx.document, 20, 12)).toBe('#f5f4ef');
+    expect(fillOf(ctx.document, 55 - 20, 12)).toBe('#f5f4ef');
+    expect(listText(ctx.document)).toContain('Black ×7');
+  });
+
   it('picking a color switches the tool back to brush', () => {
     fireClick(ctx.document.querySelector('[data-cv-tool="eraser"]')!);
     fireClick(ctx.document.querySelector('[data-cv-color="pink"]')!);

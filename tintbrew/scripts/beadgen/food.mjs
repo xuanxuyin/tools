@@ -131,7 +131,7 @@ export const FOOD = [
   // ---------------- strawberry ----------------
   {
     slug: 'strawberry', name: 'Strawberry', category: 'food', difficulty: 'easy',
-    W: 50, H: 54, mirror: false, singlesOk: ['S'],
+    W: 50, H: 54, mirror: true, singlesOk: ['S'],
     zones: {
       K: { label: 'outline', color: 'black' },
       R: { label: 'berry', color: 'cherry' },
@@ -262,7 +262,7 @@ export const FOOD = [
   // ---------------- sushi-roll ----------------
   {
     slug: 'sushi-roll', name: 'Sushi Roll', category: 'food', difficulty: 'medium',
-    W: 52, H: 46, mirror: false, singlesOk: ['S'],
+    W: 52, H: 46, mirror: true, singlesOk: ['S'],
     zones: {
       N: { label: 'nori ring', color: 'black' },
       W: { label: 'rice', color: 'white' },

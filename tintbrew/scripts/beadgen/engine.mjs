@@ -276,6 +276,34 @@ export function rasterize(meta) {
     grid.push(row);
   }
 
+  // mirror:true designs must end up exactly mirror-symmetric. Supersample
+  // votes on integer-grid boundaries split ~50/50 and can round opposite
+  // ways on the two sides (a lone bead sticking out of one cheek, one nori
+  // edge a bead wider). Restore symmetry by OR-ing occupancy across the
+  // axis: a cell only ever GAINS its partner's zone char, never loses one,
+  // so one-sided shading drawn inside the body is untouched. Pairs listed
+  // in asymOk keep their one-sided occupancy on purpose (unicorn mane locks).
+  // Runs BEFORE the rim pass so gained edge cells get their black outline.
+  if (meta.mirror) {
+    const ok = new Set((meta.asymOk ?? []).map(([x, y]) => `${x},${y}`));
+    for (let y = 0; y < GH; y++) {
+      const chars = [...grid[y]];
+      for (let x = 0; x < GW / 2; x++) {
+        const mx = GW - 1 - x;
+        if (ok.has(`${x},${y}`) || ok.has(`${mx},${y}`)) continue;
+        const a = chars[x], b = chars[mx];
+        if (a !== '.' && b === '.') {
+          chars[mx] = a;
+          counts.set(a, (counts.get(a) ?? 0) + 1);
+        } else if (b !== '.' && a === '.') {
+          chars[x] = b;
+          counts.set(b, (counts.get(b) ?? 0) + 1);
+        }
+      }
+      grid[y] = chars.join('');
+    }
+  }
+
   // K rim pass: zones in `rim` get a black rim where they touch empty space,
   // or where they touch a zone listed in `rimAgainst[z]`. Marks are decided
   // against the pre-rim grid and applied afterwards — converting cells

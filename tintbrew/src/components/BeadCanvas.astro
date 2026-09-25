@@ -18,6 +18,9 @@ const { view } = Astro.props;
 const U = 10; // viewBox units per bead cell, matches BeadFigure
 const G = 16; // coordinate gutter (viewBox units) above and left of the grid —
 // wide enough for 12-unit bold labels (two digits) to stay legible at screen and print scale
+const MAX_SCALE = 1.25; // rendered-width cap: 12-unit labels land at ≤15px screen px
+// (the vision-verified comfortable size), and mini patterns stay mini instead
+// of the blank canvas stretching to full column width
 const { grid, def } = view;
 const w = def.width * U;
 const h = grid.length * U;
@@ -48,6 +51,7 @@ grid.forEach((row, y) => {
         data-cols={def.width}
         data-rows={grid.length}
         viewBox={`0 0 ${w + G} ${h + G}`}
+        style={`max-width:${Math.round((w + G) * MAX_SCALE)}px`}
         role="img"
         aria-label={`${def.name} blank bead canvas — paint it in your own colors`}
       >
@@ -87,8 +91,10 @@ grid.forEach((row, y) => {
       <p class="side-note">
         Every bead of the {def.name.toLowerCase()} is white and waiting. Pick a color,
         then click — or drag in any of the eight directions — and the brush carries it
-        along your stroke. The eraser wipes beads back to white, and the list below
-        counts exactly what you've placed.
+        along your stroke. Turn on <strong>Mirror</strong> and every stroke lands on both
+        halves of the board at once, so symmetric designs paint in half the time. The
+        eraser wipes beads back to white, and the list below counts exactly what you've
+        placed.
       </p>
       <div class="tool-row" role="group" aria-label="Paint tools">
         <button type="button" class="btn tool-btn active" data-cv-tool="brush" aria-pressed="true">
@@ -96,6 +102,15 @@ grid.forEach((row, y) => {
         </button>
         <button type="button" class="btn tool-btn" data-cv-tool="eraser" aria-pressed="false">
           Eraser
+        </button>
+        <button
+          type="button"
+          class="btn tool-btn"
+          data-cv-mirror
+          aria-pressed="false"
+          title="Every stroke lands on the mirrored cell too"
+        >
+          Mirror
         </button>
         <button type="button" class="btn tool-btn" data-cv-clear>Clear all</button>
       </div>
@@ -126,7 +141,9 @@ grid.forEach((row, y) => {
 
 <style>
   .paint-card {
-    grid-column: 1;
+    /* spans the studio's side column too: the canvas needs the full row width
+       to keep coordinate labels readable while the palette sits beside it */
+    grid-column: 1 / -1;
     position: relative; /* anchors the island's floating cursor badge */
   }
   /* Same figure dressing as the reference/blank cards — the page's .fig-card
@@ -151,34 +168,33 @@ grid.forEach((row, y) => {
   .fig-card .bead-fig {
     display: block;
     width: 100%; /* without this the svg falls back to intrinsic ~416px, shrinking every label */
+    margin-inline: auto; /* centers the board when the max-width cap binds (minis) */
     height: auto;
     background: var(--paper, #fbfaf7);
     border-radius: 10px;
   }
   .paint-body {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: grid; /* single stacked column on narrow screens */
     gap: var(--sp-4);
     align-items: start;
+  }
+  /* Canvas left, tools right — with the tools below, the palette sat a full
+     screen-height under the board (user: can't see colors and canvas together). */
+  @media (min-width: 901px) {
+    .paint-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: var(--sp-4);
+      align-items: start;
+    }
+    .paint-tools {
+      position: sticky;
+      top: 12px; /* palette stays on screen while painting a tall board */
+    }
   }
   .paint-tools h3 {
     font-size: 1.15rem;
     margin-bottom: var(--sp-2);
-  }
-  /* Full-width canvas on top, tools in two columns below — a 320px side column
-     capped the figure at ~416px and shrank the coordinate labels to ~8px. */
-  @media (min-width: 901px) {
-    .paint-tools {
-      display: grid;
-      grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
-      gap: var(--sp-2) var(--sp-4);
-      align-items: start;
-    }
-    .paint-tools h3,
-    .paint-tools .side-note,
-    .paint-tools .cv-list {
-      grid-column: 1 / -1;
-    }
   }
   .tool-row {
     display: flex;

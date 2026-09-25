@@ -205,30 +205,18 @@ const zoneTotal = view.regions.length;
     grid-template-columns: 1fr 1fr;
     gap: var(--sp-4);
   }
-  /* The zone picker sticks next to the templates: pick a color and the
-     effect is on screen without scrolling. */
+  /* Static, row 1 only — NOT sticky: Chrome constrains a sticky grid item
+     to the whole grid container, not its own grid area, so a stuck zone
+     panel kept sliding over the paint canvas below (double-text overlap).
+     The paint canvas carries its own palette; zone chips stop mattering
+     once you scroll past the templates. */
   .studio-side {
     grid-column: 2;
-    grid-row: 1 / 3;
-    position: sticky;
-    top: 12px;
-    max-height: calc(100vh - 24px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding-right: 4px;
+    grid-row: 1;
   }
-  /* Room to scroll the open chip's popover fully into the sticky sidebar. */
-  .studio-side .zone-list { padding-bottom: 176px; }
   @media (max-width: 900px) {
     .studio { grid-template-columns: 1fr; }
     .studio-grid { grid-template-columns: 1fr; }
-    .studio-side {
-      position: static;
-      max-height: none;
-      overflow: visible;
-      padding-right: 0;
-    }
-    .studio-side .zone-list { padding-bottom: 0; }
   }
   .fig-card {
     margin: 0;

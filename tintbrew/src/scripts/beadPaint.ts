@@ -19,6 +19,7 @@ class PaintCanvas {
   private cells = new Map<number, SVGRectElement>();
   private painted = new Map<number, string>(); // cell index -> bead id
   private tool: 'brush' | 'eraser' = 'brush';
+  private mirror = false; // paint the mirrored cell too — symmetric boards in half the strokes
   private beadId = 'black';
   private hex = beadById('black')!.hex;
   private drawing = false;
@@ -78,6 +79,14 @@ class PaintCanvas {
     const toolBtn = target.closest<HTMLButtonElement>('[data-cv-tool]');
     if (toolBtn) {
       this.setTool(toolBtn.dataset.cvTool === 'eraser' ? 'eraser' : 'brush');
+      return;
+    }
+
+    const mirrorBtn = target.closest<HTMLButtonElement>('[data-cv-mirror]');
+    if (mirrorBtn) {
+      this.mirror = !this.mirror;
+      mirrorBtn.classList.toggle('active', this.mirror);
+      mirrorBtn.setAttribute('aria-pressed', this.mirror ? 'true' : 'false');
       return;
     }
 
@@ -186,6 +195,13 @@ class PaintCanvas {
 
   private paintCell(cell: PaintCell) {
     const cols = Number(this.svg.dataset.cols);
+    this.applyCell(cell);
+    if (this.mirror) this.applyCell({ x: cols - 1 - cell.x, y: cell.y });
+    this.queueList();
+  }
+
+  private applyCell(cell: PaintCell) {
+    const cols = Number(this.svg.dataset.cols);
     const idx = cell.y * cols + cell.x;
     const el = this.cells.get(idx);
     if (!el) return;
@@ -199,7 +215,6 @@ class PaintCanvas {
       el.classList.remove('colored');
       this.painted.delete(idx);
     }
-    this.queueList();
   }
 
   private clearAll() {
