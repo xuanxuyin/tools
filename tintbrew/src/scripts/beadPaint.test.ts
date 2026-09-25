@@ -16,6 +16,9 @@ const htmlPath = resolve(fileURLToPath(import.meta.url), '../../../dist/perler-b
 const COLS = 56; // cat grid width (v5 showpiece scale)
 const ROWS = 40; // cat grid height
 const CELL_PX = 20; // stubbed layout: 56 cols × 20px = 1120px wide board
+const GUTTER = 6; // coordinate gutter in viewBox units (BeadCanvas.astro)
+// viewBox is gutter + grid, so one cell spans (10 × PPU) stubbed pixels
+const PPU = (COLS * CELL_PX) / (COLS * 10 + GUTTER);
 
 async function loadPage() {
   const html = readFileSync(htmlPath, 'utf8');
@@ -54,7 +57,10 @@ function fireClick(el: Element) {
 }
 
 /** client-pixel center of grid cell (col, row) under the stubbed layout */
-const px = (col: number, row: number) => ({ cx: col * CELL_PX + 5, cy: row * CELL_PX + 5 });
+const px = (col: number, row: number) => ({
+  cx: (GUTTER + col * 10 + 5) * PPU,
+  cy: (GUTTER + row * 10 + 5) * PPU,
+});
 
 const fillOf = (doc: Document, col: number, row: number) =>
   doc
@@ -79,6 +85,14 @@ describe('paint canvas island (real SSR markup)', () => {
     expect(cells.length + pegs.length).toBe(COLS * ROWS);
     expect(fillOf(ctx.document, 12, 12)).toBe('#f5f4ef'); // row 12 outline bead starts white
     expect(ctx.document.querySelector('[data-cv-tool="brush"]')!.classList.contains('active')).toBe(true);
+
+    // every-5 coordinate labels along the top and left edges
+    const labels = [...ctx.document.querySelectorAll('[data-bead-canvas] .cv-label')].map(
+      (t) => t.textContent?.trim(),
+    );
+    expect(labels).toContain('5');
+    expect(labels).toContain('55'); // last top tick on the 56-wide cat
+    expect(labels).toContain('40'); // last left tick on the 40-row cat
   });
 
   it('tap paints one bead with the selected color', () => {

@@ -46,6 +46,8 @@ class BeadStudio {
 
     root.addEventListener('click', (e) => this.onClick(e));
     root.addEventListener('input', (e) => this.onInput(e));
+    // some browsers only fire `change` when the native dialog is confirmed
+    root.addEventListener('change', (e) => this.onInput(e));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closePicker();
     });
@@ -62,6 +64,24 @@ class BeadStudio {
       closePicker();
       return;
     }
+
+    const use = target.closest<HTMLButtonElement>('[data-bead-use]');
+    if (use && openPicker) {
+      const input = openPicker.chip.querySelector<HTMLInputElement>('[data-custom]');
+      const hex = input ? normalizeHex(input.value) : null;
+      if (hex) {
+        const bead = nearestBead(hex);
+        this.apply(openPicker.chip.dataset.zone!, bead.hex, bead.id, bead.hex === hex);
+      }
+      closePicker();
+      return;
+    }
+
+    // The popover lives inside the zone chip <button>, so any click on the
+    // custom color input (or elsewhere in the popover) would bubble into the
+    // chip-toggle branch below and tear the picker down mid-click — the
+    // native dialog never opens. Swallow popover clicks instead.
+    if (openPicker && target.closest('.bead-picker')) return;
 
     const chip = target.closest<HTMLButtonElement>('[data-zone]');
     if (chip) {
@@ -112,11 +132,15 @@ class BeadStudio {
     const hint = openPicker.chip.querySelector('.picker-hint');
     if (hint) {
       hint.textContent =
-        bead.hex === hex ? `exact match: ${bead.name}` : `nearest bead: ${bead.name}`;
+        bead.hex === hex
+          ? `exact match: ${bead.name}`
+          : `${hex} → nearest bead: ${bead.name}`;
     }
   }
 
   private openPicker(chip: HTMLButtonElement) {
+    const zone = this.zones.get(chip.dataset.zone!);
+
     const picker = document.createElement('div');
     picker.className = 'bead-picker no-print';
 
@@ -130,21 +154,33 @@ class BeadStudio {
       b.style.background = bead.hex;
       b.title = bead.name;
       b.setAttribute('aria-label', `Color zone with ${bead.name}`);
+      if (zone && bead.id === zone.beadId) {
+        b.classList.add('active');
+        b.setAttribute('aria-pressed', 'true');
+      }
       grid.appendChild(b);
     }
     picker.appendChild(grid);
 
-    const row = document.createElement('label');
+    // div, not label: a label would forward the Use-button click to the input
+    const row = document.createElement('div');
     row.className = 'picker-custom';
     const input = document.createElement('input');
     input.type = 'color';
     input.dataset.custom = '';
+    input.value = zone?.hex ?? '#888888';
     input.setAttribute('aria-label', 'Pick a custom color for this zone');
     row.appendChild(input);
     const hint = document.createElement('span');
     hint.className = 'picker-hint';
-    hint.textContent = 'custom — snapped to the nearest bead';
+    hint.textContent = `current: ${zone ? (beadById(zone.beadId)?.name ?? zone.hex) : ''}`;
     row.appendChild(hint);
+    const use = document.createElement('button');
+    use.type = 'button';
+    use.className = 'picker-use';
+    use.dataset.beadUse = '';
+    use.textContent = 'Use color';
+    row.appendChild(use);
     picker.appendChild(row);
 
     chip.appendChild(picker);

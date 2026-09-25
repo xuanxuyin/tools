@@ -131,8 +131,15 @@ class PaintCanvas {
     if (!rect.width || !rect.height) return null;
     const cols = Number(this.svg.dataset.cols);
     const rows = Number(this.svg.dataset.rows);
-    const x = Math.floor(((e.clientX - rect.left) / rect.width) * cols);
-    const y = Math.floor(((e.clientY - rect.top) / rect.height) * rows);
+    const U = 10; // viewBox units per cell, matches BeadCanvas.astro
+    // The viewBox is a square coordinate gutter plus the cell grid itself —
+    // derive both from the attribute so the math tracks any gutter size.
+    const vb = (this.svg.getAttribute('viewBox') ?? '').trim().split(/\s+/).map(Number);
+    const vbW = vb[2] || cols * U;
+    const scale = rect.width / vbW;
+    const gutter = vbW - cols * U;
+    const x = Math.floor(((e.clientX - rect.left) / scale - gutter) / U);
+    const y = Math.floor(((e.clientY - rect.top) / scale - gutter) / U);
     if (x < 0 || y < 0 || x >= cols || y >= rows) return null;
     return this.cells.has(y * cols + x) ? { x, y } : null;
   }

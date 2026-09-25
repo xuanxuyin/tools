@@ -16,9 +16,15 @@ interface Props {
 
 const { view } = Astro.props;
 const U = 10; // viewBox units per bead cell, matches BeadFigure
+const G = 6; // coordinate gutter (viewBox units) above and left of the grid
 const { grid, def } = view;
 const w = def.width * U;
 const h = grid.length * U;
+
+const colTicks: number[] = []; // every-5 column numbers along the top edge
+for (let c = 5; c <= def.width; c += 5) colTicks.push(c);
+const rowTicks: number[] = []; // every-5 row numbers along the left edge
+for (let r = 5; r <= grid.length; r += 5) rowTicks.push(r);
 
 const paintable: { x: number; y: number }[] = [];
 const pegs: { x: number; y: number }[] = [];
@@ -40,20 +46,32 @@ grid.forEach((row, y) => {
         data-bead-canvas
         data-cols={def.width}
         data-rows={grid.length}
-        viewBox={`0 0 ${w} ${h}`}
+        viewBox={`0 0 ${w + G} ${h + G}`}
         role="img"
         aria-label={`${def.name} blank bead canvas — paint it in your own colors`}
       >
+        <g class="cv-coords" aria-hidden="true">
+          {colTicks.map((c) => (
+            <text class="cv-label" x={G + c * U - U / 2} y={G / 2}>
+              {c}
+            </text>
+          ))}
+          {rowTicks.map((r) => (
+            <text class="cv-label" x={G / 2} y={G + r * U - U / 2}>
+              {r}
+            </text>
+          ))}
+        </g>
         {pegs.map((p) => (
-          <circle class="cv-peg" cx={p.x + U / 2} cy={p.y + U / 2} r={1.1} />
+          <circle class="cv-peg" cx={p.x + G + U / 2} cy={p.y + G + U / 2} r={1.1} />
         ))}
         {paintable.map((c) => (
           <rect
             class="cv-cell"
             data-cx={c.x / U}
             data-cy={c.y / U}
-            x={c.x + 0.8}
-            y={c.y + 0.8}
+            x={c.x + G + 0.8}
+            y={c.y + G + 0.8}
             width={U - 1.6}
             height={U - 1.6}
             rx={2.6}
@@ -178,6 +196,14 @@ grid.forEach((row, y) => {
   }
   .bead-fig[data-bead-canvas] .cv-peg {
     fill: rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+  }
+  .bead-fig[data-bead-canvas] .cv-label {
+    fill: rgba(0, 0, 0, 0.45);
+    font-size: 4.2px;
+    font-family: ui-monospace, monospace;
+    text-anchor: middle;
+    dominant-baseline: central;
     pointer-events: none;
   }
   .bead-fig[data-bead-canvas] .cv-cell {

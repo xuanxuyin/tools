@@ -10,11 +10,12 @@
 
 > 9/24 👤 未完项全部顺延（索引配额 PT 午夜已重置）；9/24 已完项归档在下方。
 
-- [ ] 👤 **周一例行收尾（只剩一步）**：两站**效果 28 天环比**数字发 Claude（chartglade 顺带看查询明细有无新冒头词）
+- [x] 👤 ~~周一例行收尾~~ **✅ 9/25 完成：两站 28 天数据入档**（chartglade 3 点击/1,194 曝光/排名 43.1，过基准档上限；tintbrew 10/**11,503**/37.1，超 1 月乐观档 3 倍）—— 判读明细各 PLAN 9/25 行
 - [ ] 👤 tintbrew CF WA 数据面收尾（9/20 手动 token 上线后唯一余项）：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
 - [ ] 👤（顺延）tintbrew Pinterest **设置照常做**（账号/board/域名认领，[DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1）—— chartglade 三连拦先例：链接 pin 首测定 **10/01** 不硬试，色卡 pin 批（§3.3）改"门开则补"；**10 月第 1 周万圣分发主力 = Reddit 烘焙帖**（§3.4）
-- [ ] 👤 **request indexing 每日例行（今日 10 条）**：GSC → URL 检查 → 逐条"请求编入索引"，今日打头：① /1-cm-graph-paper/ ② /5mm-graph-paper/（9/24 配额断点续），此后支柱页 + 高量字母页 z/b/k，每天 ~10 条啃 49 页池，跑完一轮回传数字 Claude 对账；⚠️ 若报"提交索引编制请求时出现问题"= GSC 界面 Google 侧瞬时故障（站端已巡检全 200）：等 2~5 分钟刷新重试，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
+- [x] 👤 ~~request indexing 新页批次~~ **✅ 9/25 完成：12/12 新页当日全部推完**（万圣 4 + graph paper 簇 7 + name-tracing，超每日 ~10 常规量）→ 累计手动请求 **26/64**（9/8×5 + 9/9×9 + 9/25×12）。**下次例行继续**：支柱变体页（multiplication 1-20/blank/1-15、decimal/anchor place-value）+ 字母页 g/h/l 打头，每天 ~10 条啃剩余 ~37 页池，跑完一轮回传数字 Claude 对账；⚠️ 若报"提交索引编制请求时出现问题"= GSC 界面 Google 侧瞬时故障（站端已巡检全 200）：等 2~5 分钟刷新重试，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
 - [ ] 👤（可选，2 分钟）CF 修复 http://www.chartglade.com/ 403：CF dash → chartglade.com → Rules → Redirect Rules → 新建：Hostname equals `www.chartglade.com` → 301 → `https://chartglade.com/${http.request.uri.path}`（保留路径）；顺手对比 tintbrew zone 的 SSL/TLS → Edge Certificates → Always Use HTTPS 状态。不修无实害
+- [x] 🤖 ~~拼豆 studio 两修~~ **✅ 9/25 上线**：zone 取色器自定义色点了没反应（弹层挂 chip 按钮内、点击冒泡触发切换当场拆弹层 → 吞点击 + Use color 确定钮 + 当前色回显）｜ Blank canvas 加每 5 格坐标（顶列/左行，随图打印）；142→145 测试绿（PLAN 9/25 行）
 - [x] 👤 ~~拼豆提案 AITDK 拉量（16 词）~~ **✅ 9/25 完成 → 立项成立，落位 tintbrew（👤 当日裁决推翻初判 chartglade：「成年女孩也爱卡通上色」「和衣服搭配功能一样，做 tintbrew 里」）**：主族 ≈30.4K/月过 10K 定标 3 倍（patterns 14.8K + ideas 9.9K + fuse/easy/templates/christmas/animals/halloween/food），KD 全带 14~35 → **tintbrew 拼豆上色族首批 5 页（hub + easy/animals/food/christmas），10-15 前**，全原创图案零 IP；perler beads 40.5K 导航词 KD41 弃、pony bead 6.6K 第二批。明细 [research/fuse-bead-patterns.md](../research/fuse-bead-patterns.md) §七 + tintbrew PLAN 9/25 行
 - [x] 🤖 ~~tintbrew 穿搭页二连修（👤 "脖子脱离身体了""我在哪个页面可以自己搭配"）~~ **✅ 9/25 凌晨上线**：① 人台颈部断层修复（颈路径终点 y64 vs 躯干顶缘 y74 的 ~10px 空白 → 颈延长塞入躯干下；360px 放大截图 + AI 复检两图确认 chin→neck→torso 连续无白缝）② combos 后新增 **Style it yourself** 自由搭配卡（锚色 top + charcoal 裤 + ivory 鞋 + 金吊坠起步，复用换色 island 零新脚本，预设/自定义任选，read/阶梯实时重算）；114 测试全绿（PLAN 9/25 行）
 

@@ -359,6 +359,21 @@ const zoneTotal = view.regions.length;
   }
   .picker-custom input { width: 34px; height: 26px; padding: 0; border: 1px solid var(--border); border-radius: 6px; background: none; cursor: pointer; }
   .picker-hint { font-style: italic; }
+  .picker-bead.active {
+    box-shadow: 0 0 0 2px var(--accent-soft, #ede9fe), 0 0 0 4px var(--accent, #6d28d9);
+  }
+  .picker-use {
+    margin-left: auto;
+    font: inherit;
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border: 1px solid var(--accent, #6d28d9);
+    border-radius: 999px;
+    color: var(--accent, #6d28d9);
+    background: var(--accent-soft, #ede9fe);
+    cursor: pointer;
+  }
+  .picker-use:hover { background: var(--accent, #6d28d9); color: var(--accent-contrast, #fff); }
 
   /* The island rebuilds the bead list at runtime — those nodes are outside
      the scoped tree, so their rules live here. */
