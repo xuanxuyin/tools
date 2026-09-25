@@ -51,6 +51,16 @@ class BeadStudio {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closePicker();
     });
+    // Clicks OUTSIDE the studio section never reach the root listener above
+    // (they don't pass through it), so without this the sheet would ignore
+    // taps on the hero, prose, footer… Clicks inside the studio are left to
+    // the root handler, which already closes on its own outside-the-picker
+    // clicks — closePicker is idempotent, so a double run is harmless.
+    document.addEventListener('click', (e) => {
+      if (!openPicker) return;
+      if ((e.target as HTMLElement | null)?.closest?.('[data-bead-studio]')) return;
+      closePicker();
+    });
   }
 
   private onClick(e: Event) {

@@ -321,6 +321,23 @@ const zoneTotal = view.regions.length;
 </style>
 
 <style is:global>
+  /* Template figures size against the VIEWPORT, not just the card width: the
+     color sheet pins ~280px to the bottom of the screen, and a card grown
+     from width alone (bear: ~408px tall) could never sit entirely above it
+     on a short viewport — pattern and swatches can't co-exist (user report).
+     max-height with width/height auto keeps the grid's ratio and letterboxes
+     it centered; wide screens stay width-bound and unchanged. Reserve =
+     sheet ~291 + its 16px stand-off + card chrome ~64 + a small gap. Global
+     because the svg lives in BeadFigure (scoped page rules don't cross it). */
+  .studio-grid .fig-card .bead-fig {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: max(216px, calc(100vh - 385px));
+    max-height: max(216px, calc(100dvh - 385px));
+    margin-inline: auto;
+  }
+
   /* Picker sheet created by scripts/bead.ts lives outside the scoped tree.
      Fixed bottom sheet, not an inline popover under the chip: the chips sit
      below the template cards, so an inline picker forced a scroll to reach
@@ -338,18 +355,18 @@ const zoneTotal = view.regions.length;
     background: var(--bg, #fff);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 12px;
+    padding: 10px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   }
   .picker-title {
     font-size: 0.85rem;
     font-weight: 600;
-    margin: 0 0 8px;
+    margin: 0 0 6px;
   }
   .picker-grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    gap: 6px;
+    gap: 5px;
   }
   .picker-bead {
     width: 100%;
@@ -363,7 +380,7 @@ const zoneTotal = view.regions.length;
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 8px;
+    margin-top: 6px;
     font-size: 0.8rem;
     color: var(--ink-soft, #666);
   }
