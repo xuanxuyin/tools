@@ -244,9 +244,9 @@ const zoneTotal = view.regions.length;
     gap: var(--sp-2);
   }
   .studio-head h2 { margin-bottom: 0; }
-  /* the note lives BELOW the chips: a chip popover opens downward and may
-     cover it — instructions sit under what they describe without stealing
-     height from the templates at pick time */
+  /* the note lives BELOW the chips: instructions sit under what they
+     describe, and the color sheet is a fixed overlay so nothing here is
+     pushed around at pick time */
   .side-note { font-size: 0.9rem; color: var(--ink-soft, #666); margin: var(--sp-2) 0 0; }
   .zone-list {
     list-style: none;
@@ -257,7 +257,6 @@ const zoneTotal = view.regions.length;
     gap: 6px;
   }
   .zone-chip {
-    position: relative;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -322,19 +321,30 @@ const zoneTotal = view.regions.length;
 </style>
 
 <style is:global>
-  /* Picker popover created by scripts/bead.ts lives outside the scoped tree. */
+  /* Picker sheet created by scripts/bead.ts lives outside the scoped tree.
+     Fixed bottom sheet, not an inline popover under the chip: the chips sit
+     below the template cards, so an inline picker forced a scroll to reach
+     the swatches — and scrolling pushed the pattern off-screen exactly when
+     you needed to see it (user report, panda page). Pinned to the viewport
+     bottom it never needs scrolling; the pattern stays wherever you left it.
+     No ancestor of .studio sets transform/filter, so fixed = viewport. */
   .bead-picker {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(100% + 6px);
-    max-width: 420px; /* chips can be wider than the old 320px rail — keep swatches bead-sized */
-    z-index: 30;
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(440px, calc(100vw - 32px));
+    z-index: 60;
     background: var(--bg, #fff);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.14);
+    padding: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .picker-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0 0 8px;
   }
   .picker-grid {
     display: grid;

@@ -16,11 +16,11 @@ interface ZoneState {
   exact: boolean;
 }
 
-let openPicker: { chip: HTMLButtonElement; root: HTMLElement } | null = null;
+let openPicker: { chip: HTMLButtonElement; root: HTMLElement; picker: HTMLElement } | null = null;
 
 function closePicker() {
   if (!openPicker) return;
-  openPicker.chip.querySelector('.bead-picker')?.remove();
+  openPicker.picker.remove();
   openPicker.chip.setAttribute('aria-expanded', 'false');
   openPicker.chip.classList.remove('zone-open');
   openPicker = null;
@@ -67,7 +67,7 @@ class BeadStudio {
 
     const use = target.closest<HTMLButtonElement>('[data-bead-use]');
     if (use && openPicker) {
-      const input = openPicker.chip.querySelector<HTMLInputElement>('[data-custom]');
+      const input = openPicker.picker.querySelector<HTMLInputElement>('[data-custom]');
       const hex = input ? normalizeHex(input.value) : null;
       if (hex) {
         const bead = nearestBead(hex);
@@ -77,10 +77,11 @@ class BeadStudio {
       return;
     }
 
-    // The popover lives inside the zone chip <button>, so any click on the
-    // custom color input (or elsewhere in the popover) would bubble into the
-    // chip-toggle branch below and tear the picker down mid-click — the
-    // native dialog never opens. Swallow popover clicks instead.
+    // The sheet hangs off the studio root but is NOT inside a chip, so its
+    // clicks reach this handler without matching any branch below. Swallow
+    // them anyway: an explicit "inside the picker" guard reads clearer than
+    // relying on the final outside-click check, and keeps the native color
+    // dialog safe if the branches above ever change order.
     if (openPicker && target.closest('.bead-picker')) return;
 
     const chip = target.closest<HTMLButtonElement>('[data-zone]');
@@ -94,7 +95,9 @@ class BeadStudio {
       return;
     }
 
-    // tapping a bead inside the blank template selects that zone
+    // Tapping a bead inside the blank template selects that zone. The picker
+    // is a fixed bottom sheet, so no scroll is needed or wanted here — the
+    // whole point is that the pattern stays exactly where the user put it.
     const beadEl = target.closest<SVGElement>('[data-bead-mode="blank"] [data-region]');
     if (beadEl) {
       const key = beadEl.dataset.region!;
@@ -102,13 +105,6 @@ class BeadStudio {
       if (chip) {
         closePicker();
         this.openPicker(chip);
-        // Bring the chip into view WITH room below it for the popover — the
-        // chip sits under the templates now, and a bare scrollIntoView
-        // ('nearest') can leave the popover opening below the fold.
-        const r = chip.getBoundingClientRect();
-        const over = r.bottom + 250 - window.innerHeight;
-        if (over > 0) window.scrollBy?.({ top: over, behavior: 'smooth' });
-        else if (r.top < 0) window.scrollBy?.({ top: r.top - 12, behavior: 'smooth' });
       }
       return;
     }
@@ -135,7 +131,7 @@ class BeadStudio {
     if (!hex) return;
     const bead = nearestBead(hex);
     this.apply(openPicker.chip.dataset.zone!, bead.hex, bead.id, bead.hex === hex);
-    const hint = openPicker.chip.querySelector('.picker-hint');
+    const hint = openPicker.picker.querySelector('.picker-hint');
     if (hint) {
       hint.textContent =
         bead.hex === hex
@@ -149,6 +145,16 @@ class BeadStudio {
 
     const picker = document.createElement('div');
     picker.className = 'bead-picker no-print';
+
+    // The sheet is detached from the chip (fixed at the viewport bottom), so
+    // it carries the zone's name itself — you always know what you're dyeing.
+    const label = chip.querySelector('.zone-label')?.textContent?.trim();
+    if (label) {
+      const title = document.createElement('p');
+      title.className = 'picker-title';
+      title.textContent = `${label} zone`;
+      picker.appendChild(title);
+    }
 
     const grid = document.createElement('div');
     grid.className = 'picker-grid';
@@ -189,10 +195,14 @@ class BeadStudio {
     row.appendChild(use);
     picker.appendChild(row);
 
-    chip.appendChild(picker);
+    // Child of the studio root, not the chip: a fixed bottom sheet that
+    // scrolls WITH the viewport, so reaching the swatches never scrolls the
+    // template off-screen (and the picker markup stays out of the chip
+    // <button>, where nested buttons were invalid HTML anyway).
+    this.root.appendChild(picker);
     chip.setAttribute('aria-expanded', 'true');
     chip.classList.add('zone-open');
-    openPicker = { chip, root: this.root };
+    openPicker = { chip, root: this.root, picker };
   }
 
   /** Color one zone and recompute everything derived from the zone colors. */

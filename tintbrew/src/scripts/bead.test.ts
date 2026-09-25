@@ -1,11 +1,12 @@
 /**
  * Zone-studio island tests against the real SSR markup from `astro build`
- * (the cat page). The picker popover is appended inside the zone chip
- * <button>, so clicks on the custom color input used to bubble into the
- * chip-toggle branch and tear the popover down mid-click — the native color
- * dialog never opened. These lock the fix: popover clicks are swallowed, the
- * current zone color is echoed (active bead + seeded input), custom hexes
- * apply live (snapped to the nearest bead), and the Use button commits.
+ * (the cat page). The picker is a fixed bottom sheet appended to the studio
+ * root (it used to live inside the zone chip <button>, where clicks on the
+ * custom color input bubbled into the chip-toggle branch and tore it down
+ * mid-click — the native color dialog never opened). These lock the behavior:
+ * sheet clicks are swallowed, the current zone color is echoed (active bead +
+ * seeded input), custom hexes apply live (snapped to the nearest bead), and
+ * the Use button commits.
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -45,7 +46,7 @@ function openPicker(doc: Document) {
     '[data-bead-studio] [data-zone]',
   ) as unknown as HTMLButtonElement;
   fireClick(chip);
-  const picker = chip.querySelector('.bead-picker');
+  const picker = doc.querySelector('[data-bead-studio] .bead-picker');
   expect(picker).toBeTruthy();
   return { chip, picker: picker! };
 }
@@ -66,17 +67,17 @@ describe('zone studio island (real SSR markup)', () => {
   });
 
   it('clicking the custom input or hint does not close the picker (regression)', () => {
-    const { chip } = openPicker(ctx.document);
-    fireClick(chip.querySelector('[data-custom]')!);
-    expect(chip.querySelector('.bead-picker')).toBeTruthy();
-    fireClick(chip.querySelector('.picker-hint')!);
-    expect(chip.querySelector('.bead-picker')).toBeTruthy();
+    const { picker } = openPicker(ctx.document);
+    fireClick(picker.querySelector('[data-custom]')!);
+    expect(ctx.document.querySelector('[data-bead-studio] .bead-picker')).toBeTruthy();
+    fireClick(picker.querySelector('.picker-hint')!);
+    expect(ctx.document.querySelector('[data-bead-studio] .bead-picker')).toBeTruthy();
   });
 
   it('a custom hex applies live (snapped to the nearest bead) and Use commits and closes', () => {
-    const { chip } = openPicker(ctx.document);
+    const { chip, picker } = openPicker(ctx.document);
     const bead = nearestBead('#ff0000');
-    fireInput(chip.querySelector('[data-custom]')!, '#ff0000');
+    fireInput(picker.querySelector('[data-custom]')!, '#ff0000');
 
     const key = chip.dataset.zone!;
     const name = chip.querySelector('.zone-bead')!;
@@ -87,8 +88,8 @@ describe('zone studio island (real SSR markup)', () => {
         ?.classList.contains('colored'),
     ).toBe(true);
 
-    fireClick(chip.querySelector('[data-bead-use]')!);
-    expect(chip.querySelector('.bead-picker')).toBeNull();
+    fireClick(picker.querySelector('[data-bead-use]')!);
+    expect(ctx.document.querySelector('[data-bead-studio] .bead-picker')).toBeNull();
     expect(chip.getAttribute('aria-expanded')).toBe('false');
     expect(chip.querySelector('.zone-bead')!.textContent).toContain(bead.name); // state persists
   });
