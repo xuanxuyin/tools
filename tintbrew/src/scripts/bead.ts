@@ -102,7 +102,13 @@ class BeadStudio {
       if (chip) {
         closePicker();
         this.openPicker(chip);
-        chip.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        // Bring the chip into view WITH room below it for the popover — the
+        // chip sits under the templates now, and a bare scrollIntoView
+        // ('nearest') can leave the popover opening below the fold.
+        const r = chip.getBoundingClientRect();
+        const over = r.bottom + 250 - window.innerHeight;
+        if (over > 0) window.scrollBy?.({ top: over, behavior: 'smooth' });
+        else if (r.top < 0) window.scrollBy?.({ top: r.top - 12, behavior: 'smooth' });
       }
       return;
     }
@@ -187,14 +193,6 @@ class BeadStudio {
     chip.setAttribute('aria-expanded', 'true');
     chip.classList.add('zone-open');
     openPicker = { chip, root: this.root };
-
-    // In the sticky zone sidebar, scroll the chip toward the top so the
-    // popover below it isn't clipped by the sidebar's scroll box.
-    const side = chip.closest('.studio-side');
-    if (side instanceof HTMLElement && getComputedStyle(side).overflowY === 'auto') {
-      const below = side.clientHeight - chip.offsetTop - chip.offsetHeight;
-      if (below < 190) side.scrollTo({ top: Math.max(0, chip.offsetTop - 12), behavior: 'smooth' });
-    }
   }
 
   /** Color one zone and recompute everything derived from the zone colors. */

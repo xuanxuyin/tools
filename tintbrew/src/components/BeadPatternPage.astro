@@ -70,12 +70,13 @@ const zoneTotal = view.regions.length;
     </div>
 
     <div class="studio-side">
-      <h2>Pick a zone, pick a bead</h2>
-      <p class="side-note">
-        Every zone below is a separate area of the design. Tap one (or tap the template
-        itself), then choose from the 32 standard bead colors — or a custom color, snapped
-        to the bead you'd actually buy.
-      </p>
+      <div class="studio-head">
+        <h2>Pick a zone, pick a bead</h2>
+        <div class="studio-actions no-print">
+          <button type="button" class="btn" data-reset>Reset to reference</button>
+          <button type="button" class="btn" data-print>Print template</button>
+        </div>
+      </div>
       <ul class="zone-list">
         {view.regions.map((r) => (
           <li>
@@ -100,10 +101,11 @@ const zoneTotal = view.regions.length;
           </li>
         ))}
       </ul>
-      <div class="studio-actions no-print">
-        <button type="button" class="btn" data-reset>Reset to reference</button>
-        <button type="button" class="btn" data-print>Print template</button>
-      </div>
+      <p class="side-note">
+        Tap a zone (or the template itself), then pick from the 32 standard bead colors or a
+        custom one, snapped to the bead you'd actually buy — the template above, the chip
+        and the materials list all update together.
+      </p>
     </div>
 
     <BeadCanvas view={view} />
@@ -192,30 +194,25 @@ const zoneTotal = view.regions.length;
 </script>
 
 <style>
+  /* Single column: templates first, the zone picker right below them. The
+     old 320px right rail made the picker TALLER than the template cards —
+     by the time you reached a low zone (bear "nose"), the recolored
+     template had scrolled off the top of the screen (user report). With
+     the picker directly under the cards, a picked color always lands on a
+     picture that is still on screen. */
   .studio {
     margin-top: var(--sp-4);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--sp-4);
     align-items: start;
   }
   .studio-grid {
-    grid-column: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--sp-4);
   }
-  /* Static, row 1 only — NOT sticky: Chrome constrains a sticky grid item
-     to the whole grid container, not its own grid area, so a stuck zone
-     panel kept sliding over the paint canvas below (double-text overlap).
-     The paint canvas carries its own palette; zone chips stop mattering
-     once you scroll past the templates. */
-  .studio-side {
-    grid-column: 2;
-    grid-row: 1;
-  }
   @media (max-width: 900px) {
-    .studio { grid-template-columns: 1fr; }
     .studio-grid { grid-template-columns: 1fr; }
   }
   .fig-card {
@@ -236,12 +233,27 @@ const zoneTotal = view.regions.length;
   }
   .fig-card .hint { font-weight: 400; font-style: italic; }
   .studio-side h2, .studio-list h2 { font-size: 1.15rem; margin-bottom: var(--sp-2); }
-  .side-note { font-size: 0.9rem; color: var(--ink-soft, #666); margin: 0 0 var(--sp-3); }
+  /* compact strip: header + actions on one line, chips in columns — the
+     whole panel stays under ~2 chip rows tall so the recolored template
+     above remains on screen while picking (the point of this layout) */
+  .studio-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+  }
+  .studio-head h2 { margin-bottom: 0; }
+  /* the note lives BELOW the chips: a chip popover opens downward and may
+     cover it — instructions sit under what they describe without stealing
+     height from the templates at pick time */
+  .side-note { font-size: 0.9rem; color: var(--ink-soft, #666); margin: var(--sp-2) 0 0; }
   .zone-list {
     list-style: none;
-    margin: 0 0 var(--sp-3);
+    margin: var(--sp-2) 0 0;
     padding: 0;
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 6px;
   }
   .zone-chip {
@@ -271,7 +283,6 @@ const zoneTotal = view.regions.length;
   .zone-bead.zone-approx::after { content: ' ≈'; }
   .zone-count { font-size: 0.85rem; color: var(--ink-soft, #666); font-variant-numeric: tabular-nums; }
   .studio-actions { display: flex; gap: var(--sp-2); }
-  .studio-list { grid-column: 1 / -1; }
   .bead-list {
     list-style: none;
     margin: 0;
@@ -317,6 +328,7 @@ const zoneTotal = view.regions.length;
     left: 0;
     right: 0;
     top: calc(100% + 6px);
+    max-width: 420px; /* chips can be wider than the old 320px rail — keep swatches bead-sized */
     z-index: 30;
     background: var(--bg, #fff);
     border: 1px solid var(--border);
