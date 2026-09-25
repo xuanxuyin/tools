@@ -24,7 +24,7 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
   description:
     'Original fuse bead patterns for every level: animals, food, Halloween and Christmas. Recolor any area with real bead colors, then print the template and its bead list for free.',
   intro: [
-    'Every pattern on this page was drawn here, bead by bead — no Pinterest reposts, no characters you are not allowed to sell. 46 designs across animals, food, minis, Halloween and Christmas, each one sized for a standard square pegboard.',
+    'Every pattern on this page was drawn here, bead by bead — no Pinterest reposts, no characters you are not allowed to sell. 46 designs across animals, food, minis, Halloween and Christmas, from evening-sized minis on one pegboard to a 64-bead-wide showpiece unicorn.',
     'What makes these different from a normal pattern grid: every area of a design — fur, frosting, scarf, eyes — is its own zone. Tap a zone and try any of 32 real bead colors before you commit. The bead list updates live, so you know exactly how many of each color to pull from the jar.',
     'When a design looks right, print it. The printed sheet gives you the empty template in zone outlines plus the shopping list of beads, and it fits on one letter-size page.',
   ],
@@ -35,7 +35,7 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
     },
     {
       q: 'What size pegboard do I need?',
-      a: 'All full-size designs fit a standard 16×16 small square pegboard (or one quarter of a large interlocking board). The mini designs fit an 8×8 or even a 6×6 heart or square board.',
+      a: 'The minis fit a single large interlocking pegboard (29×29). Full-size designs run 44 to 64 beads wide: most need two large interlocking boards side by side, and the unicorn needs three. Every pattern page lists its exact grid size.',
     },
     {
       q: 'Can I sell crafts I make from these patterns?',
@@ -60,8 +60,8 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
     description:
       'Free perler bead animal patterns: cat, bunny, panda, fox, owl, penguin, dog, bear, frog, chick, dinosaur and unicorn. Recolor each animal online, then print the template.',
     intro: [
-      'Twelve animal faces and figures, drawn for 16×16 boards. Each one separates fur, inner ears, eyes, nose and mouth into their own zones — so a cheddar cat becomes a gray cat in two clicks, without redrawing anything.',
-      'Start with the cat or the panda if this is your first pattern: both are mostly one color with a few details. The unicorn and the fox are the crowd favorites for keychains.',
+      'Twelve animal faces and figures at showpiece scale — 56 beads wide, with the unicorn an even bigger 64. Each one separates fur, inner ears, eyes, nose and mouth into their own zones — so a cheddar cat becomes a gray cat in two clicks, without redrawing anything.',
+      'Start with the cat or the panda if this is your first showpiece: both are mostly one color with a few details. The unicorn is the flagship — about 1,600 beads, twenty-two recolorable zones.',
     ],
     faqs: [
       {
@@ -70,11 +70,11 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
       },
       {
         q: 'How long does an animal pattern take?',
-        a: 'Most crafters place the beads for one 16×16 animal in 20 to 40 minutes, plus a few minutes of ironing. Budget an hour for your first one while you learn to read the grid.',
+        a: 'Most crafters place the beads for one full-size animal in one to two hours, plus a few minutes of ironing. The unicorn is a deliberate afternoon at about 1,600 beads.',
       },
       {
         q: 'Can I turn these into keychains?',
-        a: 'Yes. Iron both sides well, add a jump ring through a corner bead hole before the final ironing pass, and the animals hold up to bag wear. The unicorn and fox are the usual suspects.',
+        a: 'The full-size animals are shelf-and-wall pieces — a cat face finishes about 11 inches wide. For keychains and zipper pulls, use the minis instead: the mini heart and butterfly are sized for exactly that. Either way, iron both sides well and add a jump ring through a corner bead before the final pass.',
       },
     ],
   },
@@ -110,13 +110,13 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
     description:
       'Free Christmas fuse bead patterns: tree, snowman, stocking, wreath, gift, gingerbread man, Santa hat, bell, reindeer and hot cocoa. Recolor and print for the holidays.',
     intro: [
-      'Ten holiday designs sized for 16×16 boards, drawn to be made in batches — the sort of project where you iron six ornaments in one sitting. Tree, snowman and stocking are the tree-and-mantel trio most people start with.',
+      'Ten holiday designs at door-and-mantel scale, drawn to be made in batches. Tree, snowman and stocking are the trio most people start with — the sort of project where the whole mantel set gets ironed in one December afternoon.',
       'Every trim is its own zone: scarf separate from snow, ribbon separate from box, lights separate from foliage. That matters in December, when you want each family member’s stocking in their own color without redesigning anything.',
     ],
     faqs: [
       {
         q: 'When should I start Christmas bead projects?',
-        a: 'Early-to-mid November. Each design takes under an hour, but batches for gifting or the classroom add up, and you do not want to be ironing on December 23.',
+        a: 'Early-to-mid November. Each design takes an hour or two, and batches for gifting or the classroom add up fast — you do not want to be ironing on December 23.',
       },
       {
         q: 'Can these hang on a real Christmas tree?',
@@ -133,15 +133,15 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
     h1: 'Easy Perler Bead Patterns',
     title: '27 Easy Perler Bead Patterns for Beginners — Free & Printable',
     description:
-      'Beginner fuse bead patterns that still look great: animals, food and minis in five or fewer zones each. Pick one, recolor it online, print the template and start beading.',
+      'Beginner fuse bead patterns that still look great: animals, food and minis with straightforward, forgiving grids. Pick one, recolor it online, print the template and start beading.',
     intro: [
-      'Every design here is marked easy in our catalog: a simple silhouette, five or fewer zones, and no fiddly single-bead details except where they are the whole point (the mini heart’s shine, the moon’s eye).',
-      'If this is your very first pattern, start with a mini — the heart is ten rows. Move up to a face design like the cat once placing beads from a printed grid feels natural.',
+      'Every design here is marked easy in our catalog: a simple silhouette, mostly-large color areas, and no fiddly single-bead details except where they are the whole point (the mini heart’s shine, the moon’s eye).',
+      'If this is your very first pattern, start with a mini — the heart is under 200 beads on one pegboard. Move up to a face design like the cat once placing beads from a printed grid feels natural.',
     ],
     faqs: [
       {
         q: 'What do I need to start with easy patterns?',
-        a: 'A small square pegboard, one assorted bead tub (any brand), ironing paper, and a household iron. Every easy pattern here works with a basic 24-color assortment.',
+        a: 'A large interlocking pegboard for the minis (two for the full-size designs), one assorted bead tub (any brand), ironing paper, and a household iron. Every easy pattern here works with a basic 24-color assortment.',
       },
       {
         q: 'What age are these easy patterns for?',

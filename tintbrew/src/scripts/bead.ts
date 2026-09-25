@@ -151,6 +151,14 @@ class BeadStudio {
     chip.setAttribute('aria-expanded', 'true');
     chip.classList.add('zone-open');
     openPicker = { chip, root: this.root };
+
+    // In the sticky zone sidebar, scroll the chip toward the top so the
+    // popover below it isn't clipped by the sidebar's scroll box.
+    const side = chip.closest('.studio-side');
+    if (side instanceof HTMLElement && getComputedStyle(side).overflowY === 'auto') {
+      const below = side.clientHeight - chip.offsetTop - chip.offsetHeight;
+      if (below < 190) side.scrollTo({ top: Math.max(0, chip.offsetTop - 12), behavior: 'smooth' });
+    }
   }
 
   /** Color one zone and recompute everything derived from the zone colors. */

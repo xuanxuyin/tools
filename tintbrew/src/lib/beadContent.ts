@@ -136,6 +136,15 @@ export function beadCrumbItems(view: PatternView): { name: string; item: string 
   ];
 }
 
+/** Pegboard guidance by grid width (standard boards: 16×16 small, 29×29 large
+ *  interlocking — the sizes real US crafters already own). */
+export function pegboardsFor(w: number): string {
+  if (w <= 16) return 'a single small square pegboard (16×16)';
+  if (w <= 29) return 'a single large interlocking pegboard (29×29)';
+  if (w <= 58) return 'two large interlocking pegboards side by side';
+  return 'three large interlocking pegboards (or two large plus one small square)';
+}
+
 /** Breadcrumb + per-pattern FAQ whose answers embed the computed counts. */
 export function patternFaqs(view: PatternView): { q: string; a: string }[] {
   return [
@@ -154,7 +163,7 @@ export function patternFaqs(view: PatternView): { q: string; a: string }[] {
     },
     {
       q: `What pegboard size does the ${view.def.name} use?`,
-      a: `A standard small square pegboard (${view.def.width}×${view.def.width} or larger). The grid is ${view.def.width} beads wide by ${view.grid.length} tall.`,
+      a: `The grid is ${view.def.width} beads wide by ${view.grid.length} tall — plan on ${pegboardsFor(view.def.width)}.`,
     },
   ];
 }

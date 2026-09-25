@@ -1,0 +1,211 @@
+---
+/**
+ * Free-paint canvas: the pattern silhouette as an all-white pegboard. Third
+ * studio card — pick a bead color, then click or drag in any of the eight
+ * directions to paint; the eraser turns beads back to white; a live
+ * materials list counts what you placed (scripts/beadPaint.ts).
+ * No-JS/print contract: the SSR figure is already a complete blank
+ * template of the shape — printable as a "draw your own colors" sheet.
+ */
+import type { PatternView } from '../lib/beadContent';
+import { BEAD_COLORS } from '../lib/beadPalette';
+
+interface Props {
+  view: PatternView;
+}
+
+const { view } = Astro.props;
+const U = 10; // viewBox units per bead cell, matches BeadFigure
+const { grid, def } = view;
+const w = def.width * U;
+const h = grid.length * U;
+
+const paintable: { x: number; y: number }[] = [];
+const pegs: { x: number; y: number }[] = [];
+grid.forEach((row, y) => {
+  for (let x = 0; x < def.width; x++) {
+    (row[x]! !== '.' ? paintable : pegs).push({ x: x * U, y: y * U });
+  }
+});
+---
+
+<div class="paint-card" data-bead-paint>
+  <div class="paint-body">
+    <figure class="fig-card">
+      <figcaption>
+        Blank canvas <span class="hint">your colors, bead by bead</span>
+      </figcaption>
+      <svg
+        class="bead-fig"
+        data-bead-canvas
+        data-cols={def.width}
+        data-rows={grid.length}
+        viewBox={`0 0 ${w} ${h}`}
+        role="img"
+        aria-label={`${def.name} blank bead canvas — paint it in your own colors`}
+      >
+        {pegs.map((p) => (
+          <circle class="cv-peg" cx={p.x + U / 2} cy={p.y + U / 2} r={1.1} />
+        ))}
+        {paintable.map((c) => (
+          <rect
+            class="cv-cell"
+            data-cx={c.x / U}
+            data-cy={c.y / U}
+            x={c.x + 0.8}
+            y={c.y + 0.8}
+            width={U - 1.6}
+            height={U - 1.6}
+            rx={2.6}
+            fill="#f5f4ef"
+          />
+        ))}
+      </svg>
+    </figure>
+
+    <div class="paint-tools no-print">
+      <h3>Draw your own version</h3>
+      <p class="side-note">
+        Every bead of the {def.name.toLowerCase()} is white and waiting. Pick a color,
+        then click — or drag in any of the eight directions — and the brush carries it
+        along your stroke. The eraser wipes beads back to white, and the list below
+        counts exactly what you've placed.
+      </p>
+      <div class="tool-row" role="group" aria-label="Paint tools">
+        <button type="button" class="btn tool-btn active" data-cv-tool="brush" aria-pressed="true">
+          Brush
+        </button>
+        <button type="button" class="btn tool-btn" data-cv-tool="eraser" aria-pressed="false">
+          Eraser
+        </button>
+        <button type="button" class="btn tool-btn" data-cv-clear>Clear all</button>
+      </div>
+      <div class="cv-palette" role="group" aria-label="Bead colors">
+        {BEAD_COLORS.map((b) => (
+          <button
+            type="button"
+            class:list={['cv-swatch', { active: b.id === 'black' }]}
+            data-cv-color={b.id}
+            style={`background:${b.hex}`}
+            title={b.name}
+            aria-label={`Paint with ${b.name}`}
+            aria-pressed={b.id === 'black' ? 'true' : 'false'}
+          ></button>
+        ))}
+      </div>
+      <label class="cv-custom">
+        custom color
+        <input type="color" data-cv-custom aria-label="Custom paint color, snapped to the nearest bead" />
+        <span class="cv-custom-hint">snapped to the nearest bead</span>
+      </label>
+      <ul class="bead-list cv-list" data-cv-list>
+        <li class="cv-empty">Nothing painted yet — your bead list builds as you draw.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .paint-card {
+    grid-column: 1;
+  }
+  .paint-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--sp-4);
+    align-items: start;
+  }
+  .paint-tools h3 {
+    font-size: 1.15rem;
+    margin-bottom: var(--sp-2);
+  }
+  .tool-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 var(--sp-3);
+  }
+  .tool-btn.active {
+    border-color: var(--accent, #b3552e);
+    box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
+  }
+  .cv-palette {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    margin: 0 0 var(--sp-2);
+  }
+  .cv-swatch {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    padding: 0;
+  }
+  .cv-swatch.active {
+    outline: 2px solid var(--accent, #b3552e);
+    outline-offset: 1px;
+  }
+  .cv-custom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--ink-soft, #666);
+    margin-bottom: var(--sp-2);
+  }
+  .cv-custom input {
+    width: 34px;
+    height: 26px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: none;
+    cursor: pointer;
+  }
+  .cv-custom-hint { font-style: italic; }
+  @media (max-width: 900px) {
+    .paint-body { grid-template-columns: 1fr; }
+  }
+</style>
+
+<style is:global>
+  /* Runtime pieces created by scripts/beadPaint.ts live outside the scoped tree. */
+  .bead-fig[data-bead-canvas] {
+    touch-action: none;
+    user-select: none;
+  }
+  .bead-fig[data-bead-canvas] .cv-peg {
+    fill: rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+  }
+  .bead-fig[data-bead-canvas] .cv-cell {
+    stroke: rgba(0, 0, 0, 0.16);
+    stroke-width: 0.5;
+    cursor: crosshair;
+  }
+  .bead-fig[data-bead-canvas] .cv-cell.colored {
+    stroke: rgba(0, 0, 0, 0.12);
+  }
+  .cv-list { margin: 0; }
+  .cv-empty {
+    border: 1px dashed var(--border);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .cv-total {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .cv-item-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex: none;
+  }
+</style>

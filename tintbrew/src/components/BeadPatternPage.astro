@@ -6,6 +6,7 @@
  * adds the recolor play on top.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BeadCanvas from './BeadCanvas.astro';
 import BeadFigure from './BeadFigure.astro';
 import {
   CATEGORY_LABEL,
@@ -105,6 +106,8 @@ const zoneTotal = view.regions.length;
       </div>
     </div>
 
+    <BeadCanvas view={view} />
+
     <div class="studio-list">
       <h2>Beads you'll need</h2>
       <p class="side-note">Updates live as you recolor. Counts assume single-sided ironing.</p>
@@ -185,6 +188,7 @@ const zoneTotal = view.regions.length;
 
 <script>
   import '../scripts/bead';
+  import '../scripts/beadPaint';
 </script>
 
 <style>
@@ -196,13 +200,35 @@ const zoneTotal = view.regions.length;
     align-items: start;
   }
   .studio-grid {
+    grid-column: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--sp-4);
   }
+  /* The zone picker sticks next to the templates: pick a color and the
+     effect is on screen without scrolling. */
+  .studio-side {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    position: sticky;
+    top: 12px;
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 4px;
+  }
+  /* Room to scroll the open chip's popover fully into the sticky sidebar. */
+  .studio-side .zone-list { padding-bottom: 176px; }
   @media (max-width: 900px) {
     .studio { grid-template-columns: 1fr; }
     .studio-grid { grid-template-columns: 1fr; }
+    .studio-side {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding-right: 0;
+    }
+    .studio-side .zone-list { padding-bottom: 0; }
   }
   .fig-card {
     margin: 0;
@@ -266,22 +292,6 @@ const zoneTotal = view.regions.length;
     flex-wrap: wrap;
     gap: 8px;
   }
-  .bead-list li {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px 6px 8px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 0.9rem;
-    font-variant-numeric: tabular-nums;
-  }
-  .list-swatch {
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.15);
-  }
-  .list-approx { font-style: normal; font-size: 0.75rem; color: var(--ink-soft, #666); margin-left: 6px; }
   .stat-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
   .stat {
     border: 1px solid var(--border);
@@ -349,6 +359,25 @@ const zoneTotal = view.regions.length;
   }
   .picker-custom input { width: 34px; height: 26px; padding: 0; border: 1px solid var(--border); border-radius: 6px; background: none; cursor: pointer; }
   .picker-hint { font-style: italic; }
+
+  /* The island rebuilds the bead list at runtime — those nodes are outside
+     the scoped tree, so their rules live here. */
+  .bead-list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .list-swatch {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+  .list-approx { font-style: normal; font-size: 0.75rem; color: var(--ink-soft, #666); margin-left: 6px; }
 
   /* The page is the printable: template + bead list on letter paper. */
   @media print {

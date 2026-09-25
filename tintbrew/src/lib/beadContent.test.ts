@@ -183,6 +183,15 @@ describe('bead pages in real dist markup', () => {
       expect(html).toContain('@media print');
       expect(html).toContain('FAQPage');
       expect(html).toContain(`${p.totalBeads} beads`);
+      // free-paint canvas: silhouette cells white + peg holes, tools present
+      expect(html).toContain('data-bead-canvas');
+      expect(html).toContain('data-cv-tool="brush"');
+      expect(html).toContain('data-cv-tool="eraser"');
+      expect(html).toContain('data-cv-clear');
+      expect(html).toContain('data-cv-custom');
+      expect((html.match(/class="cv-cell/g) ?? []).length).toBe(p.totalBeads);
+      const pegCount = p.def.width * p.grid.length - p.totalBeads;
+      expect((html.match(/class="cv-peg"/g) ?? []).length).toBe(pegCount);
       // island data source: one chip per region, counts present
       expect((html.match(/data-zone="/g) ?? []).length).toBe(p.regions.length);
       expect(html).toContain(`data-count="${p.regions[0]!.count}"`);
@@ -192,6 +201,8 @@ describe('bead pages in real dist markup', () => {
       const chunk = readFileSync(resolve(distRoot, chunkMatch![1]!.slice(1)), 'utf8');
       expect(chunk).toContain('print');
       expect(chunk).toContain('data-zone');
+      expect(chunk).toContain('pointerdown');
+      expect(chunk).toContain('cv-cell');
     }
   });
 
