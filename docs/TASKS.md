@@ -13,7 +13,10 @@
 - [x] 👤 ~~周一例行补跑~~ **✅ 9/29 已收数入档**：tintbrew 查询明细 20 词全 top 3~7.7（**10/01 V2.2 门实质撞开**，等拍板开工）；chartglade 15/52 八天零转化（收录门真堵，破口=外链+页龄）；tintbrew 47/22 判读报告滞后（10/01 复查）；DDG ≈35 条正常
 - [x] 👤 ~~每日例行：GSC 新冒头词~~ **✅ 9/29 已收**（两站明细 25+25 词入档：tintbrew **首个自然点击** brown 页 + color mixer 工具词冒头；chartglade 零孤岛 + cursive 字母矩阵开始分发）—— CF WA 两站曲线仍未看
 - [x] 👤 ~~chartglade CF WA 7 天 Visits~~ **✅ 9/29 已收：18**（基线 9/20 = 39；判读入 PLAN：零点击期全量访问≈自查直访，非异常，流量拐点等排名破 top 30）
-- [ ] 👤 **request indexing**（若 9/26~28 推过则从累计处续，累计基线 29/64）：https://chartglade.com/decimal-place-value-chart/ 重试打头 → 每日 ~10 条（支柱变体 multiplication 1-20/blank/1-15 + 字母页 g/h/l），池剩 ~34 页；⚠️ 报"提交…出现问题" = 等 2~5 分钟重试，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
+- [ ] 👤 **request indexing**（累计基线 29/64；今日清单 9/29 切好如下）。⚠️ 报"提交…出现问题" = Google 侧故障，等 2~5 分钟重试或明天；当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）；查到"网址位于 Google 上" = 已编入，跳过不浪费配额
+  - **chartglade 今日 10 条**（GSC 资源切 chartglade.com）：① decimal-place-value-chart（重试打头）② multiplication-chart-1-20 ③ multiplication-chart-blank ④ multiplication-chart-1-15 ⑤ cursive/g ⑥ cursive/h ⑦ cursive/l ⑧ cursive/b（GSC 曝光 32 最高字母）⑨ cursive/z ⑩ cursive/f
+  - **tintbrew 今日 7 条**（切 tintbrew.com 资源，配额独立）：what-colors-make-blue / red / black / maroon / peach / turquoise + color-mixing-chart（9/29 批 A 新页首批）
+  - **明日备用**：chartglade 字母页剩 21 个（a c d e i j k m n o p q r s t u v w x y，每日 ~10 推）
 - [x] 👤 ~~tintbrew CF WA 数据面（10/01 前必清）~~ **✅ 9/29 确认收集正常**（手动 token 管道活，悬案销）
 - [x] 👤 ~~tintbrew Pinterest 设置~~ **取消（9/29 裁定）**：chartglade 四连拦实锤 DR0 新域**域名级信誉门**，tintbrew 域更年轻必同拦 → 双站 Pinterest 休眠（DISTRIBUTION 两处盖章），设置/色卡 pin 不做。**双探针 10/15 + 11/15**（各发 1 个带链接 pin 1 分钟；11/15 仍拦 = 永久关案）。10 月万圣分发主力 = **Reddit 烘焙帖单一渠道**（文案在位）
 - [x] 🤖 ~~V2.2 等拍板~~ **✅ 9/29 批 A 上线**（👤 "做掉"当日开工当日收，main `3674025`）：make-X 6 页（blue/red 原色陷阱诚实角度 + black/maroon/peach/turquoise）+ /color-mixing-chart/ 11×11 矩阵页 + gold 色对，104→111 页、128→150 测试绿、OG 43 卡重生成、4 类 URL 实勘 200/301。**批 B = /hue-test/ 色觉互动页**（3,070/月词族，9/24 立项第二梯队）下次开工
