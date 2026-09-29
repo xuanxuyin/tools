@@ -80,6 +80,13 @@ export const colors: ColorDef[] = [
     kind: 'neutral',
     blurb: 'All visible wavelengths of light at once; in paint, the tint that lightens every mix.',
   },
+  {
+    id: 'gold',
+    name: 'Gold',
+    hex: '#d8982d',
+    kind: 'tertiary',
+    blurb: 'Warm, brownish yellow — the metallic original is about shine, but the paint color is yellow deepened with brown.',
+  },
 ];
 
 export const colorById: Record<string, ColorDef> = Object.fromEntries(
