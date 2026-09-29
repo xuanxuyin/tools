@@ -57,6 +57,8 @@ Free, no sign-up, nothing to install. Would love feedback from people who mix co
 
 ## 三、Pinterest 色卡 pin（每周 2~3 个，常青流量）
 
+> **⚠️ 渠道休眠（2026-09-29 裁定）**：chartglade 同日四连拦实锤 DR0 新域**域名级信誉门**（拦 link 不拦账号），tintbrew 域更年轻必同拦 —— 本节冻结，设置（§3.1）暂不做。探针随双站日历：**10/15、11/15 各发 1 个带链接 pin**，通了才启动本节；11/15 仍拦 = 永久关案。**10 月万圣分发主力 = Reddit 烘焙帖单一渠道**（§二文案在位）。
+
 和 chartglade 的打印件 pin 不同 —— **tintbrew 的 pin 是色卡**：一张大色块结果图 + 问题式标题。
 
 ### 3.1 一次性设置（15 分钟）
