@@ -8,14 +8,15 @@
 
 ## 今天 · 2026-09-29（周二）
 
-> TASKS 停在 9/26，9/27~9/28 无记录 —— 9/28 周一例行默认滑档，今日补跑；若其实做过，数字发 Claude 入档即销项。**后天 10/01（周四）双门**：tintbrew 决策点 + 双站 Pinterest 复试，今天的数据例行直接喂它。
+> TASKS 停在 9/26，9/27~9/28 无记录 —— 9/28 周一例行默认滑档，今日补跑；若其实做过，数字发 Claude 入档即销项。**10/01（周四）双门**：tintbrew 决策点已随 9/29 门线碾压**提前消化**（V2.2 批 A 当日上线）→ 10/01 只剩 Pinterest 复试 + 数据例行。
 
 - [x] 👤 ~~周一例行补跑~~ **✅ 9/29 已收数入档**：tintbrew 查询明细 20 词全 top 3~7.7（**10/01 V2.2 门实质撞开**，等拍板开工）；chartglade 15/52 八天零转化（收录门真堵，破口=外链+页龄）；tintbrew 47/22 判读报告滞后（10/01 复查）；DDG ≈35 条正常
 - [ ] 👤 每日例行（≤3 分钟）：GSC 新冒头词 ｜ CF WA 两站曲线
 - [ ] 👤 **request indexing**（若 9/26~28 推过则从累计处续，累计基线 29/64）：https://chartglade.com/decimal-place-value-chart/ 重试打头 → 每日 ~10 条（支柱变体 multiplication 1-20/blank/1-15 + 字母页 g/h/l），池剩 ~34 页；⚠️ 报"提交…出现问题" = 等 2~5 分钟重试，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
 - [ ] 👤（顺延多日，**10/01 前必须清**）tintbrew CF WA 数据面：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
 - [ ] 👤（同上，10/01 链接 pin 首测前置）tintbrew Pinterest 设置（账号/board/域名认领，[DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1）—— 链接 pin 首测 10/01 不硬试；10 月第 1 周万圣分发主力 = Reddit 烘焙帖（§3.4 文案在位）
-- [ ] 🤖 空窗期无硬任务（10/01 门 → 10/05 批之间）。**可选项等 👤 拍板**：tintbrew V2.2 提前开工（make-X 6 页 + chart 页 + gold/teal + hue test；9/25 预演已过线）｜或 10/01 万圣分发素材预演（Reddit 烘焙帖配图先打磨，OG 卡 9/24 已就位）
+- [x] 🤖 ~~V2.2 等拍板~~ **✅ 9/29 批 A 上线**（👤 "做掉"当日开工当日收，main `3674025`）：make-X 6 页（blue/red 原色陷阱诚实角度 + black/maroon/peach/turquoise）+ /color-mixing-chart/ 11×11 矩阵页 + gold 色对，104→111 页、128→150 测试绿、OG 43 卡重生成、4 类 URL 实勘 200/301。**批 B = /hue-test/ 色觉互动页**（3,070/月词族，9/24 立项第二梯队）下次开工
+- [ ] 🤖 批 B 前置小活：新 7 页（6 make-X + chart）**sitemap 已随 build 自动更新**，👤 request indexing 可加进每日 ~10 条池
 
 **9/25 已完成归档**：👤 周一例行补录（两站 28 天数据入档）｜ 👤 request indexing 两批（新页 12/12 + place-value 家族 3/4，decimal 待重试，累计 26→29/64）｜ 👤 CF 修 http://www.chartglade.com/ 403（Always Use HTTPS 1 开关）｜ 👤 拼豆提案拉量 30.4K 立项落 tintbrew ｜ 🤖 拼豆 studio 连环修四推（`29e189c` 选色面板下移 → `3ceffe0` 固定底部浮层 → `3868cc7` 视口自适应 + 46 图×双视口全审计 → `af9f6a3` 画布同屏 + 引擎镜像对称 + Mirror 笔刷）｜ 🤖 图纸精确率双修 `8704b81`（引擎封闭洞治愈 + bunny 内耳 leaf 重画）｜ 🤖 穿搭页二连修 `ede4419`（颈部断层 + Style it yourself 自由搭配区）｜ 🤖 双站热门查询体检入档（两站头词簇破 top 10，两个门预演过线）
 
