@@ -11,7 +11,8 @@
 > TASKS 停在 9/26，9/27~9/28 无记录 —— 9/28 周一例行默认滑档，今日补跑；若其实做过，数字发 Claude 入档即销项。**10/01（周四）双门**：tintbrew 决策点已随 9/29 门线碾压**提前消化**（V2.2 批 A 当日上线）→ 10/01 只剩 Pinterest 复试 + 数据例行。
 
 - [x] 👤 ~~周一例行补跑~~ **✅ 9/29 已收数入档**：tintbrew 查询明细 20 词全 top 3~7.7（**10/01 V2.2 门实质撞开**，等拍板开工）；chartglade 15/52 八天零转化（收录门真堵，破口=外链+页龄）；tintbrew 47/22 判读报告滞后（10/01 复查）；DDG ≈35 条正常
-- [ ] 👤 每日例行（≤3 分钟）：GSC 新冒头词 ｜ CF WA 两站曲线
+- [x] 👤 ~~每日例行：GSC 新冒头词~~ **✅ 9/29 已收**（两站明细 25+25 词入档：tintbrew **首个自然点击** brown 页 + color mixer 工具词冒头；chartglade 零孤岛 + cursive 字母矩阵开始分发）—— CF WA 两站曲线仍未看
+- [ ] 👤 每日例行剩余半项：CF WA 两站曲线（tintbrew 侧与上面 10/01 前必清项同一件，看一次销两项）
 - [ ] 👤 **request indexing**（若 9/26~28 推过则从累计处续，累计基线 29/64）：https://chartglade.com/decimal-place-value-chart/ 重试打头 → 每日 ~10 条（支柱变体 multiplication 1-20/blank/1-15 + 字母页 g/h/l），池剩 ~34 页；⚠️ 报"提交…出现问题" = 等 2~5 分钟重试，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
 - [ ] 👤（顺延多日，**10/01 前必须清**）tintbrew CF WA 数据面：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
 - [ ] 👤（同上，10/01 链接 pin 首测前置）tintbrew Pinterest 设置（账号/board/域名认领，[DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1）—— 链接 pin 首测 10/01 不硬试；10 月第 1 周万圣分发主力 = Reddit 烘焙帖（§3.4 文案在位）
