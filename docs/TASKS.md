@@ -6,15 +6,16 @@
 
 ---
 
-## 今天 · 2026-09-26（周六）
+## 今天 · 2026-09-29（周二）
 
-> 9/25 未完两项顺延（CF WA 数据面 / Pinterest 设置）；已完项归档在下方。周六轻量日：例行 + 两个顺延小项。
+> TASKS 停在 9/26，9/27~9/28 无记录 —— 9/28 周一例行默认滑档，今日补跑；若其实做过，数字发 Claude 入档即销项。**后天 10/01（周四）双门**：tintbrew 决策点 + 双站 Pinterest 复试，今天的数据例行直接喂它。
 
-- [ ] 👤 每日例行（≤3 分钟）：GSC → 效果看新冒头词 ｜ CF → Web Analytics 曲线（两站）
-- [ ] 👤 **request indexing（第一条 = decimal 重试）**：https://chartglade.com/decimal-place-value-chart/ （9/25 二批未成功，站端已巡检干净 = Google 侧瞬时故障）补上后继续每日 ~10 条 —— 支柱变体页（multiplication 1-20/blank/1-15）+ 字母页 g/h/l 打头，啃剩余 ~34 页池；⚠️ 报"提交索引编制请求时出现问题" = 等 2~5 分钟重试，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
-- [ ] 👤（顺延）tintbrew CF WA 数据面收尾：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
-- [ ] 👤（顺延）tintbrew Pinterest **设置照常做**（账号/board/域名认领，[DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1）—— 链接 pin 首测定 **10/01** 不硬试；10 月第 1 周万圣分发主力 = Reddit 烘焙帖（§3.4）
-- [ ] 🤖 无排期任务（10/01 门 / 10/05 批之间空窗，新站不堆页）。**可选项等 👤 拍板**：tintbrew V2.2 提前开工与否 —— 10/01 门排名条件 9/25 已被预演满足（矩阵词 3~7 位 vs 门线 top 30），纪律原定等 10/01 正式核对；要提前开工（make-X 6 页 + chart 页 + gold/teal + hue test）就下指令，否则按门走
+- [ ] 👤 **周一例行补跑（10/01 门的直接输入，今日主任务）**：①两站 GSC 索引覆盖（已编/未编数字）②效果 28 天环比 + **查询明细**——tintbrew 重点拉 /mix/ 相关词现排名（9/25 预演矩阵词 3~7 位，10/01 正式核对此数开 V2.2 门）③DDG `site:tintbrew.com` 复核 Bing 系收录 → 数字发 Claude
+- [ ] 👤 每日例行（≤3 分钟）：GSC 新冒头词 ｜ CF WA 两站曲线
+- [ ] 👤 **request indexing**（若 9/26~28 推过则从累计处续，累计基线 29/64）：https://chartglade.com/decimal-place-value-chart/ 重试打头 → 每日 ~10 条（支柱变体 multiplication 1-20/blank/1-15 + 字母页 g/h/l），池剩 ~34 页；⚠️ 报"提交…出现问题" = 等 2~5 分钟重试，当天推不完不追（配额 PT 午夜重置 ≈ 北京 15:00）
+- [ ] 👤（顺延多日，**10/01 前必须清**）tintbrew CF WA 数据面：访问 tintbrew 任一页 → dashboard 刷新看曲线冒头（几分钟内）
+- [ ] 👤（同上，10/01 链接 pin 首测前置）tintbrew Pinterest 设置（账号/board/域名认领，[DISTRIBUTION.md](./tintbrew/DISTRIBUTION.md) §3.1）—— 链接 pin 首测 10/01 不硬试；10 月第 1 周万圣分发主力 = Reddit 烘焙帖（§3.4 文案在位）
+- [ ] 🤖 空窗期无硬任务（10/01 门 → 10/05 批之间）。**可选项等 👤 拍板**：tintbrew V2.2 提前开工（make-X 6 页 + chart 页 + gold/teal + hue test；9/25 预演已过线）｜或 10/01 万圣分发素材预演（Reddit 烘焙帖配图先打磨，OG 卡 9/24 已就位）
 
 **9/25 已完成归档**：👤 周一例行补录（两站 28 天数据入档）｜ 👤 request indexing 两批（新页 12/12 + place-value 家族 3/4，decimal 待重试，累计 26→29/64）｜ 👤 CF 修 http://www.chartglade.com/ 403（Always Use HTTPS 1 开关）｜ 👤 拼豆提案拉量 30.4K 立项落 tintbrew ｜ 🤖 拼豆 studio 连环修四推（`29e189c` 选色面板下移 → `3ceffe0` 固定底部浮层 → `3868cc7` 视口自适应 + 46 图×双视口全审计 → `af9f6a3` 画布同屏 + 引擎镜像对称 + Mirror 笔刷）｜ 🤖 图纸精确率双修 `8704b81`（引擎封闭洞治愈 + bunny 内耳 leaf 重画）｜ 🤖 穿搭页二连修 `ede4419`（颈部断层 + Style it yourself 自由搭配区）｜ 🤖 双站热门查询体检入档（两站头词簇破 top 10，两个门预演过线）
 
@@ -39,7 +40,7 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
-| 9/28（周一） | 例行：GSC 索引覆盖 + 效果 28 天环比（数字发 Claude）+ DDG `site:tintbrew.com` 复核 Bing 系收录 | 根 README「每周数据检查 SOP」 |
+| （周一例行滑档已挪"今天"栏补跑；本周主节点 = 10/01 双门） | | |
 
 ---
 
