@@ -8,13 +8,21 @@
 
 ## 今天 · 2026-10-02（周五）
 
-> TASKS 停在 9/29，9/30~10/01 无记录 —— 10/01 双门已提前消化（V2.2 批 A 9/29 上线 / Pinterest 休眠），只剩的数据例行默认滑档，今日补跑。本周剩余主节点：**10/05 批（周一，建议提前今天做掉**，V1.8 收录要 2~4 周、PT conference 10 月中开场，早 3 天 = 多 3 天收录窗**）**+ 10 月第 1 周分发两件（今天是窗口内最后一个工作日）。
+> TASKS 停在 9/29，9/30~10/01 无记录 —— 10/01 双门已提前消化（V2.2 批 A 9/29 上线 / Pinterest 休眠），只剩的数据例行默认滑档，今日补跑。**10/05 批已提前今日上线**（见下勾项）。本周收尾剩：数据例行 + request indexing + 分发两件。
 
 - [ ] 👤 **例行补跑**：两站 GSC 28 天环比 + 索引覆盖读数（9/30~今天任意时点数字都行；若其实看过，报数即销项）
-- [ ] 👤 **request indexing 每日 ~10 条**。⚠️ 先确认 9/29 清单（chartglade 10 + tintbrew 7）推没推：推过 → chartglade 字母页池继续（剩 a c d e i j k m n o p q r s t u v w x y 里未推的）；没推 → 从那份清单开始（明细见 9/29 归档行）。报"提交…出现问题" = Google 侧故障，2~5 分钟重试或明天
+- [ ] 👤 **request indexing**：9/29 清单（chartglade 10 + tintbrew 7，链接已交付）若还没推完从它继续；推完则 **10/02 上线的 6 张 sign-in 新页打头**（部署已确认，链接如下）再接字母页池
+  ```
+  https://chartglade.com/sign-in-sheets/
+  https://chartglade.com/sign-in-sheet/
+  https://chartglade.com/open-house-sign-in-sheet/
+  https://chartglade.com/parent-teacher-conference-sign-in-sheet/
+  https://chartglade.com/field-trip-sign-in-sheet/
+  https://chartglade.com/volunteer-sign-in-sheet/
+  ```
 - [ ] 👤 **本周分发两件（别再拖，今天窗口最后工作日）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道，文案在 tintbrew DISTRIBUTION）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，引用首封补一发，模板在 chartglade DISTRIBUTION §5.2）
-- [ ] 🤖 **10/05 批执行**（待拍板提前今天）：predev 补齐批内两小件（首页 Halloween 季节板块 + 5 支柱页 "no download, no sign-up" 文案软化为 "no sign-up"——下载钮上线后字面拧巴，9/24 挂账裁定）→ 全测试绿 → merge predev → main push（自动部署）→ 线上验证 + sitemap 64→70 核对 + **IndexNow 补推 6 新页**（sign-in hub+5，9/15 立的补推钩子）
-- [ ] 🤖（批后有余力）tintbrew 批 B = /hue-test/ 色觉互动页（3,070/月，9/24 立项第二梯队）
+- [x] 🤖 ~~10/05 批执行~~ **✅ 10/02 提前上线**（👤 拍板）：#18 下载按钮 + V1.8 sign-in 族 6 页 + 首页 Halloween 板块 + 文案软化，71 页/sitemap 70/81 测试绿，6 新页 200+canonical 自指、IndexNow 补推返 200【实勘】；过程抓到一个坑：测试放 src/pages/ 炸 Astro 构建（.ts 被当路由），已挪 data/ 修复。predev 已 reset 到 main = 10/25 批干净起点
+- [ ] 🤖（有余力）tintbrew 批 B = /hue-test/ 色觉互动页（3,070/月，9/24 立项第二梯队）
 
 **9/29 已完成归档**：👤 周一例行补跑（tintbrew 20 词全 top 3~7.7 决策门撞开；chartglade 15/52 八天零转化收录门真堵；DDG ≈35）｜ 👤 查询明细两站 50 词入档（tintbrew 首个自然点击 brown 页）｜ 👤 chartglade CF WA 7d=18 判读自查直访 ｜ 👤 tintbrew CF WA token 管道确认活 ｜ 🤖 V2.2 批 A 当日上线 `3674025`（make-X 6 页 + mixing chart + gold，111 页 150 测试绿）。**9/29 未销项**：request indexing 清单（chartglade 10：decimal 重试 + mult 变体 3 + cursive g/h/l/b/z/f；tintbrew 7：make-blue/red/black/maroon/peach/turquoise + color-mixing-chart）—— 推没推待确认
 
@@ -42,7 +50,7 @@
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
 | 10/02（今天） | 👤 分发两件（Reddit 烘焙帖 + follow-up ×2）｜🤖 10/05 批执行（待拍板提前） | 各 DISTRIBUTION |
-| 10/05（周一） | 10/05 批若今天未做 → 当日合并 push main | PLAN §3 #11/#18 |
+| 10/05（周一） | ~~10/05 批~~ **✅ 10/02 已提前上线**；当日只剩数据例行 | — |
 
 ---
 
@@ -53,7 +61,7 @@
 | 10/01（周四） | ~~tintbrew 决策点~~ **已提前消化**：9/29 门线碾压（20 词 top 3~7.7 + 首点击），V2.2 批 A 当日上线；~~Pinterest 复试~~ **已提前试**：四连拦 → 双站休眠。当日只剩数据例行（GSC 28 天环比） |
 | 10 月第 1 周 | 👤 tintbrew 万圣分发：**Reddit 烘焙帖单一渠道**（色卡 pin 已随 Pinterest 休眠取消；页面 + OG 卡 9/24 已就位，只欠分发）｜👤 chartglade 外链 follow-up（homeschool/Cathy Duffy 零回音补一发） |
 | 10/15（周四） | **双站 Pinterest 探针 #1**（各发 1 个带链接 pin，1 分钟）：通了才重启渠道；仍拦 → 只剩 11/15 末次探针 |
-| 10/05（周一） | **chartglade 10/05 批（死线，建议提前 10/02）**：#18 支柱页下载按钮 + **V1.8 sign-in sheet 族**（hub + 5 页，用户指令提前赶 PT conference 季；万圣 + V1.6 已 9/20 提前发掉）+ 首页 Halloween 板块 + "no download" 文案软化 = 分支合并 push main + IndexNow 补推 |
+| 10/05（周一） | ~~chartglade 10/05 批~~ **✅ 10/02 提前上线**（#18 + V1.8 + 首页季节位 + 文案软化；明细 PLAN 10/02 行）|
 | 10/17（周六） | **chartglade 6 周大验收**：变体词排名（9/25 预演：place value 族 4.6~9.0）→ 加码矩阵 或 B 计划 |
 | 10/25（周日） | chartglade 10/25 批：感恩节页 + V1.7 公式表 2 页 + #14 数学练习 island |
 | 11 月 | chartglade 11 月批：视力表 2 页小簇（V1.8 已提前至 10/05）+ 谱纸生成器 + 作曲工具岛（9/25 立项，12.6K 词池） |
