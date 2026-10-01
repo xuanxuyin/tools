@@ -67,7 +67,7 @@ export const placeValuePages: PageDef[] = [
       },
       {
         q: 'Is this chart free to print for my classroom?',
-        a: 'Yes. Print as many copies as you need for your class or your kids — no sign-up, no download, no watermark beyond a small site credit. Hit the print button and it comes out as one clean letter page.',
+        a: 'Yes. Print as many copies as you need for your class or your kids — no sign-up, no watermark beyond a small site credit. Hit the print button and it comes out as one clean letter page, or use the Download PNG button to save the image.',
       },
     ],
     related: [

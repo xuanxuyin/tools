@@ -31,6 +31,18 @@ const popular = [
   { href: '/number-line-printable/', label: 'Number line 0-20' },
 ];
 
+// Seasonal slot — swap this block per season (next: Thanksgiving, late Oct).
+const seasonal = {
+  heading: 'This month: Halloween printables',
+  body: 'One Halloween word list, three ways to use it — scan it, solve it, write it. All free, all one page.',
+  links: [
+    { href: '/halloween-word-search/', label: 'Halloween word search (2 levels)' },
+    { href: '/halloween-color-by-number/', label: 'Color by number math facts' },
+    { href: '/halloween-cursive-practice/', label: 'Halloween cursive practice' },
+  ],
+  hub: { href: '/halloween/', label: 'See all Halloween sheets' },
+};
+
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -52,7 +64,7 @@ const jsonLd = [
     <p class="lead">
       ChartGlade is a small library of classroom charts that print straight from your browser onto letter paper:
       math references for K-8, the complete Dolch sight word lists, and the cursive alphabet. No accounts, no
-      downloads, no paywalls — hit print and hang it up.
+      paywalls — hit print and hang it up, or grab the PNG.
     </p>
     <a class="btn btn-primary" href="/charts/">Browse the charts</a>
   </section>
@@ -66,6 +78,17 @@ const jsonLd = [
         </a>
       ))}
     </div>
+  </section>
+
+  <section class="section">
+    <h2>{seasonal.heading}</h2>
+    <p class="lead">{seasonal.body}</p>
+    <ul class="related-list">
+      {seasonal.links.map((l) => (
+        <li><a href={l.href}>{l.label}</a></li>
+      ))}
+    </ul>
+    <p><a class="btn" href={seasonal.hub.href}>{seasonal.hub.label}</a></p>
   </section>
 
   <section class="section">

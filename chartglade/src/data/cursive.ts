@@ -88,7 +88,7 @@ export const cursivePages: PageDef[] = [
       },
       {
         q: 'Where can I get a free cursive chart to print?',
-        a: 'This page is one: the cursive chart above prints straight from your browser on a single letter sheet — no download, no sign-up, no watermark. For letter-by-letter practice, every letter also has its own sheet at /cursive/a/ through /cursive/z/.',
+        a: 'This page is one: the cursive chart above prints straight from your browser on a single letter sheet — no sign-up, no watermark. For letter-by-letter practice, every letter also has its own sheet at /cursive/a/ through /cursive/z/.',
       },
       {
         q: 'Do you have every cursive letter from A to Z?',
