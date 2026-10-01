@@ -27,3 +27,6 @@ research/**/*.png
 
 # pin/og 生成产物（脚本在 scripts/generate-pins.mjs，随时可重出）
 **/pins-output/
+
+# 各项目 tmp/：一次性验证脚本、headless 截图、开发期预览（beadgen SVG sheet 等）
+**/tmp/

@@ -1,0 +1,138 @@
+---
+/**
+ * Shared gallery template for the bead family landing pages: the hub (all
+ * categories as sections), the three category galleries, and the easy
+ * cross-category gallery. Cards carry the server-rendered reference figure,
+ * so the gallery is complete without JS.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BeadFigure from './BeadFigure.astro';
+import type { PatternView } from '../lib/beadContent';
+import type { BeadSeoDef } from '../data/beadSeo';
+import { SITE } from '../consts';
+
+export interface BeadGroup {
+  label: string;
+  /** link out when the group has its own landing page */
+  href?: string;
+  blurb?: string;
+  patterns: PatternView[];
+}
+
+interface Props {
+  seo: BeadSeoDef;
+  groups: BeadGroup[];
+}
+
+const { seo, groups } = Astro.props;
+const [lead, ...prose] = seo.intro;
+const totalCount = groups.reduce((s, g) => s + g.patterns.length, 0);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: seo.h1, item: `${SITE.url}${seo.path}` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: seo.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={seo.title} description={seo.description} path={seo.path.replace(/\/$/, '')} jsonLd={jsonLd}>
+  <section class="hero">
+    <p class="crumbs">
+      <a href="/">Home</a> <span aria-hidden="true">›</span>
+      <span>{seo.h1}</span>
+    </p>
+    <h1>{seo.h1}</h1>
+    <p class="lead">{lead}</p>
+    <p class="stat-row" aria-label="Collection facts">
+      <span class="stat"><strong>{totalCount}</strong> patterns</span>
+      <span class="stat">all <strong>free</strong> to print</span>
+      <span class="stat"><strong>32</strong> bead colors</span>
+    </p>
+  </section>
+
+  {prose.length > 0 && (
+    <section class="prose" style="margin-top: var(--sp-4);">
+      {prose.map((p) => <p>{p}</p>)}
+    </section>
+  )}
+
+  {groups.map((g) => (
+    <section class="gallery" style="margin-top: var(--sp-6);">
+      <h2>
+        {g.href ? <a href={g.href}>{g.label}</a> : g.label}
+        <span class="count"> — {g.patterns.length} patterns</span>
+      </h2>
+      {g.blurb && <p class="group-blurb">{g.blurb}</p>}
+      <div class="card-grid">
+        {g.patterns.map((p) => (
+          <a class="pattern-card" href={p.url}>
+            <BeadFigure view={p} mode="reference" />
+            <span class="card-name">{p.def.name}</span>
+            <span class="card-tag">{p.def.tagline}</span>
+            <span class="card-meta">
+              {p.totalBeads} beads · {p.regions.length} zones · {p.def.difficulty}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>FAQ</h2>
+    {seo.faqs.map((f) => (
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .stat-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+  .stat {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .gallery h2 .count { font-weight: 400; font-size: 0.9em; color: var(--ink-soft, #666); }
+  .gallery h2 a { color: inherit; }
+  .group-blurb { color: var(--ink-soft, #666); margin: var(--sp-2) 0 0; }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: var(--sp-3);
+    margin-top: var(--sp-3);
+  }
+  .pattern-card {
+    display: grid;
+    gap: 6px;
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    background: var(--bg, #fff);
+  }
+  .pattern-card:hover { border-color: var(--accent, #b3552e); }
+  .card-name { font-weight: 600; }
+  .card-tag { font-size: 0.8rem; color: var(--ink-soft, #666); line-height: 1.35; }
+  .card-meta { font-size: 0.75rem; color: var(--ink-soft, #999); font-variant-numeric: tabular-nums; }
+</style>

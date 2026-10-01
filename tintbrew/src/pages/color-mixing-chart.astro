@@ -1,0 +1,322 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { colors } from '../data/colors';
+import { mixes } from '../data/mixes';
+import { hexToRgb, oklabMix, rgbToHex } from '../lib/color';
+import { SITE } from '../consts';
+
+/**
+ * Color mixing chart (6.6K/KD27): the full two-way blend matrix for every
+ * color on the site, SSR-computed by the Oklab engine — a printable chart
+ * where every cell is the real perceptual blend, not a scanned image.
+ * Cells with a dedicated mix page link out to it (data-order slug).
+ */
+
+const hexOf = Object.fromEntries(colors.map((c) => [c.id, c.hex]));
+
+/** pair key (sorted) → result hex, computed for ALL pairs, page or not */
+const blend = new Map<string, string>();
+for (let i = 0; i < colors.length; i++) {
+  for (let j = i + 1; j < colors.length; j++) {
+    const a = colors[i]!;
+    const b = colors[j]!;
+    const key = [a.id, b.id].sort().join('|');
+    const hex = rgbToHex(oklabMix([hexToRgb(a.hex), hexToRgb(b.hex)], [1, 1]));
+    blend.set(key, hex);
+  }
+}
+
+/** sorted pair key → that pair's mix page slug (data order, not sorted) */
+const pageOf = new Map<string, string>();
+for (const m of mixes) {
+  pageOf.set([m.a, m.b].sort().join('|'), `${m.a}-${m.b}`);
+}
+
+const faqs = [
+  {
+    q: 'What is a color mixing chart?',
+    a: 'A grid that shows the result of blending any two colors. Find one color across the top and the other down the side; the cell where they meet is the blend. This chart computes every blend in a perceptual color space, so each cell is the color your eye actually sees, with its HEX code.',
+  },
+  {
+    q: 'How do I print this color mixing chart?',
+    a: 'Use the Print button under the chart. The print layout keeps the full grid, the color names and the HEX codes on one letter page in landscape — it makes a good studio or classroom wall reference.',
+  },
+  {
+    q: 'Why do my paint mixes look different from the chart?',
+    a: 'Pigments subtract light and every brand leans slightly different, so a physical mix lands a step lighter or darker than the computed blend. Treat the chart as the direction and the ratio logic, not an exact paint recipe.',
+  },
+  {
+    q: 'Which cells have their own pages?',
+    a: 'Every linked cell opens a full page for that pair — ratio walks, tints and shades, and FAQs. The site also has head-word guides for brown, purple, green, orange, blue, red, black, maroon, peach and turquoise.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Color Guides', item: `${SITE.url}/color-guides/` },
+      { '@type': 'ListItem', position: 3, name: 'Color Mixing Chart', item: `${SITE.url}/color-mixing-chart/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Color Mixing Chart (Every Pair, Exact HEX, Printable) | TintBrew"
+  description="A full color mixing chart: every two-color blend computed in a perceptual color space with exact HEX codes — printable on one page, with a guide page for every linked pair."
+  path="/color-mixing-chart/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <p class="crumbs">
+      <a href="/">Home</a> <span aria-hidden="true">›</span>
+      <a href="/color-guides">Color Guides</a> <span aria-hidden="true">›</span>
+      <span>Color Mixing Chart</span>
+    </p>
+    <h1>Color Mixing Chart</h1>
+    <p class="lead">
+      Every color on this site against every other, in one grid. Find your two colors, read the
+      cell — that swatch is the computed 50/50 blend with its HEX code, not a photograph. Linked
+      cells open a full page for that pair.
+    </p>
+  </section>
+
+  <section class="chart-wrap">
+    <div class="chart-scroll" role="region" aria-label="Color mixing matrix" tabindex="0">
+      <table class="mix-chart">
+        <thead>
+          <tr>
+            <th scope="col"><span class="visually-hidden">Color</span></th>
+            {colors.map((c) => (
+              <th scope="col">
+                <span class="chip" style={`background:${c.hex}`} aria-hidden="true"></span>
+                <span class="chip-name">{c.name}</span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {colors.map((row) => (
+            <tr>
+              <th scope="row">
+                <span class="chip" style={`background:${row.hex}`} aria-hidden="true"></span>
+                <span class="chip-name">{row.name}</span>
+              </th>
+              {colors.map((col) => {
+                if (row.id === col.id) {
+                  return (
+                    <td class="diag" title={`${row.name} as-is`}>
+                      <span class="cell-swatch" style={`background:${row.hex}`}></span>
+                      <span class="cell-hex">{row.hex.slice(1)}</span>
+                    </td>
+                  );
+                }
+                const key = [row.id, col.id].sort().join('|');
+                const hex = blend.get(key)!;
+                const slug = pageOf.get(key);
+                return slug ? (
+                  <td>
+                    <a href={`/mix/${slug}/`} title={`${row.name} + ${col.name} = ${hex} — full page`}>
+                      <span class="cell-swatch" style={`background:${hex}`}></span>
+                      <span class="cell-hex">{hex.slice(1)}</span>
+                    </a>
+                  </td>
+                ) : (
+                  <td title={`${row.name} + ${col.name} = ${hex}`}>
+                    <span class="cell-swatch" style={`background:${hex}`}></span>
+                    <span class="cell-hex">{hex.slice(1)}</span>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <button type="button" data-print>Print this chart</button>
+  </section>
+
+  <section class="prose">
+    <h2>How to read the chart</h2>
+    <p>
+      Pick one color across the top and one down the side; the cell where they meet is their
+      equal-parts blend, computed in Oklab — a perceptual space that mirrors how human vision
+      weighs color, so mid-blends land where your eye expects them instead of where raw RGB math
+      would put them. The diagonal is each color unmixed.
+    </p>
+    <p>
+      Not every pair mixes the same way in paint and in light. Complementary pairs (red-green,
+      blue-orange, yellow-purple) cancel toward brown and gray; neighbors (blue-green,
+      yellow-orange) blend cleanly. For the pairs that behave differently on screens versus in
+      paint, the linked pages carry the full explanation — the chart shows the paint-side answer,
+      which is what most mixing questions mean.
+    </p>
+    <p>
+      Every cell lists its HEX code, so the chart doubles as a lookup: find the blend you want,
+      copy the code, and use it anywhere. The color converter turns any of these codes into RGB,
+      HSL and more.
+    </p>
+  </section>
+
+  <section class="prose">
+    <h2>Frequently asked questions</h2>
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </section>
+
+  <section class="prose">
+    <h2>Keep going</h2>
+    <ul>
+      <li><a href="/color-mixer/">Mix any two colors live, with ratio control</a></li>
+      <li><a href="/color-guides/">All head-word color guides</a> (brown, purple, teal, gold and more)</li>
+      <li><a href="/color-converter/">Convert any HEX code to RGB, HSL, CMYK</a></li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .chart-wrap {
+    margin-top: var(--sp-4);
+  }
+
+  .chart-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .mix-chart {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 64rem;
+  }
+
+  .mix-chart th,
+  .mix-chart td {
+    border: 1px solid var(--border);
+    padding: 0;
+  }
+
+  .mix-chart th {
+    padding: var(--sp-2);
+    vertical-align: bottom;
+    white-space: nowrap;
+  }
+
+  .chip {
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    vertical-align: middle;
+    margin-right: 0.35rem;
+  }
+
+  .chip-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .mix-chart td {
+    text-align: center;
+  }
+
+  .mix-chart td a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .mix-chart td a:hover .cell-swatch {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .cell-swatch {
+    display: block;
+    height: 2.6rem;
+  }
+
+  .cell-hex {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    color: var(--muted);
+    padding: 0.15rem 0;
+  }
+
+  .diag .cell-swatch {
+    height: 2.6rem;
+    opacity: 0.45;
+  }
+
+  [data-print] {
+    margin-top: var(--sp-3);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media print {
+    @page {
+      size: letter landscape;
+      margin: 0.4in;
+    }
+
+    .chart-scroll {
+      overflow: visible;
+      border: none;
+      background: none;
+    }
+
+    .mix-chart {
+      min-width: 0;
+      width: 100%;
+      font-size: 0.5rem;
+    }
+
+    .cell-hex {
+      font-size: 0.34rem;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .cell-swatch,
+    .chip {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    button {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>

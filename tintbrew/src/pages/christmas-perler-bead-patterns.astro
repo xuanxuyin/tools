@@ -1,0 +1,10 @@
+---
+import BeadCategoryPage from '../components/BeadCategoryPage.astro';
+import { BEAD_CATEGORY_SEO } from '../data/beadSeo';
+import { patternsByCategory } from '../lib/beadContent';
+---
+
+<BeadCategoryPage
+  seo={BEAD_CATEGORY_SEO.christmas!}
+  groups={[{ label: 'Christmas patterns', patterns: patternsByCategory('christmas') }]}
+/>

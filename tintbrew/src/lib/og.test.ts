@@ -13,10 +13,14 @@ import { colors } from '../data/colors';
 import { mixes } from '../data/mixes';
 import { hexToRgb, oklabMix, rgbToHex } from './color';
 import { scenarioContents } from './scenarioContent';
-import { COLORS as OG_COLORS, PAIRS, SCENARIOS } from '../../scripts/og-data.mjs';
+import { outfitContents } from './outfitContent';
+import { COLORS as OG_COLORS, PAIRS, SCENARIOS, OUTFITS } from '../../scripts/og-data.mjs';
 import { mixHex } from '../../scripts/og-color.mjs';
 
 const distRoot = resolve(fileURLToPath(import.meta.url), '../../../dist');
+
+// PAIRS arrives untyped from the .mjs snapshot; key it loosely for lookups.
+const OG_COLOR_MAP: Record<string, string> = OG_COLORS;
 
 describe('og-data.mjs snapshot parity', () => {
   it('colors match data/colors.ts', () => {
@@ -41,15 +45,23 @@ describe('og-data.mjs snapshot parity', () => {
       });
     }
   });
+
+  it('outfit cards match computed hero strips', () => {
+    expect(OUTFITS).toHaveLength(outfitContents.length);
+    for (let i = 0; i < outfitContents.length; i++) {
+      const o = outfitContents[i]!;
+      expect(OUTFITS[i]).toEqual({ slug: o.def.slug, swatches: o.heroStrip });
+    }
+  });
 });
 
 describe('og-color.mjs math parity', () => {
   it('port matches the engine for every pair', () => {
     for (const [a, b] of PAIRS) {
       const engine = rgbToHex(
-        oklabMix([hexToRgb(OG_COLORS[a]), hexToRgb(OG_COLORS[b])], [1, 1]),
+        oklabMix([hexToRgb(OG_COLOR_MAP[a]!), hexToRgb(OG_COLOR_MAP[b]!)], [1, 1]),
       );
-      expect(mixHex(OG_COLORS[a], OG_COLORS[b]), `${a}+${b}`).toBe(engine);
+      expect(mixHex(OG_COLOR_MAP[a]!, OG_COLOR_MAP[b]!), `${a}+${b}`).toBe(engine);
     }
   });
 
@@ -79,6 +91,14 @@ describe('og wiring (real dist markup)', () => {
       const html = readFileSync(resolve(distRoot, `${c.def.slug}/index.html`), 'utf8');
       expect(ogImageOf(html), c.def.slug).toBe(`https://tintbrew.com/og/${c.def.slug}.png`);
       expect(existsSync(resolve(distRoot, `og/${c.def.slug}.png`)), c.def.slug).toBe(true);
+    }
+  });
+
+  it('every outfit page points at its own card and the file exists', () => {
+    for (const o of outfitContents) {
+      const html = readFileSync(resolve(distRoot, `${o.def.slug}/index.html`), 'utf8');
+      expect(ogImageOf(html), o.def.slug).toBe(`https://tintbrew.com/og/${o.def.slug}.png`);
+      expect(existsSync(resolve(distRoot, `og/${o.def.slug}.png`)), o.def.slug).toBe(true);
     }
   });
 

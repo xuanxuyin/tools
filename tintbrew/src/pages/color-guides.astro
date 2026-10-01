@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { scenarioContents } from '../lib/scenarioContent';
+import { outfitContents } from '../lib/outfitContent';
 import { SITE } from '../consts';
 
-const title = 'Color Guides — Mixing Answers With Exact HEX | TintBrew';
+const title = 'Color Guides — Mixing & Pairing Answers With Exact HEX | TintBrew';
 const description =
-  'Every classic mixing question answered with computed swatches: what colors make brown, purple, green or orange, plus frosting, icing and gel-color charts.';
+  'Every classic color question answered with computed swatches: what colors make brown, purple, green or orange, what colors go with them, plus frosting, icing and gel-color charts.';
 
 const jsonLd = [
   {
@@ -19,7 +20,7 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: scenarioContents.map((c, i) => ({
+    itemListElement: [...scenarioContents, ...outfitContents].map((c, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: c.def.h1,
@@ -34,14 +35,14 @@ const jsonLd = [
     <h1>Color guides</h1>
     <p class="lead">
       The classic color questions, answered with arithmetic instead of adjectives: what colors
-      make brown, purple, green or orange, plus recipe-style guides for frosting, icing and
-      gel-color charts. Every swatch is computed with its HEX code — no photographed
-      approximations — alongside the practical facts (ratios, drop counts, rest times) that make
-      the color land.
+      make brown, purple, green or orange, what colors go with them, plus recipe-style guides for
+      frosting, icing and gel-color charts. Every swatch is computed with its HEX code — no
+      photographed approximations — alongside the practical facts (ratios, drop counts, rest
+      times) that make the color land.
     </p>
   </section>
 
-  <section class="tool-grid" aria-label="Color guides">
+  <section class="tool-grid" aria-label="Mixing guides">
     {scenarioContents.map((c) => (
       <a class="tool-card" href={`/${c.def.slug}`}>
         <h2>{c.def.h1}</h2>
@@ -50,6 +51,20 @@ const jsonLd = [
           <span style={`background:${c.heroHex}`}></span>
           <span style={`background:${c.def.mixerColors[0]}`}></span>
           <span style={`background:${c.def.mixerColors[1] ?? c.def.mixerColors[0]}`}></span>
+        </div>
+      </a>
+    ))}
+  </section>
+
+  <section class="tool-grid" style="margin-top: var(--sp-6);" aria-label="Pairing guides">
+    {outfitContents.map((o) => (
+      <a class="tool-card" href={`/${o.def.slug}`}>
+        <h2>{o.def.h1}</h2>
+        <p>{o.def.metaDescription}</p>
+        <div class="swatch-strip" aria-hidden="true">
+          {o.heroStrip.map((h) => (
+            <span style={`background:${h}`}></span>
+          ))}
         </div>
       </a>
     ))}

@@ -1,0 +1,38 @@
+---
+import BeadCategoryPage from '../components/BeadCategoryPage.astro';
+import { BEAD_HUB_SEO } from '../data/beadSeo';
+import { patternsByCategory } from '../lib/beadContent';
+
+const groups = [
+  {
+    label: 'Animals',
+    href: '/perler-bead-animals/',
+    blurb: 'Cat, bunny, panda, fox, owl, penguin, dog, bear, frog, chick, dinosaur, unicorn.',
+    patterns: patternsByCategory('animals'),
+  },
+  {
+    label: 'Food',
+    href: '/perler-bead-food/',
+    blurb: 'Cupcake, donut, pizza slice, ice cream cone, strawberry, cookie, watermelon, ice pop, burger, sushi roll.',
+    patterns: patternsByCategory('food'),
+  },
+  {
+    label: 'Christmas',
+    href: '/christmas-perler-bead-patterns/',
+    blurb: 'Tree, snowman, stocking, wreath, gift, gingerbread man, Santa hat, bell, reindeer, hot cocoa.',
+    patterns: patternsByCategory('christmas'),
+  },
+  {
+    label: 'Halloween',
+    blurb: 'Ghost, jack-o’-lantern, bat, skull, candy corn, spider — the spooky set at the same showpiece scale.',
+    patterns: patternsByCategory('halloween'),
+  },
+  {
+    label: 'Minis',
+    blurb: 'Evening-size projects that fit one large pegboard — the true beginner tier, and the fastest gift in the set.',
+    patterns: patternsByCategory('minis'),
+  },
+];
+---
+
+<BeadCategoryPage seo={BEAD_HUB_SEO} groups={groups} />

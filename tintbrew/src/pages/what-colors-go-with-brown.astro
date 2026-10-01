@@ -1,0 +1,8 @@
+---
+import OutfitPage from '../components/OutfitPage.astro';
+import { outfitBySlug } from '../lib/outfitContent';
+
+const v = outfitBySlug('what-colors-go-with-brown')!;
+---
+
+<OutfitPage v={v} />

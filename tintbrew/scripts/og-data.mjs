@@ -16,9 +16,10 @@ export const COLORS = {
   brown: '#a52a2a',
   black: '#000000',
   white: '#ffffff',
+  gold: '#d8982d',
 };
 
-/** 24 pairs as [a, b] color ids — order matches data/mixes.ts. */
+/** 25 pairs as [a, b] color ids — order matches data/mixes.ts. */
 export const PAIRS = [
   ['red', 'blue'],
   ['blue', 'yellow'],
@@ -44,9 +45,10 @@ export const PAIRS = [
   ['purple', 'red'],
   ['yellow', 'black'],
   ['green', 'black'],
+  ['yellow', 'brown'],
 ];
 
-/** 8 scenario/chart pages: source swatches + the computed hero answer. */
+/** 14 scenario/chart pages: source swatches + the computed hero answer. */
 export const SCENARIOS = [
   { slug: 'what-colors-make-brown', swatches: ['#ff0000', '#008000'], resultHex: '#6b4423' },
   { slug: 'what-colors-make-purple', swatches: ['#ff0000', '#0000ff'], resultHex: '#8c53a2' },
@@ -56,4 +58,19 @@ export const SCENARIOS = [
   { slug: 'how-to-make-brown-icing', swatches: ['#fffbf4', '#5b3a1e'], resultHex: '#6f4a2c' },
   { slug: 'icing-color-chart', swatches: ['#fffbf4', '#d91d3c'], resultHex: '#fed5ce' },
   { slug: 'buttercream-color-chart', swatches: ['#fff2d8', '#1554c0'], resultHex: '#fdcdb8' },
+  { slug: 'what-colors-make-blue', swatches: ['#800080', '#008000'], resultHex: '#0000ff' },
+  { slug: 'what-colors-make-red', swatches: ['#ff69b4', '#ffa500'], resultHex: '#ff0000' },
+  { slug: 'what-colors-make-black', swatches: ['#ff0000', '#008000', '#0000ff'], resultHex: '#70697c' },
+  { slug: 'what-colors-make-maroon', swatches: ['#ff0000', '#a52a2a'], resultHex: '#ad1a19' },
+  { slug: 'what-colors-make-peach', swatches: ['#ffa500', '#ffffff'], resultHex: '#ffdab9' },
+  { slug: 'what-colors-make-turquoise', swatches: ['#0000ff', '#008000', '#ffffff'], resultHex: '#40e0d0' },
+];
+
+/** 4 outfit-pairing pages (V2.2): the anchor color + the first combo's
+ *  partners — mirrors outfitContents[].heroStrip. */
+export const OUTFITS = [
+  { slug: 'what-colors-go-with-brown', swatches: ['#6b4423', '#f5f2ec', '#5b3a2e'] },
+  { slug: 'what-colors-go-with-green', swatches: ['#386641', '#f4f2ec', '#b98f56'] },
+  { slug: 'what-colors-go-with-purple', swatches: ['#6f4a8c', '#f4f2ec', '#a7a9b0'] },
+  { slug: 'what-colors-go-with-burgundy', swatches: ['#6d2a35', '#ece3d2', '#5b3a2e'] },
 ];

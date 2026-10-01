@@ -168,4 +168,12 @@ export const mixes: MixDef[] = [
     b: 'black',
     resultName: 'forest green',
   },
+  {
+    a: 'yellow',
+    b: 'brown',
+    resultName: 'gold (a rich amber)',
+    popular: true,
+    additiveNote:
+      'Gold the color is simply yellow deepened with brown — no shine required. In paint this is the classic "old gold" recipe; on a screen the blend reads as a warm amber because screens cannot render metallic luster, only the underlying hue.',
+  },
 ];

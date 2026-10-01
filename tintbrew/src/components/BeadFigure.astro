@@ -1,0 +1,124 @@
+---
+/**
+ * One pattern rendered as an SVG pegboard. Two modes from the same data:
+ *
+ *  - reference: every zone filled with its default bead color (static)
+ *  - blank:     paper-tinted zones with the zone key letter in each bead —
+ *               the coloring canvas. The island recolors zones by setting
+ *               `--bd-<key>` custom properties on the wrapper; beads read
+ *               fill from those vars, so one assignment recolors a whole
+ *               zone with zero per-bead DOM work.
+ *
+ * No-JS guarantee: the blank figure still shows every zone divided and
+ * labeled, and the printed sheet is a complete template on its own.
+ */
+import type { PatternView } from '../lib/beadContent';
+
+interface Props {
+  view: PatternView;
+  mode: 'reference' | 'blank';
+}
+
+const { view, mode } = Astro.props;
+const U = 10; // viewBox units per bead cell
+const { grid, def } = view;
+const w = def.width * U;
+const h = grid.length * U;
+
+const cells: { x: number; y: number; key: string }[] = [];
+grid.forEach((row, y) => {
+  for (let x = 0; x < def.width; x++) {
+    const ch = row[x]!;
+    if (ch !== '.') cells.push({ x: x * U, y: y * U, key: ch });
+  }
+});
+
+const hexFor = (key: string) =>
+  view.regions.find((r) => r.key === key)?.hex ?? '#888888';
+
+const label =
+  mode === 'reference'
+    ? `${def.name} bead pattern, colored reference`
+    : `${def.name} bead template, zones outlined for coloring`;
+---
+
+<svg
+  class="bead-fig"
+  data-bead-mode={mode}
+  data-pattern={def.slug}
+  viewBox={`0 0 ${w} ${h}`}
+  role="img"
+  aria-label={label}
+>
+  {cells.map((c) => {
+    const hex = hexFor(c.key);
+    return mode === 'reference' ? (
+      <rect
+        class="bd bd-fill"
+        data-region={c.key}
+        x={c.x + 0.8}
+        y={c.y + 0.8}
+        width={U - 1.6}
+        height={U - 1.6}
+        rx={2.6}
+        fill={hex}
+      />
+    ) : (
+      <g class="bd bd-blank" data-region={c.key}>
+        <rect
+          x={c.x + 0.8}
+          y={c.y + 0.8}
+          width={U - 1.6}
+          height={U - 1.6}
+          rx={2.6}
+          fill={hex}
+          fill-opacity="0.14"
+          stroke={hex}
+          stroke-opacity="0.5"
+          stroke-width="0.5"
+          style={`--z:${hex}`}
+        />
+        <text
+          class="bd-key"
+          x={c.x + U / 2}
+          y={c.y + U / 2}
+          text-anchor="middle"
+          dominant-baseline="central"
+          fill={hex}
+          fill-opacity="0.75"
+        >
+          {c.key}
+        </text>
+      </g>
+    );
+  })}
+</svg>
+
+<style>
+  .bead-fig {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--paper, #fbfaf7);
+    border-radius: 10px;
+  }
+  .bead-fig .bd-key {
+    font-size: 4.6px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+  }
+  /* Zone fills for the blank canvas — the island overrides these per zone. */
+  .bead-fig[data-bead-mode='blank'] .bd-blank rect {
+    cursor: pointer;
+    transition: fill 120ms ease;
+  }
+  .bead-fig[data-bead-mode='blank'] .bd-blank.colored rect {
+    fill: var(--zone, #fff);
+    fill-opacity: 1;
+    stroke-opacity: 0.22;
+  }
+  .bead-fig[data-bead-mode='blank'] .bd-blank.colored .bd-key {
+    display: none;
+  }
+</style>

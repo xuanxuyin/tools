@@ -17,7 +17,7 @@ import { PNG } from 'pngjs';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
-import { COLORS, PAIRS, SCENARIOS } from './og-data.mjs';
+import { COLORS, PAIRS, SCENARIOS, OUTFITS } from './og-data.mjs';
 import { mixHex } from './og-color.mjs';
 
 const W = 1200;
@@ -207,26 +207,57 @@ for (const [a, b] of PAIRS) {
 for (const s of SCENARIOS) {
   const { png, set } = newCard();
 
-  const [s1, s2] = s.swatches;
-  circle(set, 275, 250, 85, hex(s1), 0.92);
-  circle(set, 475, 250, 85, hex(s2), 0.92);
+  // 2 sources: two big circles; 3 sources: three tighter ones
+  if (s.swatches.length <= 2) {
+    const [s1, s2] = s.swatches;
+    circle(set, 275, 250, 85, hex(s1), 0.92);
+    circle(set, 475, 250, 85, hex(s2), 0.92);
+    hexLabel(set, s1, 275, 352, 4, 0.82);
+    hexLabel(set, s2, 475, 352, 4, 0.82);
+  } else {
+    const xs = [190, 375, 560];
+    s.swatches.slice(0, 3).forEach((sw, i) => {
+      circle(set, xs[i], 250, 78, hex(sw), 0.92);
+      hexLabel(set, sw, xs[i], 344, 3.5, 0.82);
+    });
+  }
 
   // arrow: shaft + head
   for (let y = 246; y < 254; y++) {
-    for (let x = 585; x < 735; x++) set(x, y, WHITE, 0.9);
+    for (let x = 640; x < 760; x++) set(x, y, WHITE, 0.9);
   }
   for (let dy = -14; dy <= 14; dy++) {
     for (let dx = 0; dx <= 22; dx++) {
-      if (Math.abs(dy) <= 14 - (14 / 22) * dx) set(735 + dx, 250 + dy, WHITE, 0.9);
+      if (Math.abs(dy) <= 14 - (14 / 22) * dx) set(760 + dx, 250 + dy, WHITE, 0.9);
     }
   }
 
-  circle(set, 885, 250, 115, hex(s.resultHex), 0.95);
+  circle(set, 900, 250, 110, hex(s.resultHex), 0.95);
 
-  hexLabel(set, s1, 275, 352, 4, 0.82);
-  hexLabel(set, s2, 475, 352, 4, 0.82);
-  hexLabel(set, s.resultHex, 885, 382, 6, 0.97);
+  hexLabel(set, s.resultHex, 900, 380, 6, 0.97);
   wordmark(set, 545, 8, 0.75);
 
   write(png, `og/${s.slug}.png`);
+}
+
+// --- 4. outfit-pairing pages: big anchor circle + partner fan ---------------
+
+for (const o of OUTFITS) {
+  const { png, set } = newCard();
+
+  const [anchor, ...partners] = o.swatches;
+  circle(set, 280, 250, 130, hex(anchor), 0.95);
+  hexLabel(set, anchor, 280, 396, 4, 0.82);
+
+  // partners fanned right, centered around x ≈ 810
+  const cx0 = 810 - ((partners.length - 1) * 200) / 2;
+  partners.forEach((p, i) => {
+    const cx = cx0 + i * 200;
+    circle(set, cx, 250, 90, hex(p), 0.92);
+    hexLabel(set, p, cx, 356, 4, 0.82);
+  });
+
+  wordmark(set, 545, 8, 0.75);
+
+  write(png, `og/${o.slug}.png`);
 }

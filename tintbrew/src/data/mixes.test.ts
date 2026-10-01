@@ -5,10 +5,10 @@ import { buildMixContent } from '../lib/mixContent';
 import { mixSlug } from '../lib/slug';
 
 describe('mix data integrity', () => {
-  it('has 24 pairs, all slugs unique', () => {
+  it('has 25 pairs, all slugs unique', () => {
     const slugs = mixes.map((m) => mixSlug(m.a, m.b));
-    expect(slugs).toHaveLength(24);
-    expect(new Set(slugs).size).toBe(24);
+    expect(slugs).toHaveLength(25);
+    expect(new Set(slugs).size).toBe(25);
   });
 
   it('references only defined colors', () => {
@@ -19,15 +19,16 @@ describe('mix data integrity', () => {
     }
   });
 
-  it('every pair has a hand-tuned resultName and 7 pairs are popular', () => {
+  it('every pair has a hand-tuned resultName and 8 pairs are popular', () => {
     for (const m of mixes) expect(m.resultName.length).toBeGreaterThan(2);
-    expect(mixes.filter((m) => m.popular)).toHaveLength(7);
+    expect(mixes.filter((m) => m.popular)).toHaveLength(8);
   });
 
-  it('defines all 10 colors used by pairs', () => {
+  it('defines all colors used by pairs (gold joins via the mixing chart matrix)', () => {
     const used = new Set(mixes.flatMap((m) => [m.a, m.b]));
-    for (const c of colors) expect(used.has(c.id), c.id).toBe(true);
-    expect(used.size).toBe(colors.length);
+    const pairColors = colors.filter((c) => c.id !== 'gold');
+    for (const c of pairColors) expect(used.has(c.id), c.id).toBe(true);
+    expect(used.size).toBe(pairColors.length);
   });
 });
 
