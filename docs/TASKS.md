@@ -12,7 +12,7 @@
 
 - [ ] 👤 **request indexing**（配额 PT 午夜重置 ≈ 北京 15:00，今日新额度应可用）：
   - **chartglade 10 条 = 6 sign-in 新页打头**（链接在下）+ cursive c / d / e / j
-  - **tintbrew 补 3 条**：peach / turquoise / color-mixing-chart（链接在 10/02 归档行）
+  - **tintbrew 补 4 条**：peach / turquoise / color-mixing-chart（链接在 10/02 归档行）+ 今日上线新页 hue-test（批 B，已 IndexNow 推过，GSC 补一手 request indexing）：`https://tintbrew.com/hue-test/`
   ```
   https://chartglade.com/sign-in-sheets/
   https://chartglade.com/sign-in-sheet/
@@ -22,7 +22,7 @@
   https://chartglade.com/volunteer-sign-in-sheet/
   ```
 - [ ] 👤 **分发两件（若 10/02~03 未发）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道，文案在 tintbrew DISTRIBUTION）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，模板在 chartglade DISTRIBUTION §5.2）—— 已发过报一声即销项
-- [ ] 🤖 tintbrew 批 B = /hue-test/ 色觉互动页（3,070/月，9/24 立项第二梯队，等开工信号）
+- [x] 🤖 tintbrew 批 B = /hue-test/ ✅ **10/04 上线**（main `b1afa6e`；104 页 sitemap 实测 / 164 测试绿 / OG 卡 44；线上 200+canonical 自指 + OG 卡可取【外部 reader 实勘，本机 TLS 断】；IndexNow 200 —— V2.2 全批收官，明细 PLAN 10/04 时间线行）
 - 明日预告：周一例行（GSC 索引覆盖 sitemap 视图+快照日期 / 28 天环比 / site: / DDG），两站数字一起报
 
 ---
