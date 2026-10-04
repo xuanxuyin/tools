@@ -23,7 +23,7 @@
   ```
 - [ ] 👤 **分发两件（若 10/02~03 未发）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道，文案在 tintbrew DISTRIBUTION）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，模板在 chartglade DISTRIBUTION §5.2）—— 已发过报一声即销项
 - [x] 🤖 tintbrew 批 B = /hue-test/ ✅ **10/04 上线**（main `b1afa6e`；104 页 sitemap 实测 / 164 测试绿 / OG 卡 44；线上 200+canonical 自指 + OG 卡可取【外部 reader 实勘，本机 TLS 断】；IndexNow 200 —— V2.2 全批收官，明细 PLAN 10/04 时间线行）
-- 明日预告：周一例行（GSC 索引覆盖 sitemap 视图+快照日期 / 28 天环比 / site: / DDG），两站数字一起报
+- 明日预告：周一例行（GSC 索引覆盖 sitemap 视图+快照日期 / 28 天环比 / site: / DDG），两站数字一起报；**顺带复查 tintbrew CF WA 异常点：bear 页 9/27=11、/color-mixer/ 10/03=28**（对照当日 GSC 点击判来源：Google 爬位 vs Bing/IndexNow vs 直访）
 
 ---
 
