@@ -53,6 +53,54 @@ Free, no sign-up, nothing to install. Would love feedback from people who mix co
 
 **答帖姿势**（长期主力）：搜 `site:reddit.com "what color does red and blue make"` 这类问题帖 → 先认真回答 → 自然附上 /mix/ 页链接（答帖比主帖存活率高得多）。
 
+### 2.3 万圣烘焙帖（10 月季节主力，2026-10-04 补位）
+
+> **勘误**：9/24（"§3.4 文案在位"）与 9/29（"§二文案在位"）两处判定引用悬空——git 实勘 frosting 文案从未写入本手册（§二自 9/09 起只有 mixer/DIY 模板），本节为当日补齐。
+
+**版块选择**：
+
+| 版块 | 用法 |
+|---|---|
+| r/Baking（主战场，量最大） | 主帖 text post，Halloween 角度（文案在下） |
+| r/cakedecorating（备选，人群最准） | 若 r/Baking 版规禁 text 帖/外链，同文案微改发这里 |
+| r/AskBaking（答帖池） | 搜 `black frosting gray` 新旧问帖 → 认真答 + 附页面链接 |
+
+**账号门槛（Reddit 通用现实）**：新号带链接发帖大概率被 AutoMod 静默过滤；多数大版要求账号 ≥7 天 + 少量 karma。无老号 → 10/04 建号养 7~10 天，10/12~15 发帖（万圣烘焙窗持续到 ~10/28，来得及）。**养号**：订阅上述版块 → 每天 2~3 条真诚评论（任何兴趣版均可）→ 攒 50+ karma → 发帖前一晚读目标版 Sidebar 确认版规（以版规为准：text/外链/自推日限/账号门槛）。
+
+**发帖时机**：周二~周四，美东 9~11 点（= 北京 21:00~23:00）；发后守评论区 1 小时（帖生死在前一小时）。
+
+**主帖文案（r/Baking，直接抄）——标题**：
+```
+Why your black frosting is gray, not black — and four ways to fix it before Halloween
+```
+
+**正文**：
+```
+If you've ever loaded a whole bottle of black gel into white buttercream and still ended up with gray, it's not you. It's physics.
+
+White frosting reflects basically all light. Dye can only subtract light, never add it — so going from white to true black means subtracting almost everything, and that takes enough dye to taste bitter (and turn buttercream to soup if you're using liquid coloring; gel or bust).
+
+Four routes that actually work:
+
+1. Chocolate base + black gel (how bakeries do it). Dark chocolate buttercream is already 80% of the way to black, so you need a fraction of the gel, no bitter edge, and it tastes like chocolate. Start with an eighth of a teaspoon of gel per cup of buttercream, cap around a quarter.
+
+2. Black cocoa. Swap a quarter of your regular cocoa for onyx (black) cocoa — the ingredient that makes Oreo filling taste like Oreo filling. Lands near-black on its own, basically no dye.
+
+3. White base + heavy gel. The vanilla-must-stay route. Fair warning: it has a ceiling — charcoal, not true black, even after it deepens overnight.
+
+4. No black gel at all? Red + blue + green gel in white frosting cancels itself out. It works as a rescue, but it lands muddy and eats flavor. Emergency only.
+
+And the free trick everyone sleeps on: black gel darkens as it hydrates. What looks dark gray at 8pm reads black by morning. Let it rest overnight before you add more dye — extra dye costs flavor, resting is free.
+
+I got deep enough into frosting color math that I ended up building a free tool that computes what any blend of icing colors actually looks like, at exact ratios (no signup, nothing for sale): https://tintbrew.com/how-to-make-black-frosting/
+
+There's a full icing color chart too if you're building out a whole Halloween palette: https://tintbrew.com/icing-color-chart/
+
+Happy to take color questions in the comments — "orange that doesn't look neon" is another fun one.
+```
+
+**红线**：帖被过滤/删除不要原样重发（spam 判定会加重）；同文案不连发多版（换版块隔天 + 改角度）；答帖永远优先于主帖（存活率高）；不买 upvote。
+
 ---
 
 ## 三、Pinterest 色卡 pin（每周 2~3 个，常青流量）

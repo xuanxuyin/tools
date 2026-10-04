@@ -21,7 +21,7 @@
   https://chartglade.com/field-trip-sign-in-sheet/
   https://chartglade.com/volunteer-sign-in-sheet/
   ```
-- [ ] 👤 **分发两件（若 10/02~03 未发）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道，文案在 tintbrew DISTRIBUTION）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，模板在 chartglade DISTRIBUTION §5.2）—— 已发过报一声即销项
+- [ ] 👤 **分发两件（若 10/02~03 未发）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道；文案 + 版块/养号/时机全套步骤在 tintbrew DISTRIBUTION **§2.3**——10/04 补位，原"文案在位"引用悬空已勘误；无老号今天建号养 7~10 天，10/12~15 发）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，模板在 chartglade DISTRIBUTION §5.2）—— 已发过报一声即销项
 - [x] 🤖 tintbrew 批 B = /hue-test/ ✅ **10/04 上线**（main `b1afa6e`；104 页 sitemap 实测 / 164 测试绿 / OG 卡 44；线上 200+canonical 自指 + OG 卡可取【外部 reader 实勘，本机 TLS 断】；IndexNow 200 —— V2.2 全批收官，明细 PLAN 10/04 时间线行）
 - 明日预告：周一例行（GSC 索引覆盖 sitemap 视图+快照日期 / 28 天环比 / site: / DDG），两站数字一起报；**复查 tintbrew 异常点：mixer 10/03=28 已定案 ChatGPT 引荐（AI 通道首现，看 GSC 对照 Google 自身贡献 + GA 来源/媒介是否复现）；bear 页 9/27=11 来源未拆**
 
