@@ -1,6 +1,7 @@
 ---
 import ChartPage from '../components/ChartPage.astro';
 import CursiveAlphabet from '../components/printables/CursiveAlphabet.astro';
+import CursiveAZ from '../components/CursiveAZ.astro';
 import { cursivePages } from '../data/cursive';
 
 const def = cursivePages.find((p) => p.slug === 'cursive-alphabet')!;
@@ -8,4 +9,5 @@ const def = cursivePages.find((p) => p.slug === 'cursive-alphabet')!;
 
 <ChartPage def={def}>
   <CursiveAlphabet title="Cursive Alphabet Chart" />
+  <CursiveAZ slot="after" />
 </ChartPage>

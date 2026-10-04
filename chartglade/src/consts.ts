@@ -15,3 +15,13 @@ export const SITE = {
   /** Google Analytics 4 measurement ID — public by design (rendered into gtag.js URL) */
   gaMeasurementId: 'G-EKH9T22FDT',
 } as const;
+
+/**
+ * Site-wide content freshness date (2026-10-04 incumbent teardown: winners all
+ * carry visible updated dates / sitemap lastmod; we carried none). Bump on
+ * every content batch — do NOT bump for code-only deploys, or the signal
+ * becomes noise. Renders as the visible "Last updated" line, JSON-LD
+ * dateModified, and the sitemap lastmod (astro.config.mjs mirrors it — mjs
+ * can't import this TS file).
+ */
+export const CONTENT_UPDATED = '2026-10-04';

@@ -3,7 +3,7 @@ import '../styles/global.css';
 import SeoHead from '../components/SeoHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE } from '../consts';
+import { SITE, CONTENT_UPDATED } from '../consts';
 
 interface Props {
   title: string;
@@ -51,6 +51,10 @@ const gaId = SITE.gaMeasurementId;
     <main id="main" class="container">
       <slot />
     </main>
+    <p class="container updated-line no-print">
+      Charts last updated{' '}
+      {new Date(CONTENT_UPDATED).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+    </p>
     <Footer />
     <!-- Global delegated handlers: print button + printable table interactivity -->
     <script>

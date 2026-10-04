@@ -1,6 +1,7 @@
 ---
 import ChartPage from '../../components/ChartPage.astro';
 import CursiveLetterSheet from '../../components/printables/CursiveLetterSheet.astro';
+import CursiveAZ from '../../components/CursiveAZ.astro';
 import { cursiveLetters } from '../../data/cursiveLetters';
 
 export function getStaticPaths() {
@@ -17,4 +18,5 @@ const pageDef = { ...def, path: `/cursive/${def.slug}` };
 
 <ChartPage def={pageDef}>
   <CursiveLetterSheet sheet={def.sheet} />
+  <CursiveAZ slot="after" current={def.slug} />
 </ChartPage>

@@ -1478,3 +1478,12 @@ svg {
     font-size: 15pt;
   }
 }
+
+/* Site-wide freshness line (2026-10-04): winners carry visible updated dates */
+.updated-line {
+  margin: 0 auto 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e3e8ee;
+  color: #64748b;
+  font-size: 0.85rem;
+}

@@ -30,7 +30,7 @@ export const cursivePages: PageDef[] = [
     extraSection: {
       heading: 'Every cursive letter, A to Z — the chart and the letter pages',
       paras: [
-        'This cursive chart is the one-page overview: all 52 forms — 26 capitals and 26 lowercase letters — on a single printable sheet for the wall or the desk. When one letter needs more than a glance, every letter also has its own page here, from /cursive/a/ through /cursive/z/. Each letter page breaks the capital and the lowercase into numbered strokes, prints as a trace-and-write practice sheet, names the single most common mistake for that specific letter, and answers the questions people actually ask (how to write the capital, why it looks wrong, whether it connects).',
+        'This cursive chart is the one-page overview: all 52 forms — 26 capitals and 26 lowercase letters — on a single printable sheet for the wall or the desk. When one letter needs more than a glance, every letter also has its own page here — the A-to-Z strip at the bottom of each letter page jumps straight to any of them. Each letter page breaks the capital and the lowercase into numbered strokes, prints as a trace-and-write practice sheet, names the single most common mistake for that specific letter, and answers the questions people actually ask (how to write the capital, why it looks wrong, whether it connects).',
         'The chart and the letter pages serve two different moments. Searching for a "cursive chart" usually means the overview moment — one sheet, every letter, hang it up and go. Searching for one cursive letter usually means the stuck moment — a capital that keeps coming out wrong, a child who needs tonight\'s homework letter explained. Print the chart once for reference, then jump straight to the letter page you are stuck on; start with the family letters (c, a, d) and the rest arrive faster than the alphabet order suggests.',
       ],
     },
@@ -88,11 +88,11 @@ export const cursivePages: PageDef[] = [
       },
       {
         q: 'Where can I get a free cursive chart to print?',
-        a: 'This page is one: the cursive chart above prints straight from your browser on a single letter sheet — no sign-up, no watermark. For letter-by-letter practice, every letter also has its own sheet at /cursive/a/ through /cursive/z/.',
+        a: 'This page is one: the cursive chart above prints straight from your browser on a single letter sheet — no sign-up, no watermark. For letter-by-letter practice, every letter also has its own sheet — the A-to-Z strip at the bottom of each letter page links to all 26.',
       },
       {
         q: 'Do you have every cursive letter from A to Z?',
-        a: 'Yes — the chart above shows all 26 at once, and each letter has its own page at /cursive/a/ through /cursive/z/ with numbered strokes for both forms, a printable practice sheet, that letter\'s most common mistake, and letter-specific teaching tips.',
+        a: 'Yes — the chart above shows all 26 at once, and each letter has its own page with numbered strokes for both forms, a printable practice sheet, that letter\'s most common mistake, and letter-specific teaching tips. The A-to-Z strip at the bottom of this page links to every one of them.',
       },
       {
         q: 'What\'s the difference between a cursive alphabet chart and cursive worksheets?',
