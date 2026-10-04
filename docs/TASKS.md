@@ -6,12 +6,13 @@
 
 ---
 
-## 今天 · 2026-10-02（周五）
+## 今天 · 2026-10-04（周日）
 
-> TASKS 停在 9/29，9/30~10/01 无记录 —— 10/01 双门已提前消化（V2.2 批 A 9/29 上线 / Pinterest 休眠），只剩的数据例行默认滑档，今日补跑。**10/05 批已提前今日上线**（见下勾项）。本周收尾剩：数据例行 + request indexing + 分发两件。
+> 10/02 批提前上线后 10/03 无记录。👤 已报 request indexing 进度：**chartglade 9/29 清单 10/10 完成（累计 39/70）**、**tintbrew 4/7**（blue/red/black/maroon ✅），peach/turquoise/color-mixing-chart 卡配额今日补。⚠️ **配额浪费教训**：9/29 清单里 cursive b/z/f 本就在 9/24 索引清单 15 条内（脚注自己写了"勿再请求"，切清单失察）= 3 条重复请求；**剩余字母池修正为 c d e j m n o p q r s t u v w（15 个）**。**明日 10/05（周一）= 周一例行**，9/30~10/04 滑档数据并入明天一次看，不单独补跑。
 
-- [ ] 👤 **例行补跑**：两站 GSC 28 天环比 + 索引覆盖读数（9/30~今天任意时点数字都行；若其实看过，报数即销项）
-- [ ] 👤 **request indexing**：9/29 清单（chartglade 10 + tintbrew 7，链接已交付）若还没推完从它继续；推完则 **10/02 上线的 6 张 sign-in 新页打头**（部署已确认，链接如下）再接字母页池
+- [ ] 👤 **request indexing**（配额 PT 午夜重置 ≈ 北京 15:00，今日新额度应可用）：
+  - **chartglade 10 条 = 6 sign-in 新页打头**（链接在下）+ cursive c / d / e / j
+  - **tintbrew 补 3 条**：peach / turquoise / color-mixing-chart（链接在 10/02 归档行）
   ```
   https://chartglade.com/sign-in-sheets/
   https://chartglade.com/sign-in-sheet/
@@ -20,9 +21,15 @@
   https://chartglade.com/field-trip-sign-in-sheet/
   https://chartglade.com/volunteer-sign-in-sheet/
   ```
-- [ ] 👤 **本周分发两件（别再拖，今天窗口最后工作日）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道，文案在 tintbrew DISTRIBUTION）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，引用首封补一发，模板在 chartglade DISTRIBUTION §5.2）
-- [x] 🤖 ~~10/05 批执行~~ **✅ 10/02 提前上线**（👤 拍板）：#18 下载按钮 + V1.8 sign-in 族 6 页 + 首页 Halloween 板块 + 文案软化，71 页/sitemap 70/81 测试绿，6 新页 200+canonical 自指、IndexNow 补推返 200【实勘】；过程抓到一个坑：测试放 src/pages/ 炸 Astro 构建（.ts 被当路由），已挪 data/ 修复。predev 已 reset 到 main = 10/25 批干净起点
-- [ ] 🤖（有余力）tintbrew 批 B = /hue-test/ 色觉互动页（3,070/月，9/24 立项第二梯队）
+- [ ] 👤 **分发两件（若 10/02~03 未发）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道，文案在 tintbrew DISTRIBUTION）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，模板在 chartglade DISTRIBUTION §5.2）—— 已发过报一声即销项
+- [ ] 🤖 tintbrew 批 B = /hue-test/ 色觉互动页（3,070/月，9/24 立项第二梯队，等开工信号）
+- 明日预告：周一例行（GSC 索引覆盖 sitemap 视图+快照日期 / 28 天环比 / site: / DDG），两站数字一起报
+
+---
+
+## 10/02 已完成归档
+
+**🤖 10/05 批提前上线（👤 拍板当日执行当日收）**：#18 支柱页下载按钮 + V1.8 sign-in 族 hub+5 页 + 首页 Halloween 季节板块 + "no download" 文案软化；71 页 / sitemap 64→70 / 81 测试绿；6 新页 200+canonical 自指、IndexNow 补推 6 URL 返 200【实勘 curl 权威 IP】；main `c222d13`+`b8a2e75`，predev reset 到 main = 10/25 批干净起点。**过程坑入档**：守卫测试放 `src/pages/` 炸 Astro 构建（pages 下 .ts 被当路由模块加载）→ 挪 `src/data/homepage.test.ts`；IndexNow key 文件真名 = `885ed6e41c45aaa0a07837bfe89d5937.txt`（9/15 档里 "cadecee" 是 commit 哈希非文件名，已勘误）。明细 PLAN 10/02 时间线行。
 
 **9/29 已完成归档**：👤 周一例行补跑（tintbrew 20 词全 top 3~7.7 决策门撞开；chartglade 15/52 八天零转化收录门真堵；DDG ≈35）｜ 👤 查询明细两站 50 词入档（tintbrew 首个自然点击 brown 页）｜ 👤 chartglade CF WA 7d=18 判读自查直访 ｜ 👤 tintbrew CF WA token 管道确认活 ｜ 🤖 V2.2 批 A 当日上线 `3674025`（make-X 6 页 + mixing chart + gold，111 页 150 测试绿）。**9/29 未销项**：request indexing 清单（chartglade 10：decimal 重试 + mult 变体 3 + cursive g/h/l/b/z/f；tintbrew 7：make-blue/red/black/maroon/peach/turquoise + color-mixing-chart）—— 推没推待确认
 
