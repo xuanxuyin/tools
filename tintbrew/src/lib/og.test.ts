@@ -113,6 +113,14 @@ describe('og wiring (real dist markup)', () => {
     expect(existsSync(resolve(distRoot, 'og/hue-test.png'))).toBe(true);
   });
 
+  it('color-mixing-chart and color-mixer point at their own cards', () => {
+    for (const slug of ['color-mixing-chart', 'color-mixer']) {
+      const html = readFileSync(resolve(distRoot, `${slug}/index.html`), 'utf8');
+      expect(ogImageOf(html), slug).toBe(`https://tintbrew.com/og/${slug}.png`);
+      expect(existsSync(resolve(distRoot, `og/${slug}.png`)), slug).toBe(true);
+    }
+  });
+
   it('brand default card still exists for tool/remaining pages', () => {
     expect(existsSync(resolve(distRoot, 'og-default.png'))).toBe(true);
   });

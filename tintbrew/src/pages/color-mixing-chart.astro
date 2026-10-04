@@ -26,6 +26,16 @@ for (let i = 0; i < colors.length; i++) {
   }
 }
 
+/**
+ * Ratio walk per pair (2026-10-04 batch A): each cell renders a 5-stop strip
+ * from 75/25 through 50/50 to 25/75, keyed by the ROW color's share — so the
+ * strip always runs row-heavy → col-heavy, giving the chart a second axis of
+ * information without adding any page weight beyond spans.
+ */
+const RATIOS = [0.75, 0.6, 0.5, 0.4, 0.25];
+const ratioHex = (rowHex: string, colHex: string) =>
+  RATIOS.map((t) => rgbToHex(oklabMix([hexToRgb(rowHex), hexToRgb(colHex)], [t, 1 - t])));
+
 /** sorted pair key → that pair's mix page slug (data order, not sorted) */
 const pageOf = new Map<string, string>();
 for (const m of mixes) {
@@ -78,6 +88,7 @@ const jsonLd = [
   description="A full color mixing chart: every two-color blend computed in a perceptual color space with exact HEX codes — printable on one page, with a guide page for every linked pair."
   path="/color-mixing-chart"
   jsonLd={jsonLd}
+  ogImage="/og/color-mixing-chart.png"
 >
   <section class="hero">
     <p class="crumbs">
@@ -126,16 +137,26 @@ const jsonLd = [
                 const key = [row.id, col.id].sort().join('|');
                 const hex = blend.get(key)!;
                 const slug = pageOf.get(key);
+                const strip = ratioHex(row.hex, col.hex);
+                const tip = `${row.name} + ${col.name} — strip runs ${row.name}-heavy to ${col.name}-heavy, 75/25 to 25/75; middle stop = ${hex}`;
                 return slug ? (
                   <td>
-                    <a href={`/mix/${slug}/`} title={`${row.name} + ${col.name} = ${hex} — full page`}>
-                      <span class="cell-swatch" style={`background:${hex}`}></span>
+                    <a href={`/mix/${slug}/`} title={`${tip} — full page`}>
+                      <span class="cell-strip">
+                        {strip.map((h) => (
+                          <span style={`background:${h}`}></span>
+                        ))}
+                      </span>
                       <span class="cell-hex">{hex.slice(1)}</span>
                     </a>
                   </td>
                 ) : (
-                  <td title={`${row.name} + ${col.name} = ${hex}`}>
-                    <span class="cell-swatch" style={`background:${hex}`}></span>
+                  <td title={tip}>
+                    <span class="cell-strip">
+                      {strip.map((h) => (
+                        <span style={`background:${h}`}></span>
+                      ))}
+                    </span>
                     <span class="cell-hex">{hex.slice(1)}</span>
                   </td>
                 );
@@ -155,6 +176,12 @@ const jsonLd = [
       equal-parts blend, computed in Oklab — a perceptual space that mirrors how human vision
       weighs color, so mid-blends land where your eye expects them instead of where raw RGB math
       would put them. The diagonal is each color unmixed.
+    </p>
+    <p>
+      Each swatch is a five-stop ratio strip, not a single color. It runs from the row color at
+      75% (left) through the 50/50 blend (middle, the HEX printed under the cell) to the column
+      color at 75% (right) — so one cell answers "what does more of one do?" without opening
+      anything. Hover a cell for the full ratio readout.
     </p>
     <p>
       Not every pair mixes the same way in paint and in light. Complementary pairs (red-green,
@@ -250,6 +277,15 @@ const jsonLd = [
     outline-offset: -2px;
   }
 
+  .cell-strip {
+    display: flex;
+    height: 2.6rem;
+  }
+
+  .cell-strip span {
+    flex: 1;
+  }
+
   .cell-swatch {
     display: block;
     height: 2.6rem;
@@ -306,6 +342,7 @@ const jsonLd = [
     }
 
     .cell-swatch,
+    .cell-strip span,
     .chip {
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;

@@ -18,7 +18,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 import { COLORS, PAIRS, SCENARIOS, OUTFITS, HUE_ARC } from './og-data.mjs';
-import { mixHex } from './og-color.mjs';
+import { mixHex, oklabMix, hexToRgb, rgbToHex } from './og-color.mjs';
 
 const W = 1200;
 const H = 630;
@@ -55,6 +55,12 @@ const FONT = {
   9: ['01110', '10001', '10001', '01111', '00001', '00010', '01100'],
   '#': ['01010', '11111', '01010', '01010', '01010', '11111', '01010'],
   '+': ['00100', '00100', '00100', '11111', '00100', '00100', '00100'],
+  // added for the dedicated chart/mixer cards (2026-10-04)
+  O: ['01110', '10001', '10001', '10001', '10001', '10001', '01110'],
+  L: ['10000', '10000', '10000', '10000', '10000', '10000', '11111'],
+  M: ['10001', '11011', '10101', '10101', '10001', '10001', '10001'],
+  X: ['10001', '10001', '01010', '00100', '01010', '10001', '10001'],
+  G: ['01110', '10001', '10000', '10011', '10001', '10001', '01110'],
 };
 
 const hex = (h) => [
@@ -291,4 +297,70 @@ for (const o of OUTFITS) {
   wordmark(set, 545, 8, 0.75);
 
   write(png, 'og/hue-test.png');
+}
+
+// --- 6. color mixing chart: the grid itself, miniaturized --------------------
+
+{
+  const { png, set } = newCard();
+
+  const title = 'COLOR MIXING CHART';
+  text(set, title, Math.round((W - measure(title, 6)) / 2), 105, 6, WHITE, 0.95);
+
+  // 5×5 mini matrix of the anchor colors, every cell the real Oklab blend
+  // (mixHex(c, c) === c, so the diagonal needs no special case)
+  const axis = ['red', 'yellow', 'blue', 'white', 'black'].map((id) => COLORS[id]);
+  const CELL = 130;
+  const GAP = 10;
+  const x0 = Math.round((W - (5 * CELL + 4 * GAP)) / 2);
+  const y0 = 205;
+  for (let r = 0; r < 5; r++) {
+    for (let c = 0; c < 5; c++) {
+      const x = x0 + c * (CELL + GAP);
+      const y = y0 + r * (CELL + GAP);
+      const color = hex(mixHex(axis[r], axis[c]));
+      const diag = r === c;
+      for (let py = y; py < y + CELL; py++) {
+        for (let px = x; px < x + CELL; px++) set(px, py, color, diag ? 0.55 : 0.95);
+      }
+    }
+  }
+
+  wordmark(set, 545, 8, 0.75);
+
+  write(png, 'og/color-mixing-chart.png');
+}
+
+// --- 7. color mixer: two circles blending into the lens ----------------------
+
+{
+  const { png, set } = newCard();
+
+  const title = 'COLOR MIXER';
+  text(set, title, Math.round((W - measure(title, 10)) / 2), 110, 10, WHITE, 0.95);
+
+  const RED_HEX = '#ff3d5a';
+  const BLUE_HEX = '#3b82f6';
+
+  circle(set, 505, 300, 135, hex(RED_HEX), 0.92);
+  circle(set, 695, 300, 135, hex(BLUE_HEX), 0.92);
+  lens(set, 505, 695, 300, 135, hex(mixHex(RED_HEX, BLUE_HEX)), 0.95);
+
+  // ratio walk under the lens: the mixer's core promise in five stops
+  const WALK_X = 320;
+  const WALK_Y = 485;
+  const WALK_W = 560;
+  const SH = 34;
+  const RATIOS = [0.75, 0.6, 0.5, 0.4, 0.25];
+  RATIOS.forEach((t, i) => {
+    const color = hex(rgbToHex(oklabMix([hexToRgb(RED_HEX), hexToRgb(BLUE_HEX)], [t, 1 - t])));
+    const x = WALK_X + Math.round(i * (WALK_W / 5));
+    for (let y = WALK_Y; y < WALK_Y + SH; y++) {
+      for (let px = x; px < x + WALK_W / 5 - 4; px++) set(px, y, color, 0.9);
+    }
+  });
+
+  wordmark(set, 545, 8, 0.75);
+
+  write(png, 'og/color-mixer.png');
 }

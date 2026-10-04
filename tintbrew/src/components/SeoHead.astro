@@ -1,5 +1,5 @@
 ---
-import { SITE } from '../consts';
+import { SITE, CONTENT_UPDATED } from '../consts';
 
 interface Props {
   /** Full <title> content (page-level caller composes brand suffix) */
@@ -25,6 +25,12 @@ const canonical = path === '/' ? `${SITE.url}/` : `${SITE.url}${cleanPath}/`;
 const ogImageAbs = new URL(ogImage, SITE.url).href;
 const jsonLdItems: Record<string, unknown>[] = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const gsc = import.meta.env.PUBLIC_GSC_VERIFICATION ?? SITE.gscVerification;
+
+// freshness signal (2026-10-04): stamp dateModified on every entity except
+// BreadcrumbList, where the property would be meaningless
+const datedItems = jsonLdItems.map((item) =>
+  item['@type'] === 'BreadcrumbList' ? item : { ...item, dateModified: CONTENT_UPDATED },
+);
 ---
 
 <title>{title}</title>
@@ -47,4 +53,4 @@ const gsc = import.meta.env.PUBLIC_GSC_VERIFICATION ?? SITE.gscVerification;
 <meta name="twitter:image" content={ogImageAbs} />
 
 {gsc && <meta name="google-site-verification" content={gsc} />}
-{jsonLdItems.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+{datedItems.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
