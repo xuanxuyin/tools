@@ -24,7 +24,7 @@
 - [ ] 👤 **分发两件（若 10/02~03 未发）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道；文案 + 版块/养号/时机全套步骤在 tintbrew DISTRIBUTION **§2.3**——10/04 补位，原"文案在位"引用悬空已勘误；无老号今天建号养 7~10 天，10/12~15 发）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，模板在 chartglade DISTRIBUTION §5.2）—— 已发过报一声即销项
 - [x] 🤖 tintbrew 批 B = /hue-test/ ✅ **10/04 上线**（main `b1afa6e`；104 页 sitemap 实测 / 164 测试绿 / OG 卡 44；线上 200+canonical 自指 + OG 卡可取【外部 reader 实勘，本机 TLS 断】；IndexNow 200 —— V2.2 全批收官，明细 PLAN 10/04 时间线行）
 - [x] 🤖 **竞品差距 A 批 ✅ 10/04 全项上线**（👤 "现在开工"）：chartglade `002ced3`（字母 A-Z 条带 = 676 互链边 + freshness 三件套 + twitter 大卡，86 测试绿）｜tintbrew `d8d4bd4`（chart 页每格 5 档比例条 550 混色 + freshness 三件套 + chart/mixer 两张专属 OG 卡，170 测试绿）。明细各 PLAN 10/04 A 批行。逐页 OG 生成器推迟 10/25 批
-- [ ] 👤 **AITDK 拉量：tintbrew gray/white 扩容判定**（竞品 paintlogs 有 48 对页我们 25，10K 定标判定；照旧记 量+KD）：
+- [x] 👤 **AITDK 拉量：tintbrew gray/white 扩容判定** ✅ 10/04：white **4.4K** + gray 2.4K，6 配对词全 0~20 → **gray 配对死档**；white/gray 头词两页 <10K 线 → **V2.3 搭车候选不单独开批**（明细 PLAN 10/04 行）：
   ```
   what colors make gray
   what colors make white
