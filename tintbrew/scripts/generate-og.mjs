@@ -17,7 +17,7 @@ import { PNG } from 'pngjs';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
-import { COLORS, PAIRS, SCENARIOS, OUTFITS } from './og-data.mjs';
+import { COLORS, PAIRS, SCENARIOS, OUTFITS, HUE_ARC } from './og-data.mjs';
 import { mixHex } from './og-color.mjs';
 
 const W = 1200;
@@ -36,6 +36,9 @@ const FONT = {
   R: ['11110', '10001', '10001', '11110', '10100', '10010', '10001'],
   E: ['11111', '10000', '10000', '11110', '10000', '10000', '11111'],
   W: ['10001', '10001', '10001', '10101', '10101', '11011', '10001'],
+  H: ['10001', '10001', '10001', '11111', '10001', '10001', '10001'],
+  U: ['10001', '10001', '10001', '10001', '10001', '10001', '01110'],
+  S: ['01110', '10001', '10000', '01110', '00001', '10001', '01110'],
   A: ['01110', '10001', '10001', '11111', '10001', '10001', '10001'],
   C: ['01110', '10001', '10000', '10000', '10000', '10001', '01110'],
   D: ['11110', '10001', '10001', '10001', '10001', '10001', '11110'],
@@ -260,4 +263,32 @@ for (const o of OUTFITS) {
   wordmark(set, 545, 8, 0.75);
 
   write(png, `og/${o.slug}.png`);
+}
+
+// --- 5. hue test: the game's own hue band, scrambled at one end ------------
+
+{
+  const { png, set } = newCard();
+
+  const title = 'HUE TEST';
+  text(set, title, Math.round((W - measure(title, 10)) / 2), 130, 10, WHITE, 0.95);
+
+  // spectrum band, 8 stops × 110px, with the last two stops swapped — the
+  // game in one glance: put the band back in order
+  const BAND_X = 160;
+  const BAND_Y = 250;
+  const SW = 110;
+  const SH = 100;
+  const order = [0, 1, 2, 3, 4, 5, 7, 6]; // swap positions 6/7
+  order.forEach((stop, i) => {
+    const x = BAND_X + i * SW;
+    const color = hex(HUE_ARC[stop]);
+    for (let y = BAND_Y; y < BAND_Y + SH; y++) {
+      for (let px = x; px < x + SW - 4; px++) set(px, y, color, 0.95); // 4px gap between stops
+    }
+  });
+
+  wordmark(set, 545, 8, 0.75);
+
+  write(png, 'og/hue-test.png');
 }

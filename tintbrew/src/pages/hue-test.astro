@@ -1,0 +1,334 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildRows, scoreAll, tierFor } from '../lib/hueTest';
+import { SITE } from '../consts';
+
+const rows = buildRows();
+const demo = scoreAll(rows);
+const demoTier = tierFor(demo.total);
+
+const title = 'Hue Test — Free Online Color Perception Test | TintBrew';
+const description =
+  'Rearrange shuffled hues into a smooth gradient and get your error score — a free Farnsworth-style color perception challenge. Fun, not a diagnosis.';
+
+// Polar fan geometry — the island script redraws spokes with these same numbers.
+const CX = 170;
+const CY = 170;
+const R0 = 14;
+const UNIT = 14;
+const endpoint = (hue: number, error: number) => {
+  const rad = ((hue - 90) * Math.PI) / 180; // 0° hue at 12 o'clock
+  const r = R0 + error * UNIT;
+  return { x: CX + r * Math.cos(rad), y: CY + r * Math.sin(rad) };
+};
+
+const faqs = [
+  {
+    q: 'What is a hue test?',
+    a: 'A hue test measures how finely you can tell neighboring colors apart. You get a set of similar swatches in random order and arrange them into the smoothest possible gradient — first a yellow-green into a green, then that green into a teal. Your arrangement is scored by how far each swatch sat from its home slot, which is why the test is about small hue steps, not naming colors.',
+  },
+  {
+    q: 'Is this the Farnsworth–Munsell 100 Hue Test?',
+    a: 'It is a web mini-tribute to it. The original Farnsworth–Munsell 100 Hue Test is the lab standard: 85 colored caps in four trays, graded with a Total Error Score, used in vision research and vocations where color judgment matters. This page keeps the idea — fixed end anchors, shuffled middle caps, an error score — with 33 hues in three trays you can play anywhere, in your browser, for free.',
+  },
+  {
+    q: 'Is this a color blindness test?',
+    a: 'No. It is a fun color-perception challenge, not a medical screening — it cannot diagnose color vision deficiency or anything else. If you suspect a color vision problem, or need a certified test for work, see an optometrist. Think of this as the color-nerd version of a brain teaser.',
+  },
+  {
+    q: 'What is a good score?',
+    a: 'Zero is perfect: every tile in its home slot. Scoring is strict — each single adjacent swap costs 2 points, out of a 150 maximum. Most careful players land between 10 and 30; a purely random arrangement averages around 100. The tier under your score tells you where you stand.',
+  },
+  {
+    q: 'Does my screen or lighting matter?',
+    a: 'Quite a bit. Night mode, blue-light filters, aggressive screen dimming and dark rooms all compress the differences between neighboring hues. For your best attempt, use a normally lit room and your usual display settings — and compare results only from the same device, since screens shift hues differently.',
+  },
+  {
+    q: 'Is it free? Do I need an account?',
+    a: 'Free, no account, no download — everything runs in your browser. When you are done sorting hues, the color mixer and converter on this site use the same perceptual (Oklab) color math.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TintBrew Hue Test',
+    url: `${SITE.url}/hue-test/`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript for scoring',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Hue Test', item: `${SITE.url}/hue-test/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/hue-test" ogImage="/og/hue-test.png" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>Hue Test</h1>
+    <p class="lead">
+      Three rows of shuffled hues. Tap two tiles to swap them and rebuild each smooth gradient — the
+      end anchors stay put, like the classic Farnsworth trays. Score when it looks right.
+    </p>
+    <p class="note">
+      A color-perception game, not a medical test — it cannot screen for color vision deficiency.
+    </p>
+  </section>
+
+  <div class="hue-test" data-hue-test>
+    <div class="hue-board">
+      {
+        rows.map((row) => (
+          <div class="hue-row">
+            <span class="hue-anchor" style={`--c: ${row.anchors[0].hex}`} title={`Fixed anchor ${row.anchors[0].hex}`} />
+            <div class="hue-tiles" data-tiles data-row={row.row}>
+              {row.tiles.map((t) => (
+                <button
+                  class="hue-tile"
+                  type="button"
+                  data-id={t.id}
+                  data-true={t.trueRank}
+                  data-hue={t.hue.toFixed(2)}
+                  style={`--c: ${t.hex}`}
+                  aria-pressed="false"
+                  aria-label={`Hue tile ${t.hex}`}
+                  title={t.hex}
+                />
+              ))}
+            </div>
+            <span class="hue-anchor" style={`--c: ${row.anchors[1].hex}`} title={`Fixed anchor ${row.anchors[1].hex}`} />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="hue-actions">
+      <button class="btn btn-primary" type="button" data-hue-score>Score my arrangement</button>
+      <button class="btn" type="button" data-hue-shuffle>Shuffle again</button>
+      <button class="btn" type="button" data-hue-reset>Reset</button>
+    </div>
+
+    <div class="hue-result" data-hue-result hidden>
+      <p class="hue-result-total">
+        Error score: <strong data-result-total>0</strong> / 150 — <strong data-result-tier></strong>
+      </p>
+      <p data-result-blurb></p>
+      <p class="hue-result-rows">
+        Trays: {rows.map((r) => <span><span data-result-row={r.row}>–</span>{r.row < rows.length - 1 ? ' · ' : ''}</span>)}
+      </p>
+    </div>
+
+    <figure class="polar-wrap">
+      <svg
+        viewBox="0 0 340 340"
+        width="340"
+        height="340"
+        role="img"
+        aria-label="Polar chart of hue errors: one colored spoke per tile, longer spokes mean bigger misses"
+      >
+        <circle cx={CX} cy={CY} r={R0 + 5 * UNIT} class="guide" />
+        <circle cx={CX} cy={CY} r={R0 + 10 * UNIT} class="guide" />
+        <circle cx={CX} cy={CY} r={R0} class="hub" />
+        {
+          demo.rows.flatMap((row) =>
+            row.errors.map((e) => {
+              const { x, y } = endpoint(e.hue, e.error);
+              return (
+                <g class="spoke" data-id={e.id}>
+                  <line x1={CX} y1={CY} x2={x.toFixed(1)} y2={y.toFixed(1)} stroke={e.hex} />
+                  <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r="4" fill={e.hex} />
+                </g>
+              );
+            }),
+          )
+        }
+      </svg>
+      <figcaption>
+        The error fan — one spoke per tile, drawn at the tile's hue; the longer the spoke, the further
+        that tile sat from home. This is the shipped shuffle (it scores {demo.total}, “{demoTier.label}”);
+        hit <em>Score my arrangement</em> to redraw it with yours.
+      </figcaption>
+    </figure>
+
+    <noscript>
+      <p class="note">
+        The grader needs JavaScript. Without it this page still shows a full worked example: the
+        arrangement above scores {demo.total} of 150 (“{demoTier.label}” — {demoTier.blurb.toLowerCase()}).
+      </p>
+    </noscript>
+  </div>
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2>How the scoring works</h2>
+    <p>
+      Every tile has a home slot between the anchors. When you score, each tile is charged the number
+      of slots it sits away from home — a tile two positions off costs 2, whatever is between it and
+      home. The row totals add up to your error score out of 150 (three trays × 50 for a fully
+      reversed row). Perfect is 0, a single adjacent swap costs 2, and random play averages around
+      100, so the ladder is unforgiving in a good way.
+    </p>
+    <p>
+      The tiers: <strong>0</strong> Perfect · <strong>1–6</strong> Elite · <strong>7–15</strong> Sharp ·
+      <strong>16–30</strong> Solid · <strong>31–60</strong> Warming up · <strong>61+</strong> Scrambled.
+    </p>
+    <p>
+      The hues themselves come from Oklab hue — the same perceptual color model this site's
+      <a href="/color-mixer">color mixer</a> blends with — walked at constant lightness and chroma, so
+      every step between neighbors is a genuinely even perceptual step, not just an even RGB step.
+    </p>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Why hue arrangement, and why this hurts (in a fun way)</h2>
+    <p>
+      Telling <em>red</em> from <em>blue</em> is easy; the eye's real resolution shows up in the
+      in-between — deciding whether this olive sits before or after that chartreuse. That is exactly
+      what capsule tests probe: the Farnsworth–Munsell 100 Hue Test has been the laboratory version
+      of this exercise since the 1940s, and online versions (X-Rite's among them) run the same play.
+      Designers use these tests to sanity-check calibrated eyes; everyone else uses them to argue
+      about who sees color best.
+    </p>
+    <p>
+      One honest caveat belongs in bold: <strong>this is a game, not a diagnostic</strong>. Screen
+      settings, room lighting and patience all move your score. If you need a real color vision
+      assessment, that is an optometrist's office, not a web page.
+    </p>
+    <p>
+      Ready for calmer colors? The <a href="/color-mixer">mixer</a> blends any two (or five) colors in
+      perceptual space, the <a href="/color-converter">converter</a> translates a color between HEX,
+      RGB, HSL and CMYK, and the <a href="/color-mixing-chart">color mixing chart</a> shows all 25
+      pairs at once.
+    </p>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hue-test {
+    margin-top: var(--sp-6);
+  }
+  .hue-board {
+    display: grid;
+    gap: var(--sp-3);
+  }
+  .hue-row {
+    display: flex;
+    align-items: stretch;
+    gap: var(--sp-2);
+  }
+  .hue-anchor {
+    flex: 0 0 auto;
+    width: 40px;
+    border-radius: var(--radius-sm);
+    border: 2px dashed var(--border);
+    background: var(--c);
+  }
+  .hue-tiles {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(10, minmax(28px, 1fr));
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .hue-tile {
+    aspect-ratio: 1;
+    min-width: 28px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--border);
+    background: var(--c);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.08s ease;
+  }
+  .hue-tile:hover {
+    transform: translateY(-2px);
+  }
+  .hue-tile.is-selected {
+    outline: 3px solid var(--text);
+    outline-offset: 2px;
+    transform: translateY(-2px);
+  }
+  .hue-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin-top: var(--sp-4);
+  }
+  .hue-result {
+    margin-top: var(--sp-4);
+    padding: var(--sp-3) var(--sp-4);
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+  }
+  .hue-result-total {
+    font-size: 1.05rem;
+    margin-bottom: var(--sp-1);
+  }
+  .hue-result-rows {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+  .polar-wrap {
+    margin: var(--sp-6) auto 0;
+    max-width: 24rem;
+  }
+  .polar-wrap svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .polar-wrap .guide {
+    fill: none;
+    stroke: var(--border);
+    stroke-dasharray: 3 5;
+  }
+  .polar-wrap .hub {
+    fill: var(--border);
+  }
+  .polar-wrap figcaption {
+    margin-top: var(--sp-2);
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .note {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  import '../scripts/hueTest';
+</script>

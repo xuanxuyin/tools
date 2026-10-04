@@ -14,7 +14,8 @@ import { mixes } from '../data/mixes';
 import { hexToRgb, oklabMix, rgbToHex } from './color';
 import { scenarioContents } from './scenarioContent';
 import { outfitContents } from './outfitContent';
-import { COLORS as OG_COLORS, PAIRS, SCENARIOS, OUTFITS } from '../../scripts/og-data.mjs';
+import { hueToHex } from './hueTest';
+import { COLORS as OG_COLORS, PAIRS, SCENARIOS, OUTFITS, HUE_ARC } from '../../scripts/og-data.mjs';
 import { mixHex } from '../../scripts/og-color.mjs';
 
 const distRoot = resolve(fileURLToPath(import.meta.url), '../../../dist');
@@ -52,6 +53,10 @@ describe('og-data.mjs snapshot parity', () => {
       const o = outfitContents[i]!;
       expect(OUTFITS[i]).toEqual({ slug: o.def.slug, swatches: o.heroStrip });
     }
+  });
+
+  it('hue-test band matches the engine hue ring', () => {
+    expect(HUE_ARC).toEqual(Array.from({ length: 8 }, (_, k) => hueToHex(k * 45)));
   });
 });
 
@@ -100,6 +105,12 @@ describe('og wiring (real dist markup)', () => {
       expect(ogImageOf(html), o.def.slug).toBe(`https://tintbrew.com/og/${o.def.slug}.png`);
       expect(existsSync(resolve(distRoot, `og/${o.def.slug}.png`)), o.def.slug).toBe(true);
     }
+  });
+
+  it('hue test page points at its own card and the file exists', () => {
+    const html = readFileSync(resolve(distRoot, 'hue-test/index.html'), 'utf8');
+    expect(ogImageOf(html)).toBe('https://tintbrew.com/og/hue-test.png');
+    expect(existsSync(resolve(distRoot, 'og/hue-test.png'))).toBe(true);
   });
 
   it('brand default card still exists for tool/remaining pages', () => {

@@ -19,6 +19,19 @@ export const COLORS = {
   gold: '#d8982d',
 };
 
+/** Hue-test card band — 8 stops of the Oklab hue ring at the game's L/C
+ *  (lib/hueTest.ts hueToHex at k·45°). Parity-locked by src/lib/og.test.ts. */
+export const HUE_ARC = [
+  '#c07089',
+  '#c17755',
+  '#a58938',
+  '#709a58',
+  '#2ba18f',
+  '#3299bc',
+  '#7389cc',
+  '#a478b8',
+];
+
 /** 25 pairs as [a, b] color ids — order matches data/mixes.ts. */
 export const PAIRS = [
   ['red', 'blue'],
