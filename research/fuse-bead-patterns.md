@@ -75,3 +75,23 @@
 | perler bead patterns for kids | 0 | 0 | ❌ 弃 |
 
 **终局判定**:主族合计 **≈30.4K/月**(9 词),过 ≥10K 新机会定标 3 倍;KD 带 14~35 无越线 → **立项成立**。落位 **tintbrew**(9/25 👤 三连裁决推翻初判 chartglade,理由见 §四终局注),首批 5 页 = hub + easy/animals/food/christmas(tintbrew PLAN §3 #9),**10/15 前**上线(早于 chartglade 10/25 车避双站同周合并)。CPC 全 ~$0 = 纯信息流量,变现走展示广告。
+
+## 八、逐动物长尾补拉(2026-10-04,👤 AITDK,bear 页访问异常触发)
+
+> 触发:/perler-bead-animals/bear/ **9/27 单日 11 次访问**(CF WA Pages 口径,站内近日单页最高,上线第 2 天),判是否延伸变体矩阵。
+
+| 词 | 量(US/月) | KD |
+|---|---|---|
+| cat perler bead pattern | 720 | 7 |
+| dog perler bead pattern | 320 | 14 |
+| unicorn perler bead pattern | 210 | 10 |
+| panda perler bead pattern | 140 | 21 |
+| bunny perler bead pattern | 110 | 3 |
+| owl perler bead pattern | 110 | 2 |
+| penguin perler bead pattern | 110 | 18 |
+| dinosaur perler bead pattern | 70 | 8 |
+| fox perler bead pattern | 50 | 20 |
+
+bear 系 6 词(bear/teddy bear/polar/gummy/grizzly/koala perler bead pattern)未返回数据(无量不显示)。
+
+**终局:9 词合计 ≈1,840/月,离 10K 扩容定标一个数量级 → 逐动物变体矩阵不立项,入观察池**("几百到几千修补型小机会一律不做"纪律直接适用,同先例:扩色配对其余候选对)。bear 页不单页加深(已是完整交互件,排名变量在词覆盖与外链)。**判读附注**:Google 侧量撑不起单日 11 次 → 流量更可能来自 Bing/IndexNow 快车道(9/25 推过 51 URL,AITDK 估的是 Google 侧、GSC 不记 Bing)或直访;👤 有空在 GSC 页面筛选举一眼可定案,但不改任何决策。拼豆下一班车维持 §七 既定:pony bead patterns 6,600/KD28(编织形态,独立判定,不混本簇)。
