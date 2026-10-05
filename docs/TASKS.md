@@ -6,13 +6,11 @@
 
 ---
 
-## 今天 · 2026-10-04（周日）
+## 今天 · 2026-10-05（周一）
 
-> 10/02 批提前上线后 10/03 无记录。👤 已报 request indexing 进度：**chartglade 9/29 清单 10/10 完成（累计 39/70）**、**tintbrew 4/7**（blue/red/black/maroon ✅），peach/turquoise/color-mixing-chart 卡配额今日补。⚠️ **配额浪费教训**：9/29 清单里 cursive b/z/f 本就在 9/24 索引清单 15 条内（脚注自己写了"勿再请求"，切清单失察）= 3 条重复请求；**剩余字母池修正为 c d e j m n o p q r s t u v w（15 个）**。**明日 10/05（周一）= 周一例行**，9/30~10/04 滑档数据并入明天一次看，不单独补跑。
+> 昨日收官：A 批全项上线+线上验证 ✅ ｜ hue-test 上线 ✅ ｜ gray/white 拉量终局（配对死档；white/gray 头词 V2.3 搭车候选）｜ **tintbrew request indexing 4/4 ✅**（peach / turquoise / color-mixing-chart / hue-test）。**chartglade 10 条昨日未报 → 今日打头**。
 
-- [ ] 👤 **request indexing**（配额 PT 午夜重置 ≈ 北京 15:00，今日新额度应可用）：
-  - **chartglade 10 条 = 6 sign-in 新页打头**（链接在下）+ cursive c / d / e / j
-  - **tintbrew 补 4 条**：peach / turquoise / color-mixing-chart（链接在 10/02 归档行）+ 今日上线新页 hue-test（批 B，已 IndexNow 推过，GSC 补一手 request indexing）：`https://tintbrew.com/hue-test/`
+- [ ] 👤 **chartglade request indexing 10 条**（若昨日已做，报一声即销项）：6 sign-in 新页 + cursive c / d / e / j：
   ```
   https://chartglade.com/sign-in-sheets/
   https://chartglade.com/sign-in-sheet/
@@ -21,21 +19,16 @@
   https://chartglade.com/field-trip-sign-in-sheet/
   https://chartglade.com/volunteer-sign-in-sheet/
   ```
-- [ ] 👤 **分发两件（若 10/02~03 未发）**：① tintbrew **Reddit 烘焙帖**（万圣分发唯一渠道；文案 + 版块/养号/时机全套步骤在 tintbrew DISTRIBUTION **§2.3**——10/04 补位，原"文案在位"引用悬空已勘误；无老号今天建号养 7~10 天，10/12~15 发）② chartglade **外链 follow-up ×2**（homeschool.com / Cathy Duffy，模板在 chartglade DISTRIBUTION §5.2）—— 已发过报一声即销项
-- [x] 🤖 tintbrew 批 B = /hue-test/ ✅ **10/04 上线**（main `b1afa6e`；104 页 sitemap 实测 / 164 测试绿 / OG 卡 44；线上 200+canonical 自指 + OG 卡可取【外部 reader 实勘，本机 TLS 断】；IndexNow 200 —— V2.2 全批收官，明细 PLAN 10/04 时间线行）
-- [x] 🤖 **竞品差距 A 批 ✅ 10/04 全项上线**（👤 "现在开工"）：chartglade `002ced3`（字母 A-Z 条带 = 676 互链边 + freshness 三件套 + twitter 大卡，86 测试绿）｜tintbrew `d8d4bd4`（chart 页每格 5 档比例条 550 混色 + freshness 三件套 + chart/mixer 两张专属 OG 卡，170 测试绿）。明细各 PLAN 10/04 A 批行。逐页 OG 生成器推迟 10/25 批
-- [x] 👤 **AITDK 拉量：tintbrew gray/white 扩容判定** ✅ 10/04：white **4.4K** + gray 2.4K，6 配对词全 0~20 → **gray 配对死档**；white/gray 头词两页 <10K 线 → **V2.3 搭车候选不单独开批**（明细 PLAN 10/04 行）：
-  ```
-  what colors make gray
-  what colors make white
-  blue and gray make
-  red and gray make
-  yellow and gray make
-  green and gray make
-  gray and purple make
-  black and gray make
-  ```
-- 明日预告：周一例行（GSC 索引覆盖 sitemap 视图+快照日期 / 28 天环比 / site: / DDG），两站数字一起报；**复查 tintbrew 异常点：mixer 10/03=28 已定案 ChatGPT 引荐（AI 通道首现，看 GSC 对照 Google 自身贡献 + GA 来源/媒介是否复现）；bear 页 9/27=11 来源未拆**
+- [ ] 👤 **周一例行（两站数字一起报，9/30~10/04 滑档并入今天一次看）**：
+  - GSC 索引覆盖（**sitemap 视图 + 快照日期**）｜ 效果 28 天环比（点击/曝光/CTR/平均排名）｜ 查询明细新冒头词 ｜ site: + DDG site:（粗信号）
+  - **复查 ①**：mixer 10/03=28 PV 已定案 ChatGPT 引荐 → GA 来源/媒介看 10/04 起是否复现 chatgpt.com + GSC 对照 Google 自身贡献
+  - **复查 ②**：bear 页 9/27=11 访问来源未拆（GSC 页面筛选 / CF WA 渠道一眼）
+- [ ] 👤 **分发（按实际进度补做）**：① Reddit 烘焙帖——未建号今天建（养 7~10 天，10/12~15 发；步骤 tintbrew DISTRIBUTION §2.3）② chartglade follow-up ×2（homeschool.com / Cathy Duffy，模板 §5.2）③ 可选新外链渠道（10/04 议）：r/perlerbeads 原创图纸帖 + 工具目录站第二梯队 —— 👤 点头哪个 Claude 出文案
+- [ ] 🤖 待命：新渠道文案（r/perlerbeads 帖 + 目录站第二梯队清单）随 👤 点头写入 DISTRIBUTION；10/25 批（chartglade 感恩节簇 + V1.7 + #14 island）预备开发不阻塞
+
+## 10/04 已完成归档
+
+**🤖 A 批（竞品差距修复）全项上线 ✅**：chartglade `002ced3`（CursiveAZ 条带 676 互链边 + freshness 三件套 + twitter 大卡，86 测试绿；线上验证条带/大卡/canonical ✓）｜ tintbrew `d8d4bd4`（chart 页 5 档比例条 550 混色 + freshness 三件套 + chart/mixer 专属 OG 卡，170 测试绿；线上验证 ✓，reader 验证须加 `?cachebust=` 查询串坑入档）。连带战果：tintbrew canonical 双斜杠修复 `3444c18` + chartglade SeoHead 防御 `e89df17` ｜ 🤖 hue-test 上线 `b1afa6e`（104 页 / 164 测试绿，V2.2 全批收官）｜ 👤 gray/white AITDK 拉量终局（white 4.4K + gray 2.4K，配对 6 词全 0~20 死档）｜ 👤 tintbrew request indexing 4/4 ✅
 
 ---
 
@@ -68,8 +61,7 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
-| 10/02（今天） | 👤 分发两件（Reddit 烘焙帖 + follow-up ×2）｜🤖 10/05 批执行（待拍板提前） | 各 DISTRIBUTION |
-| 10/05（周一） | ~~10/05 批~~ **✅ 10/02 已提前上线**；当日只剩数据例行 | — |
+| 10/05（今天·周一） | 周一例行（两站数字）+ chartglade request indexing 10 条 + 分发补做 | 各 DISTRIBUTION |
 
 ---
 
