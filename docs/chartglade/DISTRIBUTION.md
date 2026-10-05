@@ -272,6 +272,36 @@ Thanks for considering it,
 [你的名字]
 ```
 
+**follow-up 版（10/05 补发，9/17 首发零回音）—— 家家 5 分钟**：
+
+**homeschool.com follow-up**（还是 `https://www.homeschool.com/contact-us/` 表单，Reasons 照勾 Partner/Advertise With Us）：
+```
+Hi — following up on my note from Sept 17. I run ChartGlade (chartglade.com),
+a free printables site for K-5: place value charts, multiplication tables,
+Dolch & Fry sight word lists, and a full cursive alphabet section. Every page
+prints straight from the browser — no download, no sign-up, no email wall.
+
+Still not advertising or selling anything — I think it would sit well in your
+Resource Guide next to the free resources already listed (Easy Peasy, Superstar
+Worksheets). Happy to send screenshots or printable samples any time.
+
+Thanks for considering it!
+```
+
+**Cathy Duffy follow-up**（`https://cathyduffyreviews.com/contact-us` 表单，保持她的"短"纪律）：
+```
+Hi — following up on my note from Sept 17. ChartGlade (chartglade.com) is a
+free K-5 printables site: place value charts, multiplication tables, Dolch &
+Fry sight words, and a 26-letter cursive alphabet with stroke-by-stroke
+breakdowns. Complete and live, 70+ pages, nothing to sign up for.
+
+I still think it fits your Handwriting category or Free Homeschooling
+Resources. Happy to answer any questions.
+
+Thanks for considering it,
+[你的名字]
+```
+
 ---
 
 ## 六、节奏总表
