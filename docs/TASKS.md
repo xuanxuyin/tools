@@ -10,7 +10,7 @@
 
 > 昨日收官：A 批全项上线+线上验证 ✅ ｜ hue-test 上线 ✅ ｜ gray/white 拉量终局（配对死档；white/gray 头词 V2.3 搭车候选）｜ **tintbrew request indexing 4/4 ✅**（peach / turquoise / color-mixing-chart / hue-test）。**chartglade 10 条昨日未报 → 今日打头**。
 
-- [ ] 👤 **chartglade request indexing 10 条**（若昨日已做，报一声即销项）：6 sign-in 新页 + cursive c / d / e / j：
+- [ ] 👤 **chartglade request indexing：6 sign-in 新页 ✅ 10/05 完成；剩 cursive c / d / e / j 4 条**（`https://chartglade.com/cursive/c/` 同款路径，今日配额够就顺手）：
   ```
   https://chartglade.com/sign-in-sheets/
   https://chartglade.com/sign-in-sheet/
