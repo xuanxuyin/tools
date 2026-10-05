@@ -23,7 +23,7 @@
   - GSC 索引覆盖（**sitemap 视图 + 快照日期**）｜ 效果 28 天环比（点击/曝光/CTR/平均排名）｜ 查询明细新冒头词 ｜ site: + DDG site:（粗信号）
   - **复查 ①**：mixer 10/03=28 PV 已定案 ChatGPT 引荐 → GA 来源/媒介看 10/04 起是否复现 chatgpt.com + GSC 对照 Google 自身贡献
   - **复查 ②**：bear 页 9/27=11 访问来源未拆（GSC 页面筛选 / CF WA 渠道一眼）
-- [ ] 👤 **分发**：① Reddit 烘焙帖——未建号今天建（养 7~10 天，10/12~15 发；步骤 tintbrew DISTRIBUTION §2.3）② ~~chartglade follow-up ×2~~ **✅ 10/05 已补发**（homeschool.com / Cathy Duffy 表单版，文案 §5.3 follow-up 版）③ 可选新外链渠道（10/04 议）：r/perlerbeads 原创图纸帖 + 工具目录站第二梯队 —— 👤 点头哪个 Claude 出文案
+- [ ] 👤 **分发**：① Reddit 烘焙帖——**✅ 号已建 + r/Teachers 首条养号答帖已发（10/05）**；养号期每日 1~2 条真人互动零链接，**10/12~15 发主帖**（§2.3，周二~四北京 21~23 点）② ~~chartglade follow-up ×2~~ **✅ 10/05 已补发**（homeschool.com / Cathy Duffy 表单版，文案 §5.3 follow-up 版）③ 可选新外链渠道（10/04 议）：r/perlerbeads 原创图纸帖 + 工具目录站第二梯队 —— 👤 点头哪个 Claude 出文案
 - [ ] 🤖 待命：新渠道文案（r/perlerbeads 帖 + 目录站第二梯队清单）随 👤 点头写入 DISTRIBUTION；10/25 批（chartglade 感恩节簇 + V1.7 + #14 island）预备开发不阻塞
 
 ## 10/04 已完成归档
