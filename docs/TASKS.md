@@ -6,25 +6,18 @@
 
 ---
 
-## 今天 · 2026-10-05（周一）
+## 今天 · 2026-10-06（周二）
 
-> 昨日收官：A 批全项上线+线上验证 ✅ ｜ hue-test 上线 ✅ ｜ gray/white 拉量终局（配对死档；white/gray 头词 V2.3 搭车候选）｜ **tintbrew request indexing 4/4 ✅**（peach / turquoise / color-mixing-chart / hue-test）。**chartglade 10 条昨日未报 → 今日打头**。
+> 10/05 收官：双站周一例行 + 复查点全闭环（chartglade 曝光 1,709 超乐观档 / place value 族 4.7~6.5 实锤；tintbrew 真实系列 4,924→5,661 = 11 天 +15%、9/25 的 11.5K 勘误口径异常止损垫更正 1.13 倍；mixer 49PV 全站最热 = AI/直访在真实使用工具）｜ request indexing 累计 47/70 ｜ follow-up ×2 已发进静默期 ｜ Reddit 号已建 + 首条养号答帖。
 
-- [x] 👤 **chartglade request indexing ✅ 10/05：sign-in 6 页 + cursive c/d 完成（累计 47/70）；e/j 配额尽明日补**：
-  ```
-  https://chartglade.com/sign-in-sheets/
-  https://chartglade.com/sign-in-sheet/
-  https://chartglade.com/open-house-sign-in-sheet/
-  https://chartglade.com/parent-teacher-conference-sign-in-sheet/
-  https://chartglade.com/field-trip-sign-in-sheet/
-  https://chartglade.com/volunteer-sign-in-sheet/
-  ```
-- [ ] 👤 **周一例行（两站数字一起报，9/30~10/04 滑档并入今天一次看）**：
-  - GSC 索引覆盖（**sitemap 视图 + 快照日期**）｜ 效果 28 天环比（点击/曝光/CTR/平均排名）｜ 查询明细新冒头词 ｜ site: + DDG site:（粗信号）
-  - **复查 ①**：mixer 10/03=28 PV 已定案 ChatGPT 引荐 → GA 来源/媒介看 10/04 起是否复现 chatgpt.com + GSC 对照 Google 自身贡献
-  - **复查 ②**：bear 页 9/27=11 访问来源未拆（GSC 页面筛选 / CF WA 渠道一眼）
-- [ ] 👤 **分发**：① Reddit 烘焙帖——**✅ 号已建 + r/Teachers 首条养号答帖已发（10/05）**；养号期每日 1~2 条真人互动零链接，**10/12~15 发主帖**（§2.3，周二~四北京 21~23 点）② ~~chartglade follow-up ×2~~ **✅ 10/05 已补发**（homeschool.com / Cathy Duffy 表单版，文案 §5.3 follow-up 版）③ 可选新外链渠道（10/04 议）：r/perlerbeads 原创图纸帖 + 工具目录站第二梯队 —— 👤 点头哪个 Claude 出文案
-- [ ] 🤖 待命：新渠道文案（r/perlerbeads 帖 + 目录站第二梯队清单）随 👤 点头写入 DISTRIBUTION；10/25 批（chartglade 感恩节簇 + V1.7 + #14 island）预备开发不阻塞
+- [ ] 👤 **chartglade request indexing（额度 ~15:00 后）**：cursive e / j 打头，有余量续字母池 m / n / o（`https://chartglade.com/cursive/e/` 同款路径；勿再请求名单见 PLAN §3 脚注）
+- [ ] 👤 **Reddit 养号 5~10 分钟**：r/Baking / r/AskBaking / r/cakedecorating 真人评论 1~2 条，零链接；**10/12~15 发主帖**
+- [ ] 👤 **每日例行 3 分钟**：GSC 效果新冒头词扫一眼（两站）+ CF WA 曲线异常否 —— 有异动报 Claude
+- [ ] 🤖 待命：新外链渠道文案（r/perlerbeads 图纸帖 / 目录站第二梯队清单）随 👤 点头写入 DISTRIBUTION；10/25 批（chartglade 感恩节簇 + V1.7 + #14 island + 逐页 OG 生成器）预备开发不阻塞
+
+## 10/05 已完成归档
+
+**👤 双站周一例行全闭环**（数字明细各 PLAN 10/05 行）：chartglade 曝光 1,709 / 排名 37.6 / 点击 5、索引快照双站同卡 9/21（无信息）、三支柱头词首次霸榜、place value 族 4.7~6.5 实锤、GA ~7PV 自访噪音级；tintbrew 曝光 5,661 / 排名 36.2 / 点击 9、9/25 的 11,503 勘误口径异常（真实 +15%）、止损垫更正 1.13 倍、mixer 49PV（+1,125%）= AI 引荐+直访实证、site: 156 采样噪音 ｜ **👤 request indexing**：tintbrew 4/4 + chartglade sign-in 6 + cursive c/d（累计 47/70，e/j 配额尽）｜ **👤 外链 follow-up ×2 补发**（homeschool.com / Cathy Duffy，进静默期）｜ **👤 Reddit 建号 + r/Teachers 首条养号答帖**（vent 帖零链接判读在案）
 
 ## 10/04 已完成归档
 
