@@ -6,14 +6,18 @@
 
 ---
 
-## 今天 · 2026-10-06（周二）
+## 今天 · 2026-10-07（周三）
 
-> 10/05 收官：双站周一例行 + 复查点全闭环（chartglade 曝光 1,709 超乐观档 / place value 族 4.7~6.5 实锤；tintbrew 真实系列 4,924→5,661 = 11 天 +15%、9/25 的 11.5K 勘误口径异常止损垫更正 1.13 倍；mixer 49PV 全站最热 = AI/直访在真实使用工具）｜ request indexing 累计 47/70 ｜ follow-up ×2 已发进静默期 ｜ Reddit 号已建 + 首条养号答帖。
+> 10/06 收官：cursive e / j ✅（**累计 49/70**，字母池剩 m n o p q r s t u v w 13 个）。👤 问"双站浏览量昨日 7~8、今日归零"→ 判读非故障（自访基线波动 + 真实自然流量本就 ≈0/天，见对话；管道自证法 = 自己开一页看 Realtime 跳 1）。
 
-- [ ] 👤 **chartglade request indexing（额度 ~15:00 后）**：cursive e / j 打头，有余量续字母池 m / n / o（`https://chartglade.com/cursive/e/` 同款路径；勿再请求名单见 PLAN §3 脚注）
-- [ ] 👤 **Reddit 养号 5~10 分钟**：r/Baking / r/AskBaking / r/cakedecorating 真人评论 1~2 条，零链接；**10/12~15 发主帖**
-- [ ] 👤 **每日例行 3 分钟**：GSC 效果新冒头词扫一眼（两站）+ CF WA 曲线异常否 —— 有异动报 Claude
-- [ ] 🤖 待命：新外链渠道文案（r/perlerbeads 图纸帖 / 目录站第二梯队清单）随 👤 点头写入 DISTRIBUTION；10/25 批（chartglade 感恩节簇 + V1.7 + #14 island + 逐页 OG 生成器）预备开发不阻塞
+- [ ] 👤 **chartglade request indexing（额度 ~15:00 后）**：字母池 m / n / o / p（`https://chartglade.com/cursive/m/` 同款路径；勿再请求名单见 PLAN §3 脚注）
+- [ ] 👤 **Reddit 养号 5~10 分钟**：烘焙三版块真人评论 1~2 条，零链接；**10/12~15 发主帖**（§2.3）
+- [ ] 👤 **每日例行 3 分钟**：GSC 新冒头词 + CF WA 曲线 —— 有异动报 Claude
+- [ ] 🤖 待命：新外链渠道文案（r/perlerbeads / 目录站第二梯队）随 👤 点头；10/25 批预备开发（感恩节簇 + V1.7 + #14 island + 逐页 OG）不阻塞
+
+## 10/06 已完成归档
+
+**👤 chartglade request indexing cursive e / j ✅**（累计 49/70）｜ Reddit 养号进行中（首周）｜ 双站数据面无事件日
 
 ## 10/05 已完成归档
 
