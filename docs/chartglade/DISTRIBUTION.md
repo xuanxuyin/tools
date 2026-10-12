@@ -228,6 +228,10 @@ community.libguides.com 搜 "cursive worksheets" / "free printable worksheets" �
 
 **① Rowan-Cabarrus CC · Early Childhood Education**（收件人已确证 `lrc@rccc.edu`，可直接发）
 
+> **一键发送**：复制下面整行到浏览器地址栏回车 → 默认邮件客户端打开，收件人/主题/正文全填好 → 把 `[Your name]` 换成你的名字 → 发送。全程 ~15 秒。
+>
+> `mailto:lrc@rccc.edu?subject=Free%20printable%20resource%20for%20your%20Early%20Childhood%20Education%20guide&body=Hi%2C%0D%0A%0D%0AI%20run%20ChartGlade%20(chartglade.com)%20%E2%80%94%20a%20free%20printables%20site%20for%20K-5%3A%20place%20value%0D%0Acharts%2C%20multiplication%20tables%2C%20Dolch%20%26%20Fry%20sight%20word%20lists%2C%20and%20a%20full%20cursive%0D%0Aalphabet%20section%20with%20letter-by-letter%20stroke%20breakdowns.%20Every%20page%20prints%0D%0Astraight%20from%20the%20browser%20on%20a%20letter-size%20sheet%20%E2%80%94%20no%20download%2C%20no%20sign-up%2C%0D%0Ano%20email%20wall.%0D%0A%0D%0AYour%20Early%20Childhood%20Education%20guide%20is%20one%20of%20the%20clearer%20landing%20spots%20for%0D%0Aeducation%20students%20at%20Rowan-Cabarrus%20(I%20noticed%20ERIC%20front%20and%20center%20on%20the%0D%0Aresearch%20databases%20page)%2C%20and%20I%20thought%20ChartGlade%20might%20deserve%20a%20line%20on%20it%0D%0Afor%20the%20student-teachers%20who%20need%20ready-to-print%20classroom%20materials.%0D%0A%0D%0AHappy%20to%20send%20screenshots%20or%20printable%20samples%20if%20useful.%20Thanks%20for%20considering%20it%2C%0D%0A%0D%0A%5BYour%20name%5D%0D%0Achartglade.com`
+
 ```
 Subject: Free printable resource for your Early Childhood Education guide
 
