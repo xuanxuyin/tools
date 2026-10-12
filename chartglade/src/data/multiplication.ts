@@ -41,7 +41,7 @@ export const multiplicationPages: PageDef[] = [
       },
       {
         title: 'Use the chart to teach, not just quiz',
-        body: '"Why is 6 × 7 one less than 6 × 8?" Locating neighbors on the grid builds the derived-fact habits (doubles, one-more-set) that carry kids past memorization.',
+        body: '"Why is 6 × 7 six less than 6 × 8?" Locating neighbors on the grid builds the derived-fact habits (doubles, one-more-set) that carry kids past memorization.',
       },
       {
         title: 'Hang it where homework happens',

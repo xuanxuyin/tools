@@ -317,7 +317,7 @@ export const graphPaperPages: GraphPaperDef[] = [
       },
       {
         q: 'How do you draw a cube on isometric paper?',
-        a: 'Pick a point, draw two short strokes along the two diagonal families (the top edges), drop a vertical from each end and one from the point between, then close the bottom with two more diagonal strokes — six strokes total, every one along a printed line.',
+        a: 'Pick a point, draw two short strokes along the two diagonal families (the top edges), drop a vertical from each end and one from the point between, then close the bottom with two more diagonal strokes — seven strokes total, every one along a printed line.',
       },
       {
         q: 'What grade is isometric paper used in?',
