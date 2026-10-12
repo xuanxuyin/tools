@@ -16,6 +16,7 @@
 - [ ] 👤 **tintbrew 拼豆 hub 补推 1 条（1 分钟，若未推）**：`https://tintbrew.com/perler-bead-patterns/` → GSC URL 检查 → 请求编入索引；若已显示编入就跳过；顺手记「上次更新」日期 + 已编入总数发我
 - [x] 🤖 **#16 外链诱饵页 /states-that-require-cursive/ 上线 ✅**（main `4785a9e`：50 州三档追踪 + 竞品误传纠偏主文案；线上 200 / canonical / sitemap / IndexNow 全验；明细 PLAN 10/12 行，数据档 CURSIVE-STATES-DATA.md）
 - [x] 🤖 **外链三线收口（👤 分工裁定"外链 Claude 全包"）**：①awesome-math PR #198 已提（rossant/awesome-math，教育节 NRICH 旁）②LibGuides 5 封复制即发草稿入 §5.2.1（RCCC 收件人确证，其余 4 封 30 秒找邮箱路径写明）③无登录目录判死 → 替代产出 roundup pitch 4 目标入 §5.2 #6；10/25 批预备开发不阻塞
+- [x] 🤖 **tintbrew Copy link 分享按钮热修上线**（main `4aa0369`，GA 判读驱动：存量留存流量无分享出口）：mixer/converter 旗舰页 "Copy link" 复制带精确颜色参数的 URL；174/174 测试绿；线上三态验证 ✓（mixer/converter 有、矩阵页无）；明细 tintbrew PLAN 10/12 行
 
 ## 10/09~10/11 已完成归档
 
