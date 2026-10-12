@@ -220,6 +220,123 @@ Tinybeans（roundup 文）/ Mommy Poppins（草书教学文）两家都写过竞
 **#5 LibGuides 馆员推荐 —— 👤 批量低成本**
 community.libguides.com 搜 "cursive worksheets" / "free printable worksheets" → 命中的教育类 guide → 页脚维护馆员邮箱 → 短邮件推荐补充资源。馆员对免费教学资源建议接受度高（竞品先例：Centennial College 挂 MyCursive）。
 
+### 5.2.1 LibGuides 首批 5 封（2026-10-12 Claude 实勘 + 起草，复制即发）
+
+> 实勘过程：community.libguides.com 站内搜索为 JS 渲染抓不到，改 Google 定位具体 guide；候选 7 个中 RCCC 与 Hartford 页面结构已亲手核过（RCCC `/earlychildhood/` 列 ERIC 等教育库、tab 结构 books/cite/classes/newbery/paper/plagiarism；收件邮箱 RCCC 实测在页脚 `mailto:lrc@rccc.edu`）。**发送前 30 秒动作（第 2~5 封）**：打开 guide URL → 页面右侧/底部 profile 卡 → 馆员姓名 + 邮箱填进 `[ ]`；找不到 profile 邮箱就发该馆咨询台（guide 页脚 "Ask a Librarian" 链接落地即有）。全部零链接变体不加 UTM，纯 chartglade.com 域名。
+
+**① Rowan-Cabarrus CC · Early Childhood Education**（收件人已确证 `lrc@rccc.edu`，可直接发）
+
+```
+Subject: Free printable resource for your Early Childhood Education guide
+
+Hi,
+
+I run ChartGlade (chartglade.com) — a free printables site for K-5: place value
+charts, multiplication tables, Dolch & Fry sight word lists, and a full cursive
+alphabet section with letter-by-letter stroke breakdowns. Every page prints
+straight from the browser on a letter-size sheet — no download, no sign-up,
+no email wall.
+
+Your Early Childhood Education guide is one of the clearer landing spots for
+education students at Rowan-Cabarrus (I noticed ERIC front and center on the
+research databases page), and I thought ChartGlade might deserve a line on it
+for the student-teachers who need ready-to-print classroom materials.
+
+Happy to send screenshots or printable samples if useful. Thanks for considering it,
+
+[Your name]
+chartglade.com
+```
+
+**② Stonehill College · EDU Resources for Practicum: Lesson Plans**（guide: google 搜 "Stonehill EDU Resources for Practicum"，2025-07 仍在更新）
+
+```
+Subject: Free printable teaching materials for your Practicum resources guide
+
+Hi [Name],
+
+I run ChartGlade (chartglade.com) — free printable charts and worksheets for
+K-5: place value and multiplication charts, sight word cards, graph paper, and
+a cursive section with per-letter stroke pages. Everything prints from the
+browser, no sign-up.
+
+Your EDU Resources for Practicum guide is exactly the kind of page student
+teachers bookmark when they're building lesson plans, and free printables that
+need no account fit that moment — I thought it might be worth a line next to
+your lesson-plan sources.
+
+Happy to send specific pages or screenshots. Thanks for considering it,
+
+[Your name]
+chartglade.com
+```
+
+**③ Brescia University · Elementary Education Research Guide**（2026-08 更新，活跃）
+
+```
+Subject: Free printable resource for your Elementary Education guide
+
+Hi [Name],
+
+I run ChartGlade (chartglade.com) — a free K-5 printables site: math reference
+charts (place value, multiplication, hundred charts, number lines), Dolch & Fry
+sight word lists, printable graph paper, and a cursive alphabet section with
+letter-by-letter stroke breakdowns. No sign-up, no watermark — just print.
+
+I came across your Elementary Education Research Guide and thought ChartGlade
+would fit naturally alongside your teaching resources for teacher candidates
+preparing classroom materials.
+
+Glad to send samples or answer anything. Thanks for considering it,
+
+[Your name]
+chartglade.com
+```
+
+**④ Southeastern Louisiana University · Lesson Plans & Teaching Resources Websites**（guide 名即"资源网站列表"——形态最匹配）
+
+```
+Subject: One more free site for your Lesson Plans & Teaching Resources list
+
+Hi [Name],
+
+I run ChartGlade (chartglade.com) — a free printables site for K-5 teachers:
+place value and multiplication charts, sight word cards and lists, graph paper,
+and a cursive alphabet section (charts plus per-letter stroke pages). Every
+page prints from the browser — no account, no watermark.
+
+Your Lesson Plans & Teaching Resources page is a straight list of the sites
+teachers actually use, and that's what ChartGlade is built to be — I'd be glad
+if you considered adding it.
+
+Happy to send anything you need to evaluate it. Thanks,
+
+[Your name]
+chartglade.com
+```
+
+**⑤ University of Hartford · Education guide**（guide: libguides.hartford.edu/education，200 实测在位）
+
+```
+Subject: Free printable resource for your Education guide
+
+Hi [Name],
+
+I run ChartGlade (chartglade.com) — free printable teaching charts for K-5:
+place value and multiplication charts, hundred charts, sight word lists,
+graph paper, and a cursive alphabet section with stroke-by-stroke letter pages.
+Everything prints directly from the browser, no sign-up.
+
+I saw your Education guide and its collection of web resources for education
+students — a free printables site seemed like a natural addition for the
+student teachers among them.
+
+Happy to send samples or screenshots. Thanks for considering it,
+
+[Your name]
+chartglade.com
+```
+
 ### 5.3 pitch 邮件模板（#3/#4/#5 通用，改 [ ] 处）
 
 ```
