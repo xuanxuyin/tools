@@ -307,7 +307,7 @@ xuanxuyin
 chartglade.com
 ```
 
-**④ Southeastern Louisiana University · Lesson Plans & Teaching Resources Websites**（guide `selu.libguides.com/c.php?g=690312`，Teaching & Learning 组，guide 名即"资源网站列表"——形态最匹配；收件人已确证【实勘 2026-10-12】：guide owner **Alex Sharp**（Assistant Professor of Library Science, Head of Acquisitions，学科分区含 Education）`alexandra.sharp@selu.edu`，lesson-plans guide DC.Creator 实锤 + 其名下 /educ /teaching /nursing 三 guide 正文 mailto 同址双实锤。注：selu 用 `.libguides.com` 非 `.edu` 子域，站内 guide 列表全 JS 渲染，DuckDuckGo HTML 端点是绕行路）
+**④ Southeastern Louisiana University · Lesson Plans & Teaching Resources Websites**（guide `selu.libguides.com/c.php?g=690312`，Teaching & Learning 组，guide 名即"资源网站列表"——形态最匹配；收件人已确证【实勘 2026-10-12】：guide owner **Alex Sharp**（Assistant Professor of Library Science, Head of Acquisitions，学科分区含 Education）`alexandra.sharp@selu.edu`，lesson-plans guide DC.Creator 实锤 + 其名下 /educ /teaching /nursing 三 guide 正文 mailto 同址双实锤。注：selu 用 `.libguides.com` 非 `.edu` 子域，站内 guide 列表全 JS 渲染，DuckDuckGo HTML 端点是绕行路）— **✅ 已发 2026-10-12**
 
 > **一键发送（Chrome + Gmail）**：复制整行 → Chrome 地址栏 → 回车 → 点发送。
 >
@@ -333,12 +333,16 @@ xuanxuyin
 chartglade.com
 ```
 
-**⑤ University of Hartford · Education guide**（guide: libguides.hartford.edu/education，200 实测在位）
+**⑤ University of Hartford · Education guide**（guide `libguides.hartford.edu/education`，2026-08-13 更新活跃；收件人已确证【实勘 2026-10-12】：guide owner **Taylor St. Pierre** `tstpierre@hartford.edu`，DC.Creator + 页面 profile Contact 卡（服务端渲染）同页双实锤）
+
+> **一键发送（Chrome + Gmail）**：复制整行 → Chrome 地址栏 → 回车 → 点发送。
+>
+> `https://mail.google.com/mail/?view=cm&fs=1&to=tstpierre%40hartford.edu&su=Free%20printable%20resource%20for%20your%20Education%20guide&body=Hi%20Taylor%2C%0D%0A%0D%0AI%20run%20ChartGlade%20(chartglade.com)%20%E2%80%94%20free%20printable%20teaching%20charts%20for%20K-5%3A%0D%0Aplace%20value%20and%20multiplication%20charts%2C%20hundred%20charts%2C%20sight%20word%20lists%2C%0D%0Agraph%20paper%2C%20and%20a%20cursive%20alphabet%20section%20with%20stroke-by-stroke%20letter%20pages.%0D%0AEverything%20prints%20directly%20from%20the%20browser%2C%20no%20sign-up.%0D%0A%0D%0AI%20saw%20your%20Education%20guide%20and%20its%20collection%20of%20web%20resources%20for%20education%0D%0Astudents%20%E2%80%94%20a%20free%20printables%20site%20seemed%20like%20a%20natural%20addition%20for%20the%0D%0Astudent%20teachers%20among%20them.%0D%0A%0D%0AHappy%20to%20send%20samples%20or%20screenshots.%20Thanks%20for%20considering%20it%2C%0D%0A%0D%0Axuanxuyin%0D%0Achartglade.com`
 
 ```
 Subject: Free printable resource for your Education guide
 
-Hi [Name],
+Hi Taylor,
 
 I run ChartGlade (chartglade.com) — free printable teaching charts for K-5:
 place value and multiplication charts, hundred charts, sight word lists,
@@ -351,7 +355,7 @@ student teachers among them.
 
 Happy to send samples or screenshots. Thanks for considering it,
 
-[Your name]
+xuanxuyin
 chartglade.com
 ```
 
