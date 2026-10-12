@@ -281,7 +281,7 @@ xuanxuyin
 chartglade.com
 ```
 
-**③ Brescia University · Elementary Education Research Guide**（guide `libguides.brescia.edu/elementary_education`，2026-08 更新活跃；收件人已确证【实勘 2026-10-12】：guide owner **Sarah Cox** `sarah.cox@brescia.edu`，DC.Creator + 页面 mailto 双实锤）
+**③ Brescia University · Elementary Education Research Guide**（guide `libguides.brescia.edu/elementary_education`，2026-08 更新活跃；收件人已确证【实勘 2026-10-12】：guide owner **Sarah Cox** `sarah.cox@brescia.edu`，DC.Creator + 页面 mailto 双实锤）— **✅ 已发 2026-10-12**
 
 > **一键发送（Chrome + Gmail）**：复制整行 → Chrome 地址栏 → 回车 → 点发送。
 >
@@ -307,12 +307,16 @@ xuanxuyin
 chartglade.com
 ```
 
-**④ Southeastern Louisiana University · Lesson Plans & Teaching Resources Websites**（guide 名即"资源网站列表"——形态最匹配）
+**④ Southeastern Louisiana University · Lesson Plans & Teaching Resources Websites**（guide `selu.libguides.com/c.php?g=690312`，Teaching & Learning 组，guide 名即"资源网站列表"——形态最匹配；收件人已确证【实勘 2026-10-12】：guide owner **Alex Sharp**（Assistant Professor of Library Science, Head of Acquisitions，学科分区含 Education）`alexandra.sharp@selu.edu`，lesson-plans guide DC.Creator 实锤 + 其名下 /educ /teaching /nursing 三 guide 正文 mailto 同址双实锤。注：selu 用 `.libguides.com` 非 `.edu` 子域，站内 guide 列表全 JS 渲染，DuckDuckGo HTML 端点是绕行路）
+
+> **一键发送（Chrome + Gmail）**：复制整行 → Chrome 地址栏 → 回车 → 点发送。
+>
+> `https://mail.google.com/mail/?view=cm&fs=1&to=alexandra.sharp%40selu.edu&su=One%20more%20free%20site%20for%20your%20Lesson%20Plans%20%26%20Teaching%20Resources%20list&body=Hi%20Alex%2C%0D%0A%0D%0AI%20run%20ChartGlade%20(chartglade.com)%20%E2%80%94%20a%20free%20printables%20site%20for%20K-5%20teachers%3A%0D%0Aplace%20value%20and%20multiplication%20charts%2C%20sight%20word%20cards%20and%20lists%2C%20graph%20paper%2C%0D%0Aand%20a%20cursive%20alphabet%20section%20(charts%20plus%20per-letter%20stroke%20pages).%20Every%20page%20prints%20from%20the%0D%0Abrowser%20%E2%80%94%20no%20account%2C%20no%20watermark.%0D%0A%0D%0AYour%20Lesson%20Plans%20%26%20Teaching%20Resources%20page%20is%20a%20straight%20list%20of%20the%20sites%0D%0Ateachers%20actually%20use%2C%20and%20that%27s%20what%20ChartGlade%20is%20built%20to%20be%20%E2%80%94%20I%27d%20be%20glad%0D%0Aif%20you%20considered%20adding%20it.%0D%0A%0D%0AHappy%20to%20send%20anything%20you%20need%20to%20evaluate%20it.%20Thanks%2C%0D%0A%0D%0Axuanxuyin%0D%0Achartglade.com`
 
 ```
 Subject: One more free site for your Lesson Plans & Teaching Resources list
 
-Hi [Name],
+Hi Alex,
 
 I run ChartGlade (chartglade.com) — a free printables site for K-5 teachers:
 place value and multiplication charts, sight word cards and lists, graph paper,
@@ -325,7 +329,7 @@ if you considered adding it.
 
 Happy to send anything you need to evaluate it. Thanks,
 
-[Your name]
+xuanxuyin
 chartglade.com
 ```
 
