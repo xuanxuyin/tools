@@ -220,6 +220,8 @@ Tinybeans（roundup 文）/ Mommy Poppins（草书教学文）两家都写过竞
 **#5 LibGuides 馆员推荐 —— 👤 批量低成本**
 community.libguides.com 搜 "cursive worksheets" / "free printable worksheets" → 命中的教育类 guide → 页脚维护馆员邮箱 → 短邮件推荐补充资源。馆员对免费教学资源建议接受度高（竞品先例：Centennial College 挂 MyCursive）。
 
+**#6 roundup 文章 pitch（2026-10-12 立）—— 🤖 起草 / 👤 发送**：与 #3 同打法（文中找作者署名/联系页发 §5.3 模板）。实勘 4 篇 2026 活跃目标【实勘 2026-10-12 搜索】：① Teach 4 the Heart《75+ Best Websites for Teachers》② Research.com《List of 72 Fun and Free Educational Websites for Kids》（站 DR 高，优先）③ Bored Teachers《50 Best Free Teaching Resources》④ monsha.ai《7 Best Free Websites for Teaching Resources》（2026-07 新文，页面最不成熟 = 最可能收）。**连带判死**：无登录目录渠道不存在（教育"目录"已全量 roundup 化，真人审目录都要账号/表单，批量 SEO 目录在红线内不碰）——此结论替代原"无登录目录实勘"线。
+
 ### 5.2.1 LibGuides 首批 5 封（2026-10-12 Claude 实勘 + 起草，复制即发）
 
 > 实勘过程：community.libguides.com 站内搜索为 JS 渲染抓不到，改 Google 定位具体 guide；候选 7 个中 RCCC 与 Hartford 页面结构已亲手核过（RCCC `/earlychildhood/` 列 ERIC 等教育库、tab 结构 books/cite/classes/newbery/paper/plagiarism；收件邮箱 RCCC 实测在页脚 `mailto:lrc@rccc.edu`）。**发送前 30 秒动作（第 2~5 封）**：打开 guide URL → 页面右侧/底部 profile 卡 → 馆员姓名 + 邮箱填进 `[ ]`；找不到 profile 邮箱就发该馆咨询台（guide 页脚 "Ask a Librarian" 链接落地即有）。全部零链接变体不加 UTM，纯 chartglade.com 域名。
