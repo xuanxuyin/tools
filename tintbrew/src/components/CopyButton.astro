@@ -1,15 +1,25 @@
 ---
 /** Copy button. `data-copy` is read at click time by scripts/copy.ts, so the
- *  island can update the attribute when a value changes — no rewiring. */
+ *  island can update the attribute when a value changes — no rewiring.
+ *  `link` renders a data-copy-link button instead: copies the live page URL
+ *  (the island keeps it in sync via history.replaceState). */
 interface Props {
-  value: string;
+  value?: string;
   /** Accessible description of what is copied */
   label?: string;
+  /** Copy the current page URL (share link) instead of a static value */
+  link?: boolean;
 }
 
-const { value, label } = Astro.props;
+const { value, label, link } = Astro.props;
 ---
 
-<button type="button" class="btn btn-copy" data-copy={value} aria-label={`Copy ${label ?? 'value'}`}>
-  Copy
-</button>
+{link ? (
+  <button type="button" class="btn btn-copy" data-copy-link aria-label={`Copy ${label ?? 'link'}`}>
+    Copy link
+  </button>
+) : (
+  <button type="button" class="btn btn-copy" data-copy={value} aria-label={`Copy ${label ?? 'value'}`}>
+    Copy
+  </button>
+)}

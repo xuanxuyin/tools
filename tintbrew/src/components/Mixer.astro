@@ -180,6 +180,13 @@ const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
         <code class="code-block" data-snippet>{snippet}</code>
         <CopyButton value={snippet} label="CSS snippet" />
       </div>
+
+      {syncUrl && (
+        <p class="share-row">
+          <CopyButton link label="shareable link" />
+          <span>The link carries this exact mix — colors, ratios and mode.</span>
+        </p>
+      )}
     </div>
   </div>
 </section>

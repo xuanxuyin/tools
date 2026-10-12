@@ -99,6 +99,13 @@ const nearest = nearestColorName(rgb);
       </div>
 
       <p class="c-hint" data-c-hint>Type or paste a value in any format — the others update as you go.</p>
+
+      {syncUrl && (
+        <p class="share-row">
+          <CopyButton link label="shareable link" />
+          <span>The link opens the converter with this exact color.</span>
+        </p>
+      )}
     </div>
   </div>
 </section>

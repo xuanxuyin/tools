@@ -1,6 +1,8 @@
 /**
  * Global delegated copy handler (~1KB). Any element with [data-copy] copies
- * its current attribute value and flashes "Copied" feedback.
+ * its current attribute value and flashes "Copied" feedback; [data-copy-link]
+ * copies the live page URL (islands keep the query string current, so the
+ * link carries the user's exact colors/ratios).
  */
 
 async function copyText(text: string): Promise<boolean> {
@@ -29,7 +31,8 @@ async function copyText(text: string): Promise<boolean> {
 document.addEventListener('click', (e) => {
   const btn = (e.target as HTMLElement | null)?.closest<HTMLElement>('.btn-copy');
   if (!btn) return;
-  const value = btn.getAttribute('data-copy');
+  const isLink = btn.hasAttribute('data-copy-link');
+  const value = isLink ? window.location.href : btn.getAttribute('data-copy');
   if (!value) return;
   void copyText(value).then((ok) => {
     if (!ok) return;
