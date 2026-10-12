@@ -15,7 +15,7 @@
 - [ ] 👤 **chartglade request indexing 字母池（今日 GSC 报错未推成）**：15:00 后配额窗重试 m n o p q r s t u v（https://chartglade.com/cursive/m/ 同款路径逐字母）；仍报错把报错文案发 Claude 看类型；推完即永久结项（勿再请求名单见 PLAN §3 脚注）
 - [ ] 👤 **tintbrew 拼豆 hub 补推 1 条（1 分钟，若未推）**：`https://tintbrew.com/perler-bead-patterns/` → GSC URL 检查 → 请求编入索引；若已显示编入就跳过；顺手记「上次更新」日期 + 已编入总数发我
 - [x] 🤖 **#16 外链诱饵页 /states-that-require-cursive/ 上线 ✅**（main `4785a9e`：50 州三档追踪 + 竞品误传纠偏主文案；线上 200 / canonical / sitemap / IndexNow 全验；明细 PLAN 10/12 行，数据档 CURSIVE-STATES-DATA.md）
-- [x] 🤖 **外链三线收口（👤 分工裁定"外链 Claude 全包"）**：①awesome-math PR #198 **10/12 被关**（类型不收 + 指教学笔记有数学错误；已当线程追问 specifics，反馈若坐实 = 产品修复项，跟进入 PLAN 10/12 行）②LibGuides 5 封：RCCC/Stonehill/Brescia 三封已发 ✅，SELU ④（Alex Sharp）一键链接已备待发，Hartford ⑤ 排队 ③无登录目录判死 → 替代产出 roundup pitch 4 目标入 §5.2 #6
+- [x] 🤖 **外链三线收口（👤 分工裁定"外链 Claude 全包"）**：①awesome-math PR #198 **10/12 被关**（类型不收 + 指教学笔记有数学错误；指控坐实 2 处真错已修 `44b90cf` + 4 守卫，PR 线程闭环）②**LibGuides 5 封全发完 ✅ 2026-10-12**（RCCC lrc / Stonehill Boezi / Brescia Cox / SELU Sharp / Hartford St. Pierre，五收件人全双实锤；10/19 静默期满看回音定 follow-up）③无登录目录判死 → 替代产出 roundup pitch 4 目标入 §5.2 #6
 - [x] 🤖 **tintbrew Copy link 分享按钮热修上线**（main `4aa0369`，GA 判读驱动：存量留存流量无分享出口）：mixer/converter 旗舰页 "Copy link" 复制带精确颜色参数的 URL；174/174 测试绿；线上三态验证 ✓（mixer/converter 有、矩阵页无）；明细 tintbrew PLAN 10/12 行
 - [x] 👤 **LibGuides RCCC 首封已发 ✅**（lrc@rccc.edu，Gmail compose 一键链接发出；10/19 静默期满看回音定 follow-up）；②~⑤ 封邮箱确证 + Gmail 链接生成归 🤖，随发随备
 

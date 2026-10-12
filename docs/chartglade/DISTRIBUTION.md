@@ -333,7 +333,7 @@ xuanxuyin
 chartglade.com
 ```
 
-**⑤ University of Hartford · Education guide**（guide `libguides.hartford.edu/education`，2026-08-13 更新活跃；收件人已确证【实勘 2026-10-12】：guide owner **Taylor St. Pierre** `tstpierre@hartford.edu`，DC.Creator + 页面 profile Contact 卡（服务端渲染）同页双实锤）
+**⑤ University of Hartford · Education guide**（guide `libguides.hartford.edu/education`，2026-08-13 更新活跃；收件人已确证【实勘 2026-10-12】：guide owner **Taylor St. Pierre** `tstpierre@hartford.edu`，DC.Creator + 页面 profile Contact 卡（服务端渲染）同页双实锤）— **✅ 已发 2026-10-12**
 
 > **一键发送（Chrome + Gmail）**：复制整行 → Chrome 地址栏 → 回车 → 点发送。
 >
