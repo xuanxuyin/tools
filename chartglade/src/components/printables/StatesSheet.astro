@@ -1,0 +1,40 @@
+---
+import { cursiveStates, type StateTier } from '../../data/cursiveStates';
+
+/**
+ * The printable itself: all 50 states in a two-column compact layout
+ * (25 rows each), sized to fit a single letter page in print.
+ * The detailed sourced tables live in StatesDetail (screen only).
+ */
+
+const MARK: Record<StateTier, string> = { law: '✓', standards: '•', none: '—' };
+const WORD: Record<StateTier, string> = { law: 'Law', standards: 'Standards', none: 'None' };
+const sorted = [...cursiveStates].sort((a, b) => a.name.localeCompare(b.name));
+const half = Math.ceil(sorted.length / 2);
+const cols = [sorted.slice(0, half), sorted.slice(half)];
+---
+
+<div class="states-compact">
+  <h2 class="sheet-title">Cursive Requirements by State — October 2026</h2>
+  <div class="states-cols">
+    {cols.map((col) => (
+      <table class="states-table">
+        <thead>
+          <tr><th>State</th><th>Required?</th><th>Since</th></tr>
+        </thead>
+        <tbody>
+          {col.map((s) => (
+            <tr class={`tier-${s.tier}`}>
+              <td>{s.name}</td>
+              <td><span class="mark" aria-hidden="true">{MARK[s.tier]}</span> {WORD[s.tier]}</td>
+              <td>{s.year ?? '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    ))}
+  </div>
+  <p class="states-legend">
+    ✓ Law — required by state statute. • Standards — required by state standards, no statute. — No state requirement as of Oct 2026.
+  </p>
+</div>

@@ -1487,3 +1487,86 @@ svg {
   color: #64748b;
   font-size: 0.85rem;
 }
+
+/* ---- States tracker page (#16): compact printable + screen-only detail tables ---- */
+.states-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.5rem;
+}
+
+.states-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.states-table th,
+.states-table td {
+  padding: 0.3rem 0.45rem;
+  border-bottom: 1px solid #e3e8ee;
+  text-align: left;
+}
+
+.states-table th {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.states-table .mark {
+  display: inline-block;
+  width: 0.9em;
+  text-align: center;
+}
+
+.states-table .tier-law .mark { color: #15803d; }
+.states-table .tier-standards .mark { color: #b45309; }
+
+.states-legend {
+  margin-top: 0.75rem;
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+.states-detail .table-scroll { overflow-x: auto; }
+
+.states-deep { font-size: 0.88rem; }
+
+.states-deep td a {
+  display: block;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.states-watch {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #f8fafc;
+  border-left: 3px solid #b45309;
+}
+
+.states-watch ul { margin: 0.5rem 0 0; padding-left: 1.1rem; }
+.states-watch li + li { margin-top: 0.35rem; }
+
+.states-method {
+  margin-top: 1.75rem;
+  color: #64748b;
+  font-size: 0.85rem;
+  border-top: 1px solid #e3e8ee;
+  padding-top: 1rem;
+}
+
+@media (max-width: 40rem) {
+  .states-cols { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .states-table { font-size: 8.5pt; }
+  .states-table th,
+  .states-table td { padding: 0.06rem 0.3rem; }
+  .states-cols { gap: 0.3in; }
+  .states-legend { font-size: 8pt; }
+}

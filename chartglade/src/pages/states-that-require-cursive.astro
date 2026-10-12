@@ -1,0 +1,13 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import StatesSheet from '../components/printables/StatesSheet.astro';
+import StatesDetail from '../components/StatesDetail.astro';
+import { statesPage } from '../data/cursiveStates';
+
+const def = statesPage;
+---
+
+<ChartPage def={def}>
+  <StatesSheet />
+  <StatesDetail slot="after" />
+</ChartPage>

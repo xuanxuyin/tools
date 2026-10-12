@@ -32,13 +32,13 @@ describe.skipIf(!existsSync(DIST))('cursive internal-link mesh (real dist)', () 
 describe.skipIf(!existsSync(DIST))('freshness signals (real dist)', () => {
   it('JSON-LD dateModified + visible updated line + twitter large card', () => {
     const html = readFileSync(resolve(DIST, 'cursive', 'a', 'index.html'), 'utf8');
-    expect(html).toContain('"dateModified":"2026-10-04"');
+    expect(html).toContain('"dateModified":"2026-10-12"');
     expect(html).toContain('Charts last updated');
     expect(html).toContain('content="summary_large_image"');
   });
 
   it('sitemap carries lastmod for every URL', () => {
     const xml = readFileSync(resolve(DIST, 'sitemap-0.xml'), 'utf8');
-    expect(xml).toContain('<lastmod>2026-10-04');
+    expect(xml).toContain('<lastmod>2026-10-12');
   });
 });

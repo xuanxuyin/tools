@@ -24,4 +24,4 @@ export const SITE = {
  * dateModified, and the sitemap lastmod (astro.config.mjs mirrors it — mjs
  * can't import this TS file).
  */
-export const CONTENT_UPDATED = '2026-10-04';
+export const CONTENT_UPDATED = '2026-10-12';

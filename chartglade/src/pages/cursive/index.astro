@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../consts';
 import { cursivePages } from '../../data/cursive';
 import { nameTracingPage } from '../../data/nameTracing';
+import { statesPage } from '../../data/cursiveStates';
 import { cursiveLetters } from '../../data/cursiveLetters';
 
 const jsonLd = [
@@ -48,6 +49,10 @@ const jsonLd = [
       <a class="card" href={`/${nameTracingPage.slug}/`}>
         <h2>{nameTracingPage.h1}</h2>
         <p>Type any name and print a tracing worksheet — print or cursive lettering, with model, trace and blank rows on one letter page.</p>
+      </a>
+      <a class="card" href={`/${statesPage.slug}/`}>
+        <h2>{statesPage.h1}</h2>
+        <p>A 50-state tracker of cursive requirements — 19 states by law, 8 more by standards, with bill numbers and sources. Updated October 2026.</p>
       </a>
     </div>
   </section>

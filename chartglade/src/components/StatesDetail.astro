@@ -1,0 +1,100 @@
+---
+import { cursiveStates, TIER_LABEL, type StateCursiveStatus } from '../data/cursiveStates';
+import { CONTENT_UPDATED } from '../consts';
+
+/**
+ * Screen-only deep tables (lives in ChartPage's "after" slot, wrapped in
+ * .section so print CSS strips it). This is the citation-bait layer: every
+ * row carries its statute/standard and a source link.
+ */
+
+const byTier = (tier: StateCursiveStatus['tier']) =>
+  [...cursiveStates].filter((s) => s.tier === tier).sort((a, b) => a.name.localeCompare(b.name));
+
+const law = byTier('law');
+const standards = byTier('standards');
+const none = byTier('none');
+const watch = cursiveStates.filter((s) => s.watch).sort((a, b) => a.name.localeCompare(b.name));
+
+const host = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+};
+---
+
+<section class="section states-detail no-print">
+  <h2>Required by state law ({law.length} states)</h2>
+  <p>Each of these states has a statute on the books — passed by the legislature and signed by the governor.</p>
+  <div class="table-scroll">
+    <table class="states-table states-deep">
+      <thead>
+        <tr><th>State</th><th>Statute</th><th>Year</th><th>What it requires</th><th>Source</th></tr>
+      </thead>
+      <tbody>
+        {law.map((s) => (
+          <tr>
+            <td>{s.name}</td>
+            <td>{s.citation}</td>
+            <td>{s.year}</td>
+            <td>{s.note}</td>
+            <td>
+              {s.sources.length ? s.sources.map((u) => <a href={u} rel="noopener">{host(u)}</a>) : '—'}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Required by state standards ({standards.length} states)</h2>
+  <p>No standalone statute — cursive sits inside the state’s English language arts standards or a state board action. It still binds classrooms; it can also be revised by the board without a new law.</p>
+  <div class="table-scroll">
+    <table class="states-table states-deep">
+      <thead>
+        <tr><th>State</th><th>Standard</th><th>Year</th><th>What it requires</th><th>Source</th></tr>
+      </thead>
+      <tbody>
+        {standards.map((s) => (
+          <tr>
+            <td>{s.name}</td>
+            <td>{s.citation}</td>
+            <td>{s.year}</td>
+            <td>{s.note}</td>
+            <td>
+              {s.sources.length ? s.sources.map((u) => <a href={u} rel="noopener">{host(u)}</a>) : '—'}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>No state requirement ({none.length} states)</h2>
+  <p>
+    As of October 2026: {none.map((s) => s.name).join(', ')}. Several have bills in progress — see the watch list below.
+    “No state requirement” does not mean no schools teach it; it means the decision sits with districts.
+  </p>
+
+  {watch.length > 0 && (
+    <div class="states-watch">
+      <h3>Watch list — bills in progress</h3>
+      <ul>
+        {watch.map((s) => (
+          <li><strong>{s.name}:</strong> {s.watch}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p class="states-method">
+    Method: statutes verified against state legislature and department of education pages; the “no requirement”
+    tier is cross-checked against Education Week’s tracker (Nov 2024) and state teachers-association reporting (2026),
+    then spot-checked per state. Counts differ across trackers mostly because of the law-vs-standards category
+    — Maine (a 2025 study, not a mandate) and Indiana (permission, not requirement) are the two most
+    commonly mislabeled. Data updated {new Date(CONTENT_UPDATED).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })};
+    verify a state’s current text at the linked source before citing it.
+  </p>
+</section>
