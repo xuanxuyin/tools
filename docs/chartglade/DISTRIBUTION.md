@@ -226,7 +226,7 @@ community.libguides.com 搜 "cursive worksheets" / "free printable worksheets" �
 
 > 实勘过程：community.libguides.com 站内搜索为 JS 渲染抓不到，改 Google 定位具体 guide；候选 7 个中 RCCC 与 Hartford 页面结构已亲手核过（RCCC `/earlychildhood/` 列 ERIC 等教育库、tab 结构 books/cite/classes/newbery/paper/plagiarism；收件邮箱 RCCC 实测在页脚 `mailto:lrc@rccc.edu`）。**发送前 30 秒动作（第 2~5 封）**：打开 guide URL → 页面右侧/底部 profile 卡 → 馆员姓名 + 邮箱填进 `[ ]`；找不到 profile 邮箱就发该馆咨询台（guide 页脚 "Ask a Librarian" 链接落地即有）。全部零链接变体不加 UTM，纯 chartglade.com 域名。
 
-**① Rowan-Cabarrus CC · Early Childhood Education**（收件人已确证 `lrc@rccc.edu`，可直接发）
+**① Rowan-Cabarrus CC · Early Childhood Education**（收件人已确证 `lrc@rccc.edu`）— **✅ 已发 2026-10-12**（👤 Gmail 发出；10/19 静默期满零回音则 follow-up 一发，节奏同 homeschool/Cathy Duffy 先例）
 
 > **一键发送（Chrome + Gmail 版，2026-10-12 适配 👤 环境：mailto 协议被搜狗浏览器抢占）**：复制下面整行 → 粘贴到 **Chrome 地址栏**回车 → Gmail 撰写窗口收件人/主题/正文（含署名）全填好 → 点发送。前提：Chrome 已登录 Gmail；跳登录页就先登录再重粘一次。全程 ~10 秒。
 >
@@ -254,26 +254,30 @@ xuanxuyin
 chartglade.com
 ```
 
-**② Stonehill College · EDU Resources for Practicum: Lesson Plans**（guide: google 搜 "Stonehill EDU Resources for Practicum"，2025-07 仍在更新）
+**② Stonehill College · Education Studies**（guide `libguides.stonehill.edu/education`，10/12 实勘原 "EDU Resources for Practicum" 已改名 Education Studies；收件人已确证【实勘 2026-10-12】：guide owner **Lindsay Boezi** `lboezi@stonehill.edu`，页面 DC.Creator 元数据实锤）
+
+> **一键发送（Chrome + Gmail）**：复制整行 → Chrome 地址栏 → 回车 → 点发送。
+>
+> `https://mail.google.com/mail/?view=cm&fs=1&to=lboezi%40stonehill.edu&su=Free%20printable%20teaching%20materials%20for%20your%20Education%20Studies%20guide&body=Hi%20Lindsay%2C%0D%0A%0D%0AI%20run%20ChartGlade%20(chartglade.com)%20%E2%80%94%20free%20printable%20charts%20and%20worksheets%20for%0D%0AK-5%3A%20place%20value%20and%20multiplication%20charts%2C%20sight%20word%20cards%2C%20graph%20paper%2C%20and%0D%0Aa%20cursive%20section%20with%20per-letter%20stroke%20pages.%20Everything%20prints%20from%20the%0D%0Abrowser%2C%20no%20sign-up.%0D%0A%0D%0AYour%20Education%20Studies%20guide%20is%20exactly%20the%20kind%20of%20page%20student%0D%0Ateachers%20bookmark%20when%20they%27re%20building%20lesson%20plans%2C%20and%20free%20printables%20that%0D%0Aneed%20no%20account%20fit%20that%20moment%20%E2%80%94%20I%20thought%20it%20might%20be%20worth%20a%20line%20next%20to%0D%0Ayour%20lesson-plan%20sources.%0D%0A%0D%0AHappy%20to%20send%20specific%20pages%20or%20screenshots.%20Thanks%20for%20considering%20it%2C%0D%0A%0D%0Axuanxuyin%0D%0Achartglade.com`
 
 ```
-Subject: Free printable teaching materials for your Practicum resources guide
+Subject: Free printable teaching materials for your Education Studies guide
 
-Hi [Name],
+Hi Lindsay,
 
 I run ChartGlade (chartglade.com) — free printable charts and worksheets for
 K-5: place value and multiplication charts, sight word cards, graph paper, and
 a cursive section with per-letter stroke pages. Everything prints from the
 browser, no sign-up.
 
-Your EDU Resources for Practicum guide is exactly the kind of page student
+Your Education Studies guide is exactly the kind of page student
 teachers bookmark when they're building lesson plans, and free printables that
 need no account fit that moment — I thought it might be worth a line next to
 your lesson-plan sources.
 
 Happy to send specific pages or screenshots. Thanks for considering it,
 
-[Your name]
+xuanxuyin
 chartglade.com
 ```
 
