@@ -254,7 +254,7 @@ xuanxuyin
 chartglade.com
 ```
 
-**② Stonehill College · Education Studies**（guide `libguides.stonehill.edu/education`，10/12 实勘原 "EDU Resources for Practicum" 已改名 Education Studies；收件人已确证【实勘 2026-10-12】：guide owner **Lindsay Boezi** `lboezi@stonehill.edu`，页面 DC.Creator 元数据实锤）
+**② Stonehill College · Education Studies**（guide `libguides.stonehill.edu/education`，10/12 实勘原 "EDU Resources for Practicum" 已改名 Education Studies；收件人已确证【实勘 2026-10-12】：guide owner **Lindsay Boezi** `lboezi@stonehill.edu`，页面 DC.Creator 元数据实锤）— **✅ 已发 2026-10-12**
 
 > **一键发送（Chrome + Gmail）**：复制整行 → Chrome 地址栏 → 回车 → 点发送。
 >
@@ -281,12 +281,16 @@ xuanxuyin
 chartglade.com
 ```
 
-**③ Brescia University · Elementary Education Research Guide**（2026-08 更新，活跃）
+**③ Brescia University · Elementary Education Research Guide**（guide `libguides.brescia.edu/elementary_education`，2026-08 更新活跃；收件人已确证【实勘 2026-10-12】：guide owner **Sarah Cox** `sarah.cox@brescia.edu`，DC.Creator + 页面 mailto 双实锤）
+
+> **一键发送（Chrome + Gmail）**：复制整行 → Chrome 地址栏 → 回车 → 点发送。
+>
+> `https://mail.google.com/mail/?view=cm&fs=1&to=sarah.cox%40brescia.edu&su=Free%20printable%20resource%20for%20your%20Elementary%20Education%20guide&body=Hi%20Sarah%2C%0D%0A%0D%0AI%20run%20ChartGlade%20(chartglade.com)%20%E2%80%94%20a%20free%20K-5%20printables%20site%3A%20math%20reference%0D%0Acharts%20(place%20value%2C%20multiplication%2C%20hundred%20charts%2C%20number%20lines)%2C%20Dolch%20%26%20Fry%0D%0Asight%20word%20lists%2C%20printable%20graph%20paper%2C%20and%20a%20cursive%20alphabet%20section%20with%0D%0Aletter-by-letter%20stroke%20breakdowns.%20No%20sign-up%2C%20no%20watermark%20%E2%80%94%20just%20print.%0D%0A%0D%0AI%20came%20across%20your%20Elementary%20Education%20Research%20Guide%20and%20thought%20ChartGlade%0D%0Awould%20fit%20naturally%20alongside%20your%20teaching%20resources%20for%20teacher%20candidates%0D%0Apreparing%20classroom%20materials.%0D%0A%0D%0AGlad%20to%20send%20samples%20or%20answer%20anything.%20Thanks%20for%20considering%20it%2C%0D%0A%0D%0Axuanxuyin%0D%0Achartglade.com`
 
 ```
 Subject: Free printable resource for your Elementary Education guide
 
-Hi [Name],
+Hi Sarah,
 
 I run ChartGlade (chartglade.com) — a free K-5 printables site: math reference
 charts (place value, multiplication, hundred charts, number lines), Dolch & Fry
@@ -299,7 +303,7 @@ preparing classroom materials.
 
 Glad to send samples or answer anything. Thanks for considering it,
 
-[Your name]
+xuanxuyin
 chartglade.com
 ```
 
