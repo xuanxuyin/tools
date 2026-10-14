@@ -133,6 +133,9 @@ export class PhotoStudio {
     canvas.height = ch;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) throw new Error('no 2d context');
+    // a 4000px phone photo downsampled in one step defaults to cheap
+    // filtering — high-quality resampling keeps region colors true
+    ctx.imageSmoothingQuality = 'high';
     draw(ctx);
     // a 12MP phone photo decodes to ~48MB of bitmap memory — release it
     // the moment it's on the canvas instead of waiting for GC

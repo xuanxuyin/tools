@@ -15,7 +15,7 @@
  * maxColors caps the color count so the shopping list fits the beads people
  * actually own. Photo boards are always full — every cell gets a bead.
  */
-import { rgbToOklab, hexToRgb, type Oklab, type RGB } from './color';
+import { rgbToOklab, hexToRgb, type Oklab } from './color';
 import { BEAD_COLORS } from './beadPalette';
 
 export interface SampleImage {
@@ -90,27 +90,41 @@ function cellRect(
   };
 }
 
-/** Box mean over a pixel rectangle. Semi-transparent pixels composite onto
- *  white — a bead board has no transparency, and pegboard-white reads as a
- *  white bead. Returns float channels; Oklab is happier unrounded. */
-function boxMean(img: SampleImage, x0: number, y0: number, x1: number, y1: number): RGB {
+/** Oklab of pure white — alpha-composite target, precomputed. */
+const WHITE_LAB = rgbToOklab({ r: 255, g: 255, b: 255 });
+
+/** Box mean over a pixel rectangle, computed in Oklab. Averaging sRGB
+ *  channel values directly is the classic gamma mistake: sRGB numbers are
+ *  not linear light, so a 50/50 mix of black and white averages to 128
+ *  instead of the perceptual mid-gray 188 — every soft gradient came out
+ *  darker and muddier than the photo, and the board followed. Semi-
+ *  transparent pixels composite onto white (a bead board has no
+ *  transparency; pegboard white reads as a white bead). */
+function boxMeanLab(
+  img: SampleImage,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+): Oklab {
   const { data, width } = img;
-  let r = 0;
-  let g = 0;
+  let L = 0;
+  let a = 0;
   let b = 0;
   let n = 0;
   for (let y = y0; y < y1; y++) {
     for (let x = x0; x < x1; x++) {
       const i = (y * width + x) * 4;
-      const a = data[i + 3]! / 255;
-      r += data[i]! * a + 255 * (1 - a);
-      g += data[i + 1]! * a + 255 * (1 - a);
-      b += data[i + 2]! * a + 255 * (1 - a);
+      const al = data[i + 3]! / 255;
+      const px = rgbToOklab({ r: data[i]!, g: data[i + 1]!, b: data[i + 2]! });
+      L += px.L * al + WHITE_LAB.L * (1 - al);
+      a += px.a * al + WHITE_LAB.a * (1 - al);
+      b += px.b * al + WHITE_LAB.b * (1 - al);
       n++;
     }
   }
-  if (!n) return { r: 255, g: 255, b: 255 };
-  return { r: r / n, g: g / n, b: b / n };
+  if (!n) return WHITE_LAB;
+  return { L: L / n, a: a / n, b: b / n };
 }
 
 function spread(
@@ -249,7 +263,7 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
       const { x0, y0, x1, y1 } = cellRect(img, cols, rows, x, y);
-      labs[y * cols + x] = rgbToOklab(boxMean(img, x0, y0, x1, y1));
+      labs[y * cols + x] = boxMeanLab(img, x0, y0, x1, y1);
     }
   }
 
