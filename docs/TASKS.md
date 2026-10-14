@@ -6,18 +6,18 @@
 
 ---
 
-## 今天 · 2026-10-12（周一）
+## 今天 · 2026-10-14（周三）
 
-> 10/10~11 周末无盘。10/09 三件收尾活（字母池 / 拼豆 hub / 养号）完成情况未确认 → 顺延至今日销项；今日主轴 = **周一例行 + Reddit 主帖窗口开启**。
+> 10/13（周二）无例行无盘。10/12 三件 👤 活（Reddit 主帖 / 字母池 / 拼豆补推）完成情况未确认 → 再顺延；**Reddit 主帖窗口只剩今明两天（10/12~15），今日最优先**。周三例行（1 个分发动作）由发主帖本身覆盖，不另排。
 
-- [x] 👤 **周一例行（~15 分钟，唯一常设例行）**：GSC 双站 28 天环比 ✅ 10/12 已报（判读入档：tintbrew 曝光 -45% 真回落 / chartglade -16% 排名反升，两 PLAN 10/12 行）；周对比拆解 **👤 已裁定不做**，降级为零成本可选项：哪天顺手把 GSC 效果页**默认视图**（不点任何按钮）查询榜截一张图发 Claude 即可
-- [ ] 👤 **Reddit 主帖窗口开启（10/12~15）**：tintbrew 万圣烘焙主帖，r/Baking 主战场，文案直接抄 tintbrew DISTRIBUTION §2.3；发帖前一晚读版规确认账号门槛；发完养号任务永久停
-- [ ] 👤 **chartglade request indexing 字母池（今日 GSC 报错未推成）**：15:00 后配额窗重试 m n o p q r s t u v（https://chartglade.com/cursive/m/ 同款路径逐字母）；仍报错把报错文案发 Claude 看类型；推完即永久结项（勿再请求名单见 PLAN §3 脚注）
-- [ ] 👤 **tintbrew 拼豆 hub 补推 1 条（1 分钟，若未推）**：`https://tintbrew.com/perler-bead-patterns/` → GSC URL 检查 → 请求编入索引；若已显示编入就跳过；顺手记「上次更新」日期 + 已编入总数发我
-- [x] 🤖 **#16 外链诱饵页 /states-that-require-cursive/ 上线 ✅**（main `4785a9e`：50 州三档追踪 + 竞品误传纠偏主文案；线上 200 / canonical / sitemap / IndexNow 全验；明细 PLAN 10/12 行，数据档 CURSIVE-STATES-DATA.md）
-- [x] 🤖 **外链三线收口（👤 分工裁定"外链 Claude 全包"）**：①awesome-math PR #198 **10/12 被关**（类型不收 + 指教学笔记有数学错误；指控坐实 2 处真错已修 `44b90cf` + 4 守卫，PR 线程闭环）②**LibGuides 5 封全发完 ✅ 2026-10-12**（RCCC lrc / Stonehill Boezi / Brescia Cox / SELU Sharp / Hartford St. Pierre，五收件人全双实锤；10/19 静默期满看回音定 follow-up）③无登录目录判死 → 替代产出 roundup pitch 4 目标入 §5.2 #6
-- [x] 🤖 **tintbrew Copy link 分享按钮热修上线**（main `4aa0369`，GA 判读驱动：存量留存流量无分享出口）：mixer/converter 旗舰页 "Copy link" 复制带精确颜色参数的 URL；174/174 测试绿；线上三态验证 ✓（mixer/converter 有、矩阵页无）；明细 tintbrew PLAN 10/12 行
-- [x] 👤 **LibGuides RCCC 首封已发 ✅**（lrc@rccc.edu，Gmail compose 一键链接发出；10/19 静默期满看回音定 follow-up）；②~⑤ 封邮箱确证 + Gmail 链接生成归 🤖，随发随备
+- [ ] 👤 **Reddit 主帖（⚠️ 窗口 10/12~15 只剩今明两天，今日最优先）**：tintbrew 万圣烘焙主帖，r/Baking 主战场，文案直接抄 tintbrew DISTRIBUTION §2.3；发帖前读版规确认账号门槛；发完养号任务永久停。**发完这帖 = 本周三分发动作同时完成**
+- [ ] 👤 **chartglade request indexing 字母池 m~v（多日顺延）**：GSC URL 检查 → 请求编入索引（https://chartglade.com/cursive/m/ 同款路径逐字母 m n o p q r s t u v）；报错把文案发 Claude 看类型；推完即永久结项（勿再请求名单见 PLAN §3 脚注）
+- [ ] 👤 **tintbrew 拼豆 hub 补推 1 条（1 分钟，多日顺延）**：`https://tintbrew.com/perler-bead-patterns/` → GSC URL 检查 → 请求编入索引；已显示编入就跳过；顺手记「上次更新」日期 + 已编入总数发我
+- [ ] 👤 **明日预告 10/15（周四）**：双站 Pinterest 探针 #1（各发 1 个带链接 pin，1 分钟）——通了才重启渠道；仍拦 → 只剩 11/15 末次探针
+
+## 10/12 已完成归档
+
+**👤 周一例行 ✅ 10/12 已报**（判读入档：tintbrew 曝光 -45% 真回落 / chartglade -16% 排名反升，两 PLAN 10/12 行；周对比拆解裁定不做，降级零成本可选项——哪天顺手截 GSC 效果页默认视图查询榜发 Claude 即可）｜ 🤖 #16 外链诱饵页 /states-that-require-cursive/ 上线 `4785a9e`（线上 200 / canonical / sitemap / IndexNow 全验，数据档 CURSIVE-STATES-DATA.md）｜ 🤖 外链三线收口：awesome-math PR #198 被关（2 数学真错已修 `44b90cf` + 4 守卫，线程闭环）+ LibGuides 5 封全发完 + 无登录目录判死 → roundup pitch 4 目标入 §5.2 #6 ｜ 🤖 tintbrew Copy link 热修 `4aa0369`（174/174 测试绿，线上三态验证 ✓）｜ 🤖 LibGuides ②~⑤ 封邮箱确证 + Gmail 一键链接随发随备（5/5 于 10/12 全发出，RCCC lrc / Stonehill Boezi / Brescia Cox / SELU Sharp / Hartford St. Pierre 全双实锤；10/19 静默期满看回音）｜ **未销项顺延 10/14**：Reddit 主帖（窗口至 10/15）/ 字母池 m~v / 拼豆 hub 补推
 
 ## 10/09~10/11 已完成归档
 
