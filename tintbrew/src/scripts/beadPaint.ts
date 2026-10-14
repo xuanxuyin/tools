@@ -38,8 +38,15 @@ export class PaintCanvas {
   private last: PaintCell | null = null;
   private listQueued = false;
   private badge: HTMLDivElement | null = null;
+  /** fill an erased cell gets. The photo converter passes 'transparent'
+   *  so its per-cell region underlay peeks through a cleared board. */
+  private erasedFill: string;
 
-  constructor(private root: HTMLElement) {
+  constructor(
+    private root: HTMLElement,
+    options?: { erasedFill?: string },
+  ) {
+    this.erasedFill = options?.erasedFill ?? WHITE_HEX;
     this.svg = root.querySelector<SVGSVGElement>('[data-bead-canvas]')!;
     this.list = root.querySelector<HTMLElement>('[data-cv-list]')!;
     const cols = Number(this.svg.dataset.cols);
@@ -231,7 +238,7 @@ export class PaintCanvas {
       el.classList.add('colored');
       this.painted.set(idx, this.beadId);
     } else {
-      el.setAttribute('fill', WHITE_HEX);
+      el.setAttribute('fill', this.erasedFill);
       el.classList.remove('colored');
       this.painted.delete(idx);
     }
@@ -239,7 +246,7 @@ export class PaintCanvas {
 
   private clearAll() {
     for (const el of this.cells.values()) {
-      el.setAttribute('fill', WHITE_HEX);
+      el.setAttribute('fill', this.erasedFill);
       el.classList.remove('colored');
     }
     this.painted.clear();

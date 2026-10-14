@@ -138,11 +138,30 @@ describe('photo bead island (real SSR markup)', () => {
     );
     firePointer(ctx.window, svg, 'pointerdown', px(10, 10).cx, px(10, 10).cy);
     firePointer(ctx.window, svg, 'pointerup', px(10, 10).cx, px(10, 10).cy);
+    // erased cells go transparent on this page so the region underlay shows
     expect(
       ctx.host.querySelector('.cv-cell[data-cx="10"][data-cy="10"]')?.getAttribute('fill'),
-    ).toBe('#f5f4ef');
+    ).toBe('transparent');
     expect(listText(ctx.document)).toContain('Cherry ×840');
     expect(listText(ctx.document)).toContain('840 of 841 beads painted');
+  });
+
+  it('clear all empties the board but the region underlay stays', () => {
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    // one low-opacity ghost rect per cell under the painted board
+    expect(ctx.host.querySelectorAll('.cv-ghost').length).toBe(29 * 29);
+    expect(ctx.host.querySelector('.cv-ghost')?.getAttribute('fill')).toBe(CHERRY);
+    (ctx.host.querySelector('[data-cv-clear]') as HTMLElement).dispatchEvent(
+      new (ctx.window as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent('click', {
+        bubbles: true,
+      }),
+    );
+    // every cell turned transparent → the region tint shows through, so an
+    // emptied board still reads as a fill-it-yourself template
+    for (const c of ctx.host.querySelectorAll('.cv-cell')) {
+      expect(c.getAttribute('fill')).toBe('transparent');
+    }
+    expect(listText(ctx.document)).not.toContain('Cherry');
   });
 
   it('changing the board size re-converts without a second upload', () => {

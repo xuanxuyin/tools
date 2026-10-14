@@ -135,8 +135,12 @@ function spread(
 }
 
 /** Minimum Oklab distance between two cluster centers — closer colors are
- *  one region, not two beads. */
-const MERGE_T = 0.07;
+ *  one region, not two beads. Kept tight (0.04) so detail colors survive. */
+const MERGE_T = 0.04;
+/** A cell farther than this from EVERY region center is "detail" — an eye,
+ *  a highlight, a thin edge — and snaps to the full palette on its own
+ *  instead of being dragged into the surrounding region. */
+const OUTLIER_T = 0.1;
 /** Oklab components are bucketed at 1/12 steps for the color histogram —
  *  coarse pre-merge, deterministic, and symmetry-preserving (mirror cells
  *  quantize into the same bucket, so a symmetric photo stays symmetric). */
@@ -189,12 +193,21 @@ function clusterCells(labs: Oklab[], maxColors: number): string[] {
         best = i;
       }
     }
+    // far from every region = a detail cell (eye, highlight, thin edge);
+    // it picks the closest bead among the regions' beads instead of just
+    // following its spatially-nearest region — sharper detail, and the
+    // color budget stays closed (no bead beyond the chosen regions)
+    if (bestD > OUTLIER_T) {
+      const subset = new Set(centerBeads);
+      return nearestBeadLab(lab, subset).id;
+    }
     return centerBeads[best]!;
   });
 }
 
-/** One 3×3 majority-vote pass: a cell whose 8 neighbors hold ≥6 of one bead
- *  switches to it — kills isolated speckles without eroding real edges. */
+/** One 3×3 majority-vote pass: a cell whose 8 neighbors hold ≥7 of one bead
+ *  switches to it — kills fully-surrounded speckles without eroding real
+ *  detail (a 2×2 eye or an edge line never reaches the threshold). */
 function despeckle(cells: string[], cols: number, rows: number): string[] {
   const out = cells.slice();
   for (let y = 0; y < rows; y++) {
@@ -212,7 +225,7 @@ function despeckle(cells: string[], cols: number, rows: number): string[] {
         }
       }
       for (const [id, n] of counts) {
-        if (n >= 6 && id !== cells[i]) {
+        if (n >= 7 && id !== cells[i]) {
           out[i] = id;
           break;
         }

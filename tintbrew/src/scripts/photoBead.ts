@@ -226,6 +226,19 @@ export class PhotoStudio {
       for (let x = 0; x < p.cols; x++) {
         const bead = beadById(p.cells[y * p.cols + x]!);
         if (!bead) continue;
+        // region underlay: a low-opacity tint under every cell. Painted
+        // cells cover it completely; erase or Clear all makes the cell
+        // transparent and the region tint shows through — an emptied board
+        // still tells you where each color area was (and prints as a
+        // fill-it-yourself template)
+        const ghost = document.createElementNS(SVG_NS, 'rect');
+        ghost.setAttribute('class', 'cv-ghost');
+        ghost.setAttribute('x', String(x * U + G + 0.8));
+        ghost.setAttribute('y', String(y * U + G + 0.8));
+        ghost.setAttribute('width', String(U - 1.6));
+        ghost.setAttribute('height', String(U - 1.6));
+        ghost.setAttribute('rx', '2.6');
+        ghost.setAttribute('fill', bead.hex);
         const rect = document.createElementNS(SVG_NS, 'rect');
         rect.setAttribute('class', 'cv-cell colored');
         rect.setAttribute('data-cx', String(x));
@@ -236,6 +249,7 @@ export class PhotoStudio {
         rect.setAttribute('height', String(U - 1.6));
         rect.setAttribute('rx', '2.6');
         rect.setAttribute('fill', bead.hex);
+        svg.appendChild(ghost);
         svg.appendChild(rect);
       }
     }
@@ -307,7 +321,8 @@ export class PhotoStudio {
     }
     card.appendChild(body);
     stage.appendChild(card);
-    new PaintCanvas(card);
+    // erased cells go transparent so the region underlay shows through
+    new PaintCanvas(card, { erasedFill: 'transparent' });
   }
 }
 
