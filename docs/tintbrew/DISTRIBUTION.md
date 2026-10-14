@@ -101,6 +101,12 @@ Happy to take color questions in the comments — "orange that doesn't look neon
 
 **发帖操作坑（10/14 实勘）**：r/Baking 强制 flair（中文界面叫"帖子标识"，不选发布时报"你的帖子必须包含帖子标识"）→ 发帖页标题框下方点 **"标识"（Flair）按钮 → 选 General Baking Discussion**【实测 10/14 全列表】。勿选 Recipe Included（强制附完整配方）/ Baking Advice Needed（求助专用）/ Showcase (No-Recipe)（晒成品专用）。
 
+**⚠️ 10/14 实战判读：主帖被站方 spam filter 移除**（发帖+flair 全对，发布即被"Reddit 筛选器"移除，非版主手删）——9 天新号 + 主帖带 2 个商业链接 = **账号信誉门**，与 Pinterest 域名信誉门同构。红线执行：**不重发、不删帖**。处置双路线：A. modmail 申诉一次（文案见下），24h 无回音不追问；B. **主线转答帖**（本节红线既定"答帖永远优先于主帖"）——r/Baking 搜 `black buttercream`/`black frosting` 按 New 排序找 7 天内求助帖，先实答后带链、单帖单链。主帖重试门槛：账号 ≥1 个月 + karma 有积累。
+
+**Modmail 申诉文案（直接抄）**：
+
+> Hi mods — my post about getting buttercream to true black (General Baking Discussion flair) was removed by Reddit's spam filter right after posting. My account is only about a week old, so I'm guessing that's what tripped it. The post is a practical guide — four routes to black frosting, why gel beats liquid, the overnight-darkening trick — and it links to a free color-mixing calculator I built (no signup, nothing for sale). If it looks okay within the rules, would you consider restoring it? Happy to edit or trim the links if that's the concern. Thanks!
+
 **红线**：帖被过滤/删除不要原样重发（spam 判定会加重）；同文案不连发多版（换版块隔天 + 改角度）；答帖永远优先于主帖（存活率高）；不买 upvote。
 
 ---
