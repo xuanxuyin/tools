@@ -15,6 +15,10 @@
 - [ ] 👤 **tintbrew 拼豆 hub 补推 1 条（1 分钟，多日顺延）**：`https://tintbrew.com/perler-bead-patterns/` → GSC URL 检查 → 请求编入索引；已显示编入就跳过；顺手记「上次更新」日期 + 已编入总数发我
 - [ ] 👤 **明日预告 10/15（周四）**：双站 Pinterest 探针 #1（各发 1 个带链接 pin，1 分钟）——通了才重启渠道；仍拦 → 只剩 11/15 末次探针
 
+## 10/14 已完成归档
+
+**🤖 tintbrew 拼豆新玩法上线：照片转拼豆图纸 /photo-to-perler-bead-pattern/**（👤 提议，裁定不走调研线）`4520083`：上传照片→格点采样→Oklab 最近珠吸附→可编辑图纸+数量清单+打印；PaintCanvas 接管编辑零新交互代码。评审 2H+3M+1L 全修（FS 残差守恒 / 打印清单移位 + scoped 打印规则匹配不到运行时 DOM 的坑搬 global / bmp 内存 / 防拖偏丢图）；105 页 191 测试全绿；线上 200+canonical+sitemap+IndexNow 全验。明细 PLAN 10/14 行。**👤 顺手活：浏览器拖一张图过一遍手感（dither 对比/改格/打印预览）**，异常报我
+
 ## 10/12 已完成归档
 
 **👤 周一例行 ✅ 10/12 已报**（判读入档：tintbrew 曝光 -45% 真回落 / chartglade -16% 排名反升，两 PLAN 10/12 行；周对比拆解裁定不做，降级零成本可选项——哪天顺手截 GSC 效果页默认视图查询榜发 Claude 即可）｜ 🤖 #16 外链诱饵页 /states-that-require-cursive/ 上线 `4785a9e`（线上 200 / canonical / sitemap / IndexNow 全验，数据档 CURSIVE-STATES-DATA.md）｜ 🤖 外链三线收口：awesome-math PR #198 被关（2 数学真错已修 `44b90cf` + 4 守卫，线程闭环）+ LibGuides 5 封全发完 + 无登录目录判死 → roundup pitch 4 目标入 §5.2 #6 ｜ 🤖 tintbrew Copy link 热修 `4aa0369`（174/174 测试绿，线上三态验证 ✓）｜ 🤖 LibGuides ②~⑤ 封邮箱确证 + Gmail 一键链接随发随备（5/5 于 10/12 全发出，RCCC lrc / Stonehill Boezi / Brescia Cox / SELU Sharp / Hartford St. Pierre 全双实锤；10/19 静默期满看回音）｜ **未销项顺延 10/14**：Reddit 主帖（窗口至 10/15）/ 字母池 m~v / 拼豆 hub 补推
