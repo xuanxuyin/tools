@@ -9,7 +9,7 @@ const description =
 const faqs = [
   {
     q: 'How does my photo become a bead pattern?',
-    a: 'The picture is divided into a grid matching your board size, and each cell is matched to the closest real bead color. Matching runs in Oklab, a color space built around how different two colors look to the human eye, so skin stays skin-toned and reds stay red instead of drifting muddy.',
+    a: 'The picture is scanned and divided into color regions, then each region is matched to a real bead color. Matching runs in Oklab, a color space built around how different two colors look to the human eye, so skin stays skin-toned and reds stay red instead of drifting muddy.',
   },
   {
     q: 'What kind of photo works best?',
@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: 'What is the bead list for?',
-    a: 'It counts every bead on the board by color, like a shopping list — White ×210, Black ×96 and so on. Cap the palette with the "Beads on hand" setting and off-palette colors re-snap onto the beads you actually own.',
+    a: 'It counts every bead on the board by color, like a shopping list — White ×210, Black ×96 and so on. The "Beads on hand" setting caps how many colors the pattern uses, so it fits the beads you actually own instead of calling for forty different bags.',
   },
   {
     q: 'Does my photo get uploaded anywhere?',
@@ -106,7 +106,7 @@ const jsonLd = [
         <label>
           Look
           <select data-photo-mode>
-            <option value="smooth">Smooth — calm blocks</option>
+            <option value="smooth">Smooth — clean color regions</option>
             <option value="dither">Dithered — richer gradients</option>
           </select>
         </label>

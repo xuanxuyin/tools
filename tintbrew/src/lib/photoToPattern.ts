@@ -1,16 +1,19 @@
 /**
  * Photo → fuse-bead pattern engine. Pure functions, no DOM: takes decoded
- * pixel data (any ImageData-shaped object) and maps every board cell onto
- * the nearest real bead by Oklab distance — the same perceptual metric the
- * color-name engine uses — so photos keep their gradients instead of
- * drifting the way RGB-distance converters let them.
+ * pixel data (any ImageData-shaped object) and turns it into a bead board.
+ * Matching runs in Oklab — the same perceptual metric the color-name engine
+ * uses — so photos keep their character instead of drifting the way
+ * RGB-distance converters let them.
  *
- * Two modes: 'smooth' (box-average per cell, the calm look) and 'dither'
- * (Floyd–Steinberg error diffusion carried out in Oklab, which trades a
- * little noise for far richer gradients at small board sizes).
- * maxColors caps the palette so the shopping list fits the beads people
- * actually own: the most-used beads stay, everything else re-snaps onto
- * them. Photo boards are always full — every cell gets a bead, no pegs.
+ * Two pipelines:
+ *  - 'smooth' (default): scan → cluster cell colors into regions → one bead
+ *    per region → majority-vote away speckles. Clean area maps: a logo or
+ *    cartoon stays crisp, and a symmetric photo comes out symmetric.
+ *  - 'dither': Floyd–Steinberg error diffusion over the full palette with a
+ *    serpentine scan — trades a little texture for much richer gradients
+ *    (sunsets, skies) at small board sizes.
+ * maxColors caps the color count so the shopping list fits the beads people
+ * actually own. Photo boards are always full — every cell gets a bead.
  */
 import { rgbToOklab, hexToRgb, type Oklab, type RGB } from './color';
 import { BEAD_COLORS } from './beadPalette';
@@ -131,6 +134,94 @@ function spread(
   }
 }
 
+/** Minimum Oklab distance between two cluster centers — closer colors are
+ *  one region, not two beads. */
+const MERGE_T = 0.07;
+/** Oklab components are bucketed at 1/12 steps for the color histogram —
+ *  coarse pre-merge, deterministic, and symmetry-preserving (mirror cells
+ *  quantize into the same bucket, so a symmetric photo stays symmetric). */
+const BUCKET = 12;
+
+/**
+ * The region pipeline: scan every cell's color, merge them into buckets,
+ * pick well-separated centers by frequency, and give each region one bead.
+ * Per-cell independent snapping (the old behavior) lets JPEG noise and soft
+ * gradients flip neighboring cells to different beads — this groups first,
+ * colors second, which is how a human reads a pattern.
+ */
+function clusterCells(labs: Oklab[], maxColors: number): string[] {
+  const buckets = new Map<string, { n: number; L: number; a: number; b: number }>();
+  for (const lab of labs) {
+    const key = `${Math.round(lab.L * BUCKET)},${Math.round(lab.a * BUCKET)},${Math.round(lab.b * BUCKET)}`;
+    let bkt = buckets.get(key);
+    if (!bkt) {
+      bkt = { n: 0, L: 0, a: 0, b: 0 };
+      buckets.set(key, bkt);
+    }
+    bkt.n++;
+    bkt.L += lab.L;
+    bkt.a += lab.a;
+    bkt.b += lab.b;
+  }
+  // frequency desc, key asc — a fixed order for identical inputs
+  const sorted = [...buckets.entries()].sort(
+    (x, y) => y[1].n - x[1].n || (x[0] < y[0] ? -1 : x[0] > y[0] ? 1 : 0),
+  );
+  const centers: Oklab[] = [];
+  const cap = Math.max(1, maxColors);
+  for (const [, bkt] of sorted) {
+    if (centers.length >= cap) break;
+    const c: Oklab = { L: bkt.L / bkt.n, a: bkt.a / bkt.n, b: bkt.b / bkt.n };
+    if (centers.every((k) => Math.hypot(c.L - k.L, c.a - k.a, c.b - k.b) > MERGE_T)) {
+      centers.push(c);
+    }
+  }
+  // two centers may snap to the same bead — that merge is free and correct
+  const centerBeads = centers.map((c) => nearestBeadLab(c, null).id);
+  return labs.map((lab) => {
+    let best = 0;
+    let bestD = Infinity;
+    for (let i = 0; i < centers.length; i++) {
+      const k = centers[i]!;
+      const d = Math.hypot(lab.L - k.L, lab.a - k.a, lab.b - k.b);
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    }
+    return centerBeads[best]!;
+  });
+}
+
+/** One 3×3 majority-vote pass: a cell whose 8 neighbors hold ≥6 of one bead
+ *  switches to it — kills isolated speckles without eroding real edges. */
+function despeckle(cells: string[], cols: number, rows: number): string[] {
+  const out = cells.slice();
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const i = y * cols + x;
+      const counts = new Map<string, number>();
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          if (!dx && !dy) continue;
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) continue;
+          const id = cells[ny * cols + nx]!;
+          counts.set(id, (counts.get(id) ?? 0) + 1);
+        }
+      }
+      for (const [id, n] of counts) {
+        if (n >= 6 && id !== cells[i]) {
+          out[i] = id;
+          break;
+        }
+      }
+    }
+  }
+  return out;
+}
+
 export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern {
   if (!img.width || !img.height || img.data.length < img.width * img.height * 4) {
     return { cols: 0, rows: 0, cells: [] };
@@ -139,20 +230,37 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
   // aspect-following height; capped, so extreme panoramas compress rather
   // than mint an unbuildable board
   const rows = Math.max(MIN_COLS, Math.min(MAX_ROWS, Math.round((img.height / img.width) * cols)));
-  const cells: string[] = new Array(cols * rows);
+
+  // per-cell box-mean sampled once — both pipelines share it
+  const labs: Oklab[] = new Array(cols * rows);
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const { x0, y0, x1, y1 } = cellRect(img, cols, rows, x, y);
+      labs[y * cols + x] = rgbToOklab(boxMean(img, x0, y0, x1, y1));
+    }
+  }
+
+  const max = opts.maxColors ?? BEAD_COLORS.length;
+  let cells: string[];
 
   if (opts.mode === 'dither') {
+    // gradient pipeline: Floyd–Steinberg over the full palette, serpentine
+    // scan (even rows left→right, odd rows right→left) so error diffusion
+    // doesn't drag every picture to one side
+    cells = new Array(cols * rows);
     const err: (Oklab | undefined)[] = new Array(cols * rows);
     for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const { x0, y0, x1, y1 } = cellRect(img, cols, rows, x, y);
-        const base = rgbToOklab(boxMean(img, x0, y0, x1, y1));
-        const e = err[y * cols + x];
+      const ltr = y % 2 === 0;
+      for (let k = 0; k < cols; k++) {
+        const x = ltr ? k : cols - 1 - k;
+        const i = y * cols + x;
+        const base = labs[i]!;
+        const e = err[i];
         const target: Oklab = e
           ? { L: base.L + e.L, a: base.a + e.a, b: base.b + e.b }
           : base;
         const bead = nearestBeadLab(target, null);
-        cells[y * cols + x] = bead.id;
+        cells[i] = bead.id;
         // classic FS: the residual is target − bead, so incoming error is
         // conserved through the board instead of being absorbed per cell
         const d: Oklab = {
@@ -160,44 +268,41 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
           a: target.a - bead.lab.a,
           b: target.b - bead.lab.b,
         };
-        spread(err, cols, rows, x + 1, y, d, 7 / 16);
-        spread(err, cols, rows, x - 1, y + 1, d, 3 / 16);
+        const fwd = ltr ? x + 1 : x - 1;
+        const back = ltr ? x - 1 : x + 1;
+        spread(err, cols, rows, fwd, y, d, 7 / 16);
+        spread(err, cols, rows, back, y + 1, d, 3 / 16);
         spread(err, cols, rows, x, y + 1, d, 5 / 16);
-        spread(err, cols, rows, x + 1, y + 1, d, 1 / 16);
+        spread(err, cols, rows, fwd, y + 1, d, 1 / 16);
+      }
+    }
+    // palette cap: keep the most-used beads, re-snap the rest onto them
+    if (max > 0 && max < BEAD_COLORS.length) {
+      const counts = new Map<string, number>();
+      for (const id of cells) counts.set(id, (counts.get(id) ?? 0) + 1);
+      const keep = new Set(
+        [...counts.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, Math.max(1, max))
+          .map(([id]) => id),
+      );
+      const snap = new Map<string, string>();
+      for (let i = 0; i < cells.length; i++) {
+        const id = cells[i]!;
+        if (keep.has(id)) continue;
+        let mapped = snap.get(id);
+        if (!mapped) {
+          const from = BEAD_LAB.find((b) => b.id === id)!;
+          mapped = nearestBeadLab(from.lab, keep).id;
+          snap.set(id, mapped);
+        }
+        cells[i] = mapped;
       }
     }
   } else {
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const { x0, y0, x1, y1 } = cellRect(img, cols, rows, x, y);
-        cells[y * cols + x] = nearestBeadLab(rgbToOklab(boxMean(img, x0, y0, x1, y1)), null).id;
-      }
-    }
-  }
-
-  const max = opts.maxColors ?? BEAD_COLORS.length;
-  if (max > 0 && max < BEAD_COLORS.length) {
-    const counts = new Map<string, number>();
-    for (const id of cells) counts.set(id, (counts.get(id) ?? 0) + 1);
-    const keep = new Set(
-      [...counts.entries()]
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, Math.max(1, max))
-        .map(([id]) => id),
-    );
-    // off-palette beads re-snap onto the kept set; one memo per discarded id
-    const snap = new Map<string, string>();
-    for (let i = 0; i < cells.length; i++) {
-      const id = cells[i]!;
-      if (keep.has(id)) continue;
-      let mapped = snap.get(id);
-      if (!mapped) {
-        const from = BEAD_LAB.find((b) => b.id === id)!;
-        mapped = nearestBeadLab(from.lab, keep).id;
-        snap.set(id, mapped);
-      }
-      cells[i] = mapped;
-    }
+    // region pipeline: scan → cluster into color regions → one bead per
+    // region → majority-vote away the speckles
+    cells = despeckle(clusterCells(labs, max), cols, rows);
   }
 
   return { cols, rows, cells };

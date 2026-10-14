@@ -37,6 +37,28 @@ function split(w: number, h: number, left: string, right: string): SampleImage {
   return { data, width: w, height: h };
 }
 
+/** Left-right mirrored photo: symmetric gradient, integer channels — mirror
+ *  cells are pixel-identical, so a symmetric pipeline must stay symmetric. */
+function mirrored(w: number, h: number): SampleImage {
+  const data = new Uint8ClampedArray(w * h * 4);
+  const half = Math.floor(w / 2);
+  const table: { r: number; g: number; b: number }[] = [];
+  for (let i = 0; i < half; i++) {
+    table.push({ r: Math.round((i / Math.max(1, half - 1)) * 255), g: 0, b: 255 });
+  }
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const c = x < half ? table[x]! : table[w - 1 - x]!;
+      const i = (y * w + x) * 4;
+      data[i] = c.r;
+      data[i + 1] = c.g;
+      data[i + 2] = c.b;
+      data[i + 3] = 255;
+    }
+  }
+  return { data, width: w, height: h };
+}
+
 describe('photoToPattern', () => {
   it('fills a solid photo with the nearest single bead', () => {
     const img = solid(40, 40, '#ff0000');
@@ -162,5 +184,35 @@ describe('photoToPattern', () => {
       }
       expect(Math.abs(L / out.cells.length - src.L), `gray ${level}`).toBeLessThan(0.01);
     }
+  });
+
+  it('a mirrored photo converts to a mirrored board (region pipeline symmetry)', () => {
+    // the old per-cell snapping let sampling asymmetries flip mirror cells
+    // to different beads; the region pipeline must hold mirror equality
+    // for every cell, not just on average
+    const out = photoToPattern(mirrored(40, 20), { cols: 20, mode: 'smooth' });
+    for (let y = 0; y < out.rows; y++) {
+      for (let x = 0; x < out.cols; x++) {
+        expect(
+          out.cells[y * out.cols + x],
+          `cell ${x},${y}`,
+        ).toBe(out.cells[y * out.cols + (out.cols - 1 - x)]);
+      }
+    }
+    // and the mirror image isn't degenerate — a gradient yields ≥3 regions
+    expect(new Set(out.cells).size).toBeGreaterThanOrEqual(3);
+  });
+
+  it('an isolated off-color pixel is absorbed by its region (despeckle)', () => {
+    // one far-off pixel (yellow in a blue field) becomes its own cluster
+    // center, but the 3×3 majority vote eats it back into the region
+    const img = solid(20, 20, '#3366cc');
+    const i = (10 * 20 + 10) * 4;
+    img.data[i] = 255;
+    img.data[i + 1] = 255;
+    img.data[i + 2] = 0;
+    const out = photoToPattern(img, { cols: 20, mode: 'smooth' });
+    expect(out.cells[10 * 20 + 10]).toBe(out.cells[0]);
+    expect(new Set(out.cells).size).toBe(1);
   });
 });
