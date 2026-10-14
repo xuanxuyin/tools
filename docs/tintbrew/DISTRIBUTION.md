@@ -103,7 +103,7 @@ Happy to take color questions in the comments — "orange that doesn't look neon
 
 **⚠️ 10/14 实战判读：主帖被站方 spam filter 移除**（发帖+flair 全对，发布即被"Reddit 筛选器"移除，非版主手删）——9 天新号 + 主帖带 2 个商业链接 = **账号信誉门**，与 Pinterest 域名信誉门同构。红线执行：**不重发、不删帖**。处置双路线：A. modmail 申诉一次（文案见下），24h 无回音不追问；B. **主线转答帖**（本节红线既定"答帖永远优先于主帖"）——r/Baking 搜 `black buttercream`/`black frosting` 按 New 排序找 7 天内求助帖，先实答后带链、单帖单链。主帖重试门槛：账号 ≥1 个月 + karma 有积累。
 
-**Modmail 申诉文案（直接抄）**：标题 `Spam filter removed my post — could you take a look?`；正文如下。**入口坑（10/14 实勘）**：点版主个人头像"发送消息"= 个人 DM，新号被拦（报错 "You can't message that user"）→ 正确入口 = modmail composer 直达 `https://www.reddit.com/message/compose?to=%2Fr%2FBaking`（收件人显示 r/Baking 整个团队）或社区页右侧栏 "Message the Moderators"
+**Modmail 申诉文案（直接抄）**：标题 `Spam filter removed my post — could you take a look?`；正文如下。**入口坑（10/14 实勘，判读二次修正）**：modmail 通道（收件人 = r/Baking 团队）也报 "You can't message that user" —— **不是走错入口，是发消息这个动作本身被拦**：疑① 零 karma 新号消息门槛 ② 帖子被 filter 移除后账号进观察状态。排查：无痕窗口开 `reddit.com/user/<用户名>/` ——"找不到用户"= 被隐藏（shadowban），登录态走 `reddit.com/appeals` 申诉；主页正常 = 新号消息门槛，**modmail 直接放弃**（本就白赚路线），主线转答帖（评论门槛远低于消息，r/Teachers 答帖先例在）
 
 > Hi mods — my post about getting buttercream to true black (General Baking Discussion flair) was removed by Reddit's spam filter right after posting. My account is only about a week old, so I'm guessing that's what tripped it. The post is a practical guide — four routes to black frosting, why gel beats liquid, the overnight-darkening trick — and it links to a free color-mixing calculator I built (no signup, nothing for sale). If it looks okay within the rules, would you consider restoring it? Happy to edit or trim the links if that's the concern. Thanks!
 
