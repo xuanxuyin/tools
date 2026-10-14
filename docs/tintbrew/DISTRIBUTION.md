@@ -99,7 +99,7 @@ There's a full icing color chart too if you're building out a whole Halloween pa
 Happy to take color questions in the comments — "orange that doesn't look neon" is another fun one.
 ```
 
-**发帖操作坑（10/14 实勘）**：r/Baking 强制 flair（中文界面叫"帖子标识"，不选发布时报"你的帖子必须包含帖子标识"）→ 发帖页标题框下方点 **"标识"（Flair）按钮 → 选 Discussion**（技巧/经验分享对口）。勿选 Recipe（选了强制附完整配方）/ Question/Advice（非提问）/ Showcase（晒成品专用）。
+**发帖操作坑（10/14 实勘）**：r/Baking 强制 flair（中文界面叫"帖子标识"，不选发布时报"你的帖子必须包含帖子标识"）→ 发帖页标题框下方点 **"标识"（Flair）按钮 → 选 General Baking Discussion**【实测 10/14 全列表】。勿选 Recipe Included（强制附完整配方）/ Baking Advice Needed（求助专用）/ Showcase (No-Recipe)（晒成品专用）。
 
 **红线**：帖被过滤/删除不要原样重发（spam 判定会加重）；同文案不连发多版（换版块隔天 + 改角度）；答帖永远优先于主帖（存活率高）；不买 upvote。
 
