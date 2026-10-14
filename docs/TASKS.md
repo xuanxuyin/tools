@@ -10,7 +10,7 @@
 
 > 10/13（周二）无例行无盘。10/12 三件 👤 活（Reddit 主帖 / 字母池 / 拼豆补推）完成情况未确认 → 再顺延；**Reddit 主帖窗口只剩今明两天（10/12~15），今日最优先**。周三例行（1 个分发动作）由发主帖本身覆盖，不另排。
 
-- [ ] 👤 **Reddit 答帖转常态蹲守（10/14 实勘：主帖被站方 filter 移除 + modmail 新号被拦 + 本周无黑霜饰新帖）**：判读全链入档 tintbrew DISTRIBUTION §2.3（账号信誉门，与 Pinterest 域名门同构；红线执行不重发不删帖）。**立即可做**：①开 1ryleqw 帖（Cake4Kids 黑霜饰求助，见 §2.3）验日期，2 周内就答（回复文案找 Claude 要）②r/painting / r/DIY 搜混色问答（§2.1 在案角度，常青）。**挂起到 10/18**：万圣霜饰求助高峰 10/20~31（美国派对档期），届时 r/Baking + r/AskBaking 搜 `black frosting`/`orange frosting`/`halloween` 按 New，有对口就答（先实答后带链，单帖单链）。主帖重试门槛 = 账号满月 + karma 攒起；周三分发动作已由今日主帖尝试消耗，不欠账
+- [ ] 👤 **Reddit 答帖蹲守挂起至 10/18（今日线收工）**：10/14 实勘全链受阻——主帖被站方 filter 移除 + modmail 新号被拦 + r/Baking 无黑霜饰新帖 + 候选帖 1ryleqw 验为 7 个月前死帖；判读全入 tintbrew DISTRIBUTION §2.3（账号信誉门，与 Pinterest 域名门同构；红线执行不重发不删帖）。**10/18 起蹲守**（万圣霜饰求助高峰 10/20~31）：r/Baking + r/AskBaking 搜 `black frosting`/`orange frosting`/`halloween` 按 New + r/painting 搜混色问答（§2.1 在案角度），有对口就答（先实答后带链，单帖单链，文案找 Claude 写）。主帖重试门槛 = 账号满月 + karma 攒起；周三分发动作已由今日主帖尝试消耗，不欠账
 - [ ] 👤 **chartglade request indexing 字母池 m~v（多日顺延；10/14 报错已判读）**：报错类型 = "出了点问题/稍后重试"【实勘 10/14】→ **Google 侧故障，非配额非页面**（线上抽查 m/q/v 全 200 + canonical 自指 + 无 noindex【实勘 curl 权威 IP】）。处置：①关弹窗同 URL 重点一次（常第二次就过）②无痕窗口重试③再不成即降级"顺手试"，不再单列排队——sitemap/IndexNow/676 条内链全绿，自然抓取在跑，此活只是加速器
 - [ ] 👤 **tintbrew 拼豆 hub 补推 1 条（1 分钟，多日顺延）**：`https://tintbrew.com/perler-bead-patterns/` → GSC URL 检查 → 请求编入索引；已显示编入就跳过；顺手记「上次更新」日期 + 已编入总数发我
 - [ ] 👤 **明日预告 10/15（周四）**：双站 Pinterest 探针 #1（各发 1 个带链接 pin，1 分钟）——通了才重启渠道；仍拦 → 只剩 11/15 末次探针
