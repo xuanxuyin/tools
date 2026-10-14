@@ -11,7 +11,7 @@
 > 10/13（周二）无例行无盘。10/12 三件 👤 活（Reddit 主帖 / 字母池 / 拼豆补推）完成情况未确认 → 再顺延；**Reddit 主帖窗口只剩今明两天（10/12~15），今日最优先**。周三例行（1 个分发动作）由发主帖本身覆盖，不另排。
 
 - [ ] 👤 **Reddit 主帖（⚠️ 窗口 10/12~15 只剩今明两天，今日最优先）**：tintbrew 万圣烘焙主帖，r/Baking 主战场，文案直接抄 tintbrew DISTRIBUTION §2.3；发帖前读版规确认账号门槛；发完养号任务永久停。**发完这帖 = 本周三分发动作同时完成**
-- [ ] 👤 **chartglade request indexing 字母池 m~v（多日顺延）**：GSC URL 检查 → 请求编入索引（https://chartglade.com/cursive/m/ 同款路径逐字母 m n o p q r s t u v）；报错把文案发 Claude 看类型；推完即永久结项（勿再请求名单见 PLAN §3 脚注）
+- [ ] 👤 **chartglade request indexing 字母池 m~v（多日顺延；10/14 报错已判读）**：报错类型 = "出了点问题/稍后重试"【实勘 10/14】→ **Google 侧故障，非配额非页面**（线上抽查 m/q/v 全 200 + canonical 自指 + 无 noindex【实勘 curl 权威 IP】）。处置：①关弹窗同 URL 重点一次（常第二次就过）②无痕窗口重试③再不成即降级"顺手试"，不再单列排队——sitemap/IndexNow/676 条内链全绿，自然抓取在跑，此活只是加速器
 - [ ] 👤 **tintbrew 拼豆 hub 补推 1 条（1 分钟，多日顺延）**：`https://tintbrew.com/perler-bead-patterns/` → GSC URL 检查 → 请求编入索引；已显示编入就跳过；顺手记「上次更新」日期 + 已编入总数发我
 - [ ] 👤 **明日预告 10/15（周四）**：双站 Pinterest 探针 #1（各发 1 个带链接 pin，1 分钟）——通了才重启渠道；仍拦 → 只剩 11/15 末次探针
 
