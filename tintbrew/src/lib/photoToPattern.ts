@@ -64,8 +64,10 @@ function nearestBeadLab(target: Oklab, subset: Set<string> | null): { id: string
   return best;
 }
 
-/** Pixel rectangle covered by board cell (x, y); edges overlap by a pixel
- *  when the photo doesn't divide evenly — box means are approximations. */
+/** Pixel rectangle covered by board cell (x, y). Round-based boundaries
+ *  keep symmetric photos symmetric: cell x and cell cols-1-x cover the
+ *  same pixel width. Edges overlap by a pixel when the photo doesn't
+ *  divide evenly — box means are approximations. */
 function cellRect(
   img: SampleImage,
   cols: number,
@@ -73,11 +75,16 @@ function cellRect(
   x: number,
   y: number,
 ): { x0: number; y0: number; x1: number; y1: number } {
-  const x0 = Math.floor((x * img.width) / cols);
-  const y0 = Math.floor((y * img.height) / rows);
-  const x1 = Math.min(img.width, Math.max(x0 + 1, Math.ceil(((x + 1) * img.width) / cols)));
-  const y1 = Math.min(img.height, Math.max(y0 + 1, Math.ceil(((y + 1) * img.height) / rows)));
-  return { x0, y0, x1, y1 };
+  const x0 = Math.round((x * img.width) / cols);
+  const y0 = Math.round((y * img.height) / rows);
+  const x1raw = Math.round(((x + 1) * img.width) / cols);
+  const y1raw = Math.round(((y + 1) * img.height) / rows);
+  return {
+    x0: Math.min(x0, img.width - 1),
+    y0: Math.min(y0, img.height - 1),
+    x1: Math.max(x0 + 1, Math.min(x1raw, img.width)),
+    y1: Math.max(y0 + 1, Math.min(y1raw, img.height)),
+  };
 }
 
 /** Box mean over a pixel rectangle. Semi-transparent pixels composite onto

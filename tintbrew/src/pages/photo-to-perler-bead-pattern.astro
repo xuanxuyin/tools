@@ -459,6 +459,27 @@ const jsonLd = [
     }
   }
 
+  .photo-stage .source-photo {
+    grid-column: 1 / -1;
+    margin-bottom: var(--sp-2);
+  }
+  .photo-stage .source-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-soft, #666);
+    margin: 0 0 var(--sp-1);
+  }
+  .photo-stage .source-img {
+    display: block;
+    max-width: 100%;
+    max-height: 260px;
+    width: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    object-fit: contain;
+    background: var(--paper, #fbfaf7);
+  }
+
   /* Print must live in a GLOBAL block: the runtime-built board carries no
      astro scoping attribute, so scoped rules (compiled with
      [data-astro-cid-…]) never match it — the board would print its tools
@@ -476,7 +497,8 @@ const jsonLd = [
       padding: 0;
     }
     .photo-stage .paint-card,
-    .photo-stage .cv-list-card {
+    .photo-stage .cv-list-card,
+    .photo-stage .source-photo {
       break-inside: avoid;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;

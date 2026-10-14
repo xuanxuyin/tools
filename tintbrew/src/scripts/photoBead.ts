@@ -20,6 +20,7 @@ const DECODE_CAP = 1200; // sampling beyond this only burns memory
 
 export class PhotoStudio {
   private source: SampleImage | null = null;
+  private sourceUrl: string | null = null; // blob URL for the source photo preview
 
   constructor(private root: HTMLElement) {
     const fileInput = root.querySelector<HTMLInputElement>('[data-photo-file]')!;
@@ -86,6 +87,9 @@ export class PhotoStudio {
       status.textContent = 'That file is not an image — pick a JPG, PNG or WebP.';
       return;
     }
+    // release the previous blob URL so we don't leak one per upload
+    if (this.sourceUrl) URL.revokeObjectURL(this.sourceUrl);
+    this.sourceUrl = URL.createObjectURL(file);
     status.textContent = 'Reading your photo…';
     try {
       this.source = await this.decode(file);
@@ -282,7 +286,25 @@ export class PhotoStudio {
     list.appendChild(listEmpty);
     listCard.append(listTitle, list);
 
-    body.append(figure, tools, listCard);
+    // source photo thumbnail — so the user can compare the original to the
+    // bead board. The URL is only set via the real upload path; the test
+    // shortcut (convertSample) has no URL and skips the preview.
+    if (this.sourceUrl) {
+      const sourceCard = document.createElement('div');
+      sourceCard.className = 'source-photo';
+      const sourceLabel = document.createElement('p');
+      sourceLabel.className = 'source-label';
+      sourceLabel.textContent = 'Your source photo';
+      const sourceImg = document.createElement('img');
+      sourceImg.src = this.sourceUrl;
+      sourceImg.alt = 'Your uploaded photo — use it as a reference while editing the bead board';
+      sourceImg.className = 'source-img';
+      sourceImg.loading = 'lazy';
+      sourceCard.append(sourceLabel, sourceImg);
+      body.append(sourceCard, figure, tools, listCard);
+    } else {
+      body.append(figure, tools, listCard);
+    }
     card.appendChild(body);
     stage.appendChild(card);
     new PaintCanvas(card);
