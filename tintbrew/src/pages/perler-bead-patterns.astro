@@ -35,4 +35,53 @@ const groups = [
 ];
 ---
 
-<BeadCategoryPage seo={BEAD_HUB_SEO} groups={groups} />
+<BeadCategoryPage seo={BEAD_HUB_SEO} groups={groups}>
+  <a class="photo-cta" href="/photo-to-perler-bead-pattern/">
+    <span class="cta-label">New</span>
+    <strong>Turn your own photo into a pattern</strong>
+    <span class="cta-body">
+      Drop in any picture and get a printable bead board matched to real colors — with the bead
+      count list ready. Free, and the photo never leaves your browser.
+    </span>
+    <span class="cta-go">Open the converter →</span>
+  </a>
+</BeadCategoryPage>
+
+<style>
+  .photo-cta {
+    display: grid;
+    gap: 6px;
+    justify-items: start;
+    margin-top: var(--sp-4);
+    padding: var(--sp-4);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent, #b3552e);
+    border-radius: 12px;
+    background: var(--paper, #fbfaf7);
+    text-decoration: none;
+    color: inherit;
+  }
+  .photo-cta:hover {
+    border-color: var(--accent, #b3552e);
+  }
+  .cta-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent, #b3552e);
+  }
+  .photo-cta strong {
+    font-size: 1.05rem;
+  }
+  .cta-body {
+    font-size: 0.9rem;
+    color: var(--ink-soft, #666);
+    line-height: 1.5;
+  }
+  .cta-go {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--accent, #b3552e);
+  }
+</style>

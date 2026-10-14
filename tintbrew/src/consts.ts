@@ -16,9 +16,8 @@ export const SITE = {
 } as const;
 
 /**
- * Site-wide content freshness date (2026-10-04 incumbent teardown: every SERP
- * winner shows an updated date; we showed none). Bump ONLY on content batches —
- * never on code-only deploys. Mirrored as a string in astro.config.mjs sitemap
- * serialize (mjs can't import this TS file).
+ * Site-wide content freshness date (2026-10-14: photo→bead converter page).
+ * Bump ONLY on content batches — never on code-only deploys. Mirrored as a
+ * string in astro.config.mjs sitemap serialize (mjs can't import this TS file).
  */
-export const CONTENT_UPDATED = '2026-10-04';
+export const CONTENT_UPDATED = '2026-10-14';

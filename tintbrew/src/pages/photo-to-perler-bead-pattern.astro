@@ -1,0 +1,485 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = 'Photo to Perler Bead Pattern — Free Picture-to-Bead Converter | TintBrew';
+const description =
+  'Turn any photo into a printable fuse bead pattern. Pick a board size, get every bead matched to a real color, edit any cell, and print the pattern plus a bead count list. Nothing uploads.';
+
+const faqs = [
+  {
+    q: 'How does my photo become a bead pattern?',
+    a: 'The picture is divided into a grid matching your board size, and each cell is matched to the closest real bead color. Matching runs in Oklab, a color space built around how different two colors look to the human eye, so skin stays skin-toned and reds stay red instead of drifting muddy.',
+  },
+  {
+    q: 'What kind of photo works best?',
+    a: 'Pictures with one clear subject and a simple background — a pet face, a logo, a cartoon character. Busy backgrounds turn into bead noise at 29 × 29. If your photo has soft gradients (sunsets, skies), try the Dithered mode, which trades a little texture for much smoother shading.',
+  },
+  {
+    q: 'Why do my gradients look banded?',
+    a: 'A standard 5mm bead assortment only has about 32 colors, so every smooth gradient has to snap onto those steps. Dithered mode mixes neighboring beads the way printers mix dots, which restores the in-between shades at small board sizes.',
+  },
+  {
+    q: 'What is the bead list for?',
+    a: 'It counts every bead on the board by color, like a shopping list — White ×210, Black ×96 and so on. Cap the palette with the "Beads on hand" setting and off-palette colors re-snap onto the beads you actually own.',
+  },
+  {
+    q: 'Does my photo get uploaded anywhere?',
+    a: 'No. The whole conversion runs in your browser — the picture never leaves your device, and the pattern disappears when you close the tab. Print it if you want to keep it.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TintBrew Photo to Bead Pattern',
+    url: `${SITE.url}/photo-to-perler-bead-pattern/`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Perler Bead Patterns',
+        item: `${SITE.url}/perler-bead-patterns/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: 'Photo to Bead Pattern',
+        item: `${SITE.url}/photo-to-perler-bead-pattern/`,
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/photo-to-perler-bead-pattern" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>Photo to Perler Bead Pattern</h1>
+    <p class="lead">
+      Turn any picture into a bead board you can print. Drop in a photo, pick a board size, and every
+      bead lands on a real fuse-bead color — with a count list ready for your next bag of beads.
+    </p>
+  </section>
+
+  <section class="tool-shell" data-photo-bead>
+    <div class="photo-controls no-print">
+      <div
+        class="photo-drop"
+        data-photo-drop
+        role="button"
+        tabindex="0"
+        aria-label="Choose a photo, or drop one here"
+      >
+        <strong>Drop a photo here</strong>
+        <span>or click to browse — JPG, PNG, WebP</span>
+      </div>
+      <input type="file" accept="image/*" data-photo-file hidden />
+      <div class="photo-opts">
+        <label>
+          Board size
+          <select data-photo-size>
+            <option value="29">29 × 29 — one pegboard</option>
+            <option value="58">58 × 58 — four pegboards</option>
+            <option value="87">87 × 87 — nine pegboards</option>
+          </select>
+        </label>
+        <label>
+          Look
+          <select data-photo-mode>
+            <option value="smooth">Smooth — calm blocks</option>
+            <option value="dither">Dithered — richer gradients</option>
+          </select>
+        </label>
+        <label>
+          Beads on hand
+          <select data-photo-colors>
+            <option value="32">All 32 colors</option>
+            <option value="16">16 colors</option>
+            <option value="10">10 colors</option>
+          </select>
+        </label>
+        <button type="button" class="btn" data-photo-convert>Convert</button>
+      </div>
+      <p class="photo-status" data-photo-status aria-live="polite">
+        Pick a photo to start — it converts right on this page, nothing uploads.
+      </p>
+    </div>
+    <div class="photo-stage" data-photo-stage>
+      <div class="stage-empty">
+        Your pattern appears here — the full board, bead colors and counts, ready to print.
+      </div>
+    </div>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2>How it works</h2>
+    <ol>
+      <li>
+        <strong>Pick a photo.</strong> Pets, faces and logos come out best — anything with one clear
+        subject and a simple background.
+      </li>
+      <li>
+        <strong>Choose your board.</strong> 29 × 29 fits a single large square pegboard and makes an
+        evening project. 58 × 58 spans four boards; 87 × 87 is a showpiece that wants a weekend.
+        The pattern follows your photo's shape — the board is as tall as the picture is.
+      </li>
+      <li>
+        <strong>Print and place.</strong> The pattern prints with row and column numbers every five
+        beads, plus a bead list that counts every color you need. One page, no signup, nothing to
+        install.
+      </li>
+    </ol>
+
+    <h2>Why the colors come out right</h2>
+    <p>
+      Every cell is matched to the nearest real bead color by Oklab distance — a measure of how
+      different two colors <em>look</em>, not how different their numbers are. Most photo-to-bead
+      converters match raw RGB values, which is why their skin tones drift green and their reds go
+      muddy. The 32-color palette here mirrors a standard 5mm fuse-bead assortment, so what you see
+      on screen is what you can actually place.
+    </p>
+    <p>
+      Wrong bead somewhere? The board is editable — tap any cell with the brush to repaint it, and
+      the count list updates as you go. <strong>Mirror</strong> paints both halves at once for
+      symmetric fixes.
+    </p>
+
+    <h2>A note on what you convert</h2>
+    <p>
+      Convert photos you own or have the right to use. Bead versions of other people's artwork or
+      characters are for your own shelf, not for sale.
+    </p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+
+    <p class="keep-reading">
+      Rather start from a ready-made design? Browse the
+      <a href="/perler-bead-patterns/">full perler bead pattern set</a> — 46 animals, food,
+      Halloween and Christmas boards at every size, each with the same printable template and bead
+      list.
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../scripts/photoBead';
+</script>
+
+<style>
+  .tool-shell {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: var(--sp-4);
+    background: var(--bg, #fff);
+  }
+  .photo-drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--sp-6) var(--sp-4);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    background: var(--paper, #fbfaf7);
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.12s ease;
+  }
+  .photo-drop strong {
+    font-size: 1.1rem;
+  }
+  .photo-drop span {
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .photo-drop:hover,
+  .photo-drop:focus-visible,
+  .photo-drop.over {
+    border-color: var(--accent, #b3552e);
+  }
+  .photo-opts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--sp-3);
+    margin-top: var(--sp-3);
+  }
+  .photo-opts label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-soft, #666);
+  }
+  .photo-opts select {
+    min-width: 190px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg, #fff);
+    font: inherit;
+    font-weight: 400;
+  }
+  .photo-opts .btn {
+    align-self: end;
+  }
+  .photo-status {
+    margin: var(--sp-3) 0 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft, #666);
+    min-height: 1.4em;
+  }
+  .photo-stage {
+    margin-top: var(--sp-4);
+  }
+  .stage-empty {
+    padding: var(--sp-8) var(--sp-4);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    text-align: center;
+    color: var(--ink-soft, #666);
+    font-style: italic;
+  }
+</style>
+
+<style is:global>
+  /* Runtime board built by scripts/photoBead.ts lives outside the scoped
+     tree — mirrors the BeadCanvas.astro blocks (scoped structure + global
+     cv-* rules) so both boards look and print identically. */
+  .photo-stage .paint-card {
+    position: relative;
+  }
+  .photo-stage .fig-card {
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--sp-3);
+    background: var(--bg, #fff);
+  }
+  .photo-stage .fig-card figcaption {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-soft, #666);
+    margin-bottom: var(--sp-2);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-2);
+  }
+  .photo-stage .fig-card .hint {
+    font-weight: 400;
+    font-style: italic;
+  }
+  .photo-stage .bead-fig {
+    display: block;
+    width: 100%;
+    margin-inline: auto;
+    height: auto;
+    background: var(--paper, #fbfaf7);
+    border-radius: 10px;
+  }
+  .photo-stage .paint-body {
+    display: grid;
+    gap: var(--sp-4);
+    align-items: start;
+  }
+  @media (min-width: 901px) {
+    .photo-stage .paint-body {
+      grid-template-columns: minmax(0, 1fr) 280px;
+    }
+    .photo-stage .paint-tools {
+      position: sticky;
+      top: 12px;
+    }
+  }
+  .photo-stage .paint-tools h3 {
+    font-size: 1.15rem;
+    margin-bottom: var(--sp-2);
+  }
+  .photo-stage .tool-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 var(--sp-3);
+  }
+  .photo-stage .tool-btn.active {
+    border-color: var(--accent, #b3552e);
+    box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
+  }
+  .photo-stage .cv-palette {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    margin: 0 0 var(--sp-2);
+  }
+  .photo-stage .cv-swatch {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    padding: 0;
+  }
+  .photo-stage .cv-swatch.active {
+    outline: 2px solid var(--accent, #b3552e);
+    outline-offset: 1px;
+  }
+  .photo-stage .cv-custom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--ink-soft, #666);
+    margin-bottom: var(--sp-2);
+  }
+  .photo-stage .cv-custom input {
+    width: 34px;
+    height: 26px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: none;
+    cursor: pointer;
+  }
+  .photo-stage .cv-custom-hint {
+    font-style: italic;
+  }
+
+  .bead-fig[data-bead-canvas] {
+    touch-action: none;
+    user-select: none;
+  }
+  .bead-fig[data-bead-canvas] .cv-label {
+    fill: rgba(0, 0, 0, 0.8);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+  }
+  .cv-cursor {
+    position: absolute;
+    z-index: 6;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(35, 35, 38, 0.92);
+    color: #fff;
+    font: 600 12px/1.3 ui-monospace, monospace;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    white-space: nowrap;
+  }
+  .cv-cursor.on {
+    opacity: 1;
+  }
+  .bead-fig[data-bead-canvas] .cv-cell {
+    stroke: rgba(0, 0, 0, 0.16);
+    stroke-width: 0.5;
+    cursor: crosshair;
+  }
+  .bead-fig[data-bead-canvas] .cv-cell.colored {
+    stroke: rgba(0, 0, 0, 0.12);
+  }
+  .cv-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cv-list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg, #fff);
+    font-size: 0.9rem;
+  }
+  .cv-empty {
+    border-style: dashed;
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .cv-total {
+    border: none;
+    padding: 0;
+    background: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .cv-item-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex: none;
+  }
+  .photo-stage .cv-list-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: var(--sp-2);
+  }
+  @media (min-width: 901px) {
+    .photo-stage .cv-list-card {
+      grid-column: 1 / -1; /* chips wrap full-width under the board */
+    }
+  }
+
+  /* Print must live in a GLOBAL block: the runtime-built board carries no
+     astro scoping attribute, so scoped rules (compiled with
+     [data-astro-cid-…]) never match it — the board would print its tools
+     panel and lose print-color-adjust. Same pattern as BeadPatternPage. */
+  @media print {
+    .site-header,
+    .site-footer,
+    .no-print,
+    .stage-empty,
+    .keep-reading {
+      display: none !important;
+    }
+    .tool-shell {
+      border: none;
+      padding: 0;
+    }
+    .photo-stage .paint-card,
+    .photo-stage .cv-list-card {
+      break-inside: avoid;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>

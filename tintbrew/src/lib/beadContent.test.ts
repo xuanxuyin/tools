@@ -195,10 +195,15 @@ describe('bead pages in real dist markup', () => {
       // island data source: one chip per region, counts present
       expect((html.match(/data-zone="/g) ?? []).length).toBe(p.regions.length);
       expect(html).toContain(`data-count="${p.regions[0]!.count}"`);
-      // the island ships as an external chunk; it must carry the real logic
+      // the island ships as an external chunk; it must carry the real logic.
+      // shared modules (PaintCanvas) may sit in their own chunk since the
+      // photo converter imports them too — follow one hop of static imports
       const chunkMatch = html.match(/src="(\/_astro\/BeadPatternPage[^"]+\.js)"/);
       expect(chunkMatch, `${p.url} island chunk`).toBeTruthy();
-      const chunk = readFileSync(resolve(distRoot, chunkMatch![1]!.slice(1)), 'utf8');
+      let chunk = readFileSync(resolve(distRoot, chunkMatch![1]!.slice(1)), 'utf8');
+      for (const imp of chunk.matchAll(/from"(\.\/[^"]+\.js)"/g)) {
+        chunk += readFileSync(resolve(distRoot, '_astro', imp[1]!.slice(2)), 'utf8');
+      }
       expect(chunk).toContain('print');
       expect(chunk).toContain('data-zone');
       expect(chunk).toContain('pointerdown');
@@ -235,5 +240,49 @@ describe('bead pages in real dist markup', () => {
     for (const p of patternContents) {
       expect(xml, p.url).toContain(p.url);
     }
+  });
+
+  it('the photo converter page ships its shell, SEO triple and print path', () => {
+    const html = readFileSync(resolve(distRoot, 'photo-to-perler-bead-pattern/index.html'), 'utf8');
+    // SSR shell: upload controls, option selects, status line, empty stage
+    expect(html).toContain('data-photo-bead');
+    expect(html).toContain('data-photo-drop');
+    expect(html).toContain('data-photo-file');
+    expect(html).toContain('data-photo-stage');
+    // SEO triple + freshness, never noindex
+    expect(html).toContain('WebApplication');
+    expect(html).toContain('FAQPage');
+    expect(html).toContain('BreadcrumbList');
+    expect(html).toMatch(/rel="canonical" href="https:\/\/tintbrew\.com\/photo-to-perler-bead-pattern\/"/);
+    expect(html).not.toContain('noindex');
+    // print contract: controls hide, board prints with exact colors.
+    // The board is built by JS and carries NO scoping attribute, so its
+    // print rules must be global-form selectors — a scoped rule compiles
+    // to .paint-card[data-astro-cid-…] and never matches the runtime DOM
+    expect(html).toContain('@media print');
+    expect(html).toMatch(/\.photo-stage \.paint-card[^{]*\{[^}]*print-color-adjust:\s*exact/);
+    expect(html).toMatch(/@media print\{[^{]*\.no-print/);
+    // the island chunk must carry the real conversion entry points
+    const chunkMatch = html.match(/src="(\/_astro\/photo-to-perler-bead-pattern[^"]+\.js)"/);
+    expect(chunkMatch, 'photo island chunk').toBeTruthy();
+    const chunk = readFileSync(resolve(distRoot, chunkMatch![1]!.slice(1)), 'utf8');
+    expect(chunk).toContain('data-photo-bead');
+    // no-JS contract: the how-to prose is server-rendered content
+    expect(html).toContain('How it works');
+    expect(html).toContain('never leaves your device');
+  });
+
+  it('hub links the converter; footer carries it under the bead family', () => {
+    const hub = readFileSync(resolve(distRoot, 'perler-bead-patterns/index.html'), 'utf8');
+    expect(hub).toContain('href="/photo-to-perler-bead-pattern/"');
+    const footer = readFileSync(resolve(distRoot, 'index.html'), 'utf8');
+    expect(footer).toContain('/photo-to-perler-bead-pattern/');
+    // sitemap picks it up automatically
+    const sm0 = resolve(distRoot, 'sitemap-0.xml');
+    const raw = readFileSync(sm0);
+    const xml = raw.subarray(0, 2).equals(Buffer.from([0x1f, 0x8b]))
+      ? gunzipSync(raw).toString('utf8')
+      : raw.toString('utf8');
+    expect(xml).toContain('/photo-to-perler-bead-pattern/');
   });
 });

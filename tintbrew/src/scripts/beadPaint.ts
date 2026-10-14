@@ -8,12 +8,24 @@
  * live materials list built from the painted cells alone.
  */
 import { normalizeHex } from '../lib/color';
-import { beadById, nearestBead } from '../lib/beadPalette';
+import { BEAD_COLORS, beadById, nearestBead } from '../lib/beadPalette';
 import { paintLine, type PaintCell } from '../lib/beadPaint';
 
 const WHITE_HEX = '#f5f4ef';
 
-class PaintCanvas {
+/** hex → id reverse map: seeded boards carry exact bead hexes, so the fill
+ *  scan stays O(1) per cell even on an 87×87 board (nearestBead's full
+ *  Oklab pass is the rare-Path fallback for off-palette fills). */
+const BEAD_ID_BY_HEX = new Map(BEAD_COLORS.map((b) => [b.hex, b.id]));
+
+/**
+ * Exported for scripts/photoBead.ts: the photo converter builds the same
+ * cv-cell DOM at runtime and hands it to this class for editing. On the
+ * pattern pages the class self-instantiates below with an all-white board;
+ * a pre-filled board (photo pattern) seeds `painted` from the initial fill
+ * so the materials list starts correct.
+ */
+export class PaintCanvas {
   private svg: SVGSVGElement;
   private list: HTMLElement;
   private cells = new Map<number, SVGRectElement>();
@@ -35,6 +47,12 @@ class PaintCanvas {
     for (const el of this.svg.querySelectorAll<SVGRectElement>('.cv-cell')) {
       const idx = Number(el.dataset.cy) * cols + Number(el.dataset.cx);
       this.cells.set(idx, el);
+      // a photo-pattern board ships with its cells already filled — adopt
+      // them as painted so the list reflects the converted image from tick one
+      const fill = (el.getAttribute('fill') ?? WHITE_HEX).toLowerCase();
+      if (fill !== WHITE_HEX) {
+        this.painted.set(idx, BEAD_ID_BY_HEX.get(fill) ?? nearestBead(fill).id);
+      }
     }
 
     root.addEventListener('click', (e) => this.onClick(e));
@@ -64,6 +82,8 @@ class PaintCanvas {
     };
     this.svg.addEventListener('pointerup', stop);
     this.svg.addEventListener('pointercancel', stop);
+
+    if (this.painted.size) this.renderList();
   }
 
   private onClick(e: Event) {

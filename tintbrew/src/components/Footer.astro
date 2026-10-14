@@ -8,8 +8,10 @@ import { BEAD_CATEGORY_SEO, BEAD_HUB_SEO } from '../data/beadSeo';
 const guides = [...scenarioContents, ...outfitContents].map((s) => s.def);
 
 // V2.2 bead family — landing pages only; the 46 detail pages hang off these.
+// The photo converter is a tool page rather than a BeadSeoDef, spelled inline.
 const beadLinks = [
   BEAD_HUB_SEO,
+  { path: '/photo-to-perler-bead-pattern/', h1: 'Photo to Bead Pattern' },
   BEAD_CATEGORY_SEO.animals!,
   BEAD_CATEGORY_SEO.food!,
   BEAD_CATEGORY_SEO.christmas!,

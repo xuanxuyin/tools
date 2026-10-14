@@ -70,6 +70,10 @@ const jsonLd = [
     </section>
   )}
 
+  <!-- hub-only slot: the photo-converter CTA lives between the intro and the
+       first gallery; category pages pass nothing and render no gap -->
+  <slot />
+
   {groups.map((g) => (
     <section class="gallery" style="margin-top: var(--sp-6);">
       <h2>

@@ -9,6 +9,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { colors, colorById } from '../data/colors';
 import { hexToRgb, oklabMix, rgbToHex } from './color';
+import { CONTENT_UPDATED } from '../consts';
 
 const DIST = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', 'dist');
 
@@ -40,14 +41,16 @@ describe.skipIf(!existsSync(DIST))('ratio strips (real dist)', () => {
 describe.skipIf(!existsSync(DIST))('freshness signals (real dist)', () => {
   it('JSON-LD dateModified (never on BreadcrumbList) + visible updated line', () => {
     const page = readFileSync(resolve(DIST, 'color-mixer', 'index.html'), 'utf8');
-    expect(page).toContain('"dateModified":"2026-10-04"');
-    expect(page.match(/"dateModified":"2026-10-04"/g)!.length).toBeGreaterThanOrEqual(2); // WebApplication + FAQPage
+    // CONTENT_UPDATED is the single source the pages render from — assert it,
+    // so future bumps never leave this guard stale
+    expect(page).toContain(`"dateModified":"${CONTENT_UPDATED}"`);
+    expect(page.match(new RegExp(`"dateModified":"${CONTENT_UPDATED}"`, 'g'))!.length).toBeGreaterThanOrEqual(2); // WebApplication + FAQPage
     expect(page).not.toContain('BreadcrumbList","dateModified');
     expect(page).toContain('Color tools last updated');
   });
 
   it('sitemap carries lastmod for every URL', () => {
     const xml = readFileSync(resolve(DIST, 'sitemap-0.xml'), 'utf8');
-    expect(xml).toContain('<lastmod>2026-10-04');
+    expect(xml).toContain(`<lastmod>${CONTENT_UPDATED}`);
   });
 });
