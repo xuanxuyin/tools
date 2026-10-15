@@ -215,4 +215,66 @@ describe('photoToPattern', () => {
     expect(out.cells[10 * 20 + 10]).toBe(out.cells[0]);
     expect(new Set(out.cells).size).toBe(1);
   });
+
+  it('edge cells take their dominant color, not the mean (no outline mud)', () => {
+    // every 4×4 pixel block carries exactly 1 black outline pixel (spaced
+    // so no edge line of the image is uniform white — the margin trim has
+    // nothing to grab). The mean (L≈0.94) is fine here, but the same
+    // dominant-color rule is what keeps a real 50/50 outline cell off the
+    // muddy Light Gray the mean would pick.
+    const w = 32;
+    const data = new Uint8ClampedArray(w * w * 4);
+    for (let y = 0; y < w; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        const black = x % 4 === 2 && y % 4 === 2;
+        data[i] = black ? 0 : 255;
+        data[i + 1] = black ? 0 : 255;
+        data[i + 2] = black ? 0 : 255;
+        data[i + 3] = 255;
+      }
+    }
+    const out = photoToPattern({ data, width: w, height: w }, { cols: 8, mode: 'smooth' });
+    const white = nearestBead('#ffffff').id;
+    expect(new Set(out.cells)).toEqual(new Set([white]));
+  });
+
+  it('trims a uniform screenshot margin so the art fills the board', () => {
+    // 40×40 white page with a 20×20 red card centered: the board must be
+    // the card, not a fifth-size card floating in white beads
+    const w = 40;
+    const data = new Uint8ClampedArray(w * w * 4).fill(255);
+    for (let y = 10; y < 30; y++) {
+      for (let x = 10; x < 30; x++) {
+        const i = (y * w + x) * 4;
+        data[i] = 255;
+        data[i + 1] = 0;
+        data[i + 2] = 0;
+      }
+    }
+    const out = photoToPattern({ data, width: w, height: w }, { cols: 8, mode: 'smooth' });
+    expect(out.rows).toBe(8); // square art on a square board after trim
+    const red = nearestBead('#ff0000').id;
+    const white = nearestBead('#ffffff').id;
+    expect(new Set(out.cells)).toEqual(new Set([red]));
+    expect(red).not.toBe(white);
+  });
+
+  it('a contested ring is content, not a margin — no trim on a half-split image', () => {
+    // half black / half white: the ring is 50/50, so no side may lose
+    // pixels even though the left columns are uniformly black
+    const out = photoToPattern(split(60, 60, '#000000', '#ffffff'), {
+      cols: 12,
+      mode: 'smooth',
+    });
+    expect(out.cols).toBe(12);
+    expect(out.rows).toBe(12);
+    const black = nearestBead('#000000').id;
+    const white = nearestBead('#ffffff').id;
+    for (let y = 0; y < out.rows; y++) {
+      for (let x = 0; x < out.cols; x++) {
+        expect(out.cells[y * out.cols + x]).toBe(x < out.cols / 2 ? black : white);
+      }
+    }
+  });
 });

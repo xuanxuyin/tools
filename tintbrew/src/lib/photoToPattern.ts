@@ -5,6 +5,11 @@
  * uses — so photos keep their character instead of drifting the way
  * RGB-distance converters let them.
  *
+ * Before any of that: uniform screenshot/scan margins around the art are
+ * trimmed (they would eat a fifth of the board), and each cell samples as
+ * mean-if-uniform / dominant-color-if-it-straddles-an-edge, so cartoon
+ * outlines stay crisp instead of averaging into muddy mid-tones.
+ *
  * Two pipelines:
  *  - 'smooth' (default): scan → cluster cell colors into regions → one bead
  *    per region → majority-vote away speckles. Clean area maps: a logo or
@@ -70,37 +75,65 @@ function nearestBeadLab(target: Oklab, subset: Set<string> | null): { id: string
 /** Pixel rectangle covered by board cell (x, y). Round-based boundaries
  *  keep symmetric photos symmetric: cell x and cell cols-1-x cover the
  *  same pixel width. Edges overlap by a pixel when the photo doesn't
- *  divide evenly — box means are approximations. */
+ *  divide evenly — cell colors are approximations. */
 function cellRect(
   img: SampleImage,
+  rect: { x0: number; y0: number; x1: number; y1: number },
   cols: number,
   rows: number,
   x: number,
   y: number,
 ): { x0: number; y0: number; x1: number; y1: number } {
-  const x0 = Math.round((x * img.width) / cols);
-  const y0 = Math.round((y * img.height) / rows);
-  const x1raw = Math.round(((x + 1) * img.width) / cols);
-  const y1raw = Math.round(((y + 1) * img.height) / rows);
+  const w = rect.x1 - rect.x0;
+  const h = rect.y1 - rect.y0;
+  const x0 = rect.x0 + Math.round((x * w) / cols);
+  const y0 = rect.y0 + Math.round((y * h) / rows);
+  const x1raw = rect.x0 + Math.round(((x + 1) * w) / cols);
+  const y1raw = rect.y0 + Math.round(((y + 1) * h) / rows);
   return {
-    x0: Math.min(x0, img.width - 1),
-    y0: Math.min(y0, img.height - 1),
-    x1: Math.max(x0 + 1, Math.min(x1raw, img.width)),
-    y1: Math.max(y0 + 1, Math.min(y1raw, img.height)),
+    x0: Math.min(x0, rect.x1 - 1),
+    y0: Math.min(y0, rect.y1 - 1),
+    x1: Math.max(x0 + 1, Math.min(x1raw, rect.x1)),
+    y1: Math.max(y0 + 1, Math.min(y1raw, rect.y1)),
   };
 }
 
 /** Oklab of pure white — alpha-composite target, precomputed. */
 const WHITE_LAB = rgbToOklab({ r: 255, g: 255, b: 255 });
 
-/** Box mean over a pixel rectangle, computed in Oklab. Averaging sRGB
- *  channel values directly is the classic gamma mistake: sRGB numbers are
- *  not linear light, so a 50/50 mix of black and white averages to 128
- *  instead of the perceptual mid-gray 188 — every soft gradient came out
- *  darker and muddier than the photo, and the board followed. Semi-
- *  transparent pixels composite onto white (a bead board has no
+/** Oklab-axis range below which a cell's pixels count as one color — the
+ *  mean is exact there (and stays gamma-correct: averaging sRGB channel
+ *  values directly is the classic mid-gray-too-dark mistake). A wider
+ *  range means the cell straddles an edge — cartoon outline, object
+ *  boundary — and averaging then invents a mid-tone the source never had
+ *  (black outline × white suit → muddy gray-brown beads along every
+ *  edge). Edge cells take their dominant color instead: the color that
+ *  actually occupies most of the cell, which flat art and photos both
+ *  keep honest. */
+const TIGHT_T = 0.08;
+
+/** Per-pixel Oklab, alpha composited onto white (a bead board has no
  *  transparency; pegboard white reads as a white bead). */
-function boxMeanLab(
+function pixelLab(img: SampleImage, i: number): Oklab {
+  const al = img.data[i + 3]! / 255;
+  const c = rgbToOklab({ r: img.data[i]!, g: img.data[i + 1]!, b: img.data[i + 2]! });
+  return {
+    L: c.L * al + WHITE_LAB.L * (1 - al),
+    a: c.a * al + WHITE_LAB.a * (1 - al),
+    b: c.b * al + WHITE_LAB.b * (1 - al),
+  };
+}
+
+/** Coarse Oklab bucket key — pixels closer than a bead's distinction land
+ *  in the same bucket, so flat-color noise merges while distinct colors
+ *  stay apart. Same quantization the cluster histogram uses. */
+function bucketKey(px: Oklab): string {
+  return `${Math.round(px.L * BUCKET)},${Math.round(px.a * 10)},${Math.round(px.b * 10)}`;
+}
+
+/** Color of one cell: mean when the pixels are tight, dominant bucket's
+ *  mean when they straddle an edge. */
+function cellColor(
   img: SampleImage,
   x0: number,
   y0: number,
@@ -108,23 +141,150 @@ function boxMeanLab(
   y1: number,
 ): Oklab {
   const { data, width } = img;
-  let L = 0;
-  let a = 0;
-  let b = 0;
+  let mL = 0;
+  let ma = 0;
+  let mb = 0;
   let n = 0;
+  let minL = Infinity;
+  let maxL = -Infinity;
+  let minA = Infinity;
+  let maxA = -Infinity;
+  let minB = Infinity;
+  let maxB = -Infinity;
+  const buckets = new Map<string, { n: number; L: number; a: number; b: number }>();
   for (let y = y0; y < y1; y++) {
     for (let x = x0; x < x1; x++) {
-      const i = (y * width + x) * 4;
-      const al = data[i + 3]! / 255;
-      const px = rgbToOklab({ r: data[i]!, g: data[i + 1]!, b: data[i + 2]! });
-      L += px.L * al + WHITE_LAB.L * (1 - al);
-      a += px.a * al + WHITE_LAB.a * (1 - al);
-      b += px.b * al + WHITE_LAB.b * (1 - al);
+      const px = pixelLab(img, (y * width + x) * 4);
+      mL += px.L;
+      ma += px.a;
+      mb += px.b;
       n++;
+      if (px.L < minL) minL = px.L;
+      if (px.L > maxL) maxL = px.L;
+      if (px.a < minA) minA = px.a;
+      if (px.a > maxA) maxA = px.a;
+      if (px.b < minB) minB = px.b;
+      if (px.b > maxB) maxB = px.b;
+      const key = bucketKey(px);
+      let bkt = buckets.get(key);
+      if (!bkt) {
+        bkt = { n: 0, L: 0, a: 0, b: 0 };
+        buckets.set(key, bkt);
+      }
+      bkt.n++;
+      bkt.L += px.L;
+      bkt.a += px.a;
+      bkt.b += px.b;
     }
   }
   if (!n) return WHITE_LAB;
-  return { L: L / n, a: a / n, b: b / n };
+  if (Math.max(maxL - minL, maxA - minA, maxB - minB) < TIGHT_T) {
+    return { L: mL / n, a: ma / n, b: mb / n };
+  }
+  // dominant bucket; exact ties (a cell split 50/50 by an edge line) take
+  // the darker color — the line reads as the crisp outline a cartoon has
+  let bestK = '';
+  let bestN = -1;
+  let bestL = Infinity;
+  for (const [k, bkt] of buckets) {
+    if (bkt.n > bestN || (bkt.n === bestN && bkt.L / bkt.n < bestL)) {
+      bestN = bkt.n;
+      bestK = k;
+      bestL = bkt.L / bkt.n;
+    }
+  }
+  const m = buckets.get(bestK)!;
+  return { L: m.L / m.n, a: m.a / m.n, b: m.b / m.n };
+}
+
+interface Rect {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+}
+
+/** Oklab distance a pixel still counts as "border-colored". */
+const BORDER_T = 0.05;
+/** A row/column trims when ≥99% of its pixels are border-colored — the
+ *  dashed frame inside a trading card doesn't qualify, the screenshot
+ *  margin around the card does. */
+const BORDER_COVER = 0.99;
+/** The frame's dominant color must hold this share of the whole ring
+ *  before trimming engages at all. A half-black/half-white image has a
+ *  contested ring (50/50) — that's content at the edges, not a margin. */
+const BORDER_SHARE = 0.6;
+/** Trim gives up if it would leave under a quarter of either side — that's
+ *  a near-uniform image (a swatch scan), not a bordered design. */
+const TRIM_KEEP = 0.25;
+
+/**
+ * Screenshots and scans arrive with a plain margin around the actual art
+ * (webpage white behind a card, scanner lid gray). Converted as-is, that
+ * margin eats a fifth of the board and the design comes out smaller than
+ * the one the user sees. This walks each side inward while it is ≥99% the
+ * frame's dominant color and hands the pipeline the art-only rectangle.
+ */
+function trimUniformBorder(img: SampleImage): Rect {
+  const full: Rect = { x0: 0, y0: 0, x1: img.width, y1: img.height };
+  if (img.width < 8 || img.height < 8) return full;
+
+  // dominant quantized color of the outermost pixel ring
+  const edge = new Map<string, number>();
+  const tally = (x: number, y: number): void => {
+    const key = bucketKey(pixelLab(img, (y * img.width + x) * 4));
+    edge.set(key, (edge.get(key) ?? 0) + 1);
+  };
+  for (let x = 0; x < img.width; x++) {
+    tally(x, 0);
+    tally(x, img.height - 1);
+  }
+  for (let y = 0; y < img.height; y++) {
+    tally(0, y);
+    tally(img.width - 1, y);
+  }
+  let borderK = '';
+  let borderN = -1;
+  let ring = 0;
+  for (const [k, n] of edge) {
+    ring += n;
+    if (n > borderN) {
+      borderN = n;
+      borderK = k;
+    }
+  }
+  if (borderN / ring < BORDER_SHARE) return full;
+  const [bL, ba, bb] = borderK.split(',').map(Number);
+  const border = { L: bL! / BUCKET, a: ba! / 10, b: bb! / 10 };
+
+  const isBorder = (x: number, y: number): boolean => {
+    const px = pixelLab(img, (y * img.width + x) * 4);
+    return Math.hypot(px.L - border.L, px.a - border.a, px.b - border.b) < BORDER_T;
+  };
+  const rowBorder = (y: number): boolean => {
+    let hits = 0;
+    for (let x = 0; x < img.width; x++) if (isBorder(x, y)) hits++;
+    return hits / img.width >= BORDER_COVER;
+  };
+  const colBorder = (x: number): boolean => {
+    let hits = 0;
+    for (let y = 0; y < img.height; y++) if (isBorder(x, y)) hits++;
+    return hits / img.height >= BORDER_COVER;
+  };
+
+  let top = 0;
+  let bot = 0;
+  let left = 0;
+  let right = 0;
+  while (top < img.height / 2 && rowBorder(top)) top++;
+  while (bot < img.height / 2 && rowBorder(img.height - 1 - bot)) bot++;
+  while (left < img.width / 2 && colBorder(left)) left++;
+  while (right < img.width / 2 && colBorder(img.width - 1 - right)) right++;
+
+  const w = img.width - left - right;
+  const h = img.height - top - bot;
+  if (w < img.width * TRIM_KEEP || h < img.height * TRIM_KEEP) return full;
+  return { x0: left, y0: top, x1: img.width - right, y1: img.height - bot };
 }
 
 function spread(
@@ -254,16 +414,20 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
     return { cols: 0, rows: 0, cells: [] };
   }
   const cols = Math.max(MIN_COLS, Math.min(MAX_COLS, Math.round(opts.cols)));
-  // aspect-following height; capped, so extreme panoramas compress rather
-  // than mint an unbuildable board
-  const rows = Math.max(MIN_COLS, Math.min(MAX_ROWS, Math.round((img.height / img.width) * cols)));
+  // screenshot/scan margins go first — the board belongs to the art
+  const rect = trimUniformBorder(img);
+  const w = rect.x1 - rect.x0;
+  const h = rect.y1 - rect.y0;
+  // aspect-following height (of the trimmed art); capped, so extreme
+  // panoramas compress rather than mint an unbuildable board
+  const rows = Math.max(MIN_COLS, Math.min(MAX_ROWS, Math.round((h / w) * cols)));
 
-  // per-cell box-mean sampled once — both pipelines share it
+  // per-cell color sampled once — both pipelines share it
   const labs: Oklab[] = new Array(cols * rows);
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      const { x0, y0, x1, y1 } = cellRect(img, cols, rows, x, y);
-      labs[y * cols + x] = boxMeanLab(img, x0, y0, x1, y1);
+      const { x0, y0, x1, y1 } = cellRect(img, rect, cols, rows, x, y);
+      labs[y * cols + x] = cellColor(img, x0, y0, x1, y1);
     }
   }
 

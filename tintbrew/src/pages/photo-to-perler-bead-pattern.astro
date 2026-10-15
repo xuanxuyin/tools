@@ -155,8 +155,13 @@ const jsonLd = [
       Every cell is matched to the nearest real bead color by Oklab distance — a measure of how
       different two colors <em>look</em>, not how different their numbers are. Most photo-to-bead
       converters match raw RGB values, which is why their skin tones drift green and their reds go
-      muddy. The 32-color palette here mirrors a standard 5mm fuse-bead assortment, so what you see
+      muddy. The 48-color palette here mirrors a standard 5mm fuse-bead assortment, so what you see
       on screen is what you can actually place.
+    </p>
+    <p>
+      Two details keep flat art crisp: cells that straddle an edge take the color that fills most
+      of them instead of a washed-out average of both sides, and a plain border around your photo
+      (screenshot background, scanner lid) is trimmed automatically so the design fills the board.
     </p>
     <p>
       Wrong bead somewhere? The board is editable — tap any cell with the brush to repaint it, and

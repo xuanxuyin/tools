@@ -133,9 +133,11 @@ export class PhotoStudio {
     canvas.height = ch;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) throw new Error('no 2d context');
-    // a 4000px phone photo downsampled in one step defaults to cheap
-    // filtering — high-quality resampling keeps region colors true
-    ctx.imageSmoothingQuality = 'high';
+    // bead conversion wants the colors that are IN the source: smoothing
+    // would blur a large cartoon's outlines into mid-tones before the
+    // engine ever samples them. Nearest keeps hard edges hard; the engine
+    // averages per cell where averaging is right (smooth photo gradients)
+    ctx.imageSmoothingEnabled = false;
     draw(ctx);
     // a 12MP phone photo decodes to ~48MB of bitmap memory — release it
     // the moment it's on the canvas instead of waiting for GC
