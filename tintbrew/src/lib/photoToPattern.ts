@@ -31,7 +31,7 @@ export interface PhotoOpts {
   /** Board width in beads; height follows the photo's aspect ratio */
   cols: number;
   mode: PhotoMode;
-  /** 1..42; defaults to the full palette */
+  /** 1..48; defaults to the full palette */
   maxColors?: number;
 }
 
