@@ -8,6 +8,9 @@
  *
  * Hexes are approximations of a standard 5mm fuse-bead assortment,
  * hand-tuned for the bead look on screen (slightly muted, low gloss).
+ * The vivid row (pure blue, lime, lemon, fuchsia…) is deliberate: a 32-color
+ * muted-only palette left Oklab gaps of 0.11–0.18 on saturated photo colors,
+ * so photos with skies, grass or toys drifted to the wrong bead.
  */
 import { hexToRgb } from './color';
 import { oklabDistance } from './colorName';
@@ -32,25 +35,33 @@ export const BEAD_COLORS: BeadColor[] = [
   { id: 'brown', name: 'Brown', hex: '#8a5a33' },
   { id: 'dark-brown', name: 'Dark Brown', hex: '#5a3a22' },
   { id: 'rust', name: 'Rust', hex: '#b34a1f' },
+  { id: 'orange', name: 'Orange', hex: '#f2731d' },
   { id: 'cheddar', name: 'Cheddar', hex: '#f2a03d' },
   { id: 'butternut', name: 'Butternut', hex: '#f6cf85' },
   { id: 'sunshine', name: 'Sunshine', hex: '#ffd21f' },
+  { id: 'lemon', name: 'Lemon', hex: '#f9ea34' },
   { id: 'peach', name: 'Peach', hex: '#f6b489' },
   { id: 'blush', name: 'Blush', hex: '#f5b6c6' },
   { id: 'pink', name: 'Pink', hex: '#f272ae' },
   { id: 'hot-magenta', name: 'Hot Magenta', hex: '#d94f9e' },
+  { id: 'fuchsia', name: 'Fuchsia', hex: '#ec48f5' },
   { id: 'cherry', name: 'Cherry', hex: '#d5322f' },
+  { id: 'dark-red', name: 'Dark Red', hex: '#8e1c26' },
   { id: 'kiwi', name: 'Kiwi', hex: '#a8c94f' },
+  { id: 'lime', name: 'Lime', hex: '#93e025' },
   { id: 'bright-green', name: 'Bright Green', hex: '#3ba735' },
   { id: 'pine', name: 'Pine', hex: '#256f40' },
   { id: 'mint', name: 'Mint', hex: '#a9dfc2' },
   { id: 'teal', name: 'Teal', hex: '#2a8f8f' },
   { id: 'light-blue', name: 'Light Blue', hex: '#82c8e8' },
+  { id: 'sky-blue', name: 'Sky Blue', hex: '#3f9bf2' },
   { id: 'royal-blue', name: 'Royal Blue', hex: '#2b5fb8' },
+  { id: 'blue', name: 'Blue', hex: '#0f45e0' },
   { id: 'navy', name: 'Navy', hex: '#23366b' },
   { id: 'periwinkle', name: 'Periwinkle', hex: '#8f9fe0' },
   { id: 'lavender', name: 'Lavender', hex: '#c3a6e0' },
   { id: 'purple', name: 'Purple', hex: '#8e5fbf' },
+  { id: 'violet', name: 'Violet', hex: '#7a3fd4' },
   { id: 'grape', name: 'Grape', hex: '#5f3a8e' },
   { id: 'plum', name: 'Plum', hex: '#8e3a62' },
 ];
