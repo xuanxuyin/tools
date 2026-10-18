@@ -2,7 +2,7 @@
 import { generateWordSearch } from '../../lib/wordSearch';
 import { HALLOWEEN_WORDS_EASY, HALLOWEEN_WORDS_HARD } from '../../data/halloween';
 
-interface PuzzleSpec {
+export interface PuzzleSpec {
   title: string;
   audience: string;
   words: string[];
@@ -12,11 +12,16 @@ interface PuzzleSpec {
   hard?: boolean;
 }
 
+interface Props {
+  /** Seasonal overrides; defaults keep the Halloween page's exact output. */
+  puzzles?: PuzzleSpec[];
+}
+
 /**
  * Fixed seeds: the printed puzzle is part of the page's content, so it must
  * be identical on every build (and match what a teacher printed last week).
  */
-const PUZZLES: PuzzleSpec[] = [
+const HALLOWEEN_PUZZLES: PuzzleSpec[] = [
   {
     title: 'Easy Halloween Word Search',
     audience: 'Kindergarten – Grade 2 · words run right, down, and diagonally',
@@ -36,7 +41,9 @@ const PUZZLES: PuzzleSpec[] = [
   },
 ];
 
-const sheets = PUZZLES.map((spec) => ({
+const { puzzles = HALLOWEEN_PUZZLES } = Astro.props;
+
+const sheets = puzzles.map((spec) => ({
   ...spec,
   puzzle: generateWordSearch(spec.words, {
     rows: spec.rows,

@@ -1479,6 +1479,286 @@ svg {
   }
 }
 
+/* ===== Thanksgiving cluster (thankful worksheet / placemat / starter) ===== */
+
+.write-line.write-line-long {
+  width: 14rem;
+}
+
+/* Traced starter sentence between header fields and the table */
+
+.signin-starter {
+  margin: 0 0 var(--sp-4);
+}
+
+.signin-starter-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: var(--sp-1);
+}
+
+.signin-starter-model {
+  font-family: var(--font-hand);
+  font-size: 1.7rem;
+  line-height: 1.2;
+  color: #b9b5a8;
+  margin: 0 0 var(--sp-2);
+}
+
+.signin-starter-copy {
+  height: 1.9rem;
+  border-bottom: 2px dotted var(--line-strong);
+}
+
+/* Kid-sized handwriting rows + sentence-frame column split */
+
+.thankful-sheet .chart-table.signin td.fill-in {
+  height: 2.6em;
+}
+
+.thankful-sheet .chart-table.signin th:nth-child(1),
+.thankful-sheet .chart-table.signin td:nth-child(1) {
+  width: 42%;
+}
+
+/* Placemat: one letter page, three activity boxes, decorative border */
+
+.pm-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  border: 4px double var(--line-strong);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.pm-corner {
+  position: absolute;
+  color: #b9853c;
+  line-height: 0;
+}
+
+.pm-corner svg {
+  width: 20px;
+  height: 20px;
+}
+
+.pm-corner-tl { top: 7px; left: 7px; }
+.pm-corner-tr { top: 7px; right: 7px; }
+.pm-corner-bl { bottom: 7px; left: 7px; }
+.pm-corner-br { bottom: 7px; right: 7px; }
+
+.pm-head {
+  text-align: center;
+}
+
+.pm-title {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  margin: 0 0 var(--sp-1);
+}
+
+.pm-belongs {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.pm-box {
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+}
+
+.pm-box h3 {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.95rem;
+}
+
+.pm-scramble-list {
+  /* li is display:flex, which suppresses native list markers — number via counter */
+  list-style: none;
+  counter-reset: pm-item;
+  margin: 0;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--sp-4);
+  row-gap: var(--sp-2);
+}
+
+.pm-scramble-list li {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5em;
+  counter-increment: pm-item;
+}
+
+.pm-scramble-list li::before {
+  content: counter(pm-item) ".";
+  flex: none;
+  min-width: 1.2em;
+}
+
+.pm-scramble-letters {
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pm-blanks {
+  display: inline-block;
+  flex: none;
+  width: calc(var(--pm-len) * 1.05em);
+  min-height: 1em;
+  border-bottom: 1.5px solid var(--line-strong);
+}
+
+.pm-ttt-grids {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  max-width: 5in;
+  margin: 0 auto;
+}
+
+.pm-ttt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  aspect-ratio: 1;
+  border: 2.5px solid var(--line-strong);
+}
+
+.pm-ttt-cell {
+  border: 1.5px solid var(--line-strong);
+}
+
+/* The draw section is the sheet's flex child — it must grow, not the box inside it */
+.pm-box.pm-draw {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pm-draw-box {
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  flex: 1;
+  min-height: 3in;
+}
+
+.pm-answers {
+  margin: 0;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  transform: rotate(180deg);
+}
+
+/* Print pass for the Thanksgiving sheets — placemat fills exactly one page */
+
+@media print {
+  .signin-starter-label {
+    font-size: 9pt;
+  }
+
+  .signin-starter-model {
+    font-size: 20pt;
+    color: #999 !important;
+  }
+
+  .signin-starter-copy {
+    height: 26pt;
+    border-color: #000 !important;
+  }
+
+  .thankful-sheet .chart-table.signin td.fill-in {
+    height: 2.8em;
+  }
+
+  .pm-sheet {
+    height: 9.9in;
+    box-sizing: border-box;
+    border: 3px double #000;
+    border-radius: 0;
+    padding: 10pt;
+    gap: 7pt;
+  }
+
+  .pm-corner {
+    color: #777;
+  }
+
+  .pm-corner svg {
+    width: 13pt;
+    height: 13pt;
+  }
+
+  .pm-corner-tl { top: 5pt; left: 5pt; }
+  .pm-corner-tr { top: 5pt; right: 5pt; }
+  .pm-corner-bl { bottom: 5pt; left: 5pt; }
+  .pm-corner-br { bottom: 5pt; right: 5pt; }
+
+  .pm-title {
+    font-size: 17pt;
+  }
+
+  .pm-belongs {
+    font-size: 10.5pt;
+  }
+
+  .pm-box {
+    border-color: #000 !important;
+    padding: 6pt;
+  }
+
+  .pm-box h3 {
+    font-size: 10.5pt;
+    margin-bottom: 4pt;
+  }
+
+  .pm-scramble-list {
+    font-size: 11.5pt;
+    row-gap: 5pt;
+  }
+
+  .pm-blanks {
+    border-color: #000 !important;
+  }
+
+  .pm-ttt-grids {
+    /* content-sized boards (1fr would stretch the frame past its 3x0.62in cells) */
+    grid-template-columns: repeat(2, auto);
+    justify-content: space-evenly;
+    gap: 14pt;
+  }
+
+  .pm-ttt-grid {
+    border-color: #000 !important;
+    grid-template-columns: repeat(3, 0.62in);
+    grid-auto-rows: 0.62in;
+    aspect-ratio: auto;
+  }
+
+  .pm-ttt-cell {
+    border-color: #000 !important;
+  }
+
+  .pm-draw-box {
+    border-color: #000 !important;
+    border-style: solid;
+  }
+
+  .pm-answers {
+    font-size: 8pt;
+    color: #555;
+  }
+}
+
 /* Site-wide freshness line (2026-10-04): winners carry visible updated dates */
 .updated-line {
   margin: 0 auto 1.5rem;

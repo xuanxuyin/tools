@@ -1,0 +1,76 @@
+---
+import { PLACEMAT_SCRAMBLES } from '../../data/thanksgiving';
+
+/**
+ * Thanksgiving kids' placemat (Thanksgiving cluster): one letter page, three
+ * activities — word scramble, two tic-tac-toe boards, draw-your-feast box —
+ * inside a printable border. Answers print upside down along the bottom,
+ * the traditional diner-placemat move.
+ */
+---
+
+<div class="pm-sheet">
+  <span class="pm-corner pm-corner-tl" aria-hidden="true">
+    <svg viewBox="0 0 24 24" style="transform:rotate(-45deg)">
+      <path d="M12 2c5 4 7 8 7 11.5A7 7 0 0 1 5 13.5C5 10 7 6 12 2z" fill="currentColor" />
+      <path d="M12 13v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  </span>
+  <span class="pm-corner pm-corner-tr" aria-hidden="true">
+    <svg viewBox="0 0 24 24" style="transform:rotate(45deg)">
+      <path d="M12 2c5 4 7 8 7 11.5A7 7 0 0 1 5 13.5C5 10 7 6 12 2z" fill="currentColor" />
+      <path d="M12 13v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  </span>
+  <span class="pm-corner pm-corner-bl" aria-hidden="true">
+    <svg viewBox="0 0 24 24" style="transform:rotate(-135deg)">
+      <path d="M12 2c5 4 7 8 7 11.5A7 7 0 0 1 5 13.5C5 10 7 6 12 2z" fill="currentColor" />
+      <path d="M12 13v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  </span>
+  <span class="pm-corner pm-corner-br" aria-hidden="true">
+    <svg viewBox="0 0 24 24" style="transform:rotate(135deg)">
+      <path d="M12 2c5 4 7 8 7 11.5A7 7 0 0 1 5 13.5C5 10 7 6 12 2z" fill="currentColor" />
+      <path d="M12 13v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  </span>
+
+  <header class="pm-head">
+    <h2 class="pm-title">Thanksgiving Placemat</h2>
+    <p class="pm-belongs">
+      This placemat belongs to <span class="write-line write-line-long" aria-hidden="true"></span>
+    </p>
+  </header>
+
+  <section class="pm-box pm-scramble" aria-label="Thanksgiving word scramble">
+    <h3>Unscramble the Thanksgiving words</h3>
+    <ol class="pm-scramble-list">
+      {PLACEMAT_SCRAMBLES.map(({ word, scrambled }) => (
+        <li>
+          <span class="pm-scramble-letters">{scrambled}</span>
+          <span class="pm-blanks" style={`--pm-len:${word.length}`} aria-hidden="true"></span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="pm-box pm-ttt" aria-label="Tic-tac-toe boards">
+    <h3>Tic-tac-toe — best of two</h3>
+    <div class="pm-ttt-grids">
+      {[0, 1].map((g) => (
+        <div class="pm-ttt-grid" role="img" aria-label={`Tic-tac-toe board ${g + 1}`}>
+          {Array.from({ length: 9 }).map(() => <span class="pm-ttt-cell"></span>)}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="pm-box pm-draw" aria-label="Draw your Thanksgiving feast">
+    <h3>Draw your Thanksgiving feast</h3>
+    <div class="pm-draw-box"></div>
+  </section>
+
+  <p class="pm-answers" aria-hidden="true">
+    Answers: {PLACEMAT_SCRAMBLES.map((s) => s.word).join(' · ')}
+  </p>
+</div>

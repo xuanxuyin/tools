@@ -1,0 +1,20 @@
+---
+import SignInSheet from './SignInSheet.astro';
+
+/**
+ * "I am thankful for" gratitude worksheet (Thanksgiving cluster): the sign-in
+ * sheet machinery repurposed for kid handwriting — header fields become
+ * name/date, the visitor columns become the two halves of the sentence frame,
+ * and the starter prop adds the trace-a-sentence warm-up.
+ */
+---
+
+<div class="thankful-sheet">
+  <SignInSheet
+    title="I Am Thankful For…"
+    metaFields={['Name', 'Date']}
+    columns={['I am thankful for…', '…because']}
+    rows={8}
+    starter="I am thankful for my family because they read with me every night."
+  />
+</div>

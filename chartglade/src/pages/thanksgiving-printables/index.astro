@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+
+const pages = [
+  {
+    href: '/thanksgiving-word-search/',
+    h2: 'Thanksgiving Word Search',
+    blurb:
+      'Two printable puzzles — easy (K-2, forwards only) and hard (3-5, all eight directions) — with word lists that double as November vocabulary.',
+  },
+  {
+    href: '/thanksgiving-color-by-number/',
+    h2: 'Thanksgiving Color by Number',
+    blurb:
+      'A turkey addition sheet and a pumpkin pie multiplication sheet: solve the fact in every cell, match the answer to the color key, reveal the picture.',
+  },
+  {
+    href: '/i-am-thankful-for-worksheet/',
+    h2: 'I Am Thankful For Worksheet',
+    blurb:
+      'The classic gratitude writing sheet: a traced starter sentence, then eight handwriting rows that finish the frame "I am thankful for ___ because ___."',
+  },
+  {
+    href: '/thanksgiving-placemat-printable/',
+    h2: 'Thanksgiving Placemat',
+    blurb:
+      'One letter page, three kids\'-table activities: a word scramble, tic-tac-toe boards and a draw-your-feast box, framed and ready for crayons.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Thanksgiving', item: `${SITE.url}/thanksgiving-printables/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Thanksgiving Printables (Free, No Sign-Up) | ChartGlade"
+  description="Free printable Thanksgiving activities for K-5: word search in two levels, math-facts color by number, a thankful writing worksheet and a kids' placemat. Print from any browser."
+  path="/thanksgiving-printables"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Thanksgiving</span>
+  </nav>
+
+  <section class="hero">
+    <h1>Thanksgiving Printables</h1>
+    <p class="lead">
+      Four classroom-ready Thanksgiving activities — a word search, a math-facts coloring
+      sheet, a gratitude worksheet and a kids' placemat — each printable straight from the
+      browser on letter paper. No sign-up, no watermark, and each one earns its place in
+      the lesson plan, not just the party.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="card-grid">
+      {pages.map((p) => (
+        <a class="card" href={p.href}>
+          <h2>{p.h2}</h2>
+          <p>{p.blurb}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="prose section">
+    <h2>One November, four ways to keep kids learning</h2>
+    <p>
+      The activities share their vocabulary on purpose: scan the words in the
+      <a href="/thanksgiving-word-search/">word search</a>, compute with the season in the
+      <a href="/thanksgiving-color-by-number/">color by number</a>, turn the same ideas into
+      writing on the <a href="/i-am-thankful-for-worksheet/">thankful worksheet</a>, and send
+      the whole set home on the <a href="/thanksgiving-placemat-printable/">placemat</a>.
+      Repetition across formats is how seasonal vocabulary sticks past Thanksgiving — and it
+      lets the same class work at different stations off one printed packet.
+    </p>
+    <p>
+      Every sheet is print-first: plain letter paper, black-and-white friendly (the coloring
+      legend names its colors as well as showing them), and paired with teaching notes on its
+      page. For the rest of the year, the same engine runs our
+      <a href="/charts/">math charts</a>, <a href="/sight-words/">sight words</a> and
+      <a href="/cursive/">cursive worksheets</a> — Thanksgiving is just the seasonal wing.
+    </p>
+    <h2>Two traditions we folded in rather than printed separately</h2>
+    <p>
+      <strong>The gratitude tree.</strong> A paper trunk on the wall and a construction-paper
+      leaf per student is the classic November bulletin board — and it wants exactly what the
+      <a href="/i-am-thankful-for-worksheet/">thankful worksheet</a> produces: one sentence
+      per child with a because in it. Have students copy their best row onto a leaf, mount
+      it, and the writing assignment becomes the display. No separate printable needed; the
+      tree is the craft, the sentences are the content.
+    </p>
+    <p>
+      <strong>The thankful ABC.</strong> Working from A to Z (Apples, Brother, Cookies…)
+      until the class stalls is a rich gratitude brainstorm, but it lives or dies on the
+      brainstorming, not on paper. Run it aloud as a class for a week, then let students pick
+      their best three letters for worksheet rows — the frame's because column does the same
+      work an ABC list would, with fewer dead letters and better sentences.
+    </p>
+  </section>
+</BaseLayout>

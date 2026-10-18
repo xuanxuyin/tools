@@ -5,7 +5,14 @@ export interface PageDef {
   /** Full route path when it is not `/${slug}` — cursive letters live at /cursive/<slug>/. */
   path?: string;
   /** Which hub owns the page (drives breadcrumb + footer grouping). */
-  hub: 'charts' | 'sight-words' | 'cursive' | 'graph-paper' | 'halloween' | 'sign-in-sheets';
+  hub:
+    | 'charts'
+    | 'sight-words'
+    | 'cursive'
+    | 'graph-paper'
+    | 'halloween'
+    | 'thanksgiving'
+    | 'sign-in-sheets';
   h1: string;
   metaTitle: string;
   metaDescription: string;

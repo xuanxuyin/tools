@@ -1,0 +1,31 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import WordSearchSheet from '../components/printables/WordSearchSheet.astro';
+import { thanksgivingPages, THANKSGIVING_WORDS_EASY, THANKSGIVING_WORDS_HARD } from '../data/thanksgiving';
+
+const def = thanksgivingPages.find((p) => p.slug === 'thanksgiving-word-search')!;
+---
+
+<ChartPage def={def}>
+  <WordSearchSheet
+    puzzles={[
+      {
+        title: 'Easy Thanksgiving Word Search',
+        audience: 'Kindergarten – Grade 2 · words run right, down, and diagonally',
+        words: THANKSGIVING_WORDS_EASY,
+        rows: 12,
+        cols: 12,
+        seed: 20261126,
+      },
+      {
+        title: 'Hard Thanksgiving Word Search',
+        audience: 'Grades 3–5 · words run in all eight directions, backwards too',
+        words: THANKSGIVING_WORDS_HARD,
+        rows: 13,
+        cols: 13,
+        seed: 20261127,
+        hard: true,
+      },
+    ]}
+  />
+</ChartPage>

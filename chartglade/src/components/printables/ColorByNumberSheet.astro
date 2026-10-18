@@ -6,7 +6,7 @@ import {
   type PaintArt,
 } from '../../data/halloween';
 
-interface EditionSpec {
+export interface EditionSpec {
   title: string;
   audience: string;
   art: PaintArt;
@@ -14,7 +14,12 @@ interface EditionSpec {
   factLabel: string;
 }
 
-const EDITIONS: EditionSpec[] = [
+interface Props {
+  /** Seasonal overrides; defaults keep the Halloween page's exact output. */
+  editions?: EditionSpec[];
+}
+
+const HALLOWEEN_EDITIONS: EditionSpec[] = [
   {
     title: 'Jack-o’-lantern — Color by Addition',
     audience: 'Grades 1–2 · add, then match the sum to a color',
@@ -31,7 +36,9 @@ const EDITIONS: EditionSpec[] = [
   },
 ];
 
-const sheets = EDITIONS.map((spec) => {
+const { editions = HALLOWEEN_EDITIONS } = Astro.props;
+
+const sheets = editions.map((spec) => {
   const { art, mode } = spec;
   const used = new Set(art.cells.flat().filter((k) => k !== 0));
   const keys = Object.keys(art.legend)

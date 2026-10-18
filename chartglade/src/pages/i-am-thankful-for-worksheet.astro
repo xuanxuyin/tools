@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import ThankfulSheet from '../components/printables/ThankfulSheet.astro';
+import { thanksgivingPages } from '../data/thanksgiving';
+
+const def = thanksgivingPages.find((p) => p.slug === 'i-am-thankful-for-worksheet')!;
+---
+
+<ChartPage def={def}>
+  <ThankfulSheet />
+</ChartPage>

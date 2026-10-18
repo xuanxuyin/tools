@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import PlacematSheet from '../components/printables/PlacematSheet.astro';
+import { thanksgivingPages } from '../data/thanksgiving';
+
+const def = thanksgivingPages.find((p) => p.slug === 'thanksgiving-placemat-printable')!;
+---
+
+<ChartPage def={def}>
+  <PlacematSheet />
+</ChartPage>
