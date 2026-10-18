@@ -17,10 +17,11 @@ const homeReady = existsSync(resolve(DIST, 'index.html'));
 describe.skipIf(!homeReady)('homepage seasonal slot', () => {
   const raw = readFileSync(resolve(DIST, 'index.html'), 'utf8');
   const html = raw.replace(/\s+/g, ' '); // source line breaks split phrases in the markup
-  const seasonalHrefs = [...raw.matchAll(/href="(\/halloween[a-z-]*\/)"/g)].map((m) => m[1]);
+  // Regex tracks the current season (was halloween through Oct, thanksgiving from the 10/25 batch)
+  const seasonalHrefs = [...raw.matchAll(/href="(\/thanksgiving[a-z-]*\/|\/i-am-thankful-for-worksheet\/)"/g)].map((m) => m[1]);
 
   it('shows the seasonal block with its hub link', () => {
-    expect(seasonalHrefs).toContain('/halloween/');
+    expect(seasonalHrefs).toContain('/thanksgiving-printables/');
     expect(seasonalHrefs.length).toBeGreaterThanOrEqual(4);
   });
 
