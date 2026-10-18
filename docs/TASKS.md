@@ -16,7 +16,7 @@
 - [ ] 👤 **tintbrew GA4 关「网页更改」（1 分钟，10/15 顺延未确认）**：GA4 管理中心 → 数据流（tintbrew Web 流）→「增强衡量设置」→ 点开「网页浏览量」条目 → 高级设置 → 关「基于浏览器历史记录事件的网页更改」→ 保存（其余 6 个顶层开关不动；关后浏览量回落 = 口径修正非掉量）
 - [ ] 👤 **顺手活两项（不再单列排队）**：① chartglade 字母池 m~v request indexing（10/14 判读 Google 侧报错：同 URL 重点一次，不过就放弃——自然抓取在跑，此活只是加速器）② tintbrew 拼豆 hub 补推 https://tintbrew.com/perler-bead-patterns/ （已编入就跳过）
 - [x] 🤖 **外线第二波弹药备齐**：LibGuides 第二批 **8 目标 8/8 确证**（7 家馆员直邮双源 + Relay 官方馆箱；3 家 cursive 专题 guide 优先）+ round-up pitch **4 封草稿**（Tinybeans / Mommy Poppins / 3 Boys and a Dog / Free Homeschool Deals）→ [LIBGUIDES-BATCH2.md](./chartglade/LIBGUIDES-BATCH2.md)，零发送。**👤 明天随首批 5 封 follow-up 同窗发出**
-- [x] 🤖 **10/25 批开发全部完成（死线提前 7 天）**：感恩节簇 5 页（`21fe047`）+ V1.7 公式表 2 页 + #14 mad-minute island（`17dba46`）—— `oct25-predev` 分支 **79 页 / 150 测试全绿**，未 push，main 未动。**合并窗（首页换季 + CONTENT_UPDATED/sitemap lastmod 成对 bump + 合并上 main + 线上验证）待 👤 拍板：既定 10/25，或提前（10/02 先例）**
+- [x] 🤖 **10/25 批开发+上线全部完成（👤 拍板提前，死线提前 7 天）**：感恩节簇 5 页（`21fe047`）+ V1.7 公式表 2 页 + #14 mad-minute island（`17dba46`）+ 换季/成对 bump（`66d3b07`）—— main 已 push，**79 页 / 150 测试绿**；线上验证 ✅ 7 新页 200+canonical、sitemap 78 全 lastmod 10-18、首页板块换季、island 挂载、**IndexNow 8 URL 返 200**
 
 ## 10/15 已完成归档
 
