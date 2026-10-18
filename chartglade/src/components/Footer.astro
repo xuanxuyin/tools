@@ -1,6 +1,7 @@
 ---
 import { placeValuePages } from '../data/placeValue';
 import { multiplicationPages } from '../data/multiplication';
+import { formulaSheetPages } from '../data/formulaSheets';
 import { sightWordPages } from '../data/sightWordsContent';
 import { cursivePages } from '../data/cursive';
 import { graphPaperPages } from '../data/graphPaper';
@@ -14,6 +15,7 @@ const columns = [
     links: [
       ...placeValuePages.map((p) => link(p.slug, p.h1)),
       ...multiplicationPages.map((p) => link(p.slug, p.h1)),
+      ...formulaSheetPages.map((p) => link(p.slug, p.h1)),
       ...loosePages.filter((p) => p.slug !== 'alphabet-chart').map((p) => link(p.slug, p.h1)),
     ],
   },

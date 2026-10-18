@@ -13,9 +13,9 @@ export const multiplicationPages: PageDef[] = [
     h1: 'Multiplication Chart',
     metaTitle: 'Multiplication Chart 1-12 (Free Printable) | ChartGlade',
     metaDescription:
-      'Free printable multiplication chart 1-12 with the perfect-square diagonal marked, click-to-check facts, and how to use it without it becoming a crutch.',
+      'Free printable multiplication chart 1-12 with the perfect-square diagonal marked, click-to-check facts, a mad-minute drill maker — and how to use the chart without it becoming a crutch.',
     lead:
-      'The classic 1-12 multiplication chart, ready to print on one letter page. Click any cell to check the fact; the shaded diagonal marks the perfect squares. Below the chart: the order kids actually memorize facts in, and how to use the chart as a bridge rather than a crutch.',
+      'The classic 1-12 multiplication chart, ready to print on one letter page. Click any cell to check the fact; the shaded diagonal marks the perfect squares. Below the chart: a mad-minute generator for timed drill sheets (addition, subtraction, multiplication or mixed, answer key included), the order kids actually memorize facts in, and how to use the chart as a bridge rather than a crutch.',
     introHeading: 'One chart, half the memorization',
     intro: [
       'The quiet power of the multiplication chart is symmetry: 7 × 8 and 8 × 7 are the same fact, so the grid is a mirror along the diagonal. Of the 144 cells on this chart, kids only need to learn a little more than half — the diagonal (perfect squares, shaded above) plus one triangle of the mirror. Pointing that out on day one turns a wall of numbers into a visibly smaller job.',
@@ -66,6 +66,10 @@ export const multiplicationPages: PageDef[] = [
         a: 'Yes, as a bridge: look up unknown facts while solving bigger problems, then drill the looked-up facts separately. The chart keeps multi-step work moving while memorization catches up — cover mastered rows so it slowly retires itself.',
       },
       {
+        q: 'What is a mad minute, and how does the drill maker work?',
+        a: 'A mad minute is the classic timed fluency drill: as many problems as possible in 60 seconds. The generator on this page lays out 30 or 60 problems in addition, subtraction, multiplication or mixed operations, for numbers up to 10, 12 or 20 — pick the settings, print, and the answer key prints on its own page. The default sheet prints even with JavaScript off.',
+      },
+      {
         q: 'Is this chart free to print?',
         a: 'Free, no sign-up, one letter page. The print button strips the page down to the chart itself; the shaded diagonal prints as light gray and photocopies fine.',
       },
@@ -73,7 +77,8 @@ export const multiplicationPages: PageDef[] = [
     related: [
       { href: '/multiplication-chart-blank/', label: 'Blank multiplication chart for practice' },
       { href: '/multiplication-chart-1-20/', label: 'Multiplication chart 1-20 (challenge grid)' },
-      { href: '/addition-chart/', label: 'Addition chart (the grade 1-2 version)' },
+      { href: '/algebra-formula-sheet/', label: 'Algebra formula sheet (where the facts lead)' },
+      { href: '/geometry-formula-sheet/', label: 'Geometry formula sheet' },
       { href: '/charts/', label: 'All math charts' },
     ],
   },

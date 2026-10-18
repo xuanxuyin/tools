@@ -1,0 +1,15 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import FormulaSheet from '../components/printables/FormulaSheet.astro';
+import { formulaSheetPages } from '../data/formulaSheets';
+import { GEOMETRY_SECTIONS } from '../lib/formulas';
+
+const def = formulaSheetPages.find((p) => p.slug === 'geometry-formula-sheet')!;
+---
+
+<ChartPage def={def}>
+  <FormulaSheet
+    nameHead="Shape"
+    columns={[GEOMETRY_SECTIONS.slice(0, 1), GEOMETRY_SECTIONS.slice(1)]}
+  />
+</ChartPage>

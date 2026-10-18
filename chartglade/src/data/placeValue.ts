@@ -74,6 +74,7 @@ export const placeValuePages: PageDef[] = [
       { href: '/decimal-place-value-chart/', label: 'Decimal place value chart (tenths and beyond)' },
       { href: '/place-value-anchor-chart/', label: 'Place value anchor chart for the classroom wall' },
       { href: '/place-value-chart-printable/', label: 'Blank and filled printable versions' },
+      { href: '/geometry-formula-sheet/', label: 'Geometry formula sheet (where place value leads)' },
       { href: '/charts/', label: 'All math charts' },
     ],
   },

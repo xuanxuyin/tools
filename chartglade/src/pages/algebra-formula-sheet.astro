@@ -1,0 +1,15 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import FormulaSheet from '../components/printables/FormulaSheet.astro';
+import { formulaSheetPages } from '../data/formulaSheets';
+import { ALGEBRA_SECTIONS } from '../lib/formulas';
+
+const def = formulaSheetPages.find((p) => p.slug === 'algebra-formula-sheet')!;
+---
+
+<ChartPage def={def}>
+  <FormulaSheet
+    nameHead="Rule"
+    columns={[ALGEBRA_SECTIONS.slice(0, 3), ALGEBRA_SECTIONS.slice(3)]}
+  />
+</ChartPage>

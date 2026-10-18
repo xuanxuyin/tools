@@ -1,0 +1,89 @@
+---
+/**
+ * Mad-minute drill sheet (#14). SSR renders the full default drill
+ * (multiplication facts to 12, 30 problems, fixed seed) so the page prints
+ * complete with JavaScript off; the island below regenerates problems and
+ * answer key from the same pure functions as the controls change — text
+ * replacement only, no framework.
+ */
+import { MAD_DEFAULTS, MAD_RANGES, renderMadMinuteHtml } from '../../lib/madMinute';
+
+const html = renderMadMinuteHtml(MAD_DEFAULTS);
+const defaultRanges = MAD_RANGES[MAD_DEFAULTS.op];
+---
+
+<div class="mad-controls no-print">
+  <label>
+    Operation
+    <select id="mad-op">
+      <option value="addition">Addition</option>
+      <option value="subtraction">Subtraction</option>
+      <option value="multiplication" selected>Multiplication</option>
+      <option value="mixed">Mixed</option>
+    </select>
+  </label>
+  <label>
+    Numbers
+    <select id="mad-range">
+      {
+        defaultRanges.map(([lo, hi]) => (
+          <option value={`${lo}-${hi}`} selected={lo === MAD_DEFAULTS.min && hi === MAD_DEFAULTS.max}>
+            {lo}–{hi}
+          </option>
+        ))
+      }
+    </select>
+  </label>
+  <label>
+    Problems
+    <select id="mad-count">
+      <option value="30" selected>30 (3 columns)</option>
+      <option value="60">60 (4 columns)</option>
+    </select>
+  </label>
+  <button type="button" class="btn btn-primary" id="mad-new">New sheet</button>
+</div>
+<div id="mad-minute-sheet" aria-label="Mad minute drill sheet and answer key" set:html={html} />
+
+<script>
+  import { MAD_RANGES, renderMadMinuteHtml, type MadOp } from '../../lib/madMinute';
+
+  const opSel = document.getElementById('mad-op') as HTMLSelectElement;
+  const rangeSel = document.getElementById('mad-range') as HTMLSelectElement;
+  const countSel = document.getElementById('mad-count') as HTMLSelectElement;
+  const newBtn = document.getElementById('mad-new') as HTMLButtonElement;
+  const sheet = document.getElementById('mad-minute-sheet') as HTMLElement;
+
+  function rebuildRanges(): void {
+    const ranges = MAD_RANGES[opSel.value as MadOp];
+    const prev = rangeSel.value;
+    rangeSel.innerHTML = '';
+    for (const [lo, hi] of ranges) {
+      const o = document.createElement('option');
+      o.value = `${lo}-${hi}`;
+      o.textContent = `${lo}–${hi}`;
+      rangeSel.append(o);
+    }
+    // Keep the chosen range when it still exists for the new operation.
+    if (ranges.some(([lo, hi]) => `${lo}-${hi}` === prev)) rangeSel.value = prev;
+  }
+
+  function regen(): void {
+    const [min, max] = rangeSel.value.split('-').map(Number);
+    sheet.innerHTML = renderMadMinuteHtml({
+      op: opSel.value as MadOp,
+      min: min!,
+      max: max!,
+      count: Number(countSel.value),
+      seed: (Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0,
+    });
+  }
+
+  opSel.addEventListener('change', () => {
+    rebuildRanges();
+    regen();
+  });
+  rangeSel.addEventListener('change', regen);
+  countSel.addEventListener('change', regen);
+  newBtn.addEventListener('click', regen);
+</script>

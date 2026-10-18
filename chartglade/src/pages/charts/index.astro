@@ -3,9 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../consts';
 import { placeValuePages } from '../../data/placeValue';
 import { multiplicationPages } from '../../data/multiplication';
+import { formulaSheetPages } from '../../data/formulaSheets';
 import { loosePages } from '../../data/loose';
 
-const charts = [...placeValuePages, ...multiplicationPages, ...loosePages];
+const charts = [...placeValuePages, ...multiplicationPages, ...formulaSheetPages, ...loosePages];
 
 const blurbs: Record<string, string> = {
   'place-value-chart': 'Ones to millions with the comma periods marked — click any digit to see what it is worth.',
@@ -16,6 +17,8 @@ const blurbs: Record<string, string> = {
   'multiplication-chart-blank': 'The same 1-12 grid with the products removed — retrieval practice and self-grading quizzes.',
   'multiplication-chart-1-15': 'The extended grid with the 13s-15s columns real problems actually use. Prints landscape.',
   'multiplication-chart-1-20': 'All 400 facts on one landscape page — the middle-school reference chart.',
+  'geometry-formula-sheet': 'Perimeter, area, volume, surface area and the Pythagorean theorem — every formula with a worked example.',
+  'algebra-formula-sheet': 'Slope, the quadratic formula, exponent laws and factoring patterns, each with a self-check example.',
   'fraction-chart': 'Same-length fraction strips from one whole to twelfths; equivalences line up by themselves.',
   'hundred-chart': 'The 1-100 grid that runs K-2: skip-count coloring, ten-more boxes, missing-number puzzles.',
   'number-line-printable': 'A big 0-20 line for the hop method, one per landscape page.',
@@ -70,8 +73,10 @@ const jsonLd = [
     <p>
       Place value charts come first because everything else in elementary math stands on them: reading big numbers,
       regrouping, decimals. The multiplication charts cover the fact fluency years (grade 3 through 5), from the
-      standard 1-12 grid to the 1-20 reference for middle school. The rest — fractions, hundred chart, number line,
-      addition, alphabet — are the single-sheet workhorses that each own one job.
+      standard 1-12 grid (which now carries a mad-minute drill maker) to the 1-20 reference for middle school. The
+      formula sheets pick up where the facts end — geometry for grades 6-8, algebra for Algebra 1. The rest —
+      fractions, hundred chart, number line, addition, alphabet — are the single-sheet workhorses that each own one
+      job.
     </p>
     <p>
       Need blank paper with a grid instead? The <a href="/graph-paper/">graph paper section</a> prints true-size

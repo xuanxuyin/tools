@@ -1,0 +1,52 @@
+---
+/**
+ * Formula-sheet printable (V1.7). The page IS the printable: two balanced
+ * columns of section tables, every row carrying the formula plus a worked
+ * example. Both formula pages print landscape on one letter page — wide
+ * formulas like the quadratic formula need the room.
+ */
+import type { FormulaSection } from '../../lib/formulas';
+
+interface Props {
+  /** Label for the first column: 'Shape' (geometry) or 'Rule' (algebra). */
+  nameHead: string;
+  /** Sections per printed column — hand-balanced by the page wrapper. */
+  columns: FormulaSection[][];
+}
+
+const { nameHead, columns } = Astro.props;
+---
+
+<div class="formula-sheet">
+  {columns.map((sections, c) => (
+    <div class:list={['fs-col', `fs-col-${c + 1}`]}>
+      {sections.map((s) => (
+        <section class="fs-section" aria-label={s.heading}>
+          <h3 class="fs-heading">{s.heading}</h3>
+          <p class="fs-note">{s.note}</p>
+          <table class="fs-table">
+            <thead>
+              <tr>
+                <th scope="col">{nameHead}</th>
+                <th scope="col">Formula</th>
+                <th scope="col">Worked example</th>
+              </tr>
+            </thead>
+            <tbody>
+              {s.rows.map((r) => (
+                <tr>
+                  <th scope="row">
+                    {r.name}
+                    <span class="fs-measure">{r.measure}</span>
+                  </th>
+                  <td class="fs-formula">{r.formula}</td>
+                  <td class="fs-example">{r.example}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      ))}
+    </div>
+  ))}
+</div>

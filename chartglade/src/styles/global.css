@@ -732,14 +732,16 @@ svg {
 
 /* Name tracing sheet */
 
-.name-controls {
+.name-controls,
+.mad-controls {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-3);
   margin-bottom: var(--sp-4);
 }
 
-.name-controls label {
+.name-controls label,
+.mad-controls label {
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
@@ -750,8 +752,13 @@ svg {
   color: var(--ink-soft);
 }
 
+.mad-controls {
+  align-items: end;
+}
+
 .name-controls input,
-.name-controls select {
+.name-controls select,
+.mad-controls select {
   font: inherit;
   font-size: 0.95rem;
   font-weight: 400;
@@ -1850,3 +1857,206 @@ svg {
   .states-cols { gap: 0.3in; }
   .states-legend { font-size: 8pt; }
 }
+
+/* ===== Formula sheets (V1.7) — the page is the printable ===== */
+
+.formula-sheet {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.fs-section + .fs-section {
+  margin-top: var(--sp-4);
+}
+
+.fs-heading {
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  margin: 0 0 var(--sp-1);
+}
+
+.fs-note {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--sp-2);
+}
+
+.fs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.fs-table th,
+.fs-table td {
+  border: 1px solid var(--line-strong);
+  padding: 0.3em 0.45em;
+  text-align: left;
+  vertical-align: top;
+}
+
+.fs-table thead th {
+  background: var(--green-tint);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fs-table tbody th {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.fs-measure {
+  display: block;
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  white-space: normal;
+}
+
+.fs-formula {
+  font-family: var(--font-serif);
+  white-space: nowrap;
+}
+
+.fs-example {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 50rem) {
+  .formula-sheet {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .formula-sheet {
+    gap: 0.22in;
+  }
+
+  .fs-section + .fs-section {
+    margin-top: 0.18in;
+  }
+
+  .fs-heading {
+    font-size: 9.5pt;
+    margin-bottom: 2pt;
+  }
+
+  .fs-note {
+    font-size: 6.8pt;
+    line-height: 1.25;
+    margin-bottom: 4pt;
+  }
+
+  .fs-table {
+    font-size: 7.8pt;
+  }
+
+  .fs-table thead th {
+    font-size: 6.5pt;
+    background: #fff !important;
+    border-color: #000 !important;
+    color: #000 !important;
+  }
+
+  .fs-table th,
+  .fs-table td {
+    border-color: #000 !important;
+    color: #000 !important;
+    padding: 0.12em 0.3em;
+  }
+
+  .fs-example,
+  .fs-measure {
+    color: #333 !important;
+  }
+
+  .fs-table tbody th {
+    white-space: normal;
+  }
+}
+
+/* ===== Mad minute drill (#14) — generator island on the mult chart page ===== */
+
+.mm-sheet,
+.mm-answers {
+  break-inside: avoid;
+}
+
+.mm-sub {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--sp-2);
+}
+
+.mm-name {
+  margin: 0 0 var(--sp-3);
+  font-size: 0.95rem;
+}
+
+.mm-grid {
+  display: grid;
+  gap: var(--sp-2) var(--sp-4);
+}
+
+.mm-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5ch;
+  font-variant-numeric: tabular-nums;
+}
+
+.mm-n {
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  min-width: 2.4ch;
+}
+
+.mm-q {
+  white-space: nowrap;
+}
+
+.mm-answers .sheet-title {
+  margin-top: 0;
+}
+
+@media print {
+  /* The drill always starts on its own printed page, after the chart itself. */
+  .mad-minute-wrap {
+    break-before: page;
+  }
+
+  .mm-sub {
+    font-size: 9pt;
+    color: #333;
+  }
+
+  .mm-name {
+    font-size: 11pt;
+    margin-bottom: 10pt;
+  }
+
+  .mm-grid {
+    gap: 14pt 18pt;
+  }
+
+  .mm-q {
+    font-size: 12pt;
+  }
+
+  .mm-n {
+    font-size: 8pt;
+    color: #555;
+  }
+
+  .mm-answers .mm-q {
+    font-size: 10pt;
+  }
+}
+

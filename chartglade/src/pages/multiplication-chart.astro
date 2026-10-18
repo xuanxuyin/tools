@@ -1,6 +1,7 @@
 ---
 import ChartPage from '../components/ChartPage.astro';
 import MultTable from '../components/printables/MultTable.astro';
+import MadMinuteSheet from '../components/printables/MadMinuteSheet.astro';
 import { multiplicationPages } from '../data/multiplication';
 
 const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart')!;
@@ -8,4 +9,25 @@ const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart')!;
 
 <ChartPage def={def}>
   <MultTable size={12} title="Multiplication Table 1-12" />
+  <Fragment slot="after">
+    <section class="section no-print" aria-labelledby="mad-minute-h">
+      <h2 id="mad-minute-h">Mad minute: make your own timed drill</h2>
+      <p>
+        The chart is for looking facts up — fluency needs producing them under a clock. Pick an operation, a number
+        range and 30 or 60 problems, and the generator lays out a fresh mad-minute sheet with its answer key. The
+        sheet below is printable exactly as shown, no JavaScript required; the controls just bake a new one.
+      </p>
+    </section>
+    <section class="printable-wrap mad-minute-wrap" aria-label="Mad minute worksheet generator">
+      <div class="printable-toolbar">
+        <span class="print-note">
+          The drill prints on one letter page, portrait; the answer key follows on a second page.
+        </span>
+        <button type="button" class="btn" data-print>Print</button>
+      </div>
+      <div class="printable">
+        <MadMinuteSheet />
+      </div>
+    </section>
+  </Fragment>
 </ChartPage>
