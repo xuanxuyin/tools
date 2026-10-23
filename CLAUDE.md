@@ -88,5 +88,5 @@ Astro 5 纯静态 SSG + 原生 TS islands（无框架）+ 原生 CSS tokens + �
 - **色彩引擎**：`src/lib/color.ts`（Oklab 感知混色，纯函数，内部全浮点显示时才取整）+ `colorName.ts`
 - **数据驱动矩阵页**：`data/colors.ts` + `data/mixes.ts` → `lib/mixContent.ts` 生成全部内容（meta/答案/FAQ/3 变体按 slug hash）。**加一对配色 = 改这两个文件，其余全自动；改了 mixes.ts 必须重新生成 `public/_redirects`**（反向 slug 301）
 - **测试基准**：红+蓝 50/50 = `#8c53a2`；DOM 测试加载真实 `dist/` HTML + `vi.resetModules()`
-- **统计**：CF Web Analytics 边缘自动注入 —— **不要**往 `consts.ts` 填 beacon token（双重计数）
+- **统计**：CF Web Analytics **手动 token 模式**（token 在 `consts.ts`，仪表盘显示 "JS Snippet installation"；2026-10-23 线上实测恰好 1 个 beacon 无双埋点）—— **删 token 会断统计**。chartglade 才是边缘自动注入模式（token 留空）
 - **V2.1 进度**：W1 烘焙 4 页 + brown 头词页 + hub（2026-09-05）与 W2 三色头词页 purple/green/orange（合计 58.4K/月，2026-09-05）均已上线，共 41 页；后续波次计划在 `docs/tintbrew/PLAN.md`
