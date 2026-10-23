@@ -17,6 +17,7 @@
 - [ ] 👤 **顺手活两项**：① chartglade 字母池 m~v request indexing（同 URL 重点一次，不过就放弃——自然抓取在跑）② tintbrew 拼豆 hub 补推 https://tintbrew.com/perler-bead-patterns/ （已编入就跳过）
 - [x] 👤 **工具词补拉 4 词 ✅ 10/23 已回已判读（终局）**：**name tracing 族 11.5K 过线 → /name-tracing/ 独立工具页立项进 11 月批**（裸词 9.9K/KD15 + generator 1.6K/KD13，全场最薄带）；cross stitch pattern maker 9.9K/**KD57 红线死档**（40+ 不碰）、sight word generator 110 / buttercream 70 死档 —— **两站工具词探索全线收口**，明细两 PLAN 10/23 行
 - [ ] 🤖 **photo→bead 试玩回访**：👤 硬刷新重传同一张卡（10/15 众数采样+裁边修复后未确认效果）；仍缺色/细节不够 → 报色名或试 58×58
+- [ ] 🤖 **name tracing 工具页预开发开工（10/23 立项当日启动，11 月批三候选之首）**：后台代理在隔离 clone（d:/tmp/name-tracing-dev，分支 nov-predev）开发 /name-tracing/（输入名字→描红练习页→打印，Caveat/Dancing Script 自托管复用 + NameTracingSheet island 模式）；main 不动，完成后评审报 👤 拍板合并（照 10/25 批先例拍板即上线，无季节性不卡日历）
 - 周一例行（10/19）滑档不补 —— GSC 28 天滚动窗口数据不丢，**10/26（下周一）照常报**（10 月底 B 计划讨论的数据底正好用上）
 
 ## 10/18 已完成归档
