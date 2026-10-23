@@ -15,11 +15,7 @@
 - [ ] 👤 **双站 Pinterest 探针 #1（1 分钟，10/15 起三顺延）**：各发 1 个带链接 pin —— 通了才重启渠道；仍拦 → 只剩 11/15 末次探针（文案/图在两份 DISTRIBUTION）
 - [ ] 👤 **tintbrew GA4 关「网页更改」（1 分钟，10/15 起三顺延）**：GA4 管理中心 → 数据流（tintbrew Web 流）→「增强衡量设置」→ 点开「网页浏览量」条目 → 高级设置 → 关「基于浏览器历史记录事件的网页更改」→ 保存（其余 6 个顶层开关不动；关后浏览量回落 = 口径修正非掉量）
 - [ ] 👤 **顺手活两项**：① chartglade 字母池 m~v request indexing（同 URL 重点一次，不过就放弃——自然抓取在跑）② tintbrew 拼豆 hub 补推 https://tintbrew.com/perler-bead-patterns/ （已编入就跳过）
-- [ ] 👤 **工具词补拉 4 词收口（~3 分钟，AITDK；首轮 7 词已回已判读——独立页全不过族线不立项，明细两 PLAN 10/23 行）**：
-  1. `name tracing`（裸词，chartglade 唯一活口的族主量——**10K+ 则 name tracing 升独立页**，KD13 修饰词已证竞争薄）
-  2. `sight word generator`（裸词）
-  3. `cross stitch pattern maker`（tintbrew 十字绣族主量，首轮漏拉）
-  4. `buttercream color chart`（tintbrew 烘焙族主量，Q4 正在窗口）
+- [x] 👤 **工具词补拉 4 词 ✅ 10/23 已回已判读（终局）**：**name tracing 族 11.5K 过线 → /name-tracing/ 独立工具页立项进 11 月批**（裸词 9.9K/KD15 + generator 1.6K/KD13，全场最薄带）；cross stitch pattern maker 9.9K/**KD57 红线死档**（40+ 不碰）、sight word generator 110 / buttercream 70 死档 —— **两站工具词探索全线收口**，明细两 PLAN 10/23 行
 - [ ] 🤖 **photo→bead 试玩回访**：👤 硬刷新重传同一张卡（10/15 众数采样+裁边修复后未确认效果）；仍缺色/细节不够 → 报色名或试 58×58
 - 周一例行（10/19）滑档不补 —— GSC 28 天滚动窗口数据不丢，**10/26（下周一）照常报**（10 月底 B 计划讨论的数据底正好用上）
 
