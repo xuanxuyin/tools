@@ -811,20 +811,66 @@ svg {
   white-space: nowrap;
 }
 
+/* letter styles: print falls back to the system stack, cursive reuses the
+   site's cursive chart face so the letters match /cursive-alphabet/ */
 .name-sheet-print .glyph {
-  font-family: 'Patrick Hand', var(--font-hand);
+  font-family: 'Patrick Hand', var(--font-sans);
 }
 
 .name-sheet-cursive .glyph {
-  font-family: 'Caveat', var(--font-script);
+  font-family: var(--font-script);
+  font-weight: 700;
 }
 
 .name-row.model .glyph {
   color: var(--ink);
 }
 
+/* trace: solid light-gray letters to trace over */
 .name-row.trace .glyph {
   color: #b5b1a4;
+}
+
+/* hollow: outline-only letters to fill in (-webkit-text-stroke works in
+   Chrome, Safari, Edge and Firefox) */
+.name-row.hollow .glyph {
+  color: transparent;
+  -webkit-text-stroke: 1pt #a39f92;
+}
+
+/* wipe & write: each practice row fainter than the last — the model
+   disappears gradually and the blank rows take over */
+.name-row.fade-1 .glyph {
+  color: #85816f;
+}
+
+.name-row.fade-2 .glyph {
+  color: #a19d8c;
+}
+
+.name-row.fade-3 .glyph {
+  color: #bcb8a8;
+}
+
+.name-row.fade-4 .glyph {
+  color: #d4d0c2;
+}
+
+.name-row.fade-5 .glyph {
+  color: #e6e3d7;
+}
+
+/* start marker: green dot under the first letter of every name in the
+   model row ("start here, big letter") */
+.name-row.model .name-cell.cap::after {
+  content: '';
+  position: absolute;
+  left: 2.5pt;
+  bottom: 2pt;
+  width: 3pt;
+  height: 3pt;
+  border-radius: 50%;
+  background: var(--green);
 }
 
 /* ---------- cards / grids used by hubs & related ---------- */
@@ -1212,6 +1258,39 @@ svg {
 
   .name-row.trace .glyph {
     color: #999 !important;
+  }
+
+  .name-row.hollow .glyph {
+    color: transparent !important;
+    -webkit-text-stroke: 0.8pt #999 !important;
+  }
+
+  .name-row.fade-1 .glyph {
+    color: #666 !important;
+  }
+
+  .name-row.fade-2 .glyph {
+    color: #888 !important;
+  }
+
+  .name-row.fade-3 .glyph {
+    color: #aaa !important;
+  }
+
+  .name-row.fade-4 .glyph {
+    color: #bbb !important;
+  }
+
+  .name-row.fade-5 .glyph {
+    color: #ccc !important;
+  }
+
+  .name-row.model .name-cell.cap::after {
+    background: #000 !important;
+  }
+
+  .name-row {
+    break-inside: avoid;
   }
 
   .letter-grid,
