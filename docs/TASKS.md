@@ -6,17 +6,21 @@
 
 ---
 
-## 今天 · 2026-10-18（周日）
+## 今天 · 2026-10-23（周五）
 
-> 10/16~17 周末无盘、无记录。**⭐ 10/17 六周大验收滑档 → 今天补跑**（chartglade PLAN §6 决策点，只差 👤 GSC 报数 + 🤖 判读）；Reddit 蹲守今日按计划开班（万圣霜饰高峰 10/20~31 的前哨）。明天周一例行 + **LibGuides 静默期满**。
+> 10/19~10/22 无盘无记录（周一例行 + **LibGuides 静默期满发送窗全滑档**）。周五纪律：无批次不动 —— 10/25 批已提前 10/18 上线，今天全是外线 + 清欠账。**今日正主 = LibGuides 发送窗（拖 5 天；两站曝光三连跌定性权威瓶颈，外链是唯一杠杆，tintbrew 已挂"10 月底全零回音 → 提前开 B 计划讨论"）**。
 
-- [x] ⭐ 👤 **chartglade 6 周大验收报数 → ✅ 10/18 当日闭环**：排名榜 25 词全 1.0~9.5（place value 族 3.4~9.5 占 19/25、millionths #1、第 2 滴点击）→ **门线大幅过线：加码矩阵，B 计划不启动**；两站曝光暴跌定性 = 展示收缩非排名滑落（权威瓶颈终证）→ 外线主战场。明细两 PLAN 10/18 双行
-- [ ] 👤 **Reddit 答帖蹲守第 1 班（今日开班，10~15 分钟）**：r/Baking + r/AskBaking 搜 `black frosting` / `orange frosting` / `halloween` 按 New + r/painting 搜混色问答 —— 有对口就答（先实答后带链，**单帖单链，文案找 Claude 写**）；无对口就零动作收班，别硬答
-- [ ] 👤 **双站 Pinterest 探针 #1（1 分钟，10/15 顺延未确认）**：各发 1 个带链接 pin —— 通了才重启渠道；仍拦 → 只剩 11/15 末次探针（文案/图在两份 DISTRIBUTION）
-- [ ] 👤 **tintbrew GA4 关「网页更改」（1 分钟，10/15 顺延未确认）**：GA4 管理中心 → 数据流（tintbrew Web 流）→「增强衡量设置」→ 点开「网页浏览量」条目 → 高级设置 → 关「基于浏览器历史记录事件的网页更改」→ 保存（其余 6 个顶层开关不动；关后浏览量回落 = 口径修正非掉量）
-- [ ] 👤 **顺手活两项（不再单列排队）**：① chartglade 字母池 m~v request indexing（10/14 判读 Google 侧报错：同 URL 重点一次，不过就放弃——自然抓取在跑，此活只是加速器）② tintbrew 拼豆 hub 补推 https://tintbrew.com/perler-bead-patterns/ （已编入就跳过）
-- [x] 🤖 **外线第二波弹药备齐**：LibGuides 第二批 **8 目标 8/8 确证**（7 家馆员直邮双源 + Relay 官方馆箱；3 家 cursive 专题 guide 优先）+ round-up pitch **4 封草稿**（Tinybeans / Mommy Poppins / 3 Boys and a Dog / Free Homeschool Deals）→ [LIBGUIDES-BATCH2.md](./chartglade/LIBGUIDES-BATCH2.md)，零发送。**👤 明天随首批 5 封 follow-up 同窗发出**
-- [x] 🤖 **10/25 批开发+上线全部完成（👤 拍板提前，死线提前 7 天）**：感恩节簇 5 页（`21fe047`）+ V1.7 公式表 2 页 + #14 mad-minute island（`17dba46`）+ 换季/成对 bump（`66d3b07`）—— main 已 push，**79 页 / 150 测试绿**；线上验证 ✅ 7 新页 200+canonical、sitemap 78 全 lastmod 10-18、首页板块换季、island 挂载、**IndexNow 8 URL 返 200**
+- [ ] 👤 **外线发送窗（今日正主，~20 分钟）**：① 首批 5 封 follow-up（静默期 10/19 已满，零回音 → 原邮件 + 一句 value 补充，不重发全稿）② **第二批 8 封**（草稿 + Gmail 一键链接全在 [LIBGUIDES-BATCH2.md](./chartglade/LIBGUIDES-BATCH2.md) §2；3 家 cursive 专题 guide 优先）③ round-up pitch 4 封（同档 §2：Tinybeans / Mommy Poppins / 3 Boys and a Dog / Free Homeschool Deals）
+- [ ] 👤 **Reddit 蹲守班（10~15 分钟；10/18 开班后无班记录，万圣霜饰高峰 10/20~31 正在窗口正中）**：r/Baking + r/AskBaking 搜 `black frosting` / `orange frosting` / `halloween` 按 New + r/painting 搜混色问答 —— 有对口就答（先实答后带链，**单帖单链，文案找 Claude 写**）；无对口零动作收班
+- [ ] 👤 **双站 Pinterest 探针 #1（1 分钟，10/15 起三顺延）**：各发 1 个带链接 pin —— 通了才重启渠道；仍拦 → 只剩 11/15 末次探针（文案/图在两份 DISTRIBUTION）
+- [ ] 👤 **tintbrew GA4 关「网页更改」（1 分钟，10/15 起三顺延）**：GA4 管理中心 → 数据流（tintbrew Web 流）→「增强衡量设置」→ 点开「网页浏览量」条目 → 高级设置 → 关「基于浏览器历史记录事件的网页更改」→ 保存（其余 6 个顶层开关不动；关后浏览量回落 = 口径修正非掉量）
+- [ ] 👤 **顺手活两项**：① chartglade 字母池 m~v request indexing（同 URL 重点一次，不过就放弃——自然抓取在跑）② tintbrew 拼豆 hub 补推 https://tintbrew.com/perler-bead-patterns/ （已编入就跳过）
+- [ ] 🤖 **photo→bead 试玩回访**：👤 硬刷新重传同一张卡（10/15 众数采样+裁边修复后未确认效果）；仍缺色/细节不够 → 报色名或试 58×58
+- 周一例行（10/19）滑档不补 —— GSC 28 天滚动窗口数据不丢，**10/26（下周一）照常报**（10 月底 B 计划讨论的数据底正好用上）
+
+## 10/18 已完成归档
+
+**⭐ chartglade 6 周大验收当日闭环**（👤 报数 → 🤖 判读：排名 25 词全 1.0~9.5、place value 族 19/25、millionths #1 → **门线大幅过线，加码矩阵，B 计划不启动**；两站曝光三连跌定性 = 展示收缩非排名滑落，权威瓶颈终证 → 外线主战场。明细两 PLAN 10/18 行）｜ **🤖 10/25 批提前 7 天上线**（👤 拍板：感恩节簇 5 页 + V1.7 公式表 2 页 + #14 mad-minute island + 首页换季，main `21fe047`→`66d3b07`，79 页 150 测试绿，线上 7 新页 200 / sitemap 78 / IndexNow 8 URL 返 200）｜ **🤖 外线二波弹药备齐零发送**（LibGuides 第二批 8 目标 8/8 确证 + pitch 4 封草稿 → LIBGUIDES-BATCH2.md；**发送滑档 10/19 → 今天正主**）｜ Reddit 第 1 班 / Pinterest 探针 / GA4 开关 / 顺手活 → 未确认顺延
 
 ## 10/15 已完成归档
 
@@ -81,7 +85,7 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
-| 本周（10/19~10/25） | 周一例行（10/19）+ **LibGuides 静默期满看回音/follow-up** ｜ Reddit 蹲守常态（万圣霜饰高峰 10/20~31，隔天一班）｜ 10/25 批开发+上线（🤖） | tintbrew DISTRIBUTION §2.3 ｜ chartglade PLAN §6 |
+| 本周（10/20~10/26） | **LibGuides 发送窗（10/19 滑档 → 今日清）** ｜ Reddit 蹲守常态（万圣霜饰高峰 10/20~31，隔天一班）｜ 周一例行 10/26 照常 | tintbrew DISTRIBUTION §2.3 ｜ chartglade PLAN §6 |
 
 ---
 
@@ -92,8 +96,10 @@
 | 10/18（周日） | ⭐ **chartglade 6 周大验收（10/17 滑档补跑）**：👤 GSC 排名/曝光两榜 → 🤖 判读加码矩阵或 B 计划 ｜ Reddit 蹲守开班 |
 | 10/19（周一） | 周一例行 ｜ **LibGuides 5 封静默期满**：零回音 → 各补 follow-up 一发（原邮件 + 一句 value 补充，不重发全稿）；有回音 → 处理入链 ｜ **第二批 8 封 + pitch 4 封发送**（弹药已备：LIBGUIDES-BATCH2.md） |
 | 10/20~31 | 万圣霜饰求助高峰（Reddit 蹲守主战场窗口） |
-| 10/15（周四） | **双站 Pinterest 探针 #1**（各发 1 个带链接 pin，1 分钟）：通了才重启渠道；仍拦 → 只剩 11/15 末次探针 —— ⚠️ 10/15 未确认，已顺延 |
-| 10/25（周日） | chartglade 10/25 批：感恩节簇 5 页 + V1.7 公式表 2 页 + #14 数学练习 island |
+| 10/15（周四） | **双站 Pinterest 探针 #1**（各发 1 个带链接 pin，1 分钟）：通了才重启渠道；仍拦 → 只剩 11/15 末次探针 —— ⚠️ 10/15 起三顺延，今日清 |
+| 10/25（周日） | ~~chartglade 10/25 批~~ **✅ 已提前 10/18 上线**（79 页 / IndexNow 8/8 已验） |
+| 10/26（周一） | 周一例行（GSC 28 天两榜；10/19 滑档不补，数据滚动不丢） |
+| 10 月底 | tintbrew B 计划讨论门：LibGuides/homeschool/Cathy Duffy 全零回音 → 提前开（不等 1/31） |
 | 11 月 | chartglade 11 月批：视力表 2 页小簇（V1.8 已提前至 10/05）+ 谱纸生成器 + 作曲工具岛（9/25 立项，12.6K 词池） ｜ 11/15 Pinterest 末次探针 |
 | 2027-01-31 | **双站止损线复盘**（chartglade <3K 且零词 top 30；tintbrew <5K 且零词 top 30 → 停投） |
 
