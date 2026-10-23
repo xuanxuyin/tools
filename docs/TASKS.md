@@ -23,6 +23,8 @@
   5. `frosting color chart`（tintbrew ②，另记 `buttercream color chart`）
   6. `diamond painting custom pattern`（tintbrew ③）
   7. `word search maker`（chartglade 已弃项，仅校验放弃是否正确）
+  8. `AI cross stitch pattern generator`（tintbrew ① AI 变体——今日实勘 SERP 真空，量够就收编进 title）
+  9. `AI sight word generator` + `AI name tracing`（chartglade ①② AI 变体——头词是资本墙，看细分变体有没有肉）
 - [ ] 🤖 **photo→bead 试玩回访**：👤 硬刷新重传同一张卡（10/15 众数采样+裁边修复后未确认效果）；仍缺色/细节不够 → 报色名或试 58×58
 - 周一例行（10/19）滑档不补 —— GSC 28 天滚动窗口数据不丢，**10/26（下周一）照常报**（10 月底 B 计划讨论的数据底正好用上）
 
