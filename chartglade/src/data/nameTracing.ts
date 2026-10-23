@@ -13,13 +13,13 @@ export const nameTracingPage: PageDef = {
   h1: 'Name Tracing Generator',
   metaTitle: 'Name Tracing Generator — Free Printable Practice Sheet | ChartGlade',
   metaDescription:
-    'Type any name and print a tracing worksheet: one model row, gray trace rows and blank guided lines — in print or cursive. Free, no sign-up, prints on letter paper.',
+    'Type any name and print a tracing worksheet: gray trace letters, hollow outlines, or rows that fade to blank — print or cursive. Free, no sign-up, letter paper.',
   lead:
-    'Type a name, pick print or cursive, and print the sheet: the name in dark ink as a model, five rows to trace over in light gray, then blank lines with guides to write it solo. The sheet is ready to print right now with a sample name — no download, no sign-up.',
+    'Type a name, pick print or cursive letters, and choose how the practice rows guide the hand: solid gray letters to trace, hollow outlines to fill in, or letters that fade a little more with each row until the child writes solo. The sheet is ready to print right now with a sample name — no download, no sign-up.',
   introHeading: 'Why the name comes first',
   intro: [
     'A child\'s own name is the first word most American kids learn to write — usually in pre-K, before they can reliably form any other word. It is personal, it is on every paper they will ever hand in, and it carries the two habits handwriting is built on: a capital letter to start, and left-to-right order across the page. Name tracing worksheets are the standard vehicle because tracing lets the hand learn the letter shapes without yet having to remember them — the gray letters do the remembering while the muscle does the learning.',
-    'Use the generator the way teachers do: type the first name exactly as it will appear at school (nicknames trace like throwaway practice; the real name sticks), print or cursive to match what the class is working on, and print several copies. One copy gets traced with a finger, one with a crayon, one saved for next week — the same name fresh three times beats three names once each. The rows follow the classic format: model, trace, then blank guide lines so the child graduates from following to producing in the same session.',
+    'Use the generator the way teachers do: type the first name exactly as it will appear at school (nicknames trace like throwaway practice; the real name sticks), print or cursive to match what the class is working on, and print several copies. One copy gets traced with a finger, one with a crayon, one saved for next week — the same name fresh three times beats three names once each. The rows follow the classic format — a model, practice, then blank guide lines — and the tracing style tunes how fast the training wheels come off: gray letters to trace over, hollow outlines to fill in, or a wipe-and-write fade where each row is fainter than the last and the name stands alone by the bottom of the page.',
   ],
   printNote: 'Sheet prints on one letter page, portrait — model row, five trace rows, two blank rows.',
   interactive: true,
@@ -35,6 +35,10 @@ export const nameTracingPage: PageDef = {
     {
       title: 'First name, then last',
       body: 'Master the first name, then generate the last name as a second sheet. Kindergarten teachers report name mastery as a milestone — the full first-and-last combo is the graduation exercise.',
+    },
+    {
+      title: 'Grip before letters',
+      body: 'Handwriting starts with the hold: thumb and index pinching, pencil resting on the middle finger. A golf pencil or a broken crayon is the classic fix for a fisted grip — short tools force a pinch. Feet flat, paper square to the desk, helper hand holding the page still.',
     },
     {
       title: 'Five minutes, done',
@@ -59,12 +63,17 @@ export const nameTracingPage: PageDef = {
       a: 'Names are proper nouns — the capital is part of the spelling, and the generator capitalizes the first letter automatically. Starting the habit now is much easier than fixing lowercase-first names in first grade.',
     },
     {
+      q: 'Can I put a first and last name on the same sheet?',
+      a: "Yes — spaces, hyphens and apostrophes all work (\"Mary Jane\", \"Smith-O'Brien\"), each part keeps its capital letter, and the space between words becomes a blank gap box. For beginners one name per sheet is still the better start: the sheet holds 12 characters, so long first-and-last combos get cut short, and a child who has nailed the first name has earned the combo as the next win.",
+    },
+    {
       q: 'How many times should a child trace their name?',
       a: 'One full sheet per session is plenty — that is up to 24 traced names across the rows. Quality of the strokes matters more than count; stop when the letters start drifting, and pick it up again tomorrow.',
     },
   ],
   related: [
     { href: '/cursive-alphabet/', label: 'Cursive alphabet chart (the next step)' },
+    { href: '/cursive/', label: 'Cursive hub — every letter, its own page' },
     { href: '/alphabet-chart/', label: 'Print alphabet chart' },
     { href: '/kindergarten-sight-words/', label: 'Kindergarten sight words (same age)' },
     { href: '/half-inch-graph-paper/', label: 'Half-inch graph paper (big squares, same age)' },

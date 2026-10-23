@@ -1,12 +1,15 @@
 ---
 /**
  * Name tracing sheet. SSR renders the full default sheet ("Emma", print
- * style) so the page is printable with JavaScript off; the island below
- * re-renders rows from the shared pure functions as the user types.
+ * letters, gray trace style) so the page is printable with JavaScript off;
+ * the island below re-renders rows from the shared pure functions as the
+ * user types or switches letter/tracing style. The letter style is a font
+ * class on the sheet wrapper; the tracing style changes the practice-row
+ * classes (trace / hollow / fade-N) — CSS does the rest, no redraw framework.
  */
 import { DEFAULT_NAME, renderNameSheetHtml } from '../../lib/nameTracing';
 
-const rows = renderNameSheetHtml(DEFAULT_NAME, 'print');
+const rows = renderNameSheetHtml(DEFAULT_NAME, 'trace');
 ---
 
 <div class="name-controls no-print">
@@ -15,29 +18,40 @@ const rows = renderNameSheetHtml(DEFAULT_NAME, 'print');
     <input id="name-input" type="text" maxlength="12" value={DEFAULT_NAME} autocomplete="off" spellcheck="false" placeholder="Type a name…" />
   </label>
   <label>
-    Letter style
+    Letters
     <select id="name-style">
-      <option value="print" selected>Print (Zaner-Bloser style)</option>
+      <option value="print" selected>Print</option>
       <option value="cursive">Cursive</option>
+    </select>
+  </label>
+  <label>
+    Tracing style
+    <select id="name-trace">
+      <option value="trace" selected>Trace (gray letters)</option>
+      <option value="hollow">Hollow (outlines)</option>
+      <option value="wipe">Wipe &amp; write (letters fade out)</option>
     </select>
   </label>
 </div>
 <div class="name-sheet name-sheet-print" id="name-sheet" aria-label="Name tracing practice sheet" set:html={rows} />
 
 <script>
-  import { renderNameSheetHtml, sanitizeName, type TraceStyle } from '../../lib/nameTracing';
+  import { renderNameSheetHtml, sanitizeName, type LetterStyle, type TraceStyle } from '../../lib/nameTracing';
 
   const input = document.getElementById('name-input') as HTMLInputElement;
-  const style = document.getElementById('name-style') as HTMLSelectElement;
+  const letterSel = document.getElementById('name-style') as HTMLSelectElement;
+  const traceSel = document.getElementById('name-trace') as HTMLSelectElement;
   const sheet = document.getElementById('name-sheet') as HTMLElement;
 
   function update(): void {
-    const styleVal: TraceStyle = style.value === 'cursive' ? 'cursive' : 'print';
+    const letter: LetterStyle = letterSel.value === 'cursive' ? 'cursive' : 'print';
+    const trace: TraceStyle = traceSel.value === 'hollow' ? 'hollow' : traceSel.value === 'wipe' ? 'wipe' : 'trace';
     const name = sanitizeName(input.value);
-    sheet.className = `name-sheet name-sheet-${styleVal}`;
-    sheet.innerHTML = renderNameSheetHtml(name, styleVal);
+    sheet.className = `name-sheet name-sheet-${letter}`;
+    sheet.innerHTML = renderNameSheetHtml(name, trace);
   }
 
   input.addEventListener('input', update);
-  style.addEventListener('change', update);
+  letterSel.addEventListener('change', update);
+  traceSel.addEventListener('change', update);
 </script>

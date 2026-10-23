@@ -100,6 +100,7 @@ export const cursivePages: PageDef[] = [
       },
     ],
     related: [
+      { href: '/name-tracing/', label: 'Name tracing generator — type any name, print or cursive' },
       { href: '/cursive/f/', label: 'Cursive F — a full stroke-by-stroke letter page' },
       { href: '/alphabet-chart/', label: 'Print alphabet chart (the pre-cursive step)' },
       { href: '/third-grade-sight-words/', label: 'Third grade sight words (same age, reading side)' },
