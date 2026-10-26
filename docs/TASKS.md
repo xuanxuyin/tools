@@ -12,7 +12,7 @@
 
 - [x] 👤 **周一例行报数 ✅ 10/26 已报已判读**：两站第四跌同步（tintbrew 495/-91% 峰值、chartglade 438/-74%）但排名全完好反在长（tintbrew 新科 #1 red plus yellow + blue-yellow 族进 30~40 带；chartglade place value 15+ 问法 + periods/decimal 子族冒头）→ **周五 B 计划讨论数据底齐**；止损机械不触发（AND 排名条件不成立）。明细两 PLAN 10/26 行
 - [x] 👤 **外线发送窗 A+B ✅ 10/26 已发 13 封**（首批 5 封 follow-up + 第二批 8 封，一键 Gmail 连发；静默期两线均至 11/2）。**剩 C 组 pitch 4 封未发**（[LIBGUIDES-BATCH2.md §2](./chartglade/LIBGUIDES-BATCH2.md)，Mommy Poppins "23 州旧数据更正"钩子优先）—— 今日顺手或改天都行
-- [ ] 👤 **Reddit 蹲守班（10~15 分钟；万圣霜饰窗口还剩 6 天到 10/31）**：r/Baking + r/AskBaking 搜 `black frosting` / `orange frosting` / `halloween` 按 New + r/painting 搜混色问答 —— 有对口就答（先实答后带链，**单帖单链，文案找 Claude 写**）；无对口零动作收班
+- [ ] 👤 **Reddit 蹲守班（10~15 分钟；万圣霜饰窗口还剩 6 天到 10/31；工具包已配齐 = tintbrew DISTRIBUTION §6）**：5 个站内搜索入口（含 10/26 新增 r/cakedecorating）sorted=New 只答 7 天内新帖 —— 模板 A 黑霜饰（链 /how-to-make-black-frosting/）+ 模板 B 调色（链 /buttercream-color-chart/）照抄微调；单帖单链、一天最多 1~2 带链答；无对口新帖零动作收班
 - [ ] 👤 **顺延小活打包（~5 分钟，多项四顺延）**：① 双站 Pinterest 探针 #1（各发 1 个带链接 pin；仍拦 → 只剩 11/15 末次）② tintbrew GA4 关「网页更改」（管理中心 → 数据流 → 增强衡量设置 → 网页浏览量 → 高级设置 → 关「基于浏览器历史记录事件的网页更改」→ 保存）③ chartglade 字母池 m~v request indexing（重点一次，不过就放弃）④ tintbrew 拼豆 hub 补推 https://tintbrew.com/perler-bead-patterns/ （已编入就跳过）
 - [ ] 👤 **试玩回访两项（顺手，~3 分钟）**：① photo→bead 硬刷新重传同一张卡（10/15 众数采样+裁边修复后未确认；仍缺色 → 报色名或试 58×58）② /name-tracing/ 真机打一张（上周五 V2 上线，重点看 wipe 最淡档灰阶合不合适）
 - [ ] 🤖 **无在跑批次**：11 月批候选（place value 族深化 / multiplication 变体梯队）等今天周一数字判读后排序；B 计划讨论等周五门线 + 外线回音状态

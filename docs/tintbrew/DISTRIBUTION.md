@@ -160,3 +160,33 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 | 每周三 | 2~3 个色卡 pin（§3）或 1 个目录站/社区动作 | 15 分钟 |
 | 每月 | 1~2 个 Reddit 帖（§2，主帖+答帖混着来） | 15 分钟 |
 | 10 月 | Product Hunt 发布（§四） | 半天 |
+
+## §6 Reddit 蹲守班工具包（2026-10-26 配齐；万圣窗口至 10/31）
+
+**入口（Reddit 站内搜索，sorted=New + t=week，只答 7 天内新帖——老帖零流量不碰）：**
+
+- https://www.reddit.com/r/Baking/search/?q=black%20frosting&restrict_sr=1&sort=new&t=week
+- https://www.reddit.com/r/AskBaking/search/?q=black%20frosting&restrict_sr=1&sort=new&t=week
+- https://www.reddit.com/r/cakedecorating/search/?q=black%20frosting&restrict_sr=1&sort=new&t=week （10/26 实勘新增：黑霜饰主战场，原清单漏）
+- https://www.reddit.com/r/Baking/search/?q=orange%20frosting&restrict_sr=1&sort=new&t=week
+- https://www.reddit.com/r/AskBaking/search/?q=frosting%20color&restrict_sr=1&sort=new&t=week
+
+**模板 A · 黑霜饰帖（先实答后带链，链接 = /how-to-make-black-frosting/）：**
+
+> Black frosting is the classic Halloween trap. What actually works:
+>
+> Start from chocolate — white buttercream needs a mountain of black gel and ends up bitter with tooth-stain. Make a dark chocolate buttercream first, then add black cocoa powder. That gets you most of the way with no bitter aftertaste.
+>
+> Finish with gel (Americolor Super Black), a few drops at a time — never liquid food color.
+>
+> And the step everyone skips: let it rest. It deepens a lot overnight. Dark gray at 10pm is properly black by morning.
+>
+> I wrote up the full method with drop counts here if it helps: https://tintbrew.com/how-to-make-black-frosting/
+
+**模板 B · 调色问法帖（链接 = /buttercream-color-chart/）：**
+
+> Gel color, not liquid — and mix 15 minutes before you judge it, colors deepen as they sit. If you're blending (a true orange, a deep purple), start with the lighter color and add the darker one drop by drop — it's way easier to darken than to walk back.
+>
+> I keep a buttercream color chart with drop counts I made for reference: https://tintbrew.com/buttercream-color-chart/
+
+**纪律：单帖单链；一条账号一天最多 1~2 带链答（养号在先）；无对口新帖 = 零动作收班，不硬答。**
