@@ -190,3 +190,5 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 > I keep a buttercream color chart with drop counts I made for reference: https://tintbrew.com/buttercream-color-chart/
 
 **纪律：单帖单链；一条账号一天最多 1~2 带链答（养号在先）；无对口新帖 = 零动作收班，不硬答。**
+
+**判定口令（10/26 实战补）：标题对口 ≠ 正文对口 —— 必须点开读原帖正文，确认问的是"颜色怎么调"才出手。** 实例：r/Baking "Black buttercream frosting help"（48 票/31 评）标题完美对口，正文实为油水分离质地救援帖（热评全在讲 rewhip/喷枪），调黑答案在那里 = 答非所问+热帖当众 spam。撤答零损失，窗口到 10/31 每天侦查成本 2 分钟。
