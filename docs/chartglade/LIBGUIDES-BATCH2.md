@@ -1,6 +1,6 @@
 # 外链第二波弹药：LibGuides 第二批目标 + round-up pitch 4 封（2026-10-18 实勘）
 
-> **状态：🤖 调研 + 草稿完毕 / 👤 未发送任何邮件。** 风格与收件人确证纪律照 `docs/chartglade/DISTRIBUTION.md` §5.2.1（短、具体、价值先行；每个邮箱至少两个证据源交叉；不吹新站）。已排除 2026-10-12 首批已发 5 家：RCCC、Stonehill、Brescia、SELU、Hartford。
+> **状态更新 2026-10-26：B 组 8 封已全部发出（👤 一键 Gmail 连发，§4 链接）—— 静默期至 11/2（下周一），零回音则 11/2 后各补一发 follow-up；C 组 pitch 4 封仍未发（Mommy Poppins "23 州旧数据更正"钩子优先）。** 原状态：🤖 调研 + 草稿完毕。 风格与收件人确证纪律照 `docs/chartglade/DISTRIBUTION.md` §5.2.1（短、具体、价值先行；每个邮箱至少两个证据源交叉；不吹新站）。已排除 2026-10-12 首批已发 5 家：RCCC、Stonehill、Brescia、SELU、Hartford。
 >
 > 站方弹药（均已实测 HTTP 200，2026-10-18）：
 > - 钩子页 = https://chartglade.com/states-that-require-cursive/（页 title：*Which States Require Cursive in School? 2026 50-State Tracker*；竞品 MyCursive 同款页停在 23 州旧数据，本页即"记者可引用的独家数据"卖点）

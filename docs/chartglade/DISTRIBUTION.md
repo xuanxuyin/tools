@@ -224,6 +224,8 @@ community.libguides.com 搜 "cursive worksheets" / "free printable worksheets" �
 
 ### 5.2.1 LibGuides 首批 5 封（2026-10-12 Claude 实勘 + 起草，复制即发）
 
+> **状态更新 2026-10-26：首批 5 封 follow-up 已全部发出**（👤 一键 Gmail 连发；新价值点 = 感恩节活动包 + name tracing 生成器，链接在 [LIBGUIDES-BATCH2.md §4](./LIBGUIDES-BATCH2.md) A 组）。二轮静默期至 **11/2（下周一）**，仍零回音则该 5 家转入观察池不再三连发。
+
 > 实勘过程：community.libguides.com 站内搜索为 JS 渲染抓不到，改 Google 定位具体 guide；候选 7 个中 RCCC 与 Hartford 页面结构已亲手核过（RCCC `/earlychildhood/` 列 ERIC 等教育库、tab 结构 books/cite/classes/newbery/paper/plagiarism；收件邮箱 RCCC 实测在页脚 `mailto:lrc@rccc.edu`）。**发送前 30 秒动作（第 2~5 封）**：打开 guide URL → 页面右侧/底部 profile 卡 → 馆员姓名 + 邮箱填进 `[ ]`；找不到 profile 邮箱就发该馆咨询台（guide 页脚 "Ask a Librarian" 链接落地即有）。全部零链接变体不加 UTM，纯 chartglade.com 域名。
 
 **① Rowan-Cabarrus CC · Early Childhood Education**（收件人已确证 `lrc@rccc.edu`）— **✅ 已发 2026-10-12**（👤 Gmail 发出；10/19 静默期满零回音则 follow-up 一发，节奏同 homeschool/Cathy Duffy 先例）
