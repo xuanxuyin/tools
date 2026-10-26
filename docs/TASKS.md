@@ -10,7 +10,7 @@
 
 > 10/24~25 周末无盘。**今天双正主：① 周一例行报数（GSC 28 天两榜，tintbrew 索引页已来已判读——重定向 29 全良性）② 外线发送窗（拖 7 天）**。本周五（10/30）= 10 月底 B 计划讨论门：**没发送就没回音可言，门线判读直接瘸腿 —— 发送窗今天不能再滑**。
 
-- [ ] 👤 **周一例行报数（正主①，~10 分钟；10/19 滑档不补数据不丢，今天这份 = 周五 B 计划讨论的数据底）**：GSC 效果 28 天 —— 两站各报 ① 点击/曝光/CTR ② 排名榜（查询按排名升序前 25 词）。tintbrew 索引页数字今早已报已入档 ✅
+- [x] 👤 **周一例行报数 ✅ 10/26 已报已判读**：两站第四跌同步（tintbrew 495/-91% 峰值、chartglade 438/-74%）但排名全完好反在长（tintbrew 新科 #1 red plus yellow + blue-yellow 族进 30~40 带；chartglade place value 15+ 问法 + periods/decimal 子族冒头）→ **周五 B 计划讨论数据底齐**；止损机械不触发（AND 排名条件不成立）。明细两 PLAN 10/26 行
 - [ ] 👤 **外线发送窗（正主②，~20 分钟，10/19 起拖 7 天）**：① 首批 5 封 follow-up（静默期满，零回音 → 原邮件 + 一句 value 补充，不重发全稿）② **第二批 8 封**（草稿 + Gmail 一键链接全在 [LIBGUIDES-BATCH2.md](./chartglade/LIBGUIDES-BATCH2.md) §2；3 家 cursive 专题 guide 优先）③ round-up pitch 4 封（同档 §2：Tinybeans / Mommy Poppins / 3 Boys and a Dog / Free Homeschool Deals）
 - [ ] 👤 **Reddit 蹲守班（10~15 分钟；万圣霜饰窗口还剩 6 天到 10/31）**：r/Baking + r/AskBaking 搜 `black frosting` / `orange frosting` / `halloween` 按 New + r/painting 搜混色问答 —— 有对口就答（先实答后带链，**单帖单链，文案找 Claude 写**）；无对口零动作收班
 - [ ] 👤 **顺延小活打包（~5 分钟，多项四顺延）**：① 双站 Pinterest 探针 #1（各发 1 个带链接 pin；仍拦 → 只剩 11/15 末次）② tintbrew GA4 关「网页更改」（管理中心 → 数据流 → 增强衡量设置 → 网页浏览量 → 高级设置 → 关「基于浏览器历史记录事件的网页更改」→ 保存）③ chartglade 字母池 m~v request indexing（重点一次，不过就放弃）④ tintbrew 拼豆 hub 补推 https://tintbrew.com/perler-bead-patterns/ （已编入就跳过）
