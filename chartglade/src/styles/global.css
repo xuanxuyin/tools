@@ -987,6 +987,66 @@ svg {
   border-color: var(--green);
 }
 
+/* ---------- teaching calendar hub (year index + month blocks) ---------- */
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--sp-4) var(--sp-5);
+}
+
+.cal-month h3 {
+  margin: 0 0 var(--sp-1);
+  font-size: 0.98rem;
+  font-family: var(--font-serif);
+}
+
+.cal-dates {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.cal-print-list {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.cal-print-list a + a::before {
+  content: '· ';
+  color: var(--ink-soft);
+}
+
+.cal-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--sp-2);
+}
+
+.cal-links li {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  font-size: 0.92rem;
+}
+
+.cal-links a {
+  font-weight: 600;
+}
+
+.cal-links .cal-note {
+  display: block;
+  margin-top: 2px;
+  font-weight: 400;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+}
+
 /* ---------- per-sheet extras ---------- */
 
 .chart-table.dense th,
@@ -2136,6 +2196,36 @@ svg {
 
   .mm-answers .mm-q {
     font-size: 10pt;
+  }
+}
+
+@media print {
+  /* Teaching calendar year index: all 12 months on one letter page.
+     The screen month sections (.section) are stripped by the main print
+     pass — only this compact grid prints, as the plan-book insert. */
+  .printable .cal-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7pt 10pt;
+  }
+
+  .printable .cal-month {
+    break-inside: avoid;
+  }
+
+  .printable .cal-month h3 {
+    font-size: 9pt;
+    margin: 0 0 2pt;
+  }
+
+  .printable .cal-dates {
+    font-size: 6.5pt;
+    margin: 0 0 2pt;
+    color: #444;
+  }
+
+  .printable .cal-print-list {
+    font-size: 7pt;
+    line-height: 1.6;
   }
 }
 
