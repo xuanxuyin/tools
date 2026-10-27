@@ -1000,6 +1000,41 @@ svg {
   padding: 0.6em 0.3em;
 }
 
+/* ---------- times tables in list form (one strip per table) ---------- */
+
+.table-strips {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.table-strip {
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--line);
+  break-inside: avoid;
+}
+
+.table-strip:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.table-strip .strip-label {
+  margin: 0 0 0.3em;
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--green-deep);
+}
+
+.table-strip .strip-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15em 1.1em;
+  margin: 0;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- sign-in sheets (V1.8) ---------- */
 
 .signin-meta {
@@ -1315,6 +1350,28 @@ svg {
 
   .sheet-break .sheet-title {
     margin-top: 0;
+  }
+
+  .table-strip {
+    padding-bottom: 3pt;
+    border-bottom: 0.5pt solid #999;
+  }
+
+  .table-strip:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .table-strip .strip-label {
+    font-size: 8.5pt;
+    margin: 0 0 1pt;
+    color: #000;
+  }
+
+  .table-strip .strip-facts {
+    font-size: 8pt;
+    gap: 0 0.75em;
+    line-height: 1.5;
   }
 
   .trace-heading {
