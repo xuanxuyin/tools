@@ -12,7 +12,7 @@
 
 - [x] 🤖 **11 月批候选排序 ✅ 10/27 已出结论入两 PLAN**：chartglade 主车厢 = place value 深化（首位，子族问法 top 10 实证）+ multiplication 梯队（Q4 换血窗口加急）+ cursive 深化 2 页 + Teaching Calendar hub —— 11/12 前后上线；视力表 + 谱纸 + 作曲岛滑 12 月批。tintbrew 11 月轻批 = V2.3 反向配色计算器 + make-X white/gray 搭车。**排序是 10/30 B 计划门弹药，裁止损则冻结**（两 PLAN 10/27 行）
 - [x] 🤖 **multiplication 变体梯队 SERP 实勘 ✅ 10/27 选型定案**：times table 词 EMD 小站 #1 + 博客混排可打 → /times-table-chart/ 立项；1-12 官方 PDF（Scholastic/Alberta/CAASPP）三锁不建页；printable 维持 10/04 窗口立项；blank 已有页不重做 —— **#25 收口 = 2 页**（PLAN 10/27 行）。变体词 AITDK 拉量降顺手活
-- [ ] 🤖 **11 月批预开发第一波提前启动（原 11/05 → 今日）**：nov-predev 本地分支（main 不动），不依赖实勘的四件先跑 —— periods 变体新页 + decimal 页 interactive island + cursive 深化 2 页 + Teaching Calendar hub；multiplication 梯队页等实勘结论进第二波
+- [x] 🤖 **11 月批预开发第一波 ✅ 10/27 当日闭环**：四件齐（periods 新页 / decimal interactive island / cursive 深化 2 页 / teaching-calendar hub）三 worktree 代理并行完成，并入 `nov-predev` 分支存货（main 未动）；合并共存验证 **83 页 build + 228/228 测试绿**；遗留（sheetImage/OG/冬季页回填）随上线批。**第二波 mult 2 页已启动**（printable + times-table，选型已定）—— 到齐后 `nov-predev` = 全批弹药，11/12 上线窗只剩 merge + 部署验证
 - [ ] 🤖 **B 计划门（10/30）判读预备考**：两情景框架（加火力/止损）+ 数字底一次备齐，周五直接讨论
 - 👤 **五活裁决（10/27 用户裁定不干，逐项处理入档）**：**C 组 pitch 4 封** = 发送只能你（Gmail 我够不到）；B 计划门前提已成立（18 封在途零回音），C 组是加项不是前提 → **不发按"未发"状态进判读不瘸腿**，降顺手活（想发 = [LIBGUIDES-BATCH2.md §2](./chartglade/LIBGUIDES-BATCH2.md) 一键链接即点即发）｜ **Pinterest 探针** = 账号活 + 三顺延信号 → **并入 11/15 末次探针一次性处理**，不再日挂 ｜ **GA4 关「网页更改」** = 账号活，下次周一报数前顺手即可（数据口径活不急）｜ **Reddit 蹲守** = 🤖 代干会毁号（自动化触发反垃圾，害养号 1 个月的人号），不想干就零动作 —— 10/31 万圣窗口自动关，零损失 ｜ **试玩回访** = 真机手感/物理打印替代不了，转纯顺手（photo→bead 仍缺色报色名；name-tracing wipe 灰阶真机打一张）
 
