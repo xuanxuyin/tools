@@ -2139,3 +2139,371 @@ svg {
   }
 }
 
+/* ===== How-to-write-in-cursive lesson sheet (Nov pre-dev wave 1) ===== */
+
+.ht-name {
+  margin: 0 0 var(--sp-3);
+  font-size: 0.95rem;
+}
+
+.ht-step {
+  margin-top: var(--sp-5);
+  break-inside: avoid;
+}
+
+.ht-step h3 {
+  font-size: 1.1rem;
+  margin-bottom: var(--sp-2);
+}
+
+.ht-points {
+  margin: 0 0 var(--sp-2);
+  padding-left: 1.15rem;
+}
+
+.ht-points li {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin-bottom: 0.3rem;
+}
+
+.ht-drill {
+  margin: var(--sp-3) 0 var(--sp-4);
+}
+
+.ht-drill-label {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.ht-drill-label .ht-hint {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink-soft);
+}
+
+.ht-stroke-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.ht-stroke-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 58px;
+  padding: 2px 5px 6px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+}
+
+.ht-stroke-cell svg {
+  display: block;
+  width: 100%;
+  height: 44px;
+}
+
+.ht-stroke-cell path {
+  fill: none;
+  stroke: #b9b5a8;
+  stroke-width: 3.4;
+  stroke-linecap: round;
+}
+
+.ht-stroke-cell .baseline {
+  border-bottom: 2px dotted var(--line-strong);
+}
+
+.ht-words {
+  display: grid;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.ht-words-row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: var(--sp-3);
+  align-items: center;
+}
+
+.ht-words-label {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.ht-words-cells {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.ht-word-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 46px;
+  overflow: hidden;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+}
+
+.ht-word-model {
+  margin-top: 2px;
+  font-family: var(--font-hand);
+  font-size: 1.55rem;
+  line-height: 1.1;
+  color: #b9b5a8;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ht-word-model-sm {
+  font-size: 1.2rem;
+}
+
+.ht-word-baseline {
+  flex: 1;
+  margin: 0 var(--sp-1);
+  border-bottom: 2px dotted var(--line-strong);
+}
+
+/* ===== Cursive sentences sheet — trace / hollow / write rows ===== */
+
+.sent-block {
+  margin-top: var(--sp-5);
+  break-inside: avoid;
+}
+
+.sent-label {
+  margin: 0 0 2px;
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+}
+
+.sent-fact {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.sent-row {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 58px;
+  margin-bottom: 10px;
+  padding: 0 6px 8px;
+  border-top: 1pt solid var(--line);
+  border-bottom: 1.5pt solid var(--line-strong);
+}
+
+.sent-row::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 58%;
+  left: 0;
+  border-top: 1pt dashed var(--line);
+}
+
+.sent-row .glyph {
+  font-family: var(--font-hand);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.sent-row.lg .glyph {
+  font-size: 34px;
+}
+
+.sent-row.md .glyph {
+  font-size: 30px;
+}
+
+.sent-row.sm .glyph {
+  font-size: 26px;
+}
+
+/* same fading-support colors as the name tracing rows */
+.sent-row.trace .glyph {
+  color: #b5b1a4;
+}
+
+.sent-row.hollow .glyph {
+  color: transparent;
+  -webkit-text-stroke: 1px #a39f92;
+}
+
+/* Print pass for both new sheets — two letter pages each */
+
+@media print {
+  .ht-step {
+    margin-top: 14pt;
+  }
+
+  .ht-step h3 {
+    font-size: 13pt;
+    margin-bottom: 5pt;
+  }
+
+  .ht-points {
+    margin-bottom: 6pt;
+    padding-left: 12pt;
+  }
+
+  .ht-points li {
+    font-size: 9.5pt;
+    line-height: 1.4;
+    margin-bottom: 2pt;
+  }
+
+  .ht-drill {
+    margin: 8pt 0 12pt;
+  }
+
+  .ht-drill-label {
+    margin-bottom: 4pt;
+    font-size: 9pt;
+  }
+
+  .ht-drill-label .ht-hint {
+    font-size: 8.5pt;
+  }
+
+  .ht-stroke-strip,
+  .ht-words,
+  .trace-strip {
+    gap: 5pt;
+  }
+
+  .ht-stroke-cell {
+    min-height: 40pt;
+    padding: 2pt 4pt 5pt;
+    border-color: #000 !important;
+  }
+
+  .ht-stroke-cell svg {
+    height: 30pt;
+  }
+
+  .ht-stroke-cell path {
+    stroke: #999 !important;
+  }
+
+  .ht-stroke-cell .baseline {
+    border-color: #999 !important;
+  }
+
+  .ht-words-row {
+    grid-template-columns: 70pt minmax(0, 1fr);
+    gap: 8pt;
+  }
+
+  .ht-words-label {
+    font-size: 10pt;
+  }
+
+  .ht-words-cells {
+    gap: 5pt;
+  }
+
+  .ht-word-cell {
+    min-height: 38pt;
+    border-color: #000 !important;
+  }
+
+  .ht-word-model {
+    font-size: 19pt;
+    color: #999 !important;
+  }
+
+  .ht-word-model-sm {
+    font-size: 15pt;
+  }
+
+  .ht-word-baseline {
+    border-color: #999 !important;
+  }
+
+  .sent-block {
+    margin-top: 16pt;
+  }
+
+  .sent-label {
+    font-size: 12pt;
+  }
+
+  .sent-fact {
+    font-size: 8.5pt;
+    color: #555 !important;
+    margin-bottom: 5pt;
+  }
+
+  .sent-row {
+    height: 46pt;
+    margin-bottom: 8pt;
+    padding: 0 4pt 6pt;
+    border-color: #000 !important;
+  }
+
+  .sent-row::before {
+    border-color: #999 !important;
+  }
+
+  .sent-row.lg .glyph {
+    font-size: 22pt;
+  }
+
+  .sent-row.md .glyph {
+    font-size: 19pt;
+  }
+
+  .sent-row.sm .glyph {
+    font-size: 16pt;
+  }
+
+  .sent-row.trace .glyph {
+    color: #999 !important;
+  }
+
+  .sent-row.hollow .glyph {
+    color: transparent !important;
+    -webkit-text-stroke: 0.8pt #999 !important;
+  }
+}
+
+@media (max-width: 40rem) {
+  .ht-stroke-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ht-words-row {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+
+  .ht-words-cells {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sent-row.lg .glyph {
+    font-size: 24px;
+  }
+
+  .sent-row.md .glyph {
+    font-size: 22px;
+  }
+
+  .sent-row.sm .glyph {
+    font-size: 19px;
+  }
+}
+
