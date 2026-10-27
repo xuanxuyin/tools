@@ -14,6 +14,7 @@
 - [x] 🤖 **multiplication 变体梯队 SERP 实勘 ✅ 10/27 选型定案**：times table 词 EMD 小站 #1 + 博客混排可打 → /times-table-chart/ 立项；1-12 官方 PDF（Scholastic/Alberta/CAASPP）三锁不建页；printable 维持 10/04 窗口立项；blank 已有页不重做 —— **#25 收口 = 2 页**（PLAN 10/27 行）。变体词 AITDK 拉量降顺手活
 - [x] 🤖 **11 月批预开发 ✅ 两波全闭环 10/27 当日备齐**：第一波四件（periods 新页 / decimal interactive island / cursive 深化 2 页 / teaching-calendar hub）+ 第二波 mult 2 页（printable 三格式 + times-table 双版式，6 页乘法簇全互链）全部并入 `nov-predev` 分支存货（main 未动）；**最终 85 页 build + 241/241 测试绿**，8 新 URL dist 在位。遗留（sheetImage/OG/冬季页回填）随上线批。**11/12 上线窗只剩 merge + 首页换季 + IndexNow + 线上验证，零开发压力**
 - [x] 🤖 **B 计划门（10/30）判读预备考 ✅ 入 chartglade PLAN §6**：止损无数据依据（AND 排名侧锁死不成立），议题实质 = 火力结构重组（🤖 全包资产侧 vs 👤 手工发送侧）；周五照框架拍板即可
+- [x] 🤖 **tintbrew GA4 当日报数判读 ✅ 入 PLAN 10/27 行**：chatgpt.com 引荐 3/7 用户（43%）= AI 引荐结构性通道实锤（加固 V2.3 轻批决策）；mixer 17 事件真交互 + hue test 0% 跳出 vs 内容页 100% 跳出再证 AI 截流分级；7 用户/日噪音低位不改判据。零决策改动
 - 👤 **五活裁决（10/27 用户裁定不干，逐项处理入档）**：**C 组 pitch 4 封** = 发送只能你（Gmail 我够不到）；B 计划门前提已成立（18 封在途零回音），C 组是加项不是前提 → **不发按"未发"状态进判读不瘸腿**，降顺手活（想发 = [LIBGUIDES-BATCH2.md §2](./chartglade/LIBGUIDES-BATCH2.md) 一键链接即点即发）｜ **Pinterest 探针** = 账号活 + 三顺延信号 → **并入 11/15 末次探针一次性处理**，不再日挂 ｜ **GA4 关「网页更改」** = 账号活，下次周一报数前顺手即可（数据口径活不急）｜ **Reddit 蹲守** = 🤖 代干会毁号（自动化触发反垃圾，害养号 1 个月的人号），不想干就零动作 —— 10/31 万圣窗口自动关，零损失 ｜ **试玩回访** = 真机手感/物理打印替代不了，转纯顺手（photo→bead 仍缺色报色名；name-tracing wipe 灰阶真机打一张）
 
 ## 10/26 已完成归档
