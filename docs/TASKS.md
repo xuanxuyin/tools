@@ -8,13 +8,13 @@
 
 ## 今天 · 2026-10-27（周二）
 
-> 昨 10/26 双正主已闭环（周一报数判读 + 外线 A/B 13 封发出，静默期两线至 11/2）。**本周唯一大节点：10/30（周五）B 计划讨论门（还剩 3 天）** —— 判读要 C 组 pitch 4 封的发送状态入档，今天把它定了。探针 / GA4 开关已三顺延，今日清。
+> 昨 10/26 双正主已闭环（周一报数判读 + 外线 A/B 13 封发出，静默期两线至 11/2）。**本周唯一大节点：10/30（周五）B 计划讨论门（还剩 3 天）**。👤 五活经用户裁定"不想干、觉得没用"→ 🤖 逐项裁决（见下），全部降级/转顺手，零硬门槛活；🤖 接管三项自跑保持推进。
 
-- [ ] 👤 **C 组 pitch 4 封（外线收尾，~10 分钟）**：[LIBGUIDES-BATCH2.md §2](./chartglade/LIBGUIDES-BATCH2.md) 照抄微调，Mommy Poppins "23 州旧数据更正"钩子优先；**发或不发都当天入档** —— 10/30 门判读要用
-- [ ] 👤 **顺延小活两件今日清（10/15 起三顺延，各 ~1 分钟）**：① 双站 Pinterest 探针 #1（各发 1 个带链接 pin；通了重启渠道，仍拦 → 只剩 11/15 末次）② GA4 关「网页更改」开关（replaceState 虚增 ~10 倍，10/15 判读派生）
-- [ ] 👤 **Reddit 蹲守班（10~15 分钟；万圣霜饰窗口还剩 4 天到 10/31；工具包 = tintbrew DISTRIBUTION §6）**：5 个站内搜索入口（含 r/cakedecorating）sorted=New 只答 7 天内新帖 —— 模板 A 黑霜饰（链 /how-to-make-black-frosting/）+ 模板 B 调色（链 /buttercream-color-chart/）照抄微调；单帖单链、一天最多 1~2 带链答；无对口新帖零动作收班
-- [ ] 👤 **试玩回访两项（顺手，~3 分钟）**：① photo→bead 硬刷新重传同一张卡（10/15 众数采样+裁边修复后未确认；仍缺色 → 报色名或试 58×58）② /name-tracing/ 真机打一张（重点看 wipe 最淡档灰阶合不合适）
-- [x] 🤖 **11 月批候选排序 ✅ 10/27 已出结论入两 PLAN**：chartglade 主车厢 = place value 深化（首位，子族问法 top 10 实证）+ multiplication 梯队（Q4 换血窗口加急，变体词待 👤 拉量排优先级）+ cursive 深化 2 页 + Teaching Calendar hub —— 11/12 前后上线、预开发 11/05 启动；视力表 + 谱纸 + 作曲岛滑 12 月批。tintbrew 11 月轻批 = V2.3 反向配色计算器 + make-X white/gray 搭车，主力在外线。**排序是 10/30 B 计划门弹药，裁止损则冻结**
+- [x] 🤖 **11 月批候选排序 ✅ 10/27 已出结论入两 PLAN**：chartglade 主车厢 = place value 深化（首位，子族问法 top 10 实证）+ multiplication 梯队（Q4 换血窗口加急）+ cursive 深化 2 页 + Teaching Calendar hub —— 11/12 前后上线；视力表 + 谱纸 + 作曲岛滑 12 月批。tintbrew 11 月轻批 = V2.3 反向配色计算器 + make-X white/gray 搭车。**排序是 10/30 B 计划门弹药，裁止损则冻结**（两 PLAN 10/27 行）
+- [x] 🤖 **multiplication 变体梯队 SERP 实勘 ✅ 10/27 选型定案**：times table 词 EMD 小站 #1 + 博客混排可打 → /times-table-chart/ 立项；1-12 官方 PDF（Scholastic/Alberta/CAASPP）三锁不建页；printable 维持 10/04 窗口立项；blank 已有页不重做 —— **#25 收口 = 2 页**（PLAN 10/27 行）。变体词 AITDK 拉量降顺手活
+- [ ] 🤖 **11 月批预开发第一波提前启动（原 11/05 → 今日）**：nov-predev 本地分支（main 不动），不依赖实勘的四件先跑 —— periods 变体新页 + decimal 页 interactive island + cursive 深化 2 页 + Teaching Calendar hub；multiplication 梯队页等实勘结论进第二波
+- [ ] 🤖 **B 计划门（10/30）判读预备考**：两情景框架（加火力/止损）+ 数字底一次备齐，周五直接讨论
+- 👤 **五活裁决（10/27 用户裁定不干，逐项处理入档）**：**C 组 pitch 4 封** = 发送只能你（Gmail 我够不到）；B 计划门前提已成立（18 封在途零回音），C 组是加项不是前提 → **不发按"未发"状态进判读不瘸腿**，降顺手活（想发 = [LIBGUIDES-BATCH2.md §2](./chartglade/LIBGUIDES-BATCH2.md) 一键链接即点即发）｜ **Pinterest 探针** = 账号活 + 三顺延信号 → **并入 11/15 末次探针一次性处理**，不再日挂 ｜ **GA4 关「网页更改」** = 账号活，下次周一报数前顺手即可（数据口径活不急）｜ **Reddit 蹲守** = 🤖 代干会毁号（自动化触发反垃圾，害养号 1 个月的人号），不想干就零动作 —— 10/31 万圣窗口自动关，零损失 ｜ **试玩回访** = 真机手感/物理打印替代不了，转纯顺手（photo→bead 仍缺色报色名；name-tracing wipe 灰阶真机打一张）
 
 ## 10/26 已完成归档
 
