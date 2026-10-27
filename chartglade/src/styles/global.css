@@ -465,6 +465,63 @@ svg {
   font-family: var(--font-serif);
 }
 
+/* Periods variant: super-header bands + heavier inter-period separators */
+
+.pv-table .period-head {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--amber-tint);
+}
+
+.pv-table th.period-head + th.period-head {
+  border-left: 3px double var(--line-strong);
+}
+
+.pv-table.pv-periods .period-sep {
+  border-left: 4px double var(--line-strong);
+}
+
+/* Read-each-period table under the filled periods chart */
+
+.period-reading {
+  margin-top: var(--sp-5);
+}
+
+.pr-sentence {
+  margin: var(--sp-3) auto 0;
+  max-width: 60ch;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+}
+
+/* Decimal breakdown island (decimal chart page) */
+
+.db-line {
+  margin: var(--sp-2) auto 0;
+  max-width: 60ch;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.db-line strong {
+  color: var(--green-deep);
+}
+
+/* title of the second table on a two-table sheet */
+.second-title {
+  margin-top: var(--sp-5);
+}
+
+.decimal-controls .presets {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
 /* Sight word cards */
 
 .word-cards {
@@ -733,7 +790,8 @@ svg {
 /* Name tracing sheet */
 
 .name-controls,
-.mad-controls {
+.mad-controls,
+.decimal-controls {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-3);
@@ -741,7 +799,8 @@ svg {
 }
 
 .name-controls label,
-.mad-controls label {
+.mad-controls label,
+.decimal-controls label {
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
@@ -752,13 +811,15 @@ svg {
   color: var(--ink-soft);
 }
 
-.mad-controls {
+.mad-controls,
+.decimal-controls {
   align-items: end;
 }
 
 .name-controls input,
 .name-controls select,
-.mad-controls select {
+.mad-controls select,
+.decimal-controls input {
   font: inherit;
   font-size: 0.95rem;
   font-weight: 400;
@@ -2139,3 +2200,44 @@ svg {
   }
 }
 
+
+/* ===== Periods chart + decimal breakdown (Nov pre-dev batch) — print pass ===== */
+
+@media print {
+  /* Period band separators survive the black-and-white strip */
+  .pv-table .period-head {
+    border-left: 2px solid #000 !important;
+  }
+
+  .pv-table th.period-head:first-child {
+    border-left: 1px solid #000 !important;
+  }
+
+  .pv-table.pv-periods .period-sep {
+    border-left: 3px double #000 !important;
+  }
+
+  .period-reading {
+    margin-top: 10pt;
+  }
+
+  .second-title {
+    margin-top: 10pt;
+  }
+
+  .pr-sentence {
+    font-size: 11pt;
+    margin-top: 6pt;
+  }
+
+  /* The decimal reference sheet and the breakdown each get their own page */
+  .decimal-places-wrap,
+  .decimal-explore-wrap {
+    break-before: page;
+  }
+
+  .db-line {
+    font-size: 10pt;
+    margin-top: 4pt;
+  }
+}

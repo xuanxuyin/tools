@@ -18,13 +18,25 @@ interface Props {
   showValues?: boolean;
   /** clickable digits with the worth sentence */
   interactive?: boolean;
+  /** super-header banding the columns into ones/thousands/millions/billions periods */
+  periods?: boolean;
 }
 
-const { whole = 7, dec = 0, example, title, showValues = false, interactive = false } = Astro.props;
+const { whole = 7, dec = 0, example, title, showValues = false, interactive = false, periods = false } = Astro.props;
 
 // left-to-right = highest whole place first
 const cols = placeValueColumns(whole).slice().reverse();
 const decCols = decimalPlaceColumns(dec);
+
+// period bands for the super-header: runs of columns sharing one period, high first
+const bands: { name: string; span: number }[] = [];
+if (periods) {
+  for (const c of cols) {
+    const last = bands[bands.length - 1];
+    if (last && last.name === c.period) last.span += 1;
+    else bands.push({ name: c.period, span: 1 });
+  }
+}
 
 let digits: (number | null)[] = cols.map(() => null);
 let decDigits: (number | null)[] = decCols.map(() => null);
@@ -51,11 +63,19 @@ const DEFAULT_FACT = 'Click any digit to see what it is worth.';
 
 {title && <p class="sheet-title">{title}</p>}
 <table
-  class:list={['chart-table', 'pv-table', { clickable: interactive }]}
+  class:list={['chart-table', 'pv-table', { clickable: interactive, 'pv-periods': periods }]}
   data-fact-table={interactive ? '' : undefined}
   data-fact-default={interactive ? DEFAULT_FACT : undefined}
 >
   <thead>
+    {periods && (
+      <tr class="period-row">
+        {bands.map((b) => (
+          <th scope="colgroup" class="period-head" colspan={b.span}>{b.name} period</th>
+        ))}
+        {decCols.length > 0 && <th class="period-head" colspan={decCols.length + 1} aria-hidden="true"></th>}
+      </tr>
+    )}
     <tr>
       {cols.map((c) => (
         <th scope="col" class:list={[{ 'period-sep': periodStart(c.name) }]}>{c.name}</th>

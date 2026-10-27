@@ -156,6 +156,63 @@ export function digitsOf(n: number, length: number): number[] {
   return out;
 }
 
+/** English reading of 0-999 (the size of one period group): 914 -> "nine hundred fourteen". */
+export function periodWords(n: number): string {
+  if (n < 0 || n > 999) throw new Error('periodWords: 0-999 only');
+  if (n < 100) return smallNumberWord(n);
+  const h = Math.floor(n / 100);
+  const r = n % 100;
+  return r ? `${ONES[h]} hundred ${smallNumberWord(r)}` : `${ONES[h]} hundred`;
+}
+
+/** Period family -> the word you say after its digits: thousands -> "thousand". */
+const PERIOD_SAID: Record<string, string> = {
+  ones: '',
+  thousands: 'thousand',
+  millions: 'million',
+  billions: 'billion',
+};
+
+export interface NumberPeriod {
+  /** 'billions' | 'millions' | 'thousands' | 'ones' — same names as PlaceColumn.period */
+  name: string;
+  /** the 1-999 group inside that period */
+  value: number;
+}
+
+/**
+ * The comma groups of a whole number, highest period first:
+ * numberPeriods(471930862505) -> billions 471, millions 930, thousands 862, ones 505.
+ * Leading empty periods are dropped; the ones period always stays.
+ */
+export function numberPeriods(n: number): NumberPeriod[] {
+  if (!Number.isInteger(n) || n < 0 || n > 999_999_999_999) {
+    throw new Error('numberPeriods: whole numbers 0..999,999,999,999 only');
+  }
+  const out: NumberPeriod[] = [];
+  let rest = n;
+  for (const name of PERIODS) {
+    out.push({ name, value: rest % 1000 });
+    rest = Math.floor(rest / 1000);
+  }
+  while (out.length > 1 && out[out.length - 1].value === 0) out.pop();
+  return out.reverse();
+}
+
+/** One period group read aloud: periodPhrase(930, 'millions') -> "nine hundred thirty million". */
+export function periodPhrase(value: number, period: string): string {
+  const said = PERIOD_SAID[period];
+  if (said === undefined) throw new Error(`periodPhrase: unknown period "${period}"`);
+  return said ? `${periodWords(value)} ${said}` : periodWords(value);
+}
+
+/** The full spoken sentence, comma by comma (matches how Americans read big numbers). */
+export function readNumberWithPeriods(n: number): string {
+  const parts = numberPeriods(n).filter((p) => p.value > 0);
+  if (parts.length === 0) return 'zero';
+  return parts.map((p) => periodPhrase(p.value, p.name)).join(', ');
+}
+
 /** Fraction strip rows: unit fractions 1/2..1/den (whole bar handled by caller). */
 export function fractionDenominators(max: number): number[] {
   const out: number[] = [];
