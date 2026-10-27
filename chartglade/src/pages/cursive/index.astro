@@ -5,6 +5,8 @@ import { cursivePages } from '../../data/cursive';
 import { nameTracingPage } from '../../data/nameTracing';
 import { statesPage } from '../../data/cursiveStates';
 import { cursiveLetters } from '../../data/cursiveLetters';
+import { howToCursivePage } from '../../data/howToCursive';
+import { cursiveSentencesPage } from '../../data/cursiveSentences';
 
 const jsonLd = [
   {
@@ -40,6 +42,10 @@ const jsonLd = [
 
   <section class="section">
     <div class="card-grid">
+      <a class="card" href={`/${howToCursivePage.slug}/`}>
+        <h2>{howToCursivePage.h1}</h2>
+        <p>The six-step front door: posture and grip, the four basic strokes, lowercase by stroke family, joins, words, sentences — with a practice sheet that prints the whole sequence.</p>
+      </a>
       {cursivePages.map((p) => (
         <a class="card" href={`/${p.slug}/`}>
           <h2>{p.h1}</h2>
@@ -49,6 +55,10 @@ const jsonLd = [
       <a class="card" href={`/${nameTracingPage.slug}/`}>
         <h2>{nameTracingPage.h1}</h2>
         <p>Type any name and print a tracing worksheet — print or cursive letters, with gray trace rows, hollow outlines or a wipe-and-write fade on one letter page.</p>
+      </a>
+      <a class="card" href={`/${cursiveSentencesPage.slug}/`}>
+        <h2>{cursiveSentencesPage.h1}</h2>
+        <p>Eight public-domain American quotes — Lincoln, Longfellow, Paine — with a gray trace row, a hollow outline row, then write solo. Prints on two letter pages.</p>
       </a>
       <a class="card" href={`/${statesPage.slug}/`}>
         <h2>{statesPage.h1}</h2>

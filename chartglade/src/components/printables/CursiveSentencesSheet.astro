@@ -1,0 +1,32 @@
+---
+/**
+ * Trace-then-write quote sheet. Every sentence ships three rows — gray trace,
+ * hollow outline, blank guide lines — the fading-support sequence from the
+ * name tracing page, applied at sentence length. Pure SSR: the page prints
+ * complete with JavaScript off. Two letter pages: sentences 1-4, then 5-8.
+ */
+import { CURSIVE_SENTENCES } from '../../data/cursiveSentences';
+
+/** Font tiers keep a 30-59 character sentence inside one full-width row. */
+const tierOf = (len: number): string => (len <= 35 ? 'lg' : len <= 50 ? 'md' : 'sm');
+const BREAK_AFTER = 4;
+---
+
+<div class="sent-sheet">
+  <p class="sheet-title">Cursive sentences — trace, then write</p>
+  <p class="ht-name">Name: ______________________ &nbsp;&nbsp; Date: ____________</p>
+
+  {CURSIVE_SENTENCES.map((s, i) => (
+    <section class:list={['sent-block', { 'sheet-break': i === BREAK_AFTER }]} aria-label={`Sentence ${i + 1}: ${s.author}`}>
+      <p class="sent-label">{i + 1}. {s.author}</p>
+      <p class="sent-fact">{s.fact}</p>
+      <div class:list={['sent-row', 'trace', tierOf(s.text.length)]}>
+        <span class="glyph">{s.text}</span>
+      </div>
+      <div class:list={['sent-row', 'hollow', tierOf(s.text.length)]} aria-hidden="true">
+        <span class="glyph">{s.text}</span>
+      </div>
+      <div class:list={['sent-row', 'blank', tierOf(s.text.length)]} aria-hidden="true"></div>
+    </section>
+  ))}
+</div>
