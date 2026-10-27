@@ -2666,6 +2666,9 @@ svg {
 
   .sent-row.sm .glyph {
     font-size: 19px;
+  }
+}
+
 @media print {
   /* Teaching calendar year index: all 12 months on one letter page.
      The screen month sections (.section) are stripped by the main print
