@@ -8,8 +8,12 @@ import {
   hundredNumbers,
   isDiagonal,
   multTable,
+  numberPeriods,
+  periodPhrase,
+  periodWords,
   placeFact,
   placeValueColumns,
+  readNumberWithPeriods,
   smallNumberWord,
 } from './mathCharts';
 
@@ -108,5 +112,51 @@ describe('smallNumberWord', () => {
     expect(smallNumberWord(13)).toBe('thirteen');
     expect(smallNumberWord(42)).toBe('forty-two');
     expect(smallNumberWord(90)).toBe('ninety');
+  });
+});
+
+describe('periods (the three-digit comma groups)', () => {
+  it('reads any 1-999 group the way a period is read', () => {
+    expect(periodWords(0)).toBe('zero');
+    expect(periodWords(7)).toBe('seven');
+    expect(periodWords(42)).toBe('forty-two');
+    expect(periodWords(300)).toBe('three hundred');
+    expect(periodWords(914)).toBe('nine hundred fourteen');
+    expect(periodWords(505)).toBe('five hundred five');
+    expect(() => periodWords(1000)).toThrow();
+  });
+
+  it('splits a number into its comma periods, highest first', () => {
+    expect(numberPeriods(471930862505)).toEqual([
+      { name: 'billions', value: 471 },
+      { name: 'millions', value: 930 },
+      { name: 'thousands', value: 862 },
+      { name: 'ones', value: 505 },
+    ]);
+    // leading empty periods drop; the ones period always stays
+    expect(numberPeriods(505)).toEqual([{ name: 'ones', value: 505 }]);
+    expect(numberPeriods(0)).toEqual([{ name: 'ones', value: 0 }]);
+    expect(() => numberPeriods(1e12)).toThrow();
+  });
+
+  it('reads one period group with its name attached', () => {
+    expect(periodPhrase(930, 'millions')).toBe('nine hundred thirty million');
+    expect(periodPhrase(2, 'billions')).toBe('two billion');
+    expect(periodPhrase(175, 'ones')).toBe('one hundred seventy-five');
+    expect(() => periodPhrase(5, 'zillions')).toThrow();
+  });
+
+  it('reads whole numbers comma by comma (the cluster examples)', () => {
+    // the worked example on the periods chart page
+    expect(readNumberWithPeriods(471930862505)).toBe(
+      'four hundred seventy-one billion, nine hundred thirty million, eight hundred sixty-two thousand, five hundred five',
+    );
+    // the example number used across the rest of the cluster
+    expect(readNumberWithPeriods(4302175)).toBe(
+      'four million, three hundred two thousand, one hundred seventy-five',
+    );
+    // a zero period is skipped, not said
+    expect(readNumberWithPeriods(4000175)).toBe('four million, one hundred seventy-five');
+    expect(readNumberWithPeriods(0)).toBe('zero');
   });
 });
