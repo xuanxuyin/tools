@@ -17,12 +17,12 @@ import { nearestBead } from '../lib/beadPalette';
 
 const htmlPath = resolve(
   fileURLToPath(import.meta.url),
-  '../../../dist/perler-bead-animals/cat/index.html',
+  '../../../dist/perler-bead-animals/corgi-butt-peek/index.html',
 );
 
 async function loadPage() {
   const html = readFileSync(htmlPath, 'utf8');
-  const window = new Window({ url: 'https://tintbrew.com/perler-bead-animals/cat/' });
+  const window = new Window({ url: 'https://tintbrew.com/perler-bead-animals/corgi-butt-peek/' });
   const { document } = window;
   document.write(html);
   (globalThis as Record<string, unknown>).document = document;

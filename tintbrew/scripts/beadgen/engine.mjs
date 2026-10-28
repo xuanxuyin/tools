@@ -384,7 +384,11 @@ export function audit(meta, rows, counts) {
   const declared = Object.keys(meta.zones);
   for (const z of declared) if (!counts.has(z)) problems.push(`zone ${z} (${meta.zones[z].label}) unused`);
   for (const z of counts.keys()) if (!declared.includes(z)) problems.push(`undeclared zone ${z} in grid`);
-  if (declared.length < 4) problems.push(`only ${declared.length} zones (min 4)`);
+  // editor-sourced minis (import-webp.mjs _editor manifest) ship as few as
+  // 2 zones — the community design is genuinely 2 colors; zonesMin opts a
+  // def out of the hand-authored 4-zone floor the same way singlesOk does
+  const minZones = meta.zonesMin ?? 4;
+  if (declared.length < minZones) problems.push(`only ${declared.length} zones (min ${minZones})`);
   for (const [z, n] of counts) if (n < 4 && !((meta.singlesOk ?? []).includes(z))) notes.push(`zone ${z} (${meta.zones[z].label}) has only ${n} beads`);
 
   // symmetry: per-row span center vs grid center (mirror designs only)

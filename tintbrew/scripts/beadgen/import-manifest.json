@@ -111,5 +111,19 @@
   },
   "small": {
     "finger-heart-hand": { "category": "minis" }
+  },
+  "_editor": {
+    "_comment": "Flight-data source: key names editor-<key>.html under PBP_EDITOR_DIR (the community site's /editor/<slug> pages carry the grid verbatim in RSC data). No image exists for these — the main webp was never exported.",
+    "boba-tea": { "category": "food" },
+    "mushroom": { "category": "food" },
+    "manual-french-fries": { "slug": "french-fries", "category": "food" },
+    "manual-bee": { "slug": "bee", "category": "animals" },
+    "manual2-purple-butterfly": { "slug": "purple-butterfly", "category": "animals" },
+    "manual-red-heart": { "slug": "red-heart", "category": "minis" },
+    "manual2-lavender-heart": { "slug": "lavender-heart", "category": "minis" },
+    "manual2-mint-heart": { "slug": "mint-heart", "category": "minis" },
+    "manual2-peach-heart": { "slug": "peach-heart", "category": "minis" },
+    "manual2-game-controller": { "slug": "game-controller", "category": "characters" },
+    "manual2-green-creature": { "slug": "green-creature", "category": "characters" }
   }
 }

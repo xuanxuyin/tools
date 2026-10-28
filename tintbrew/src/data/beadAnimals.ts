@@ -4472,4 +4472,51 @@ export const BEAD_ANIMALS: BeadPatternDef[] = [
       '..................................................................................',
     ],
   },
+  {
+    slug: 'bee',
+    name: 'Bee',
+    category: 'animals',
+    difficulty: 'easy',
+    width: 9,
+    tagline: 'A 9 × 6 board in 3 colors — lemon does the heavy lifting.',
+    blurb:
+      'The Bee spans 9 × 6 beads — about 1.8 inches wide on the board — 36 beads across 3 colors, every one counted in the list below. Print the grid for the pegboard, or place it here in the browser and repaint any color before you commit.',
+    regions: {
+      A: { label: 'lemon', color: 'lemon' },
+      B: { label: 'toasted marshmallow', color: 'toasted-marshmallow' },
+      C: { label: 'dark spruce', color: 'dark-spruce' },
+    },
+    rows: [
+      '...AAA...',
+      '..AAAAA..',
+      '.BCCCCCB.',
+      'BBAAAAABB',
+      'BBCCCCCBB',
+      '...AAA...',
+    ],
+  },
+  {
+    slug: 'purple-butterfly',
+    name: 'Purple Butterfly',
+    category: 'animals',
+    difficulty: 'easy',
+    width: 11,
+    tagline: '61 beads, 2 colors, mostly plum and frosted lilac.',
+    blurb:
+      'The Purple Butterfly spans 11 × 8 beads — about 2.2 inches wide on the board — 61 beads across 2 colors, every one counted in the list below. Print the grid for the pegboard, or place it here in the browser and repaint any color before you commit.',
+    regions: {
+      A: { label: 'plum', color: 'plum' },
+      B: { label: 'frosted lilac', color: 'frosted-lilac' },
+    },
+    rows: [
+      'AAA.....AAA',
+      'ABBA...ABBA',
+      'ABBBA.ABBBA',
+      '.AABBABBAA.',
+      '..ABBABBA..',
+      '.ABBAAABBA.',
+      '.ABBA.ABBA.',
+      '..AA...AA..',
+    ],
+  },
 ];

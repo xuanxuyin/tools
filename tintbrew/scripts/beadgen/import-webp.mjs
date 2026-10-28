@@ -12,6 +12,14 @@
 // Zone letters follow the label-equals-color-word convention of the
 // hand-authored defs.
 //
+// A second source shape rides the same pipeline: the community site's
+// /editor/<slug> pages ship the pattern verbatim in RSC flight data (a
+// width×height matrix of palette indices). Those skip the raster machinery
+// entirely — each source hex just Oklab-snaps onto the Perler line — and
+// land in the manifest under `_editor` (bucket key = editor HTML stem).
+// Designs that genuinely use fewer than 4 colors carry zonesMin so the
+// engine audit doesn't hold them to the hand-authored 4-zone floor.
+//
 //   node scripts/beadgen/import-webp.mjs <img...>         → def JSON to stdout
 //   node scripts/beadgen/import-webp.mjs --svg <out.png> <img>  → preview png
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -191,6 +199,46 @@ function capColors(grid, K) {
   }));
 }
 
+// ---------- editor source: /editor/<slug> RSC flight carries the pattern
+// grid verbatim (palette-index matrix, 0 = empty peg). No raster pipeline —
+// each source hex snaps once onto the Perler line. Two source hexes can
+// snap onto the same bead (a 3-gray heart → 2 grays); those merge into one
+// zone so a def never ships the same Perler color twice.
+const EDITOR_DIR = process.env.PBP_EDITOR_DIR ?? 'D:/tmp/pbp-crawl';
+function parseEditorPattern(htmlPath) {
+  const html = readFileSync(htmlPath, 'utf8');
+  const chunks = [...html.matchAll(/self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)/g)]
+    .map((m) => JSON.parse(`"${m[1]}"`));
+  const all = chunks.join('');
+  const start = all.indexOf('"pattern":{');
+  if (start < 0) throw new Error(`no pattern in flight data of ${htmlPath}`);
+  let depth = 0;
+  let end = -1;
+  for (let j = all.indexOf('{', start); j < all.length; j++) {
+    if (all[j] === '{') depth++;
+    else if (all[j] === '}') { depth--; if (!depth) { end = j + 1; break; } }
+  }
+  return JSON.parse(all.slice(all.indexOf('{', start), end));
+}
+function editorCells(p, htmlPath) {
+  const snap = p.colors.map((hex) => {
+    const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return nearestBead(r, g, b).bead.id;
+  });
+  // dedup snapped ids: source index (1-based) → first index with same bead
+  const remap = new Map();
+  snap.forEach((id, k) => {
+    const first = snap.findIndex((other) => other === id);
+    remap.set(k + 1, first + 1);
+  });
+  const cells = p.grid.map((row) => row.map((v) => {
+    const src = remap.get(v);
+    if (v !== 0 && src === undefined) throw new Error(`grid index ${v} outside palette in ${htmlPath}`);
+    return v === 0 ? '.' : snap[src - 1];
+  }));
+  return { cells, W: p.width, H: p.height, name: p.name };
+}
+
 // ---------- driver ----------
 const argv = process.argv.slice(2);
 let svgOut = null;
@@ -220,6 +268,8 @@ function stemFile(stem) {
 // manifest mode: import-manifest.json maps crawl stems → { slug?, category? }
 // (IP characters are genericized there); the bucket key is the default
 // category. Output splits per category into imported-<cat>.mjs modules.
+// The `_editor` bucket is the flight-data source: keys name editor-<key>.html
+// files under EDITOR_DIR instead of images.
 if (manifestPath) {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
   for (const [bucket, entries] of Object.entries(manifest)) {
@@ -232,6 +282,12 @@ if (manifestPath) {
       });
     }
   }
+  for (const [stem, over] of Object.entries(manifest._editor ?? {})) {
+    if (stem.startsWith('_')) continue;
+    const path = `${EDITOR_DIR}/editor-${stem}.html`;
+    if (!existsSync(path)) throw new Error(`no editor page for "${stem}" under ${EDITOR_DIR}`);
+    jobs.push({ editor: path, slug: over.slug ?? stem, category: over.category ?? 'animals' });
+  }
 }
 
 // bead pitch is 5 mm — matches lib/beadContent beadSizeInches()
@@ -239,10 +295,17 @@ const inchesOf = (n) => ((n * 5) / 25.4).toFixed(1);
 
 const defs = [];
 for (const job of jobs) {
-  const { data, info } = await sharp(job.path).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-  const grid = detectGrid(data, info.width, info.height);
-  let cells = despeckle(sample(data, info.width, info.height, grid));
-  if (maxColors > 0) cells = capColors(cells, maxColors);
+  let cells, W, H, name;
+  if (job.editor) {
+    const p = parseEditorPattern(job.editor);
+    ({ cells, W, H, name } = editorCells(p, job.editor));
+  } else {
+    const { data, info } = await sharp(job.path).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    const grid = detectGrid(data, info.width, info.height);
+    cells = despeckle(sample(data, info.width, info.height, grid));
+    if (maxColors > 0) cells = capColors(cells, maxColors);
+    W = grid.N; H = grid.M;
+  }
   // grid → lettered rows + zone map (letters ordered by bead count so the
   // most-used colors get A, B, C… and the map is stable across reruns)
   const counts = new Map();
@@ -252,7 +315,7 @@ for (const job of jobs) {
   order.forEach((id, i) => { zones[id] = LETTERS[i]; });
   const rows = cells.map((row) => row.map((c) => (c === '.' ? '.' : zones[c])).join(''));
   const slug = job.slug ?? job.path.split(/[\\/]/).pop().replace(/\.(webp|png)$/i, '');
-  const name = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  if (!job.editor) name = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
   const category = job.category ?? 'animals';
   const zoneMap = {};
   for (const [id, L] of Object.entries(zones)) {
@@ -261,7 +324,6 @@ for (const job of jobs) {
   }
   const total = [...counts.values()].reduce((a, b) => a + b, 0);
   const top2 = order.slice(0, 2).map((id) => LINE.find((b) => b.id === id).name.toLowerCase());
-  const W = grid.N, H = grid.M;
   // data-driven copy: facts only (sizes, counts, dominant colors), rotated
   // per-slug so gallery cards don't read as one template
   const taglines = [
@@ -278,6 +340,8 @@ for (const job of jobs) {
     slug, name, category,
     difficulty: W <= 30 ? 'easy' : 'medium',
     W, H, zones: zoneMap, rows, tagline, blurb,
+    // genuinely-N-color community designs opt out of the 4-zone floor
+    ...(order.length < 4 ? { zonesMin: order.length } : {}),
   });
   const countsStr = order.map((id) => `${LINE.find((b) => b.id === id).name} ${counts.get(id)}`).join(', ');
   console.log(`${category}/${slug}: ${W}x${H}, ${order.length} colors, ${total} beads — ${countsStr.slice(0, 80)}`);
@@ -289,6 +353,7 @@ function moduleOf(cat, catDefs) {
     '  {\n' +
     `    slug: ${q(d.slug)},\n    name: ${q(d.name)},\n    category: ${q(d.category)},\n` +
     `    difficulty: ${q(d.difficulty)},\n    W: ${d.W},\n    H: ${d.H},\n    mirror: false,\n` +
+    (d.zonesMin ? `    zonesMin: ${d.zonesMin},\n` : '') +
     `    tagline: ${q(d.tagline)},\n    blurb: ${q(d.blurb)},\n` +
     `    zones: {\n${Object.entries(d.zones).map(([L, z]) => `      ${L}: { label: ${q(z.label)}, color: ${q(z.color)} },`).join('\n')}\n    },\n` +
     `    rows: [\n${d.rows.map((r) => `      ${q(r)},`).join('\n')}\n    ],\n  },`,

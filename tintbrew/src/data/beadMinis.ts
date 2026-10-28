@@ -1,7 +1,8 @@
 /**
- * Mini patterns (8) — vector-authored in scripts/beadgen/*.mjs and
- * rasterized by the beadgen engine. The smallest tier stays smallest
- * (14-22 wide): an-evening project, exactly four regions each.
+ * Mini patterns — quick makes from community designs, imported by
+ * scripts/beadgen/import-webp.mjs. The smallest tier stays smallest
+ * (6-22 wide): keychain-size, as few as 2 colors where the source
+ * design genuinely uses two.
  */
 import type { BeadPatternDef } from '../lib/beadTypes';
 
@@ -91,6 +92,96 @@ export const BEAD_MINIS: BeadPatternDef[] = [
       '..........BBBBAAAAAAAAAAAAAABB........',
       '............BBBBBBBBBBBBBBBB..........',
       '............BBBBBBBBBBBBBBBB..........',
+    ],
+  },
+  {
+    slug: 'red-heart',
+    name: 'Red Heart',
+    category: 'minis',
+    difficulty: 'easy',
+    width: 7,
+    tagline: 'A 7 × 6 board in 4 colors — cherry does the heavy lifting.',
+    blurb:
+      'The Red Heart spans 7 × 6 beads — about 1.4 inches wide on the board — 27 beads across 4 colors, every one counted in the list below. Print the grid for the pegboard, or place it here in the browser and repaint any color before you commit.',
+    regions: {
+      A: { label: 'cherry', color: 'cherry' },
+      B: { label: 'midnight', color: 'midnight' },
+      C: { label: 'charcoal', color: 'charcoal' },
+      D: { label: 'slate blue', color: 'slate-blue' },
+    },
+    rows: [
+      '.CC.CC.',
+      'DAADAAD',
+      'BAAAAAB',
+      '.BAAAB.',
+      '..BAB..',
+      '...B...',
+    ],
+  },
+  {
+    slug: 'lavender-heart',
+    name: 'Lavender Heart',
+    category: 'minis',
+    difficulty: 'easy',
+    width: 7,
+    tagline: 'Built on plum and frosted lilac — 27 beads across a 7-wide board.',
+    blurb:
+      'The Lavender Heart spans 7 × 6 beads — about 1.4 inches wide on the board — 27 beads across 2 colors, every one counted in the list below. Print the grid for the pegboard, or place it here in the browser and repaint any color before you commit.',
+    regions: {
+      A: { label: 'plum', color: 'plum' },
+      B: { label: 'frosted lilac', color: 'frosted-lilac' },
+    },
+    rows: [
+      '.AA.AA.',
+      'ABBABBA',
+      'ABBBBBA',
+      '.ABBBA.',
+      '..ABA..',
+      '...A...',
+    ],
+  },
+  {
+    slug: 'mint-heart',
+    name: 'Mint Heart',
+    category: 'minis',
+    difficulty: 'easy',
+    width: 7,
+    tagline: '27 beads, 2 colors, mostly forest and kiwi lime.',
+    blurb:
+      'The Mint Heart spans 7 × 6 beads — about 1.4 inches wide on the board — 27 beads across 2 colors, every one counted in the list below. Print the grid for the pegboard, or place it here in the browser and repaint any color before you commit.',
+    regions: {
+      A: { label: 'forest', color: 'forest' },
+      B: { label: 'kiwi lime', color: 'kiwi-lime' },
+    },
+    rows: [
+      '.AA.AA.',
+      'ABBABBA',
+      'ABBBBBA',
+      '.ABBBA.',
+      '..ABA..',
+      '...A...',
+    ],
+  },
+  {
+    slug: 'peach-heart',
+    name: 'Peach Heart',
+    category: 'minis',
+    difficulty: 'easy',
+    width: 7,
+    tagline: 'Built on rust and cheddar — 27 beads across a 7-wide board.',
+    blurb:
+      'The Peach Heart spans 7 × 6 beads — about 1.4 inches wide on the board — 27 beads across 2 colors, every one counted in the list below. Print the grid for the pegboard, or place it here in the browser and repaint any color before you commit.',
+    regions: {
+      A: { label: 'rust', color: 'rust' },
+      B: { label: 'cheddar', color: 'cheddar' },
+    },
+    rows: [
+      '.AA.AA.',
+      'ABBABBA',
+      'ABBBBBA',
+      '.ABBBA.',
+      '..ABA..',
+      '...A...',
     ],
   },
 ];

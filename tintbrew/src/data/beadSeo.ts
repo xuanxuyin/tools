@@ -25,7 +25,7 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
   description:
     'Free fuse bead patterns for every level: dogs, cats, bunnies, pandas, chibi characters and a Halloween set. Recolor any area with the real 103-color Perler line, then print the template and its bead list.',
   intro: [
-    '106 designs across animals, characters, Halloween and quick makes — from 19-bead-wide starters that fit one pegboard to 90-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
+    '117 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 90-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
     'What makes these different from a normal pattern grid: every area of a design — fur, frosting, scarf, eyes — is its own zone. Tap a zone and try any of the 103 real bead colors before you commit. The bead list updates live, so you know exactly how many of each color to pull from the jar.',
     'When a design looks right, print it. The printed sheet gives you the empty template in zone outlines plus the shopping list of beads, and it fits on one letter-size page.',
   ],

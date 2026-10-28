@@ -45,20 +45,22 @@ const BANNED = [
 ];
 
 describe('bead pattern data integrity', () => {
-  it('106 patterns across six categories with locked minimums', () => {
+  it('117 patterns across six categories with locked minimums', () => {
     // all-imported catalog since 2026-10-28: the 46 vector-authored designs
-    // went offline; community bead renders are the whole set now
-    expect(BEAD_PATTERNS).toHaveLength(106);
-    expect(patternContents).toHaveLength(106);
+    // went offline; community bead renders are the whole set now — images
+    // for 106 boards plus 11 editor-sourced minis whose grids ship verbatim
+    // in the community site's RSC flight data
+    expect(BEAD_PATTERNS).toHaveLength(117);
+    expect(patternContents).toHaveLength(117);
     expect(categoryCounts).toEqual({
-      animals: 52,
-      food: 1,
+      animals: 54,
+      food: 4,
       christmas: 0,
       halloween: 11,
-      minis: 1,
-      characters: 41,
+      minis: 5,
+      characters: 43,
     });
-    expect(easyPatterns.length).toBe(13);
+    expect(easyPatterns.length).toBe(24);
   });
 
   it('grids are rectangular: no row exceeds width, rows are padded', () => {
@@ -237,7 +239,7 @@ describe('bead pages in real dist markup', () => {
     expect(sm).toContain('<sitemap>');
   });
 
-  it('sitemap file lists all 106 pattern URLs', () => {
+  it('sitemap file lists all 117 pattern URLs', () => {
     // sitemap-0.xml is gzipped when large; Astro writes plain when small
     const sm0 = resolve(distRoot, 'sitemap-0.xml');
     const raw = readFileSync(sm0);

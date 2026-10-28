@@ -64,9 +64,10 @@ const CATS = [
     imported: 'imported-minis',
     header:
       '/**\n' +
-      ' * Mini patterns (8) — vector-authored in scripts/beadgen/*.mjs and\n' +
-      ' * rasterized by the beadgen engine. The smallest tier stays smallest\n' +
-      ' * (14-22 wide): an-evening project, exactly four regions each.\n' +
+      ' * Mini patterns — quick makes from community designs, imported by\n' +
+      ' * scripts/beadgen/import-webp.mjs. The smallest tier stays smallest\n' +
+      ' * (6-22 wide): keychain-size, as few as 2 colors where the source\n' +
+      ' * design genuinely uses two.\n' +
       ' */',
   },
   {
