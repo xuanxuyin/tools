@@ -169,7 +169,7 @@ const zoneTotal = view.regions.length;
       <div class="related-grid">
         {related.map((p) => (
           <a class="related-card" href={p.url}>
-            <BeadFigure view={p} mode="reference" />
+            <BeadFigure view={p} mode="reference" thumb />
             <span class="related-name">{p.def.name}</span>
             <span class="related-meta">{p.totalBeads} beads · {p.def.difficulty}</span>
           </a>

@@ -17,17 +17,55 @@ import type { PatternView } from '../lib/beadContent';
 interface Props {
   view: PatternView;
   mode: 'reference' | 'blank';
+  /**
+   * Card-thumbnail mode. Boards wider than 40 beads collapse each f×f
+   * block to its majority zone — at 150px card size the loss is invisible,
+   * and hub/gallery pages stay far under Cloudflare Pages' 25 MiB
+   * single-file cap (the all-bead hub hit 25.3 MiB and every deploy
+   * failed at asset validation). Detail pages never pass thumb: every
+   * bead always renders there.
+   */
+  thumb?: boolean;
 }
 
-const { view, mode } = Astro.props;
+const { view, mode, thumb = false } = Astro.props;
 const U = 10; // viewBox units per bead cell
 const { grid, def } = view;
-const w = def.width * U;
-const h = grid.length * U;
+
+let rows = grid;
+if (thumb && def.width > 40) {
+  const f = Math.ceil(def.width / 40);
+  const out: string[] = [];
+  for (let y = 0; y < grid.length; y += f) {
+    let line = '';
+    for (let x = 0; x < def.width; x += f) {
+      const counts = new Map<string, number>();
+      for (let dy = 0; dy < f && y + dy < grid.length; dy++) {
+        for (let dx = 0; dx < f && x + dx < def.width; dx++) {
+          const ch = grid[y + dy]![x + dx]!;
+          counts.set(ch, (counts.get(ch) ?? 0) + 1);
+        }
+      }
+      // majority non-empty key; '.' only wins when empty pegs strictly
+      // outnumber it, so one-bead outlines survive the decimation
+      let best = '.';
+      let n = 0;
+      for (const [ch, c] of counts) {
+        if (ch !== '.' && c > n) { n = c; best = ch; }
+      }
+      line += (counts.get('.') ?? 0) > n ? '.' : best;
+    }
+    out.push(line);
+  }
+  rows = out;
+}
+const cols = rows[0]?.length ?? def.width;
+const w = cols * U;
+const h = rows.length * U;
 
 const cells: { x: number; y: number; key: string }[] = [];
-grid.forEach((row, y) => {
-  for (let x = 0; x < def.width; x++) {
+rows.forEach((row, y) => {
+  for (let x = 0; x < row.length; x++) {
     const ch = row[x]!;
     if (ch !== '.') cells.push({ x: x * U, y: y * U, key: ch });
   }
