@@ -88,7 +88,7 @@ const px = (col: number, row: number) => ({
 const listText = (doc: Document) =>
   [...doc.querySelectorAll('[data-cv-list] li')].map((li) => li.textContent).join(' | ');
 
-const CHERRY = '#d5322f'; // nearestBead('#ff0000') → Cherry (lib guards pin this)
+const RED = '#fd5918'; // nearestBead('#ff0000') → Tangerine (lib guards pin this)
 
 describe('photo bead island (real SSR markup)', () => {
   let ctx: Awaited<ReturnType<typeof loadPage>>;
@@ -112,9 +112,9 @@ describe('photo bead island (real SSR markup)', () => {
     expect(svg?.getAttribute('data-rows')).toBe('29');
     const cells = ctx.host.querySelectorAll('.cv-cell');
     expect(cells.length).toBe(29 * 29);
-    for (const c of cells) expect(c.getAttribute('fill')).toBe(CHERRY);
+    for (const c of cells) expect(c.getAttribute('fill')).toBe(RED);
     // pre-filled board → list already counted by PaintCanvas's seed pass
-    expect(listText(ctx.document)).toContain('Cherry ×841');
+    expect(listText(ctx.document)).toContain('Tangerine ×841');
     expect(listText(ctx.document)).toContain('841 of 841 beads painted');
     // status line reports the board
     expect(ctx.host.querySelector('[data-photo-status]')?.textContent).toContain('29 × 29');
@@ -142,7 +142,7 @@ describe('photo bead island (real SSR markup)', () => {
     expect(
       ctx.host.querySelector('.cv-cell[data-cx="10"][data-cy="10"]')?.getAttribute('fill'),
     ).toBe('transparent');
-    expect(listText(ctx.document)).toContain('Cherry ×840');
+    expect(listText(ctx.document)).toContain('Tangerine ×840');
     expect(listText(ctx.document)).toContain('840 of 841 beads painted');
   });
 
@@ -150,7 +150,7 @@ describe('photo bead island (real SSR markup)', () => {
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     // one low-opacity ghost rect per cell under the painted board
     expect(ctx.host.querySelectorAll('.cv-ghost').length).toBe(29 * 29);
-    expect(ctx.host.querySelector('.cv-ghost')?.getAttribute('fill')).toBe(CHERRY);
+    expect(ctx.host.querySelector('.cv-ghost')?.getAttribute('fill')).toBe(RED);
     (ctx.host.querySelector('[data-cv-clear]') as HTMLElement).dispatchEvent(
       new (ctx.window as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent('click', {
         bubbles: true,
@@ -161,7 +161,7 @@ describe('photo bead island (real SSR markup)', () => {
     for (const c of ctx.host.querySelectorAll('.cv-cell')) {
       expect(c.getAttribute('fill')).toBe('transparent');
     }
-    expect(listText(ctx.document)).not.toContain('Cherry');
+    expect(listText(ctx.document)).not.toContain('Tangerine');
   });
 
   it('changing the board size re-converts without a second upload', () => {

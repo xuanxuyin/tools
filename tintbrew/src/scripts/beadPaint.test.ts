@@ -83,7 +83,7 @@ describe('paint canvas island (real SSR markup)', () => {
     expect(cells.length).toBeGreaterThan(100);
     // cat is 56×40 = 2240 board positions
     expect(cells.length + pegs.length).toBe(COLS * ROWS);
-    expect(fillOf(ctx.document, 12, 12)).toBe('#f5f4ef'); // row 12 outline bead starts white
+    expect(fillOf(ctx.document, 12, 12)).toBe('#eaefee'); // row 12 outline bead starts white
     expect(ctx.document.querySelector('[data-cv-tool="brush"]')!.classList.contains('active')).toBe(true);
 
     // every-5 coordinate labels along the top and left edges
@@ -120,7 +120,7 @@ describe('paint canvas island (real SSR markup)', () => {
     const { cx, cy } = px(20, 12); // cat row 12: solid fur band — (20,12) is a fur bead
     firePointer(ctx.window, svg, 'pointerdown', cx, cy);
     firePointer(ctx.window, svg, 'pointerup', cx, cy);
-    expect(fillOf(ctx.document, 20, 12)).toBe('#d5322f');
+    expect(fillOf(ctx.document, 20, 12)).toBe('#9d2b3a');
     expect(listText(ctx.document)).toContain('Cherry ×1');
     expect(listText(ctx.document)).toContain('1 of');
   });
@@ -132,7 +132,7 @@ describe('paint canvas island (real SSR markup)', () => {
     firePointer(ctx.window, svg, 'pointerup', px(24, 12).cx, px(24, 12).cy);
     // row 12 is a solid fur band: cols 20-24 all painted
     for (const c of [20, 21, 22, 23, 24]) {
-      expect(fillOf(ctx.document, c, 12)).toBe('#232326'); // default brush = black
+      expect(fillOf(ctx.document, c, 12)).toBe('#323234'); // default brush = black
     }
     expect(listText(ctx.document)).toContain('Black ×5');
 
@@ -140,8 +140,8 @@ describe('paint canvas island (real SSR markup)', () => {
     // row 6: '........KOOIIIIOOK.....KKKKKKKKKK.....KOOIIIIOOK........'
     firePointer(ctx.window, svg, 'pointerdown', px(15, 6).cx, px(15, 6).cy);
     firePointer(ctx.window, svg, 'pointermove', px(25, 6).cx, px(25, 6).cy);
-    expect(fillOf(ctx.document, 17, 6)).toBe('#232326');
-    expect(fillOf(ctx.document, 23, 6)).toBe('#232326');
+    expect(fillOf(ctx.document, 17, 6)).toBe('#323234');
+    expect(fillOf(ctx.document, 23, 6)).toBe('#323234');
     expect(ctx.document.querySelector('.cv-cell[data-cx="19"][data-cy="6"]')).toBeNull();
     expect(listText(ctx.document)).toContain('Black ×11'); // 5 fur + 3+3 across the gap
   });
@@ -154,7 +154,7 @@ describe('paint canvas island (real SSR markup)', () => {
     firePointer(ctx.window, svg, 'pointerup', px(26, 22).cx, px(26, 22).cy);
     // Bresenham on the perfect diagonal (20,16)→(26,22): every step moves +1,+1
     for (const [c, r] of [[21, 17], [22, 18], [23, 19], [24, 20], [25, 21], [26, 22]] as const) {
-      expect(fillOf(ctx.document, c, r)).toBe('#232326');
+      expect(fillOf(ctx.document, c, r)).toBe('#323234');
     }
     expect(listText(ctx.document)).toContain('Black ×7');
   });
@@ -164,17 +164,17 @@ describe('paint canvas island (real SSR markup)', () => {
     firePointer(ctx.window, svg, 'pointerdown', px(20, 12).cx, px(20, 12).cy);
     firePointer(ctx.window, svg, 'pointermove', px(24, 12).cx, px(24, 12).cy);
     firePointer(ctx.window, svg, 'pointerup', px(24, 12).cx, px(24, 12).cy);
-    expect(fillOf(ctx.document, 22, 12)).toBe('#232326');
+    expect(fillOf(ctx.document, 22, 12)).toBe('#323234');
 
     fireClick(ctx.document.querySelector('[data-cv-tool="eraser"]')!);
     expect(ctx.document.querySelector('[data-cv-tool="eraser"]')!.classList.contains('active')).toBe(true);
     firePointer(ctx.window, svg, 'pointerdown', px(22, 12).cx, px(22, 12).cy);
     firePointer(ctx.window, svg, 'pointerup', px(22, 12).cx, px(22, 12).cy);
-    expect(fillOf(ctx.document, 22, 12)).toBe('#f5f4ef');
+    expect(fillOf(ctx.document, 22, 12)).toBe('#eaefee');
     expect(listText(ctx.document)).toContain('Black ×4');
 
     fireClick(ctx.document.querySelector('[data-cv-clear]')!);
-    expect(fillOf(ctx.document, 20, 12)).toBe('#f5f4ef');
+    expect(fillOf(ctx.document, 20, 12)).toBe('#eaefee');
     expect(listText(ctx.document)).toContain('0 of');
     expect(listText(ctx.document)).toContain('Nothing painted yet');
   });
@@ -190,8 +190,8 @@ describe('paint canvas island (real SSR markup)', () => {
     // one tap lands on both halves: (20,12) + its mirror (35,12)
     firePointer(ctx.window, svg, 'pointerdown', px(20, 12).cx, px(20, 12).cy);
     firePointer(ctx.window, svg, 'pointerup', px(20, 12).cx, px(20, 12).cy);
-    expect(fillOf(ctx.document, 20, 12)).toBe('#232326');
-    expect(fillOf(ctx.document, 55 - 20, 12)).toBe('#232326');
+    expect(fillOf(ctx.document, 20, 12)).toBe('#323234');
+    expect(fillOf(ctx.document, 55 - 20, 12)).toBe('#323234');
     expect(listText(ctx.document)).toContain('Black ×2');
 
     // a drag mirrors cell by cell: 21-23 plus mirrors 32-34 on row 13
@@ -199,7 +199,7 @@ describe('paint canvas island (real SSR markup)', () => {
     firePointer(ctx.window, svg, 'pointermove', px(23, 13).cx, px(23, 13).cy);
     firePointer(ctx.window, svg, 'pointerup', px(23, 13).cx, px(23, 13).cy);
     for (const c of [21, 22, 23, 55 - 23, 55 - 22, 55 - 21]) {
-      expect(fillOf(ctx.document, c, 13)).toBe('#232326');
+      expect(fillOf(ctx.document, c, 13)).toBe('#323234');
     }
     expect(listText(ctx.document)).toContain('Black ×8');
 
@@ -208,8 +208,8 @@ describe('paint canvas island (real SSR markup)', () => {
     expect(btn.getAttribute('aria-pressed')).toBe('false');
     firePointer(ctx.window, svg, 'pointerdown', px(24, 14).cx, px(24, 14).cy);
     firePointer(ctx.window, svg, 'pointerup', px(24, 14).cx, px(24, 14).cy);
-    expect(fillOf(ctx.document, 24, 14)).toBe('#232326');
-    expect(fillOf(ctx.document, 55 - 24, 14)).toBe('#f5f4ef');
+    expect(fillOf(ctx.document, 24, 14)).toBe('#323234');
+    expect(fillOf(ctx.document, 55 - 24, 14)).toBe('#eaefee');
     expect(listText(ctx.document)).toContain('Black ×9');
 
     // mirror + eraser wipes both halves in one pass
@@ -217,8 +217,8 @@ describe('paint canvas island (real SSR markup)', () => {
     fireClick(ctx.document.querySelector('[data-cv-tool="eraser"]')!);
     firePointer(ctx.window, svg, 'pointerdown', px(20, 12).cx, px(20, 12).cy);
     firePointer(ctx.window, svg, 'pointerup', px(20, 12).cx, px(20, 12).cy);
-    expect(fillOf(ctx.document, 20, 12)).toBe('#f5f4ef');
-    expect(fillOf(ctx.document, 55 - 20, 12)).toBe('#f5f4ef');
+    expect(fillOf(ctx.document, 20, 12)).toBe('#eaefee');
+    expect(fillOf(ctx.document, 55 - 20, 12)).toBe('#eaefee');
     expect(listText(ctx.document)).toContain('Black ×7');
   });
 

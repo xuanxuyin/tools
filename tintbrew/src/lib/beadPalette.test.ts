@@ -1,11 +1,14 @@
 /**
- * Palette invariants. The assortment grew 32 → 40 → 42 → 48, each round
- * closing measured Oklab gaps on photo colors (saturated hues first, then
- * the warm mid-tones, then a full color-space sweep). The sweep test below
- * is the permanent version of that audit: every hue × saturation × lightness
- * cell a photo can present must sit within 0.11 Oklab of some bead —
- * about the color variation between bead batches. If a palette edit
- * reopens a band anywhere, this fails with the offending hex.
+ * Palette invariants. The palette is the official 103-color Perler line
+ * (P1–P103, community-measured hexes — see the beadPalette.ts header), so
+ * these guards check line integrity rather than hand-tuned spacing: codes
+ * form the full P1..P103 set with no duplicates, ids/hexes stay unique, and
+ * the color-space sweep stays honest — every photo-plausible cell within
+ * 0.18 Oklab of some bead. The old 48-color guards (≥ 0.04 min spacing,
+ * whole 8-swatch rows) retired with the hand-tuned palette: a real
+ * commercial assortment carries legitimate near-duplicates (Charcoal ↔
+ * Dark Grey 0.020, Sand ↔ Orange Cream 0.021) because both beads exist in
+ * shops, and 103 does not divide into even rows.
  */
 import { describe, expect, it } from 'vitest';
 import { hexToRgb, rgbToOklab, type Oklab } from './color';
@@ -41,67 +44,64 @@ function hsl(h: number, s: number, l: number): string {
 }
 
 describe('bead palette', () => {
-  it('is the 48-color assortment: unique ids and hexes, whole swatch rows', () => {
-    expect(BEAD_COLORS).toHaveLength(48);
-    expect(new Set(BEAD_COLORS.map((b) => b.id)).size).toBe(48);
-    expect(new Set(BEAD_COLORS.map((b) => b.hex.toLowerCase())).size).toBe(48);
-    // 8-column swatch grid → exactly six full rows
-    expect(BEAD_COLORS.length % 8).toBe(0);
+  it('is the official Perler line: 103 unique colors, codes P1–P103', () => {
+    expect(BEAD_COLORS).toHaveLength(103);
+    expect(new Set(BEAD_COLORS.map((b) => b.id)).size).toBe(103);
+    expect(new Set(BEAD_COLORS.map((b) => b.hex.toLowerCase())).size).toBe(103);
+    const codes = BEAD_COLORS.map((b) => Number(b.code.slice(1))).sort((a, b) => a - b);
+    expect(codes).toEqual(Array.from({ length: 103 }, (_, i) => i + 1));
   });
 
-  it('every bead is distinct enough from its nearest neighbor (≥ 0.04 Oklab)', () => {
-    // 0.04, not tighter: White↔Cream shipped at 0.042 in the original 32
-    // (near-whites read as distinct to the eye at closer spacing than
-    // saturated colors)
-    for (const b of BEAD_COLORS) {
-      const nearest = Math.min(
-        ...BEAD_COLORS.filter((o) => o.id !== b.id).map((o) => distance(b.hex, o.hex)),
-      );
-      expect(nearest, `${b.name} sits only ${nearest.toFixed(3)} from another bead`).toBeGreaterThanOrEqual(0.04);
-    }
+  it('near-duplicates are the real assortment, not drift (Charcoal ↔ Dark Grey)', () => {
+    // pins the closest measured pair so a future hex correction that would
+    // visually merge two shop-distinct beads gets caught deliberately
+    expect(distance('#4f595a', '#585c61')).toBeLessThan(0.03);
+    expect(
+      BEAD_COLORS.filter((b) => ['charcoal', 'dark-grey'].includes(b.id)),
+    ).toHaveLength(2);
   });
 
-  it('the gap-filler beads catch the saturated photo colors they were added for', () => {
-    // [photo color, expected bead id] — one pin per band the expansions
-    // opened. If a future bead nudges one of these flips, it must be a
+  it('photo anchors map to the right Perler family', () => {
+    // [photo color, expected bead id] — computed against the 103-color line
+    // 2026-10-28. If a future palette edit flips one of these, it must be a
     // deliberate retune, not an accident.
     const anchors: [string, string][] = [
-      ['#ff0000', 'cherry'],
-      ['#ff8b2a', 'orange'], // bright cartoon orange — was Cheddar (looked yellow)
-      ['#d96426', 'rust'], // burnt/pumpkin orange — was Cherry (looked red)
-      ['#fa8072', 'coral'], // salmon pink — was Orange (wrong hue family)
-      ['#f78fb3', 'rose'],
-      ['#0000ff', 'blue'],
-      ['#1e90ff', 'sky-blue'],
-      ['#7cfc00', 'lime'],
+      ['#000000', 'dark-spruce'], // darkest bead in the line — Black sits a touch lighter
+      ['#ff0000', 'tangerine'], // pure display red — Perler sells no pure red
+      ['#ff8b2a', 'orange'], // bright cartoon orange
+      ['#d96426', 'spice'], // burnt/pumpkin orange
+      ['#fa8072', 'brick'], // salmon pink
+      ['#f78fb3', 'blush'],
+      ['#0000ff', 'neon-blue'],
+      ['#1e90ff', 'light-blue'],
+      ['#7cfc00', 'sour-apple'],
       ['#ffff00', 'lemon'],
-      ['#8b0000', 'dark-red'],
+      ['#8b0000', 'cherry'], // dark red
       ['#ff00ff', 'fuchsia'],
-      ['#33ff99', 'spring-green'], // spring green — was Mint (pale, wrong family)
-      ['#2eb8a1', 'turquoise'], // mid teal — was Teal (too dark)
-      ['#000099', 'indigo'], // dark vivid indigo — was Navy (too gray, worst gap 0.125)
-      ['#998000', 'olive'], // dark goldenrod — was Rust (wrong family)
-      ['#bf00e6', 'amethyst'], // violet-magenta — was Fuchsia
-      ['#bf80ff', 'orchid'], // light purple — was Lavender (too gray)
+      ['#33ff99', 'sour-apple'], // spring green
+      ['#2eb8a1', 'light-green'], // mid teal
+      ['#000099', 'dark-blue'], // dark vivid indigo
+      ['#998000', 'fern'], // dark goldenrod
+      ['#bf00e6', 'fuchsia'], // violet-magenta
+      ['#bf80ff', 'lavender'], // light purple
     ];
     for (const [hex, id] of anchors) {
       expect(nearestBead(hex).id, hex).toBe(id);
     }
   });
 
-  it('full color-space sweep: every photo-plausible cell within 0.112 of a bead', () => {
-    // 36 hues × saturations 40–100 × lightness 30–90 = 720 samples — the
-    // audit that found the six missing bands. Pre-expansion worst gap:
-    // 0.125 (dark indigo → Navy). The 0.112 ceiling is set by exactly one
-    // sample: #33ffff, the pure-RGB display-cyan corner (0.1107 → Mint) —
-    // a monitor color photos essentially never contain. Every other cell
-    // lands ≤ 0.10, and real photo colors (the named set) ≤ 0.08.
+  it('full color-space sweep: every photo-plausible cell within 0.18 of a bead', () => {
+    // 36 hues × saturations 40–100 × lightness 30–90 = 720 samples. The
+    // 0.18 ceiling is set by the vivid violet-magenta corner (#9900e6 →
+    // Fuchsia, 0.173) — the one region where the Perler line simply sells
+    // no saturated bead. Inventing a color there would put an unpurchasable
+    // bead on shopping lists; honest nearest-match is the better trade.
     for (let h = 0; h < 360; h += 10) {
       for (const s of [100, 80, 60, 40]) {
         for (const l of [30, 45, 60, 75, 90]) {
           const hex = hsl(h, s, l);
           const bead = nearestBead(hex);
-          expect(distance(hex, bead.hex), `${hex} → ${bead.name}`).toBeLessThanOrEqual(0.112);
+          expect(distance(hex, bead.hex), `${hex} → ${bead.name}`).toBeLessThanOrEqual(0.18);
         }
       }
     }

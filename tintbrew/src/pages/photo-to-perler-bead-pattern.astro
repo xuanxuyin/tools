@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: 'Why do my gradients look banded?',
-    a: 'A standard 5mm bead assortment only has about 48 colors, so every smooth gradient has to snap onto those steps. Dithered mode mixes neighboring beads the way printers mix dots, which restores the in-between shades at small board sizes.',
+    a: 'The real Perler line tops out at 103 colors, so every smooth gradient has to snap onto those steps. Dithered mode mixes neighboring beads the way printers mix dots, which restores the in-between shades at small board sizes.',
   },
   {
     q: 'What is the bead list for?',
@@ -113,7 +113,7 @@ const jsonLd = [
         <label>
           Beads on hand
           <select data-photo-colors>
-            <option value="48">All 48 colors</option>
+            <option value="103">All 103 colors</option>
             <option value="16">16 colors</option>
             <option value="10">10 colors</option>
           </select>
@@ -155,8 +155,8 @@ const jsonLd = [
       Every cell is matched to the nearest real bead color by Oklab distance — a measure of how
       different two colors <em>look</em>, not how different their numbers are. Most photo-to-bead
       converters match raw RGB values, which is why their skin tones drift green and their reds go
-      muddy. The 48-color palette here mirrors a standard 5mm fuse-bead assortment, so what you see
-      on screen is what you can actually place.
+      muddy. The 103-color palette here mirrors the official Perler fuse-bead line, so what you see
+      on screen is what you can actually buy and place.
     </p>
     <p>
       Two details keep flat art crisp: cells that straddle an edge take the color that fills most

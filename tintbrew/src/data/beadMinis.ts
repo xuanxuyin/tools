@@ -17,8 +17,8 @@ export const BEAD_MINIS: BeadPatternDef[] = [
       'Still the classic first bead project — now with real curved lobes, a pink inner heart, one white shine bead and an outline. About 200 beads: done before your iron warms up. Make a dozen in swapped colors; they magnetize onto fridges and trade like currency at craft tables.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      R: { label: 'heart', color: 'cherry' },
-      P: { label: 'inner glow', color: 'pink' },
+      R: { label: 'heart', color: 'tomato' },
+      P: { label: 'inner glow', color: 'cotton-candy' },
       W: { label: 'shine', color: 'white' },
     },
     rows: [
@@ -51,8 +51,8 @@ export const BEAD_MINIS: BeadPatternDef[] = [
       'A chunky star that stays recognizable from across the room. The bottom legs splay one bead wider than you think they should — trust the grid — and the butternut inner star gives it depth without a single diagonal bead.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      Y: { label: 'star', color: 'sunshine' },
-      y: { label: 'inner star', color: 'butternut' },
+      Y: { label: 'star', color: 'lemon' },
+      y: { label: 'inner star', color: 'rich-butter' },
       W: { label: 'shine', color: 'white' },
     },
     rows: [
@@ -84,10 +84,10 @@ export const BEAD_MINIS: BeadPatternDef[] = [
     blurb:
       'Four petals, one center disc, a straight stem with a single leaf. It is the pattern to teach with: every part is a visible, countable step, and at this size the whole thing fits one small pegboard.',
     regions: {
-      P: { label: 'petals', color: 'pink' },
-      Y: { label: 'center', color: 'sunshine' },
-      G: { label: 'stem', color: 'bright-green' },
-      g: { label: 'leaf', color: 'kiwi' },
+      P: { label: 'petals', color: 'cotton-candy' },
+      Y: { label: 'center', color: 'lemon' },
+      G: { label: 'stem', color: 'green' },
+      g: { label: 'leaf', color: 'prickly-pear' },
     },
     rows: [
       '.........PP.........',
@@ -127,9 +127,9 @@ export const BEAD_MINIS: BeadPatternDef[] = [
     blurb:
       'The universal mood-lifter at fridge-magnet size. Straightforward grid, instant payoff — and the smile is a real arc now, so it beams instead of zigzagging. Add the blush last for the full charm offensive.',
     regions: {
-      Y: { label: 'face', color: 'sunshine' },
+      Y: { label: 'face', color: 'lemon' },
       K: { label: 'eyes & mouth', color: 'black' },
-      P: { label: 'blush', color: 'blush' },
+      P: { label: 'flamingo', color: 'flamingo' },
       W: { label: 'shine', color: 'white' },
     },
     rows: [
@@ -164,9 +164,9 @@ export const BEAD_MINIS: BeadPatternDef[] = [
       'A toadstool in four regions: cap, spots, stem, outline. The spots are placed asymmetrically on purpose — real mushrooms are not symmetrical either — and the domed cap is a true curve now, not a stepped pyramid.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      R: { label: 'cap', color: 'cherry' },
+      R: { label: 'cap', color: 'tomato' },
       W: { label: 'spots', color: 'white' },
-      C: { label: 'stem', color: 'cream' },
+      C: { label: 'stem', color: 'creme' },
     },
     rows: [
       '......KKKKKKKK......',
@@ -202,7 +202,7 @@ export const BEAD_MINIS: BeadPatternDef[] = [
       'A C-shaped moon that works because the inner edge recedes smoothly toward the tips. The closed eye is a single dark stroke and the mouth a two-bead smile — recolor either and the moon wakes up cranky.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      Y: { label: 'moon', color: 'sunshine' },
+      Y: { label: 'moon', color: 'lemon' },
       e: { label: 'closed eye', color: 'black' },
       m: { label: 'mouth', color: 'black' },
     },
@@ -237,9 +237,9 @@ export const BEAD_MINIS: BeadPatternDef[] = [
       'A desk-size cactus in four regions — green body, pink bloom, cherry pot, outline. The arm joins the trunk with a real elbow now; below that everything is straight columns, so it is still a count-while-you-go build.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      G: { label: 'cactus', color: 'bright-green' },
-      F: { label: 'bloom', color: 'pink' },
-      R: { label: 'pot', color: 'cherry' },
+      G: { label: 'cactus', color: 'green' },
+      F: { label: 'bloom', color: 'cotton-candy' },
+      R: { label: 'pot', color: 'tomato' },
     },
     rows: [
       '..........KK........',
@@ -280,7 +280,7 @@ export const BEAD_MINIS: BeadPatternDef[] = [
       K: { label: 'body & antennae', color: 'black' },
       L: { label: 'wings', color: 'lavender' },
       W: { label: 'spots', color: 'white' },
-      P: { label: 'tips', color: 'pink' },
+      P: { label: 'tips', color: 'cotton-candy' },
     },
     rows: [
       '........K....K........',

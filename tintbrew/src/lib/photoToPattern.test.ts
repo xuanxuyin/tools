@@ -37,14 +37,20 @@ function split(w: number, h: number, left: string, right: string): SampleImage {
   return { data, width: w, height: h };
 }
 
-/** Left-right mirrored photo: symmetric gradient, integer channels — mirror
- *  cells are pixel-identical, so a symmetric pipeline must stay symmetric. */
+/** Left-right mirrored photo: symmetric blue→green gradient, integer
+ *  channels — mirror cells are pixel-identical, so a symmetric pipeline must
+ *  stay symmetric. The gradient runs through a palette corridor the Perler
+ *  line covers well (cobalt → teal → green → sour apple); the previous
+ *  blue→magenta ramp crosses the vivid-violet gap where Perler sells no
+ *  bead, which honestly collapses it to two zones (see the beadPalette
+ *  sweep guard) — that tested palette coverage, not pipeline symmetry. */
 function mirrored(w: number, h: number): SampleImage {
   const data = new Uint8ClampedArray(w * h * 4);
   const half = Math.floor(w / 2);
   const table: { r: number; g: number; b: number }[] = [];
   for (let i = 0; i < half; i++) {
-    table.push({ r: Math.round((i / Math.max(1, half - 1)) * 255), g: 0, b: 255 });
+    const t = Math.round((i / Math.max(1, half - 1)) * 255);
+    table.push({ r: 0, g: t, b: 255 - t });
   }
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
@@ -122,15 +128,28 @@ describe('photoToPattern', () => {
   });
 
   it('dither mode preserves the photo average color within a small error', () => {
-    // 50% black / 50% white photo: the board's mean must stay near mid-gray
+    // 50% black / 50% white photo: Floyd–Steinberg must conserve the board's
+    // mean luminance. Measured against the reachable mean (nearest dark bead
+    // + nearest white bead, 50/50) — no bead hits pure 0 or 1, and the
+    // 103-color line splits the black half between its two darkest beads
+    // (Dark Spruce / Cocoa), so counting one bead's share is no longer the
+    // conservation signal; the mean is.
     const out = photoToPattern(split(60, 60, '#000000', '#ffffff'), {
       cols: 30,
       mode: 'dither',
     });
-    const black = nearestBead('#000000').id;
-    const whites = out.cells.filter((id) => id === black).length;
-    expect(whites / out.cells.length).toBeGreaterThan(0.4);
-    expect(whites / out.cells.length).toBeLessThan(0.6);
+    const lab = (hex: string) => rgbToOklab(hexToRgb(hex)).L;
+    const dark = nearestBead('#000000');
+    const white = nearestBead('#ffffff');
+    const reachable = (lab(dark.hex) + lab(white.hex)) / 2;
+    const beadHex = new Map(BEAD_COLORS.map((b) => [b.id, b.hex]));
+    const mean = out.cells.reduce((s, id) => s + lab(beadHex.get(id)!), 0) / out.cells.length;
+    expect(mean).toBeGreaterThan(reachable - 0.06);
+    expect(mean).toBeLessThan(reachable + 0.06);
+    // both halves stay real: white keeps its half, dark-family beads theirs
+    const whiteShare = out.cells.filter((id) => id === white.id).length / out.cells.length;
+    expect(whiteShare).toBeGreaterThan(0.4);
+    expect(whiteShare).toBeLessThan(0.6);
   });
 
   it('composites transparency onto white (transparent photo → white beads)', () => {

@@ -16,13 +16,13 @@ export const BEAD_FOOD: BeadPatternDef[] = [
       'Sweetest project in the set, scaled up to real showpiece size — a frosting dome with scalloped drips, white sprinkle beads and a cherry that sits proud of the top. The wrapper has a face (eyes, mouth and blush are separate regions), so you can flavor-swap pink for lavender or mint without touching it.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      F: { label: 'frosting', color: 'pink' },
+      F: { label: 'frosting', color: 'cotton-candy' },
       W: { label: 'sprinkles', color: 'white' },
-      R: { label: 'cherry', color: 'cherry' },
+      R: { label: 'tomato', color: 'tomato' },
       T: { label: 'wrapper', color: 'tan' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
-      P: { label: 'blush', color: 'blush' },
+      P: { label: 'flamingo', color: 'flamingo' },
     },
     rows: [
       '........................KKKK........................',
@@ -77,10 +77,10 @@ export const BEAD_FOOD: BeadPatternDef[] = [
       'The hole is genuinely empty — no beads placed — which is exactly how a bead donut should read, and at this scale it is a true ring you can see through. Icing is the obvious customization target; sprinkles are single beads in two colors, so go wild.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      P: { label: 'icing', color: 'pink' },
+      P: { label: 'icing', color: 'cotton-candy' },
       W: { label: 'white sprinkles', color: 'white' },
-      S: { label: 'yellow sprinkles', color: 'sunshine' },
-      D: { label: 'dough', color: 'butternut' },
+      S: { label: 'yellow sprinkles', color: 'lemon' },
+      D: { label: 'dough', color: 'rich-butter' },
     },
     rows: [
       '.....................KKKKKKKKKK.....................',
@@ -137,8 +137,8 @@ export const BEAD_FOOD: BeadPatternDef[] = [
       K: { label: 'outline', color: 'black' },
       r: { label: 'crust', color: 'tan' },
       C: { label: 'cheese', color: 'cheddar' },
-      R: { label: 'pepperoni', color: 'cherry' },
-      G: { label: 'basil', color: 'bright-green' },
+      R: { label: 'pepperoni', color: 'tomato' },
+      G: { label: 'basil', color: 'green' },
     },
     rows: [
       '......KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK......',
@@ -190,13 +190,13 @@ export const BEAD_FOOD: BeadPatternDef[] = [
       'Two big scoops stacked on a foot-tall waffle cone. The top scoop has the face — eyes, mouth and blush are separate regions — and the waffle crosshatch is drawn as cream lines clipped inside the cone, so the tip stays crisp.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      F: { label: 'top scoop', color: 'pink' },
+      F: { label: 'top scoop', color: 'cotton-candy' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
-      b: { label: 'blush', color: 'blush' },
+      b: { label: 'flamingo', color: 'flamingo' },
       M: { label: 'bottom scoop', color: 'mint' },
       T: { label: 'cone', color: 'tan' },
-      C: { label: 'waffle lines', color: 'cream' },
+      C: { label: 'waffle lines', color: 'creme' },
     },
     rows: [
       '.......................KKKK.......................',
@@ -258,12 +258,12 @@ export const BEAD_FOOD: BeadPatternDef[] = [
       'A heart-shaped berry with a face, sized for framing. The seeds are single sunshine beads — place them last, after the red fill, so the spacing stays even on both sides.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      R: { label: 'berry', color: 'cherry' },
-      S: { label: 'seeds', color: 'sunshine' },
-      G: { label: 'leaves', color: 'bright-green' },
+      R: { label: 'berry', color: 'tomato' },
+      S: { label: 'seeds', color: 'lemon' },
+      G: { label: 'leaves', color: 'green' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
-      P: { label: 'blush', color: 'blush' },
+      P: { label: 'flamingo', color: 'flamingo' },
     },
     rows: [
       '........................KK........................',
@@ -325,10 +325,10 @@ export const BEAD_FOOD: BeadPatternDef[] = [
     regions: {
       K: { label: 'outline', color: 'black' },
       L: { label: 'dough', color: 'light-brown' },
-      D: { label: 'chocolate chips', color: 'dark-brown' },
+      D: { label: 'chocolate chips', color: 'brown' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
-      P: { label: 'blush', color: 'blush' },
+      P: { label: 'flamingo', color: 'flamingo' },
     },
     rows: [
       '..............KKKKKKKKKKKKKKKKKKKKKKKK..............',
@@ -378,10 +378,10 @@ export const BEAD_FOOD: BeadPatternDef[] = [
       'A wide dome slice with three distinct rind layers, so it teaches color banding: red flesh, white gap, green skin — each band a hand-sized arc of its own. Seeds are single black beads placed after the fill.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      R: { label: 'flesh', color: 'cherry' },
+      R: { label: 'flesh', color: 'tomato' },
       S: { label: 'seeds', color: 'black' },
       W: { label: 'inner rind', color: 'white' },
-      G: { label: 'rind', color: 'pine' },
+      G: { label: 'rind', color: 'dark-green' },
     },
     rows: [
       '....................KKKKKKKKKKKK....................',
@@ -417,7 +417,7 @@ export const BEAD_FOOD: BeadPatternDef[] = [
       'A full-height popsicle with a face on the upper half and a real stick below. The white shine band down the left edge is what makes it look glossy — keep it when you recolor the pop.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      F: { label: 'pop', color: 'cherry' },
+      F: { label: 'pop', color: 'tomato' },
       W: { label: 'shine', color: 'white' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
@@ -486,12 +486,12 @@ export const BEAD_FOOD: BeadPatternDef[] = [
       'A stacked burger in seven regions at platter size — bun, sesame, lettuce, cheese, patty and bottom bun can each be recolored, which makes it the best pattern in the set for teaching color banding. The lettuce is a true wavy ruffle that sticks out past the bun.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      B: { label: 'top bun', color: 'butternut' },
-      S: { label: 'sesame seeds', color: 'sunshine' },
-      L: { label: 'lettuce', color: 'kiwi' },
+      B: { label: 'top bun', color: 'rich-butter' },
+      S: { label: 'sesame seeds', color: 'lemon' },
+      L: { label: 'lettuce', color: 'prickly-pear' },
       C: { label: 'cheese', color: 'cheddar' },
-      P: { label: 'patty', color: 'brown' },
-      b: { label: 'bottom bun', color: 'butternut' },
+      P: { label: 'patty', color: 'gingerbread' },
+      b: { label: 'bottom bun', color: 'rich-butter' },
     },
     rows: [
       '.........................KKKKKK.........................',
@@ -539,8 +539,8 @@ export const BEAD_FOOD: BeadPatternDef[] = [
     regions: {
       N: { label: 'nori ring', color: 'black' },
       W: { label: 'rice', color: 'white' },
-      G: { label: 'fill', color: 'kiwi' },
-      S: { label: 'salmon bits', color: 'pink' },
+      G: { label: 'fill', color: 'prickly-pear' },
+      S: { label: 'salmon bits', color: 'cotton-candy' },
     },
     rows: [
       '.....................NNNNNNNNNN.....................',

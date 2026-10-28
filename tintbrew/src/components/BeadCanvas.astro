@@ -8,7 +8,11 @@
  * template of the shape — printable as a "draw your own colors" sheet.
  */
 import type { PatternView } from '../lib/beadContent';
-import { BEAD_COLORS } from '../lib/beadPalette';
+import { BEAD_COLORS, beadById } from '../lib/beadPalette';
+
+// blank-cell fill: the real White bead hex, so the paint island's
+// "fill === white means unpainted" check can never drift from this template
+const WHITE_HEX = beadById('white')!.hex;
 
 interface Props {
   view: PatternView;
@@ -80,7 +84,7 @@ grid.forEach((row, y) => {
             width={U - 1.6}
             height={U - 1.6}
             rx={2.6}
-            fill="#f5f4ef"
+            fill={WHITE_HEX}
           />
         ))}
       </svg>

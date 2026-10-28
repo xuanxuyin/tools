@@ -20,7 +20,7 @@ export const BEAD_HALLOWEEN: BeadPatternDef[] = [
       W: { label: 'body', color: 'white' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
-      P: { label: 'blush', color: 'blush' },
+      P: { label: 'flamingo', color: 'flamingo' },
     },
     rows: [
       '.......................KKKKKK.......................',
@@ -82,8 +82,8 @@ export const BEAD_HALLOWEEN: BeadPatternDef[] = [
     regions: {
       K: { label: 'outline', color: 'black' },
       O: { label: 'pumpkin', color: 'cheddar' },
-      r: { label: 'ribs', color: 'rust' },
-      G: { label: 'stem', color: 'bright-green' },
+      r: { label: 'ribs', color: 'spice' },
+      G: { label: 'stem', color: 'green' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
     },
@@ -143,7 +143,7 @@ export const BEAD_HALLOWEEN: BeadPatternDef[] = [
     blurb:
       'One solid wing shape with scalloped membranes, a purple body patch and a crescent moon peeking in from the corner. The white eyes and tiny fangs sit on the dark field — swap them for sunshine if you want the radioactive variant.',
     regions: {
-      M: { label: 'moon', color: 'butternut' },
+      M: { label: 'moon', color: 'rich-butter' },
       K: { label: 'wings & ears', color: 'black' },
       V: { label: 'body', color: 'purple' },
       e: { label: 'eyes', color: 'white' },
@@ -256,7 +256,7 @@ export const BEAD_HALLOWEEN: BeadPatternDef[] = [
       K: { label: 'outline', color: 'black' },
       W: { label: 'tip', color: 'white' },
       O: { label: 'middle', color: 'cheddar' },
-      Y: { label: 'base', color: 'sunshine' },
+      Y: { label: 'base', color: 'lemon' },
     },
     rows: [
       '.........................KK.........................',
@@ -312,10 +312,10 @@ export const BEAD_HALLOWEEN: BeadPatternDef[] = [
     regions: {
       K: { label: 'legs', color: 'black' },
       V: { label: 'body', color: 'purple' },
-      R: { label: 'hourglass', color: 'cherry' },
+      R: { label: 'hourglass', color: 'tomato' },
       e: { label: 'eyes', color: 'white' },
       m: { label: 'mouth', color: 'black' },
-      P: { label: 'blush', color: 'blush' },
+      P: { label: 'flamingo', color: 'flamingo' },
     },
     rows: [
       '.....KK..........................................KK.....',

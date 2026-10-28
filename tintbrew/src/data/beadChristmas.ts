@@ -15,10 +15,10 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
     blurb:
       'A traditional tiered tree a foot tall, with a star on top and scalloped lighter-green fringe under every tier. Lights, baubles and star are all separate regions, so the whole tree can be re-lit in your colors.',
     regions: {
-      Y: { label: 'star', color: 'sunshine' },
-      g: { label: 'light foliage', color: 'kiwi' },
-      G: { label: 'dark foliage', color: 'pine' },
-      R: { label: 'lights', color: 'cherry' },
+      Y: { label: 'star', color: 'lemon' },
+      g: { label: 'light foliage', color: 'prickly-pear' },
+      G: { label: 'dark foliage', color: 'dark-green' },
+      R: { label: 'lights', color: 'tomato' },
       b: { label: 'baubles', color: 'light-blue' },
       T: { label: 'trunk', color: 'tan' },
     },
@@ -91,7 +91,7 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
       E: { label: 'eyes', color: 'black' },
       O: { label: 'carrot nose', color: 'cheddar' },
       m: { label: 'mouth', color: 'black' },
-      R: { label: 'scarf & buttons', color: 'cherry' },
+      R: { label: 'scarf & buttons', color: 'tomato' },
     },
     rows: [
       '..................KKKKKKKKKKKKKK..................',
@@ -166,7 +166,7 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
     regions: {
       K: { label: 'outline & eyes', color: 'black' },
       W: { label: 'cuff', color: 'white' },
-      R: { label: 'stocking', color: 'cherry' },
+      R: { label: 'stocking', color: 'tomato' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
     },
@@ -225,10 +225,10 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
     blurb:
       'A dinner-plate ring of pine with kiwi highlight arcs, a big bow at the top and berry clusters at the bottom front. Hang it as-is or thread a ribbon through the empty center once it is ironed — the hole is structural, not a mistake.',
     regions: {
-      G: { label: 'pine', color: 'pine' },
-      g: { label: 'kiwi highlights', color: 'kiwi' },
-      R: { label: 'bow', color: 'cherry' },
-      B: { label: 'berries', color: 'cherry' },
+      G: { label: 'dark-green', color: 'dark-green' },
+      g: { label: 'kiwi highlights', color: 'prickly-pear' },
+      R: { label: 'bow', color: 'tomato' },
+      B: { label: 'berries', color: 'tomato' },
     },
     rows: [
       '................RRRRRR..............................',
@@ -287,8 +287,8 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
       'Straight lines, instant gratification — now big enough that the ribbon cross is a real band of beads you can recolor in one click. The white tag sits at the crossing; count from the center outward so the box stays square.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      R: { label: 'box', color: 'cherry' },
-      Y: { label: 'ribbon & bow', color: 'sunshine' },
+      R: { label: 'box', color: 'tomato' },
+      Y: { label: 'ribbon & bow', color: 'lemon' },
       W: { label: 'tag', color: 'white' },
     },
     rows: [
@@ -344,7 +344,7 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
       L: { label: 'cookie', color: 'light-brown' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
-      R: { label: 'buttons', color: 'cherry' },
+      R: { label: 'buttons', color: 'tomato' },
     },
     rows: [
       '.......................KKKKKK.......................',
@@ -411,7 +411,7 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
       'A quick holiday win: a curved cone that leans into the pom pom, one wide fur brim, and a light-blue snowflake decal on the side — swap the decal color for any bead you like.',
     regions: {
       K: { label: 'outline', color: 'black' },
-      R: { label: 'hat', color: 'cherry' },
+      R: { label: 'hat', color: 'tomato' },
       F: { label: 'snowflake', color: 'light-blue' },
       W: { label: 'fur brim', color: 'white' },
       w: { label: 'pom pom', color: 'white' },
@@ -464,11 +464,11 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
     blurb:
       'A bell that flares as it goes down, ending in a darker gold rim band. The white shine streak on the left edge is what makes it look round — keep it one bead wide so the flare stays clean.',
     regions: {
-      h: { label: 'hanger', color: 'dark-gray' },
+      h: { label: 'hanger', color: 'charcoal' },
       K: { label: 'outline', color: 'black' },
-      Y: { label: 'bell', color: 'sunshine' },
+      Y: { label: 'bell', color: 'lemon' },
       W: { label: 'shine', color: 'white' },
-      B: { label: 'rim', color: 'butternut' },
+      B: { label: 'rim', color: 'rich-butter' },
     },
     rows: [
       '......................KKKK......................',
@@ -519,14 +519,14 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
     blurb:
       'A friendly reindeer face with broad swept-back branch antlers and a cream muzzle, sized for the mantel. The nose is its own region — keep it cherry for the classic look, or go black-nose for a more realistic doe.',
     regions: {
-      A: { label: 'antlers', color: 'butternut' },
+      A: { label: 'antlers', color: 'rich-butter' },
       K: { label: 'outline', color: 'black' },
-      B: { label: 'head', color: 'brown' },
+      B: { label: 'head', color: 'gingerbread' },
       L: { label: 'inner ears', color: 'light-brown' },
       E: { label: 'eyes', color: 'black' },
       e: { label: 'eye shine', color: 'white' },
-      W: { label: 'muzzle', color: 'cream' },
-      N: { label: 'nose', color: 'cherry' },
+      W: { label: 'muzzle', color: 'creme' },
+      N: { label: 'nose', color: 'tomato' },
     },
     rows: [
       '............K..............................K............',
@@ -583,14 +583,14 @@ export const BEAD_CHRISTMAS: BeadPatternDef[] = [
     blurb:
       'A cozy two-hand-wide mug with steam wisps floating above and marshmallows melting into the cocoa. Eight regions including the steam — recolor the mug itself and the whole winter kitchen changes.',
     regions: {
-      s: { label: 'steam', color: 'light-gray' },
+      s: { label: 'steam', color: 'light-grey' },
       K: { label: 'outline', color: 'black' },
-      C: { label: 'cocoa', color: 'brown' },
+      C: { label: 'cocoa', color: 'gingerbread' },
       W: { label: 'marshmallows & base', color: 'white' },
-      M: { label: 'mug', color: 'cherry' },
+      M: { label: 'mug', color: 'tomato' },
       E: { label: 'eyes', color: 'black' },
       m: { label: 'mouth', color: 'black' },
-      P: { label: 'blush', color: 'blush' },
+      P: { label: 'flamingo', color: 'flamingo' },
     },
     rows: [
       '...................ss.............................',

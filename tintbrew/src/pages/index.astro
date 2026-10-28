@@ -49,6 +49,83 @@ const jsonLd = {
         <span style="background:#fde68a"></span>
       </div>
     </a>
+    <a class="tool-card" href="/photo-to-perler-bead-pattern/">
+      <h2>Photo to Bead Pattern</h2>
+      <p>
+        Turn any photo into a fuse-bead board on the official 103-color Perler line — real color
+        names and P-codes on the shopping list, printable grid and bead counts included.
+      </p>
+      <div class="swatch-strip" aria-hidden="true">
+        <span style="background:#278cc9"></span>
+        <span style="background:#fd5918"></span>
+        <span style="background:#4dab64"></span>
+      </div>
+    </a>
+  </section>
+
+  <section aria-label="Perler bead patterns" class="tool-grid" style="margin-top: var(--sp-8);">
+    <h2 class="grid-title">
+      Perler bead patterns <span class="hint">— color work you can hold</span>
+    </h2>
+    <a class="tool-card" href="/perler-bead-patterns/">
+      <h3>All free Perler patterns</h3>
+      <p>
+        Every pattern on one page — animals, food, holidays and minis, each with a printable grid,
+        a bead shopping list, and a paint-it-yourself canvas.
+      </p>
+      <div class="swatch-strip" aria-hidden="true">
+        <span style="background:#323234"></span>
+        <span style="background:#eaefee"></span>
+        <span style="background:#fd5918"></span>
+      </div>
+    </a>
+    <a class="tool-card" href="/perler-bead-animals/">
+      <h3>Perler bead animals</h3>
+      <p>
+        Cats, dogs and more — full-size boards in the real Perler palette, ready to print or play
+        online.
+      </p>
+      <div class="swatch-strip" aria-hidden="true">
+        <span style="background:#936848"></span>
+        <span style="background:#f6ca69"></span>
+        <span style="background:#323234"></span>
+      </div>
+    </a>
+    <a class="tool-card" href="/perler-bead-food/">
+      <h3>Perler bead food</h3>
+      <p>
+        Fruit, snacks and sweets that look good enough to eat — with exact bead counts for each
+        color.
+      </p>
+      <div class="swatch-strip" aria-hidden="true">
+        <span style="background:#fd5918"></span>
+        <span style="background:#f6d901"></span>
+        <span style="background:#d14337"></span>
+      </div>
+    </a>
+    <a class="tool-card" href="/christmas-perler-bead-patterns/">
+      <h3>Christmas Perler patterns</h3>
+      <p>
+        Trees, ornaments and gifts — seasonal boards sized for small hands, printed on one sheet
+        each.
+      </p>
+      <div class="swatch-strip" aria-hidden="true">
+        <span style="background:#007b4e"></span>
+        <span style="background:#b0353c"></span>
+        <span style="background:#eaefee"></span>
+      </div>
+    </a>
+    <a class="tool-card" href="/easy-perler-bead-patterns/">
+      <h3>Easy Perler patterns</h3>
+      <p>
+        Small boards, few colors, big win — the right first project for beginners and kids.
+      </p>
+      <div class="swatch-strip" aria-hidden="true">
+        <span style="background:#f2afb7"></span>
+        <span style="background:#96d1d4"></span>
+        <span style="background:#a3de6f"></span>
+      </div>
+    </a>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-8);">
@@ -84,3 +161,21 @@ const jsonLd = {
     <p>See <a href="/color-guides">all color guides</a> for more.</p>
   </section>
 </BaseLayout>
+
+<style>
+  /* the section heading lives inside the card grid — span it full width */
+  .grid-title {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+  .grid-title .hint {
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+  /* category cards sit one heading level under the tools row's h2 cards */
+  .tool-card h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.1rem;
+  }
+</style>

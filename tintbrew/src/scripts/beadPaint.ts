@@ -3,7 +3,7 @@
  * carries the paintable cells (the pattern silhouette, all white) and the
  * peg holes; this script adds the play: a brush and an eraser, pointer
  * drag interpolated with an 8-connected line so fast or diagonal strokes
- * leave no gaps, the 32 real bead colors (custom input snapped to the
+ * leave no gaps, the 103 real bead colors (custom input snapped to the
  * nearest bead, same Oklab engine as everywhere else), clear-all, and a
  * live materials list built from the painted cells alone.
  */
@@ -11,7 +11,7 @@ import { normalizeHex } from '../lib/color';
 import { BEAD_COLORS, beadById, nearestBead } from '../lib/beadPalette';
 import { paintLine, type PaintCell } from '../lib/beadPaint';
 
-const WHITE_HEX = '#f5f4ef';
+const WHITE_HEX = '#eaefee';
 
 /** hex → id reverse map: seeded boards carry exact bead hexes, so the fill
  *  scan stays O(1) per cell even on an 87×87 board (nearestBead's full
