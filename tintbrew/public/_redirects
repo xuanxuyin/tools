@@ -23,3 +23,11 @@
 /mix/black-yellow /mix/yellow-black/ 301
 /mix/black-green /mix/green-black/ 301
 /mix/brown-yellow /mix/yellow-brown/ 301
+
+# hand-drawn set retired 2026-10-28: christmas + food sections park on the hub
+/christmas-perler-bead-patterns /perler-bead-patterns/ 301
+/christmas-perler-bead-patterns/ /perler-bead-patterns/ 301
+/christmas-perler-bead-patterns/* /perler-bead-patterns/ 301
+/perler-bead-food /perler-bead-patterns/ 301
+/perler-bead-food/ /perler-bead-patterns/ 301
+/perler-bead-food/* /perler-bead-patterns/ 301

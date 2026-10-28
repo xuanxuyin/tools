@@ -37,12 +37,15 @@ export interface PatternView {
   url: string;
 }
 
-/** Detail-page base per category: own gallery for the three SEO categories,
- *  hub path for halloween + minis (they live as hub sections). */
+/** Detail-page base per category: own gallery for the big SEO categories,
+ *  hub path for the rest. Food's own gallery retired with the hand-drawn
+ *  set (2026-10-28) — its one imported pattern lives under the hub; the
+ *  christmas gallery is gone entirely until the pixel-grid importer
+ *  restocks it, so both park on the hub base. */
 export const CATEGORY_BASE: Record<BeadCategory, string> = {
   animals: '/perler-bead-animals/',
-  food: '/perler-bead-food/',
-  christmas: '/christmas-perler-bead-patterns/',
+  food: '/perler-bead-patterns/',
+  christmas: '/perler-bead-patterns/',
   halloween: '/perler-bead-patterns/',
   minis: '/perler-bead-patterns/',
   characters: '/perler-bead-characters/',

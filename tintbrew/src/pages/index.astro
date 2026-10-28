@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BeadFigure from '../components/BeadFigure.astro';
 import { BEAD_PATTERNS } from '../data/beadPatterns';
-import { categoryCounts, patternContents } from '../lib/beadContent';
+import { categoryCounts, easyPatterns, patternContents } from '../lib/beadContent';
 import { SITE } from '../consts';
 
 // one flagship board per category stands in for the whole set — the figures
@@ -79,10 +79,10 @@ const jsonLd = {
       <a class="all-link" href="/perler-bead-patterns/">All {BEAD_PATTERNS.length} patterns →</a>
     </h2>
     <a class="bead-card" href="/perler-bead-animals/">
-      <span class="bead-thumb"><BeadFigure view={bySlug('cat')} mode="reference" /></span>
+      <span class="bead-thumb"><BeadFigure view={bySlug('shiba')} mode="reference" /></span>
       <span class="bead-count">{categoryCounts.animals} patterns</span>
       <h3>Animals</h3>
-      <p>Cat, panda, fox — and a whole kennel of dogs. Recolor any board online before you print.</p>
+      <p>Corgis, shibas, cats and carrot bunnies — a whole kennel of community designs. Recolor any board online before you print.</p>
     </a>
     <a class="bead-card" href="/perler-bead-characters/">
       <span class="bead-thumb"><BeadFigure view={bySlug('blue-alien')} mode="reference" /></span>
@@ -90,21 +90,21 @@ const jsonLd = {
       <h3>Characters</h3>
       <p>Big-eyed girls, chibi heroes and friendly spooks — portrait boards on real bead colors.</p>
     </a>
-    <a class="bead-card" href="/perler-bead-food/">
-      <span class="bead-thumb"><BeadFigure view={bySlug('cupcake')} mode="reference" /></span>
-      <span class="bead-count">{categoryCounts.food} patterns</span>
-      <h3>Food</h3>
-      <p>Fruit, snacks and sweets that look good enough to eat — each with exact bead counts.</p>
+    <a class="bead-card" href="/perler-bead-patterns/">
+      <span class="bead-thumb"><BeadFigure view={bySlug('spooky-ghost')} mode="reference" /></span>
+      <span class="bead-count">{categoryCounts.halloween} patterns</span>
+      <h3>Halloween</h3>
+      <p>Kawaii bats, witch cats and pumpkin ghosts — the spooky set lives on the main pattern page.</p>
     </a>
-    <a class="bead-card" href="/christmas-perler-bead-patterns/">
-      <span class="bead-thumb"><BeadFigure view={bySlug('christmas-tree')} mode="reference" /></span>
-      <span class="bead-count">{categoryCounts.christmas} patterns</span>
-      <h3>Christmas</h3>
-      <p>Trees, snowmen and stockings — seasonal boards sized for small hands, one sheet each.</p>
+    <a class="bead-card" href="/easy-perler-bead-patterns/">
+      <span class="bead-thumb"><BeadFigure view={bySlug('corgi-butt-peek')} mode="reference" /></span>
+      <span class="bead-count">{easyPatterns.length} patterns</span>
+      <h3>Easy</h3>
+      <p>Small boards, big color areas — first-timers finish any of these in one sitting.</p>
     </a>
     <p class="bead-more">
-      First board? The <a href="/easy-perler-bead-patterns/">easy patterns</a> keep it small — and
-      the <a href="/perler-bead-patterns/">Halloween set</a> lives on the main pattern page.
+      Plus quick makes — an apple-orchard scene and a finger-heart mini — on the
+      <a href="/perler-bead-patterns/">main pattern page</a>.
     </p>
   </section>
 

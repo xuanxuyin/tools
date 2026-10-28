@@ -1,10 +1,12 @@
 ---
 import BeadPatternPage from '../../components/BeadPatternPage.astro';
-import { patternContents } from '../../lib/beadContent';
+import { CATEGORY_BASE, patternContents } from '../../lib/beadContent';
 
 export function getStaticPaths() {
+  // every category whose detail base is this hub — halloween, minis, and
+  // (since the hand-drawn set retired 2026-10-28) food too
   return patternContents
-    .filter((p) => p.def.category === 'halloween' || p.def.category === 'minis')
+    .filter((p) => CATEGORY_BASE[p.def.category] === '/perler-bead-patterns/')
     .map((p) => ({ params: { pattern: p.def.slug }, props: { view: p } }));
 }
 const { view } = Astro.props;

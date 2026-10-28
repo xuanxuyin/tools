@@ -7,36 +7,24 @@ const groups = [
   {
     label: 'Animals',
     href: '/perler-bead-animals/',
-    blurb: 'Cat, bunny, panda, fox, owl, penguin, dog, bear, frog, chick, dinosaur, unicorn.',
+    blurb: 'Corgi, shiba, husky, golden retriever, orange cat, calico kittens, carrot bunnies, pandas — community designs converted bead for bead.',
     patterns: patternsByCategory('animals'),
-  },
-  {
-    label: 'Food',
-    href: '/perler-bead-food/',
-    blurb: 'Cupcake, donut, pizza slice, ice cream cone, strawberry, cookie, watermelon, ice pop, burger, sushi roll.',
-    patterns: patternsByCategory('food'),
-  },
-  {
-    label: 'Christmas',
-    href: '/christmas-perler-bead-patterns/',
-    blurb: 'Tree, snowman, stocking, wreath, gift, gingerbread man, Santa hat, bell, reindeer, hot cocoa.',
-    patterns: patternsByCategory('christmas'),
-  },
-  {
-    label: 'Halloween',
-    blurb: 'Ghost, jack-o’-lantern, bat, skull, candy corn, spider — the spooky set at the same showpiece scale.',
-    patterns: patternsByCategory('halloween'),
   },
   {
     label: 'Characters',
     href: '/perler-bead-characters/',
-    blurb: 'Big-eyed girls, chibi heroes, wizards and vampires — portrait boards converted from community designs.',
+    blurb: 'Chibi heroes, little monsters and mascot-style portraits — boards converted from community bead art.',
     patterns: patternsByCategory('characters'),
   },
   {
-    label: 'Minis',
-    blurb: 'Evening-size projects that fit one large pegboard — the true beginner tier, and the fastest gift in the set.',
-    patterns: patternsByCategory('minis'),
+    label: 'Halloween',
+    blurb: 'Kawaii bat, witch-cape kitty, bat-wing ghost, jack-o’-lantern, pumpkin ghosts, vampire — the spooky set.',
+    patterns: patternsByCategory('halloween'),
+  },
+  {
+    label: 'Quick Makes',
+    blurb: 'Small boards for one quiet evening — an apple-orchard scene and a finger-heart mini.',
+    patterns: [...patternsByCategory('food'), ...patternsByCategory('minis')],
   },
 ];
 ---
