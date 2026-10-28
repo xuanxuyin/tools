@@ -45,17 +45,18 @@ const BANNED = [
 ];
 
 describe('bead pattern data integrity', () => {
-  it('46 originals across five categories with locked minimums', () => {
-    expect(BEAD_PATTERNS).toHaveLength(46);
-    expect(patternContents).toHaveLength(46);
+  it('68 patterns across five categories with locked minimums', () => {
+    // 46 hand-authored + 22 imported from community bead renders (2026-10-28)
+    expect(BEAD_PATTERNS).toHaveLength(68);
+    expect(patternContents).toHaveLength(68);
     expect(categoryCounts).toEqual({
-      animals: 12,
+      animals: 34,
       food: 10,
       christmas: 10,
       halloween: 6,
       minis: 8,
     });
-    expect(easyPatterns.length).toBe(27);
+    expect(easyPatterns.length).toBe(31);
   });
 
   it('grids are rectangular: no row exceeds width, rows are padded', () => {

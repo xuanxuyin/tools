@@ -13,8 +13,11 @@
 - [x] 🤖 **拼豆 P0 ✅ 当日上线**：色板 48 假色 → **103 色 Perler 官方线**（P1~P103 购物码+官方色名+社区测量 hex）——购物清单从此指向真可买的珠子；图纸数据全部迁移重生成；201/201 测试 + 106 页 build 绿。明细 PLAN 10/28 行
 - [x] 🤖 **主页拼豆入口 ✅**（👤 指令）：工具卡（Photo to Bead）+ 品类卡板块（All/Animals/Food/Christmas/Easy）上线，此前首页零拼豆链接
 - [x] 🤖 **拼豆 P3 方向判读+拍板入档 ✅**（👤 "照它抄就完事了"+ 排版导航也抄）：perlerbeadpatterns.org 拆解（2026-06 新站排 #2 = 车道开着；~110 图纸 + 16 hub + 图片 sitemap 全声明）→ 题材目录/hub 体系/图纸页元数据/排版导航全复刻，beadgen 重制不搬文件；差异点 = 在线直接拼 + P 码清单。明细 PLAN 10/28 行
+- [x] 🤖 **爬图→图纸转换管道 + 首批 22 张 ✅**（👤 "为什么不用扒下来的图，我们自己的太丑"）：渲染珠图逆向（网格检测迭代阈值 + 全格 median 采样 + pegboard Oklab 竞争 + 16 色封顶）→ 22 张非 IP 动物进 `/perler-bead-animals/`（12→34 张，全站 46→68 图纸、128 页、203/203 绿）。明细 PLAN 10/28 下半场行
+- [x] 🤖 **photo→bead 三连修 ✅**（👤 指令）：convert 后编辑器加 **Print pattern** 按钮；Board size 加 **116×116**（16 板）+ 解码上限 1200→1600 提精度；站内可见 "last updated" 行删除（机器信号保留）
+- [ ] 👤 **线上验收首批 22 张**：打开 [/perler-bead-animals/](https://tintbrew.com/perler-bead-animals/) 点几张（shiba / corgi-looking-up / border-collie / cut-parrot）—— 格子干净度/像不像/打印输出三看；**过 → 我铺全量 84 张**，不过 → 报哪张哪不对，转换参数调完再铺
 - [ ] 👤 **AITDK 拉量（P3 立项门，插件拉完报数即可）**：`perler bead patterns`（主词复拉）+ `dog perler bead patterns` + `cat perler bead patterns` + `pokemon perler pattern` + `perler bead animals`（品类族抽查）—— **合计 ≥10K US/月 → P3 全量开工**（~100 题材页）；不到线则 P3 缩量做已有品类页深化
-- [ ] 顺手：photo→bead 上传一张照片验证 103 色效果（色板刚全换，缺色报色名）；10/30 B 计划门材料已备齐（chartglade PLAN §6）
+- [ ] 顺手：photo→bead 上传一张照片验证 103 色效果 + 新 116 尺寸 + Print 按钮三件一起看（缺色报色名）；10/30 B 计划门材料已备齐（chartglade PLAN §6）
 
 ## 10/27 已完成归档
 

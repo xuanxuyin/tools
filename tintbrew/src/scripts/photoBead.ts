@@ -16,7 +16,8 @@ const U = 10; // viewBox units per cell — matches BeadCanvas.astro
 const G = 16; // coordinate gutter (viewBox units)
 const MAX_SCALE = 1.25; // rendered-width cap, same idea as the blank canvas
 const SVG_NS = 'http://www.w3.org/2000/svg';
-const DECODE_CAP = 1200; // sampling beyond this only burns memory
+const DECODE_CAP = 1600; // sampling beyond this only burns memory; at the
+// 116-wide board option it still feeds every cell ~13 source pixels
 
 export class PhotoStudio {
   private source: SampleImage | null = null;
@@ -56,6 +57,10 @@ export class PhotoStudio {
 
     root.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('[data-photo-convert]')) this.convert();
+      // print lives with the touch-up tools (not the upload controls) —
+      // users print after editing, and the print CSS keeps the board, the
+      // bead list and the source photo while the tool panel hides
+      if ((e.target as HTMLElement).closest('[data-photo-print]')) window.print();
     });
     // an option change re-converts immediately — no dead "Convert" clicks
     root.addEventListener('change', (e) => {
@@ -277,6 +282,7 @@ export class PhotoStudio {
         <button type="button" class="btn tool-btn" data-cv-tool="eraser" aria-pressed="false">Eraser</button>
         <button type="button" class="btn tool-btn" data-cv-mirror aria-pressed="false" title="Every stroke lands on the mirrored cell too">Mirror</button>
         <button type="button" class="btn tool-btn" data-cv-clear>Clear all</button>
+        <button type="button" class="btn tool-btn" data-photo-print>Print pattern</button>
       </div>
       <div class="cv-palette" role="group" aria-label="Bead colors">
         ${BEAD_COLORS.map(

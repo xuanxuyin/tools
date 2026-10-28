@@ -175,4 +175,31 @@ describe('photo bead island (real SSR markup)', () => {
     expect(svg?.getAttribute('data-cols')).toBe('58');
     expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(58 * 58);
   });
+
+  it('the sixteen-pegboard option converts to a 116-wide board', () => {
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    const size = ctx.host.querySelector('[data-photo-size]') as unknown as HTMLSelectElement;
+    size.value = '116';
+    size.dispatchEvent(
+      new (ctx.window as unknown as { Event: typeof Event }).Event('change', { bubbles: true }),
+    );
+    const svg = ctx.host.querySelector('[data-bead-canvas]');
+    expect(svg?.getAttribute('data-cols')).toBe('116'); // engine caps at 120
+    expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(116 * 116);
+  });
+
+  it('the touch-up row carries a Print pattern button that opens the print dialog', () => {
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    const btn = ctx.host.querySelector('[data-photo-print]') as HTMLElement;
+    expect(btn).toBeTruthy();
+    expect(btn.textContent).toContain('Print');
+    const printSpy = vi.fn();
+    (ctx.window as unknown as { print: () => void }).print = printSpy;
+    btn.dispatchEvent(
+      new (ctx.window as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent('click', {
+        bubbles: true,
+      }),
+    );
+    expect(printSpy).toHaveBeenCalledOnce();
+  });
 });

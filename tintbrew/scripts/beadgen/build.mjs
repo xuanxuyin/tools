@@ -1,5 +1,9 @@
-// Generates src/data/bead*.ts from the vector defs in scripts/beadgen/.
+// Generates src/data/bead*.ts from the defs in scripts/beadgen/.
 // This is the single source of truth step: defs → rasterize → typed data.
+// Two def shapes flow in:
+//   - vector defs (draw()) → rasterize() supersamples them onto the grid
+//   - imported defs (rows already quantized, from import-webp.mjs) →
+//     rows pass straight through; only the audit still runs
 //   node scripts/beadgen/build.mjs
 // Guards: refuses to write if any audit fails, and refuses to touch
 // beadAnimals.ts unless the generated unicorn rows are byte-identical to
@@ -9,9 +13,17 @@ import { audit, rasterize } from './engine.mjs';
 
 const q = (s) => `'${String(s).replaceAll("'", "\\'")}'`;
 
+// letter → bead count, straight off quantized rows (audit's input shape)
+function tally(rows) {
+  const m = new Map();
+  for (const r of rows) for (const c of r) if (c !== '.') m.set(c, (m.get(c) ?? 0) + 1);
+  return m;
+}
+
 const CATS = [
   {
     key: 'animals', file: 'beadAnimals.ts', constName: 'BEAD_ANIMALS',
+    imported: 'imported-animals',
     header:
       '/**\n' +
       ' * Animal patterns (12) — vector-authored in scripts/beadgen/*.mjs and\n' +
@@ -58,11 +70,21 @@ const CATS = [
 
 for (const cat of CATS) {
   const mod = await import(`./${cat.key}.mjs`);
-  const defs = mod[Object.keys(mod)[0]];
+  const defs = [...mod[Object.keys(mod)[0]]];
+  // imported defs (quantized rows straight off community bead renders)
+  // append to the hand-authored set — same category file, same pages
+  if (cat.imported) {
+    try {
+      const imp = await import(`./${cat.imported}.mjs`);
+      defs.push(...imp[Object.keys(imp)[0]]);
+    } catch { /* no imported module for this category yet */ }
+  }
   const out = [];
   let beads = 0;
   for (const def of defs) {
-    const { rows, counts } = rasterize(def);
+    const { rows, counts } = def.rows
+      ? { rows: def.rows, counts: tally(def.rows) }
+      : rasterize(def);
     const a = audit(def, rows, counts);
     if (a.problems.length) {
       console.error(`${def.slug}: AUDIT FAIL — ${a.problems.join(' | ')}`);

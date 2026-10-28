@@ -39,14 +39,17 @@ describe.skipIf(!existsSync(DIST))('ratio strips (real dist)', () => {
 });
 
 describe.skipIf(!existsSync(DIST))('freshness signals (real dist)', () => {
-  it('JSON-LD dateModified (never on BreadcrumbList) + visible updated line', () => {
+  it('JSON-LD dateModified (never on BreadcrumbList), no visible updated line', () => {
     const page = readFileSync(resolve(DIST, 'color-mixer', 'index.html'), 'utf8');
     // CONTENT_UPDATED is the single source the pages render from — assert it,
     // so future bumps never leave this guard stale
     expect(page).toContain(`"dateModified":"${CONTENT_UPDATED}"`);
     expect(page.match(new RegExp(`"dateModified":"${CONTENT_UPDATED}"`, 'g'))!.length).toBeGreaterThanOrEqual(2); // WebApplication + FAQPage
     expect(page).not.toContain('BreadcrumbList","dateModified');
-    expect(page).toContain('Color tools last updated');
+    // freshness stays a machine signal (dateModified/lastmod) — the visible
+    // "Color tools last updated …" line was removed 2026-10-28 (user: keep
+    // maintenance notes in the repo, not on the site)
+    expect(page).not.toContain('Color tools last updated');
   });
 
   it('sitemap carries lastmod for every URL', () => {
