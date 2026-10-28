@@ -56,6 +56,8 @@ const BEAD_LAB: { id: string; lab: Oklab }[] = BEAD_COLORS.map((b) => ({
   id: b.id,
   lab: rgbToOklab(hexToRgb(b.hex)),
 }));
+/** Lightness by bead id, for the darker-wins tie-breaks. */
+const BEAD_L = new Map(BEAD_LAB.map((b) => [b.id, b.lab.L]));
 
 /** Closest bead by Oklab distance, optionally restricted to a subset. */
 function nearestBeadLab(target: Oklab, subset: Set<string> | null): { id: string; lab: Oklab } {
@@ -311,6 +313,12 @@ function spread(
 /** Minimum Oklab distance between two cluster centers — closer colors are
  *  one region, not two beads. Kept tight (0.04) so detail colors survive. */
 const MERGE_T = 0.04;
+/** Minimum Oklab distance between two *beads* before they count as the same
+ *  color. Fuse-bead palettes carry sibling shades (three creams, five browns)
+ *  that soft shading splits a region across — neighboring cells then flip
+ *  between family members and the board reads as confetti. Centers whose
+ *  beads land closer than this collapse into the more frequent one. */
+const BEAD_MERGE_T = 0.06;
 /** A cell farther than this from EVERY region center is "detail" — an eye,
  *  a highlight, a thin edge — and snaps to the full palette on its own
  *  instead of being dragged into the surrounding region. */
@@ -354,13 +362,34 @@ function clusterCells(labs: Oklab[], maxColors: number): string[] {
       centers.push(c);
     }
   }
-  // two centers may snap to the same bead — that merge is free and correct
-  const centerBeads = centers.map((c) => nearestBeadLab(c, null).id);
+  // two centers may snap to the same bead — that merge is free and correct.
+  // Beyond that, drop centers whose beads are siblings (creams vs sand,
+  // toothpaste vs lagoon): soft shading loves to split one region across a
+  // near-duplicate family, and the board turns to confetti. Frequency order
+  // decides who survives — `centers` is sorted by bucket count.
+  const keptCenters: Oklab[] = [];
+  const keptBeads: { id: string; lab: Oklab }[] = [];
+  for (const c of centers) {
+    const bead = nearestBeadLab(c, null);
+    const sibling = keptBeads.find(
+      (k) =>
+        k.id === bead.id ||
+        Math.hypot(bead.lab.L - k.lab.L, bead.lab.a - k.lab.a, bead.lab.b - k.lab.b) < BEAD_MERGE_T,
+    );
+    if (!sibling) {
+      keptCenters.push(c);
+      keptBeads.push(bead);
+    }
+  }
+  const centersFinal = keptCenters.length ? keptCenters : centers;
+  const centerBeads = keptBeads.length
+    ? keptBeads.map((b) => b.id)
+    : centersFinal.map((c) => nearestBeadLab(c, null).id);
   return labs.map((lab) => {
     let best = 0;
     let bestD = Infinity;
-    for (let i = 0; i < centers.length; i++) {
-      const k = centers[i]!;
+    for (let i = 0; i < centersFinal.length; i++) {
+      const k = centersFinal[i]!;
       const d = Math.hypot(lab.L - k.L, lab.a - k.a, lab.b - k.b);
       if (d < bestD) {
         bestD = d;
@@ -379,10 +408,13 @@ function clusterCells(labs: Oklab[], maxColors: number): string[] {
   });
 }
 
-/** One 3×3 majority-vote pass: a cell whose 8 neighbors hold ≥7 of one bead
- *  switches to it — kills fully-surrounded speckles without eroding real
- *  detail (a 2×2 eye or an edge line never reaches the threshold). */
-function despeckle(cells: string[], cols: number, rows: number): string[] {
+/** One 3×3 majority-vote pass: a cell whose 8 neighbors hold ≥t of one bead
+ *  switches to it. t=7 kills fully-surrounded speckles only; the follow-up
+ *  t=6 pass also clears 2-cell flecks along shading boundaries. Real detail
+ *  survives both — a 2×2 eye has 5 background neighbors at most, an edge
+ *  line 4 — while conversion noise (anti-aliased edges, soft gradients)
+ *  almost always sits inside a 6+ unanimous pocket. */
+function despeckle(cells: string[], cols: number, rows: number, t: number): string[] {
   const out = cells.slice();
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
@@ -399,11 +431,54 @@ function despeckle(cells: string[], cols: number, rows: number): string[] {
         }
       }
       for (const [id, n] of counts) {
-        if (n >= 7 && id !== cells[i]) {
+        if (n >= t && id !== cells[i]) {
           out[i] = id;
           break;
         }
       }
+    }
+  }
+  return out;
+}
+
+/** Last mopping pass for boundary stragglers: a cell with zero same-bead
+ *  neighbors is unreadable as detail at board scale — it is an edge cell
+ *  whose sampled color landed on a third bead (anti-aliasing mid-tones do
+ *  this constantly). When one neighbor color holds ≥4 of the 8, the cell
+ *  joins it; exact ties join the darker bead, the same side-taking bias
+ *  cellColor gives edge pixels. Cells with even one same-bead neighbor keep
+ *  their color — that is a detail (an eye, a snow dot), not noise. */
+function adoptIsolated(cells: string[], cols: number, rows: number): string[] {
+  const out = cells.slice();
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const i = y * cols + x;
+      const counts = new Map<string, number>();
+      let same = 0;
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          if (!dx && !dy) continue;
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) continue;
+          const id = cells[ny * cols + nx]!;
+          counts.set(id, (counts.get(id) ?? 0) + 1);
+          if (id === cells[i]) same++;
+        }
+      }
+      if (same > 0) continue;
+      let best = '';
+      let bestN = 0;
+      let bestL = Infinity;
+      for (const [id, n] of counts) {
+        const L = BEAD_L.get(id) ?? Infinity;
+        if (n > bestN || (n === bestN && L < bestL)) {
+          best = id;
+          bestN = n;
+          bestL = L;
+        }
+      }
+      if (bestN >= 4 && best !== cells[i]) out[i] = best;
     }
   }
   return out;
@@ -492,8 +567,13 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
     }
   } else {
     // region pipeline: scan → cluster into color regions → one bead per
-    // region → majority-vote away the speckles
-    cells = despeckle(clusterCells(labs, max), cols, rows);
+    // region (near-duplicate beads merged) → majority-vote passes →
+    // boundary stragglers join their strongest neighbor
+    cells = adoptIsolated(
+      despeckle(despeckle(clusterCells(labs, max), cols, rows, 7), cols, rows, 6),
+      cols,
+      rows,
+    );
   }
 
   return { cols, rows, cells };

@@ -235,6 +235,47 @@ describe('photoToPattern', () => {
     expect(new Set(out.cells).size).toBe(1);
   });
 
+  it('a noisy flat photo yields no confetti — zero isolated cells', () => {
+    // regression pin (button_city repro): JPEG/anti-aliasing jitter at a few
+    // source pixels per cell used to flip scattered cells to sibling beads —
+    // the "很花" board. The bead merge + majority votes + isolated adoption
+    // must leave not one cell whose 8 neighbors all wear a different bead.
+    const w = 96;
+    const data = new Uint8ClampedArray(w * w * 4);
+    let seed = 12345; // deterministic LCG — same board every run
+    const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff - 0.5);
+    for (let p = 0; p < w * w; p++) {
+      const n = rnd() * 24; // ±12 per channel: bucket-crossing noise
+      data[p * 4] = 51 + n;
+      data[p * 4 + 1] = 102 + n;
+      data[p * 4 + 2] = 204 + n;
+      data[p * 4 + 3] = 255;
+    }
+    const out = photoToPattern({ data, width: w, height: w }, {
+      cols: 29,
+      mode: 'smooth',
+    });
+    let isolated = 0;
+    for (let y = 0; y < out.rows; y++) {
+      for (let x = 0; x < out.cols; x++) {
+        const id = out.cells[y * out.cols + x]!;
+        let same = 0;
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (!dx && !dy) continue;
+            const nx = x + dx;
+            const ny = y + dy;
+            if (nx < 0 || nx >= out.cols || ny < 0 || ny >= out.rows) continue;
+            if (out.cells[ny * out.cols + nx] === id) same++;
+          }
+        }
+        if (same === 0) isolated++;
+      }
+    }
+    expect(isolated, `${isolated} isolated cells on a flat noisy field`).toBe(0);
+    expect(new Set(out.cells).size).toBeLessThanOrEqual(3);
+  });
+
   it('edge cells take their dominant color, not the mean (no outline mud)', () => {
     // every 4×4 pixel block carries exactly 1 black outline pixel (spaced
     // so no edge line of the image is uniform white — the margin trim has

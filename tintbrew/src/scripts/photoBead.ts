@@ -82,7 +82,7 @@ export class PhotoStudio {
     return {
       cols: sel('[data-photo-size]') || 29,
       mode: mode === 'dither' ? 'dither' : 'smooth',
-      maxColors: sel('[data-photo-colors]') || BEAD_COLORS.length,
+      maxColors: sel('[data-photo-colors]') || 24,
     };
   }
 
@@ -194,6 +194,16 @@ export class PhotoStudio {
     }
     this.render(pattern);
     status.textContent = `${pattern.cols} × ${pattern.rows} board — ${pattern.cells.length.toLocaleString('en-US')} beads. Paint over any cell you want to change, then print.`;
+    // upsampling past the photo's detail just resamples anti-aliasing — say
+    // so when the picked board outruns what the source can feed it
+    const sizeSel = this.root.querySelector<HTMLSelectElement>('[data-photo-size]');
+    if (sizeSel) {
+      const sizes = Array.from(sizeSel.options, (o) => Number(o.value)).filter((n) => n > 0);
+      const suggested = PhotoStudio.suggestCols(this.source.width, this.source.height, sizes);
+      if (this.opts().cols > suggested) {
+        status.textContent += ` Heads up: this photo only carries about ${suggested} beads of detail — the ${suggested} × ${suggested} board prints cleaner.`;
+      }
+    }
     this.root
       .querySelector('[data-photo-stage]')
       ?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
