@@ -17,10 +17,12 @@
 - [x] 🤖 **photo→bead 三连修 ✅**（👤 指令）：convert 后编辑器加 **Print pattern** 按钮；Board size 加 **116×116**（16 板）+ 解码上限 1200→1600 提精度；站内可见 "last updated" 行删除（机器信号保留）
 - [x] 🤖 **全量 106 张铺开 ✅**（👤 "怎么只有22张"）：manifest 106/106 零失败 → **六类 152 张**（animals 64 / characters 41 / halloween 17 / food 11 / christmas 10 / minis 9），**新类别页 /perler-bead-characters/**（IP 泛化 21 名：pikachu→lightning-mouse、stitch→blue-alien 等）；213 页 + 204/204 测试绿。明细 PLAN 10/28 夜场行
 - [x] 🤖 **首页 bead 板块重做 ✅**（👤 "色条卡丑/分类乱/按类型做卡"）：4 类型卡各带 SSR 真图纸代表图（cat / blue-alien / cupcake / christmas-tree）+ 计数徽章；All/Easy 卡撤（Easy=筛选非类型），收进标题行 + 底部引导行
-- [x] 🤖 **photo Drop 自动板号 ✅**（👤 指令）：按图片短边 ≥8 源像素/格自动选默认 Board size（大图 116 / 中图 58 / 小图 29），select 可见更新
-- [ ] 👤 **线上验收全量 152 张**：[/perler-bead-animals/](https://tintbrew.com/perler-bead-animals/)（64 张，重点看新转的 IP 泛化款）+ [/perler-bead-characters/](https://tintbrew.com/perler-bead-characters/)（41 张）+ [hub](https://tintbrew.com/perler-bead-patterns/)（152 张）—— 格子干净度/像不像/打印输出三看；不对的报哪张，参数调完重转
+- [x] 🤖 **photo Drop 自动板号 ✅**（👤 指令）：按图片短边 ≥8 源像素/格自动选默认 Board Size（大图 116 / 中图 58 / 小图 29），select 可见更新
+- [x] 🤖 **photo→bead 质量三刀 ✅**（👤 "convert 识别效果很差，animal town 都很花"）：珠空间近亲合并（治家族劈色 confetti）+ despeckle 双轮 + **adoptIsolated 收编边界残兵** → 用户配置孤立格 6.0%→3.0%、16 色档 1.4%；**默认色数 103→24（推荐位）** + convert 超采样提示。明细 PLAN 10/28 夜场第二场行
+- [x] 🤖 **手绘 46 张全下 ✅**（👤 拍板"全下+圣诞页撤"）：站点变**纯爬图 106 张**（animals 52 / characters 41 / halloween 11 / quick makes 2）；圣诞+美食页 301→hub；首页 4 卡换 Animals/Characters/Halloween/Easy；165 页 + 205/205 测试绿；像素网格 importer（圣诞回补）排 11 月批
+- [ ] 👤 **线上验收 106 张（Ctrl+F5）**：[/perler-bead-animals/](https://tintbrew.com/perler-bead-animals/)（52 张）+ [/perler-bead-characters/](https://tintbrew.com/perler-bead-characters/)（41 张）+ [hub](https://tintbrew.com/perler-bead-patterns/)（106 张 + Quick Makes 组）—— 格子干净度/像不像/打印输出三看；不对的报哪张，参数调完重转
 - [ ] 👤 **AITDK 拉量（P3 立项门，插件拉完报数即可）**：`perler bead patterns`（主词复拉）+ `dog perler bead patterns` + `cat perler bead patterns` + `pokemon perler pattern` + `perler bead animals`（品类族抽查）—— **合计 ≥10K US/月 → P3 全量开工**（~100 题材页）；不到线则 P3 缩量做已有品类页深化
-- [ ] 顺手：photo→bead 上传一张照片一起验四件 —— 103 色效果 / **Drop 后自动板号** / 116 尺寸 / **Print pattern 只出 Your pattern**（缺色报色名）；首页看新类型卡观感；10/30 B 计划门材料已备齐（chartglade PLAN §6）
+- [ ] 顺手：photo→bead **重转 button_city_1.png 对比效果**（旧截图 vs 新引擎：默认已改 24 色推荐，116/smooth 下再试 16 色档更干净；超采样不足会有提示）+ **Drop 后自动板号** / **Print pattern 只出 Your pattern**；首页看新 4 卡（手绘代表图已换爬图款）；10/30 B 计划门材料已备齐（chartglade PLAN §6）
 
 ## 10/27 已完成归档
 
