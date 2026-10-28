@@ -98,10 +98,31 @@ export class PhotoStudio {
     status.textContent = 'Reading your photo…';
     try {
       this.source = await this.decode(file);
+      // a fresh photo re-picks the default board size to fit its detail —
+      // the select visibly updates, and the convert below uses it
+      this.autoSize();
       this.convert();
     } catch {
       status.textContent = 'Could not read that image — try a different file.';
     }
+  }
+
+  /** Default board width for a fresh photo: the largest size whose cells
+   *  keep ≥8 source pixels on the photo's short edge, so a small picture
+   *  lands on a small board instead of starving every bead for detail. */
+  static suggestCols(width: number, height: number, sizes: number[]): number {
+    const cap = Math.min(width, height) / 8;
+    return sizes.filter((s) => s <= cap).pop() ?? sizes[0] ?? 29;
+  }
+
+  /** Point the Board size select at the suggested default for this source. */
+  private autoSize(): void {
+    if (!this.source) return;
+    const sel = this.root.querySelector<HTMLSelectElement>('[data-photo-size]');
+    if (!sel) return;
+    const sizes = Array.from(sel.options, (o) => Number(o.value)).filter((n) => n > 0);
+    const cols = PhotoStudio.suggestCols(this.source.width, this.source.height, sizes);
+    if (sizes.includes(cols)) sel.value = String(cols);
   }
 
   /** File → RGBA pixels. Decodes locally; nothing leaves the browser. */

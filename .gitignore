@@ -31,3 +31,6 @@ research/**/*.png
 # 各项目 tmp/：一次性验证脚本、headless 截图、开发期预览（beadgen SVG sheet 等）
 **/tmp/
 push.bat
+
+# one-off diagnostic scripts (repo rule: never commit)
+*.temp.mjs

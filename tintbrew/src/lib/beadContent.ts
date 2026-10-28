@@ -45,6 +45,7 @@ export const CATEGORY_BASE: Record<BeadCategory, string> = {
   christmas: '/christmas-perler-bead-patterns/',
   halloween: '/perler-bead-patterns/',
   minis: '/perler-bead-patterns/',
+  characters: '/perler-bead-characters/',
 };
 
 export const CATEGORY_LABEL: Record<BeadCategory, string> = {
@@ -53,6 +54,7 @@ export const CATEGORY_LABEL: Record<BeadCategory, string> = {
   christmas: 'Christmas',
   halloween: 'Halloween',
   minis: 'Minis',
+  characters: 'Characters',
 };
 
 export function patternUrl(p: BeadPatternDef): string {
@@ -116,6 +118,7 @@ export const categoryCounts: Record<BeadCategory, number> = {
   christmas: patternsByCategory('christmas').length,
   halloween: patternsByCategory('halloween').length,
   minis: patternsByCategory('minis').length,
+  characters: patternsByCategory('characters').length,
 };
 
 export const totalPatternCount = patternContents.length;

@@ -10,8 +10,9 @@ const labels: Record<BeadCategory, string> = {
   food: 'Easy food',
   christmas: 'Easy Christmas',
   halloween: 'Easy Halloween',
+  characters: 'Easy characters',
 };
-const order: BeadCategory[] = ['minis', 'animals', 'food', 'christmas', 'halloween'];
+const order: BeadCategory[] = ['minis', 'animals', 'food', 'christmas', 'halloween', 'characters'];
 const groups = order
   .map((cat) => ({
     label: labels[cat],

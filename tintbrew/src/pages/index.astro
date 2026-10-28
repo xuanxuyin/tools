@@ -1,6 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BeadFigure from '../components/BeadFigure.astro';
+import { BEAD_PATTERNS } from '../data/beadPatterns';
+import { categoryCounts, patternContents } from '../lib/beadContent';
 import { SITE } from '../consts';
+
+// one flagship board per category stands in for the whole set — the figures
+// render server-side from the same pattern data as the gallery pages, so the
+// homepage shows real bead art with zero image assets
+const bySlug = (slug: string) => patternContents.find((p) => p.def.slug === slug)!;
 
 const title = 'TintBrew — Mix Colors Online & Convert HEX, RGB, HSL, CMYK';
 const description =
@@ -63,69 +71,41 @@ const jsonLd = {
     </a>
   </section>
 
-  <section aria-label="Perler bead patterns" class="tool-grid" style="margin-top: var(--sp-8);">
+  <section aria-label="Perler bead patterns" class="tool-grid bead-grid" style="margin-top: var(--sp-8);">
     <h2 class="grid-title">
-      Perler bead patterns <span class="hint">— color work you can hold</span>
+      <span>
+        Perler bead patterns <span class="hint">— color work you can hold</span>
+      </span>
+      <a class="all-link" href="/perler-bead-patterns/">All {BEAD_PATTERNS.length} patterns →</a>
     </h2>
-    <a class="tool-card" href="/perler-bead-patterns/">
-      <h3>All free Perler patterns</h3>
-      <p>
-        Every pattern on one page — animals, food, holidays and minis, each with a printable grid,
-        a bead shopping list, and a paint-it-yourself canvas.
-      </p>
-      <div class="swatch-strip" aria-hidden="true">
-        <span style="background:#323234"></span>
-        <span style="background:#eaefee"></span>
-        <span style="background:#fd5918"></span>
-      </div>
+    <a class="bead-card" href="/perler-bead-animals/">
+      <span class="bead-thumb"><BeadFigure view={bySlug('cat')} mode="reference" /></span>
+      <span class="bead-count">{categoryCounts.animals} patterns</span>
+      <h3>Animals</h3>
+      <p>Cat, panda, fox — and a whole kennel of dogs. Recolor any board online before you print.</p>
     </a>
-    <a class="tool-card" href="/perler-bead-animals/">
-      <h3>Perler bead animals</h3>
-      <p>
-        Cats, dogs and more — full-size boards in the real Perler palette, ready to print or play
-        online.
-      </p>
-      <div class="swatch-strip" aria-hidden="true">
-        <span style="background:#936848"></span>
-        <span style="background:#f6ca69"></span>
-        <span style="background:#323234"></span>
-      </div>
+    <a class="bead-card" href="/perler-bead-characters/">
+      <span class="bead-thumb"><BeadFigure view={bySlug('blue-alien')} mode="reference" /></span>
+      <span class="bead-count">{categoryCounts.characters} patterns</span>
+      <h3>Characters</h3>
+      <p>Big-eyed girls, chibi heroes and friendly spooks — portrait boards on real bead colors.</p>
     </a>
-    <a class="tool-card" href="/perler-bead-food/">
-      <h3>Perler bead food</h3>
-      <p>
-        Fruit, snacks and sweets that look good enough to eat — with exact bead counts for each
-        color.
-      </p>
-      <div class="swatch-strip" aria-hidden="true">
-        <span style="background:#fd5918"></span>
-        <span style="background:#f6d901"></span>
-        <span style="background:#d14337"></span>
-      </div>
+    <a class="bead-card" href="/perler-bead-food/">
+      <span class="bead-thumb"><BeadFigure view={bySlug('cupcake')} mode="reference" /></span>
+      <span class="bead-count">{categoryCounts.food} patterns</span>
+      <h3>Food</h3>
+      <p>Fruit, snacks and sweets that look good enough to eat — each with exact bead counts.</p>
     </a>
-    <a class="tool-card" href="/christmas-perler-bead-patterns/">
-      <h3>Christmas Perler patterns</h3>
-      <p>
-        Trees, ornaments and gifts — seasonal boards sized for small hands, printed on one sheet
-        each.
-      </p>
-      <div class="swatch-strip" aria-hidden="true">
-        <span style="background:#007b4e"></span>
-        <span style="background:#b0353c"></span>
-        <span style="background:#eaefee"></span>
-      </div>
+    <a class="bead-card" href="/christmas-perler-bead-patterns/">
+      <span class="bead-thumb"><BeadFigure view={bySlug('christmas-tree')} mode="reference" /></span>
+      <span class="bead-count">{categoryCounts.christmas} patterns</span>
+      <h3>Christmas</h3>
+      <p>Trees, snowmen and stockings — seasonal boards sized for small hands, one sheet each.</p>
     </a>
-    <a class="tool-card" href="/easy-perler-bead-patterns/">
-      <h3>Easy Perler patterns</h3>
-      <p>
-        Small boards, few colors, big win — the right first project for beginners and kids.
-      </p>
-      <div class="swatch-strip" aria-hidden="true">
-        <span style="background:#f2afb7"></span>
-        <span style="background:#96d1d4"></span>
-        <span style="background:#a3de6f"></span>
-      </div>
-    </a>
+    <p class="bead-more">
+      First board? The <a href="/easy-perler-bead-patterns/">easy patterns</a> keep it small — and
+      the <a href="/perler-bead-patterns/">Halloween set</a> lives on the main pattern page.
+    </p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-8);">
@@ -167,15 +147,85 @@ const jsonLd = {
   .grid-title {
     grid-column: 1 / -1;
     margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-2);
   }
   .grid-title .hint {
     font-weight: 400;
     font-size: 0.95rem;
     color: var(--muted);
   }
-  /* category cards sit one heading level under the tools row's h2 cards */
-  .tool-card h3 {
-    margin: 0 0 0.4rem;
+  .all-link {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--accent, #b3552e);
+  }
+  .all-link:hover {
+    text-decoration: underline;
+  }
+  /* four type cards across on wide screens — tighter floor than .tool-grid's 16rem */
+  .bead-grid {
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  }
+  .bead-card {
+    display: grid;
+    gap: 6px;
+    align-content: start;
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg, #fff);
+    text-decoration: none;
+    color: inherit;
+  }
+  .bead-card:hover {
+    border-color: var(--accent, #b3552e);
+  }
+  .bead-thumb {
+    display: flex;
+    justify-content: center;
+    height: 150px;
+  }
+  .bead-count {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--accent, #b3552e);
+  }
+  .bead-card h3 {
+    margin: 0;
     font-size: 1.1rem;
+  }
+  .bead-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--ink-soft, #666);
+  }
+  .bead-more {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft, #666);
+  }
+  .bead-more a {
+    color: var(--accent, #b3552e);
+  }
+</style>
+
+<style is:global>
+  /* BeadFigure's own scoped `.bead-fig { width: 100%; height: auto }` fills
+     the card — on the homepage the figure must fit INSIDE a fixed-height
+     thumb instead, keeping each board's aspect via its viewBox. Global (not
+     scoped) because .bead-fig is rendered by the child component and never
+     carries this page's scope id. */
+  .bead-thumb .bead-fig {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
   }
 </style>

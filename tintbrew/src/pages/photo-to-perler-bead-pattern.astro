@@ -189,9 +189,9 @@ const jsonLd = [
 
     <p class="keep-reading">
       Rather start from a ready-made design? Browse the
-      <a href="/perler-bead-patterns/">full perler bead pattern set</a> — 46 animals, food,
-      Halloween and Christmas boards at every size, each with the same printable template and bead
-      list.
+      <a href="/perler-bead-patterns/">full perler bead pattern set</a> — 152 animal, character,
+      food, Halloween and Christmas boards at every size, each with the same printable template and
+      bead list.
     </p>
   </section>
 </BaseLayout>
@@ -501,7 +501,11 @@ const jsonLd = [
     .site-footer,
     .no-print,
     .stage-empty,
-    .keep-reading {
+    .keep-reading,
+    /* the print button exists to print the converted board — the marketing
+       copy above and below it never belongs on that sheet */
+    .hero,
+    .prose {
       display: none !important;
     }
     .tool-shell {

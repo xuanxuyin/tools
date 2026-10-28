@@ -9,6 +9,7 @@ import { BEAD_FOOD } from './beadFood';
 import { BEAD_CHRISTMAS } from './beadChristmas';
 import { BEAD_HALLOWEEN } from './beadHalloween';
 import { BEAD_MINIS } from './beadMinis';
+import { BEAD_CHARACTERS } from './beadCharacters';
 
 export const BEAD_PATTERNS: BeadPatternDef[] = [
   ...BEAD_ANIMALS,
@@ -16,6 +17,7 @@ export const BEAD_PATTERNS: BeadPatternDef[] = [
   ...BEAD_CHRISTMAS,
   ...BEAD_HALLOWEEN,
   ...BEAD_MINIS,
+  ...BEAD_CHARACTERS,
 ];
 
-export { BEAD_ANIMALS, BEAD_FOOD, BEAD_CHRISTMAS, BEAD_HALLOWEEN, BEAD_MINIS };
+export { BEAD_ANIMALS, BEAD_FOOD, BEAD_CHRISTMAS, BEAD_HALLOWEEN, BEAD_MINIS, BEAD_CHARACTERS };

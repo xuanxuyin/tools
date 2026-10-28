@@ -20,12 +20,12 @@ export interface BeadSeoDef {
 export const BEAD_HUB_SEO: BeadSeoDef = {
   path: '/perler-bead-patterns/',
   h1: 'Free Perler Bead Patterns',
-  title: '46 Free Perler Bead Patterns — Recolor, Print & Iron',
+  title: '150+ Free Perler Bead Patterns — Recolor, Print & Iron',
   description:
-    'Original fuse bead patterns for every level: animals, food, Halloween and Christmas. Recolor any area with real bead colors, then print the template and its bead list for free.',
+    'Free fuse bead patterns for every level: animals, characters, food, Halloween and Christmas. Recolor any area with the real 103-color Perler line, then print the template and its bead list.',
   intro: [
-    'Every pattern on this page was drawn here, bead by bead — no Pinterest reposts, no characters you are not allowed to sell. 46 designs across animals, food, minis, Halloween and Christmas, from evening-sized minis on one pegboard to a 64-bead-wide showpiece unicorn.',
-    'What makes these different from a normal pattern grid: every area of a design — fur, frosting, scarf, eyes — is its own zone. Tap a zone and try any of 32 real bead colors before you commit. The bead list updates live, so you know exactly how many of each color to pull from the jar.',
+    '152 designs across animals, characters, food, minis, Halloween and Christmas — from evening-sized minis on one pegboard to 90-bead-wide portraits. Every board is matched bead by bead to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
+    'What makes these different from a normal pattern grid: every area of a design — fur, frosting, scarf, eyes — is its own zone. Tap a zone and try any of the 103 real bead colors before you commit. The bead list updates live, so you know exactly how many of each color to pull from the jar.',
     'When a design looks right, print it. The printed sheet gives you the empty template in zone outlines plus the shopping list of beads, and it fits on one letter-size page.',
   ],
   faqs: [
@@ -35,11 +35,11 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
     },
     {
       q: 'What size pegboard do I need?',
-      a: 'The minis fit a single large interlocking pegboard (29×29). Full-size designs run 44 to 64 beads wide: most need two large interlocking boards side by side, and the unicorn needs three. Every pattern page lists its exact grid size.',
+      a: 'The minis fit a single large interlocking pegboard (29×29). Mid-size designs run 30 to 64 beads wide — two or three large boards snapped together. The widest portraits hit 90 beads across and span up to nine boards. Every pattern page lists its exact grid size.',
     },
     {
       q: 'Can I sell crafts I make from these patterns?',
-      a: 'Yes — the designs are ours and we allow finished handmade items to be sold in small quantities (craft fairs, Etsy shops). We only ask that you do not resell or repost the patterns themselves.',
+      a: 'Yes — sell finished handmade items in small quantities (craft fairs, Etsy shops). We only ask that you do not resell or repost the patterns themselves.',
     },
     {
       q: 'What is the difference between Perler, fuse and melty beads?',
@@ -56,11 +56,11 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
   animals: {
     path: '/perler-bead-animals/',
     h1: 'Perler Bead Animals',
-    title: '12 Free Perler Bead Animal Patterns — Cat, Panda, Fox & More',
+    title: '64 Free Perler Bead Animal Patterns — Cat, Panda, Fox & More',
     description:
-      'Free perler bead animal patterns: cat, bunny, panda, fox, owl, penguin, dog, bear, frog, chick, dinosaur and unicorn. Recolor each animal online, then print the template.',
+      'Free perler bead animal patterns: cat, bunny, panda, fox, owl, penguin, dog, bear, frog, chick, dinosaur and unicorn — plus dozens more converted from community designs. Recolor each animal online, then print the template.',
     intro: [
-      'Twelve animal faces and figures at showpiece scale — 56 beads wide, with the unicorn an even bigger 64. Each one separates fur, inner ears, eyes, nose and mouth into their own zones — so a cheddar cat becomes a gray cat in two clicks, without redrawing anything.',
+      'Sixty-four animal boards matched bead by bead to the real 103-color Perler line — the twelve showpiece faces (56 beads wide, unicorn at 64) plus a whole kennel of dogs, cats, birds and sea creatures converted from community designs at every size. Each one separates fur, inner ears, eyes, nose and mouth into their own zones — so a cheddar cat becomes a gray cat in two clicks, without redrawing anything.',
       'Start with the cat or the panda if this is your first showpiece: both are mostly one color with a few details. The unicorn is the flagship — about 1,600 beads, twenty-two recolorable zones.',
     ],
     faqs: [
@@ -81,11 +81,11 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
   food: {
     path: '/perler-bead-food/',
     h1: 'Perler Bead Food Patterns',
-    title: '10 Free Perler Bead Food Patterns — Kawaii Cupcake, Pizza, Donut',
+    title: '11 Free Perler Bead Food Patterns — Kawaii Cupcake, Pizza, Donut',
     description:
-      'Free kawaii food bead patterns: cupcake, donut, pizza slice, ice cream cone, strawberry, cookie, watermelon, ice pop, burger and sushi roll. Recolor online and print.',
+      'Free kawaii food bead patterns: cupcake, donut, pizza slice, ice cream cone, strawberry, cookie, watermelon, ice pop, burger, sushi roll and apple. Recolor online and print.',
     intro: [
-      'Ten kitchen classics in kawaii style — several of them with tiny faces, because a donut with a smile sells itself at a craft fair. Icing, dough, sprinkles and wrapper are separate zones on every design, so flavor swaps are one tap each.',
+      'Eleven kitchen classics in kawaii style — several of them with tiny faces, because a donut with a smile sells itself at a craft fair. Icing, dough, sprinkles and wrapper are separate zones on every design, so flavor swaps are one tap each.',
       'The pizza slice and the cookie are the easiest grids in this set. The cupcake and the sushi roll have the most going on and are satisfying second-week projects.',
     ],
     faqs: [
@@ -131,7 +131,7 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
   easy: {
     path: '/easy-perler-bead-patterns/',
     h1: 'Easy Perler Bead Patterns',
-    title: '27 Easy Perler Bead Patterns for Beginners — Free & Printable',
+    title: 'Easy Perler Bead Patterns for Beginners — Free & Printable',
     description:
       'Beginner fuse bead patterns that still look great: animals, food and minis with straightforward, forgiving grids. Pick one, recolor it online, print the template and start beading.',
     intro: [
@@ -150,6 +150,31 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
       {
         q: 'How do I keep beads from rolling off the board?',
         a: 'Work on a tray or a cookie sheet with a rim, and press each bead straight down. If a row shifts, nudge it back with a flat fingertip before ironing — never after.',
+      },
+    ],
+  },
+  characters: {
+    path: '/perler-bead-characters/',
+    h1: 'Perler Bead Characters',
+    title: '41 Free Perler Bead Character Patterns — Girls, Chibi & More',
+    description:
+      'Free fuse bead character patterns: cute girls with bows and braids, chibi heroes, ghosts and goblins. Every board matched to real bead colors — recolor, print and start placing.',
+    intro: [
+      'Forty-one character boards converted bead by bead onto the real 103-color Perler line — big-eyed girls with ribbons and nightcaps, tiny chibi heroes, wizards and vampires. Each one keeps its original proportions, so the face you loved on screen is the face you iron.',
+      'Every pattern page gives you three things at once: the printable grid with row and column counts, the shopping list with exact bead counts per color, and the online board where you can repaint any area before you commit a single bead.',
+    ],
+    faqs: [
+      {
+        q: 'What board sizes do the character patterns use?',
+        a: 'They run from 30 to 90 beads wide. The smallest fit one or two large pegboards; the widest portraits span nine and want a flat working surface you will not need for a day. Each pattern page lists its exact grid.',
+      },
+      {
+        q: 'Which characters are easiest for beginners?',
+        a: 'Start with anything under 40 beads wide — the small girls and simple silhouettes have large color areas and forgiving outlines. Save the 80-wide portraits for your third or fourth board.',
+      },
+      {
+        q: 'Can I change the colors on a character?',
+        a: 'Yes — that is the point of the online board. Hair, dress, background: pick any area and repaint it with any of the 103 real bead colors. The bead list updates the moment you do.',
       },
     ],
   },

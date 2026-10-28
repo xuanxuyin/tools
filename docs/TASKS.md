@@ -15,9 +15,12 @@
 - [x] 🤖 **拼豆 P3 方向判读+拍板入档 ✅**（👤 "照它抄就完事了"+ 排版导航也抄）：perlerbeadpatterns.org 拆解（2026-06 新站排 #2 = 车道开着；~110 图纸 + 16 hub + 图片 sitemap 全声明）→ 题材目录/hub 体系/图纸页元数据/排版导航全复刻，beadgen 重制不搬文件；差异点 = 在线直接拼 + P 码清单。明细 PLAN 10/28 行
 - [x] 🤖 **爬图→图纸转换管道 + 首批 22 张 ✅**（👤 "为什么不用扒下来的图，我们自己的太丑"）：渲染珠图逆向（网格检测迭代阈值 + 全格 median 采样 + pegboard Oklab 竞争 + 16 色封顶）→ 22 张非 IP 动物进 `/perler-bead-animals/`（12→34 张，全站 46→68 图纸、128 页、203/203 绿）。明细 PLAN 10/28 下半场行
 - [x] 🤖 **photo→bead 三连修 ✅**（👤 指令）：convert 后编辑器加 **Print pattern** 按钮；Board size 加 **116×116**（16 板）+ 解码上限 1200→1600 提精度；站内可见 "last updated" 行删除（机器信号保留）
-- [ ] 👤 **线上验收首批 22 张**：打开 [/perler-bead-animals/](https://tintbrew.com/perler-bead-animals/) 点几张（shiba / corgi-looking-up / border-collie / cut-parrot）—— 格子干净度/像不像/打印输出三看；**过 → 我铺全量 84 张**，不过 → 报哪张哪不对，转换参数调完再铺
+- [x] 🤖 **全量 106 张铺开 ✅**（👤 "怎么只有22张"）：manifest 106/106 零失败 → **六类 152 张**（animals 64 / characters 41 / halloween 17 / food 11 / christmas 10 / minis 9），**新类别页 /perler-bead-characters/**（IP 泛化 21 名：pikachu→lightning-mouse、stitch→blue-alien 等）；213 页 + 204/204 测试绿。明细 PLAN 10/28 夜场行
+- [x] 🤖 **首页 bead 板块重做 ✅**（👤 "色条卡丑/分类乱/按类型做卡"）：4 类型卡各带 SSR 真图纸代表图（cat / blue-alien / cupcake / christmas-tree）+ 计数徽章；All/Easy 卡撤（Easy=筛选非类型），收进标题行 + 底部引导行
+- [x] 🤖 **photo Drop 自动板号 ✅**（👤 指令）：按图片短边 ≥8 源像素/格自动选默认 Board size（大图 116 / 中图 58 / 小图 29），select 可见更新
+- [ ] 👤 **线上验收全量 152 张**：[/perler-bead-animals/](https://tintbrew.com/perler-bead-animals/)（64 张，重点看新转的 IP 泛化款）+ [/perler-bead-characters/](https://tintbrew.com/perler-bead-characters/)（41 张）+ [hub](https://tintbrew.com/perler-bead-patterns/)（152 张）—— 格子干净度/像不像/打印输出三看；不对的报哪张，参数调完重转
 - [ ] 👤 **AITDK 拉量（P3 立项门，插件拉完报数即可）**：`perler bead patterns`（主词复拉）+ `dog perler bead patterns` + `cat perler bead patterns` + `pokemon perler pattern` + `perler bead animals`（品类族抽查）—— **合计 ≥10K US/月 → P3 全量开工**（~100 题材页）；不到线则 P3 缩量做已有品类页深化
-- [ ] 顺手：photo→bead 上传一张照片验证 103 色效果 + 新 116 尺寸 + Print 按钮三件一起看（缺色报色名）；10/30 B 计划门材料已备齐（chartglade PLAN §6）
+- [ ] 顺手：photo→bead 上传一张照片一起验四件 —— 103 色效果 / **Drop 后自动板号** / 116 尺寸 / **Print pattern 只出 Your pattern**（缺色报色名）；首页看新类型卡观感；10/30 B 计划门材料已备齐（chartglade PLAN §6）
 
 ## 10/27 已完成归档
 

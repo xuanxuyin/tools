@@ -1,6 +1,6 @@
 /** Shared types for the fuse-bead pattern family (data + lib + island). */
 
-export type BeadCategory = 'animals' | 'food' | 'christmas' | 'halloween' | 'minis';
+export type BeadCategory = 'animals' | 'food' | 'christmas' | 'halloween' | 'minis' | 'characters';
 
 export type BeadDifficulty = 'easy' | 'medium';
 

@@ -40,7 +40,7 @@ async function loadPage() {
   host.innerHTML = src.innerHTML;
   document.body.appendChild(host);
   const studio = new PhotoStudio(host);
-  return { window, document: document as unknown as Document, host, studio };
+  return { window, document: document as unknown as Document, host, studio, PhotoStudio };
 }
 
 /** Solid-color RGBA pixels, ImageData shaped. */
@@ -186,6 +186,18 @@ describe('photo bead island (real SSR markup)', () => {
     const svg = ctx.host.querySelector('[data-bead-canvas]');
     expect(svg?.getAttribute('data-cols')).toBe('116'); // engine caps at 120
     expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(116 * 116);
+  });
+
+  it('suggestCols scales the default board to the photo detail available', () => {
+    const sizes = [29, 58, 87, 116];
+    // ≥8 source pixels per cell on the short edge: phone photos earn the
+    // 116 board, web-sized pictures step down, thumbnails stay on 29
+    expect(ctx.PhotoStudio.suggestCols(1600, 1200, sizes)).toBe(116);
+    expect(ctx.PhotoStudio.suggestCols(1200, 1600, sizes)).toBe(116); // portrait too
+    expect(ctx.PhotoStudio.suggestCols(800, 600, sizes)).toBe(58);
+    expect(ctx.PhotoStudio.suggestCols(900, 1600, sizes)).toBe(87); // short edge 900
+    expect(ctx.PhotoStudio.suggestCols(320, 240, sizes)).toBe(29);
+    expect(ctx.PhotoStudio.suggestCols(60, 40, sizes)).toBe(29); // never below the floor
   });
 
   it('the touch-up row carries a Print pattern button that opens the print dialog', () => {

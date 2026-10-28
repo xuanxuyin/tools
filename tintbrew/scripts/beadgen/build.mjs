@@ -34,6 +34,7 @@ const CATS = [
   },
   {
     key: 'food', file: 'beadFood.ts', constName: 'BEAD_FOOD',
+    imported: 'imported-food',
     header:
       '/**\n' +
       ' * Food patterns (10) — vector-authored in scripts/beadgen/*.mjs and\n' +
@@ -50,6 +51,7 @@ const CATS = [
   },
   {
     key: 'halloween', file: 'beadHalloween.ts', constName: 'BEAD_HALLOWEEN',
+    imported: 'imported-halloween',
     header:
       '/**\n' +
       ' * Halloween patterns (6) — vector-authored in scripts/beadgen/*.mjs and\n' +
@@ -59,11 +61,23 @@ const CATS = [
   },
   {
     key: 'minis', file: 'beadMinis.ts', constName: 'BEAD_MINIS',
+    imported: 'imported-minis',
     header:
       '/**\n' +
       ' * Mini patterns (8) — vector-authored in scripts/beadgen/*.mjs and\n' +
       ' * rasterized by the beadgen engine. The smallest tier stays smallest\n' +
       ' * (14-22 wide): an-evening project, exactly four regions each.\n' +
+      ' */',
+  },
+  {
+    key: 'characters', file: 'beadCharacters.ts', constName: 'BEAD_CHARACTERS',
+    imported: 'imported-characters',
+    header:
+      '/**\n' +
+      ' * Character patterns — imported wholesale from community bead renders\n' +
+      ' * by scripts/beadgen/import-webp.mjs (import-manifest.json genericizes\n' +
+      ' * IP names: lightning-mouse, blue-alien, crayon-kid…). No hand-authored\n' +
+      ' * defs yet.\n' +
       ' */',
   },
 ];

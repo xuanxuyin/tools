@@ -45,18 +45,19 @@ const BANNED = [
 ];
 
 describe('bead pattern data integrity', () => {
-  it('68 patterns across five categories with locked minimums', () => {
-    // 46 hand-authored + 22 imported from community bead renders (2026-10-28)
-    expect(BEAD_PATTERNS).toHaveLength(68);
-    expect(patternContents).toHaveLength(68);
+  it('152 patterns across six categories with locked minimums', () => {
+    // 46 hand-authored + 106 imported from community bead renders (2026-10-28)
+    expect(BEAD_PATTERNS).toHaveLength(152);
+    expect(patternContents).toHaveLength(152);
     expect(categoryCounts).toEqual({
-      animals: 34,
-      food: 10,
+      animals: 64,
+      food: 11,
       christmas: 10,
-      halloween: 6,
-      minis: 8,
+      halloween: 17,
+      minis: 9,
+      characters: 41,
     });
-    expect(easyPatterns.length).toBe(31);
+    expect(easyPatterns.length).toBe(40);
   });
 
   it('grids are rectangular: no row exceeds width, rows are padded', () => {
@@ -155,12 +156,13 @@ describe('bead pattern data integrity', () => {
 });
 
 describe('bead pages in real dist markup', () => {
-  it('hub + all four galleries ship figures, zone-divided templates and JSON-LD', () => {
+  it('hub + all five galleries ship figures, zone-divided templates and JSON-LD', () => {
     const pages = [
       '/perler-bead-patterns/index.html',
       '/perler-bead-animals/index.html',
       '/perler-bead-food/index.html',
       '/christmas-perler-bead-patterns/index.html',
+      '/perler-bead-characters/index.html',
       '/easy-perler-bead-patterns/index.html',
     ];
     for (const page of pages) {
@@ -231,7 +233,7 @@ describe('bead pages in real dist markup', () => {
     expect(sm).toContain('<sitemap>');
   });
 
-  it('sitemap file lists all 46 pattern URLs', () => {
+  it('sitemap file lists all 152 pattern URLs', () => {
     // sitemap-0.xml is gzipped when large; Astro writes plain when small
     const sm0 = resolve(distRoot, 'sitemap-0.xml');
     const raw = readFileSync(sm0);
