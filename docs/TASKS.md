@@ -6,17 +6,19 @@
 
 ---
 
-## 今天 · 2026-10-27（周二）
+## 今天 · 2026-10-28（周三）
 
-> 昨 10/26 双正主已闭环（周一报数判读 + 外线 A/B 13 封发出，静默期两线至 11/2）。**本周唯一大节点：10/30（周五）B 计划讨论门（还剩 3 天）**。👤 五活经用户裁定"不想干、觉得没用"→ 🤖 逐项裁决（见下），全部降级/转顺手，零硬门槛活；🤖 接管三项自跑保持推进。
+> 昨 10/27 六项全闭环归档（见下）。**周五 10/30 B 计划讨论门（还剩 2 天）**。今日主线 = 拼豆：P0 已上线，P3 量级门等你拉数。
 
-- [x] 🤖 **11 月批候选排序 ✅ 10/27 已出结论入两 PLAN**：chartglade 主车厢 = place value 深化（首位，子族问法 top 10 实证）+ multiplication 梯队（Q4 换血窗口加急）+ cursive 深化 2 页 + Teaching Calendar hub —— 11/12 前后上线；视力表 + 谱纸 + 作曲岛滑 12 月批。tintbrew 11 月轻批 = V2.3 反向配色计算器 + make-X white/gray 搭车。**排序是 10/30 B 计划门弹药，裁止损则冻结**（两 PLAN 10/27 行）
-- [x] 🤖 **multiplication 变体梯队 SERP 实勘 ✅ 10/27 选型定案**：times table 词 EMD 小站 #1 + 博客混排可打 → /times-table-chart/ 立项；1-12 官方 PDF（Scholastic/Alberta/CAASPP）三锁不建页；printable 维持 10/04 窗口立项；blank 已有页不重做 —— **#25 收口 = 2 页**（PLAN 10/27 行）。变体词 AITDK 拉量降顺手活
-- [x] 🤖 **11 月批预开发 ✅ 两波全闭环 10/27 当日备齐**：第一波四件（periods 新页 / decimal interactive island / cursive 深化 2 页 / teaching-calendar hub）+ 第二波 mult 2 页（printable 三格式 + times-table 双版式，6 页乘法簇全互链）全部并入 `nov-predev` 分支存货（main 未动）；**最终 85 页 build + 241/241 测试绿**，8 新 URL dist 在位。遗留（sheetImage/OG/冬季页回填）随上线批。**11/12 上线窗只剩 merge + 首页换季 + IndexNow + 线上验证，零开发压力**
-- [x] 🤖 **B 计划门（10/30）判读预备考 ✅ 入 chartglade PLAN §6**：止损无数据依据（AND 排名侧锁死不成立），议题实质 = 火力结构重组（🤖 全包资产侧 vs 👤 手工发送侧）；周五照框架拍板即可
-- [x] 🤖 **tintbrew GA4 当日报数判读 ✅ 入 PLAN 10/27 行**：chatgpt.com 引荐 3/7 用户（43%）= AI 引荐结构性通道实锤（加固 V2.3 轻批决策）；mixer 17 事件真交互 + hue test 0% 跳出 vs 内容页 100% 跳出再证 AI 截流分级；7 用户/日噪音低位不改判据。零决策改动
-- [x] 🤖 **chartglade GA4 当日报数判读 ✅ 入 PLAN 10/27 行**：2 用户/日噪音位；两微弱信号 —— **DDG 首次引荐（通道 0→1）**、chatgpt 会话 1 但首次互动报 direct 与 tintbrew 反差印证 AI 导流偏好工具型 → 主战场外链/分发判读（10/18 已定）不变。零决策改动
-- 👤 **五活裁决（10/27 用户裁定不干，逐项处理入档）**：**C 组 pitch 4 封** = 发送只能你（Gmail 我够不到）；B 计划门前提已成立（18 封在途零回音），C 组是加项不是前提 → **不发按"未发"状态进判读不瘸腿**，降顺手活（想发 = [LIBGUIDES-BATCH2.md §2](./chartglade/LIBGUIDES-BATCH2.md) 一键链接即点即发）｜ **Pinterest 探针** = 账号活 + 三顺延信号 → **并入 11/15 末次探针一次性处理**，不再日挂 ｜ **GA4 关「网页更改」** = 账号活，下次周一报数前顺手即可（数据口径活不急）｜ **Reddit 蹲守** = 🤖 代干会毁号（自动化触发反垃圾，害养号 1 个月的人号），不想干就零动作 —— 10/31 万圣窗口自动关，零损失 ｜ **试玩回访** = 真机手感/物理打印替代不了，转纯顺手（photo→bead 仍缺色报色名；name-tracing wipe 灰阶真机打一张）
+- [x] 🤖 **拼豆 P0 ✅ 当日上线**：色板 48 假色 → **103 色 Perler 官方线**（P1~P103 购物码+官方色名+社区测量 hex）——购物清单从此指向真可买的珠子；图纸数据全部迁移重生成；201/201 测试 + 106 页 build 绿。明细 PLAN 10/28 行
+- [x] 🤖 **主页拼豆入口 ✅**（👤 指令）：工具卡（Photo to Bead）+ 品类卡板块（All/Animals/Food/Christmas/Easy）上线，此前首页零拼豆链接
+- [x] 🤖 **拼豆 P3 方向判读+拍板入档 ✅**（👤 "照它抄就完事了"+ 排版导航也抄）：perlerbeadpatterns.org 拆解（2026-06 新站排 #2 = 车道开着；~110 图纸 + 16 hub + 图片 sitemap 全声明）→ 题材目录/hub 体系/图纸页元数据/排版导航全复刻，beadgen 重制不搬文件；差异点 = 在线直接拼 + P 码清单。明细 PLAN 10/28 行
+- [ ] 👤 **AITDK 拉量（P3 立项门，插件拉完报数即可）**：`perler bead patterns`（主词复拉）+ `dog perler bead patterns` + `cat perler bead patterns` + `pokemon perler pattern` + `perler bead animals`（品类族抽查）—— **合计 ≥10K US/月 → P3 全量开工**（~100 题材页）；不到线则 P3 缩量做已有品类页深化
+- [ ] 顺手：photo→bead 上传一张照片验证 103 色效果（色板刚全换，缺色报色名）；10/30 B 计划门材料已备齐（chartglade PLAN §6）
+
+## 10/27 已完成归档
+
+**六项全闭环**：11 月批排序（chartglade 主车厢 place value 深化 + mult 梯队 + cursive 2 页 + Calendar hub；tintbrew 轻批 = V2.3 反向配色计算器 + white/gray 搭车）｜ mult 变体 SERP 实勘选型（times-table 立项，1-12 官方 PDF 三锁不建）｜ 11 月批预开发两波全并入 `nov-predev`（85 页 + 241/241 绿，11/12 窗零开发压力）｜ B 计划门判读预备考（止损无数据依据）｜ 两站 GA4 判读（tintbrew chatgpt 引荐 43% 实锤 AI 通道；chartglade DDG 0→1）。👤 五活裁决：C 组 pitch 不发按"未发"进判读 / Pinterest 并入 11/15 / GA4 开关顺手 / Reddit 10/31 自动关 / 试玩转顺手。明细两 PLAN 10/27 行
 
 ## 10/26 已完成归档
 
@@ -68,7 +70,7 @@
 
 **🤖 10/05 批提前上线（👤 拍板当日执行当日收）**：#18 支柱页下载按钮 + V1.8 sign-in 族 hub+5 页 + 首页 Halloween 季节板块 + "no download" 文案软化；71 页 / sitemap 64→70 / 81 测试绿；6 新页 200+canonical 自指、IndexNow 补推 6 URL 返 200【实勘 curl 权威 IP】；main `c222d13`+`b8a2e75`，predev reset 到 main = 10/25 批干净起点。**过程坑入档**：守卫测试放 `src/pages/` 炸 Astro 构建（pages 下 .ts 被当路由模块加载）→ 挪 `src/data/homepage.test.ts`；IndexNow key 文件真名 = `885ed6e41c45aaa0a07837bfe89d5937.txt`（9/15 档里 "cadecee" 是 commit 哈希非文件名，已勘误）。明细 PLAN 10/02 时间线行。
 
-**9/29 已完成归档**：👤 周一例行补跑（tintbrew 20 词全 top 3~7.7 决策门撞开；chartglade 15/52 八天零转化收录门真堵；DDG ≈35）｜ 👤 查询明细两站 50 词入档（tintbrew 首个自然点击 brown 页）｜ 👤 chartglade CF WA 7d=18 判读自查直访 ｜ 👤 tintbrew CF WA token 管道确认活 ｜ 🤖 V2.2 批 A 当日上线 `3674025`（make-X 6 页 + mixing chart + gold，111 页 150 测试绿）。**9/29 未销项**：request indexing 清单（chartglade 10：decimal 重试 + mult 变体 3 + cursive g/h/l/b/z/f；tintbrew 7：make-blue/red/black/maroon/peach/turquoise + color-mixing-chart）—— 推没推待确认
+**9/29 已完成归档**：👤 周一例行补跑（tintbrew 20 词全 top 3~7.7 决策门撞开；chartglade 15/52 八天零转化收录门真堵；DDG ≈35）｜ 👤 查询明细两站 50 词入档（tintbrew 首个自然点击 brown 页）｜ 👤 chartglade CF WA 7d=18 判读自查直访 ｜ 👤 tintbrew CF WA token 管道确认活 ｜ 🤖 V2.2 批 A 当日上线 `3674025`（make-X 6 页 + mixing chart + gold，111 页 150 测试绿）。**9/29 未销项**：request indexing 清单（chartglade 10：decimal 重试 + mult 变体 3 + cursive g/h/l/b/z/f；tintbrew 7：make-blue/red/black/maroon/peach/turquoise + color-mixingni-chart）—— 推没推待确认
 
 **9/25 已完成归档**：👤 周一例行补录（两站 28 天数据入档）｜ 👤 request indexing 两批（新页 12/12 + place-value 家族 3/4，decimal 待重试，累计 26→29/64）｜ 👤 CF 修 http://www.chartglade.com/ 403（Always Use HTTPS 1 开关）｜ 👤 拼豆提案拉量 30.4K 立项落 tintbrew ｜ 🤖 拼豆 studio 连环修四推（`29e189c` 选色面板下移 → `3ceffe0` 固定底部浮层 → `3868cc7` 视口自适应 + 46 图×双视口全审计 → `af9f6a3` 画布同屏 + 引擎镜像对称 + Mirror 笔刷）｜ 🤖 图纸精确率双修 `8704b81`（引擎封闭洞治愈 + bunny 内耳 leaf 重画）｜ 🤖 穿搭页二连修 `ede4419`（颈部断层 + Style it yourself 自由搭配区）｜ 🤖 双站热门查询体检入档（两站头词簇破 top 10，两个门预演过线）
 
@@ -102,7 +104,7 @@
 | 日期 | 事件 |
 |---|---|
 | 10/30（周五） | ⭐ **10 月底 B 计划讨论门**：前提已修正 = 外线 18 封在途（首批 5+follow-up 5+二批 8）+ 迄今零回音 → 讨论开（单问：加火力 or 止损）；C 组 pitch 4 封发出与否也入判读 |
-| 11 月 | chartglade 11 月批：视力表 2 页小簇（V1.8 已提前至 10/05）+ 谱纸生成器 + 作曲工具岛（9/25 立项，12.6K 词池）+ cursive 深化 2 页（9/24 立项）+ Teaching Calendar hub 候选；构成以 10/27 排序结论为准 ｜ 11/15 Pinterest 末次探针 |
+| 11 月 | chartglade 11 月批：视力表 2 页小簇（V1.8 已提前至 10/05）+ 谱纸生成器 + 作曲工具岛（9/25 立项，12.6K 词池）+ cursive 深化 2 页（9/24 立项）+ Teaching Calendar hub 候选；构成以 10/27 排序结论为准 ｜ tintbrew：**拼豆 P1+P2（11/2~6 周：自由尺寸 8~120 + PNG 下载/分板打印 + 背景去除/裁剪）随轻批上线赶圣诞手工窗** + V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
 | 2027-01-31 | **双站止损线复盘**（chartglade <3K 且零词 top 30；tintbrew <5K 且零词 top 30 → 停投） |
 
 ---
