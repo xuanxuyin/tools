@@ -23,8 +23,9 @@
 - [x] 🤖 **对手站补齐 117/120 ✅**（👤 "120 张我都没看到"）：缺 14 张排除 IP 红线 3 张（mickey/minecraft-steve/pokeball）→ 编辑器页 RSC flight 直出图纸矩阵（比渲染图更纯，唯一 Oklab snap 一步）→ **11 张全进**：bee/purple-butterfly（animals 54）、boba-tea/french-fries/mushroom（food 4）、四色心（minis 5）、game-controller/green-creature（characters 43）；audit 加 zonesMin 豁免（2 色 mini 不吃 4-zone 地板）；176 页 + 205/205 绿。明细 PLAN 10/28 夜场第三场
 - [ ] 👤 **线上验收 117 张（Ctrl+F5）**：[/perler-bead-animals/](https://tintbrew.com/perler-bead-animals/)（54 张）+ [/perler-bead-characters/](https://tintbrew.com/perler-bead-characters/)（43 张）+ [hub](https://tintbrew.com/perler-bead-patterns/)（117 张 + Quick Makes 组 9 张：心×4/奶茶/薯条/蘑菇/苹果/比心手）—— 格子干净度/像不像/打印输出三看；不对的报哪张，参数调完重转
 - [x] 🤖 **CF Pages 部署事故 ✅ 当日闭环**（👤 贴 Build log 实锤根因）：hub 页 25.3 MiB 超 **CF 单文件 25 MiB 硬限**（117 张卡全量 SVG 直渲），构建绿、资产校验挂——8b41962 起 5 个 commit 全没上线。修复 = BeadFigure `thumb` 模式（宽>40 的板 f×f 多数票合并，仅卡片位；detail 页每珠不动）：hub 25.3→8.7 MiB、animals 11.0→3.6、characters 12.0→3.8、首页 1.2→0.4；205/205 绿。明细 PLAN 10/28 夜场第四场
+- [x] 🤖 **photo→bead Auto 板号上线 ✅**（👤 "动态按每张图分辨率生成宽高"）：四档吸附 → **autoCols 精确匹配**（短边÷8，clamp 29~116 不吸附），下拉默认 "Auto — best fit for this photo"，每张新照片自动重置；206/206 绿。最佳效果 demo 出图：合成高清照 → **Auto=116 板 11,484 珠** vs 58 板 2,842 珠（docs/demo_best_*.png），button_city Auto=32×21。明细 PLAN 10/29 行
 - [ ] 👤 **AITDK 拉量（P3 立项门，插件拉完报数即可）**：`perler bead patterns`（主词复拉）+ `dog perler bead patterns` + `cat perler bead patterns` + `pokemon perler pattern` + `perler bead animals`（品类族抽查）—— **合计 ≥10K US/月 → P3 全量开工**（~100 题材页）；不到线则 P3 缩量做已有品类页深化
-- [ ] 顺手：photo→bead **重转 button_city_1.png 对比效果**（旧截图 vs 新引擎：默认已改 24 色推荐，116/smooth 下再试 16 色档更干净；超采样不足会有提示）+ **Drop 后自动板号** / **Print pattern 只出 Your pattern**；首页看新 4 卡（手绘代表图已换爬图款）；10/30 B 计划门材料已备齐（chartglade PLAN §6）
+- [ ] 顺手：photo→bead **拖图后不动任何下拉，看 Auto 效果**（button_city 会自动落 32×21；要看到真实水平拿 ≥800px 短边**单主体**照片试，Auto 会自动上 58~116）+ **docs/ 四张对比图本机看**：demo_best_source.png（合成高清照）vs demo_best_auto116.png / demo_best_58.png / button_city_repro_auto32.png；首页看新 4 卡；10/30 B 计划门材料已备齐（chartglade PLAN §6）
 
 ## 10/27 已完成归档
 

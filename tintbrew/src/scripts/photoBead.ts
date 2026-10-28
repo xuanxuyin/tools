@@ -78,9 +78,15 @@ export class PhotoStudio {
   private opts(): { cols: number; mode: PhotoMode; maxColors: number } {
     const sel = (key: string) =>
       Number((this.root.querySelector<HTMLSelectElement>(key))?.value ?? 0);
+    const sizeVal = (this.root.querySelector<HTMLSelectElement>('[data-photo-size]'))?.value;
     const mode = (this.root.querySelector<HTMLSelectElement>('[data-photo-mode]'))?.value;
     return {
-      cols: sel('[data-photo-size]') || 29,
+      cols:
+        sizeVal === 'auto'
+          ? this.source
+            ? PhotoStudio.autoCols(this.source.width, this.source.height)
+            : 29
+          : Number(sizeVal) || 29,
       mode: mode === 'dither' ? 'dither' : 'smooth',
       maxColors: sel('[data-photo-colors]') || 24,
     };
@@ -98,8 +104,8 @@ export class PhotoStudio {
     status.textContent = 'Reading your photo…';
     try {
       this.source = await this.decode(file);
-      // a fresh photo re-picks the default board size to fit its detail —
-      // the select visibly updates, and the convert below uses it
+      // a fresh photo resets the board to Auto — the convert below sizes the
+      // board to whatever detail this picture actually carries
       this.autoSize();
       this.convert();
     } catch {
@@ -107,22 +113,21 @@ export class PhotoStudio {
     }
   }
 
-  /** Default board width for a fresh photo: the largest size whose cells
-   *  keep ≥8 source pixels on the photo's short edge, so a small picture
-   *  lands on a small board instead of starving every bead for detail. */
-  static suggestCols(width: number, height: number, sizes: number[]): number {
-    const cap = Math.min(width, height) / 8;
-    return sizes.filter((s) => s <= cap).pop() ?? sizes[0] ?? 29;
+  /** Exact-fit board width for a photo: every cell keeps ≥8 source pixels
+   *  on the short edge, clamped to the range people actually build — never
+   *  below the one-pegboard 29, never above the sixteen-pegboard 116. Unlike
+   *  the fixed dropdown entries this lands on whatever width the photo can
+   *  genuinely feed (a 387-px picture gets 32 wide, not the 29/58 straddle),
+   *  so Auto neither starves nor oversamples the source. */
+  static autoCols(width: number, height: number): number {
+    return Math.min(116, Math.max(29, Math.round(Math.min(width, height) / 8)));
   }
 
-  /** Point the Board size select at the suggested default for this source. */
+  /** A fresh photo resets the Board size to Auto — the next convert lands on
+   *  whatever width this particular picture carries detail for. */
   private autoSize(): void {
-    if (!this.source) return;
     const sel = this.root.querySelector<HTMLSelectElement>('[data-photo-size]');
-    if (!sel) return;
-    const sizes = Array.from(sel.options, (o) => Number(o.value)).filter((n) => n > 0);
-    const cols = PhotoStudio.suggestCols(this.source.width, this.source.height, sizes);
-    if (sizes.includes(cols)) sel.value = String(cols);
+    if (sel) sel.value = 'auto';
   }
 
   /** File → RGBA pixels. Decodes locally; nothing leaves the browser. */
@@ -195,13 +200,13 @@ export class PhotoStudio {
     this.render(pattern);
     status.textContent = `${pattern.cols} × ${pattern.rows} board — ${pattern.cells.length.toLocaleString('en-US')} beads. Paint over any cell you want to change, then print.`;
     // upsampling past the photo's detail just resamples anti-aliasing — say
-    // so when the picked board outruns what the source can feed it
+    // so when a hand-picked board outruns what the source can feed it (Auto
+    // by definition never does)
     const sizeSel = this.root.querySelector<HTMLSelectElement>('[data-photo-size]');
-    if (sizeSel) {
-      const sizes = Array.from(sizeSel.options, (o) => Number(o.value)).filter((n) => n > 0);
-      const suggested = PhotoStudio.suggestCols(this.source.width, this.source.height, sizes);
+    if (sizeSel && sizeSel.value !== 'auto') {
+      const suggested = PhotoStudio.autoCols(this.source.width, this.source.height);
       if (this.opts().cols > suggested) {
-        status.textContent += ` Heads up: this photo only carries about ${suggested} beads of detail — the ${suggested} × ${suggested} board prints cleaner.`;
+        status.textContent += ` Heads up: this photo only carries about ${suggested} beads of detail — Auto (${suggested} wide) prints cleaner.`;
       }
     }
     this.root

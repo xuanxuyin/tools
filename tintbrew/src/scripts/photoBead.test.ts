@@ -188,16 +188,33 @@ describe('photo bead island (real SSR markup)', () => {
     expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(116 * 116);
   });
 
-  it('suggestCols scales the default board to the photo detail available', () => {
-    const sizes = [29, 58, 87, 116];
-    // ≥8 source pixels per cell on the short edge: phone photos earn the
-    // 116 board, web-sized pictures step down, thumbnails stay on 29
-    expect(ctx.PhotoStudio.suggestCols(1600, 1200, sizes)).toBe(116);
-    expect(ctx.PhotoStudio.suggestCols(1200, 1600, sizes)).toBe(116); // portrait too
-    expect(ctx.PhotoStudio.suggestCols(800, 600, sizes)).toBe(58);
-    expect(ctx.PhotoStudio.suggestCols(900, 1600, sizes)).toBe(87); // short edge 900
-    expect(ctx.PhotoStudio.suggestCols(320, 240, sizes)).toBe(29);
-    expect(ctx.PhotoStudio.suggestCols(60, 40, sizes)).toBe(29); // never below the floor
+  it('autoCols lands on the exact width the photo can feed', () => {
+    // ≥8 source pixels per cell on the short edge, clamped to buildable
+    // boards — and no snapping to the fixed 29/58/87/116 ladder
+    expect(ctx.PhotoStudio.autoCols(1600, 1200)).toBe(116); // phone photo caps out
+    expect(ctx.PhotoStudio.autoCols(1200, 1600)).toBe(116); // portrait too
+    expect(ctx.PhotoStudio.autoCols(928, 928)).toBe(116); // exactly at the cap
+    expect(ctx.PhotoStudio.autoCols(800, 600)).toBe(75); // in-between width, not 58/87
+    expect(ctx.PhotoStudio.autoCols(900, 1600)).toBe(113); // short edge drives it
+    expect(ctx.PhotoStudio.autoCols(387, 254)).toBe(32); // a web thumbnail stays small
+    expect(ctx.PhotoStudio.autoCols(60, 40)).toBe(29); // never below one pegboard
+  });
+
+  it('Auto (the shipped default) converts to the exact-fit board for the photo', () => {
+    const size = ctx.host.querySelector('[data-photo-size]') as unknown as HTMLSelectElement;
+    expect(size.value).toBe('auto'); // the SSR default — no photo, no stale size
+    ctx.studio.convertSample(solid(640, 640, 255, 0, 0));
+    const svg = ctx.host.querySelector('[data-bead-canvas]');
+    expect(svg?.getAttribute('data-cols')).toBe('80'); // 640 ÷ 8 — no ladder snapping
+    expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(80 * 80);
+    // hand-picking past the photo's detail still gets the heads-up
+    size.value = '116';
+    size.dispatchEvent(
+      new (ctx.window as unknown as { Event: typeof Event }).Event('change', { bubbles: true }),
+    );
+    expect(ctx.host.querySelector('[data-photo-status]')?.textContent).toContain(
+      'only carries about 80 beads of detail — Auto (80 wide)',
+    );
   });
 
   it('the touch-up row carries a Print pattern button that opens the print dialog', () => {

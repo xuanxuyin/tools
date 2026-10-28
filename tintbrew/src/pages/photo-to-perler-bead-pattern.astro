@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: 'What kind of photo works best?',
-    a: 'Pictures with one clear subject and a simple background — a pet face, a logo, a cartoon character. Busy backgrounds turn into bead noise at 29 × 29. If your photo has soft gradients (sunsets, skies), try the Dithered mode, which trades a little texture for much smoother shading.',
+    a: 'Pictures with one clear subject and a simple background — a pet face, a logo, a cartoon character. Busy backgrounds turn into bead noise at 29 × 29. The Auto board size matches the board to the detail your photo actually carries — bigger, sharper photos earn bigger boards automatically. If your photo has soft gradients (sunsets, skies), try the Dithered mode, which trades a little texture for much smoother shading.',
   },
   {
     q: 'Why do my gradients look banded?',
@@ -98,6 +98,7 @@ const jsonLd = [
         <label>
           Board size
           <select data-photo-size>
+            <option value="auto" selected>Auto — best fit for this photo</option>
             <option value="29">29 × 29 — one pegboard</option>
             <option value="58">58 × 58 — four pegboards</option>
             <option value="87">87 × 87 — nine pegboards</option>
@@ -141,10 +142,11 @@ const jsonLd = [
         subject and a simple background.
       </li>
       <li>
-        <strong>Choose your board.</strong> 29 × 29 fits a single large square pegboard and makes an
-        evening project. 58 × 58 spans four boards; 87 × 87 is a showpiece that wants a weekend;
-        116 × 116 (sixteen boards) holds a face's worth of detail. The pattern follows your photo's
-        shape — the board is as tall as the picture is.
+        <strong>Choose your board.</strong> Auto sizes the board to your photo's detail — a phone
+        photo earns a big board, a small web picture lands small. 29 × 29 fits a single large
+        square pegboard and makes an evening project. 58 × 58 spans four boards; 87 × 87 is a
+        showpiece that wants a weekend; 116 × 116 (sixteen boards) holds a face's worth of detail.
+        The pattern follows your photo's shape — the board is as tall as the picture is.
       </li>
       <li>
         <strong>Print and place.</strong> The pattern prints with row and column numbers every five
