@@ -188,32 +188,32 @@ describe('photo bead island (real SSR markup)', () => {
     expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(116 * 116);
   });
 
-  it('autoCols lands on the exact width the photo can feed', () => {
-    // ≥8 source pixels per cell on the short edge, clamped to buildable
-    // boards — and no snapping to the fixed 29/58/87/116 ladder
-    expect(ctx.PhotoStudio.autoCols(1600, 1200)).toBe(116); // phone photo caps out
+  it('autoCols goes as wide as the photo can carry', () => {
+    // ≥2.2 source pixels per cell on the short edge, clamped to [29, 116] —
+    // structure resolution first: bigger boards measured CLEANER per cell
+    // than small ones, so only genuinely tiny pictures land below the cap
+    expect(ctx.PhotoStudio.autoCols(1600, 1200)).toBe(116); // any real photo caps out
     expect(ctx.PhotoStudio.autoCols(1200, 1600)).toBe(116); // portrait too
-    expect(ctx.PhotoStudio.autoCols(928, 928)).toBe(116); // exactly at the cap
-    expect(ctx.PhotoStudio.autoCols(800, 600)).toBe(75); // in-between width, not 58/87
-    expect(ctx.PhotoStudio.autoCols(900, 1600)).toBe(113); // short edge drives it
-    expect(ctx.PhotoStudio.autoCols(387, 254)).toBe(32); // a web thumbnail stays small
+    expect(ctx.PhotoStudio.autoCols(387, 254)).toBe(115); // the busy web scene → near cap
+    expect(ctx.PhotoStudio.autoCols(320, 240)).toBe(109); // small web image, no ladder snap
+    expect(ctx.PhotoStudio.autoCols(300, 200)).toBe(91); // sticker-sized scales down
     expect(ctx.PhotoStudio.autoCols(60, 40)).toBe(29); // never below one pegboard
   });
 
   it('Auto (the shipped default) converts to the exact-fit board for the photo', () => {
     const size = ctx.host.querySelector('[data-photo-size]') as unknown as HTMLSelectElement;
     expect(size.value).toBe('auto'); // the SSR default — no photo, no stale size
-    ctx.studio.convertSample(solid(640, 640, 255, 0, 0));
+    ctx.studio.convertSample(solid(200, 200, 255, 0, 0));
     const svg = ctx.host.querySelector('[data-bead-canvas]');
-    expect(svg?.getAttribute('data-cols')).toBe('80'); // 640 ÷ 8 — no ladder snapping
-    expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(80 * 80);
+    expect(svg?.getAttribute('data-cols')).toBe('91'); // 200 ÷ 2.2 — no ladder snapping
+    expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(91 * 91);
     // hand-picking past the photo's detail still gets the heads-up
     size.value = '116';
     size.dispatchEvent(
       new (ctx.window as unknown as { Event: typeof Event }).Event('change', { bubbles: true }),
     );
     expect(ctx.host.querySelector('[data-photo-status]')?.textContent).toContain(
-      'only carries about 80 beads of detail — Auto (80 wide)',
+      'only carries about 91 beads of detail — Auto (91 wide)',
     );
   });
 
