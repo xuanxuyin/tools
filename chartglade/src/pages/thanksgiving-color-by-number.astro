@@ -1,7 +1,14 @@
 ---
 import ChartPage from '../components/ChartPage.astro';
 import ColorByNumberSheet from '../components/printables/ColorByNumberSheet.astro';
-import { PIE_MULTIPLICATION, thanksgivingPages, TURKEY_ADDITION } from '../data/thanksgiving';
+import {
+  ACORN_MULTIPLICATION,
+  MAPLE_LEAF_ADDITION,
+  PIE_MULTIPLICATION,
+  PUMPKIN_ADDITION_TG,
+  thanksgivingPages,
+  TURKEY_ADDITION,
+} from '../data/thanksgiving';
 
 const def = thanksgivingPages.find((p) => p.slug === 'thanksgiving-color-by-number')!;
 ---
@@ -17,9 +24,30 @@ const def = thanksgivingPages.find((p) => p.slug === 'thanksgiving-color-by-numb
         factLabel: 'sum',
       },
       {
+        title: 'Pumpkin — Color by Addition',
+        audience: 'Grades 1–2 · add, then match the sum to a color',
+        art: PUMPKIN_ADDITION_TG,
+        mode: 'add',
+        factLabel: 'sum',
+      },
+      {
+        title: 'Maple Leaf — Color by Addition',
+        audience: 'Grades 2–3 · add, then match the sum to a color',
+        art: MAPLE_LEAF_ADDITION,
+        mode: 'add',
+        factLabel: 'sum',
+      },
+      {
         title: 'Pumpkin Pie — Color by Multiplication',
         audience: 'Grades 3–4 · multiply, then match the product to a color',
         art: PIE_MULTIPLICATION,
+        mode: 'mul',
+        factLabel: 'product',
+      },
+      {
+        title: 'Acorn — Color by Multiplication',
+        audience: 'Grades 3–4 · multiply, then match the product to a color',
+        art: ACORN_MULTIPLICATION,
         mode: 'mul',
         factLabel: 'product',
       },

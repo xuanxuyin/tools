@@ -1,5 +1,6 @@
 import type { PageDef } from './pageTypes';
 import type { PaintArt } from './halloween';
+import { asciiToPaintArt } from '../lib/paintArt';
 
 /**
  * Thanksgiving seasonal cluster (10/25 batch, PLAN §3 #19). Judged against
@@ -87,6 +88,82 @@ export function usedKeys(art: PaintArt): number[] {
   const used = new Set(art.cells.flat().filter((k) => k !== 0));
   return [...used].sort((a, b) => a - b);
 }
+
+/* ------------------------------------------------------------------ */
+/* Three more sheets (2026-10-29, user: "only two editions is too few").*/
+/* Drawn as ASCII sketches and converted — symmetric art is easy to     */
+/* eyeball while sketching, and asciiToPaintArt enforces grid sanity.   */
+/* ------------------------------------------------------------------ */
+
+/** Maple leaf, 15x15. Addition edition. */
+export const MAPLE_LEAF_ADDITION: PaintArt = asciiToPaintArt(
+  'Maple leaf',
+  [
+    '.......r.......',
+    '.....rrrrr.....',
+    '..d..rrrrr..d..',
+    '..dd.rrdrr.dd..',
+    '.ddd.rrrrr.ddd.',
+    '.ddddrrrrrdddd.',
+    '..dddrrrrrddd..',
+    '..ddrrooorrdd..',
+    '...ddrooordd...',
+    '....drooord....',
+    '.....rooor.....',
+    '......rrr......',
+    '.......r.......',
+    '.......t.......',
+    '.......t.......',
+  ],
+  { r: 8, d: 3, o: 5, t: 10 },
+  { 3: '#b03a2e', 5: '#e8801f', 8: '#d1495b', 10: '#8c5a2b' },
+  { 3: 'dark red', 5: 'orange', 8: 'red', 10: 'brown' },
+);
+
+/** Round pumpkin with a yellow highlight, 13x13. Addition edition. */
+export const PUMPKIN_ADDITION_TG: PaintArt = asciiToPaintArt(
+  'Pumpkin',
+  [
+    '......k......',
+    '.....kkk.....',
+    '...ppppppp...',
+    '..ppppppppp..',
+    '.ppyyypyyypp.',
+    'ppyyyypyyyypp',
+    'pppyyypyyyppp',
+    'ppppyypyppppp',
+    'ppppppppppppp',
+    '.ppppppppppp.',
+    '..ppppppppp..',
+    '...ppppppp...',
+    '....ccccc....',
+  ],
+  { k: 3, p: 8, y: 5, c: 10 },
+  { 3: '#3a7d44', 8: '#e8801f', 5: '#f2b53c', 10: '#c9a06a' },
+  { 3: 'green', 8: 'orange', 5: 'yellow', 10: 'tan' },
+);
+
+/** Acorn, 11x12. Multiplication edition. */
+export const ACORN_MULTIPLICATION: PaintArt = asciiToPaintArt(
+  'Acorn',
+  [
+    '.....m.....',
+    '..ttttttt..',
+    '.ttttttttt.',
+    'ttttttttttt',
+    '.bbbbbbbbb.',
+    '.bbbybybbb.',
+    '.bbbyyybbb.',
+    '.bbbbbbbbb.',
+    '..bbbbbbb..',
+    '..bbbbbbb..',
+    '...bbbbb...',
+    '....bbb....',
+  ],
+  { m: 6, t: 4, b: 10, y: 9 },
+  { 6: '#6b4423', 4: '#8c5a2b', 10: '#d9b380', 9: '#5b3a1e' },
+  { 6: 'dark brown', 4: 'brown', 10: 'tan', 9: 'chocolate' },
+);
 
 /* ------------------------------------------------------------------ */
 /* Placemat word scramble — hand-fixed, checked by tests to be a true  */
@@ -180,15 +257,15 @@ export const thanksgivingPages: PageDef[] = [
     h1: 'Thanksgiving Color by Number',
     metaTitle: 'Thanksgiving Color by Number — Free Printable Math Facts | ChartGlade',
     metaDescription:
-      'Free printable Thanksgiving color by number with real math inside: a turkey addition sheet (sums to 12) and a pumpkin pie multiplication sheet (facts to 12).',
+      'Free printable Thanksgiving color by number with real math inside: five pictures, addition sums to 12 and multiplication facts to 12.',
     lead:
-      'Color by number with the math left in: every cell of the turkey holds an addition fact whose sum matches the color key, and every cell of the pumpkin pie holds a multiplication fact. Solve, check the legend, color — a full sheet works dozens of math facts without feeling like a worksheet.',
+      'Color by number with the math left in: every cell of the turkey, pumpkin, and maple leaf holds an addition fact whose sum matches the color key, and every cell of the pumpkin pie and acorn holds a multiplication fact. Five pictures, two operations — solve, check the legend, color.',
     introHeading: 'Why math-facts coloring works',
     intro: [
       'A color-by-number page is retrieval practice in costume. Each cell asks one fact, the legend checks the answer, and the picture rewards a full page of correct recall — the same repetitions as a facts worksheet, but with a built-in answer key students actually want to consult. Wrong answers show up immediately as wrong-colored patches, so self-checking is built in: a turkey with a red beak announces exactly which facts to review.',
-      'The turkey sheet uses sums to 12 (the grade 1-2 sweet spot), with big regions of brown and orange so the picture reads early and keeps momentum. The pumpkin pie sheet uses products to 12 for grades 3-4 — the crust ring, the filling and the cream swirl split the facts into three bands, and the dark-brown nutmeg dots are the few cells that demand care.',
+      'The addition sheets — turkey, pumpkin, maple leaf — use sums to 12 (the grade 1-2 sweet spot), with big regions of brown, orange, and red so the picture reads early and keeps momentum. The multiplication sheets — pumpkin pie and acorn — use products to 12 for grades 3-4, splitting the facts into bands by region so the answer key does the checking.',
     ],
-    printNote: 'Two sheets, one letter page each (portrait). Crayon-friendly; legend names its colors.',
+    printNote: 'Five sheets, one letter page each (portrait). Crayon-friendly; legend names its colors.',
     tips: [
       {
         title: 'Color the legend first',
@@ -221,8 +298,8 @@ export const thanksgivingPages: PageDef[] = [
         a: 'The legend squares print in color, but every legend entry also names its color — red, yellow, brown, orange, tan, black for the turkey — so a black-and-white copy still works: students match the answer to the color name, not just the swatch.',
       },
       {
-        q: 'Do the two pictures share answers?',
-        a: 'No. The turkey keys colors to sums; the pie keys colors to products. Same format, two different operations — pick the sheet that matches the week\'s math focus.',
+        q: 'Do the pictures share answers?',
+        a: 'The addition sheets (turkey, pumpkin, maple leaf) key colors to sums; the multiplication sheets (pumpkin pie, acorn) key colors to products. Same format, two operations — pick the sheet that matches the week\'s math focus.',
       },
     ],
     related: [

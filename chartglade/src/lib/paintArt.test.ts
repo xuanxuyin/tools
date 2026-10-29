@@ -4,7 +4,13 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PUMPKIN_ADDITION, GHOST_MULTIPLICATION } from '../data/halloween';
 import { TREE_ADDITION, SNOWMAN_MULTIPLICATION, usedKeys } from '../data/christmas';
-import { TURKEY_ADDITION, PIE_MULTIPLICATION } from '../data/thanksgiving';
+import {
+  ACORN_MULTIPLICATION,
+  MAPLE_LEAF_ADDITION,
+  PIE_MULTIPLICATION,
+  PUMPKIN_ADDITION_TG,
+  TURKEY_ADDITION,
+} from '../data/thanksgiving';
 import { buildFactGrid, estFactWidth, referenceSvg, worksheetSvg, type PaintArt } from './paintArt';
 
 /**
@@ -18,6 +24,9 @@ const ARTS: [string, PaintArt, 'add' | 'mul'][] = [
   ['ghost', GHOST_MULTIPLICATION, 'mul'],
   ['turkey', TURKEY_ADDITION, 'add'],
   ['pie', PIE_MULTIPLICATION, 'mul'],
+  ['mapleLeaf', MAPLE_LEAF_ADDITION, 'add'],
+  ['pumpkinTg', PUMPKIN_ADDITION_TG, 'add'],
+  ['acorn', ACORN_MULTIPLICATION, 'mul'],
   ['tree', TREE_ADDITION, 'add'],
   ['snowman', SNOWMAN_MULTIPLICATION, 'mul'],
 ];

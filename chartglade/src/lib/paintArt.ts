@@ -23,6 +23,38 @@ export interface PaintArt {
   legend: Record<number, string>;
 }
 
+/**
+ * Hand-draw art as ASCII (one char = one cell, '.' = blank) and convert to a
+ * PaintArt. Drawing new sheets in characters is ~10x faster than typing number
+ * matrices, and symmetric art is easy to eyeball while sketching. Keys are the
+ * legend keys themselves (single chars 1-9 map straight through; use a map for
+ * 10+). All rows must be the same length — a ragged sketch is a bug, so it
+ * throws instead of silently building a skewed grid.
+ */
+export function asciiToPaintArt(
+  name: string,
+  sketch: string[],
+  charToKey: Record<string, number>,
+  palette: Record<number, string>,
+  legend: Record<number, string>,
+): PaintArt {
+  const width = sketch[0]?.length ?? 0;
+  const cells = sketch.map((row, r) => {
+    if (row.length !== width) {
+      throw new Error(`asciiToPaintArt(${name}): row ${r} is ${row.length} wide, expected ${width}`);
+    }
+    return [...row].map((ch) => {
+      if (ch === '.') return 0;
+      const key = charToKey[ch];
+      if (key === undefined) {
+        throw new Error(`asciiToPaintArt(${name}): unknown char "${ch}" at row ${r}`);
+      }
+      return key;
+    });
+  });
+  return { name, cells, palette, legend };
+}
+
 /** Facts for a legend key so every cell shows a fresh-but-checkable problem. */
 export function factsFor(key: number, mode: 'add' | 'mul'): { a: number; b: number }[] {
   if (mode === 'add') {
