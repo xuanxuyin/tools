@@ -7,7 +7,8 @@
  *   animals   ← perler bead animals 590
  * The christmas + food galleries retired with the hand-drawn set on
  * 2026-10-28 (301 → hub); their keyword slots reopen when the pixel-grid
- * importer restocks those categories.
+ * importer restocks those categories. The halloween gallery reopened
+ * 2026-10-29 with the 11-pattern flight import (halloween perler beads).
  */
 export interface BeadSeoDef {
   path: string;
@@ -25,7 +26,7 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
   description:
     'Free fuse bead patterns for every level: dogs, cats, bunnies, pandas, chibi characters and a Halloween set. Recolor any area with the real 103-color Perler line, then print the template and its bead list.',
   intro: [
-    '117 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 90-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
+    '117 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 116-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
     'What makes these different from a normal pattern grid: every area of a design — fur, frosting, scarf, eyes — is its own zone. Tap a zone and try any of the 103 real bead colors before you commit. The bead list updates live, so you know exactly how many of each color to pull from the jar.',
     'When a design looks right, print it. The printed sheet gives you the empty template in zone outlines plus the shopping list of beads, and it fits on one letter-size page.',
   ],
@@ -36,7 +37,7 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
     },
     {
       q: 'What size pegboard do I need?',
-      a: 'The smallest designs fit a single large interlocking pegboard (29×29). Mid-size designs run 30 to 64 beads wide — two or three large boards snapped together. The widest portraits hit 90 beads across and span up to nine boards. Every pattern page lists its exact grid size.',
+      a: 'The smallest designs fit a single large interlocking pegboard (29×29). Mid-size designs run 30 to 64 beads wide — two or three large boards snapped together. The widest portraits hit 116 beads across and span sixteen boards in a four-by-four grid. Every pattern page lists its exact grid size.',
     },
     {
       q: 'Can I sell crafts I make from these patterns?',
@@ -57,21 +58,21 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
   animals: {
     path: '/perler-bead-animals/',
     h1: 'Perler Bead Animals',
-    title: '52 Free Perler Bead Animal Patterns — Corgi, Cat, Bunny & More',
+    title: '54 Free Perler Bead Animal Patterns — Corgi, Cat, Bunny & More',
     description:
       'Free perler bead animal patterns: corgi, shiba, husky, golden retriever, orange cat, calico kittens, carrot bunnies, pandas and more — all converted from community designs. Recolor each animal online, then print the template.',
     intro: [
-      'Fifty-two animal boards converted bead by bead from community designs onto the real 103-color Perler line — a whole kennel of corgis, shibas, huskies and golden retrievers, orange cats and calico kittens, carrot bunnies, pandas, lambs and penguins, from 19 beads wide up to 90. Each one separates fur, inner ears, eyes, nose and mouth into their own zones — so a cheddar corgi becomes a gray one in two clicks, without redrawing anything.',
-      'Start with Corgi Butt Peek (19 beads wide) or a cozy carrot bunny if this is your first board: mostly one color with a few details. Save the 90-wide showpieces for after placing beads from a printed grid feels natural.',
+      'Fifty-four animal boards converted bead by bead from community designs onto the real 103-color Perler line — a whole kennel of corgis, shibas, huskies and golden retrievers, orange cats and calico kittens, carrot bunnies, pandas, lambs and penguins, from 9 beads wide up to 116. Each one separates fur, inner ears, eyes, nose and mouth into their own zones — so a cheddar corgi becomes a gray one in two clicks, without redrawing anything.',
+      'Start with Corgi Butt Peek (17 beads wide) or a cozy carrot bunny if this is your first board: mostly one color with a few details. Save the 116-wide showpiece for after placing beads from a printed grid feels natural.',
     ],
     faqs: [
       {
         q: 'Which animal pattern is easiest for beginners?',
-        a: 'Corgi Butt Peek — 19 beads wide, big color areas, and it reads instantly. The cozy carrot bunnies and the garden lamb are close behind at 27–30 beads wide.',
+        a: 'Corgi Butt Peek — 17 beads wide, big color areas, and it reads instantly. The cozy carrot bunny (23 wide) and the garden lamb (24 wide) are close behind.',
       },
       {
         q: 'How long does an animal pattern take?',
-        a: 'A 19-to-30-bead-wide animal is a single evening — under an hour of placing plus a few minutes of ironing. The 90-wide showpieces are a deliberate weekend board at several thousand beads.',
+        a: 'A 17-to-30-bead-wide animal is a single evening — under an hour of placing plus a few minutes of ironing. The 116-wide showpiece is a deliberate weekend board at several thousand beads.',
       },
       {
         q: 'Can I turn these into keychains?',
@@ -87,7 +88,7 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
       'Beginner fuse bead patterns that still look great: small corgis, bunnies, lambs and cats with straightforward, forgiving grids. Pick one, recolor it online, print the template and start beading.',
     intro: [
       'Every design here is marked easy in our catalog: a simple silhouette, mostly-large color areas, and no fiddly single-bead details. Most are small corgis, bunnies, lambs and cats — the kind of board a first-timer finishes in one sitting.',
-      'If this is your very first pattern, start with Corgi Butt Peek — 19 beads wide on a single pegboard. Move up to a 28-wide face like a cozy carrot bunny or Catnap Clementine once placing beads from a printed grid feels natural.',
+      'If this is your very first pattern, start with Corgi Butt Peek — 17 beads wide on a single pegboard. Move up to a mid-20s face like the cozy carrot bunny (23 wide) or Catnap Clementine (25 wide) once placing beads from a printed grid feels natural.',
     ],
     faqs: [
       {
@@ -107,25 +108,50 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
   characters: {
     path: '/perler-bead-characters/',
     h1: 'Perler Bead Characters',
-    title: '41 Free Perler Bead Character Patterns — Girls, Chibi & More',
+    title: '43 Free Perler Bead Character Patterns — Girls, Chibi & More',
     description:
       'Free fuse bead character patterns: cute girls with bows and braids, chibi heroes, ghosts and goblins. Every board matched to real bead colors — recolor, print and start placing.',
     intro: [
-      'Forty-one character boards converted bead by bead onto the real 103-color Perler line — big-eyed girls with ribbons and nightcaps, tiny chibi heroes, wizards and vampires. Each one keeps its original proportions, so the face you loved on screen is the face you iron.',
+      'Forty-three character boards converted bead by bead onto the real 103-color Perler line — big-eyed girls with ribbons and nightcaps, tiny chibi heroes, wizards and vampires. Each one keeps its original proportions, so the face you loved on screen is the face you iron.',
       'Every pattern page gives you three things at once: the printable grid with row and column counts, the shopping list with exact bead counts per color, and the online board where you can repaint any area before you commit a single bead.',
     ],
     faqs: [
       {
         q: 'What board sizes do the character patterns use?',
-        a: 'They run from 30 to 90 beads wide. The smallest fit one or two large pegboards; the widest portraits span nine and want a flat working surface you will not need for a day. Each pattern page lists its exact grid.',
+        a: 'They run from 10 to 72 beads wide. The smallest fit one or two large pegboards; the widest span three large boards and want a flat working surface you will not need for a day. Each pattern page lists its exact grid.',
       },
       {
         q: 'Which characters are easiest for beginners?',
-        a: 'Start with anything under 40 beads wide — the small girls and simple silhouettes have large color areas and forgiving outlines. Save the 80-wide portraits for your third or fourth board.',
+        a: 'Start with anything under 40 beads wide — the small girls and simple silhouettes have large color areas and forgiving outlines. Save the 70-wide portraits for your third or fourth board.',
       },
       {
         q: 'Can I change the colors on a character?',
         a: 'Yes — that is the point of the online board. Hair, dress, background: pick any area and repaint it with any of the 103 real bead colors. The bead list updates the moment you do.',
+      },
+    ],
+  },
+  halloween: {
+    path: '/perler-bead-halloween/',
+    h1: 'Halloween Perler Bead Patterns',
+    title: '11 Free Halloween Perler Bead Patterns — Ghosts, Witches & Pumpkins',
+    description:
+      'Free Halloween fuse bead patterns: ghosts, witches, black cats, a kawaii bat, jack-o-lanterns and a vampire. Recolor every zone with real Perler colors, then print the template and bead list.',
+    intro: [
+      'Eleven Halloween boards converted bead by bead from community designs onto the real 103-color Perler line — ghosts, witches, black cats, a kawaii bat, jack-o-lanterns and one classic vampire, from 21 beads wide up to 37. Each one splits cloak, hat, face and pumpkin into their own zones, so an orange ghost becomes a classic white one in two clicks.',
+      'Nothing here is a weekend commitment: every Halloween design lands between 21 and 37 beads wide — one to four large pegboards and 240 to 750 beads. That is an after-school board with time left to iron it.',
+    ],
+    faqs: [
+      {
+        q: 'Which Halloween pattern is easiest for beginners?',
+        a: 'The witch hat pumpkin — 23 beads wide, 237 beads, four color zones. The witch hat black cat (21 wide) and kawaii bat (29 wide) are right behind it.',
+      },
+      {
+        q: 'How many beads does a Halloween pattern take?',
+        a: 'Between 237 and 754 beads per design across the set. Each pattern page lists exact counts per color — one assorted tub covers several patterns.',
+      },
+      {
+        q: 'When should I start a Halloween Perler project?',
+        a: 'Late September or early October. The boards themselves are one evening each, but garlands, framed sets and classroom party gifts want a couple of weekends of lead time.',
       },
     ],
   },

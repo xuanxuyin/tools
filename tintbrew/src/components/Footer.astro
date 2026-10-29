@@ -9,12 +9,14 @@ const guides = [...scenarioContents, ...outfitContents].map((s) => s.def);
 
 // V2.2 bead family — landing pages only; the detail pages hang off these.
 // The photo converter is a tool page rather than a BeadSeoDef, spelled inline.
-// (food + christmas galleries retired with the hand-drawn set, 2026-10-28)
+// (food + christmas galleries retired with the hand-drawn set, 2026-10-28;
+// halloween got its own gallery back 2026-10-29)
 const beadLinks = [
   BEAD_HUB_SEO,
   { path: '/photo-to-perler-bead-pattern/', h1: 'Photo to Bead Pattern' },
   BEAD_CATEGORY_SEO.animals!,
   BEAD_CATEGORY_SEO.characters!,
+  BEAD_CATEGORY_SEO.halloween!,
   BEAD_CATEGORY_SEO.easy!,
 ];
 

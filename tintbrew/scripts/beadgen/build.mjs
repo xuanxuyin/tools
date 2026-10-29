@@ -116,6 +116,7 @@ for (const cat of CATS) {
       `    category: ${q(def.category)},\n` +
       `    difficulty: ${q(def.difficulty)},\n` +
       `    width: ${def.W},\n` +
+      (def.zonesMin ? `    zonesMin: ${def.zonesMin},\n` : '') +
       `    tagline: ${q(def.tagline)},\n` +
       `    blurb:\n      ${q(def.blurb)},\n` +
       `    regions: {\n${regions}\n    },\n` +

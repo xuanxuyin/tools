@@ -47,9 +47,9 @@ const BANNED = [
 describe('bead pattern data integrity', () => {
   it('117 patterns across six categories with locked minimums', () => {
     // all-imported catalog since 2026-10-28: the 46 vector-authored designs
-    // went offline; community bead renders are the whole set now — images
-    // for 106 boards plus 11 editor-sourced minis whose grids ship verbatim
-    // in the community site's RSC flight data
+    // went offline. Since the 2026-10-29 flight re-import every one of the
+    // 117 grids comes from the community site's RSC flight data verbatim —
+    // sizes, boundaries and bead counts match the source 1:1
     expect(BEAD_PATTERNS).toHaveLength(117);
     expect(patternContents).toHaveLength(117);
     expect(categoryCounts).toEqual({
@@ -60,7 +60,7 @@ describe('bead pattern data integrity', () => {
       minis: 5,
       characters: 43,
     });
-    expect(easyPatterns.length).toBe(24);
+    expect(easyPatterns.length).toBe(48);
   });
 
   it('grids are rectangular: no row exceeds width, rows are padded', () => {
@@ -107,7 +107,11 @@ describe('bead pattern data integrity', () => {
         expect(r.count, `${p.def.slug} ${r.key}`).toBeGreaterThan(0);
       }
       if (p.def.width >= 14) {
-        expect(p.regions.length, `${p.def.slug} zones`).toBeGreaterThanOrEqual(4);
+        // source-truth floor: genuine N-color community designs carry
+        // zonesMin from the import; everything else keeps the 4-zone guard
+        expect(p.regions.length, `${p.def.slug} zones`).toBeGreaterThanOrEqual(
+          p.def.zonesMin ?? 4,
+        );
       }
     }
   });
@@ -120,9 +124,12 @@ describe('bead pattern data integrity', () => {
   });
 
   it('detail URLs match their category route', () => {
-    expect(patternUrl(BEAD_PATTERNS[0]!)).toBe('/perler-bead-animals/corgi-looking-up/');
+    // manifest order is not stable across re-imports — locate by slug
+    const corgi = BEAD_PATTERNS.find((p) => p.slug === 'corgi-looking-up')!;
+    expect(patternUrl(corgi)).toBe('/perler-bead-animals/corgi-looking-up/');
+    // halloween got its own gallery 2026-10-29 — it left the hub base
     const ghost = patternContents.find((p) => p.def.slug === 'spooky-ghost')!;
-    expect(ghost.url).toBe('/perler-bead-patterns/spooky-ghost/');
+    expect(ghost.url).toBe('/perler-bead-halloween/spooky-ghost/');
     // food's gallery retired with the hand-drawn set — its one imported
     // pattern lives under the hub base now
     const apple = patternContents.find((p) => p.def.slug === 'apple-fuji-scene')!;
@@ -163,12 +170,14 @@ describe('bead pattern data integrity', () => {
 });
 
 describe('bead pages in real dist markup', () => {
-  it('hub + all three galleries ship figures, zone-divided templates and JSON-LD', () => {
-    // food + christmas galleries retired 2026-10-28 (301 → hub)
+  it('hub + all four galleries ship figures, zone-divided templates and JSON-LD', () => {
+    // food + christmas galleries retired 2026-10-28 (301 → hub);
+    // halloween opened its own gallery 2026-10-29
     const pages = [
       '/perler-bead-patterns/index.html',
       '/perler-bead-animals/index.html',
       '/perler-bead-characters/index.html',
+      '/perler-bead-halloween/index.html',
       '/easy-perler-bead-patterns/index.html',
     ];
     for (const page of pages) {

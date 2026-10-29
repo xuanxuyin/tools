@@ -286,7 +286,7 @@ if (manifestPath) {
     if (stem.startsWith('_')) continue;
     const path = `${EDITOR_DIR}/editor-${stem}.html`;
     if (!existsSync(path)) throw new Error(`no editor page for "${stem}" under ${EDITOR_DIR}`);
-    jobs.push({ editor: path, slug: over.slug ?? stem, category: over.category ?? 'animals' });
+    jobs.push({ editor: path, stem, slug: over.slug ?? stem, category: over.category ?? 'animals' });
   }
 }
 
@@ -316,6 +316,12 @@ for (const job of jobs) {
   const rows = cells.map((row) => row.map((c) => (c === '.' ? '.' : zones[c])).join(''));
   const slug = job.slug ?? job.path.split(/[\\/]/).pop().replace(/\.(webp|png)$/i, '');
   if (!job.editor) name = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  // editor imports carry the community site's original name in the flight
+  // data — when the manifest genericized the slug (IP redline), the display
+  // name, tagline and blurb must follow the slug, never the source name
+  else if (job.stem && slug !== job.stem) {
+    name = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  }
   const category = job.category ?? 'animals';
   const zoneMap = {};
   for (const [id, L] of Object.entries(zones)) {

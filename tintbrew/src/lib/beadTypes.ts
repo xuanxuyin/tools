@@ -19,6 +19,9 @@ export interface BeadPatternDef {
   difficulty: BeadDifficulty;
   /** Grid width in beads; rows are padded to this */
   width: number;
+  /** Zone-count floor override: a genuine N-color community design opts out
+   *  of the default 4-zone guard (N < 4). Source-truth from the import. */
+  zonesMin?: number;
   /** One-line card blurb on gallery pages */
   tagline: string;
   /** Two-sentence detail-page intro */

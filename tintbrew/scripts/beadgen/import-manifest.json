@@ -1,129 +1,386 @@
 {
-  "_comment": "Crawl-file stem -> { slug, category }. slug omitted = keep original. IP characters get genericized names (site redline: no trademarked names anywhere); historical figures (Guan Yu etc.) keep theirs. Halloween-keyword art lands in our halloween category from both source buckets.",
-  "animals": {
-    "corgi-looking-up": {},
-    "shiba": {},
-    "husky": {},
-    "golden-retriever": {},
-    "orange-cat": {},
-    "cozy-gray-cat": {},
-    "cat-and-butterfly": {},
-    "sitting-calico-kitten": {},
-    "round-calico-cat": {},
-    "cozy-carrot-bunny": {},
-    "giant-carrot-bunny": {},
-    "bouquet-panda": {},
-    "panda-apple-mat": {},
-    "bichon": {},
-    "samoyed-classic": {},
-    "border-collie": {},
-    "garden-lamb": {},
-    "flower-goat": {},
-    "cut-parrot": {},
-    "corn-snack-penguin": {},
-    "schnauzer": {},
-    "big-bark-doggo": {},
-    "big-orange-yawning-cat": {},
-    "catnap-clementine": {},
-    "chicken-bro": {},
-    "collie-crew": {},
-    "corgi-butt-peek": {},
-    "corgi-cocoa-cup": {},
-    "corgi-parade": {},
-    "dachshund-stroll": {},
-    "emperor-dog": {},
-    "fish-snack-cat": {},
-    "flower-patch-puppy": {},
-    "giant-poodle": {},
-    "golden-retriever-gang": {},
-    "husky-pack": {},
-    "husky-puppy": {},
-    "labrador-trio": {},
-    "laughing-carrot-rabbit": {},
-    "leaping-cream-cat": {},
-    "loud-mouth-puppy": {},
-    "midnight-yarn-kitties": {},
-    "mirror-ink-kitties": {},
-    "patchwork-cat": {},
-    "paws-up-gray-cat": {},
-    "shaggy-pup-face": {},
-    "shepherd-squad": {},
-    "shiba-loaf-nap": {},
-    "shiba-sitting-pretty": {},
-    "side-eye-pup": {},
-    "twin-black-and-white-cats": {},
-    "yarn-ball-cat-duo": {},
-    "kawaii-bat": { "category": "halloween" },
-    "witch-cape-kitty": { "category": "halloween" },
-    "witch-hat-black-cat": { "category": "halloween" },
-    "apple-fuji-scene": { "category": "food" }
-  },
-  "characters": {
-    "bat-wing-ghost": { "category": "halloween" },
-    "broomstick-wizard-ghost": { "category": "halloween" },
-    "jack-o-lantern-vine": { "category": "halloween" },
-    "pumpkin-ghost-pair": { "category": "halloween" },
-    "spooky-ghost": { "category": "halloween" },
-    "vampire-dracula": { "category": "halloween" },
-    "witch-ghost-pumpkin-bucket": { "category": "halloween" },
-    "witch-hat-pumpkin": { "category": "halloween" },
-    "pikachu": { "slug": "lightning-mouse" },
-    "charmander": { "slug": "flame-lizard" },
-    "charmander-walking": { "slug": "flame-lizard-walking" },
-    "charmeleon": { "slug": "ember-lizard" },
-    "bulbasaur-sitting": { "slug": "bulb-lizard-sitting" },
-    "flareon": { "slug": "fire-fox" },
-    "gengar-simple": { "slug": "shadow-imp" },
-    "jigglypuff": { "slug": "puffball" },
-    "jigglypuff-pixel": { "slug": "puffball-pixel" },
-    "togepi": { "slug": "egg-fairy" },
-    "poke-ball-pixel": { "slug": "game-ball-pixel" },
-    "stitch-classic": { "slug": "blue-alien" },
-    "stitch-flower-crown": { "slug": "blue-alien-flower-crown" },
-    "stitch-hug": { "slug": "blue-alien-hug" },
-    "stitch-hug-mirror": { "slug": "blue-alien-hug-mirror" },
-    "stitch-sitting": { "slug": "blue-alien-sitting" },
-    "patrick-star": { "slug": "starfish-buddy" },
-    "shinchan": { "slug": "crayon-kid" },
-    "kazama": { "slug": "side-part-kid" },
-    "nene": { "slug": "playhouse-girl" },
-    "lilac-dress-panel-partial": { "slug": "lilac-dress-girl" },
-    "black-ribbon-girl": {},
-    "blue-beret-teddy-girl": {},
-    "bunny-clip-girl-portrait": {},
-    "bunny-hood-carrot-girl": {},
-    "chibi-guan-yu": {},
-    "chibi-zhao-yun": {},
-    "chibi-zhuge-liang": {},
-    "fortune-blessings": {},
-    "honey-bob-girl": {},
-    "kitty-hug-girl": {},
-    "midnight-hair-girl": {},
-    "peach-bow-bun-girl": {},
-    "red-bow-kitty-girl": {},
-    "red-umbrella-girl-cat": {},
-    "scooter-dude": {},
-    "starry-dress-girl": {},
-    "starry-nightcap-girl": {},
-    "straw-hat-girl": {},
-    "teal-braids-girl": {},
-    "winking-blonde-girl": {}
-  },
-  "small": {
-    "finger-heart-hand": { "category": "minis" }
-  },
+  "_comment": "All patterns import from /editor/<key>.html RSC flight data (exact grid — matches the source site 1:1 in size, boundaries and bead count). Key names editor-<key>.html under PBP_EDITOR_DIR. slug omitted = keep original; IP characters keep genericized names; category explicit on every entry (bucket default no longer applies).",
   "_editor": {
-    "_comment": "Flight-data source: key names editor-<key>.html under PBP_EDITOR_DIR (the community site's /editor/<slug> pages carry the grid verbatim in RSC data). No image exists for these — the main webp was never exported.",
-    "boba-tea": { "category": "food" },
-    "mushroom": { "category": "food" },
-    "manual-french-fries": { "slug": "french-fries", "category": "food" },
-    "manual-bee": { "slug": "bee", "category": "animals" },
-    "manual2-purple-butterfly": { "slug": "purple-butterfly", "category": "animals" },
-    "manual-red-heart": { "slug": "red-heart", "category": "minis" },
-    "manual2-lavender-heart": { "slug": "lavender-heart", "category": "minis" },
-    "manual2-mint-heart": { "slug": "mint-heart", "category": "minis" },
-    "manual2-peach-heart": { "slug": "peach-heart", "category": "minis" },
-    "manual2-game-controller": { "slug": "game-controller", "category": "characters" },
-    "manual2-green-creature": { "slug": "green-creature", "category": "characters" }
+    "boba-tea": {
+      "category": "food"
+    },
+    "mushroom": {
+      "category": "food"
+    },
+    "manual-french-fries": {
+      "slug": "french-fries",
+      "category": "food"
+    },
+    "manual-bee": {
+      "slug": "bee",
+      "category": "animals"
+    },
+    "manual2-purple-butterfly": {
+      "slug": "purple-butterfly",
+      "category": "animals"
+    },
+    "manual-red-heart": {
+      "slug": "red-heart",
+      "category": "minis"
+    },
+    "manual2-lavender-heart": {
+      "slug": "lavender-heart",
+      "category": "minis"
+    },
+    "manual2-mint-heart": {
+      "slug": "mint-heart",
+      "category": "minis"
+    },
+    "manual2-peach-heart": {
+      "slug": "peach-heart",
+      "category": "minis"
+    },
+    "manual2-game-controller": {
+      "slug": "game-controller",
+      "category": "characters"
+    },
+    "manual2-green-creature": {
+      "slug": "green-creature",
+      "category": "characters"
+    },
+    "corgi-looking-up": {
+      "category": "animals"
+    },
+    "shiba": {
+      "category": "animals"
+    },
+    "husky": {
+      "category": "animals"
+    },
+    "golden-retriever": {
+      "category": "animals"
+    },
+    "orange-cat": {
+      "category": "animals"
+    },
+    "cozy-gray-cat": {
+      "category": "animals"
+    },
+    "cat-and-butterfly": {
+      "category": "animals"
+    },
+    "sitting-calico-kitten": {
+      "category": "animals"
+    },
+    "round-calico-cat": {
+      "category": "animals"
+    },
+    "cozy-carrot-bunny": {
+      "category": "animals"
+    },
+    "giant-carrot-bunny": {
+      "category": "animals"
+    },
+    "bouquet-panda": {
+      "category": "animals"
+    },
+    "panda-apple-mat": {
+      "category": "animals"
+    },
+    "bichon": {
+      "category": "animals"
+    },
+    "samoyed-classic": {
+      "category": "animals"
+    },
+    "border-collie": {
+      "category": "animals"
+    },
+    "garden-lamb": {
+      "category": "animals"
+    },
+    "flower-goat": {
+      "category": "animals"
+    },
+    "cut-parrot": {
+      "category": "animals"
+    },
+    "corn-snack-penguin": {
+      "category": "animals"
+    },
+    "schnauzer": {
+      "category": "animals"
+    },
+    "big-bark-doggo": {
+      "category": "animals"
+    },
+    "big-orange-yawning-cat": {
+      "category": "animals"
+    },
+    "catnap-clementine": {
+      "category": "animals"
+    },
+    "chicken-bro": {
+      "category": "animals"
+    },
+    "collie-crew": {
+      "category": "animals"
+    },
+    "corgi-butt-peek": {
+      "category": "animals"
+    },
+    "corgi-cocoa-cup": {
+      "category": "animals"
+    },
+    "corgi-parade": {
+      "category": "animals"
+    },
+    "dachshund-stroll": {
+      "category": "animals"
+    },
+    "emperor-dog": {
+      "category": "animals"
+    },
+    "fish-snack-cat": {
+      "category": "animals"
+    },
+    "flower-patch-puppy": {
+      "category": "animals"
+    },
+    "giant-poodle": {
+      "category": "animals"
+    },
+    "golden-retriever-gang": {
+      "category": "animals"
+    },
+    "husky-pack": {
+      "category": "animals"
+    },
+    "husky-puppy": {
+      "category": "animals"
+    },
+    "labrador-trio": {
+      "category": "animals"
+    },
+    "laughing-carrot-rabbit": {
+      "category": "animals"
+    },
+    "leaping-cream-cat": {
+      "category": "animals"
+    },
+    "loud-mouth-puppy": {
+      "category": "animals"
+    },
+    "midnight-yarn-kitties": {
+      "category": "animals"
+    },
+    "mirror-ink-kitties": {
+      "category": "animals"
+    },
+    "patchwork-cat": {
+      "category": "animals"
+    },
+    "paws-up-gray-cat": {
+      "category": "animals"
+    },
+    "shaggy-pup-face": {
+      "category": "animals"
+    },
+    "shepherd-squad": {
+      "category": "animals"
+    },
+    "shiba-loaf-nap": {
+      "category": "animals"
+    },
+    "shiba-sitting-pretty": {
+      "category": "animals"
+    },
+    "side-eye-pup": {
+      "category": "animals"
+    },
+    "twin-black-and-white-cats": {
+      "category": "animals"
+    },
+    "yarn-ball-cat-duo": {
+      "category": "animals"
+    },
+    "kawaii-bat": {
+      "category": "halloween"
+    },
+    "witch-cape-kitty": {
+      "category": "halloween"
+    },
+    "witch-hat-black-cat": {
+      "category": "halloween"
+    },
+    "apple-fuji-scene": {
+      "category": "food"
+    },
+    "bat-wing-ghost": {
+      "category": "halloween"
+    },
+    "broomstick-wizard-ghost": {
+      "category": "halloween"
+    },
+    "jack-o-lantern-vine": {
+      "category": "halloween"
+    },
+    "pumpkin-ghost-pair": {
+      "category": "halloween"
+    },
+    "spooky-ghost": {
+      "category": "halloween"
+    },
+    "vampire-dracula": {
+      "category": "halloween"
+    },
+    "witch-ghost-pumpkin-bucket": {
+      "category": "halloween"
+    },
+    "witch-hat-pumpkin": {
+      "category": "halloween"
+    },
+    "pikachu": {
+      "category": "characters",
+      "slug": "lightning-mouse"
+    },
+    "charmander": {
+      "category": "characters",
+      "slug": "flame-lizard"
+    },
+    "charmander-walking": {
+      "category": "characters",
+      "slug": "flame-lizard-walking"
+    },
+    "charmeleon": {
+      "category": "characters",
+      "slug": "ember-lizard"
+    },
+    "bulbasaur-sitting": {
+      "category": "characters",
+      "slug": "bulb-lizard-sitting"
+    },
+    "flareon": {
+      "category": "characters",
+      "slug": "fire-fox"
+    },
+    "gengar-simple": {
+      "category": "characters",
+      "slug": "shadow-imp"
+    },
+    "jigglypuff": {
+      "category": "characters",
+      "slug": "puffball"
+    },
+    "jigglypuff-pixel": {
+      "category": "characters",
+      "slug": "puffball-pixel"
+    },
+    "togepi": {
+      "category": "characters",
+      "slug": "egg-fairy"
+    },
+    "poke-ball-pixel": {
+      "category": "characters",
+      "slug": "game-ball-pixel"
+    },
+    "stitch-classic": {
+      "category": "characters",
+      "slug": "blue-alien"
+    },
+    "stitch-flower-crown": {
+      "category": "characters",
+      "slug": "blue-alien-flower-crown"
+    },
+    "stitch-hug": {
+      "category": "characters",
+      "slug": "blue-alien-hug"
+    },
+    "stitch-hug-mirror": {
+      "category": "characters",
+      "slug": "blue-alien-hug-mirror"
+    },
+    "stitch-sitting": {
+      "category": "characters",
+      "slug": "blue-alien-sitting"
+    },
+    "patrick-star": {
+      "category": "characters",
+      "slug": "starfish-buddy"
+    },
+    "shinchan": {
+      "category": "characters",
+      "slug": "crayon-kid"
+    },
+    "kazama": {
+      "category": "characters",
+      "slug": "side-part-kid"
+    },
+    "nene": {
+      "category": "characters",
+      "slug": "playhouse-girl"
+    },
+    "lilac-dress-panel-partial": {
+      "category": "characters",
+      "slug": "lilac-dress-girl"
+    },
+    "black-ribbon-girl": {
+      "category": "characters"
+    },
+    "blue-beret-teddy-girl": {
+      "category": "characters"
+    },
+    "bunny-clip-girl-portrait": {
+      "category": "characters"
+    },
+    "bunny-hood-carrot-girl": {
+      "category": "characters"
+    },
+    "chibi-guan-yu": {
+      "category": "characters"
+    },
+    "chibi-zhao-yun": {
+      "category": "characters"
+    },
+    "chibi-zhuge-liang": {
+      "category": "characters"
+    },
+    "fortune-blessings": {
+      "category": "characters"
+    },
+    "honey-bob-girl": {
+      "category": "characters"
+    },
+    "kitty-hug-girl": {
+      "category": "characters"
+    },
+    "midnight-hair-girl": {
+      "category": "characters"
+    },
+    "peach-bow-bun-girl": {
+      "category": "characters"
+    },
+    "red-bow-kitty-girl": {
+      "category": "characters"
+    },
+    "red-umbrella-girl-cat": {
+      "category": "characters"
+    },
+    "scooter-dude": {
+      "category": "characters"
+    },
+    "starry-dress-girl": {
+      "category": "characters"
+    },
+    "starry-nightcap-girl": {
+      "category": "characters"
+    },
+    "straw-hat-girl": {
+      "category": "characters"
+    },
+    "teal-braids-girl": {
+      "category": "characters"
+    },
+    "winking-blonde-girl": {
+      "category": "characters"
+    },
+    "finger-heart-hand": {
+      "category": "minis"
+    }
   }
 }

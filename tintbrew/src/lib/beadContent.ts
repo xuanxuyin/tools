@@ -38,15 +38,16 @@ export interface PatternView {
 }
 
 /** Detail-page base per category: own gallery for the big SEO categories,
- *  hub path for the rest. Food's own gallery retired with the hand-drawn
- *  set (2026-10-28) — its one imported pattern lives under the hub; the
- *  christmas gallery is gone entirely until the pixel-grid importer
- *  restocks it, so both park on the hub base. */
+ *  hub path for the rest. Halloween got its own gallery back on 2026-10-29
+ *  (11 patterns, mirroring the source site's dedicated landing). Food's own
+ *  gallery retired with the hand-drawn set (2026-10-28) — its patterns live
+ *  under the hub; the christmas gallery is gone entirely until the
+ *  pixel-grid importer restocks it, so both park on the hub base. */
 export const CATEGORY_BASE: Record<BeadCategory, string> = {
   animals: '/perler-bead-animals/',
   food: '/perler-bead-patterns/',
   christmas: '/perler-bead-patterns/',
-  halloween: '/perler-bead-patterns/',
+  halloween: '/perler-bead-halloween/',
   minis: '/perler-bead-patterns/',
   characters: '/perler-bead-characters/',
 };
