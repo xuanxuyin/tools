@@ -11,15 +11,9 @@ interface Props {
   columns: string[];
   rows: number;
   dense?: boolean;
-  /**
-   * Dotted-model starter sentence (Thanksgiving worksheet): rendered between
-   * the header fields and the table — a gray hand-font model plus one blank
-   * copy line. Sign-in sheets pass nothing and see no change.
-   */
-  starter?: string;
 }
 
-const { title, metaFields, columns, rows, dense = false, starter } = Astro.props;
+const { title, metaFields, columns, rows, dense = false } = Astro.props;
 ---
 
 <p class="sheet-title">{title}</p>
@@ -28,13 +22,6 @@ const { title, metaFields, columns, rows, dense = false, starter } = Astro.props
     <span class="signin-meta-field">{f}<span class="write-line" aria-hidden="true"></span></span>
   ))}
 </div>
-{starter && (
-  <div class="signin-starter">
-    <span class="signin-starter-label">Trace your starter, then write your own below</span>
-    <p class="signin-starter-model">{starter}</p>
-    <p class="signin-starter-copy" aria-hidden="true"></p>
-  </div>
-)}
 <table class:list={['chart-table', 'signin', { dense }]}>
   <thead>
     <tr>{columns.map((c) => <th scope="col">{c}</th>)}</tr>

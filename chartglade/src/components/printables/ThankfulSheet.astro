@@ -1,20 +1,63 @@
 ---
-import SignInSheet from './SignInSheet.astro';
-
 /**
- * "I am thankful for" gratitude worksheet (Thanksgiving cluster): the sign-in
- * sheet machinery repurposed for kid handwriting — header fields become
- * name/date, the visitor columns become the two halves of the sentence frame,
- * and the starter prop adds the trace-a-sentence warm-up.
+ * "I am thankful for" gratitude worksheet (Thanksgiving cluster). Not a
+ * sign-in table: this is a fall writing paper — script title with leaf
+ * trim, a traced starter sentence, four numbered "I am thankful for ___
+ * because ___" frames on tall dotted rules, and a draw-it box, the shape
+ * the big printable sites ship for this search. Visual language matches
+ * PlacematSheet so the holiday cluster reads as one family.
  */
+const FRAMES = [1, 2, 3, 4] as const;
 ---
 
-<div class="thankful-sheet">
-  <SignInSheet
-    title="I Am Thankful For…"
-    metaFields={['Name', 'Date']}
-    columns={['I am thankful for…', '…because']}
-    rows={8}
-    starter="I am thankful for my family because they read with me every night."
-  />
+<div class="tf-sheet">
+  <header class="tf-head">
+    <span class="tf-leaf" aria-hidden="true">
+      <svg viewBox="0 0 24 24" style="transform:rotate(-45deg)">
+        <path d="M12 2c5 4 7 8 7 11.5A7 7 0 0 1 5 13.5C5 10 7 6 12 2z" fill="currentColor" />
+        <path d="M12 13v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+    </span>
+    <h2 class="tf-title">I Am Thankful For…</h2>
+    <span class="tf-leaf" aria-hidden="true">
+      <svg viewBox="0 0 24 24" style="transform:rotate(45deg)">
+        <path d="M12 2c5 4 7 8 7 11.5A7 7 0 0 1 5 13.5C5 10 7 6 12 2z" fill="currentColor" />
+        <path d="M12 13v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+    </span>
+  </header>
+
+  <div class="tf-meta">
+    <span class="tf-meta-field">Name<span class="write-line" aria-hidden="true"></span></span>
+    <span class="tf-meta-field">Date<span class="write-line" aria-hidden="true"></span></span>
+  </div>
+
+  <div class="tf-starter">
+    <span class="tf-starter-label">Trace your starter, then write your own below</span>
+    <p class="tf-starter-model">I am thankful for my family because they read with me every night.</p>
+    <p class="tf-starter-copy" aria-hidden="true"></p>
+  </div>
+
+  <ol class="tf-frames">
+    {FRAMES.map((n) => (
+      <li class="tf-frame">
+        <span class="tf-num" aria-hidden="true">{n}</span>
+        <div class="tf-frame-lines">
+          <div class="tf-frameline">
+            <span class="tf-cue">I am thankful for</span>
+            <span class="tf-rule" aria-hidden="true"></span>
+          </div>
+          <div class="tf-frameline">
+            <span class="tf-cue">because</span>
+            <span class="tf-rule" aria-hidden="true"></span>
+          </div>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <div class="tf-draw">
+    <span class="tf-draw-label">Draw a picture of one thing you are thankful for</span>
+    <div class="tf-draw-box" aria-hidden="true"></div>
+  </div>
 </div>

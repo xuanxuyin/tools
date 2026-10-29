@@ -239,15 +239,15 @@ export const thanksgivingPages: PageDef[] = [
     h1: 'I Am Thankful For Worksheet',
     metaTitle: 'I Am Thankful For Worksheet — Free Printable (K-5) | ChartGlade',
     metaDescription:
-      'Free printable "I am thankful for" worksheet: eight writing rows with a sentence frame, a traced starter and an example. November gratitude writing for K-5.',
+      'Free printable "I am thankful for" worksheet: traced starter, four sentence frames, and a draw-it box. November gratitude writing for K-5.',
     lead:
-      'A gratitude writing sheet built around one sentence frame: "I am thankful for ___ because ___." A traced starter gets hesitant writers moving, then eight rows of name-and-date handwriting space carry the idea — the "because" half is where the actual thinking happens.',
+      'A gratitude writing sheet built around one sentence frame: "I am thankful for ___ because ___." A traced starter gets hesitant writers moving, four numbered frames on tall kid-sized handwriting lines carry the idea, and a draw-it box at the bottom lets pre-writers answer in pictures — the "because" half is where the actual thinking happens.',
     introHeading: 'Why the "because" is the lesson',
     intro: [
       'Ask a kid what they\'re thankful for and you get a list: family, dog, tablet. Ask why and you get the real assignment — noticing. "I am thankful for my grandma because she makes my favorite soup" is a sentence that required observation, memory and a judgment about what matters. The frame on this sheet deliberately has two blanks, and the second one is the point: gratitude exercises that stop at the noun are attendance; the because is reflection.',
-      'The sheet stays simple so it flexes across the whole elementary range. Kindergartners trace the starter, then dictate or inventive-spell one row. Second and third graders work through all eight rows with the frame as training wheels. Fourth and fifth graders treat it as a quick-write draft and take their best row into a full paragraph. However it\'s used, eight rows fit one letter page with room for kid-sized handwriting.',
+      'The sheet stays simple so it flexes across the whole elementary range. Kindergartners trace the starter, then draw their answer in the box and label it with one word. Second and third graders work through all four frames with the sentence as training wheels. Fourth and fifth graders treat it as a quick-write draft and take their best frame into a full paragraph. However it\'s used, one letter page holds the whole sheet with room to spare for kid-sized handwriting.',
     ],
-    printNote: 'One letter page, portrait. Eight tall rows plus a traced starter sentence.',
+    printNote: 'One letter page, portrait. Traced starter sentence, four tall sentence frames and a draw-it box.',
     tips: [
       {
         title: 'Model one row yourself',
@@ -255,7 +255,7 @@ export const thanksgivingPages: PageDef[] = [
       },
       {
         title: 'Push past the first three answers',
-        body: 'Family, friends and food arrive in sixty seconds. Ask what would you miss that you never notice — the bus driver, your warm coat, the person who cooks. Rows four through eight are where the noticing starts.',
+        body: 'Family, friends and food arrive in sixty seconds. Ask what would you miss that you never notice — the bus driver, your warm coat, the person who cooks. The last two frames are where the noticing starts.',
       },
       {
         title: 'Share out in a circle',
@@ -269,11 +269,11 @@ export const thanksgivingPages: PageDef[] = [
     faqs: [
       {
         q: 'What is on the worksheet?',
-        a: 'A title, name and date lines, one traced starter sentence ("I am thankful for my family because they read with me every night") with room to copy it, and eight handwriting rows split into two columns: "I am thankful for…" and "…because."',
+        a: 'A script title with fall-leaf trim, name and date lines, one traced starter sentence ("I am thankful for my family because they read with me every night") with room to copy it, four numbered frames that each finish "I am thankful for ___ because ___" on handwriting lines, and a draw-it box for a picture of one answer.',
       },
       {
         q: 'What grade is it for?',
-        a: 'Kindergarten through fifth. K-1 students trace the starter and dictate or copy one row; grades 2-3 write independently with the frame as support; grades 4-5 use the eight rows as a brainstorm and expand the best one into a paragraph.',
+        a: 'Kindergarten through fifth. K-1 students trace the starter, then draw in the box and label it with a word; grades 2-3 write independently with the frame as support; grades 4-5 use the four frames as a brainstorm and expand the best one into a paragraph.',
       },
       {
         q: 'Is it religious?',

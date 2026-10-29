@@ -66,6 +66,24 @@ export function buildFactGrid(art: PaintArt, mode: 'add' | 'mul'): FactGrid {
 const U = 10; // viewBox units per cell, same scale as tintbrew's pegboard
 const FONT = "system-ui, -apple-system, 'Segoe UI', Arial, sans-serif";
 
+/** Conservative glyph width (em fraction) so estimated text width is an
+ *  upper bound on real system-font rendering (user-caught bug 2026-10-29:
+ *  4-char facts like `10×1` overflowed the cell at the old fixed sizes). */
+export function estFactWidth(text: string, size: number): number {
+  let w = 0;
+  for (const ch of text) w += (ch >= '0' && ch <= '9' ? 0.62 : 0.55) * size;
+  return w;
+}
+
+/** Largest font size (capped at 4.6) whose estimated width fits the cell's
+ *  inner width — long facts shrink instead of spilling over the border. */
+function fittedFactSize(text: string): number {
+  const maxW = U - 1.9; // cell is U-0.8 wide; keep breathing room either side
+  let size = 4.6;
+  while (size > 2.2 && estFactWidth(text, size) > maxW) size -= 0.1;
+  return Math.round(size * 10) / 10;
+}
+
 function svgOpen(art: PaintArt, label: string): string {
   const cols = art.cells[0]?.length ?? 0;
   return (
@@ -87,7 +105,7 @@ export function worksheetSvg(art: PaintArt, grid: FactGrid, op: '+' | '×'): str
       const x = (c + 0.5) * U;
       const y = (r + 0.5) * U;
       const text = `${cell.a}${op}${cell.b}`;
-      const size = text.length <= 3 ? 4.6 : 4;
+      const size = fittedFactSize(text);
       body.push(
         `<rect x="${(c * U + 0.4).toFixed(1)}" y="${(r * U + 0.4).toFixed(1)}" width="${U - 0.8}" height="${U - 0.8}" rx="1.5" fill="#ffffff" stroke="#b8b8b8" stroke-width="0.45"/>` +
           `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="${FONT}" font-size="${size}" font-weight="600" fill="#2b2b2b" class="cbn-fact">${text}</text>`,

@@ -31,10 +31,13 @@ describe.skipIf(!existsSync(DIST))('cursive internal-link mesh (real dist)', () 
 });
 
 describe.skipIf(!existsSync(DIST))('freshness signals (real dist)', () => {
-  it('JSON-LD dateModified + visible updated line + twitter large card', () => {
+  it('JSON-LD dateModified (machine signal only) + no visible updated line + twitter large card', () => {
     const html = readFileSync(resolve(DIST, 'cursive', 'a', 'index.html'), 'utf8');
     expect(html).toContain(`"dateModified":"${CONTENT_UPDATED}"`);
-    expect(html).toContain('Charts last updated');
+    // the visible "Charts last updated" template line is gone (user call 10/29);
+    // dateModified/lastmod stay as machine-only freshness signals
+    expect(html).not.toContain('Charts last updated');
+    expect(html).not.toContain('updated-line');
     expect(html).toContain('content="summary_large_image"');
   });
 

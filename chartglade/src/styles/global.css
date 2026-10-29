@@ -1571,13 +1571,64 @@ svg {
   width: 14rem;
 }
 
-/* Traced starter sentence between header fields and the table */
+/* Thankful worksheet — a fall writing paper (leaf trim, script title,
+   traced starter, numbered sentence frames, draw-it box), visual family
+   of the placemat. Sign-in sheets never touch these. */
 
-.signin-starter {
-  margin: 0 0 var(--sp-4);
+.tf-sheet {
+  --tf-leaf: #b9853c;
+  --tf-title: #a4511f;
+  --tf-cue: #9c6030;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
 }
 
-.signin-starter-label {
+.tf-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+}
+
+.tf-leaf {
+  color: var(--tf-leaf);
+  line-height: 0;
+  flex: none;
+}
+
+.tf-leaf svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tf-title {
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--tf-title);
+  margin: 0;
+}
+
+.tf-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-3) var(--sp-6);
+  font-size: 0.92rem;
+}
+
+.tf-meta-field {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.45em;
+}
+
+.tf-starter {
+  margin: 0;
+}
+
+.tf-starter-label {
   display: block;
   font-size: 0.78rem;
   font-weight: 700;
@@ -1587,7 +1638,7 @@ svg {
   margin-bottom: var(--sp-1);
 }
 
-.signin-starter-model {
+.tf-starter-model {
   font-family: var(--font-hand);
   font-size: 1.7rem;
   line-height: 1.2;
@@ -1595,20 +1646,86 @@ svg {
   margin: 0 0 var(--sp-2);
 }
 
-.signin-starter-copy {
+.tf-starter-copy {
   height: 1.9rem;
   border-bottom: 2px dotted var(--line-strong);
 }
 
-/* Kid-sized handwriting rows + sentence-frame column split */
-
-.thankful-sheet .chart-table.signin td.fill-in {
-  height: 2.6em;
+.tf-frames {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
 }
 
-.thankful-sheet .chart-table.signin th:nth-child(1),
-.thankful-sheet .chart-table.signin td:nth-child(1) {
-  width: 42%;
+.tf-frame {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.tf-num {
+  flex: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--tf-leaf);
+  border-radius: 50%;
+  background: #f7ead8;
+  color: var(--tf-title);
+  font-weight: 700;
+  font-size: 0.95rem;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.tf-frame-lines {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.tf-frameline {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.55em;
+  min-height: 2.1rem;
+}
+
+.tf-cue {
+  flex: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--tf-cue);
+}
+
+.tf-rule {
+  flex: 1;
+  min-width: 0;
+  border-bottom: 2px dotted var(--line-strong);
+}
+
+.tf-draw {
+  margin-top: var(--sp-1);
+}
+
+.tf-draw-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--tf-cue);
+  margin-bottom: var(--sp-2);
+}
+
+.tf-draw-box {
+  border: 2px dashed var(--tf-leaf);
+  border-radius: var(--radius-sm);
+  min-height: 2.9in;
 }
 
 /* Placemat: one letter page, three activity boxes, decorative border */
@@ -1748,22 +1865,46 @@ svg {
 /* Print pass for the Thanksgiving sheets — placemat fills exactly one page */
 
 @media print {
-  .signin-starter-label {
+  .tf-sheet {
+    gap: 9pt;
+  }
+
+  .tf-title {
+    font-size: 24pt;
+  }
+
+  .tf-starter-label {
     font-size: 9pt;
   }
 
-  .signin-starter-model {
+  .tf-starter-model {
     font-size: 20pt;
     color: #999 !important;
   }
 
-  .signin-starter-copy {
+  .tf-starter-copy {
     height: 26pt;
     border-color: #000 !important;
   }
 
-  .thankful-sheet .chart-table.signin td.fill-in {
-    height: 2.8em;
+  .tf-frames {
+    gap: 13pt;
+  }
+
+  .tf-frame-lines {
+    gap: 8pt;
+  }
+
+  .tf-frameline {
+    min-height: 33pt;
+  }
+
+  .tf-rule {
+    border-color: #000 !important;
+  }
+
+  .tf-draw-box {
+    min-height: 2.55in;
   }
 
   .pm-sheet {
@@ -1843,15 +1984,6 @@ svg {
     font-size: 8pt;
     color: #555;
   }
-}
-
-/* Site-wide freshness line (2026-10-04): winners carry visible updated dates */
-.updated-line {
-  margin: 0 auto 1.5rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #e3e8ee;
-  color: #64748b;
-  font-size: 0.85rem;
 }
 
 /* ---- States tracker page (#16): compact printable + screen-only detail tables ---- */

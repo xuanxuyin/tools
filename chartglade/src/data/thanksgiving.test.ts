@@ -285,12 +285,13 @@ describe.skipIf(!allBuilt)('thanksgiving dist guards (real dist)', () => {
     }
   });
 
-  it('the thankful worksheet prints its starter, frame and eight rows', () => {
+  it('the thankful worksheet prints its starter, four frames and the draw-it box', () => {
     const html = readFileSync(resolve(DIST, 'i-am-thankful-for-worksheet', 'index.html'), 'utf8');
     expect(html).toContain('Trace your starter');
     expect(html).toContain('I am thankful for my family because they read with me every night.');
-    expect(html).toContain('…because');
-    expect(html.match(/<td class="fill-in">/g)!.length).toBe(16); // 8 rows x 2 columns
+    expect(html).toContain('Draw a picture of one thing you are thankful for');
+    expect(html.match(/class="tf-frame"/g)!.length).toBe(4); // four numbered sentence frames
+    expect(html.match(/class="tf-cue">because</g)!.length).toBe(4); // every frame keeps its because half
   });
 
   it('the placemat prints all scrambles, boards and the answer key', () => {

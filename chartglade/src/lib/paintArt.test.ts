@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { PUMPKIN_ADDITION, GHOST_MULTIPLICATION } from '../data/halloween';
 import { TREE_ADDITION, SNOWMAN_MULTIPLICATION, usedKeys } from '../data/christmas';
-import { buildFactGrid, referenceSvg, worksheetSvg, type PaintArt } from './paintArt';
+import { TURKEY_ADDITION, PIE_MULTIPLICATION } from '../data/thanksgiving';
+import { buildFactGrid, estFactWidth, referenceSvg, worksheetSvg, type PaintArt } from './paintArt';
 
 /**
  * The tintbrew-style rendering pipeline (user call 2026-10-29): one number
@@ -12,6 +13,8 @@ import { buildFactGrid, referenceSvg, worksheetSvg, type PaintArt } from './pain
 const ARTS: [string, PaintArt, 'add' | 'mul'][] = [
   ['pumpkin', PUMPKIN_ADDITION, 'add'],
   ['ghost', GHOST_MULTIPLICATION, 'mul'],
+  ['turkey', TURKEY_ADDITION, 'add'],
+  ['pie', PIE_MULTIPLICATION, 'mul'],
   ['tree', TREE_ADDITION, 'add'],
   ['snowman', SNOWMAN_MULTIPLICATION, 'mul'],
 ];
@@ -54,6 +57,16 @@ describe('worksheetSvg', () => {
       expect(svg, `legend color for key ${key} must not appear`).not.toContain(art.palette[key]!);
     }
     expect(svg).not.toContain('cbn-ref');
+  });
+
+  it.each(ARTS)('%s: every fact text fits its cell — no overflow (user-caught 10/29)', (_, art, mode) => {
+    const svg = worksheetSvg(art, buildFactGrid(art, mode), mode === 'mul' ? '×' : '+');
+    const INNER = 10 - 1.9; // fittedFactSize's ceiling; keep in sync with paintArt.ts
+    for (const m of svg.matchAll(/font-size="([\d.]+)" font-weight="600" fill="#2b2b2b" class="cbn-fact">(\d+[+×]\d+)</g)) {
+      const size = Number(m[1]);
+      const text = m[2]!;
+      expect(estFactWidth(text, size), `"${text}" at ${size} must fit ${INNER}`).toBeLessThanOrEqual(INNER + 1e-9);
+    }
   });
 });
 
