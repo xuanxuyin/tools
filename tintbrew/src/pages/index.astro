@@ -6,6 +6,7 @@ import { BEAD_PATTERNS } from '../data/beadPatterns';
 import { categoryCounts, easyPatterns, patternContents } from '../lib/beadContent';
 import { mixes } from '../data/mixes';
 import { buildMixContent } from '../lib/mixContent';
+import { formatCss, hexToRgb, mixSteps, rgbToHex } from '../lib/color';
 import { SITE } from '../consts';
 
 // one flagship board per category stands in for the whole set — the figures
@@ -19,6 +20,13 @@ const mixHex = new Map(mixes.map((m) => {
   const c = buildMixContent(m);
   return [c.slug, c.resultHex] as const;
 }));
+
+// card demos are real tool output, not decoration (user call, 2026-10-29):
+// the mixer strip is the engine's actual blend path; the converter rows are
+// the same purple run through every format
+const blendPath = mixSteps([hexToRgb('#ef4444'), hexToRgb('#3b82f6')], 9).map(rgbToHex);
+const convRgb = hexToRgb('#6d28d9');
+const convRows = ['#6d28d9', formatCss('rgb', convRgb), formatCss('hsl', convRgb)];
 
 const title = 'TintBrew — Mix Colors Online & Convert HEX, RGB, HSL, CMYK';
 const description =
@@ -51,10 +59,12 @@ const jsonLd = {
         Blend 2–5 colors with ratio sliders. Perceptual Oklab mixing matches how paint behaves, and every
         result ships with HEX, RGB, HSL, CMYK and a CSS <code>color-mix()</code> snippet.
       </p>
-      <div class="swatch-strip" aria-hidden="true">
-        <span style="background:#ef4444"></span>
-        <span style="background:#8b5cf6"></span>
-        <span style="background:#3b82f6"></span>
+      <div class="card-demo" aria-hidden="true">
+        <div class="demo-strip">
+          {blendPath.map((s) => (
+            <span style={`background:${s}`}></span>
+          ))}
+        </div>
       </div>
       <span class="card-cta">Mix colors</span>
     </a>
@@ -64,10 +74,15 @@ const jsonLd = {
         Paste a HEX code or dial in RGB, HSL or CMYK — every other format updates as you type, with
         one-click copy for each.
       </p>
-      <div class="swatch-strip" aria-hidden="true">
-        <span style="background:#f59e0b"></span>
-        <span style="background:#fbbf24"></span>
-        <span style="background:#fde68a"></span>
+      <div class="card-demo" aria-hidden="true">
+        <div class="conv-demo">
+          <span class="conv-swatch" style="background:#6d28d9"></span>
+          <span class="conv-formats">
+            {convRows.map((r) => (
+              <span>{r}</span>
+            ))}
+          </span>
+        </div>
       </div>
       <span class="card-cta">Convert a color</span>
     </a>
@@ -77,10 +92,10 @@ const jsonLd = {
         Turn any photo into a fuse-bead board matched to a real 291-color bead line — Mardiy
         codes on the shopping list, printable grid and bead counts included.
       </p>
-      <div class="swatch-strip" aria-hidden="true">
-        <span style="background:#278cc9"></span>
-        <span style="background:#fd5918"></span>
-        <span style="background:#4dab64"></span>
+      <div class="card-demo" aria-hidden="true">
+        <div class="bead-demo">
+          <BeadFigure view={bySlug('shiba')} mode="reference" thumb />
+        </div>
       </div>
       <span class="card-cta">Convert a photo</span>
     </a>
@@ -260,6 +275,49 @@ const jsonLd = {
   .bead-more a {
     color: var(--accent, #b3552e);
   }
+  /* tool-card demos: one framed 4.5rem band per card, real content inside —
+     the mixer's blend path, the converter's format rows, an actual board */
+  .card-demo {
+    margin-top: auto;
+    height: 4.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: #fff;
+  }
+  .demo-strip {
+    display: flex;
+    height: 100%;
+  }
+  .demo-strip > span {
+    flex: 1;
+  }
+  .conv-demo {
+    display: flex;
+    height: 100%;
+  }
+  .conv-swatch {
+    width: 4.5rem;
+    height: 100%;
+  }
+  .conv-formats {
+    flex: 1;
+    display: grid;
+    place-content: center;
+    gap: 0.22rem;
+    padding: 0 0.8rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .bead-demo {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem;
+  }
 </style>
 
 <style is:global>
@@ -274,6 +332,17 @@ const jsonLd = {
     height: 100%;
   }
   .bead-thumb .bead-thumb-img {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .card-demo .bead-fig {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+  }
+  .card-demo .bead-thumb-img {
     width: auto;
     max-width: 100%;
     height: 100%;

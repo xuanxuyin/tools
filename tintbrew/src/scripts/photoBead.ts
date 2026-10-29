@@ -194,8 +194,10 @@ export class PhotoStudio {
       // 'all' = the full 291-color line, uncapped; numbers cap as themselves
       maxColors: colorsVal === 'all' ? 291 : Number(colorsVal) || 12,
       simplify: simplifyVal === 'keep' || simplifyVal === 'bold' ? simplifyVal : 'balanced',
-      removeBackground: bg ? bg.checked : true,
-      darkOutline: outline ? outline.checked : true,
+      // both post-passes default OFF (user call, 2026-10-29): the photo
+      // passes through as-is until the user opts into each pass
+      removeBackground: bg ? bg.checked : false,
+      darkOutline: outline ? outline.checked : false,
     };
   }
 

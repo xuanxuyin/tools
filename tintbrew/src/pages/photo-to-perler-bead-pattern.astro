@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import DemoFigure from '../components/DemoFigure.astro';
 import { SITE } from '../consts';
 
 const title = 'Photo to Perler Bead Pattern — Free Picture-to-Bead Converter | TintBrew';
@@ -13,7 +14,7 @@ const faqs = [
   },
   {
     q: 'What kind of photo works best?',
-    a: 'A bold subject on a light or transparent background is where the converter shines — clear shapes, only a few colors to juggle. Shaded, 3D-looking art carries subtle color, so push the bead width up and raise the color count to do it justice. Prefer the whole scene? Turn off Remove background and widen the board.',
+    a: 'A bold subject on a light or transparent background is where the converter shines — clear shapes, only a few colors to juggle. Shaded, 3D-looking art carries subtle color, so push the bead width up and raise the color count to do it justice. Prefer the whole scene? Leave Remove background off and widen the board.',
   },
   {
     q: 'What does Color simplification do?',
@@ -184,18 +185,18 @@ const jsonLd = [
           </div>
 
           <label class="check-card">
-            <input type="checkbox" checked data-photo-bg />
+            <input type="checkbox" data-photo-bg />
             <span class="check-body">
               <strong>Remove background</strong>
               <span>
                 Clears the solid color connected to the edges and leaves it off the bead count. Turn
-                it off to keep the whole scene.
+                it on to cut the subject out of its background.
               </span>
             </span>
           </label>
 
           <label class="check-card">
-            <input type="checkbox" checked data-photo-outline />
+            <input type="checkbox" data-photo-outline />
             <span class="check-body">
               <strong>Dark outline</strong>
               <span>
@@ -215,84 +216,178 @@ const jsonLd = [
     </div>
   </section>
 
-  <section class="prose" style="margin-top: var(--sp-8);">
-    <h2>How it works</h2>
-    <p>From image to bead pattern in four steps:</p>
-    <ol>
-      <li>
-        <strong>Upload your image.</strong> Drop in a photo, logo, drawing or piece of pixel art.
-        Clean shapes and strong contrast convert best, but you can refine anything after the fact.
-      </li>
-      <li>
-        <strong>Convert to a bead grid.</strong> The converter maps your image onto a pegboard
-        grid, snaps every cell to the closest real bead color, and shows a live preview you can
-        steer with the settings above.
-      </li>
-      <li>
-        <strong>Refine the result.</strong> No converter nails every image — hit Edit in editor
-        and fix stray beads by hand: repaint, erase, mirror strokes, simplify colors.
-      </li>
-      <li>
-        <strong>Print or make it.</strong> The printed sheet carries the board with its pegboard
-        seams plus the bead list with Mardiy codes — or download a PNG for your phone or tablet.
-      </li>
-    </ol>
+  <div class="guide-stack">
+    <section class="guide-card" aria-label="For the best results">
+      <h2>For the best results</h2>
+      <p class="guide-sub">Different images, different settings</p>
+      <p>
+        The converter does the heavy lifting, but a couple of settings decide how close the first
+        pass lands. Here is what to reach for depending on what you are turning into beads.
+      </p>
+      <div class="guide-items">
+        <div class="guide-item">
+          <DemoFigure name="sweet-spot" />
+          <h3>The sweet spot — a clean, simple subject just works</h3>
+          <p>
+            A bold subject on a light or transparent background is where the converter shines.
+            Clear shapes, only a few colors to juggle — every bead lands on what matters, and it
+            looks great straight out of the box on the default settings. If you can start here,
+            start here.
+          </p>
+        </div>
+        <div class="guide-item">
+          <DemoFigure name="detailed-3d" />
+          <h3>Detailed &amp; 3D art needs more beads</h3>
+          <p>
+            Renders with soft shading, gradients, or a 3D feel carry a lot of subtle color. To do
+            them justice, push the bead width up and raise the color count so the shading has
+            enough beads and shades to land on. A little tuning here is the difference between a
+            muddy blob and something that genuinely reads.
+          </p>
+          <div class="demo-chips">
+            <span>Colors → 16 or 24</span>
+            <span>Bead width → higher</span>
+          </div>
+        </div>
+        <div class="guide-item">
+          <DemoFigure name="keep-bg" />
+          <h3>Want the whole scene? You can keep it</h3>
+          <p>
+            Prefer the backdrop and all? Leave Remove background off so the surroundings stay in,
+            and push the bead width up — a full scene needs more beads to hold both the subject
+            and its background without turning to mush. Set Color simplification to Keep shades
+            so the sky, sea and sand keep their soft gradients, and leave Dark outline off so the
+            figure isn't forced into a hard silhouette against the scene.
+          </p>
+          <div class="demo-chips">
+            <span>Remove background → off</span>
+            <span>Width → higher (Custom)</span>
+            <span>Simplification → Keep shades</span>
+            <span>Dark outline → off</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>Different images, different settings</h2>
-    <p>
-      The converter does the heavy lifting, but a couple of settings decide how close the first
-      pass lands:
-    </p>
-    <ul>
-      <li>
-        <strong>A clean, simple subject just works.</strong> One bold shape on a light background,
-        12 colors, Auto width — convert once and place beads.
-      </li>
-      <li>
-        <strong>Shaded, 3D-looking art needs more beads.</strong> Soft shading carries a lot of
-        subtle color; push the bead width up (87 or 116) and raise the color count to 16.
-      </li>
-      <li>
-        <strong>Want the whole scene? Keep it.</strong> Turn off Remove background so the
-        surroundings stay in, and widen the board — a full scene needs more beads than a cut-out.
-      </li>
-      <li>
-        <strong>Logos, text and icons.</strong> Keep shades + a dark outline keeps letterforms
-        readable at 29 wide; pixel art converts near-lossless at its native grid size with Custom
-        width.
-      </li>
-    </ul>
+    <section class="guide-card" aria-label="How it works">
+      <h2>How it works</h2>
+      <p class="guide-sub">From image to bead pattern in four steps</p>
+      <div class="guide-items">
+        <div class="guide-item">
+          <DemoFigure name="step-upload" />
+          <h3>1 · Upload your image</h3>
+          <p>
+            Drop in a photo, logo, drawing or piece of pixel art. Clean shapes and strong contrast
+            convert best, but you can refine anything after the first pass.
+          </p>
+        </div>
+        <div class="guide-item">
+          <DemoFigure name="step-convert" />
+          <h3>2 · Convert to a bead grid</h3>
+          <p>
+            The converter maps your image onto a pegboard grid, snaps every cell to the closest
+            real bead color, and shows a live preview you can steer with the settings above.
+          </p>
+        </div>
+        <div class="guide-item">
+          <DemoFigure name="step-refine" />
+          <h3>3 · Refine the result</h3>
+          <p>
+            No converter nails every image — hit Edit in editor and fix stray beads by hand:
+            repaint, erase, mirror strokes, simplify colors.
+          </p>
+        </div>
+        <div class="guide-item">
+          <DemoFigure name="step-print" />
+          <h3>4 · Print or make it</h3>
+          <p>
+            The printed sheet carries the board with its pegboard seams plus the bead list with
+            Mardiy codes — or download a PNG for your phone or tablet.
+          </p>
+        </div>
+      </div>
+    </section>
 
-    <h2>What your pattern includes</h2>
-    <ul>
-      <li>A printable pattern sheet with pegboard seams every 29 beads</li>
-      <li>Bead counts per color, each with its Mardiy code and hex</li>
-      <li>Pegboard count — how many 29 × 29 boards the design spans</li>
-      <li>A PNG export and a one-click jump into the bead editor</li>
-    </ul>
+    <section class="guide-card" aria-label="What you can control">
+      <h2>What you can control</h2>
+      <p class="guide-sub">A converter you can actually steer</p>
+      <p>
+        Most image-to-bead tools give you a single automatic output. This one keeps you in
+        control of size, colors, and every individual bead, so the result matches the beads you
+        own and the look you want.
+      </p>
+      <div class="guide-items">
+        <div class="guide-item">
+          <DemoFigure name="ctl-colors" />
+          <h3>Colors: 8 to all 291</h3>
+          <p>
+            Fewer colors read cleaner and are easier to source — 8 or 12 covers most bold
+            subjects. Raise it to 16 or 24 when the subject needs extra shades, or open it to all
+            291 to keep every color the converter sees.
+          </p>
+        </div>
+        <div class="guide-item">
+          <DemoFigure name="ctl-width" />
+          <h3>Bead width: Auto, presets or Custom</h3>
+          <p>
+            Leave width on Auto for the size that keeps detail readable, pick a preset board
+            (29 / 58 / 87 / 116), or type an exact width from 10 to 200 to hit a specific
+            finished size.
+          </p>
+        </div>
+        <div class="guide-item">
+          <DemoFigure name="ctl-bg" />
+          <h3>Remove background</h3>
+          <p>
+            Off by default, so full scenes convert as-is. Turn it on to clear the solid color
+            connected to the edges — it works best when your subject already sits on a plain
+            backdrop.
+          </p>
+        </div>
+        <div class="guide-item">
+          <DemoFigure name="ctl-simplify" />
+          <h3>Simplify shades &amp; dark outline</h3>
+          <p>
+            Keep shades, Balanced or Bold decides how aggressively near-duplicate colors merge.
+            Dark outline, also off by default, traces the silhouette in the darkest bead when you
+            do cut the subject out.
+          </p>
+        </div>
+      </div>
+    </section>
 
-    <h2>A note on what you convert</h2>
-    <p>
-      Convert photos you own or have the right to use. Bead versions of other people's artwork or
-      characters are for your own shelf, not for sale.
-    </p>
+    <section class="guide-card" aria-label="What your pattern includes">
+      <h2>What your pattern includes</h2>
+      <ul class="pattern-includes">
+        <li>A printable pattern sheet with pegboard seams every 29 beads</li>
+        <li>Bead counts per color, each with its Mardiy code and hex</li>
+        <li>Pegboard count — how many 29 × 29 boards the design spans</li>
+        <li>A PNG export and a one-click jump into the bead editor</li>
+      </ul>
+      <p class="fine-print">
+        Convert photos you own or have the right to use. Bead versions of other people's artwork
+        or characters are for your own shelf, not for sale.
+      </p>
+    </section>
 
-    <h2>Frequently asked questions</h2>
-    <div class="faq">
-      {faqs.map((f) => (
-        <details>
-          <summary>{f.q}</summary>
-          <p>{f.a}</p>
-        </details>
-      ))}
-    </div>
-
-    <p class="keep-reading">
-      Rather start from a ready-made design? Browse the
-      <a href="/perler-bead-patterns/">full perler bead pattern set</a> — 116 animal, character, food
-      and Halloween boards at every size, each with the same printable template and bead list.
-    </p>
-  </section>
+    <section class="guide-card" aria-label="Frequently asked questions">
+      <h2>Frequently asked questions</h2>
+      <div class="faq">
+        {faqs.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <p class="keep-reading">
+        Rather start from a ready-made design? Browse the
+        <a href="/perler-bead-patterns/">full perler bead pattern set</a> — 116 animal, character,
+        food and Halloween boards at every size, each with the same printable template and bead
+        list.
+      </p>
+    </section>
+  </div>
 </BaseLayout>
 
 <script>
@@ -305,6 +400,87 @@ const jsonLd = [
     border-radius: 14px;
     padding: var(--sp-4);
     background: var(--bg, #fff);
+  }
+  /* every guide block gets its own framed card — one border per section so
+     the long bottom half reads as blocks instead of a wall (user call,
+     2026-10-29) */
+  .guide-stack {
+    max-width: 56rem;
+    margin-top: var(--sp-8);
+    display: grid;
+    gap: var(--sp-4);
+  }
+  .guide-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: var(--sp-4);
+  }
+  .guide-card > h2 {
+    margin-top: 0;
+  }
+  .guide-sub {
+    color: var(--muted);
+    font-weight: 600;
+    margin-top: calc(-1 * var(--sp-2));
+  }
+  .guide-card > p:not(.guide-sub):not(.fine-print):not(.keep-reading) {
+    max-width: 46rem;
+  }
+  .guide-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--sp-3);
+    margin-top: var(--sp-3);
+  }
+  .guide-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--sp-3);
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .guide-item h3 {
+    font-size: 0.98rem;
+    margin: var(--sp-2) 0 0;
+  }
+  .guide-item p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+  .demo-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: var(--sp-2);
+  }
+  .demo-chips span {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    padding: 0.12rem 0.5rem;
+    border-radius: 999px;
+  }
+  .pattern-includes {
+    margin-top: var(--sp-2);
+  }
+  .pattern-includes li {
+    margin-top: 0.3rem;
+  }
+  .fine-print {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: var(--sp-3);
+    padding-top: var(--sp-2);
+    border-top: 1px dashed var(--border);
+  }
+  .guide-card .faq {
+    margin-top: var(--sp-3);
   }
   /* source-site layout: photo + settings left, result right — originals and
      the converted board sit side by side for direct comparison (user call,

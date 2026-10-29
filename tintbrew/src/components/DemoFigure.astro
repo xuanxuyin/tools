@@ -1,0 +1,183 @@
+---
+/**
+ * Hand-drawn SSR SVG mini-illustrations for the photo-converter guide
+ * sections — no image assets, every figure ships in the static HTML (user
+ * call, 2026-10-29: the source site's bottom sections each carry a sample
+ * image; ours draw the same ideas in code). One visual grammar: left = the
+ * picture you bring, right = what lands on the pegboard.
+ */
+type Rect = { x: number; y: number; w: number; h: number; f: string; s?: string; sw?: number };
+
+interface Props {
+  name:
+    | 'sweet-spot'
+    | 'detailed-3d'
+    | 'keep-bg'
+    | 'step-upload'
+    | 'step-convert'
+    | 'step-refine'
+    | 'step-print'
+    | 'ctl-colors'
+    | 'ctl-width'
+    | 'ctl-bg'
+    | 'ctl-simplify';
+}
+
+const { name } = Astro.props;
+
+/** Quantized grid cells for a pegboard panel: cols × rows of `size` cells,
+ *  filled (or skipped) by predicate — the bead version of a shape. */
+const gridRects = (
+  x0: number,
+  y0: number,
+  cols: number,
+  rows: number,
+  size: number,
+  fill: (c: number, r: number) => string | null,
+): Rect[] =>
+  Array.from({ length: rows }).flatMap((_, r) =>
+    Array.from({ length: cols }).map((_, c) => {
+      const f = fill(c, r);
+      return f ? { x: x0 + c * size, y: y0 + r * size, w: size - 1, h: size - 1, f } : null;
+    }),
+  ).filter((rc): rc is Rect => rc !== null);
+
+// shared colors: subject red family, sky/grass scene, warm paper backdrop
+const RED = '#d94f3d';
+const RED_MID = '#c04234';
+const RED_DEEP = '#9c3327';
+const GRID_LINE = '#e7e5e4';
+
+const panels = {
+  // a bold flat subject quantizes 1:1 — the sweet spot
+  'sweet-spot': gridRects(132, 20, 4, 3, 16, (c, r) =>
+    c >= 1 && c <= 2 && r >= 1 ? RED : null,
+  ),
+  // soft shading lands on three stepped reds instead of one
+  'detailed-3d': gridRects(132, 20, 4, 3, 16, (c, r) => {
+    const d = Math.hypot(c - 1.5, r - 1);
+    return d < 0.8 ? RED_DEEP : d < 1.4 ? RED_MID : d < 1.9 ? RED : null;
+  }),
+  // the whole scene stays: sky, sun, house, grass — every zone keeps beads
+  'keep-bg': gridRects(132, 20, 4, 3, 16, (c, r) =>
+    r === 0 ? (c === 3 ? '#f5c531' : '#bcdff2') : r === 1 ? (c === 1 || c === 2 ? '#6b4f3a' : '#bcdff2') : '#7bb661',
+  ),
+} as const;
+---
+
+{name === 'sweet-spot' || name === 'detailed-3d' || name === 'keep-bg' ? (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    <rect x="8" y="14" width="88" height="68" rx="8" fill="#f2e9dc"></rect>
+    {name === 'sweet-spot' && <rect x="36" y="28" width="32" height="40" rx="6" fill={RED}></rect>}
+    {name === 'detailed-3d' && (
+      <g>
+        <circle cx="52" cy="48" r="20" fill={RED}></circle>
+        <circle cx="52" cy="48" r="13" fill={RED_MID}></circle>
+        <circle cx="52" cy="48" r="6" fill={RED_DEEP}></circle>
+        <circle cx="45" cy="40" r="3" fill="#ffffff" opacity="0.55"></circle>
+      </g>
+    )}
+    {name === 'keep-bg' && (
+      <g>
+        <rect x="8" y="14" width="88" height="42" rx="0" fill="#bcdff2"></rect>
+        <rect x="8" y="56" width="88" height="26" fill="#7bb661"></rect>
+        <circle cx="80" cy="28" r="8" fill="#f5c531"></circle>
+        <rect x="36" y="40" width="26" height="18" fill="#6b4f3a"></rect>
+        <path d="M33 40 L49 28 L65 40 Z" fill="#8a5a3b"></path>
+        <rect x="8" y="14" width="88" height="68" rx="8" fill="none" stroke={GRID_LINE}></rect>
+      </g>
+    )}
+    <path d="M102 48 h12 m-4 -4 l4 4 -4 4" stroke="#57534e" stroke-width="2" fill="none"></path>
+    <rect x="124" y="14" width="88" height="68" rx="8" fill="#ffffff" stroke={GRID_LINE}></rect>
+    {panels[name].map((rc) => (
+      <rect x={rc.x} y={rc.y} width={rc.w} height={rc.h} rx="1.5" fill={rc.f}></rect>
+    ))}
+  </svg>
+) : name === 'step-upload' ? (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    <rect x="86" y="22" width="48" height="56" rx="8" fill="#ffffff" stroke={GRID_LINE}></rect>
+    <path d="M126 22 v12 h12" fill="none" stroke={GRID_LINE} stroke-width="2"></path>
+    <path d="M110 66 V42 m-7 7 l7 -7 7 7" stroke="#6d28d9" stroke-width="3" fill="none" stroke-linecap="round"></path>
+    <path d="M30 48 h44 m-6 -6 l6 6 -6 6 M190 48 h-44 m6 -6 l-6 6 6 6" stroke={GRID_LINE} stroke-width="2" fill="none"></path>
+  </svg>
+) : name === 'step-convert' ? (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    {gridRects(66, 22, 9, 5, 10, (c, r) =>
+      Math.abs(c - 4) + Math.abs(r - 2) < 3 ? (r < 1 || (r === 1 && c > 2 && c < 6) ? RED_MID : RED) : null,
+    ).map((rc) => (
+      <rect x={rc.x} y={rc.y} width={rc.w} height={rc.h} rx="1.5" fill={rc.f}></rect>
+    ))}
+    <rect x="66" y="22" width="89" height="49" rx="4" fill="none" stroke={GRID_LINE}></rect>
+  </svg>
+) : name === 'step-refine' ? (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    {gridRects(66, 22, 9, 5, 10, (c, r) =>
+      Math.abs(c - 4) + Math.abs(r - 2) < 3 ? RED : null,
+    ).map((rc) => (
+      <rect x={rc.x} y={rc.y} width={rc.w} height={rc.h} rx="1.5" fill={rc.f}></rect>
+    ))}
+    <rect x="66" y="22" width="89" height="49" rx="4" fill="none" stroke={GRID_LINE}></rect>
+    <rect x="105" y="41" width="9" height="9" rx="1.5" fill="#6d28d9"></rect>
+    <rect x="94" y="31" width="9" height="9" rx="1.5" fill="none" stroke="#6d28d9" stroke-width="2"></rect>
+    <path d="M160 66 L184 34 l6 5 L166 71 l-8 3 Z" fill="#57534e"></path>
+  </svg>
+) : name === 'step-print' ? (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    <rect x="82" y="12" width="56" height="74" rx="4" fill="#ffffff" stroke={GRID_LINE}></rect>
+    {gridRects(90, 20, 5, 6, 8, (c, r) =>
+      Math.abs(c - 2) + Math.abs(r - 2.5) < 2.5 ? RED : null,
+    ).map((rc) => (
+      <rect x={rc.x} y={rc.y} width={rc.w} height={rc.h} rx="1" fill={rc.f}></rect>
+    ))}
+    <path d="M95 76 h30" stroke={GRID_LINE} stroke-width="2"></path>
+  </svg>
+) : name === 'ctl-colors' ? (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    {Array.from({ length: 8 }).map((_, i) => (
+      <circle cx={40 + i * 20} cy="34" r="7" fill={['#9c3327', RED, RED_MID, '#e06a52', '#e88a70', '#f0a48c', '#f5bda9', '#f9d5c6'][i]}></circle>
+    ))}
+    {Array.from({ length: 16 }).map((_, i) => (
+      <circle cx={33 + i * 10.3} cy="64" r="4" fill={['#9c3327', '#a63a2b', RED, RED, RED_MID, RED_MID, '#d64b39', '#d64b39', '#e06a52', '#e06a52', '#e88a70', '#e88a70', '#f0a48c', '#f0a48c', '#f5bda9', '#f5bda9'][i]}></circle>
+    ))}
+  </svg>
+) : name === 'ctl-width' ? (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    {gridRects(24, 18, 4, 4, 16, () => null).map((rc, i) => (
+      <rect x={rc.x} y={rc.y} width={rc.w + 1} height={rc.h + 1} fill="none" stroke={GRID_LINE}></rect>
+    ))}
+    {gridRects(120, 18, 8, 8, 8, () => null).map((rc) => (
+      <rect x={rc.x} y={rc.y} width={rc.w + 1} height={rc.h + 1} fill="none" stroke={GRID_LINE}></rect>
+    ))}
+    <text x="56" y="90" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#57534e">29 wide</text>
+    <text x="152" y="90" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#57534e">116 wide</text>
+    <path d="M93 46 h30 m-5 -5 l5 5 -5 5" stroke="#57534e" stroke-width="2" fill="none"></path>
+  </svg>
+) : name === 'ctl-bg' ? (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    <rect x="12" y="18" width="80" height="60" rx="8" fill="#f2e9dc"></rect>
+    <rect x="38" y="32" width="28" height="32" rx="5" fill={RED}></rect>
+    <path d="M104 48 h12 m-4 -4 l4 4 -4 4" stroke="#57534e" stroke-width="2" fill="none"></path>
+    <rect x="128" y="18" width="80" height="60" rx="8" fill="#ffffff" stroke={GRID_LINE}></rect>
+    <rect x="154" y="32" width="28" height="32" rx="5" fill={RED}></rect>
+  </svg>
+) : (
+  <svg viewBox="0 0 220 96" aria-hidden="true">
+    {Array.from({ length: 6 }).map((_, i) => (
+      <circle cx={52 + i * 24} cy="32" r="7" fill={['#5b8fd9', '#6d9bdd', '#7fabe1', '#91bce5', '#a3cde9', '#b5deed'][i]}></circle>
+    ))}
+    <path d="M110 52 v14 m-5 -5 l5 5 5 -5" stroke="#57534e" stroke-width="2" fill="none"></path>
+    <circle cx="118" cy="78" r="7" fill="#6d9bdd"></circle>
+    <circle cx="142" cy="78" r="7" fill="#a3cde9"></circle>
+  </svg>
+)}
+
+<style>
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+  }
+</style>

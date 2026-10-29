@@ -9,6 +9,12 @@ const title = 'Color Guides — Mixing & Pairing Answers With Exact HEX | TintBr
 const description =
   'Every classic color question answered with computed swatches: what colors make brown, purple, green or orange, what colors go with them, plus frosting, icing and gel-color charts.';
 
+// the directory is a directory: tiles point, pages explain (user call,
+// 2026-10-29 — full meta paragraphs on every card made the wall of cards
+// unreadable)
+const makeGuides = scenarioContents.filter((c) => c.def.slug.startsWith('what-colors-make-'));
+const bakingGuides = scenarioContents.filter((c) => !c.def.slug.startsWith('what-colors-make-'));
+
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -45,32 +51,36 @@ const jsonLd = [
 
   <ToolNav />
 
-  <section class="tool-grid" aria-label="Mixing guides">
-    {scenarioContents.map((c) => (
-      <a class="tool-card" href={`/${c.def.slug}`}>
-        <h2>{c.def.h1}</h2>
-        <p>{c.def.metaDescription}</p>
-        <div class="swatch-strip" aria-hidden="true">
-          <span style={`background:${c.heroHex}`}></span>
-          <span style={`background:${c.def.mixerColors[0]}`}></span>
-          <span style={`background:${c.def.mixerColors[1] ?? c.def.mixerColors[0]}`}></span>
-        </div>
-        <span class="card-cta">See the answer</span>
+  <section class="link-grid guides-grid" aria-label="What colors make">
+    <h2 class="guides-group-title">What colors make…</h2>
+    {makeGuides.map((c) => (
+      <a class="link-tile" href={`/${c.def.slug}`}>
+        <span class="dot" style={`background:${c.heroHex}`}></span>
+        {c.def.h1}
       </a>
     ))}
   </section>
 
-  <section class="tool-grid" style="margin-top: var(--sp-6);" aria-label="Pairing guides">
+  <section class="link-grid guides-grid" aria-label="Frosting and icing guides">
+    <h2 class="guides-group-title">Frosting &amp; icing guides</h2>
+    {bakingGuides.map((c) => (
+      <a class="link-tile" href={`/${c.def.slug}`}>
+        <span class="dot" style={`background:${c.heroHex}`}></span>
+        {c.def.h1}
+      </a>
+    ))}
+  </section>
+
+  <section class="link-grid guides-grid" aria-label="What colors go with">
+    <h2 class="guides-group-title">What colors go with…</h2>
     {outfitContents.map((o) => (
-      <a class="tool-card" href={`/${o.def.slug}`}>
-        <h2>{o.def.h1}</h2>
-        <p>{o.def.metaDescription}</p>
-        <div class="swatch-strip" aria-hidden="true">
-          {o.heroStrip.map((h) => (
+      <a class="link-tile" href={`/${o.def.slug}`}>
+        <span class="mini-strip" aria-hidden="true">
+          {o.heroStrip.slice(0, 3).map((h) => (
             <span style={`background:${h}`}></span>
           ))}
-        </div>
-        <span class="card-cta">See the pairings</span>
+        </span>
+        {o.def.h1}
       </a>
     ))}
   </section>
@@ -86,3 +96,46 @@ const jsonLd = [
     </p>
   </section>
 </BaseLayout>
+
+<style>
+  /* group headings inside the tile grids — span the full row like the mix
+     directory; first group sits flush under the hero, later ones get air */
+  .guides-grid {
+    margin-top: var(--sp-6);
+  }
+
+  .guides-grid:first-of-type {
+    margin-top: var(--sp-4);
+  }
+
+  .guides-group-title {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  .guides-grid + .guides-grid .guides-group-title {
+    margin-top: var(--sp-3);
+  }
+
+  /* pairing tiles carry a 3-swatch strip instead of the single answer dot —
+     the palette IS the answer on those pages */
+  .mini-strip {
+    flex: none;
+    display: inline-flex;
+    gap: 2px;
+    border: 1px solid rgb(0 0 0 / 0.12);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .mini-strip > span {
+    width: 0.65rem;
+    height: 1.35rem;
+    display: inline-block;
+  }
+
+  .mini-strip > span + span {
+    border-left: 1px solid rgb(255 255 255 / 0.35);
+  }
+</style>

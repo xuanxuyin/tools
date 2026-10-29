@@ -160,17 +160,16 @@ describe('photo bead island (real SSR markup)', () => {
     const custom = ctx.host.querySelector('[data-photo-custom-width]') as HTMLInputElement;
     expect(custom.min).toBe('10');
     expect(custom.max).toBe('200');
-    // both post-passes ship checked, like the source site
-    expect((ctx.host.querySelector('[data-photo-bg]') as HTMLInputElement).checked).toBe(true);
-    expect((ctx.host.querySelector('[data-photo-outline]') as HTMLInputElement).checked).toBe(true);
+    // both post-passes ship unchecked (user call, 2026-10-29): the photo
+    // passes through as-is until the user opts in
+    expect((ctx.host.querySelector('[data-photo-bg]') as HTMLInputElement).checked).toBe(false);
+    expect((ctx.host.querySelector('[data-photo-outline]') as HTMLInputElement).checked).toBe(false);
     expect(ctx.host.querySelector('[data-photo-custom-row]')?.classList.contains('hidden')).toBe(true);
     expect(ctx.document.querySelector('h1')?.textContent).toContain('Photo to Perler Bead Pattern');
   });
 
   it('convertSample renders the preview board and all three panels from tick one', () => {
-    // background removal is on by default and a solid photo is ALL
-    // background — uncheck it so the board itself is the subject
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
+    // both post-passes are off by default now — a solid photo IS the subject
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     const svg = board(ctx.host)!;
     expect(svg.getAttribute('viewBox')).toBe('0 0 290 290');
@@ -193,7 +192,6 @@ describe('photo bead island (real SSR markup)', () => {
   });
 
   it('the bead list rows lead with the Mardiy code, hex and count', () => {
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     const rows = ctx.host.querySelectorAll('[data-photo-color-list] .bead-row');
     expect(rows.length).toBe(1);
@@ -205,7 +203,6 @@ describe('photo bead island (real SSR markup)', () => {
   });
 
   it('the 24 / All-291 color pills re-convert and take the active seat', () => {
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     fireClick(ctx.window, ctx.host.querySelector('[data-photo-colors] > [data-value="24"]')!);
     expect(
@@ -222,14 +219,12 @@ describe('photo bead island (real SSR markup)', () => {
   });
 
   it('a wide photo maps onto fewer rows (aspect follows the picture)', () => {
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(40, 20, 255, 0, 0)); // 2:1 wide
     expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 290 150');
     expect(ctx.host.querySelectorAll('.pv-cell').length).toBe(29 * 15);
   });
 
   it('a size pill click re-converts without a second upload', () => {
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     fireClick(ctx.window, ctx.host.querySelector('[data-photo-size] > [data-value="58"]')!);
     expect(
@@ -242,7 +237,6 @@ describe('photo bead island (real SSR markup)', () => {
   });
 
   it('custom width: the separate Custom option converts, invalid input holds the last board', () => {
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     // click Custom — its OWN option, outside the Presets box: the input row
     // appears with the SSR default of 58 and converts right away
@@ -269,9 +263,10 @@ describe('photo bead island (real SSR markup)', () => {
     expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 290 290');
   });
 
-  it('remove background (shipped default) empties a solid photo completely', () => {
-    // a solid color IS the background — every cell becomes an empty peg and
-    // the bead list drops to nothing
+  it('checking Remove background empties a solid photo completely', () => {
+    // a solid color IS the background — opt in, and every cell becomes an
+    // empty peg while the bead list drops to nothing
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     expect(ctx.host.querySelectorAll('.pv-cell').length).toBe(0);
     expect(ctx.host.querySelectorAll('.pv-peg').length).toBe(29 * 29);
@@ -280,7 +275,6 @@ describe('photo bead island (real SSR markup)', () => {
   });
 
   it('Edit in editor hands the whole board to the editor page', () => {
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     fireClick(ctx.window, ctx.host.querySelector('[data-photo-edit]')!);
     const raw = ctx.window.sessionStorage.getItem('bead-editor:handoff');
@@ -303,7 +297,6 @@ describe('photo bead island (real SSR markup)', () => {
   });
 
   it('the action row carries Print pattern and it opens the print dialog', () => {
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     const actions = ctx.host.querySelector('.photo-actions')!;
     expect(actions.querySelector('[data-photo-edit]')?.textContent).toContain('Edit in editor');
