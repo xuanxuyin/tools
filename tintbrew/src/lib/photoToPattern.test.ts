@@ -5,8 +5,28 @@
  */
 import { describe, expect, it } from 'vitest';
 import { photoToPattern, type SampleImage } from './photoToPattern';
-import { BEAD_COLORS, nearestBead } from './beadPalette';
+import { MARD_COLORS, mardById } from './mardPalette';
 import { hexToRgb, rgbToOklab } from './color';
+
+/** Plain-Oklab nearest Mardiy bead — the baseline for the vivid test colors
+ *  below. (The engine's matcher adds a chroma guard, but every color this
+ *  file names is either an exact palette hex — H7 black, T1 white, Q3
+ *  yellow — or a saturated primary where the guard agrees with plain
+ *  nearest; guard-sensitive cases read their expectation off the board.) */
+function nearestMardId(hex: string): string {
+  const lab = rgbToOklab(hexToRgb(hex));
+  let best = MARD_COLORS[0]!.id;
+  let bestD = Infinity;
+  for (const b of MARD_COLORS) {
+    const l = rgbToOklab(hexToRgb(b.hex));
+    const d = Math.hypot(lab.L - l.L, lab.a - l.a, lab.b - l.b);
+    if (d < bestD) {
+      bestD = d;
+      best = b.id;
+    }
+  }
+  return best;
+}
 
 function solid(w: number, h: number, hex: string, alpha = 255): SampleImage {
   const { r, g, b } = hexToRgb(hex);
@@ -40,11 +60,9 @@ function split(w: number, h: number, left: string, right: string): SampleImage {
 
 /** Left-right mirrored photo: symmetric blue→green gradient, integer
  *  channels — mirror cells are pixel-identical, so a symmetric pipeline must
- *  stay symmetric. The gradient runs through a palette corridor the Perler
- *  line covers well (cobalt → teal → green → sour apple); the previous
- *  blue→magenta ramp crosses the vivid-violet gap where Perler sells no
- *  bead, which honestly collapses it to two zones (see the beadPalette
- *  sweep guard) — that tested palette coverage, not pipeline symmetry. */
+ *  stay symmetric. The gradient runs blue → teal → green, a corridor the
+ *  291-color Mardiy line covers densely, so the mirror assertion measures
+ *  pipeline symmetry, not palette coverage. */
 function mirrored(w: number, h: number): SampleImage {
   const data = new Uint8ClampedArray(w * h * 4);
   const half = Math.floor(w / 2);
@@ -73,7 +91,7 @@ describe('photoToPattern', () => {
     expect(out.cols).toBe(29);
     expect(out.rows).toBe(29);
     expect(out.cells).toHaveLength(29 * 29);
-    const expected = nearestBead('#ff0000').id;
+    const expected = nearestMardId('#ff0000');
     for (const id of out.cells) expect(id).toBe(expected);
   });
 
@@ -93,8 +111,8 @@ describe('photoToPattern', () => {
       cols: 20,
       mode: 'smooth',
     });
-    const red = nearestBead('#ff0000').id;
-    const blue = nearestBead('#0000ff').id;
+    const red = nearestMardId('#ff0000');
+    const blue = nearestMardId('#0000ff');
     expect(red).not.toBe(blue);
     for (let y = 0; y < out.rows; y++) {
       for (let x = 0; x < out.cols; x++) {
@@ -112,8 +130,8 @@ describe('photoToPattern', () => {
       mode: 'smooth',
       simplify: 'keep',
     });
-    const red = nearestBead('#ff0000').id;
-    const blue = nearestBead('#0000ff').id;
+    const red = nearestMardId('#ff0000');
+    const blue = nearestMardId('#0000ff');
     for (let y = 0; y < out.rows; y++) {
       expect(out.cells[y * out.cols]).toBe(red);
       expect(out.cells[y * out.cols + 7]).toBe(blue);
@@ -179,27 +197,25 @@ describe('photoToPattern', () => {
     });
     const ids = new Set(out.cells);
     expect(ids.size, [...ids].join(',')).toBe(3);
-    expect(ids.has(nearestBead(colors.red).id)).toBe(true);
-    expect(ids.has(nearestBead(colors.blue).id)).toBe(true);
+    expect(ids.has(nearestMardId(colors.red))).toBe(true);
+    expect(ids.has(nearestMardId(colors.blue))).toBe(true);
   });
 
   it('dither mode preserves the photo average color within a small error', () => {
     // 50% black / 50% white photo: Floyd–Steinberg must conserve the board's
-    // mean luminance. Measured against the reachable mean (nearest dark bead
-    // + nearest white bead, 50/50) — no bead hits pure 0 or 1, and the
-    // 103-color line splits the black half between its two darkest beads
-    // (Dark Spruce / Cocoa), so counting one bead's share is no longer the
-    // conservation signal; the mean is.
+    // mean luminance. The Mardiy line pins both ends exactly (H7 #000000,
+    // T1 #FFFFFF), so the reachable mean is the true 50/50 mix and the
+    // white bead's share doubles as the conservation signal.
     const out = photoToPattern(split(60, 60, '#000000', '#ffffff'), {
       cols: 30,
       mode: 'dither',
       simplify: 'keep', // this test pins FS conservation, not the merge pass
     });
     const lab = (hex: string) => rgbToOklab(hexToRgb(hex)).L;
-    const dark = nearestBead('#000000');
-    const white = nearestBead('#ffffff');
+    const dark = mardById('mard-h7')!; // exact #000000 in the line
+    const white = mardById('mard-t1')!; // exact #FFFFFF in the line
     const reachable = (lab(dark.hex) + lab(white.hex)) / 2;
-    const beadHex = new Map(BEAD_COLORS.map((b) => [b.id, b.hex]));
+    const beadHex = new Map(MARD_COLORS.map((b) => [b.id, b.hex]));
     const mean = out.cells.reduce((s, id) => s + lab(beadHex.get(id)!), 0) / out.cells.length;
     expect(mean).toBeGreaterThan(reachable - 0.06);
     expect(mean).toBeLessThan(reachable + 0.06);
@@ -219,7 +235,7 @@ describe('photoToPattern', () => {
 
   it('faint-but-present alpha (100) still converts to its bead', () => {
     const out = photoToPattern(solid(10, 10, '#ff0000', 100), { cols: 10, mode: 'smooth' });
-    expect(out.cells.every((id) => id === nearestBead('#ff0000').id)).toBe(true);
+    expect(out.cells.every((id) => id === nearestMardId('#ff0000'))).toBe(true);
   });
 
   it('returns an empty board for degenerate input instead of throwing', () => {
@@ -244,7 +260,7 @@ describe('photoToPattern', () => {
     let a = 0;
     let b = 0;
     for (const id of out.cells) {
-      const hex = BEAD_COLORS.find((x) => x.id === id)?.hex ?? '#000000';
+      const hex = mardById(id)?.hex ?? '#000000';
       const lab = rgbToOklab(hexToRgb(hex));
       L += lab.L;
       a += lab.a;
@@ -270,7 +286,7 @@ describe('photoToPattern', () => {
       const src = rgbToOklab({ r: level, g: level, b: level });
       let L = 0;
       for (const id of out.cells) {
-        const bead = BEAD_COLORS.find((x) => x.id === id)?.hex ?? '#000000';
+        const bead = mardById(id)?.hex ?? '#000000';
         L += rgbToOklab(hexToRgb(bead)).L;
       }
       expect(Math.abs(L / out.cells.length - src.L), `gray ${level}`).toBeLessThan(0.01);
@@ -308,10 +324,10 @@ describe('photoToPattern', () => {
     img.data[i + 1] = 255;
     img.data[i + 2] = 0;
     const out = photoToPattern(img, { cols: 20, mode: 'smooth', simplify: 'keep' });
-    expect(out.cells[10 * 20 + 10]).toBe(nearestBead('#ffff00').id);
+    expect(out.cells[10 * 20 + 10]).toBe(nearestMardId('#ffff00'));
     // the field around it is untouched blue
-    expect(out.cells[0]).toBe(nearestBead('#3366cc').id);
-    expect(out.cells[10 * 20 + 11]).toBe(nearestBead('#3366cc').id);
+    expect(out.cells[0]).toBe(nearestMardId('#3366cc'));
+    expect(out.cells[10 * 20 + 11]).toBe(nearestMardId('#3366cc'));
   });
 
   it('a noisy flat photo stays one bead family — area averaging eats the jitter', () => {
@@ -339,9 +355,7 @@ describe('photoToPattern', () => {
   it('a half-and-half image keeps both halves — no trim, no ring rule', () => {
     // the source-site pipeline never crops: the board is the photo's full
     // frame at the requested width. The black half's bead is read off the
-    // board itself — under the chroma-guard distance a pure-gray source
-    // picks the palette's no-chroma black, which need not be the bead the
-    // plain-Oklab nearestBead() would name
+    // board itself (H7, the line's exact #000000) rather than hardcoded
     const out = photoToPattern(split(60, 60, '#000000', '#ffffff'), {
       cols: 12,
       mode: 'smooth',
@@ -349,7 +363,7 @@ describe('photoToPattern', () => {
     expect(out.cols).toBe(12);
     expect(out.rows).toBe(12);
     const black = out.cells[0]!;
-    const white = nearestBead('#ffffff').id;
+    const white = mardById('mard-t1')!.id;
     expect(black).not.toBe(white);
     for (let y = 0; y < out.rows; y++) {
       for (let x = 0; x < out.cols; x++) {
@@ -417,12 +431,11 @@ describe('photoToPattern', () => {
     const nulls = cells.filter((c) => c === null).length;
     expect(nulls).toBeGreaterThan(0);
     // the subject survived intact in bead red
-    const red = nearestBead('#ff0000').id;
+    const red = nearestMardId('#ff0000');
     expect(cells.filter((c) => c === red).length).toBeGreaterThan(0);
     // the board is subject + corner block + holes, no stray background ids.
-    // The corner block's bead is read off cell (0,0) — under the
-    // chroma-guard distance pure black maps to the palette's no-chroma
-    // black bead, not necessarily plain-Oklab nearestBead()'s pick
+    // The corner block's bead is read off cell (0,0) — pure black pins to
+    // H7 exactly, but self-reading keeps the assertion guard-agnostic
     const corner = cells[0] as string;
     expect(corner).toBeTruthy();
     expect(new Set(cells)).toEqual(new Set([red, null, corner]));
@@ -467,7 +480,7 @@ describe('photoToPattern', () => {
     const cells = out.cells as (string | null)[];
     // the eye sits at source pixels 18..21 → cells (9..10, 9..10)
     const eyeIdx = 9 * out.cols + 9;
-    expect(cells[eyeIdx]).toBe(nearestBead('#ffffff').id);
+    expect(cells[eyeIdx]).toBe(mardById('mard-t1')!.id);
     // the outer ring of the same white went empty
     expect(cells[0]).toBe(null);
   });
@@ -483,13 +496,13 @@ describe('photoToPattern', () => {
     const cells = out.cells as (string | null)[];
     // source-site rule: the outline bead is the PALETTE's darkest, fixed —
     // not whatever the photo happened to place on the board
-    const darkest = BEAD_COLORS.reduce((dk, b) => {
+    const darkest = MARD_COLORS.reduce((dk, b) => {
       const l = (p: string) => {
         const c = hexToRgb(p);
         return (0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b) / 255;
       };
-      return l(b.hex) < l(BEAD_COLORS.find((x) => x.id === dk)!.hex) ? b.id : dk;
-    }, BEAD_COLORS[0]!.id);
+      return l(b.hex) < l(mardById(dk)!.hex) ? b.id : dk;
+    }, MARD_COLORS[0]!.id);
     for (let y = 0; y < out.rows; y++) {
       for (let x = 0; x < out.cols; x++) {
         const id = cells[y * out.cols + x];

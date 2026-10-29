@@ -11,7 +11,7 @@
  * Everything stays in the browser — the photo is never uploaded anywhere.
  */
 import { photoToPattern, type PhotoPattern, type PhotoSimplify, type SampleImage } from '../lib/photoToPattern';
-import { beadById } from '../lib/beadPalette';
+import { mardById } from '../lib/mardPalette';
 import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
 
 const U = 10; // viewBox units per cell
@@ -123,7 +123,7 @@ export class PhotoStudio {
         downloadBoardPng(
           p.cols,
           p.rows,
-          (y, x) => beadById(p.cells[y * p.cols + x] ?? '')?.hex ?? null,
+          (y, x) => mardById(p.cells[y * p.cols + x] ?? '')?.hex ?? null,
           'tintbrew-bead-pattern.png',
         );
       }
@@ -187,10 +187,12 @@ export class PhotoStudio {
     const simplifyVal = this.groupValue('[data-photo-simplify] > button');
     const bg = this.root.querySelector<HTMLInputElement>('[data-photo-bg]');
     const outline = this.root.querySelector<HTMLInputElement>('[data-photo-outline]');
+    const colorsVal = this.groupValue('[data-photo-colors] > button');
     return {
       cols,
       mode: 'smooth',
-      maxColors: Number(this.groupValue('[data-photo-colors] > button')) || 12,
+      // 'all' = the full 291-color line, uncapped; numbers cap as themselves
+      maxColors: colorsVal === 'all' ? 291 : Number(colorsVal) || 12,
       simplify: simplifyVal === 'keep' || simplifyVal === 'bold' ? simplifyVal : 'balanced',
       removeBackground: bg ? bg.checked : true,
       darkOutline: outline ? outline.checked : true,
@@ -404,7 +406,7 @@ export class PhotoStudio {
       <div class="panel-card">
         <p class="panel-label">Conversion</p>
         <div class="panel-lines">
-          <p>Matched to the real 103-color bead line</p>
+          <p>Matched to the real 291-color bead line</p>
           <p>${sizeLabel}</p>
           ${overwiden ? `<p class="warn">This photo carries about ${suggested} beads of detail — Auto (${suggested} wide) prints cleaner.</p>` : ''}
         </div>
@@ -414,7 +416,7 @@ export class PhotoStudio {
     const counts = new Map<string, number>();
     for (const id of p.cells) if (id) counts.set(id, (counts.get(id) ?? 0) + 1);
     const rows = [...counts.entries()]
-      .map(([id, count]) => ({ bead: beadById(id)!, count }))
+      .map(([id, count]) => ({ bead: mardById(id)!, count }))
       .sort((a, b) => b.count - a.count);
 
     const listCard = document.createElement('div');
@@ -428,7 +430,7 @@ export class PhotoStudio {
     for (const { bead, count } of rows) {
       const row = document.createElement('div');
       row.className = 'bead-row';
-      row.title = `${bead.code} · ${bead.name} (${bead.hex})`;
+      row.title = `${bead.code} (${bead.hex})`;
       const swatch = document.createElement('span');
       swatch.className = 'row-swatch';
       swatch.style.background = bead.hex;
@@ -436,7 +438,7 @@ export class PhotoStudio {
       label.className = 'row-label';
       const code = document.createElement('strong');
       code.textContent = bead.code;
-      label.append(code, ` ${bead.name} (${bead.hex})`);
+      label.append(code, ` (${bead.hex})`);
       const n = document.createElement('span');
       n.className = 'row-count';
       n.textContent = String(count);
@@ -465,7 +467,7 @@ export class PhotoStudio {
       for (let x = 0; x < p.cols; x++) {
         const id = p.cells[y * p.cols + x];
         if (id) {
-          const bead = beadById(id)!;
+          const bead = mardById(id)!;
           const rect = document.createElementNS(SVG_NS, 'rect');
           rect.setAttribute('class', 'pv-cell');
           rect.setAttribute('x', String(x * U));

@@ -4,7 +4,7 @@
  * builds at the chosen pegboard size, the brush paints and the eraser
  * empties (cell ↔ peg swap), mirror doubles strokes, pick color lifts a
  * shade off the board, undo/reset walk changes back, the color library
- * searches by P-code or name, Simplify colors merges the closest shade
+ * searches by Mardiy code or hex, Simplify colors merges the closest shade
  * pair into the lighter bead, the size locks while beads are on the board,
  * and the converter's sessionStorage handoff restores a board.
  */
@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Window } from 'happy-dom';
-import { BEAD_COLORS, beadById } from '../lib/beadPalette';
+import { MARD_COLORS, mardById } from '../lib/mardPalette';
 import { rgbToOklab, hexToRgb } from '../lib/color';
 
 const htmlPath = resolve(
@@ -21,7 +21,7 @@ const htmlPath = resolve(
   '../../../dist/bead-editor/index.html',
 );
 
-const BLACK_HEX = beadById('black')!.hex;
+const BLACK_HEX = mardById('mard-h7')!.hex; // H7 — the line's exact #000000
 
 async function loadPage() {
   const html = readFileSync(htmlPath, 'utf8');
@@ -150,21 +150,21 @@ describe('bead editor island (real SSR markup)', () => {
     expect(listText(ctx.host)).toContain('Start drawing');
   });
 
-  it('the color library ships all 103 beads and filters by P-code or name', () => {
+  it('the color library ships all 291 Mardiy beads and filters by code or hex', () => {
     newEditor(ctx);
-    expect(ctx.host.querySelectorAll('[data-ed-color]').length).toBe(BEAD_COLORS.length);
+    expect(ctx.host.querySelectorAll('[data-ed-color]').length).toBe(MARD_COLORS.length);
     const search = ctx.host.querySelector('[data-ed-search]') as HTMLInputElement;
-    search.value = 'P39';
+    search.value = 'H7';
     search.dispatchEvent(
       new (ctx.window as unknown as { Event: typeof Event }).Event('input', { bubbles: true }),
     );
     expect(ctx.host.querySelectorAll('[data-ed-color]').length).toBe(1);
-    expect(ctx.host.querySelector('[data-ed-color]')?.getAttribute('title')).toContain('Black');
-    search.value = 'cheddar';
+    expect(ctx.host.querySelector('[data-ed-color]')?.getAttribute('title')).toContain('H7');
+    search.value = '#FAF4C8';
     search.dispatchEvent(
       new (ctx.window as unknown as { Event: typeof Event }).Event('input', { bubbles: true }),
     );
-    expect(ctx.host.querySelectorAll('[data-ed-color]').length).toBeGreaterThanOrEqual(1);
+    expect(ctx.host.querySelectorAll('[data-ed-color]').length).toBe(1); // A1
     search.value = 'zzz-no-such-color';
     search.dispatchEvent(
       new (ctx.window as unknown as { Event: typeof Event }).Event('input', { bubbles: true }),
@@ -179,14 +179,14 @@ describe('bead editor island (real SSR markup)', () => {
     const cell = cellAt(ctx.host, 5, 5)!;
     expect(cell.getAttribute('fill')).toBe(BLACK_HEX);
     expect(statsText(ctx.host)).toBe('1 pegboard (1 × 1) · 1 bead · 1 color');
-    expect(listText(ctx.host)).toContain('P39 Black ×1');
+    expect(listText(ctx.host)).toContain('H7 (#000000) ×1');
     const draft = JSON.parse(ctx.window.localStorage.getItem('bead-editor:draft')!) as {
       width: number;
       height: number;
       grid: (string | null)[][];
     };
     expect(draft.width).toBe(29);
-    expect(draft.grid[5]![5]).toBe('black');
+    expect(draft.grid[5]![5]).toBe('mard-h7');
   });
 
   it('a drag paints the whole stroke via 8-connected interpolation', () => {
@@ -197,7 +197,7 @@ describe('bead editor island (real SSR markup)', () => {
     for (let c = 2; c <= 6; c++) {
       expect(cellAt(ctx.host, c, 2)?.getAttribute('fill')).toBe(BLACK_HEX);
     }
-    expect(listText(ctx.host)).toContain('P39 Black ×5');
+    expect(listText(ctx.host)).toContain('H7 (#000000) ×5');
   });
 
   it('the eraser turns a bead back into an empty peg', () => {
@@ -219,15 +219,15 @@ describe('bead editor island (real SSR markup)', () => {
     firePointer(ctx.window, svg, 'pointerup', px(2, 3).cx, px(2, 3).cy);
     expect(cellAt(ctx.host, 2, 3)?.getAttribute('fill')).toBe(BLACK_HEX);
     expect(cellAt(ctx.host, 26, 3)?.getAttribute('fill')).toBe(BLACK_HEX);
-    expect(listText(ctx.host)).toContain('P39 Black ×2');
+    expect(listText(ctx.host)).toContain('H7 (#000000) ×2');
   });
 
   it('pick color lifts a shade off the board and switches back to brush', () => {
     const { host, window } = ctx;
     const { svg } = newEditor(ctx);
-    // paint with Red (P30), then pick it back off the board
-    fireClick(window, host.querySelector('[data-ed-color="red"]')!);
-    const redHex = beadById('red')!.hex;
+    // paint with F8 (the line's red), then pick it back off the board
+    fireClick(window, host.querySelector('[data-ed-color="mard-f8"]')!);
+    const redHex = mardById('mard-f8')!.hex;
     firePointer(window, svg, 'pointerdown', px(3, 3).cx, px(3, 3).cy);
     firePointer(window, svg, 'pointerup', px(3, 3).cx, px(3, 3).cy);
     fireClick(window, host.querySelector('[data-ed-tool="pick"]')!);
@@ -312,18 +312,21 @@ describe('bead editor island (real SSR markup)', () => {
 
   it('Simplify colors merges the closest shade pair into the lighter bead (undoable)', () => {
     // closest pair in the real palette — fuse lines always carry siblings
-    let a = BEAD_COLORS[0]!;
-    let b = BEAD_COLORS[1]!;
+    // skip the table's duplicate-hex pair (#FFEBFA ×2): a merge of two
+    // identical hexes can't show up as two fills after undo
+    let a = MARD_COLORS[0]!;
+    let b = MARD_COLORS[1]!;
     let minD = Infinity;
-    for (let i = 0; i < BEAD_COLORS.length; i++) {
-      for (let j = i + 1; j < BEAD_COLORS.length; j++) {
-        const la = rgbToOklab(hexToRgb(BEAD_COLORS[i]!.hex));
-        const lb = rgbToOklab(hexToRgb(BEAD_COLORS[j]!.hex));
+    for (let i = 0; i < MARD_COLORS.length; i++) {
+      for (let j = i + 1; j < MARD_COLORS.length; j++) {
+        if (MARD_COLORS[i]!.hex === MARD_COLORS[j]!.hex) continue;
+        const la = rgbToOklab(hexToRgb(MARD_COLORS[i]!.hex));
+        const lb = rgbToOklab(hexToRgb(MARD_COLORS[j]!.hex));
         const d = Math.hypot(la.L - lb.L, la.a - lb.a, la.b - lb.b);
         if (d < minD) {
           minD = d;
-          a = BEAD_COLORS[i]!;
-          b = BEAD_COLORS[j]!;
+          a = MARD_COLORS[i]!;
+          b = MARD_COLORS[j]!;
         }
       }
     }
@@ -343,7 +346,7 @@ describe('bead editor island (real SSR markup)', () => {
     expect(ctx.host.querySelectorAll('.pv-cell').length).toBe(9);
     fireClick(ctx.window, ctx.host.querySelector('[data-ed-simplify]')!);
     expect(ctx.host.querySelectorAll('.pv-cell').length).toBe(9);
-    expect(listText(ctx.host)).toContain(`${lighter.code} ${lighter.name} ×9`);
+    expect(listText(ctx.host)).toContain(`${lighter.code} (${lighter.hex}) ×9`);
     expect(listText(ctx.host).split(' | ').filter((r) => r.includes('×')).length).toBe(1);
     // undo brings both shades back
     fireClick(ctx.window, ctx.host.querySelector('[data-ed-undo]')!);
@@ -356,7 +359,7 @@ describe('bead editor island (real SSR markup)', () => {
 
   it('the converter handoff restores the board and consumes the key', () => {
     const grid: (string | null)[][] = Array.from({ length: 8 }, () => Array(8).fill(null));
-    grid[1]![1] = 'red';
+    grid[1]![1] = 'mard-f8';
     ctx.window.sessionStorage.setItem(
       'bead-editor:handoff',
       JSON.stringify({ width: 8, height: 8, grid }),
@@ -364,7 +367,7 @@ describe('bead editor island (real SSR markup)', () => {
     newEditor(ctx);
     const svg = ctx.host.querySelector('[data-ed-canvas]')!;
     expect(svg.getAttribute('viewBox')).toBe('0 0 80 80');
-    expect(cellAt(ctx.host, 1, 1)?.getAttribute('fill')).toBe(beadById('red')!.hex);
+    expect(cellAt(ctx.host, 1, 1)?.getAttribute('fill')).toBe(mardById('mard-f8')!.hex);
     expect(statsText(ctx.host)).toContain('1 bead · 1 color');
     // one-way ticket — the key is consumed so a refresh starts clean
     expect(ctx.window.sessionStorage.getItem('bead-editor:handoff')).toBeNull();
@@ -374,7 +377,7 @@ describe('bead editor island (real SSR markup)', () => {
 
   it('a saved draft restores on reload with the welcome-back note', () => {
     const grid: (string | null)[][] = Array.from({ length: 10 }, () => Array(10).fill(null));
-    grid[7]![7] = 'black';
+    grid[7]![7] = 'mard-h7';
     ctx.window.localStorage.setItem(
       'bead-editor:draft',
       JSON.stringify({ width: 10, height: 10, grid }),

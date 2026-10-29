@@ -30,7 +30,7 @@
  * for gradient-heavy pictures; the converter UI ships 'smooth'.
  */
 import { rgbToOklab, hexToRgb, type Oklab } from './color';
-import { BEAD_COLORS } from './beadPalette';
+import { MARD_COLORS } from './mardPalette';
 
 export interface SampleImage {
   /** RGBA, 4 bytes per pixel, row-major — ImageData shaped */
@@ -49,7 +49,7 @@ export interface PhotoOpts {
   /** Board width in beads; height follows the photo's aspect ratio */
   cols: number;
   mode: PhotoMode;
-  /** 1..16; defaults to the full palette */
+  /** 1..291; defaults to the full palette (no cap) */
   maxColors?: number;
   /** Near-duplicate shade merging strength; defaults to 'balanced' */
   simplify?: PhotoSimplify;
@@ -83,7 +83,7 @@ interface BeadEntry {
   chroma: number;
 }
 
-const PALETTE: BeadEntry[] = BEAD_COLORS.map((b) => {
+const PALETTE: BeadEntry[] = MARD_COLORS.map((b) => {
   const rgb = hexToRgb(b.hex);
   const lab = rgbToOklab(rgb);
   return {
@@ -448,7 +448,7 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
   // board against the survivors, so no cell keeps a bead that left the list
   const before = usesOf(grid);
   let uses = mergeShades(before, MERGE_T[opts.simplify ?? 'balanced']);
-  const limit = opts.maxColors ?? BEAD_COLORS.length;
+  const limit = opts.maxColors ?? MARD_COLORS.length;
   // dark outline spends a bead outside the picture's budget — cap one lower
   const effective = opts.darkOutline ? Math.max(1, limit - 1) : limit;
   if (uses.length > effective) uses = fitLimit(uses, effective);

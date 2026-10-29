@@ -3,7 +3,7 @@
  * (the converter page, source-site layout). Runs the compiled island in
  * happy-dom with synthetic pixels fed straight through convertSample — no
  * canvas decode needed: the static preview board renders with pegboard
- * seams, the three panels and the per-color bead list carry the P-codes,
+ * seams, the three panels and the per-color bead list carry the Mardiy codes,
  * pill changes re-convert, and "Edit in editor" hands the board to the
  * editor page through sessionStorage.
  */
@@ -12,14 +12,34 @@ import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Window } from 'happy-dom';
-import { nearestBead } from '../lib/beadPalette';
+import { MARD_COLORS, type MardColor } from '../lib/mardPalette';
+import { hexToRgb, rgbToOklab } from '../lib/color';
 
 const htmlPath = resolve(
   fileURLToPath(import.meta.url),
   '../../../dist/photo-to-perler-bead-pattern/index.html',
 );
 
-const RED_BEAD = nearestBead('#ff0000'); // Tangerine — lib guards pin this
+/** Plain-Oklab nearest Mardiy bead for #ff0000 — the board-fill baseline.
+ *  (The engine's matcher adds a chroma guard; for this saturated primary
+ *  it lands on the same bead — if this pin ever breaks, read the pick off
+ *  the board and re-pin rather than weakening the assertion.) */
+function nearestMard(hex: string): MardColor {
+  const lab = rgbToOklab(hexToRgb(hex));
+  let best = MARD_COLORS[0]!;
+  let bestD = Infinity;
+  for (const b of MARD_COLORS) {
+    const l = rgbToOklab(hexToRgb(b.hex));
+    const d = Math.hypot(lab.L - l.L, lab.a - l.a, lab.b - l.b);
+    if (d < bestD) {
+      bestD = d;
+      best = b;
+    }
+  }
+  return best;
+}
+
+const RED_BEAD = nearestMard('#ff0000');
 
 async function loadPage() {
   const html = readFileSync(htmlPath, 'utf8');
@@ -120,6 +140,13 @@ describe('photo bead island (real SSR markup)', () => {
     expect(status.nextElementSibling?.classList.contains('settings')).toBe(true);
     expect(ctx.host.querySelector('[data-photo-stage] .stage-empty')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-colors] > button.active')?.getAttribute('data-value')).toBe('12');
+    // five color-count pills now: 8 / 12 / 16 / 24 / all-291 (user call,
+    // 2026-10-29 — the lost 24 and All seats came back, widened to the line)
+    expect(ctx.host.querySelectorAll('[data-photo-colors] > button')).toHaveLength(5);
+    expect(
+      [...ctx.host.querySelectorAll('[data-photo-colors] > button')].some((b) =>
+        b.getAttribute('data-value') === 'all'),
+    ).toBe(true);
     expect(ctx.host.querySelector('[data-photo-simplify] > button.active')?.getAttribute('data-value')).toBe('balanced');
     expect(ctx.host.querySelector('[data-photo-size] > button.active')?.getAttribute('data-value')).toBe('auto');
     // bead width ships as TWO options: Presets pills (no Custom among them)
@@ -159,22 +186,39 @@ describe('photo bead island (real SSR markup)', () => {
     expect(panels).toContain('841 beads');
     expect(panels).toContain('1 color');
     expect(panels).toContain('Conversion');
-    expect(panels).toContain('Matched to the real 103-color bead line');
+    expect(panels).toContain('Matched to the real 291-color bead line');
     expect(panels).toContain('Auto: 29 beads');
     // status line reports the board
     expect(ctx.host.querySelector('[data-photo-status]')?.textContent).toContain('29 × 29');
   });
 
-  it('the bead list rows lead with the P-code, name, hex and count', () => {
+  it('the bead list rows lead with the Mardiy code, hex and count', () => {
     fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
     const rows = ctx.host.querySelectorAll('[data-photo-color-list] .bead-row');
     expect(rows.length).toBe(1);
     const row = rows[0]!;
-    expect(row.querySelector('strong')?.textContent).toMatch(/^P\d+$/);
-    expect(row.textContent).toContain(RED_BEAD.name);
+    expect(row.querySelector('strong')?.textContent).toMatch(/^[A-Z]{1,2}\d+$/);
+    expect(row.textContent).toContain(RED_BEAD.code);
     expect(row.textContent).toContain(RED_BEAD.hex);
     expect(row.textContent).toContain('841');
+  });
+
+  it('the 24 / All-291 color pills re-convert and take the active seat', () => {
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-colors] > [data-value="24"]')!);
+    expect(
+      ctx.host.querySelector('[data-photo-colors] > button.active')?.getAttribute('data-value'),
+    ).toBe('24');
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-colors] > [data-value="all"]')!);
+    expect(
+      ctx.host.querySelector('[data-photo-colors] > button.active')?.getAttribute('data-value'),
+    ).toBe('all');
+    // a solid photo stays its one bead under every cap
+    for (const c of ctx.host.querySelectorAll('.pv-cell')) {
+      expect(c.getAttribute('fill')).toBe(RED_BEAD.hex);
+    }
   });
 
   it('a wide photo maps onto fewer rows (aspect follows the picture)', () => {

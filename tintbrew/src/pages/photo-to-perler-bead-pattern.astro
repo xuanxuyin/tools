@@ -4,7 +4,7 @@ import { SITE } from '../consts';
 
 const title = 'Photo to Perler Bead Pattern — Free Picture-to-Bead Converter | TintBrew';
 const description =
-  'Turn any photo into a printable fuse bead pattern. Up to 8, 12 or 16 colors, background removal and a dark outline, pegboard counts and a bead list with real P-codes. Nothing uploads.';
+  'Turn any photo into a printable fuse bead pattern. Up to 8, 16, 24 or all 291 colors, background removal and a dark outline, pegboard counts and a bead list with real Mardiy codes. Nothing uploads.';
 
 const faqs = [
   {
@@ -20,8 +20,8 @@ const faqs = [
     a: 'It merges near-identical shades into one bead so the pattern has fewer, cleaner colors. Keep shades preserves the subtle steps, Bold collapses whole color families, and Balanced sits between the two. Every level keeps the colors you actually place on the board.',
   },
   {
-    q: 'What do the P-codes in the bead list mean?',
-    a: 'Each of the 103 colors carries a P-code — the catalog number for this site’s bead line, shown next to the color name and its hex. Chips, canvas swatches and the bead list all use the same code, so P49 always means the same bead from the list to the pegboard.',
+    q: 'What do the codes in the bead list mean?',
+    a: 'Every one of the 291 colors carries a Mardiy catalog code — A1 through ZG8, the number you order beads by, shown next to the color’s hex. Swatches and the bead list use the same code, so A1 always means the same bead from the list to the pegboard.',
   },
   {
     q: 'Why does the preview show lines through the pattern?',
@@ -121,6 +121,8 @@ const jsonLd = [
               <button type="button" data-value="8" aria-checked="false">Up to 8</button>
               <button type="button" data-value="12" class="active" aria-checked="true">Up to 12</button>
               <button type="button" data-value="16" aria-checked="false">Up to 16</button>
+              <button type="button" data-value="24" aria-checked="false">Up to 24</button>
+              <button type="button" data-value="all" aria-checked="false">All 291</button>
             </div>
             <p class="setting-help">Up to this many bead colors — the bead list caps with it.</p>
           </div>
@@ -232,7 +234,7 @@ const jsonLd = [
       </li>
       <li>
         <strong>Print or make it.</strong> The printed sheet carries the board with its pegboard
-        seams plus the bead list with P-codes — or download a PNG for your phone or tablet.
+        seams plus the bead list with Mardiy codes — or download a PNG for your phone or tablet.
       </li>
     </ol>
 
@@ -264,7 +266,7 @@ const jsonLd = [
     <h2>What your pattern includes</h2>
     <ul>
       <li>A printable pattern sheet with pegboard seams every 29 beads</li>
-      <li>Bead counts per color, each with its P-code, name and hex</li>
+      <li>Bead counts per color, each with its Mardiy code and hex</li>
       <li>Pegboard count — how many 29 × 29 boards the design spans</li>
       <li>A PNG export and a one-click jump into the bead editor</li>
     </ul>
@@ -508,7 +510,7 @@ const jsonLd = [
   /* Runtime result built by scripts/photoBead.ts lives outside the scoped
      tree — these rules mirror the source-site result layout: cream panels,
      a paper preview board with peg holes and pegboard seams, and per-color
-     rows with the P-codes shoppers order by. */
+     rows with the Mardiy codes shoppers order by. */
   .photo-stage .paint-card {
     display: grid;
     gap: var(--sp-4);

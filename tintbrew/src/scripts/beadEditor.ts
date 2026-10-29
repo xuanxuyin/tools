@@ -2,12 +2,13 @@
  * Bead editor island — the source-site editor rebuilt on our stack (user
  * call, 2026-10-29). A blank grid you size in pegboards, brush / eraser /
  * pick-color / mirror / undo / reset, a searchable color library with the
- * P-codes, one-tap shade simplification, live board stats and bead counts,
- * PNG export, print, autosave — and it receives converted photos from the
- * pattern maker through a sessionStorage handoff. Everything is local; the
- * pattern never leaves the browser.
+ * 291 Mardiy codes, one-tap shade simplification, live board stats and
+ * bead counts, PNG export, print, autosave — and it receives converted
+ * photos from the pattern maker through a sessionStorage handoff (same
+ * palette, so every id carries over). Everything is local; the pattern
+ * never leaves the browser.
  */
-import { BEAD_COLORS, beadById, nearestBead } from '../lib/beadPalette';
+import { MARD_COLORS, mardById } from '../lib/mardPalette';
 import { paintLine, type PaintCell } from '../lib/beadPaint';
 import { rgbToOklab, hexToRgb, normalizeHex, type Oklab } from '../lib/color';
 import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
@@ -20,10 +21,27 @@ const UNDO_CAP = 50;
 /** Shade-merge threshold for the editor's Simplify colors button. */
 const SIMPLIFY_T = 0.08;
 
-/** id → Oklab for the merge pass. */
+/** id → Oklab for the merge pass and custom-hex snapping. */
 const LAB: Map<string, Oklab> = new Map(
-  BEAD_COLORS.map((b) => [b.id, rgbToOklab(hexToRgb(b.hex))]),
+  MARD_COLORS.map((b) => [b.id, rgbToOklab(hexToRgb(b.hex))]),
 );
+
+/** Nearest Mardiy bead to a hex — plain Oklab distance (no chroma guard:
+ *  this is a brush picker, not the converter's matcher). */
+function nearestMardId(hex: string): string {
+  const lab = rgbToOklab(hexToRgb(hex));
+  let best = MARD_COLORS[0]!.id;
+  let bestD = Infinity;
+  for (const b of MARD_COLORS) {
+    const l = LAB.get(b.id)!;
+    const d = Math.hypot(lab.L - l.L, lab.a - l.a, lab.b - l.b);
+    if (d < bestD) {
+      bestD = d;
+      best = b.id;
+    }
+  }
+  return best;
+}
 
 type Grid = (string | null)[][];
 
@@ -68,7 +86,7 @@ export class BeadEditor {
   private pegs = new Map<number, SVGCircleElement>();
   private tool: 'brush' | 'eraser' | 'pick' = 'brush';
   private mirror = false;
-  private beadId = 'black';
+  private beadId = 'mard-h7'; // H7 — pure black, the default brush
   private undoStack: string[] = [];
   private drawing = false;
   private last: PaintCell | null = null;
@@ -88,6 +106,14 @@ export class BeadEditor {
       this.W = seed.width;
       this.H = seed.height;
       this.grid = seed.grid;
+      // Drafts saved before the 2026-10-29 Mardiy switch carry Perler ids —
+      // drop them to empty cells instead of crashing the stats render.
+      for (const row of this.grid) {
+        for (let x = 0; x < row.length; x++) {
+          const id = row[x];
+          row[x] = id && mardById(id) ? id : null;
+        }
+      }
     } else {
       this.grid = this.emptyGrid(this.W, this.H);
     }
@@ -133,7 +159,7 @@ export class BeadEditor {
       for (let x = 0; x < this.W; x++) {
         const idx = y * this.W + x;
         const id = this.grid[y]![x];
-        const bead = id ? beadById(id) : null;
+        const bead = id ? mardById(id) : null;
         if (bead) {
           const r = document.createElementNS(SVG_NS, 'rect');
           r.setAttribute('class', 'pv-cell');
@@ -244,7 +270,7 @@ export class BeadEditor {
     this.pegs.delete(idx);
     this.grid[cell.y]![cell.x] = id;
     if (id) {
-      const bead = beadById(id)!;
+      const bead = mardById(id)!;
       const rect = document.createElementNS(SVG_NS, 'rect');
       rect.setAttribute('class', 'pv-cell');
       rect.setAttribute('data-ex', String(cell.x));
@@ -320,13 +346,13 @@ export class BeadEditor {
         list.appendChild(p);
       } else {
         for (const [id, count] of [...this.counts().entries()].sort((a, b) => b[1] - a[1])) {
-          const bead = beadById(id)!;
+          const bead = mardById(id)!;
           const li = document.createElement('li');
           const swatch = document.createElement('span');
           swatch.className = 'cv-item-swatch';
           swatch.style.background = bead.hex;
           const text = document.createElement('span');
-          text.textContent = `${bead.code} ${bead.name} ×${count}`;
+          text.textContent = `${bead.code} (${bead.hex}) ×${count}`;
           li.append(swatch, text);
           list.appendChild(li);
         }
@@ -364,11 +390,11 @@ export class BeadEditor {
 
   private setActiveBead(id: string): void {
     this.beadId = id;
-    const bead = beadById(id)!;
+    const bead = mardById(id)!;
     const chip = this.root.querySelector('[data-ed-active]');
     if (chip) {
       (chip as HTMLElement).style.background = bead.hex;
-      chip.title = `${bead.code} ${bead.name} (${bead.hex})`;
+      chip.title = `${bead.code} (${bead.hex})`;
     }
     for (const s of this.root.querySelectorAll<HTMLButtonElement>('[data-ed-color]')) {
       const active = s.dataset.edColor === id;
@@ -377,20 +403,20 @@ export class BeadEditor {
     }
   }
 
-  /** Color library: all 103 beads, filtered by code or name. */
+  /** Color library: all 291 Mardiy beads, filtered by code or hex. */
   private renderLibrary(query: string): void {
     const lib = this.root.querySelector('[data-ed-library]')!;
     lib.innerHTML = '';
     const q = query.trim().toLowerCase();
-    for (const b of BEAD_COLORS) {
-      if (q && !b.code.toLowerCase().includes(q) && !b.name.toLowerCase().includes(q)) continue;
+    for (const b of MARD_COLORS) {
+      if (q && !b.code.toLowerCase().includes(q) && !b.hex.toLowerCase().includes(q)) continue;
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'cv-swatch' + (b.id === this.beadId ? ' active' : '');
       btn.dataset.edColor = b.id;
       btn.style.background = b.hex;
-      btn.title = `${b.code} ${b.name} (${b.hex})`;
-      btn.setAttribute('aria-label', `Use ${b.code} ${b.name}`);
+      btn.title = `${b.code} (${b.hex})`;
+      btn.setAttribute('aria-label', `Use ${b.code}`);
       btn.setAttribute('aria-pressed', b.id === this.beadId ? 'true' : 'false');
       lib.appendChild(btn);
     }
@@ -515,7 +541,7 @@ export class BeadEditor {
         downloadBoardPng(
           this.W,
           this.H,
-          (y, x) => beadById(this.grid[y]![x] ?? '')?.hex ?? null,
+          (y, x) => mardById(this.grid[y]![x] ?? '')?.hex ?? null,
           'tintbrew-bead-pattern.png',
         );
         return;
@@ -555,7 +581,7 @@ export class BeadEditor {
       if (custom) {
         const hex = normalizeHex(custom.value);
         if (hex) {
-          this.setActiveBead(nearestBead(hex).id);
+          this.setActiveBead(nearestMardId(hex));
           this.setTool('brush');
         }
       }

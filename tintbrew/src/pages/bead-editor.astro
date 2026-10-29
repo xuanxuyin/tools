@@ -2,7 +2,7 @@
 /**
  * The bead editor — the free-draw counterpart to the photo converter (same
  * page pair as the source site, user call 2026-10-29). Size a board in
- * pegboards, draw with the 103-color line, then print or export. The island
+ * pegboards, draw with the 291-color Mardiy line, then print or export. The island
  * (scripts/beadEditor.ts) receives converted photos through a sessionStorage
  * handoff and autosaves local work; the SSR shell below carries the full
  * instructions and FAQ either way.
@@ -12,7 +12,7 @@ import { SITE } from '../consts';
 
 const title = 'Perler Bead Pattern Editor — Design Your Own From Scratch | TintBrew';
 const description =
-  'Free bead pattern editor: size a pegboard grid, draw with all 103 real bead colors, mirror symmetric strokes, simplify shades, then print the chart or download a PNG. Autosaves in your browser.';
+  'Free bead pattern editor: size a pegboard grid, draw with all 291 real Mardiy bead colors, mirror symmetric strokes, simplify shades, then print the chart or download a PNG. Autosaves in your browser.';
 
 const faqs = [
   {
@@ -29,11 +29,11 @@ const faqs = [
   },
   {
     q: 'How do I print the finished chart?',
-    a: 'Hit Print pattern. The printed sheet carries the board at full color with pegboard seams every 29 beads, plus the bead list underneath — each color with its P-code, name and count — so you can pull beads and place them straight off the paper.',
+    a: 'Hit Print pattern. The printed sheet carries the board at full color with pegboard seams every 29 beads, plus the bead list underneath — each color with its Mardiy code and count — so you can pull beads and place them straight off the paper.',
   },
   {
-    q: 'What do the P-codes next to the colors mean?',
-    a: 'Every one of the 103 colors carries a P-code — the catalog number for this site’s bead line. The swatches, the bead list and the printed chart all use the same code, so P49 Cheddar means the same bead everywhere from screen to pegboard.',
+    q: 'What do the codes next to the colors mean?',
+    a: 'Every one of the 291 colors carries a Mardiy catalog code — A1 through ZG8, the number you order beads by. The swatches, the bead list and the printed chart all use the same code, so H7 always means the same black bead everywhere from screen to pegboard.',
   },
   {
     q: 'My pattern has too many similar colors. Can I clean it up?',
@@ -88,7 +88,7 @@ const jsonLd = [
   <section class="hero">
     <h1>Design Your Own Perler Bead Patterns</h1>
     <p class="lead">
-      A blank pegboard and all 103 real bead colors, right in the browser. Size the board, draw
+      A blank pegboard and all 291 real Mardiy bead colors, right in the browser. Size the board, draw
       bead by bead, mirror the halves for symmetric designs, then print the chart or download a
       PNG. Your work autosaves — and patterns from the photo converter land here with one click.
     </p>
@@ -146,7 +146,7 @@ const jsonLd = [
         </div>
 
         <div class="ed-group">
-          <label class="ed-label" for="ed-search">Colors <span class="ed-hint">103 beads — search by P-code or name</span></label>
+          <label class="ed-label" for="ed-search">Colors <span class="ed-hint">291 beads — search by code or hex</span></label>
           <div class="ed-active-row">
             <span class="ed-active" data-ed-active></span>
             <input type="search" id="ed-search" placeholder="Search colors…" data-ed-search />
@@ -220,13 +220,13 @@ const jsonLd = [
       a board automatically — then its <em>Edit in editor</em> button hands the result to this
       page for touch-ups. Or skip both and start from a{' '}
       <a href="/perler-bead-patterns/">ready-made pattern</a>, where every board opens recolorable
-      in the same 103 colors.
+      in the 103-color Perler line.
     </p>
 
     <h2>Printing your bead chart</h2>
     <p>
       Hit Print pattern when the board is done. The printed sheet carries the full grid in color
-      with pegboard seams every 29 beads, and beneath it the bead list — P-code, name and count
+      with pegboard seams every 29 beads, and beneath it the bead list — code and count
       for every color — so placement and shopping both happen off one page.
     </p>
 
