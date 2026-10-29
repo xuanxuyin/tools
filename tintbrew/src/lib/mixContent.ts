@@ -35,7 +35,7 @@ export interface MixContent {
   nearestName: string;
   snippet: string;
   ratioRows: RatioRow[];
-  tintsShades: { label: string; hex: string }[];
+  tintsShades: { label: string; labelKey: string; hex: string }[];
   related: { slug: string; a: ColorDef; b: ColorDef; resultHex: string; text: string }[];
   faqs: { q: string; a: string }[];
   variant: number;
@@ -85,11 +85,11 @@ export function buildMixContent(def: MixDef): MixContent {
   const shade50 = mixHex(resultHex, '#000000', 1, 1);
   const shade25 = mixHex(resultHex, '#000000', 3, 1);
   const tintsShades = [
-    { label: 'Lighter', hex: tint25 },
-    { label: 'Tint', hex: tint50 },
-    { label: '50/50 mix', hex: resultHex },
-    { label: 'Shade', hex: shade50 },
-    { label: 'Darker', hex: shade25 },
+    { label: 'Lighter', labelKey: 'mix.tsL', hex: tint25 },
+    { label: 'Tint', labelKey: 'mix.tsT', hex: tint50 },
+    { label: '50/50 mix', labelKey: 'mix.tsM', hex: resultHex },
+    { label: 'Shade', labelKey: 'mix.tsS', hex: shade50 },
+    { label: 'Darker', labelKey: 'mix.tsD', hex: shade25 },
   ];
 
   const snippet = colorMixSnippet(first.hex, second.hex, 50);

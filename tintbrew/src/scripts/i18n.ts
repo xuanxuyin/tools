@@ -13,7 +13,7 @@
  *
  * LangSwitch.astro owns the visible control; this module owns state.
  */
-import { UI_STRINGS, LANGS, type Lang, type UiKey } from '../data/uiStrings';
+import { UI_STRINGS, MIX_RESULTS, LANGS, type Lang, type UiKey } from '../data/uiStrings';
 const STORE_KEY = 'tb-lang';
 const HTML_LANG: Record<Lang, string> = { en: 'en', zh: 'zh-CN', ko: 'ko' };
 
@@ -27,29 +27,72 @@ export function t(key: UiKey): string {
   return UI_STRINGS[lang][key] ?? UI_STRINGS.en[key] ?? key;
 }
 
+/** Fill {name} placeholders in dictionary string `s`. Placeholder VALUES that
+ *  name a color, a difficulty enum, an outfit role, or a hand-written
+ *  mix-result phrase resolve through their dictionaries, so "red" renders
+ *  as 红 / 빨강, "easy" as 简单, and "purple (a muted violet)" as
+ *  紫色（偏灰的紫罗兰） automatically; a capitalized arg ("Red" in
+ *  "Red + Blue") stays capitalized after resolution. */
+function fillArgs(s: string, args: Record<string, string>): string {
+  return s.replace(/\{(\w+)\}/g, (_, k: string) => {
+    const v = args[k];
+    if (v === undefined) return `{${k}}`;
+    const lower = v.toLowerCase();
+    const resolved =
+      UI_STRINGS[lang][`color.${lower}` as UiKey] ??
+      UI_STRINGS[lang][`diff.${lower}` as UiKey] ??
+      UI_STRINGS[lang][`role.${v}` as UiKey] ??
+      (lang === 'en' ? undefined : MIX_RESULTS[lang][v]) ??
+      v;
+    return v[0] === v[0]!.toUpperCase() && resolved[0] !== resolved[0]!.toUpperCase()
+      ? resolved[0]!.toUpperCase() + resolved.slice(1)
+      : resolved;
+  });
+}
+
+/** t() with {placeholders} — runtime builders (mixer ratio line, swap
+ *  controls) pass computed values through the same resolution chain. */
+export function tArgs(key: UiKey, args: Record<string, string>): string {
+  return fillArgs(UI_STRINGS[lang][key] ?? UI_STRINGS.en[key] ?? key, args);
+}
+
+function fill(el: HTMLElement, s: string): string {
+  let args: Record<string, string> | undefined;
+  try {
+    args = el.dataset.i18nArgs ? (JSON.parse(el.dataset.i18nArgs) as Record<string, string>) : undefined;
+  } catch {
+    args = undefined;
+  }
+  return args ? fillArgs(s, args) : s;
+}
+
 /** Swap every tagged node under `root` to the active language. A node may
  *  carry data-i18n-args='{"name":"Panda"}' — {name} placeholders in the
  *  dictionary string fill from it, so word order can differ per language
- *  ("How to make the X" vs "X 怎么做"). */
+ *  ("How to make the X" vs "X 怎么做"). All four mechanisms (text, aria,
+ *  placeholder, title) share the same args handling. */
 function apply(root: ParentNode = document) {
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n]')) {
     const key = el.dataset.i18n as UiKey;
     const s = UI_STRINGS[lang][key];
     if (!s) continue;
-    let args: Record<string, string> | undefined;
-    try {
-      args = el.dataset.i18nArgs ? (JSON.parse(el.dataset.i18nArgs) as Record<string, string>) : undefined;
-    } catch {
-      args = undefined;
-    }
-    el.textContent = args
-      ? s.replace(/\{(\w+)\}/g, (_, k: string) => args![k] ?? `{${k}}`)
-      : s;
+    el.textContent = fill(el, s);
   }
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-aria]')) {
     const key = el.dataset.i18nAria as UiKey;
     const s = UI_STRINGS[lang][key];
-    if (s) el.setAttribute('aria-label', s);
+    if (s) el.setAttribute('aria-label', fill(el, s));
+  }
+  // inputs carry translatable placeholder / title attributes the same way
+  for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-placeholder]')) {
+    const key = el.dataset.i18nPlaceholder as UiKey;
+    const s = UI_STRINGS[lang][key];
+    if (s) el.setAttribute('placeholder', fill(el, s));
+  }
+  for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-title]')) {
+    const key = el.dataset.i18nTitle as UiKey;
+    const s = UI_STRINGS[lang][key];
+    if (s) el.setAttribute('title', fill(el, s));
   }
   document.documentElement.lang = HTML_LANG[lang];
   for (const btn of document.querySelectorAll<HTMLElement>('[data-lang]')) {

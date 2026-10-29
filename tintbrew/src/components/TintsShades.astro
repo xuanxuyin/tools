@@ -16,7 +16,7 @@ const { steps } = Astro.props;
     {steps.map((s) => (
       <span>
         <span class="tints-dot" style={`background:${s.hex}`} aria-hidden="true"></span>
-        {s.label} <code>{s.hex}</code>
+        <span data-i18n={s.labelKey}>{s.label}</span> <code>{s.hex}</code>
       </span>
     ))}
   </div>

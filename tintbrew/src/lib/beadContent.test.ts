@@ -12,14 +12,17 @@ import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import { BEAD_PATTERNS } from '../data/beadPatterns';
-import { BEAD_CATEGORY_SEO, BEAD_HUB_SEO } from '../data/beadSeo';
+import { BEAD_CATEGORY_SEO, BEAD_COLLECTION_SEO, BEAD_HUB_SEO } from '../data/beadSeo';
+import { BEAD_LETTERS } from '../data/beadLetters';
 import { BEAD_COLORS } from './beadPalette';
 import {
   beadSizeInches,
   categoryCounts,
+  cutePatterns,
   easyPatterns,
   patternContents,
   patternUrl,
+  smallPatterns,
 } from './beadContent';
 
 const distRoot = resolve(fileURLToPath(import.meta.url), '../../../dist');
@@ -63,6 +66,46 @@ describe('bead pattern data integrity', () => {
       characters: 43,
     });
     expect(easyPatterns.length).toBe(48);
+  });
+
+  it('collection filters: cute locked at 36, small all one-board', () => {
+    // 2026-10-29 P3 pool expansion landings — curated cute set and the
+    // width<=29 "small" filter. Bump the 36 with the curated list AND the
+    // cute SEO copy (title/intro counts) together, never one alone.
+    expect(cutePatterns).toHaveLength(36);
+    const catalogSlugs = new Set(BEAD_PATTERNS.map((p) => p.slug));
+    for (const p of cutePatterns) {
+      expect(catalogSlugs.has(p.def.slug), `cute "${p.def.slug}" in catalog`).toBe(true);
+    }
+    expect(new Set(cutePatterns.map((p) => p.def.slug)).size).toBe(36);
+
+    expect(smallPatterns.length).toBeGreaterThanOrEqual(20);
+    for (const p of smallPatterns) {
+      expect(p.def.width, `${p.def.slug} one board`).toBeLessThanOrEqual(29);
+    }
+  });
+
+  it('letters: 36 glyphs on 5×7 grids, single zone, counts 11–20', () => {
+    // glyphs never join the catalog — no detail pages for this word family
+    expect(BEAD_LETTERS).toHaveLength(36);
+    expect(
+      BEAD_PATTERNS.some((p) => p.slug.startsWith('letter-') || p.slug.startsWith('digit-')),
+    ).toBe(false);
+    const ids = new Set(BEAD_COLORS.map((b) => b.id));
+    const counts: number[] = [];
+    for (const def of BEAD_LETTERS) {
+      expect(def.width).toBe(5);
+      expect(def.rows).toHaveLength(7);
+      for (const row of def.rows) expect(row.length, `${def.slug} "${row}"`).toBe(5);
+      const beads = def.rows.join('').split('').filter((c) => c === 'X').length;
+      counts.push(beads);
+      expect(beads, `${def.slug} non-empty`).toBeGreaterThan(0);
+      expect(def.regions.X, `${def.slug} color exists`).toBeTruthy();
+      expect(ids.has(def.regions.X!.color), `${def.slug} "${def.regions.X!.color}"`).toBe(true);
+    }
+    expect(Math.min(...counts)).toBe(10); // Y — the leanest glyph
+    expect(Math.max(...counts)).toBe(20); // B and R
+    expect(new Set(BEAD_LETTERS.map((l) => l.slug)).size).toBe(36);
   });
 
   it('grids are rectangular: no row exceeds width, rows are padded', () => {
@@ -159,11 +202,18 @@ describe('bead pattern data integrity', () => {
         p.blurb,
         ...Object.values(p.regions).map((r) => r.label),
       ]),
+      ...BEAD_LETTERS.flatMap((l) => [l.slug, l.name, l.tagline, l.blurb]),
       BEAD_HUB_SEO.title,
       BEAD_HUB_SEO.description,
       ...BEAD_HUB_SEO.intro,
       ...BEAD_HUB_SEO.faqs.flatMap((f) => [f.q, f.a]),
       ...Object.values(BEAD_CATEGORY_SEO).flatMap((s) => [
+        s!.title,
+        s!.description,
+        ...s!.intro,
+        ...s!.faqs.flatMap((f) => [f.q, f.a]),
+      ]),
+      ...Object.values(BEAD_COLLECTION_SEO).flatMap((s) => [
         s!.title,
         s!.description,
         ...s!.intro,
@@ -189,13 +239,18 @@ describe('bead pages in real dist markup', () => {
   it('hub + all four galleries ship thumbnail cards and JSON-LD', () => {
     // food + christmas galleries retired 2026-10-28 (301 → hub); halloween
     // opened its own gallery 2026-10-29. Cards render the prebuilt webp
-    // thumbnails since 2026-10-29 — inline SVG figures live on detail pages
+    // thumbnails since 2026-10-29 — inline SVG figures live on detail pages.
+    // The cute/small/fuse collection landings (2026-10-29) are the same
+    // BeadCategoryPage shape, so they ride the same contract.
     const pages = [
       '/perler-bead-patterns/index.html',
       '/perler-bead-animals/index.html',
       '/perler-bead-characters/index.html',
       '/perler-bead-halloween/index.html',
       '/easy-perler-bead-patterns/index.html',
+      '/cute-perler-bead-patterns/index.html',
+      '/small-perler-bead-patterns/index.html',
+      '/fuse-bead-patterns/index.html',
     ];
     for (const page of pages) {
       const html = readFileSync(resolve(distRoot, page.slice(1)), 'utf8');
@@ -261,11 +316,52 @@ describe('bead pages in real dist markup', () => {
 
   it('footer links the five landing pages; sitemap knows every bead URL', () => {
     const footer = readFileSync(resolve(distRoot, 'index.html'), 'utf8');
-    for (const s of [BEAD_HUB_SEO, ...Object.values(BEAD_CATEGORY_SEO)]) {
+    for (const s of [
+      BEAD_HUB_SEO,
+      ...Object.values(BEAD_CATEGORY_SEO),
+      ...Object.values(BEAD_COLLECTION_SEO),
+    ]) {
       expect(footer).toContain(s!.path);
     }
     const sm = readFileSync(resolve(distRoot, 'sitemap-index.xml'), 'utf8');
     expect(sm).toContain('<sitemap>');
+  });
+
+  it('collection landings and the letters sheet ship complete', () => {
+    // the three collection pages + letters live in the image sitemap and the
+    // Astro sitemap; the letters sheet renders all 36 glyphs as inline SVG
+    // (no webp thumbs) with the computed name-demo numbers
+    const letters = readFileSync(resolve(distRoot, 'perler-bead-letters/index.html'), 'utf8');
+    expect(letters).toContain('Perler Bead Letters');
+    expect((letters.match(/data-pattern="letter-/g) ?? []).length).toBe(26);
+    expect((letters.match(/data-pattern="digit-/g) ?? []).length).toBe(10);
+    // no prebuilt webp thumbs on the sheet — every glyph is inline SVG
+    // (.bead-thumb-img still appears in BeadFigure's scoped CSS, so assert
+    // on the image path instead of the class name)
+    expect(letters).not.toContain('/pattern-thumbs/');
+    expect(letters).toContain('FAQPage');
+    expect(letters).toContain('BreadcrumbList');
+    // EMMA demo math is computed from the real grids (E+M+M+A = 70)
+    expect(letters).toContain('spells out in 70 beads');
+
+    const imgs = readFileSync(resolve(distRoot, 'sitemap-images.xml'), 'utf8');
+    for (const path of [
+      '/cute-perler-bead-patterns/',
+      '/small-perler-bead-patterns/',
+      '/fuse-bead-patterns/',
+      '/easy-perler-bead-patterns/',
+    ]) {
+      expect(imgs, path).toContain(`<loc>https://tintbrew.com${path}</loc>`);
+    }
+
+    const sm0 = resolve(distRoot, 'sitemap-0.xml');
+    const raw = readFileSync(sm0);
+    const xml = raw.subarray(0, 2).equals(Buffer.from([0x1f, 0x8b]))
+      ? gunzipSync(raw).toString('utf8')
+      : raw.toString('utf8');
+    for (const s of Object.values(BEAD_COLLECTION_SEO)) {
+      expect(xml, s!.path).toContain(s!.path);
+    }
   });
 
   it('sitemap file lists all 116 pattern URLs', () => {

@@ -13,13 +13,19 @@ interface Props {
 const { rows, a, b } = Astro.props;
 ---
 
-<div class="mix-table" role="table" aria-label={`Mixing ratios for ${a.name} and ${b.name}`}>
+<div
+  class="mix-table"
+  role="table"
+  aria-label={`Mixing ratios for ${a.name} and ${b.name}`}
+  data-i18n-aria="mix.thAria"
+  data-i18n-args={JSON.stringify({ a: a.name, b: b.name })}
+>
   <div class="mix-tr mix-th" role="row">
-    <span role="columnheader">{a.name}</span>
-    <span role="columnheader">{b.name}</span>
-    <span role="columnheader">Result</span>
+    <span role="columnheader" data-i18n={`color.${a.id}`}>{a.name}</span>
+    <span role="columnheader" data-i18n={`color.${b.id}`}>{b.name}</span>
+    <span role="columnheader" data-i18n="mix.thResult">Result</span>
     <span role="columnheader">HEX</span>
-    <span role="columnheader" class="visually-hidden">Copy</span>
+    <span role="columnheader" class="visually-hidden" data-i18n="mix.thCopy">Copy</span>
   </div>
   {rows.map((r) => (
     <div class="mix-tr" role="row">
@@ -61,6 +67,8 @@ const { rows, a, b } = Astro.props;
     color: var(--muted);
     font-size: 0.85rem;
     font-weight: 600;
+    /* color.* resolves lowercase; zh/ko have no case to capitalize */
+    text-transform: capitalize;
   }
 
   .mix-cell-name {

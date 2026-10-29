@@ -20,9 +20,12 @@ const { c } = Astro.props;
     <span class="mix-card-arrow">→</span>
     <span class="mix-card-result" style={`background:${c.resultHex}`} />
   </span>
-  <span class="mix-card-q">What does {c.a.name.toLowerCase()} and {c.b.name.toLowerCase()} make?</span>
+  <span class="mix-card-q" data-i18n="mix.qCard" data-i18n-args={JSON.stringify({ a: c.a.id, b: c.b.id })}>
+    What does {c.a.name.toLowerCase()} and {c.b.name.toLowerCase()} make?
+  </span>
   <span class="mix-card-a">
-    {c.resultName} <code>{c.resultHex}</code>
+    <span data-i18n="mix.cardA" data-i18n-args={JSON.stringify({ result: c.resultName })}>{c.resultName}</span>
+    <code>{c.resultHex}</code>
   </span>
 </a>
 

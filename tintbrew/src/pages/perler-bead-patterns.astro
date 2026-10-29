@@ -6,28 +6,57 @@ import { patternsByCategory } from '../lib/beadContent';
 const groups = [
   {
     label: 'Animals',
+    labelKey: 'bs.gAnL',
     href: '/perler-bead-animals/',
     blurb: 'Corgi, shiba, husky, golden retriever, orange cat, calico kittens, carrot bunnies, pandas — community designs converted bead for bead.',
+    blurbKey: 'bs.gAnB',
     patterns: patternsByCategory('animals'),
   },
   {
     label: 'Characters',
+    labelKey: 'bs.gChL',
     href: '/perler-bead-characters/',
     blurb: 'Chibi heroes, little monsters and mascot-style portraits — boards converted from community bead art.',
+    blurbKey: 'bs.gChB',
     patterns: patternsByCategory('characters'),
   },
   {
     label: 'Halloween',
+    labelKey: 'bs.gHaL',
     href: '/perler-bead-halloween/',
     blurb: 'Kawaii bat, witch-cape kitty, bat-wing ghost, jack-o’-lantern, pumpkin ghosts, vampire — the spooky set.',
+    blurbKey: 'bs.gHaB',
     patterns: patternsByCategory('halloween'),
   },
   {
     label: 'Quick Makes',
+    labelKey: 'bs.gQkL',
     blurb: 'Small boards for one quiet evening — snacks, hearts and other quick makes.',
+    blurbKey: 'bs.gQkB',
     patterns: [...patternsByCategory('food'), ...patternsByCategory('minis')],
   },
 ];
 ---
 
-<BeadCategoryPage seo={BEAD_HUB_SEO} groups={groups} />
+<BeadCategoryPage seo={BEAD_HUB_SEO} groups={groups}>
+  <p class="collection-strip">
+    Or browse the catalog by vibe:
+    <a href="/cute-perler-bead-patterns/">Cute</a> ·
+    <a href="/small-perler-bead-patterns/">Small — one board</a> ·
+    <a href="/easy-perler-bead-patterns/">Easy</a> ·
+    <a href="/fuse-bead-patterns/">Fuse bead patterns</a> ·
+    <a href="/perler-bead-letters/">Letters &amp; numbers</a>
+  </p>
+</BeadCategoryPage>
+
+<style>
+  .collection-strip {
+    margin-top: var(--sp-5);
+    font-size: 0.95rem;
+    color: var(--ink-soft, #666);
+  }
+  .collection-strip a {
+    color: var(--accent, #b3552e);
+    white-space: nowrap;
+  }
+</style>

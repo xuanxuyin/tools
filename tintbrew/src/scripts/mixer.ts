@@ -17,6 +17,7 @@ import {
   rgbMix,
   rgbToHex,
 } from '../lib/color';
+import { tArgs } from './i18n';
 
 type Mode = 'oklab' | 'rgb';
 
@@ -160,11 +161,15 @@ class MixerIsland {
     this.setValue('hsl', formatCss('hsl', result));
     this.setValue('cmyk', formatCss('cmyk', result));
 
-    // one-glance ratio summary under the rows
+    // one-glance ratio summary under the rows (localized — the SSR node
+    // carries data-i18n too, so first paint and recompute agree)
     const ratioLine = this.root.querySelector<HTMLElement>('[data-ratio-line]');
     if (ratioLine) {
       const pcts = weights.map((w) => Math.round(w * 100));
-      ratioLine.textContent = `Ratio ${this.ratios.join(' : ')} · ${pcts.join(' / ')}`;
+      ratioLine.textContent = tArgs('mixer.ratioLine', {
+        r: this.ratios.join(' : '),
+        p: pcts.join(' / '),
+      });
     }
 
     const stepsEl = this.root.querySelector<HTMLElement>('[data-steps]');

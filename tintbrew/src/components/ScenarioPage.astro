@@ -27,14 +27,14 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
 >
   <section class="hero">
     <p class="crumbs">
-      <a href="/">Home</a> <span aria-hidden="true">›</span>
-      <a href="/color-guides">Color Guides</a> <span aria-hidden="true">›</span>
+      <a href="/" data-i18n="crumb.home">Home</a> <span aria-hidden="true">›</span>
+      <a href="/color-guides" data-i18n="crumb.guides">Color Guides</a> <span aria-hidden="true">›</span>
       <span>{def.h1}</span>
     </p>
     <h1>{def.h1}</h1>
     <p class="lead">{def.lead}</p>
 
-    <div class="hero-answer" aria-label="The answer at a glance">
+    <div class="hero-answer" aria-label="The answer at a glance" data-i18n-aria="a11y.answer">
       <span class="hero-swatches" aria-hidden="true">
         {heroMix ? (
           heroMix.map((m) => <span style={`background:${m.hex}`} title={m.label}></span>)
@@ -49,7 +49,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
     </div>
   </section>
 
-  <Mixer initialColors={def.mixerColors} compact title="Try the blend yourself" />
+  <Mixer initialColors={def.mixerColors} compact title="Try the blend yourself" titleKey="mixer.titleBlend" />
 
   {def.intro.length > 0 && (
     <section class="prose" style="margin-top: var(--sp-6);">
@@ -61,7 +61,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   {c.methods.length > 0 && (
     <section class="prose" style="margin-top: var(--sp-6);">
       <h2>{def.listHeading}</h2>
-      <p>
+      <p data-i18n="sc.methodsP">
         Every result below is computed in a perceptual color space: the swatch is the blend your
         eye sees, with the HEX code next to it. Click any code to copy it.
       </p>
@@ -87,6 +87,8 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
                     class="btn btn-copy method-hex"
                     data-copy={m.resultHex}
                     aria-label={`Copy ${m.name} result hex code`}
+                    data-i18n-aria="sc.copyAria"
+                    data-i18n-args={JSON.stringify({ label: m.name })}
                   >
                     {m.resultHex}
                   </button>
@@ -119,7 +121,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
             <div class="chart-gel">
               <span class="gel-dot" style={`background:${row.gel.hex}`} aria-hidden="true"></span>
               <div>
-                <strong>{row.gel.name} gel</strong>
+                <strong>{row.gel.name}<span data-i18n="sc.gelWord"> gel</span></strong>
                 <span class="gel-brand">{row.gel.brand}</span>
                 <p>{row.gel.note}</p>
               </div>
@@ -128,7 +130,11 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
               {row.cells.map((cell) => (
                 <div class="chart-cell">
                   <span class="cell-swatch" style={`background:${cell.hex}`} aria-hidden="true"></span>
-                  <span class="cell-drops">{cell.drops === 0 ? 'base' : cell.drops === 1 ? '1 drop' : `${cell.drops} drops`}</span>
+                  <span
+                    class="cell-drops"
+                    data-i18n={cell.drops === 0 ? 'sc.dropsBase' : cell.drops === 1 ? 'sc.drop1' : 'sc.dropsN'}
+                    data-i18n-args={cell.drops > 1 ? JSON.stringify({ n: String(cell.drops) }) : undefined}
+                  >{cell.drops === 0 ? 'base' : cell.drops === 1 ? '1 drop' : `${cell.drops} drops`}</span>
                   <button
                     type="button"
                     class="btn btn-copy cell-hex"
@@ -148,7 +154,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   )}
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>Practical tips</h2>
+    <h2 data-i18n="sec.tipsH">Practical tips</h2>
     <ul class="tips">
       {def.tips.map((t) => (
         <li>
@@ -159,7 +165,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>Frequently asked questions</h2>
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
       {def.faqs.map((f) => (
         <details>
@@ -171,12 +177,12 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>Keep reading</h2>
+    <h2 data-i18n="sec.keepH">Keep reading</h2>
     <ul class="keep-reading">
       {def.related.slice(0, 3).map((r) => (
         <li><a href={r.href}>{r.label}</a></li>
       ))}
-      <li><a href="/color-guides">All color guides</a></li>
+      <li><a href="/color-guides" data-i18n="sec.allGuides">All color guides</a></li>
     </ul>
   </section>
 </BaseLayout>

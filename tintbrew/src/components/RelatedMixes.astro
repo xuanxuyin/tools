@@ -8,7 +8,7 @@ interface Props {
 const { related } = Astro.props;
 ---
 
-<nav class="related" aria-label="Related color mixes">
+<nav class="related" aria-label="Related color mixes" data-i18n-aria="mix.relH">
   <ul>
     {related.map((r) => (
       <li>
@@ -19,7 +19,7 @@ const { related } = Astro.props;
             <span class="related-arrow">→</span>
             <span style={`background:${r.resultHex}`}></span>
           </span>
-          {r.text}
+          <span data-i18n="mix.qWhat" data-i18n-args={JSON.stringify({ a: r.a.id, b: r.b.id })}>{r.text}</span>
         </a>
       </li>
     ))}

@@ -13,9 +13,12 @@ import { SITE } from '../consts';
 
 export interface BeadGroup {
   label: string;
+  /** uiStrings key for the label, when the group header translates */
+  labelKey?: string;
   /** link out when the group has its own landing page */
   href?: string;
   blurb?: string;
+  blurbKey?: string;
   patterns: PatternView[];
 }
 
@@ -52,21 +55,30 @@ const jsonLd = [
 <BaseLayout title={seo.title} description={seo.description} path={seo.path.replace(/\/$/, '')} jsonLd={jsonLd}>
   <section class="hero">
     <p class="crumbs">
-      <a href="/">Home</a> <span aria-hidden="true">›</span>
+      <a href="/" data-i18n="a11y.home">Home</a> <span aria-hidden="true">›</span>
       <span>{seo.h1}</span>
     </p>
-    <h1>{seo.h1}</h1>
-    <p class="lead">{lead}</p>
+    <h1 data-i18n={seo.k?.h1}>{seo.h1}</h1>
+    <p class="lead" data-i18n={seo.k?.intro[0]}>{lead}</p>
     <p class="stat-row" aria-label="Collection facts">
-      <span class="stat"><strong>{totalCount}</strong> patterns</span>
-      <span class="stat">all <strong>free</strong> to print</span>
-      <span class="stat"><strong>32</strong> bead colors</span>
+      <span class="stat">
+        <strong>{totalCount}</strong>
+        <span data-i18n="bs.statPatterns">patterns</span>
+      </span>
+      <span class="stat">
+        <span data-i18n="bs.statFreeA">all</span> <strong data-i18n="bs.statFreeM">free</strong>
+        <span data-i18n="bs.statFreeB">to print</span>
+      </span>
+      <span class="stat">
+        <strong>32</strong>
+        <span data-i18n="bs.statColors">bead colors</span>
+      </span>
     </p>
   </section>
 
   {prose.length > 0 && (
     <section class="prose" style="margin-top: var(--sp-4);">
-      {prose.map((p) => <p>{p}</p>)}
+      {prose.map((p, i) => <p data-i18n={seo.k?.intro[i + 1]}>{p}</p>)}
     </section>
   )}
 
@@ -76,17 +88,25 @@ const jsonLd = [
   {groups.map((g) => (
     <section class="gallery" style="margin-top: var(--sp-6);">
       <h2>
-        {g.href ? <a href={g.href}>{g.label}</a> : g.label}
-        <span class="count"> — {g.patterns.length} patterns</span>
+        {g.href ? (
+          <a href={g.href} data-i18n={g.labelKey}>{g.label}</a>
+        ) : (
+          <span data-i18n={g.labelKey}>{g.label}</span>
+        )}
+        <span class="count" data-i18n="bs.countN" data-i18n-args={JSON.stringify({ n: String(g.patterns.length) })}> — {g.patterns.length} patterns</span>
       </h2>
-      {g.blurb && <p class="group-blurb">{g.blurb}</p>}
+      {g.blurb && <p class="group-blurb" data-i18n={g.blurbKey}>{g.blurb}</p>}
       <div class="card-grid">
         {g.patterns.map((p) => (
           <a class="pattern-card" href={p.url}>
             <BeadFigure view={p} mode="reference" thumb />
             <span class="card-name">{p.def.name}</span>
             <span class="card-tag">{p.def.tagline}</span>
-            <span class="card-meta">
+            <span
+              class="card-meta"
+              data-i18n="bs.cardMeta"
+              data-i18n-args={JSON.stringify({ n: String(p.totalBeads), z: String(p.regions.length), d: p.def.difficulty })}
+            >
               {p.totalBeads} beads · {p.regions.length} zones · {p.def.difficulty}
             </span>
           </a>
@@ -96,11 +116,11 @@ const jsonLd = [
   ))}
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>FAQ</h2>
-    {seo.faqs.map((f) => (
+    <h2 data-i18n="bs.faqH">FAQ</h2>
+    {seo.faqs.map((f, i) => (
       <details class="faq">
-        <summary>{f.q}</summary>
-        <p>{f.a}</p>
+        <summary data-i18n={seo.k?.fq[i]}>{f.q}</summary>
+        <p data-i18n={seo.k?.fa[i]}>{f.a}</p>
       </details>
     ))}
   </section>

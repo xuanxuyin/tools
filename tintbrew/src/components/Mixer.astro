@@ -27,6 +27,8 @@ interface Props {
   showModeToggle?: boolean;
   /** Optional section heading (matrix pages use the page h1 for the question) */
   title?: string;
+  /** i18n key for the heading — textContent swaps, SSR stays English */
+  titleKey?: string;
   compact?: boolean;
 }
 
@@ -36,6 +38,7 @@ const {
   syncUrl = false,
   showModeToggle = true,
   title,
+  titleKey,
   compact = false,
 } = Astro.props;
 
@@ -77,8 +80,9 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
   data-mode="oklab"
   data-sync-url={syncUrl ? 'true' : 'false'}
   aria-label="Color mixer"
+  data-i18n-aria="mixer.sectionAria"
 >
-  {title && <h2 class="mixer-title">{title}</h2>}
+  {title && <h2 class="mixer-title" data-i18n={titleKey}>{title}</h2>}
 
   <div class="mixer-grid">
     <div class="mixer-controls">
@@ -87,7 +91,14 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
           colors.map((hex, i) => (
             <div class="mixer-row" data-row>
               <label class="mixer-swatch" data-swatch style={`background:${hex}`}>
-                <input type="color" data-color value={hex} aria-label={`Pick color ${i + 1}`} />
+                <input
+                  type="color"
+                  data-color
+                  value={hex}
+                  aria-label={`Pick color ${i + 1}`}
+                  data-i18n-aria="mixer.pickAria"
+                  data-i18n-args={JSON.stringify({ n: String(i + 1) })}
+                />
               </label>
               <input
                 class="text-input mixer-hex"
@@ -98,6 +109,8 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
                 spellcheck="false"
                 autocomplete="off"
                 aria-label={`Hex value for color ${i + 1}`}
+                data-i18n-aria="mixer.hexAria"
+                data-i18n-args={JSON.stringify({ n: String(i + 1) })}
               />
               <div class="ratio-wrap">
                 <input
@@ -108,6 +121,8 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
                   value={ratios[i]}
                   data-ratio
                   aria-label={`Mixing ratio for color ${i + 1}`}
+                  data-i18n-aria="mixer.ratioAria"
+                  data-i18n-args={JSON.stringify({ n: String(i + 1) })}
                 />
                 <output class="ratio-val" data-ratio-val>{ratios[i]}</output>
               </div>
@@ -116,6 +131,8 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
                 class="btn btn-remove"
                 data-remove
                 aria-label={`Remove color ${i + 1}`}
+                data-i18n-aria="mixer.removeAria"
+                data-i18n-args={JSON.stringify({ n: String(i + 1) })}
                 disabled={colors.length <= 2}
               >
                 ✕
@@ -124,7 +141,12 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
           ))
         }
       </div>
-      <p class="mix-ratio-line" data-ratio-line>{ratioLine}</p>
+      <p
+        class="mix-ratio-line"
+        data-ratio-line
+        data-i18n="mixer.ratioLine"
+        data-i18n-args={JSON.stringify({ r: ratios.join(' : '), p: pcts.join(' / ') })}
+      >{ratioLine}</p>
       <div class="mixer-actions">
         <button type="button" class="btn" data-add disabled={colors.length >= 5} data-i18n="mixer.add">
           + Add color
@@ -135,6 +157,8 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
           data-even
           aria-label="Reset every ratio to an even mix"
           title="Reset every ratio to an even mix"
+          data-i18n-aria="mixer.evenT"
+          data-i18n-title="mixer.evenT"
         >
           1 : 1
         </button>
@@ -145,12 +169,14 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
           aria-label="Shuffle in a random set of colors"
           title="Shuffle in a random set of colors"
           data-i18n="mixer.shuffle"
+          data-i18n-aria="mixer.shuffleT"
+          data-i18n-title="mixer.shuffleT"
         >
           Shuffle
         </button>
         {
           showModeToggle && (
-            <div class="mode-toggle" role="group" aria-label="Mixing mode">
+            <div class="mode-toggle" role="group" aria-label="Mixing mode" data-i18n-aria="mixer.modeGroup">
               <button
                 type="button"
                 class="btn"

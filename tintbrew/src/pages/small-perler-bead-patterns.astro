@@ -1,0 +1,22 @@
+---
+import BeadCategoryPage from '../components/BeadCategoryPage.astro';
+import { BEAD_COLLECTION_SEO } from '../data/beadSeo';
+import { smallPatterns } from '../lib/beadContent';
+
+// one large interlocking pegboard (29×29) is the ceiling — the two bands are
+// "clears even the small 16×16 square" and "fills most of one large board"
+const groups = [
+  {
+    label: 'Minis — under 20 beads wide',
+    blurb: 'Keychain and magnet scale. Most clear a small 16×16 square board with room to spare.',
+    patterns: smallPatterns.filter((p) => p.def.width < 20),
+  },
+  {
+    label: 'One-board designs — 20 to 29 wide',
+    blurb: 'The full footprint of a single large interlocking pegboard, no snapping boards together.',
+    patterns: smallPatterns.filter((p) => p.def.width >= 20),
+  },
+];
+---
+
+<BeadCategoryPage seo={BEAD_COLLECTION_SEO.small!} groups={groups} />

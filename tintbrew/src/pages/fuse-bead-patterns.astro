@@ -1,0 +1,53 @@
+---
+import BeadCategoryPage from '../components/BeadCategoryPage.astro';
+import { BEAD_COLLECTION_SEO } from '../data/beadSeo';
+import { patternsByCategory } from '../lib/beadContent';
+
+const groups = [
+  {
+    label: 'Animals',
+    href: '/perler-bead-animals/',
+    blurb: 'Corgis, shibas, huskies, cats, carrot bunnies and pandas — community designs converted bead for bead.',
+    patterns: patternsByCategory('animals'),
+  },
+  {
+    label: 'Characters',
+    href: '/perler-bead-characters/',
+    blurb: 'Big-eyed girls, chibi heroes and friendly spooks — portrait boards on real bead colors.',
+    patterns: patternsByCategory('characters'),
+  },
+  {
+    label: 'Halloween',
+    href: '/perler-bead-halloween/',
+    blurb: 'Kawaii bats, witch cats and pumpkin ghosts — the spooky set on its own page.',
+    patterns: patternsByCategory('halloween'),
+  },
+  {
+    label: 'Quick Makes',
+    blurb: 'Small boards for one quiet evening — snacks, hearts and other quick makes.',
+    patterns: [...patternsByCategory('food'), ...patternsByCategory('minis')],
+  },
+];
+---
+
+<BeadCategoryPage seo={BEAD_COLLECTION_SEO.fuse!} groups={groups}>
+  <p class="collection-strip">
+    Looking for something narrower?
+    <a href="/cute-perler-bead-patterns/">Cute patterns</a> ·
+    <a href="/small-perler-bead-patterns/">Small one-board patterns</a> ·
+    <a href="/easy-perler-bead-patterns/">Easy patterns</a> ·
+    <a href="/perler-bead-letters/">Letters &amp; numbers</a>
+  </p>
+</BeadCategoryPage>
+
+<style>
+  .collection-strip {
+    margin-top: var(--sp-5);
+    font-size: 0.95rem;
+    color: var(--ink-soft, #666);
+  }
+  .collection-strip a {
+    color: var(--accent, #b3552e);
+    white-space: nowrap;
+  }
+</style>

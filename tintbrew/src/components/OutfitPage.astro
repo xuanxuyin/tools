@@ -18,6 +18,8 @@ interface Props {
 
 const { v } = Astro.props;
 const { def } = v;
+// English literals for SSR; the role.* dictionary keys (same ids) translate
+// both the visible chip and the swap aria at swap time
 const roleLabel: Record<string, string> = {
   top: 'top',
   pants: 'pants / skirt',
@@ -51,14 +53,14 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
 >
   <section class="hero no-print">
     <p class="crumbs">
-      <a href="/">Home</a> <span aria-hidden="true">›</span>
-      <a href="/color-guides">Color Guides</a> <span aria-hidden="true">›</span>
+      <a href="/" data-i18n="crumb.home">Home</a> <span aria-hidden="true">›</span>
+      <a href="/color-guides" data-i18n="crumb.guides">Color Guides</a> <span aria-hidden="true">›</span>
       <span>{def.h1}</span>
     </p>
     <h1>{def.h1}</h1>
     <p class="lead">{def.lead}</p>
 
-    <div class="hero-answer" aria-label="The anchor color at a glance">
+    <div class="hero-answer" aria-label="The anchor color at a glance" data-i18n-aria="a11y.anchor">
       <span class="hero-swatches" aria-hidden="true">
         <span class="hero-result" style={`background:${def.baseHex}`}></span>
         <span class="hero-plus">+</span>
@@ -70,7 +72,7 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   </section>
 
   <div class="no-print">
-    <Mixer initialColors={def.mixerColors} compact title="Try a pairing yourself" />
+    <Mixer initialColors={def.mixerColors} compact title="Try a pairing yourself" titleKey="mixer.titlePair" />
   </div>
 
   <section class="prose no-print" style="margin-top: var(--sp-6);">
@@ -81,14 +83,14 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   <section class="combos-section" style="margin-top: var(--sp-6);">
     <div class="combos-head no-print">
       <h2>{def.combosHeading}</h2>
-      <p>
+      <p data-i18n="of.combosP">
         Each card shows the outfit on a figure, the exact swatches with copyable HEX codes, and a
         computed read-out: the Oklab lightness gap and hue relation between the anchor piece and
         its strongest partner. Click any round swatch chip to swap that piece's color — the
         figure, the read, and the ladder recompute live. Print this page and the cards become
         tear-off palette sheets.
       </p>
-      <button type="button" class="btn no-print" onclick="window.print()">
+      <button type="button" class="btn no-print" onclick="window.print()" data-i18n="of.printBtn">
         Print the palette cards
       </button>
     </div>
@@ -110,10 +112,12 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
                     aria-haspopup="true"
                     aria-expanded="false"
                     aria-label={`Swap the ${roleLabel[it.role] ?? it.role} color`}
+                    data-i18n-aria="of.swapAria"
+                    data-i18n-args={JSON.stringify({ role: it.role })}
                     style={`background:${it.hex}`}
                   ></button>
                   <span class="combo-meta">
-                    <span class="combo-role">{roleLabel[it.role] ?? it.role}</span>
+                    <span class="combo-role" data-i18n={`role.${it.role}`}>{roleLabel[it.role] ?? it.role}</span>
                     <span class="combo-label">
                       {it.label}
                       {!it.label.toLowerCase().includes(it.name.toLowerCase()) && (
@@ -125,6 +129,8 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
                       class="btn btn-copy combo-hex"
                       data-copy={it.hex}
                       aria-label={`Copy ${it.label} hex code`}
+                      data-i18n-aria="of.copyAria"
+                      data-i18n-args={JSON.stringify({ label: it.label })}
                     >
                       {it.hex}
                     </button>
@@ -144,8 +150,8 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   </section>
 
   <section class="studio-section no-print" style="margin-top: var(--sp-6);">
-    <h2>Style it yourself</h2>
-    <p style="max-width: 46rem;">
+    <h2 data-i18n="of.studioH">Style it yourself</h2>
+    <p style="max-width: 46rem;" data-i18n="of.studioP">
       Done browsing? Dress the figure your way. Click any round chip to swap that piece — preset
       colors from this page, or the custom picker for any color you have in mind. The read and the
       ladder recompute as you go.
@@ -153,8 +159,8 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
     <article class="combo-card" data-studio style="margin-top: var(--sp-3);">
       <OutfitFigure items={studioItems} />
       <div class="combo-body">
-        <h3>Your outfit</h3>
-        <p class="combo-scene">Style it yourself</p>
+        <h3 data-i18n="of.yourOutfit">Your outfit</h3>
+        <p class="combo-scene" data-i18n="of.studioH">Style it yourself</p>
         <ul class="combo-swatches">
           {studioItems.map((it, i) => (
             <li data-index={i} data-role={it.role} data-label={it.label}>
@@ -165,10 +171,12 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
                 aria-haspopup="true"
                 aria-expanded="false"
                 aria-label={`Swap the ${roleLabel[it.role] ?? it.role} color`}
+                data-i18n-aria="of.swapAria"
+                data-i18n-args={JSON.stringify({ role: it.role })}
                 style={`background:${it.hex}`}
               ></button>
               <span class="combo-meta">
-                <span class="combo-role">{roleLabel[it.role] ?? it.role}</span>
+                <span class="combo-role" data-i18n={`role.${it.role}`}>{roleLabel[it.role] ?? it.role}</span>
                 <span class="combo-label">
                   {it.label}
                   {!it.label.toLowerCase().includes(it.name.toLowerCase()) && <em> · {it.name}</em>}
@@ -178,6 +186,8 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
                   class="btn btn-copy combo-hex"
                   data-copy={it.hex}
                   aria-label={`Copy ${it.label} hex code`}
+                  data-i18n-aria="of.copyAria"
+                  data-i18n-args={JSON.stringify({ label: it.label })}
                 >
                   {it.hex}
                 </button>
@@ -194,8 +204,8 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   </section>
 
   <section class="decor-section" style="margin-top: var(--sp-6);">
-    <h2>The same color, in your rooms</h2>
-    <p class="no-print">
+    <h2 data-i18n="of.decorH">The same color, in your rooms</h2>
+    <p class="no-print" data-i18n="of.decorP">
       Four decor palettes built on the same anchor color, for the paint-store version of the
       question. Ladders show the Oklab blend between the first three colors.
     </p>
@@ -223,7 +233,7 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>What doesn’t go with it</h2>
+    <h2 data-i18n="of.avoidH">What doesn’t go with it</h2>
     <div class="avoid-grid">
       {v.avoid.map((a) => (
         <article class="avoid-card">
@@ -241,7 +251,7 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   </section>
 
   <section class="prose no-print" style="margin-top: var(--sp-6);">
-    <h2>Practical tips</h2>
+    <h2 data-i18n="sec.tipsH">Practical tips</h2>
     <ul class="tips">
       {def.tips.map((t) => (
         <li>
@@ -252,7 +262,7 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   </section>
 
   <section class="prose no-print" style="margin-top: var(--sp-6);">
-    <h2>Frequently asked questions</h2>
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
       {def.faqs.map((f) => (
         <details>
@@ -264,12 +274,12 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   </section>
 
   <section class="prose no-print" style="margin-top: var(--sp-6);">
-    <h2>Keep reading</h2>
+    <h2 data-i18n="sec.keepH">Keep reading</h2>
     <ul class="keep-reading">
       {def.related.slice(0, 3).map((r) => (
         <li><a href={r.href}>{r.label}</a></li>
       ))}
-      <li><a href="/color-guides">All color guides</a></li>
+      <li><a href="/color-guides" data-i18n="sec.allGuides">All color guides</a></li>
     </ul>
   </section>
 </BaseLayout>

@@ -116,6 +116,68 @@ export const easyPatterns: PatternView[] = patternContents.filter(
   (p) => p.def.difficulty === 'easy',
 );
 
+/* ------------------------------------------------------------------ */
+/* Collection filters (2026-10-29 P3 pool expansion: the AITDK pull     */
+/* surfaced uncovered modifiers — cute 3.6K, small 1.9K — with no URL   */
+/* to catch them. Curated here, rendered by the collection landings.)   */
+/* ------------------------------------------------------------------ */
+
+/** Curated kawaii set — round shapes, big color areas, faces that read.
+ *  Locked at 36 by the guard test; edit the list, bump the test, and the
+ *  counts inside the cute SEO copy with it. */
+const CUTE_SLUGS = [
+  // animals
+  'cozy-carrot-bunny',
+  'laughing-carrot-rabbit',
+  'bouquet-panda',
+  'panda-apple-mat',
+  'orange-cat',
+  'cozy-gray-cat',
+  'catnap-clementine',
+  'sitting-calico-kitten',
+  'round-calico-cat',
+  'cat-and-butterfly',
+  'corgi-looking-up',
+  'corgi-butt-peek',
+  'corgi-cocoa-cup',
+  'shiba-loaf-nap',
+  'husky-puppy',
+  'bichon',
+  'garden-lamb',
+  'corn-snack-penguin',
+  // characters
+  'blue-alien',
+  'blue-alien-flower-crown',
+  'starfish-buddy',
+  'egg-fairy',
+  'puffball',
+  'kitty-hug-girl',
+  'red-bow-kitty-girl',
+  'honey-bob-girl',
+  'peach-bow-bun-girl',
+  'starry-nightcap-girl',
+  'teal-braids-girl',
+  // quick makes
+  'boba-tea',
+  'mushroom',
+  'red-heart',
+  'lavender-heart',
+  'mint-heart',
+  'peach-heart',
+  'bee',
+] as const;
+
+export const cutePatterns: PatternView[] = CUTE_SLUGS.map((slug) =>
+  patternBySlug(slug),
+).filter((p): p is PatternView => p !== undefined);
+
+/** "Small" collection: everything that fits one large interlocking board
+ *  (29×29) — the keyword's real intent (small perler bead patterns 1.9K).
+ *  Sorted narrowest-first so the page opens on the true minis. */
+export const smallPatterns: PatternView[] = patternContents
+  .filter((p) => p.def.width <= 29)
+  .sort((a, b) => a.def.width - b.def.width);
+
 export const categoryCounts: Record<BeadCategory, number> = {
   animals: patternsByCategory('animals').length,
   food: patternsByCategory('food').length,

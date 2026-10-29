@@ -27,8 +27,8 @@ const jsonLd = {
 
 <BaseLayout title={title} description={description} path="/mix" jsonLd={jsonLd}>
   <section class="hero">
-    <h1>What do two colors make?</h1>
-    <p class="lead">
+    <h1 data-i18n="mix.hubH">What do two colors make?</h1>
+    <p class="lead" data-i18n="mix.hubLead">
       Every mix below opens with the answer already computed — the 50/50 blend, its HEX code, ratio
       tables from 75/25 to 25/75, tints, shades, and a live mixer preloaded with that pair.
     </p>
@@ -37,27 +37,27 @@ const jsonLd = {
   <ToolNav />
 
   <div class="mix-directory">
-    {popular.length > 0 && <h2 class="mix-group-title">Popular mixes</h2>}
+    {popular.length > 0 && <h2 class="mix-group-title" data-i18n="mix.popH">Popular mixes</h2>}
     {popular.map((c) => (
       <MixCard c={c} />
     ))}
-    {rest.length > 0 && <h2 class="mix-group-title">Every mix</h2>}
+    {rest.length > 0 && <h2 class="mix-group-title" data-i18n="mix.everyH">Every mix</h2>}
     {rest.map((c) => (
       <MixCard c={c} />
     ))}
   </div>
 
   <section class="prose" style="margin-top: var(--sp-8);">
-    <h2>Why mixes differ between screens and paint</h2>
+    <h2 data-i18n="mix.hubWhyH">Why mixes differ between screens and paint</h2>
     <p>
-      Screens mix light: combining wavelengths <em>adds</em> brightness, which is why red plus green
-      light makes yellow. Paint mixes pigments: each pigment absorbs light, so combining them
-      <em>subtracts</em> brightness — red plus green paint makes brown. Every mix page here shows
-      the perceptual blend and explains what changes between the two worlds.
+      <span data-i18n="mix.hubWhyP1">Screens mix light: combining wavelengths</span><em data-i18n="mix.emAdds">adds</em><span data-i18n="mix.hubWhyP2">brightness, which is why red plus green light makes yellow. Paint mixes pigments: each pigment absorbs light, so combining them</span><em data-i18n="mix.emSubtracts">subtracts</em><span data-i18n="mix.hubWhyP3">brightness — red plus green paint makes brown. Every mix page here shows the perceptual blend and explains what changes between the two worlds.</span>
     </p>
     <p>
-      Need a pair that isn't listed? Blend any colors yourself in the <a href="/color-mixer">color
-      mixer</a>, or look up a specific code in the <a href="/color-converter">color converter</a>.
+      <span data-i18n="mix.hubNeedA">Need a pair that isn't listed? Blend any colors yourself in the</span><a
+        href="/color-mixer"
+        data-i18n="mix.lMixerTool">color mixer</a><span data-i18n="mix.hubNeedB">, or look up a specific code in the</span><a
+        href="/color-converter"
+        data-i18n="mix.lConvTool">color converter</a><span data-i18n="mix.hubNeedC">.</span>
     </p>
   </section>
 </BaseLayout>

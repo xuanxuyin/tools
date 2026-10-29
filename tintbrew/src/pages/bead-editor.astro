@@ -16,26 +16,38 @@ const description =
 
 const faqs = [
   {
+    qKey: 'ed.fq1',
+    aKey: 'ed.fa1',
     q: 'What size board should I start with?',
     a: 'One large square pegboard holds 29 × 29 beads, so 29 × 29 is the natural first project — coasters, small sprites, keychains. 58 × 58 spans four boards and fits most character art; 87 × 87 and 116 × 116 are for big wall pieces. You can change the size any time the canvas is empty; once there are beads on it, the size locks so nothing gets cropped.',
   },
   {
+    qKey: 'ed.fq2',
+    aKey: 'ed.fa2',
     q: 'Can I start from a photo instead of a blank grid?',
     a: 'Yes — run your picture through the photo to bead pattern converter first, then hit Edit in editor under its preview. The whole converted board lands right here, ready to fix bead by bead. Going the other way works too: patterns you draw here print with the same bead list and pegboard seams.',
   },
   {
+    qKey: 'ed.fq3',
+    aKey: 'ed.fa3',
     q: 'Where does my pattern get saved?',
     a: 'In your browser only. The editor autosaves your board as you draw, so a refresh or an accidental tab close loses nothing — and nothing ever leaves your device. Clearing your browser data clears the draft, so print or download the PNG when a design is done.',
   },
   {
+    qKey: 'ed.fq4',
+    aKey: 'ed.fa4',
     q: 'How do I print the finished chart?',
     a: 'Hit Print pattern. The printed sheet carries the board at full color with pegboard seams every 29 beads, plus the bead list underneath — each color with its Mardiy code and count — so you can pull beads and place them straight off the paper.',
   },
   {
+    qKey: 'ed.fq5',
+    aKey: 'ed.fa5',
     q: 'What do the codes next to the colors mean?',
     a: 'Every one of the 291 colors carries a Mardiy catalog code — A1 through ZG8, the number you order beads by. The swatches, the bead list and the printed chart all use the same code, so H7 always means the same black bead everywhere from screen to pegboard.',
   },
   {
+    qKey: 'ed.fq6',
+    aKey: 'ed.fa6',
     q: 'My pattern has too many similar colors. Can I clean it up?',
     a: 'Hit Simplify colors. It merges the nearest shade pairs into one bead — the lighter shade wins — until the remaining colors are comfortably apart. It is one click and fully undoable, so you can compare the two versions and keep the better one.',
   },
@@ -86,8 +98,8 @@ const jsonLd = [
 
 <BaseLayout title={title} description={description} path="/bead-editor" jsonLd={jsonLd}>
   <section class="hero">
-    <h1>Design Your Own Perler Bead Patterns</h1>
-    <p class="lead">
+    <h1 data-i18n="ed.h1">Design Your Own Perler Bead Patterns</h1>
+    <p class="lead" data-i18n="ed.lead">
       A blank pegboard and all 291 real Mardiy bead colors, right in the browser. Size the board, draw
       bead by bead, mirror the halves for symmetric designs, then print the chart or download a
       PNG. Your work autosaves — and patterns from the photo converter land here with one click.
@@ -97,32 +109,32 @@ const jsonLd = [
   <section class="tool-shell" data-bead-editor>
     <div class="ed-top no-print">
       <div class="ed-group">
-        <label class="ed-label" for="ed-size">Board size</label>
+        <label class="ed-label" for="ed-size" data-i18n="ed.boardSize">Board size</label>
         <select id="ed-size" data-ed-size>
-          <option value="29x29">29 × 29 — 1 board</option>
-          <option value="58x58">58 × 58 — 4 boards</option>
-          <option value="87x58">87 × 58 — 6 boards</option>
-          <option value="58x87">58 × 87 — 6 boards</option>
-          <option value="87x87">87 × 87 — 9 boards</option>
-          <option value="116x116">116 × 116 — 16 boards</option>
-          <option value="custom">Custom…</option>
+          <option value="29x29" data-i18n="ed.o29">29 × 29 — 1 board</option>
+          <option value="58x58" data-i18n="ed.o58">58 × 58 — 4 boards</option>
+          <option value="87x58" data-i18n="ed.o8758">87 × 58 — 6 boards</option>
+          <option value="58x87" data-i18n="ed.o5887">58 × 87 — 6 boards</option>
+          <option value="87x87" data-i18n="ed.o87">87 × 87 — 9 boards</option>
+          <option value="116x116" data-i18n="ed.o116">116 × 116 — 16 boards</option>
+          <option value="custom" data-i18n="ed.oCustom">Custom…</option>
         </select>
         <span class="ed-custom hidden" data-ed-custom-row>
           <input type="number" inputmode="numeric" min="8" max="160" value="29" aria-label="Board width in beads" data-ed-w />
           <span>×</span>
           <input type="number" inputmode="numeric" min="8" max="160" value="29" aria-label="Board height in beads" data-ed-h />
-          <button type="button" class="btn" data-ed-apply>Apply</button>
+          <button type="button" class="btn" data-ed-apply data-i18n="ed.apply">Apply</button>
         </span>
-        <span class="ed-locked hidden" data-ed-locked role="note">
+        <span class="ed-locked hidden" data-ed-locked role="note" data-i18n="ed.locked">
           Size locks once beads are on the board — Reset clears it.
         </span>
       </div>
       <div class="ed-group ed-zoom">
-        <span class="ed-label">Zoom</span>
-        <button type="button" class="btn" data-ed-zoom-out aria-label="Zoom out">−</button>
+        <span class="ed-label" data-i18n="ed.zoom">Zoom</span>
+        <button type="button" class="btn" data-ed-zoom-out aria-label="Zoom out" data-i18n-aria="ed.zoomOut">−</button>
         <span class="ed-zoom-value" data-ed-zoom-label>100%</span>
-        <button type="button" class="btn" data-ed-zoom-in aria-label="Zoom in">+</button>
-        <button type="button" class="btn" data-ed-fit>Fit</button>
+        <button type="button" class="btn" data-ed-zoom-in aria-label="Zoom in" data-i18n-aria="ed.zoomIn">+</button>
+        <button type="button" class="btn" data-ed-fit data-i18n="ed.fit">Fit</button>
       </div>
     </div>
     <p class="ed-note hidden no-print" data-ed-note></p>
@@ -140,27 +152,27 @@ const jsonLd = [
             <button type="button" class="btn tool-btn" data-ed-tool="eraser" aria-pressed="false" data-i18n="ed.eraser">Eraser</button>
             <button type="button" class="btn tool-btn" data-ed-tool="pick" aria-pressed="false" data-i18n="ed.pick">Pick color</button>
             <button type="button" class="btn tool-btn" data-ed-undo data-i18n="ed.undo">Undo</button>
-            <button type="button" class="btn tool-btn" data-ed-mirror aria-pressed="false" title="Every stroke lands on the mirrored cell too" data-i18n="ed.mirror">Mirror</button>
+            <button type="button" class="btn tool-btn" data-ed-mirror aria-pressed="false" title="Every stroke lands on the mirrored cell too" data-i18n-title="ed.mirrorTip" data-i18n="ed.mirror">Mirror</button>
             <button type="button" class="btn tool-btn" data-ed-reset data-i18n="ed.reset">Reset</button>
           </div>
         </div>
 
         <div class="ed-group">
-          <label class="ed-label" for="ed-search">Colors <span class="ed-hint">291 beads — search by code or hex</span></label>
+          <label class="ed-label" for="ed-search"><span data-i18n="ed.colors">Colors</span> <span class="ed-hint" data-i18n="ed.colorsHint">291 beads — search by code or hex</span></label>
           <div class="ed-active-row">
             <span class="ed-active" data-ed-active></span>
-            <input type="search" id="ed-search" placeholder="Search colors…" data-ed-search />
+            <input type="search" id="ed-search" placeholder="Search colors…" data-i18n-placeholder="ed.searchPh" data-ed-search />
           </div>
           <div class="ed-library" data-ed-library role="group" aria-label="Bead colors"></div>
           <label class="cv-custom ed-custom-color">
-            custom color
+            <span data-i18n="ed.customColor">custom color</span>
             <input type="color" value="#000000" data-ed-custom aria-label="Custom color, snapped to the nearest bead" />
-            <span class="ed-hint">snapped to the nearest bead</span>
+            <span class="ed-hint" data-i18n="ed.snapHint">snapped to the nearest bead</span>
           </label>
         </div>
 
         <div class="ed-group">
-          <button type="button" class="btn" data-ed-simplify>Simplify colors</button>
+          <button type="button" class="btn" data-ed-simplify data-i18n="ed.simplify">Simplify colors</button>
         </div>
 
         <div class="ed-group ed-actions">
@@ -173,77 +185,82 @@ const jsonLd = [
     <p class="ed-stats" data-ed-stats aria-live="polite">1 pegboard (1 × 1) · 0 beads · 0 colors</p>
 
     <div class="ed-listcard">
-      <h2>Beads you'll need</h2>
+      <h2 data-i18n="ed.needH">Beads you'll need</h2>
       <ul class="ed-list" data-ed-list>
-        <li class="cv-empty">Start drawing to build your project palette.</li>
+        <li class="cv-empty" data-i18n="ed.empty">Start drawing to build your project palette.</li>
       </ul>
     </div>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-8);">
-    <h2>How it works</h2>
+    <h2 data-i18n="pg.howTitle">How it works</h2>
     <ol>
       <li>
-        <strong>Size the board.</strong> Pick a pegboard preset — 29 × 29 for a first project,
+        <strong data-i18n="ed.s1H">Size the board.</strong>
+        <span data-i18n="ed.s1B"> Pick a pegboard preset — 29 × 29 for a first project,
         bigger grids for full scenes — or enter a custom width and height. Seams in the preview
-        mark where each physical pegboard ends.
+        mark where each physical pegboard ends.</span>
       </li>
       <li>
-        <strong>Draw.</strong> Choose a color and click or drag; Mirror paints both halves at
+        <strong data-i18n="ed.s2H">Draw.</strong>
+        <span data-i18n="ed.s2B"> Choose a color and click or drag; Mirror paints both halves at
         once, Pick color lifts a shade straight off the board, and Undo walks back mistakes.
-        The bead list and board stats update as you go.
+        The bead list and board stats update as you go.</span>
       </li>
       <li>
-        <strong>Clean up the palette.</strong> Simplify colors merges the nearest shade pairs
+        <strong data-i18n="ed.s3H">Clean up the palette.</strong>
+        <span data-i18n="ed.s3B"> Simplify colors merges the nearest shade pairs
         until the palette is shopping-friendly — one click, one undo if you preferred the
-        detailed version.
+        detailed version.</span>
       </li>
       <li>
-        <strong>Print or export.</strong> Print pattern gives you the chart and the bead list on
-        paper; Download PNG saves the board as an image for a phone or tablet.
+        <strong data-i18n="ed.s4H">Print or export.</strong>
+        <span data-i18n="ed.s4B"> Print pattern gives you the chart and the bead list on
+        paper; Download PNG saves the board as an image for a phone or tablet.</span>
       </li>
     </ol>
 
-    <h2>What to design</h2>
+    <h2 data-i18n="ed.whatH">What to design</h2>
     <ul>
-      <li><strong>Pixels and sprites</strong> — anything born on a grid lands on the pegboard almost 1:1</li>
-      <li><strong>Letters and numbers</strong> — names, monograms, classroom door signs</li>
-      <li><strong>Coasters and keychains</strong> — 29 × 29 is exactly one board's worth</li>
-      <li><strong>Seasonal pieces</strong> — hearts for February, eggs and spring themes, snowflakes in winter</li>
-      <li><strong>Big wall art</strong> — 87 × 87 and up, drawn one pegboard at a time along the seams</li>
+      <li><strong data-i18n="ed.d1H">Pixels and sprites</strong><span data-i18n="ed.d1B"> — anything born on a grid lands on the pegboard almost 1:1</span></li>
+      <li><strong data-i18n="ed.d2H">Letters and numbers</strong><span data-i18n="ed.d2B"> — names, monograms, classroom door signs</span></li>
+      <li><strong data-i18n="ed.d3H">Coasters and keychains</strong><span data-i18n="ed.d3B"> — 29 × 29 is exactly one board's worth</span></li>
+      <li><strong data-i18n="ed.d4H">Seasonal pieces</strong><span data-i18n="ed.d4B"> — hearts for February, eggs and spring themes, snowflakes in winter</span></li>
+      <li><strong data-i18n="ed.d5H">Big wall art</strong><span data-i18n="ed.d5B"> — 87 × 87 and up, drawn one pegboard at a time along the seams</span></li>
     </ul>
 
-    <h2>Blank grid or photo converter?</h2>
+    <h2 data-i18n="ed.blankH">Blank grid or photo converter?</h2>
     <p>
-      Draw here when the design lives in your head or on paper. Already have an image? The{' '}
-      <a href="/photo-to-perler-bead-pattern/">photo to bead pattern converter</a> turns it into
-      a board automatically — then its <em>Edit in editor</em> button hands the result to this
-      page for touch-ups. Or skip both and start from a{' '}
-      <a href="/perler-bead-patterns/">ready-made pattern</a>, where every board opens recolorable
-      in the 103-color Perler line.
+      <span data-i18n="ed.blankA">Draw here when the design lives in your head or on paper. Already have an image? The</span>{' '}
+      <a href="/photo-to-perler-bead-pattern/" data-i18n="ed.lPhoto">photo to bead pattern converter</a>{' '}
+      <span data-i18n="ed.blankB">turns it into a board automatically — then its</span>{' '}
+      <em data-i18n="ed.lEditIn">Edit in editor</em>{' '}
+      <span data-i18n="ed.blankC">button hands the result to this page for touch-ups. Or skip both and start from a</span>{' '}
+      <a href="/perler-bead-patterns/" data-i18n="ed.lReady">ready-made pattern</a>
+      <span data-i18n="ed.blankD">, where every board opens recolorable in the 103-color Perler line.</span>
     </p>
 
-    <h2>Printing your bead chart</h2>
-    <p>
+    <h2 data-i18n="ed.printH">Printing your bead chart</h2>
+    <p data-i18n="ed.printP">
       Hit Print pattern when the board is done. The printed sheet carries the full grid in color
       with pegboard seams every 29 beads, and beneath it the bead list — code and count
       for every color — so placement and shopping both happen off one page.
     </p>
 
-    <h2>Frequently asked questions</h2>
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
       {faqs.map((f) => (
         <details>
-          <summary>{f.q}</summary>
-          <p>{f.a}</p>
+          <summary data-i18n={f.qKey}>{f.q}</summary>
+          <p data-i18n={f.aKey}>{f.a}</p>
         </details>
       ))}
     </div>
 
     <p class="keep-reading">
-      Looking for something to make first? Browse the{' '}
-      <a href="/perler-bead-patterns/">full perler bead pattern set</a> — 116 free boards at
-      every size, each printable with the same bead list.
+      <span data-i18n="ed.keepA">Looking for something to make first? Browse the</span>{' '}
+      <a href="/perler-bead-patterns/" data-i18n="pg.keepLink">full perler bead pattern set</a>{' '}
+      <span data-i18n="ed.keepB">— 116 free boards at every size, each printable with the same bead list.</span>
     </p>
   </section>
 </BaseLayout>

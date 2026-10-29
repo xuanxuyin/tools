@@ -1,0 +1,24 @@
+---
+import BeadCategoryPage from '../components/BeadCategoryPage.astro';
+import { BEAD_COLLECTION_SEO } from '../data/beadSeo';
+import { cutePatterns } from '../lib/beadContent';
+
+const groups = [
+  {
+    label: 'Cute animals',
+    patterns: cutePatterns.filter((p) => p.def.category === 'animals'),
+  },
+  {
+    label: 'Cute characters',
+    patterns: cutePatterns.filter((p) => p.def.category === 'characters'),
+  },
+  {
+    label: 'Cute quick makes',
+    patterns: cutePatterns.filter(
+      (p) => p.def.category === 'minis' || p.def.category === 'food',
+    ),
+  },
+];
+---
+
+<BeadCategoryPage seo={BEAD_COLLECTION_SEO.cute!} groups={groups} />

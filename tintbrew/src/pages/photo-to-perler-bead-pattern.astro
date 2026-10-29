@@ -10,30 +10,44 @@ const description =
 
 const faqs = [
   {
+    qKey: 'pg.fq1',
+    aKey: 'pg.fa1',
     q: 'How does my photo become a bead pattern?',
     a: 'The picture is scanned and divided into color regions, then each region is matched to a real bead color. Matching runs in Oklab, a color space built around how different two colors look to the human eye, so skin stays skin-toned and reds stay red instead of drifting muddy.',
   },
   {
+    qKey: 'pg.fq2',
+    aKey: 'pg.fa2',
     q: 'What kind of photo works best?',
     a: 'A bold subject on a light or transparent background is where the converter shines — clear shapes, only a few colors to juggle. Shaded, 3D-looking art carries subtle color, so push the bead width up and raise the color count to do it justice. Prefer the whole scene? Leave Remove background off and widen the board.',
   },
   {
+    qKey: 'pg.fq3',
+    aKey: 'pg.fa3',
     q: 'What does Color simplification do?',
     a: 'It merges near-identical shades into one bead so the pattern has fewer, cleaner colors. Keep shades preserves the subtle steps, Bold collapses whole color families, and Balanced sits between the two. Every level keeps the colors you actually place on the board.',
   },
   {
+    qKey: 'pg.fq4',
+    aKey: 'pg.fa4',
     q: 'What do the codes in the bead list mean?',
     a: 'Every one of the 291 colors carries a Mardiy catalog code — A1 through ZG8, the number you order beads by, shown next to the color’s hex. Swatches and the bead list use the same code, so A1 always means the same bead from the list to the pegboard.',
   },
   {
+    qKey: 'pg.fq5',
+    aKey: 'pg.fa5',
     q: 'Why does the preview show lines through the pattern?',
     a: 'Those seams mark pegboard edges — one large square pegboard holds 29 × 29 beads. A 58-wide pattern spans two boards across, and the seam lines show exactly where one board ends and the next snaps on, so you can split the work (and the boards) before you start placing.',
   },
   {
+    qKey: 'pg.fq6',
+    aKey: 'pg.fa6',
     q: 'Can I fix a bead the converter got wrong?',
     a: 'Yes — hit Edit in editor under the preview. The whole board carries over to the bead editor, where you can repaint any bead, erase, mirror strokes, simplify colors and export a PNG. Your work autosaves in the browser.',
   },
   {
+    qKey: 'pg.fq7',
+    aKey: 'pg.fa7',
     q: 'Does my photo get uploaded anywhere?',
     a: 'No. The whole conversion runs in your browser — the picture never leaves your device, and the pattern disappears when you close the tab. Print it or download the PNG if you want to keep it.',
   },
@@ -85,7 +99,7 @@ const jsonLd = [
 <BaseLayout title={title} description={description} path="/photo-to-perler-bead-pattern" jsonLd={jsonLd}>
   <section class="hero">
     <h1>Photo to Perler Bead Pattern</h1>
-    <p class="lead">
+    <p class="lead" data-i18n="ph.lead">
       Upload an image and it converts into a bead board automatically — matched to real fuse-bead
       colors, counted by color, and ready to print or finish in the editor. Adjust any setting and
       the pattern regenerates on the spot. Nothing uploads; the photo never leaves your device.
@@ -103,6 +117,7 @@ const jsonLd = [
           role="button"
           tabindex="0"
           aria-label="Choose a photo, or drop one here"
+          data-i18n-aria="ph.dropAria"
         >
           <span class="choose-btn" data-i18n="ph.choose">Choose image</span>
           <span class="file-name" data-photo-filename data-i18n="ph.noFile">No image selected yet.</span>
@@ -122,23 +137,23 @@ const jsonLd = [
           <div class="setting">
             <p class="setting-title" data-i18n="ph.maxColors">Maximum color count</p>
             <div class="opt-pills" role="group" aria-label="Maximum color count" data-photo-colors>
-              <button type="button" data-value="8" aria-checked="false">Up to 8</button>
-              <button type="button" data-value="12" class="active" aria-checked="true">Up to 12</button>
-              <button type="button" data-value="16" aria-checked="false">Up to 16</button>
-              <button type="button" data-value="24" aria-checked="false">Up to 24</button>
-              <button type="button" data-value="all" aria-checked="false">All 291</button>
+              <button type="button" data-value="8" aria-checked="false" data-i18n="ph.pill8">Up to 8</button>
+              <button type="button" data-value="12" class="active" aria-checked="true" data-i18n="ph.pill12">Up to 12</button>
+              <button type="button" data-value="16" aria-checked="false" data-i18n="ph.pill16">Up to 16</button>
+              <button type="button" data-value="24" aria-checked="false" data-i18n="ph.pill24">Up to 24</button>
+              <button type="button" data-value="all" aria-checked="false" data-i18n="ph.pillAll">All 291</button>
             </div>
-            <p class="setting-help">Up to this many bead colors — the bead list caps with it.</p>
+            <p class="setting-help" data-i18n="ph.colorsHelp">Up to this many bead colors — the bead list caps with it.</p>
           </div>
 
           <div class="setting">
             <p class="setting-title" data-i18n="ph.simplify">Color simplification</p>
             <div class="opt-pills" role="group" aria-label="Color simplification" data-photo-simplify>
-              <button type="button" data-value="keep" aria-checked="false">Keep shades</button>
-              <button type="button" data-value="balanced" class="active" aria-checked="true">Balanced</button>
-              <button type="button" data-value="bold" aria-checked="false">Bold</button>
+              <button type="button" data-value="keep" aria-checked="false" data-i18n="ph.keepShades">Keep shades</button>
+              <button type="button" data-value="balanced" class="active" aria-checked="true" data-i18n="ph.balanced">Balanced</button>
+              <button type="button" data-value="bold" aria-checked="false" data-i18n="ph.bold">Bold</button>
             </div>
-            <p class="setting-help">
+            <p class="setting-help" data-i18n="ph.simpHelp">
               Merges near-identical shades into one bead so the pattern has fewer, cleaner colors.
             </p>
           </div>
@@ -149,11 +164,11 @@ const jsonLd = [
               <div class="width-box">
                 <p class="width-box-title" data-i18n="ph.presets">Presets</p>
                 <div class="opt-pills" role="group" aria-label="Bead width presets" data-photo-size>
-                  <button type="button" data-value="auto" class="active" aria-checked="true">Auto</button>
-                  <button type="button" data-value="29" aria-checked="false">29 · Compact</button>
-                  <button type="button" data-value="58" aria-checked="false">58 · Balanced</button>
-                  <button type="button" data-value="87" aria-checked="false">87 · Detailed</button>
-                  <button type="button" data-value="116" aria-checked="false">116 · Extra detailed</button>
+                  <button type="button" data-value="auto" class="active" aria-checked="true" data-i18n="ph.auto">Auto</button>
+                  <button type="button" data-value="29" aria-checked="false" data-i18n="ph.p29">29 · Compact</button>
+                  <button type="button" data-value="58" aria-checked="false" data-i18n="ph.p58">58 · Balanced</button>
+                  <button type="button" data-value="87" aria-checked="false" data-i18n="ph.p87">87 · Detailed</button>
+                  <button type="button" data-value="116" aria-checked="false" data-i18n="ph.p116">116 · Extra detailed</button>
                 </div>
               </div>
               <div class="width-box">
@@ -163,6 +178,7 @@ const jsonLd = [
                     data-value="custom"
                     data-photo-custom-toggle
                     aria-checked="false"
+                    data-i18n="ph.custom"
                   >
                     Custom
                   </button>
@@ -177,12 +193,12 @@ const jsonLd = [
                     aria-label="Custom bead width"
                     data-photo-custom-width
                   />
-                  <span class="custom-unit">beads wide</span>
+                  <span class="custom-unit" data-i18n="ph.beadsWide">beads wide</span>
                 </div>
-                <p class="setting-help">Enter 10 to 200 beads.</p>
+                <p class="setting-help" data-i18n="ph.widthHelp">Enter 10 to 200 beads.</p>
               </div>
             </div>
-            <p class="width-error hidden" data-photo-width-error role="alert">
+            <p class="width-error hidden" data-photo-width-error role="alert" data-i18n="ph.widthError">
               Enter a width from 10 to 200 beads.
             </p>
           </div>
@@ -191,7 +207,7 @@ const jsonLd = [
             <input type="checkbox" data-photo-bg />
             <span class="check-body">
               <strong data-i18n="ph.removeBg">Remove background</strong>
-              <span>
+              <span data-i18n="ph.bgHelp">
                 Clears the solid color connected to the edges and leaves it off the bead count. Turn
                 it on to cut the subject out of its background.
               </span>
@@ -202,7 +218,7 @@ const jsonLd = [
             <input type="checkbox" data-photo-outline />
             <span class="check-body">
               <strong data-i18n="ph.outline">Dark outline</strong>
-              <span>
+              <span data-i18n="ph.outlineHelp">
                 Traces the cut-out subject's edge with the darkest bead in the palette, so the shape
                 stays crisp even where sampling lightened the rim.
               </span>
@@ -221,17 +237,17 @@ const jsonLd = [
 
   <div class="guide-stack">
     <section class="guide-card" aria-label="For the best results">
-      <h2>For the best results</h2>
-      <p class="guide-sub">Different images, different settings</p>
-      <p>
+      <h2 data-i18n="pg.bestTitle">For the best results</h2>
+      <p class="guide-sub" data-i18n="pg.bestSub">Different images, different settings</p>
+      <p data-i18n="pg.bestIntro">
         The converter does the heavy lifting, but a couple of settings decide how close the first
         pass lands. Here is what to reach for depending on what you are turning into beads.
       </p>
       <div class="guide-items">
         <div class="guide-item">
           <DemoFigure name="sweet-spot" />
-          <h3>The sweet spot — a clean, simple subject just works</h3>
-          <p>
+          <h3 data-i18n="pg.sweetH">The sweet spot — a clean, simple subject just works</h3>
+          <p data-i18n="pg.sweetP">
             A bold subject on a light or transparent background is where the converter shines.
             Clear shapes, only a few colors to juggle — every bead lands on what matters, and it
             looks great straight out of the box on the default settings. If you can start here,
@@ -240,22 +256,22 @@ const jsonLd = [
         </div>
         <div class="guide-item">
           <DemoFigure name="detailed-3d" />
-          <h3>Detailed &amp; 3D art needs more beads</h3>
-          <p>
+          <h3 data-i18n="pg.detailH">Detailed &amp; 3D art needs more beads</h3>
+          <p data-i18n="pg.detailP">
             Renders with soft shading, gradients, or a 3D feel carry a lot of subtle color. To do
             them justice, push the bead width up and raise the color count so the shading has
             enough beads and shades to land on. A little tuning here is the difference between a
             muddy blob and something that genuinely reads.
           </p>
           <div class="demo-chips">
-            <span>Colors → 16 or 24</span>
-            <span>Bead width → higher</span>
+            <span data-i18n="pg.chipColors">Colors → 16 or 24</span>
+            <span data-i18n="pg.chipWidth">Bead width → higher</span>
           </div>
         </div>
         <div class="guide-item">
           <DemoFigure name="keep-bg" />
-          <h3>Want the whole scene? You can keep it</h3>
-          <p>
+          <h3 data-i18n="pg.keepH">Want the whole scene? You can keep it</h3>
+          <p data-i18n="pg.keepP">
             Prefer the backdrop and all? Leave Remove background off so the surroundings stay in,
             and push the bead width up — a full scene needs more beads to hold both the subject
             and its background without turning to mush. Set Color simplification to Keep shades
@@ -263,47 +279,47 @@ const jsonLd = [
             figure isn't forced into a hard silhouette against the scene.
           </p>
           <div class="demo-chips">
-            <span>Remove background → off</span>
-            <span>Width → higher (Custom)</span>
-            <span>Simplification → Keep shades</span>
-            <span>Dark outline → off</span>
+            <span data-i18n="pg.chipRmBg">Remove background → off</span>
+            <span data-i18n="pg.chipWidthC">Width → higher (Custom)</span>
+            <span data-i18n="pg.chipKeep">Simplification → Keep shades</span>
+            <span data-i18n="pg.chipOutline">Dark outline → off</span>
           </div>
         </div>
       </div>
     </section>
 
     <section class="guide-card" aria-label="How it works">
-      <h2>How it works</h2>
-      <p class="guide-sub">From image to bead pattern in four steps</p>
+      <h2 data-i18n="pg.howTitle">How it works</h2>
+      <p class="guide-sub" data-i18n="pg.howSub">From image to bead pattern in four steps</p>
       <div class="guide-items">
         <div class="guide-item">
           <DemoFigure name="step-upload" />
-          <h3>1 · Upload your image</h3>
-          <p>
+          <h3 data-i18n="pg.s1H">1 · Upload your image</h3>
+          <p data-i18n="pg.s1P">
             Drop in a photo, logo, drawing or piece of pixel art. Clean shapes and strong contrast
             convert best, but you can refine anything after the first pass.
           </p>
         </div>
         <div class="guide-item">
           <DemoFigure name="step-convert" />
-          <h3>2 · Convert to a bead grid</h3>
-          <p>
+          <h3 data-i18n="pg.s2H">2 · Convert to a bead grid</h3>
+          <p data-i18n="pg.s2P">
             The converter maps your image onto a pegboard grid, snaps every cell to the closest
             real bead color, and shows a live preview you can steer with the settings above.
           </p>
         </div>
         <div class="guide-item">
           <DemoFigure name="step-refine" />
-          <h3>3 · Refine the result</h3>
-          <p>
+          <h3 data-i18n="pg.s3H">3 · Refine the result</h3>
+          <p data-i18n="pg.s3P">
             No converter nails every image — hit Edit in editor and fix stray beads by hand:
             repaint, erase, mirror strokes, simplify colors.
           </p>
         </div>
         <div class="guide-item">
           <DemoFigure name="step-print" />
-          <h3>4 · Print or make it</h3>
-          <p>
+          <h3 data-i18n="pg.s4H">4 · Print or make it</h3>
+          <p data-i18n="pg.s4P">
             The printed sheet carries the board with its pegboard seams plus the bead list with
             Mardiy codes — or download a PNG for your phone or tablet.
           </p>
@@ -312,9 +328,9 @@ const jsonLd = [
     </section>
 
     <section class="guide-card" aria-label="What you can control">
-      <h2>What you can control</h2>
-      <p class="guide-sub">A converter you can actually steer</p>
-      <p>
+      <h2 data-i18n="pg.ctlTitle">What you can control</h2>
+      <p class="guide-sub" data-i18n="pg.ctlSub">A converter you can actually steer</p>
+      <p data-i18n="pg.ctlIntro">
         Most image-to-bead tools give you a single automatic output. This one keeps you in
         control of size, colors, and every individual bead, so the result matches the beads you
         own and the look you want.
@@ -322,8 +338,8 @@ const jsonLd = [
       <div class="guide-items">
         <div class="guide-item">
           <DemoFigure name="ctl-colors" />
-          <h3>Colors: 8 to all 291</h3>
-          <p>
+          <h3 data-i18n="pg.cColorsH">Colors: 8 to all 291</h3>
+          <p data-i18n="pg.cColorsP">
             Fewer colors read cleaner and are easier to source — 8 or 12 covers most bold
             subjects. Raise it to 16 or 24 when the subject needs extra shades, or open it to all
             291 to keep every color the converter sees.
@@ -331,8 +347,8 @@ const jsonLd = [
         </div>
         <div class="guide-item">
           <DemoFigure name="ctl-width" />
-          <h3>Bead width: Auto, presets or Custom</h3>
-          <p>
+          <h3 data-i18n="pg.cWidthH">Bead width: Auto, presets or Custom</h3>
+          <p data-i18n="pg.cWidthP">
             Leave width on Auto for the size that keeps detail readable, pick a preset board
             (29 / 58 / 87 / 116), or type an exact width from 10 to 200 to hit a specific
             finished size.
@@ -340,8 +356,8 @@ const jsonLd = [
         </div>
         <div class="guide-item">
           <DemoFigure name="ctl-bg" />
-          <h3>Remove background</h3>
-          <p>
+          <h3 data-i18n="ph.removeBg">Remove background</h3>
+          <p data-i18n="pg.cBgP">
             Off by default, so full scenes convert as-is. Turn it on to clear the solid color
             connected to the edges — it works best when your subject already sits on a plain
             backdrop.
@@ -349,8 +365,8 @@ const jsonLd = [
         </div>
         <div class="guide-item">
           <DemoFigure name="ctl-simplify" />
-          <h3>Simplify shades &amp; dark outline</h3>
-          <p>
+          <h3 data-i18n="pg.cSimpH">Simplify shades &amp; dark outline</h3>
+          <p data-i18n="pg.cSimpP">
             Keep shades, Balanced or Bold decides how aggressively near-duplicate colors merge.
             Dark outline, also off by default, traces the silhouette in the darkest bead when you
             do cut the subject out.
@@ -360,34 +376,36 @@ const jsonLd = [
     </section>
 
     <section class="guide-card" aria-label="What your pattern includes">
-      <h2>What your pattern includes</h2>
+      <h2 data-i18n="pg.incTitle">What your pattern includes</h2>
       <ul class="pattern-includes">
-        <li>A printable pattern sheet with pegboard seams every 29 beads</li>
-        <li>Bead counts per color, each with its Mardiy code and hex</li>
-        <li>Pegboard count — how many 29 × 29 boards the design spans</li>
-        <li>A PNG export and a one-click jump into the bead editor</li>
+        <li data-i18n="pg.inc1">A printable pattern sheet with pegboard seams every 29 beads</li>
+        <li data-i18n="pg.inc2">Bead counts per color, each with its Mardiy code and hex</li>
+        <li data-i18n="pg.inc3">Pegboard count — how many 29 × 29 boards the design spans</li>
+        <li data-i18n="pg.inc4">A PNG export and a one-click jump into the bead editor</li>
       </ul>
-      <p class="fine-print">
+      <p class="fine-print" data-i18n="pg.fine">
         Convert photos you own or have the right to use. Bead versions of other people's artwork
         or characters are for your own shelf, not for sale.
       </p>
     </section>
 
     <section class="guide-card" aria-label="Frequently asked questions">
-      <h2>Frequently asked questions</h2>
+      <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
       <div class="faq">
         {faqs.map((f) => (
           <details>
-            <summary>{f.q}</summary>
-            <p>{f.a}</p>
+            <summary data-i18n={f.qKey}>{f.q}</summary>
+            <p data-i18n={f.aKey}>{f.a}</p>
           </details>
         ))}
       </div>
       <p class="keep-reading">
-        Rather start from a ready-made design? Browse the
-        <a href="/perler-bead-patterns/">full perler bead pattern set</a> — 116 animal, character,
-        food and Halloween boards at every size, each with the same printable template and bead
-        list.
+        <span data-i18n="pg.keepA">Rather start from a ready-made design? Browse the</span>
+        <a href="/perler-bead-patterns/" data-i18n="pg.keepLink">full perler bead pattern set</a>
+        <span data-i18n="pg.keepB">
+          — 116 animal, character, food and Halloween boards at every size, each with the same
+          printable template and bead list.
+        </span>
       </p>
     </section>
   </div>

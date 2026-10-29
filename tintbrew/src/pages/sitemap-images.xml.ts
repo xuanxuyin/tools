@@ -10,7 +10,13 @@
  */
 import type { APIRoute } from 'astro';
 import { SITE } from '../consts';
-import { patternContents, easyPatterns, CATEGORY_BASE } from '../lib/beadContent';
+import {
+  patternContents,
+  easyPatterns,
+  cutePatterns,
+  smallPatterns,
+  CATEGORY_BASE,
+} from '../lib/beadContent';
 
 export const GET: APIRoute = async () => {
   const img = (loc: string, title?: string) =>
@@ -46,6 +52,25 @@ export const GET: APIRoute = async () => {
   // the easy-patterns filter page gets its own declaration set
   urls.push(
     `<url><loc>${SITE.url}/easy-perler-bead-patterns/</loc>${easyPatterns
+      .map((v) => img(`${SITE.url}/pattern-thumbs/${v.def.slug}.webp`, v.def.name))
+      .join('')}</url>`,
+  );
+
+  // collection landings (2026-10-29) declare the thumbs they render — the
+  // letters page renders inline SVG glyphs, so it has no webp to declare
+  for (const [path, views] of [
+    ['/cute-perler-bead-patterns/', cutePatterns],
+    ['/small-perler-bead-patterns/', smallPatterns],
+  ] as const) {
+    urls.push(
+      `<url><loc>${SITE.url}${path}</loc>${views
+        .map((v) => img(`${SITE.url}/pattern-thumbs/${v.def.slug}.webp`, v.def.name))
+        .join('')}</url>`,
+    );
+  }
+  // the fuse synonym landing renders the full catalog — every thumb under it
+  urls.push(
+    `<url><loc>${SITE.url}/fuse-bead-patterns/</loc>${patternContents
       .map((v) => img(`${SITE.url}/pattern-thumbs/${v.def.slug}.webp`, v.def.name))
       .join('')}</url>`,
   );
