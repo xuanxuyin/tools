@@ -1,0 +1,63 @@
+---
+/**
+ * One times table, one letter page: the twelve facts as a filled reference
+ * block (facts 1-6 left, 7-12 right), then the same facts with the answers
+ * blanked for practice. Facts are computed from n — they cannot drift.
+ */
+interface Props {
+  n: number;
+}
+
+const { n } = Astro.props;
+const facts = Array.from({ length: 12 }, (_, i) => ({ a: i + 1, p: (i + 1) * n }));
+const rows = Array.from({ length: 6 }, (_, r) => [facts[r]!, facts[r + 6]!]);
+---
+
+<div class="tt-sheet">
+  <p class="sheet-title">{n} Times Table</p>
+  <div class="tt-block">
+    {rows.map(([l, r]) => (
+      <p class="tt-row"><span>{l.a} × {n} = {l.p}</span><span>{r.a} × {n} = {r.p}</span></p>
+    ))}
+  </div>
+  <p class="tt-directions">Cover the chart above, then fill in the answers:</p>
+  <div class="tt-block tt-practice">
+    {rows.map(([l, r]) => (
+      <p class="tt-row"><span>{l.a} × {n} = <span class="tt-box"></span></span><span>{r.a} × {n} = <span class="tt-box"></span></span></p>
+    ))}
+  </div>
+</div>
+
+<style>
+  .tt-sheet {
+    font-variant-numeric: tabular-nums;
+  }
+  .tt-block {
+    display: grid;
+    gap: 0.65rem;
+    max-width: 30rem;
+    margin: 0 auto;
+  }
+  .tt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .tt-directions {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #555;
+    margin: 1.4rem 0 0.9rem;
+  }
+  .tt-box {
+    display: inline-block;
+    width: 3.2rem;
+    height: 1.5rem;
+    border-bottom: 2px solid #999;
+    vertical-align: baseline;
+  }
+</style>

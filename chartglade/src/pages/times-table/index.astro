@@ -1,0 +1,73 @@
+---
+/**
+ * Times-table hub: the head page for the 1-12 single-table matrix (PLAN #29).
+ * Mirrors the cursive hub — every table one click away, plus the teaching
+ * order most US classrooms actually follow.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+import { timesTablePages } from '../../data/timesTables';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Times Tables', item: `${SITE.url}/times-table/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Times Tables 1-12 — Free Printable, One Page Per Table | ChartGlade"
+  description="Free printable times tables 1-12: every table on its own letter page with a filled reference chart and a blank practice strip — plus the order classrooms teach them in and the trick each table hangs on."
+  path="/times-table"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Times Tables</span>
+  </nav>
+
+  <section class="hero">
+    <h1>Times Tables 1-12</h1>
+    <p class="lead">
+      One table, one page, one letter sheet: the twelve facts as a filled reference chart on
+      top, the same facts blanked for practice below. Each page also carries the strategy
+      that table actually hangs on — the doubling chain, the finger trick, the five-and-two
+      build — because a table understood is a table kept.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Every table, its own page</h2>
+    <div class="letter-grid letter-grid-plain">
+      {timesTablePages.map((p) => (
+        <a class="letter-link" href={`/times-table/${p.n}/`}>
+          <span class="letter-link-glyph">{p.n}</span>
+          <span class="letter-link-name">{p.n} Times Table</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="prose section">
+    <h2>The order to teach them in</h2>
+    <p>
+      Not 1, 2, 3, 4. Classrooms that sequence by ease start with the tables whose patterns
+      carry them — 2s (doubles), 5s and 10s (skip counting kids already know), 11s (repeat the
+      digit) — then 9s (finger trick), 4s (double the doubles), 6s (five and one more set),
+      3s, 8s (double the 4s), and finish with the 7s, the one row with no pattern at all.
+      Each new table leans on one already fluent, which is the whole point of the order.
+    </p>
+    <p>
+      If you want the entire grid in one print instead of twelve pages, the
+      <a href="/multiplication-chart/">multiplication chart 1-12</a> puts all 144 facts on a
+      single sheet — and the <a href="/multiplication-chart-blank/">blank version</a> is the
+      same grid emptied out for fill-in practice. Most folders keep both: the chart for
+      looking up, these pages for learning one table at a time.
+    </p>
+  </section>
+</BaseLayout>

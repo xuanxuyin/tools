@@ -76,6 +76,7 @@ export const multiplicationPages: PageDef[] = [
     ],
     related: [
       { href: '/multiplication-chart-blank/', label: 'Blank multiplication chart for practice' },
+      { href: '/times-table/', label: 'Times tables 1-12 (one page per table)' },
       { href: '/multiplication-chart-1-20/', label: 'Multiplication chart 1-20 (challenge grid)' },
       { href: '/algebra-formula-sheet/', label: 'Algebra formula sheet (where the facts lead)' },
       { href: '/geometry-formula-sheet/', label: 'Geometry formula sheet' },
@@ -142,6 +143,7 @@ export const multiplicationPages: PageDef[] = [
     ],
     related: [
       { href: '/multiplication-chart/', label: 'Filled multiplication chart 1-12' },
+      { href: '/times-table/', label: 'Times tables 1-12 (one page per table)' },
       { href: '/multiplication-chart-1-15/', label: '1-15 chart (next step up)' },
       { href: '/addition-chart/', label: 'Addition chart for grade 1-2' },
       { href: '/charts/', label: 'All math charts' },

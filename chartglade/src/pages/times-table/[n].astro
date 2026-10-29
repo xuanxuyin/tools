@@ -1,0 +1,38 @@
+---
+import ChartPage from '../../components/ChartPage.astro';
+import TimesTableSheet from '../../components/printables/TimesTableSheet.astro';
+import { timesTablePages } from '../../data/timesTables';
+
+export function getStaticPaths() {
+  return timesTablePages.map((def) => ({ params: { n: String(def.n) }, props: { def } }));
+}
+
+const { def } = Astro.props;
+---
+
+<ChartPage def={def}>
+  <TimesTableSheet n={def.n} />
+  <nav slot="after" class="tt-nav" aria-label="Every times table">
+    {timesTablePages.map((p) =>
+      p.n === def.n ? (
+        <span class="tt-nav-current" aria-current="page">{p.n}</span>
+      ) : (
+        <a href={`/times-table/${p.n}/`}>{p.n}</a>
+      ),
+    )}
+  </nav>
+</ChartPage>
+
+<style>
+  .tt-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
+    font-size: 1.05rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .tt-nav-current {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+</style>
