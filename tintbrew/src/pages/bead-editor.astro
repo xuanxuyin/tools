@@ -1,0 +1,494 @@
+---
+/**
+ * The bead editor — the free-draw counterpart to the photo converter (same
+ * page pair as the source site, user call 2026-10-29). Size a board in
+ * pegboards, draw with the 103-color line, then print or export. The island
+ * (scripts/beadEditor.ts) receives converted photos through a sessionStorage
+ * handoff and autosaves local work; the SSR shell below carries the full
+ * instructions and FAQ either way.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = 'Perler Bead Pattern Editor — Design Your Own From Scratch | TintBrew';
+const description =
+  'Free bead pattern editor: size a pegboard grid, draw with all 103 real bead colors, mirror symmetric strokes, simplify shades, then print the chart or download a PNG. Autosaves in your browser.';
+
+const faqs = [
+  {
+    q: 'What size board should I start with?',
+    a: 'One large square pegboard holds 29 × 29 beads, so 29 × 29 is the natural first project — coasters, small sprites, keychains. 58 × 58 spans four boards and fits most character art; 87 × 87 and 116 × 116 are for big wall pieces. You can change the size any time the canvas is empty; once there are beads on it, the size locks so nothing gets cropped.',
+  },
+  {
+    q: 'Can I start from a photo instead of a blank grid?',
+    a: 'Yes — run your picture through the photo to bead pattern converter first, then hit Edit in editor under its preview. The whole converted board lands right here, ready to fix bead by bead. Going the other way works too: patterns you draw here print with the same bead list and pegboard seams.',
+  },
+  {
+    q: 'Where does my pattern get saved?',
+    a: 'In your browser only. The editor autosaves your board as you draw, so a refresh or an accidental tab close loses nothing — and nothing ever leaves your device. Clearing your browser data clears the draft, so print or download the PNG when a design is done.',
+  },
+  {
+    q: 'How do I print the finished chart?',
+    a: 'Hit Print pattern. The printed sheet carries the board at full color with pegboard seams every 29 beads, plus the bead list underneath — each color with its P-code, name and count — so you can pull beads and place them straight off the paper.',
+  },
+  {
+    q: 'What do the P-codes next to the colors mean?',
+    a: 'Every one of the 103 colors carries a P-code — the catalog number for this site’s bead line. The swatches, the bead list and the printed chart all use the same code, so P49 Cheddar means the same bead everywhere from screen to pegboard.',
+  },
+  {
+    q: 'My pattern has too many similar colors. Can I clean it up?',
+    a: 'Hit Simplify colors. It merges the nearest shade pairs into one bead — the lighter shade wins — until the remaining colors are comfortably apart. It is one click and fully undoable, so you can compare the two versions and keep the better one.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TintBrew Bead Pattern Editor',
+    url: `${SITE.url}/bead-editor/`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Perler Bead Patterns',
+        item: `${SITE.url}/perler-bead-patterns/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: 'Bead Pattern Editor',
+        item: `${SITE.url}/bead-editor/`,
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/bead-editor" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1>Design Your Own Perler Bead Patterns</h1>
+    <p class="lead">
+      A blank pegboard and all 103 real bead colors, right in the browser. Size the board, draw
+      bead by bead, mirror the halves for symmetric designs, then print the chart or download a
+      PNG. Your work autosaves — and patterns from the photo converter land here with one click.
+    </p>
+  </section>
+
+  <section class="tool-shell" data-bead-editor>
+    <div class="ed-top no-print">
+      <div class="ed-group">
+        <label class="ed-label" for="ed-size">Board size</label>
+        <select id="ed-size" data-ed-size>
+          <option value="29x29">29 × 29 — 1 board</option>
+          <option value="58x58">58 × 58 — 4 boards</option>
+          <option value="87x58">87 × 58 — 6 boards</option>
+          <option value="58x87">58 × 87 — 6 boards</option>
+          <option value="87x87">87 × 87 — 9 boards</option>
+          <option value="116x116">116 × 116 — 16 boards</option>
+          <option value="custom">Custom…</option>
+        </select>
+        <span class="ed-custom hidden" data-ed-custom-row>
+          <input type="number" inputmode="numeric" min="8" max="160" value="29" aria-label="Board width in beads" data-ed-w />
+          <span>×</span>
+          <input type="number" inputmode="numeric" min="8" max="160" value="29" aria-label="Board height in beads" data-ed-h />
+          <button type="button" class="btn" data-ed-apply>Apply</button>
+        </span>
+        <span class="ed-locked hidden" data-ed-locked role="note">
+          Size locks once beads are on the board — Reset clears it.
+        </span>
+      </div>
+      <div class="ed-group ed-zoom">
+        <span class="ed-label">Zoom</span>
+        <button type="button" class="btn" data-ed-zoom-out aria-label="Zoom out">−</button>
+        <span class="ed-zoom-value" data-ed-zoom-label>100%</span>
+        <button type="button" class="btn" data-ed-zoom-in aria-label="Zoom in">+</button>
+        <button type="button" class="btn" data-ed-fit>Fit</button>
+      </div>
+    </div>
+    <p class="ed-note hidden no-print" data-ed-note></p>
+
+    <div class="ed-body">
+      <div class="ed-canvas-col">
+        <div class="ed-host" data-ed-canvas-host></div>
+      </div>
+
+      <div class="ed-controls no-print">
+        <div class="ed-group">
+          <span class="ed-label">Tools</span>
+          <div class="tool-row" role="group" aria-label="Editor tools">
+            <button type="button" class="btn tool-btn active" data-ed-tool="brush" aria-pressed="true">Brush</button>
+            <button type="button" class="btn tool-btn" data-ed-tool="eraser" aria-pressed="false">Eraser</button>
+            <button type="button" class="btn tool-btn" data-ed-tool="pick" aria-pressed="false">Pick color</button>
+            <button type="button" class="btn tool-btn" data-ed-undo>Undo</button>
+            <button type="button" class="btn tool-btn" data-ed-mirror aria-pressed="false" title="Every stroke lands on the mirrored cell too">Mirror</button>
+            <button type="button" class="btn tool-btn" data-ed-reset>Reset</button>
+          </div>
+        </div>
+
+        <div class="ed-group">
+          <label class="ed-label" for="ed-search">Colors <span class="ed-hint">103 beads — search by P-code or name</span></label>
+          <div class="ed-active-row">
+            <span class="ed-active" data-ed-active></span>
+            <input type="search" id="ed-search" placeholder="Search colors…" data-ed-search />
+          </div>
+          <div class="ed-library" data-ed-library role="group" aria-label="Bead colors"></div>
+          <label class="cv-custom ed-custom-color">
+            custom color
+            <input type="color" value="#000000" data-ed-custom aria-label="Custom color, snapped to the nearest bead" />
+            <span class="ed-hint">snapped to the nearest bead</span>
+          </label>
+        </div>
+
+        <div class="ed-group">
+          <button type="button" class="btn" data-ed-simplify>Simplify colors</button>
+        </div>
+
+        <div class="ed-group ed-actions">
+          <button type="button" class="btn act-primary" data-ed-png>Download PNG</button>
+          <button type="button" class="btn" data-ed-print>Print pattern</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="ed-stats" data-ed-stats aria-live="polite">1 pegboard (1 × 1) · 0 beads · 0 colors</p>
+
+    <div class="ed-listcard">
+      <h2>Beads you'll need</h2>
+      <ul class="ed-list" data-ed-list>
+        <li class="cv-empty">Start drawing to build your project palette.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2>How it works</h2>
+    <ol>
+      <li>
+        <strong>Size the board.</strong> Pick a pegboard preset — 29 × 29 for a first project,
+        bigger grids for full scenes — or enter a custom width and height. Seams in the preview
+        mark where each physical pegboard ends.
+      </li>
+      <li>
+        <strong>Draw.</strong> Choose a color and click or drag; Mirror paints both halves at
+        once, Pick color lifts a shade straight off the board, and Undo walks back mistakes.
+        The bead list and board stats update as you go.
+      </li>
+      <li>
+        <strong>Clean up the palette.</strong> Simplify colors merges the nearest shade pairs
+        until the palette is shopping-friendly — one click, one undo if you preferred the
+        detailed version.
+      </li>
+      <li>
+        <strong>Print or export.</strong> Print pattern gives you the chart and the bead list on
+        paper; Download PNG saves the board as an image for a phone or tablet.
+      </li>
+    </ol>
+
+    <h2>What to design</h2>
+    <ul>
+      <li><strong>Pixels and sprites</strong> — anything born on a grid lands on the pegboard almost 1:1</li>
+      <li><strong>Letters and numbers</strong> — names, monograms, classroom door signs</li>
+      <li><strong>Coasters and keychains</strong> — 29 × 29 is exactly one board's worth</li>
+      <li><strong>Seasonal pieces</strong> — hearts for February, eggs and spring themes, snowflakes in winter</li>
+      <li><strong>Big wall art</strong> — 87 × 87 and up, drawn one pegboard at a time along the seams</li>
+    </ul>
+
+    <h2>Blank grid or photo converter?</h2>
+    <p>
+      Draw here when the design lives in your head or on paper. Already have an image? The{' '}
+      <a href="/photo-to-perler-bead-pattern/">photo to bead pattern converter</a> turns it into
+      a board automatically — then its <em>Edit in editor</em> button hands the result to this
+      page for touch-ups. Or skip both and start from a{' '}
+      <a href="/perler-bead-patterns/">ready-made pattern</a>, where every board opens recolorable
+      in the same 103 colors.
+    </p>
+
+    <h2>Printing your bead chart</h2>
+    <p>
+      Hit Print pattern when the board is done. The printed sheet carries the full grid in color
+      with pegboard seams every 29 beads, and beneath it the bead list — P-code, name and count
+      for every color — so placement and shopping both happen off one page.
+    </p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+
+    <p class="keep-reading">
+      Looking for something to make first? Browse the{' '}
+      <a href="/perler-bead-patterns/">full perler bead pattern set</a> — 116 free boards at
+      every size, each printable with the same bead list.
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../scripts/beadEditor';
+</script>
+
+<style>
+  .tool-shell {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: var(--sp-4);
+    background: var(--bg, #fff);
+  }
+  .ed-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-3);
+    margin-bottom: var(--sp-2);
+  }
+  .ed-group { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .ed-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-right: 2px;
+  }
+  .ed-hint { font-weight: 400; font-size: 0.78rem; color: var(--ink-soft, #666); }
+  .ed-top select {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font: inherit;
+    background: var(--bg, #fff);
+  }
+  .ed-custom input {
+    width: 72px;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font: inherit;
+  }
+  .ed-locked {
+    font-size: 0.8rem;
+    color: #b45309;
+  }
+  .ed-zoom { margin-left: auto; }
+  .ed-zoom-value {
+    min-width: 44px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-soft, #666);
+  }
+  .ed-note {
+    margin: 0 0 var(--sp-2);
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: #fffaf0;
+    font-size: 0.85rem;
+  }
+  .ed-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--sp-4);
+    align-items: start;
+  }
+  @media (max-width: 960px) {
+    .ed-body { grid-template-columns: 1fr; }
+  }
+  .ed-canvas-col { min-width: 0; }
+  .ed-host {
+    overflow: auto; /* zoomed-in boards scroll inside the card */
+    max-height: 72vh;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #f4efe8;
+  }
+  .ed-controls { display: grid; gap: var(--sp-3); align-content: start; }
+  @media (min-width: 961px) {
+    .ed-controls { position: sticky; top: 12px; }
+  }
+  .tool-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tool-btn.active {
+    border-color: var(--accent, #b3552e);
+    box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
+  }
+  .ed-active-row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+  .ed-active {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    background: #000;
+  }
+  .ed-active-row input {
+    flex: 1;
+    min-width: 0;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font: inherit;
+  }
+  .ed-custom-color {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--ink-soft, #666);
+    margin-top: var(--sp-2);
+  }
+  .ed-custom-color input {
+    width: 34px;
+    height: 26px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: none;
+    cursor: pointer;
+  }
+  .ed-actions .act-primary {
+    border-color: var(--accent, #b3552e);
+    box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
+    font-weight: 600;
+  }
+  .ed-stats {
+    margin: var(--sp-3) 0 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft, #666);
+    font-variant-numeric: tabular-nums;
+  }
+  .ed-listcard h2 { font-size: 1.15rem; margin-bottom: var(--sp-2); }
+  .ed-listcard { margin-top: var(--sp-3); }
+  .hidden { display: none !important; }
+</style>
+
+<style is:global>
+  /* Runtime pieces (the board svg, the library swatches, the list items) are
+     created by scripts/beadEditor.ts outside the scoped tree — same globals
+     pattern as the pattern pages and the photo converter. */
+  .ed-host .ed-board {
+    display: block;
+    height: auto;
+    touch-action: none;
+    user-select: none;
+    cursor: crosshair;
+  }
+  .ed-host .pv-cell {
+    stroke: rgba(0, 0, 0, 0.08);
+    stroke-width: 0.6;
+    cursor: crosshair;
+  }
+  .ed-host .pv-peg {
+    fill: #ffffff;
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 0.5;
+    cursor: crosshair;
+  }
+  .ed-host .pv-seam {
+    stroke: rgba(0, 0, 0, 0.32);
+    stroke-width: 0.8;
+    pointer-events: none;
+  }
+  .ed-host .pv-border {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.18);
+    stroke-width: 1;
+    pointer-events: none;
+  }
+  .ed-library {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    max-height: 260px;
+    overflow: auto;
+  }
+  [data-bead-editor] .cv-swatch {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    padding: 0;
+  }
+  [data-bead-editor] .cv-swatch.active {
+    outline: 2px solid var(--accent, #b3552e);
+    outline-offset: 1px;
+  }
+  [data-bead-editor] .cv-empty {
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+    font-style: italic;
+  }
+  [data-bead-editor] .ed-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  [data-bead-editor] .ed-list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg, #fff);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+  [data-bead-editor] .cv-item-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex: none;
+  }
+
+  @media print {
+    .site-header,
+    .site-footer,
+    .no-print,
+    .ed-top,
+    .ed-controls,
+    .keep-reading,
+    .hero,
+    .prose {
+      display: none !important;
+    }
+    .tool-shell { border: none; padding: 0; }
+    .ed-host {
+      overflow: visible;
+      max-height: none;
+      border: none;
+    }
+    .ed-body { display: block; }
+    .ed-host .ed-board { width: 100% !important; }
+    .ed-stats,
+    .ed-listcard li {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>

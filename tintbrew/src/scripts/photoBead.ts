@@ -1,27 +1,40 @@
 /**
- * Photo → bead-pattern island. The SSR page ships the upload controls and
- * the how-to content; this script adds the play: pick (or drag) a picture,
- * and it's sampled onto a full bead board — every cell snapped to the
- * nearest real bead by Oklab distance, so gradients survive. The rendered
- * board reuses the cv-cell DOM contract, then hands itself to PaintCanvas:
- * the brush, eraser, mirror, custom-color snapping and the live materials
- * list all work on the converted pattern with zero new interaction code.
+ * Photo → bead-pattern island, laid out like the source-site pattern maker
+ * (user call, 2026-10-29): upload → auto-convert, steer with five settings
+ * (color count, shade simplification, bead width, background removal, dark
+ * outline), and read the result off three panels — pattern summary,
+ * conversion info, and beads required per color with the P-codes shoppers
+ * order by. The preview itself is a crisp non-editable board with pegboard
+ * seams every 29 cells; fixing a stray bead happens one click away in the
+ * editor (sessionStorage handoff), exactly like the source site.
  * Everything stays in the browser — the photo is never uploaded anywhere.
  */
-import { photoToPattern, type PhotoMode, type PhotoPattern, type SampleImage } from '../lib/photoToPattern';
-import { BEAD_COLORS, beadById } from '../lib/beadPalette';
-import { PaintCanvas } from './beadPaint';
+import { photoToPattern, type PhotoPattern, type PhotoSimplify, type SampleImage } from '../lib/photoToPattern';
+import { beadById } from '../lib/beadPalette';
+import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
 
-const U = 10; // viewBox units per cell — matches BeadCanvas.astro
-const G = 16; // coordinate gutter (viewBox units)
-const MAX_SCALE = 1.25; // rendered-width cap, same idea as the blank canvas
-const SVG_NS = 'http://www.w3.org/2000/svg';
-const DECODE_CAP = 1600; // sampling beyond this only burns memory; at the
-// 116-wide board option it still feeds every cell ~13 source pixels
+const U = 10; // viewBox units per cell
+const HANDOFF_KEY = 'bead-editor:handoff';
+const DEBOUNCE_MS = 180;
+const DECODE_CAP = 1600;
+const MIN_CUSTOM = 8;
+const MAX_CUSTOM = 120;
+
+/** Width presets shown as pills — same ladder as the source site. */
+export const WIDTH_PRESETS: { value: string; label: string }[] = [
+  { value: 'auto', label: 'Auto' },
+  { value: '29', label: '29 · Compact' },
+  { value: '58', label: '58 · Balanced' },
+  { value: '87', label: '87 · Detailed' },
+  { value: '116', label: '116 · Extra detailed' },
+  { value: 'custom', label: 'Custom' },
+];
 
 export class PhotoStudio {
   private source: SampleImage | null = null;
-  private sourceUrl: string | null = null; // blob URL for the source photo preview
+  private pattern: PhotoPattern | null = null;
+  private sourceUrl: string | null = null;
+  private timer: number | undefined;
 
   constructor(private root: HTMLElement) {
     const fileInput = root.querySelector<HTMLInputElement>('[data-photo-file]')!;
@@ -33,7 +46,6 @@ export class PhotoStudio {
     });
     dropZone.addEventListener('click', () => fileInput.click());
     dropZone.addEventListener('keydown', (e) => {
-      // the drop zone carries role="button" — keys must reach it too
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         fileInput.click();
@@ -55,40 +67,105 @@ export class PhotoStudio {
     window.addEventListener('dragover', (e) => e.preventDefault());
     window.addEventListener('drop', (e) => e.preventDefault());
 
-    root.addEventListener('click', (e) => {
-      if ((e.target as HTMLElement).closest('[data-photo-convert]')) this.convert();
-      // print lives with the touch-up tools (not the upload controls) —
-      // users print after editing, and the print CSS keeps the board, the
-      // bead list and the source photo while the tool panel hides
-      if ((e.target as HTMLElement).closest('[data-photo-print]')) window.print();
-    });
-    // an option change re-converts immediately — no dead "Convert" clicks
+    root.addEventListener('click', (e) => this.onClick(e));
+    // every setting re-converts on its own — no Convert button to hunt for
     root.addEventListener('change', (e) => {
       const t = e.target as HTMLElement;
-      if (t.matches('[data-photo-size], [data-photo-mode], [data-photo-colors]') && this.source) {
-        this.convert();
+      if (t.matches('[data-photo-bg], [data-photo-outline], [data-photo-custom-width]')) {
+        this.scheduleConvert();
       }
     });
+  }
+
+  private onClick(e: Event): void {
+    const target = e.target as HTMLElement | null;
+    if (!target) return;
+    const pill = target.closest<HTMLButtonElement>('[data-photo-colors] > button, [data-photo-simplify] > button, [data-photo-size] > button');
+    if (pill) {
+      pill.parentElement!.querySelectorAll('button').forEach((b) => {
+        b.classList.toggle('active', b === pill);
+        b.setAttribute('aria-checked', b === pill ? 'true' : 'false');
+      });
+      this.updateCustomRow();
+      this.scheduleConvert();
+      return;
+    }
+    if (target.closest('[data-photo-print]')) {
+      window.print();
+      return;
+    }
+    if (target.closest('[data-photo-png]')) {
+      const p = this.pattern;
+      if (p) {
+        downloadBoardPng(
+          p.cols,
+          p.rows,
+          (y, x) => beadById(p.cells[y * p.cols + x] ?? '')?.hex ?? null,
+          'tintbrew-bead-pattern.png',
+        );
+      }
+      return;
+    }
+    if (target.closest('[data-photo-edit]')) this.openInEditor();
+  }
+
+  /** The custom-width input only makes sense on the Custom preset. */
+  private updateCustomRow(): void {
+    const row = this.root.querySelector('[data-photo-custom-row]');
+    if (!row) return;
+    const active = this.root.querySelector('[data-photo-size] > button.active')?.getAttribute('data-value');
+    row.classList.toggle('hidden', active !== 'custom');
   }
 
   private status(): HTMLElement {
     return this.root.querySelector('[data-photo-status]')!;
   }
 
-  private opts(): { cols: number; mode: PhotoMode; maxColors: number } {
-    const sel = (key: string) =>
-      Number((this.root.querySelector<HTMLSelectElement>(key))?.value ?? 0);
-    const sizeVal = (this.root.querySelector<HTMLSelectElement>('[data-photo-size]'))?.value;
-    const mode = (this.root.querySelector<HTMLSelectElement>('[data-photo-mode]'))?.value;
-    return {
-      cols:
+  private pillGroup(key: string): string {
+    return this.root.querySelector(`${key} > button.active`)?.getAttribute('data-value') ?? '';
+  }
+
+  private opts(): {
+    cols: number;
+    mode: 'smooth' | 'dither';
+    maxColors: number;
+    simplify: PhotoSimplify;
+    removeBackground: boolean;
+    darkOutline: boolean;
+  } {
+    const sizeVal = this.pillGroup('[data-photo-size]');
+    const custom = Number(
+      (this.root.querySelector<HTMLInputElement>('[data-photo-custom-width]')?.value ?? '').trim(),
+    );
+    const error = this.root.querySelector('[data-photo-width-error]');
+    let cols: number;
+    if (sizeVal === 'custom') {
+      if (!Number.isFinite(custom) || custom < MIN_CUSTOM || custom > MAX_CUSTOM) {
+        error?.classList.remove('hidden');
+        cols = -1; // signal: hold the last board until the input is valid
+      } else {
+        error?.classList.add('hidden');
+        cols = Math.round(custom);
+      }
+    } else {
+      error?.classList.add('hidden');
+      cols =
         sizeVal === 'auto'
           ? this.source
             ? PhotoStudio.autoCols(this.source.width, this.source.height)
-            : 29
-          : Number(sizeVal) || 29,
-      mode: mode === 'dither' ? 'dither' : 'smooth',
-      maxColors: sel('[data-photo-colors]') || 24,
+            : BOARD_SIZE
+          : Number(sizeVal) || BOARD_SIZE;
+    }
+    const simplifyVal = this.pillGroup('[data-photo-simplify]');
+    const bg = this.root.querySelector<HTMLInputElement>('[data-photo-bg]');
+    const outline = this.root.querySelector<HTMLInputElement>('[data-photo-outline]');
+    return {
+      cols,
+      mode: 'smooth',
+      maxColors: Number(this.pillGroup('[data-photo-colors]')) || 12,
+      simplify: simplifyVal === 'keep' || simplifyVal === 'bold' ? simplifyVal : 'balanced',
+      removeBackground: bg ? bg.checked : true,
+      darkOutline: outline?.checked ?? false,
     };
   }
 
@@ -98,15 +175,14 @@ export class PhotoStudio {
       status.textContent = 'That file is not an image — pick a JPG, PNG or WebP.';
       return;
     }
-    // release the previous blob URL so we don't leak one per upload
     if (this.sourceUrl) URL.revokeObjectURL(this.sourceUrl);
     this.sourceUrl = URL.createObjectURL(file);
     status.textContent = 'Reading your photo…';
     try {
       this.source = await this.decode(file);
-      // a fresh photo resets the board to Auto — the convert below sizes the
-      // board to whatever detail this picture actually carries
-      this.autoSize();
+      // a fresh photo resets the width to Auto, like the source site
+      const auto = this.root.querySelector<HTMLButtonElement>('[data-photo-size] > [data-value="auto"]');
+      auto?.click();
       this.convert();
     } catch {
       status.textContent = 'Could not read that image — try a different file.';
@@ -114,22 +190,9 @@ export class PhotoStudio {
   }
 
   /** Board width that keeps the photo's structure readable: ≥2.2 source
-   *  pixels per cell on the short edge, clamped to [29, 116]. Structure
-   *  resolution beats noise suppression here — an area average over even a
-   *  2×2 pixel block smooths pixel noise, while a small board collapses
-   *  whole subjects into blobs (user-tested: a busy 387-px scene was
-   *  unrecognizable at 29, clearest at 116). Measured isolated-cell rate
-   *  does NOT rise with board size (6.0% at 29-wide vs 4.8% at 116-wide)
-   *  and per-area speckle shrinks with cell size, so bigger wins on both. */
+   *  pixels per cell on the short edge, clamped to [29, 116]. */
   static autoCols(width: number, height: number): number {
     return Math.min(116, Math.max(29, Math.round(Math.min(width, height) / 2.2)));
-  }
-
-  /** A fresh photo resets the Board size to Auto — the next convert lands on
-   *  whatever width this particular picture carries detail for. */
-  private autoSize(): void {
-    const sel = this.root.querySelector<HTMLSelectElement>('[data-photo-size]');
-    if (sel) sel.value = 'auto';
   }
 
   /** File → RGBA pixels. Decodes locally; nothing leaves the browser. */
@@ -166,14 +229,8 @@ export class PhotoStudio {
     canvas.height = ch;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) throw new Error('no 2d context');
-    // bead conversion wants the colors that are IN the source: smoothing
-    // would blur a large cartoon's outlines into mid-tones before the
-    // engine ever samples them. Nearest keeps hard edges hard; the engine
-    // averages per cell where averaging is right (smooth photo gradients)
     ctx.imageSmoothingEnabled = false;
     draw(ctx);
-    // a 12MP phone photo decodes to ~48MB of bitmap memory — release it
-    // the moment it's on the canvas instead of waiting for GC
     bmp?.close();
     const img = ctx.getImageData(0, 0, cw, ch);
     return { data: img.data, width: cw, height: ch };
@@ -185,12 +242,22 @@ export class PhotoStudio {
     this.convert();
   }
 
+  /** Debounced re-convert — settings changes arrive in bursts while a user
+   *  walks the pills; one conversion per settle keeps the page responsive. */
+  private scheduleConvert(): void {
+    if (!this.source) return;
+    window.clearTimeout(this.timer);
+    this.timer = window.setTimeout(() => this.convert(), DEBOUNCE_MS);
+  }
+
   private convert(): void {
     if (!this.source) return;
+    const opts = this.opts();
+    if (opts.cols < 1) return; // custom width mid-edit — keep the last board
     const status = this.status();
     let pattern: PhotoPattern;
     try {
-      pattern = photoToPattern(this.source, this.opts());
+      pattern = photoToPattern(this.source, opts);
     } catch {
       status.textContent = 'Conversion failed — try another photo.';
       return;
@@ -199,157 +266,115 @@ export class PhotoStudio {
       status.textContent = 'Conversion failed — try another photo.';
       return;
     }
-    this.render(pattern);
-    status.textContent = `${pattern.cols} × ${pattern.rows} board — ${pattern.cells.length.toLocaleString('en-US')} beads. Paint over any cell you want to change, then print.`;
-    // upsampling past the photo's detail just resamples anti-aliasing — say
-    // so when a hand-picked board outruns what the source can feed it (Auto
-    // by definition never does)
-    const sizeSel = this.root.querySelector<HTMLSelectElement>('[data-photo-size]');
-    if (sizeSel && sizeSel.value !== 'auto') {
-      const suggested = PhotoStudio.autoCols(this.source.width, this.source.height);
-      if (this.opts().cols > suggested) {
-        status.textContent += ` Heads up: this photo only carries about ${suggested} beads of detail — Auto (${suggested} wide) prints cleaner.`;
-      }
-    }
+    this.pattern = pattern;
+    this.render(pattern, opts);
+    const beads = pattern.cells.filter(Boolean).length;
+    const colors = new Set(pattern.cells.filter(Boolean)).size;
+    status.textContent = `Pattern generated — ${pattern.cols} × ${pattern.rows}, ${beads.toLocaleString('en-US')} beads in ${colors} ${colors === 1 ? 'color' : 'colors'}. Open it in the editor to fix any bead.`;
     this.root
       .querySelector('[data-photo-stage]')
       ?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
   }
 
-  /** Build the editable board: same cv-cell contract as BeadCanvas.astro,
-   *  pre-filled with the converted colors, then handed to PaintCanvas. */
-  private render(p: PhotoPattern): void {
+  /** The result block: action row, the crisp preview board, the summary and
+   *  conversion panels, and the per-color bead list with P-codes. */
+  private render(p: PhotoPattern, opts: { cols: number; maxColors: number; simplify: string }): void {
     const stage = this.root.querySelector<HTMLElement>('[data-photo-stage]')!;
     stage.innerHTML = '';
+    const beads = p.cells.filter(Boolean).length;
+    const colors = new Set(p.cells.filter(Boolean));
+    const bw = Math.ceil(p.cols / BOARD_SIZE);
+    const bh = Math.ceil(p.rows / BOARD_SIZE);
+    const suggested = this.source ? PhotoStudio.autoCols(this.source.width, this.source.height) : p.cols;
+    const overwiden = opts.cols > suggested;
+    const sizeLabel =
+      this.pillGroup('[data-photo-size]') === 'custom'
+        ? `Custom bead width: ${opts.cols}`
+        : this.pillGroup('[data-photo-size]') === 'auto'
+          ? `Auto: ${opts.cols} beads — the detail this photo carries`
+          : `Preset width: ${opts.cols} beads`;
 
     const card = document.createElement('div');
     card.className = 'paint-card';
-    card.setAttribute('data-bead-paint', '');
+    card.setAttribute('data-photo-result', '');
 
-    const body = document.createElement('div');
-    body.className = 'paint-body';
+    const actions = document.createElement('div');
+    actions.className = 'photo-actions no-print';
+    actions.innerHTML = `
+      <button type="button" class="btn act-primary" data-photo-edit>Edit in editor</button>
+      <button type="button" class="btn" data-photo-png>Download PNG</button>
+      <button type="button" class="btn" data-photo-print>Print pattern</button>
+    `;
 
     const figure = document.createElement('figure');
     figure.className = 'fig-card';
     const caption = document.createElement('figcaption');
     const capTitle = document.createElement('span');
-    capTitle.textContent = 'Your pattern';
+    capTitle.textContent = 'Pattern preview';
     const capHint = document.createElement('span');
     capHint.className = 'hint';
-    capHint.textContent = `${p.cols} × ${p.rows} — tap a bead to fix it`;
+    capHint.textContent = `${p.cols} × ${p.rows} beads — seams mark the pegboards`;
     caption.append(capTitle, capHint);
+    figure.append(caption, this.buildBoard(p));
 
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    svg.setAttribute('class', 'bead-fig');
-    svg.setAttribute('data-bead-canvas', '');
-    svg.setAttribute('data-cols', String(p.cols));
-    svg.setAttribute('data-rows', String(p.rows));
-    svg.setAttribute('viewBox', `0 0 ${p.cols * U + G} ${p.rows * U + G}`);
-    svg.style.maxWidth = `${Math.round((p.cols * U + G) * MAX_SCALE)}px`;
-    svg.setAttribute('role', 'img');
-    svg.setAttribute('aria-label', 'Your photo converted to a bead pattern — every cell is editable');
-
-    const coords = document.createElementNS(SVG_NS, 'g');
-    coords.setAttribute('class', 'cv-coords');
-    coords.setAttribute('aria-hidden', 'true');
-    for (let c = 5; c <= p.cols; c += 5) {
-      const t = document.createElementNS(SVG_NS, 'text');
-      t.setAttribute('class', 'cv-label');
-      t.setAttribute('x', String(G + c * U - U / 2));
-      t.setAttribute('y', String(G / 2));
-      t.textContent = String(c);
-      coords.appendChild(t);
-    }
-    for (let r = 5; r <= p.rows; r += 5) {
-      const t = document.createElementNS(SVG_NS, 'text');
-      t.setAttribute('class', 'cv-label');
-      t.setAttribute('x', String(G / 2));
-      t.setAttribute('y', String(G + r * U - U / 2));
-      t.textContent = String(r);
-      coords.appendChild(t);
-    }
-    svg.appendChild(coords);
-
-    for (let y = 0; y < p.rows; y++) {
-      for (let x = 0; x < p.cols; x++) {
-        const bead = beadById(p.cells[y * p.cols + x]!);
-        if (!bead) continue;
-        // region underlay: a low-opacity tint under every cell. Painted
-        // cells cover it completely; erase or Clear all makes the cell
-        // transparent and the region tint shows through — an emptied board
-        // still tells you where each color area was (and prints as a
-        // fill-it-yourself template)
-        const ghost = document.createElementNS(SVG_NS, 'rect');
-        ghost.setAttribute('class', 'cv-ghost');
-        ghost.setAttribute('x', String(x * U + G));
-        ghost.setAttribute('y', String(y * U + G));
-        ghost.setAttribute('width', String(U));
-        ghost.setAttribute('height', String(U));
-        ghost.setAttribute('fill', bead.hex);
-        const rect = document.createElementNS(SVG_NS, 'rect');
-        rect.setAttribute('class', 'cv-cell colored');
-        rect.setAttribute('data-cx', String(x));
-        rect.setAttribute('data-cy', String(y));
-        rect.setAttribute('x', String(x * U + G));
-        rect.setAttribute('y', String(y * U + G));
-        rect.setAttribute('width', String(U));
-        rect.setAttribute('height', String(U));
-        rect.setAttribute('fill', bead.hex);
-        svg.appendChild(ghost);
-        svg.appendChild(rect);
-      }
-    }
-
-    figure.append(caption, svg);
-
-    // Tool panel mirrors BeadCanvas.astro's markup — PaintCanvas binds to
-    // these data-* hooks, so the converted board is instantly editable.
-    const tools = document.createElement('div');
-    tools.className = 'paint-tools no-print';
-    tools.innerHTML = `
-      <h3>Touch it up</h3>
-      <p class="side-note">
-        Wrong bead somewhere? The brush repaints any cell, the eraser wipes it
-        back to white, and <strong>Mirror</strong> paints both halves at once.
-        The list below counts exactly what your board uses.
-      </p>
-      <div class="tool-row" role="group" aria-label="Paint tools">
-        <button type="button" class="btn tool-btn active" data-cv-tool="brush" aria-pressed="true">Brush</button>
-        <button type="button" class="btn tool-btn" data-cv-tool="eraser" aria-pressed="false">Eraser</button>
-        <button type="button" class="btn tool-btn" data-cv-mirror aria-pressed="false" title="Every stroke lands on the mirrored cell too">Mirror</button>
-        <button type="button" class="btn tool-btn" data-cv-clear>Clear all</button>
-        <button type="button" class="btn tool-btn" data-photo-print>Print pattern</button>
+    const summary = document.createElement('div');
+    summary.className = 'panel-grid';
+    summary.innerHTML = `
+      <div class="panel-card">
+        <p class="panel-label">Pattern summary</p>
+        <div class="panel-lines">
+          <p class="strong">${p.cols} × ${p.rows} beads</p>
+          <p>${bw * bh} ${bw * bh === 1 ? 'pegboard' : 'pegboards'} — ${bw} × ${bh}</p>
+          <p>${beads.toLocaleString('en-US')} ${beads === 1 ? 'bead' : 'beads'}</p>
+          <p>${colors.size} ${colors.size === 1 ? 'color' : 'colors'}</p>
+        </div>
       </div>
-      <div class="cv-palette" role="group" aria-label="Bead colors">
-        ${BEAD_COLORS.map(
-          (b) =>
-            `<button type="button" class="cv-swatch${b.id === 'black' ? ' active' : ''}" data-cv-color="${b.id}" style="background:${b.hex}" title="${b.name}" aria-label="Paint with ${b.name}" aria-pressed="${b.id === 'black'}"></button>`,
-        ).join('')}
+      <div class="panel-card">
+        <p class="panel-label">Conversion</p>
+        <div class="panel-lines">
+          <p>Matched to the real 103-color bead line</p>
+          <p>${sizeLabel}</p>
+          ${overwiden ? `<p class="warn">This photo carries about ${suggested} beads of detail — Auto (${suggested} wide) prints cleaner.</p>` : ''}
+        </div>
       </div>
-      <label class="cv-custom">custom color
-        <input type="color" data-cv-custom aria-label="Custom paint color, snapped to the nearest bead" />
-        <span class="cv-custom-hint">snapped to the nearest bead</span>
-      </label>
     `;
 
-    // the bead list is a sibling of the tools, NOT inside them — the tools
-    // panel hides in print, and the shopping list is half the print output
+    const counts = new Map<string, number>();
+    for (const id of p.cells) if (id) counts.set(id, (counts.get(id) ?? 0) + 1);
+    const rows = [...counts.entries()]
+      .map(([id, count]) => ({ bead: beadById(id)!, count }))
+      .sort((a, b) => b.count - a.count);
+
     const listCard = document.createElement('div');
-    listCard.className = 'cv-list-card';
-    const listTitle = document.createElement('h3');
-    listTitle.textContent = 'Bead list';
-    const list = document.createElement('ul');
-    list.className = 'bead-list cv-list';
-    list.setAttribute('data-cv-list', '');
-    const listEmpty = document.createElement('li');
-    listEmpty.className = 'cv-empty';
-    listEmpty.textContent = 'Nothing painted yet — your bead list builds as you draw.';
-    list.appendChild(listEmpty);
+    listCard.className = 'panel-card beads-card';
+    const listTitle = document.createElement('p');
+    listTitle.className = 'panel-title';
+    listTitle.textContent = 'Beads required per color';
+    const list = document.createElement('div');
+    list.className = 'bead-rows';
+    list.setAttribute('data-photo-color-list', '');
+    for (const { bead, count } of rows) {
+      const row = document.createElement('div');
+      row.className = 'bead-row';
+      row.title = `${bead.code} · ${bead.name} (${bead.hex})`;
+      const swatch = document.createElement('span');
+      swatch.className = 'row-swatch';
+      swatch.style.background = bead.hex;
+      const label = document.createElement('span');
+      label.className = 'row-label';
+      const code = document.createElement('strong');
+      code.textContent = bead.code;
+      label.append(code, ` ${bead.name} (${bead.hex})`);
+      const n = document.createElement('span');
+      n.className = 'row-count';
+      n.textContent = String(count);
+      row.append(swatch, label, n);
+      list.appendChild(row);
+    }
     listCard.append(listTitle, list);
 
-    // source photo thumbnail — so the user can compare the original to the
-    // bead board. The URL is only set via the real upload path; the test
-    // shortcut (convertSample) has no URL and skips the preview.
+    // source photo thumbnail — compare the original to the board while
+    // tweaking settings. The URL is only set via the real upload path.
     if (this.sourceUrl) {
       const sourceCard = document.createElement('div');
       sourceCard.className = 'source-photo';
@@ -358,18 +383,96 @@ export class PhotoStudio {
       sourceLabel.textContent = 'Your source photo';
       const sourceImg = document.createElement('img');
       sourceImg.src = this.sourceUrl;
-      sourceImg.alt = 'Your uploaded photo — use it as a reference while editing the bead board';
+      sourceImg.alt = 'Your uploaded photo — use it as a reference while converting';
       sourceImg.className = 'source-img';
       sourceImg.loading = 'lazy';
       sourceCard.append(sourceLabel, sourceImg);
-      body.append(sourceCard, figure, tools, listCard);
+      card.append(sourceCard, figure, actions, summary, listCard);
     } else {
-      body.append(figure, tools, listCard);
+      card.append(figure, actions, summary, listCard);
     }
-    card.appendChild(body);
     stage.appendChild(card);
-    // erased cells go transparent so the region underlay shows through
-    new PaintCanvas(card, { erasedFill: 'transparent' });
+  }
+
+  /** Static preview board in the source-site editor's look: paper base,
+   *  solid bead cells, white pegs on empties, seams every 29 cells. */
+  private buildBoard(p: PhotoPattern): SVGSVGElement {
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const w = p.cols * U;
+    const h = p.rows * U;
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('class', 'bead-fig photo-preview');
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', `Converted bead pattern preview, ${p.cols} by ${p.rows} beads`);
+    svg.style.maxWidth = `${Math.round(w * 1.25)}px`;
+    for (let y = 0; y < p.rows; y++) {
+      for (let x = 0; x < p.cols; x++) {
+        const id = p.cells[y * p.cols + x];
+        if (id) {
+          const bead = beadById(id)!;
+          const rect = document.createElementNS(SVG_NS, 'rect');
+          rect.setAttribute('class', 'pv-cell');
+          rect.setAttribute('x', String(x * U));
+          rect.setAttribute('y', String(y * U));
+          rect.setAttribute('width', String(U));
+          rect.setAttribute('height', String(U));
+          rect.setAttribute('fill', bead.hex);
+          svg.appendChild(rect);
+        } else {
+          const c = document.createElementNS(SVG_NS, 'circle');
+          c.setAttribute('class', 'pv-peg');
+          c.setAttribute('cx', String(x * U + U / 2));
+          c.setAttribute('cy', String(y * U + U / 2));
+          c.setAttribute('r', String(U * 0.28));
+          svg.appendChild(c);
+        }
+      }
+    }
+    for (let x = BOARD_SIZE; x < p.cols; x += BOARD_SIZE) {
+      const l = document.createElementNS(SVG_NS, 'line');
+      l.setAttribute('class', 'pv-seam');
+      l.setAttribute('x1', String(x * U));
+      l.setAttribute('y1', '0');
+      l.setAttribute('x2', String(x * U));
+      l.setAttribute('y2', String(h));
+      svg.appendChild(l);
+    }
+    for (let y = BOARD_SIZE; y < p.rows; y += BOARD_SIZE) {
+      const l = document.createElementNS(SVG_NS, 'line');
+      l.setAttribute('class', 'pv-seam');
+      l.setAttribute('x1', '0');
+      l.setAttribute('y1', String(y * U));
+      l.setAttribute('x2', String(w));
+      l.setAttribute('y2', String(y * U));
+      svg.appendChild(l);
+    }
+    const border = document.createElementNS(SVG_NS, 'rect');
+    border.setAttribute('class', 'pv-border');
+    border.setAttribute('x', '0.5');
+    border.setAttribute('y', '0.5');
+    border.setAttribute('width', String(w - 1));
+    border.setAttribute('height', String(h - 1));
+    svg.appendChild(border);
+    return svg;
+  }
+
+  /** Hand the converted board to the editor page — the source site's
+   *  sessionStorage handoff, same key shape our editor reads. */
+  private openInEditor(): void {
+    const p = this.pattern;
+    if (!p) return;
+    const grid: (string | null)[][] = [];
+    for (let y = 0; y < p.rows; y++) {
+      grid.push(Array.from({ length: p.cols }, (_, x) => p.cells[y * p.cols + x] ?? null));
+    }
+    try {
+      window.sessionStorage.setItem(HANDOFF_KEY, JSON.stringify({ width: p.cols, height: p.rows, grid }));
+      window.location.href = '/bead-editor/';
+    } catch {
+      // storage blocked — the editor still opens, just empty
+      window.location.href = '/bead-editor/';
+    }
   }
 }
 

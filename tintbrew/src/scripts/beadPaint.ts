@@ -305,7 +305,9 @@ export class PaintCanvas {
       swatch.className = 'cv-item-swatch';
       swatch.style.background = bead.hex;
       const text = document.createElement('span');
-      text.textContent = `${bead.name} ×${count}`;
+      // P-code first — the catalog number shoppers order by, same code the
+      // pattern pages' bead list shows (user call, 2026-10-29)
+      text.textContent = `${bead.code} ${bead.name} ×${count}`;
       li.appendChild(swatch);
       li.appendChild(text);
       this.list.appendChild(li);

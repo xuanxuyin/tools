@@ -137,6 +137,7 @@ describe('photoToPattern', () => {
     const out = photoToPattern(split(60, 60, '#000000', '#ffffff'), {
       cols: 30,
       mode: 'dither',
+      simplify: 'keep', // this test pins FS conservation, not the merge pass
     });
     const lab = (hex: string) => rgbToOklab(hexToRgb(hex)).L;
     const dark = nearestBead('#000000');
@@ -170,7 +171,11 @@ describe('photoToPattern', () => {
     // FS trades per-cell accuracy for mean accuracy — individual cells may
     // borrow chromatic neighbors, but the board's average must return to
     // the source gray (the diffusion-conservation guarantee)
-    const out = photoToPattern(solid(40, 40, '#808080'), { cols: 20, mode: 'dither' });
+    const out = photoToPattern(solid(40, 40, '#808080'), {
+      cols: 20,
+      mode: 'dither',
+      simplify: 'keep', // mean conservation is a dither property — no merging
+    });
     const src = rgbToOklab({ r: 128, g: 128, b: 128 });
     let L = 0;
     let a = 0;
@@ -194,7 +199,11 @@ describe('photoToPattern', () => {
     // classic FS holds every tone within 0.01
     for (const level of [64, 128, 192]) {
       const hex = `#${level.toString(16).padStart(2, '0').repeat(3)}`;
-      const out = photoToPattern(solid(40, 40, hex), { cols: 20, mode: 'dither' });
+      const out = photoToPattern(solid(40, 40, hex), {
+        cols: 20,
+        mode: 'dither',
+        simplify: 'keep', // FS tone conservation — merging shades would blur it
+      });
       const src = rgbToOklab({ r: level, g: level, b: level });
       let L = 0;
       for (const id of out.cells) {
@@ -209,7 +218,11 @@ describe('photoToPattern', () => {
     // the old per-cell snapping let sampling asymmetries flip mirror cells
     // to different beads; the region pipeline must hold mirror equality
     // for every cell, not just on average
-    const out = photoToPattern(mirrored(40, 20), { cols: 20, mode: 'smooth' });
+    const out = photoToPattern(mirrored(40, 20), {
+      cols: 20,
+      mode: 'smooth',
+      simplify: 'keep', // region-pipeline symmetry, not the merge pass
+    });
     for (let y = 0; y < out.rows; y++) {
       for (let x = 0; x < out.cols; x++) {
         expect(
@@ -336,5 +349,112 @@ describe('photoToPattern', () => {
         expect(out.cells[y * out.cols + x]).toBe(x < out.cols / 2 ? black : white);
       }
     }
+  });
+
+  // ── source-site post-processing passes (user call, 2026-10-29) ─────────
+
+  it('simplify levels order: keep ≥ balanced ≥ bold distinct colors', () => {
+    // the blue→green gradient quantizes to many sibling shades; each level
+    // may only merge further, never split
+    const w = 64;
+    const data = new Uint8ClampedArray(w * w * 4);
+    for (let y = 0; y < w; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        data[i] = 0;
+        data[i + 1] = Math.round((x / (w - 1)) * 255);
+        data[i + 2] = Math.round(255 - (x / (w - 1)) * 255);
+        data[i + 3] = 255;
+      }
+    }
+    const img = { data, width: w, height: w };
+    const count = (simplify: 'keep' | 'balanced' | 'bold') =>
+      new Set(photoToPattern(img, { cols: 32, mode: 'smooth', simplify }).cells).size;
+    expect(count('keep')).toBeGreaterThan(count('balanced'));
+    expect(count('balanced')).toBeGreaterThanOrEqual(count('bold'));
+  });
+
+  /** Shared bg-removal fixture: white field, red subject centered, a black
+   *  4×4 block in the corner — big enough to own its cells (a single pixel
+   *  would be outvoted at cell sampling) and to keep every trim row/column
+   *  under the ≥99%-borderline, so the trim pass stays out of the way. */
+  function subjectOnWhite(): SampleImage {
+    const w = 40;
+    const data = new Uint8ClampedArray(w * w * 4).fill(255);
+    for (let y = 12; y < 28; y++) {
+      for (let x = 12; x < 28; x++) {
+        const i = (y * w + x) * 4;
+        data[i + 1] = 0;
+        data[i + 2] = 0;
+      }
+    }
+    for (let y = 0; y < 4; y++) {
+      for (let x = 0; x < 4; x++) {
+        const i = (y * w + x) * 4;
+        data[i] = 0;
+        data[i + 1] = 0;
+        data[i + 2] = 0;
+      }
+    }
+    return { data, width: w, height: w };
+  }
+
+  it('removeBackground clears the edge-connected background to null, keeps the subject', () => {
+    const out = photoToPattern(subjectOnWhite(), {
+      cols: 20,
+      mode: 'smooth',
+      simplify: 'keep',
+      removeBackground: true,
+    });
+    const cells = out.cells as (string | null)[];
+    // background became empty pegs — nulls exist and outnumber the subject
+    const nulls = cells.filter((c) => c === null).length;
+    expect(nulls).toBeGreaterThan(0);
+    // the subject survived intact in bead red
+    const red = nearestBead('#ff0000').id;
+    expect(cells.filter((c) => c === red).length).toBeGreaterThan(0);
+    // the board is subject + corner block + holes, no stray background ids
+    expect(new Set(cells)).toEqual(new Set([red, null, nearestBead('#000000').id]));
+  });
+
+  it('removeBackground stays off without the flag — same board, zero nulls', () => {
+    const out = photoToPattern(subjectOnWhite(), {
+      cols: 20,
+      mode: 'smooth',
+      simplify: 'keep',
+    });
+    expect(out.cells.some((c) => c === null)).toBe(false);
+  });
+
+  it('darkOutline traces every empty-adjacent cell with the darkest bead on the board', () => {
+    const out = photoToPattern(subjectOnWhite(), {
+      cols: 20,
+      mode: 'smooth',
+      simplify: 'keep',
+      removeBackground: true,
+      darkOutline: true,
+    });
+    const cells = out.cells as (string | null)[];
+    const ids = [...new Set(cells.filter((c): c is string => c !== null))];
+    // darkest on board = min Oklab L
+    const darkest = ids.reduce((dk, id) => {
+      const l = rgbToOklab(hexToRgb(BEAD_COLORS.find((b) => b.id === id)!.hex)).L;
+      const lDk = rgbToOklab(hexToRgb(BEAD_COLORS.find((b) => b.id === dk)!.hex)).L;
+      return l < lDk ? id : dk;
+    });
+    for (let y = 0; y < out.rows; y++) {
+      for (let x = 0; x < out.cols; x++) {
+        const id = cells[y * out.cols + x];
+        if (id === null) continue;
+        const adjNull = [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => {
+          const nx = x + dx;
+          const ny = y + dy;
+          return nx >= 0 && ny >= 0 && nx < out.cols && ny < out.rows && cells[ny * out.cols + nx] === null;
+        });
+        if (adjNull) expect(id, `cell ${x},${y} borders a hole`).toBe(darkest);
+      }
+    }
+    // the outline actually fired somewhere (subject edges exist)
+    expect(cells.filter((c) => c === darkest).length).toBeGreaterThan(0);
   });
 });

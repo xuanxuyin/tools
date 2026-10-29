@@ -8,6 +8,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BeadCanvas from './BeadCanvas.astro';
 import BeadFigure from './BeadFigure.astro';
+import { beadById } from '../lib/beadPalette';
 import {
   CATEGORY_LABEL,
   categoryCounts,
@@ -94,7 +95,9 @@ const zoneTotal = view.regions.length;
               <span class="zone-swatch" style={`background:${r.hex}`}></span>
               <span class="zone-meta">
                 <span class="zone-label">{r.label}</span>
-                <span class="zone-bead">{r.beadName}</span>
+                <span class="zone-bead">
+                  <strong class="bead-code">{beadById(r.beadId)?.code}</strong> {r.beadName}
+                </span>
               </span>
               <span class="zone-count">×{r.count}</span>
             </button>
@@ -117,7 +120,7 @@ const zoneTotal = view.regions.length;
         {view.beadList.map((e) => (
           <li>
             <span class="list-swatch" style={`background:${e.bead.hex}`}></span>
-            <span>{e.bead.name} ×{e.count}</span>
+            <span><strong class="bead-code">{e.bead.code}</strong> {e.bead.name} ×{e.count}</span>
           </li>
         ))}
       </ul>
@@ -279,6 +282,13 @@ const zoneTotal = view.regions.length;
   .zone-meta { display: grid; line-height: 1.2; flex: 1; min-width: 0; }
   .zone-label { font-weight: 600; font-size: 0.9rem; }
   .zone-bead { font-size: 0.8rem; color: var(--ink-soft, #666); }
+  .bead-code {
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 0.78em;
+    letter-spacing: 0.02em;
+    color: var(--accent, #b3552e);
+  }
   .zone-bead.zone-approx::after { content: ' ≈'; }
   .zone-count { font-size: 0.85rem; color: var(--ink-soft, #666); font-variant-numeric: tabular-nums; }
   .studio-actions { display: flex; gap: var(--sp-2); }

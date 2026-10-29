@@ -32,19 +32,34 @@ export interface SampleImage {
 
 export type PhotoMode = 'smooth' | 'dither';
 
+/** Color-simplification levels, same semantics as the source-site converter:
+ *  "Keep shades" preserves sibling palette colors, "Bold" collapses whole
+ *  families into one bead. Balanced is the default look. */
+export type PhotoSimplify = 'keep' | 'balanced' | 'bold';
+
 export interface PhotoOpts {
   /** Board width in beads; height follows the photo's aspect ratio */
   cols: number;
   mode: PhotoMode;
   /** 1..48; defaults to the full palette */
   maxColors?: number;
+  /** Near-duplicate shade merging strength; defaults to 'balanced' */
+  simplify?: PhotoSimplify;
+  /** Strip the edge-connected background: its cells become empty pegboard
+   *  and drop out of the bead count. Defaults to false (engine layer);
+   *  the converter UI ships it checked, like the source site. */
+  removeBackground?: boolean;
+  /** Trace the subject's edge with the darkest bead on the board so the
+   *  silhouette stays crisp even where sampling lightened it. */
+  darkOutline?: boolean;
 }
 
 export interface PhotoPattern {
   cols: number;
   rows: number;
-  /** cells[y * cols + x] = bead id — a full board, no empty cells */
-  cells: string[];
+  /** cells[y * cols + x] = bead id, or null for an empty pegboard cell
+   *  (removed background). Boards without background removal are full. */
+  cells: (string | null)[];
 }
 
 const MIN_COLS = 8;
@@ -484,6 +499,142 @@ function adoptIsolated(cells: string[], cols: number, rows: number): string[] {
   return out;
 }
 
+/** Oklab distance under which two bead colors on the board count as one
+ *  shade for the Color-simplification setting. Balanced (0.08) merges the
+ *  sibling shades soft shading splits across; Bold (0.14) collapses whole
+ *  families; Keep (0.03) only folds exact near-duplicates. */
+const SIMPLIFY_T: Record<PhotoSimplify, number> = { keep: 0.03, balanced: 0.08, bold: 0.14 };
+
+/** id → full Oklab, for the post-quantize passes. */
+const BEAD_LAB_BY_ID = new Map(BEAD_LAB.map((b) => [b.id, b.lab]));
+
+/**
+ * Color simplification, source-site style: while the closest pair of colors
+ * actually on the board sits under the threshold, the lighter bead absorbs
+ * the darker one's cells (ties keep the more frequent). Runs on the finished
+ * board so it also cleans up what edge sampling scattered.
+ */
+function simplifyShades(cells: (string | null)[], threshold: number): void {
+  for (;;) {
+    const ids = [...new Set(cells.filter((c): c is string => c !== null))];
+    if (ids.length < 2) return;
+    let a = '';
+    let b = '';
+    let minD = Infinity;
+    for (let i = 0; i < ids.length; i++) {
+      for (let j = i + 1; j < ids.length; j++) {
+        const la = BEAD_LAB_BY_ID.get(ids[i]!)!;
+        const lb = BEAD_LAB_BY_ID.get(ids[j]!)!;
+        const d = Math.hypot(la.L - lb.L, la.a - lb.a, la.b - lb.b);
+        if (d < minD) {
+          minD = d;
+          a = ids[i]!;
+          b = ids[j]!;
+        }
+      }
+    }
+    if (minD >= threshold || !a || !b) return;
+    const counts = new Map<string, number>();
+    for (const c of cells) if (c) counts.set(c, (counts.get(c) ?? 0) + 1);
+    // lighter survives — backgrounds and fill areas read lighter; exact
+    // lightness ties keep the color already holding more cells
+    const La = BEAD_LAB_BY_ID.get(a)!.L;
+    const Lb = BEAD_LAB_BY_ID.get(b)!.L;
+    const from =
+      Lb < La || (Lb === La && (counts.get(b) ?? 0) <= (counts.get(a) ?? 0)) ? b : a;
+    const to = from === a ? b : a;
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i] === from) cells[i] = to;
+    }
+  }
+}
+
+/** Share of the border ring one bead must hold before background removal
+ *  engages — a subject that touches every edge (full-bleed photo) has a
+ *  contested ring, and stripping its color would gut the picture. */
+const RING_SHARE = 0.5;
+
+/**
+ * Background removal: the bead that dominates the board's border ring gets
+ * flood-filled from the edges — every ring-connected cell of that color
+ * becomes an empty pegboard cell and leaves the bead count. Interior
+ * islands of the same color (a white shirt on a white wall) survive.
+ */
+function removeBackgroundCells(cells: (string | null)[], cols: number, rows: number): void {
+  const ring: number[] = [];
+  for (let x = 0; x < cols; x++) {
+    ring.push(x, (rows - 1) * cols + x);
+  }
+  for (let y = 0; y < rows; y++) {
+    ring.push(y * cols, y * cols + cols - 1);
+  }
+  const counts = new Map<string, number>();
+  for (const i of ring) {
+    const id = cells[i];
+    if (id) counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
+  let bg = '';
+  let bgN = 0;
+  for (const [id, n] of counts) {
+    if (n > bgN) {
+      bgN = n;
+      bg = id;
+    }
+  }
+  if (!bg || bgN / ring.length < RING_SHARE) return;
+  // flood fill from every ring cell that carries the background bead
+  const seen = new Uint8Array(cols * rows);
+  const stack: number[] = [];
+  for (const i of ring) {
+    if (cells[i] === bg && !seen[i]) {
+      seen[i] = 1;
+      stack.push(i);
+    }
+  }
+  while (stack.length) {
+    const i = stack.pop()!;
+    cells[i] = null;
+    const x = i % cols;
+    const y = (i - x) / cols;
+    if (x > 0 && !seen[i - 1] && cells[i - 1] === bg) (seen[i - 1] = 1), stack.push(i - 1);
+    if (x < cols - 1 && !seen[i + 1] && cells[i + 1] === bg) (seen[i + 1] = 1), stack.push(i + 1);
+    if (y > 0 && !seen[i - cols] && cells[i - cols] === bg) (seen[i - cols] = 1), stack.push(i - cols);
+    if (y < rows - 1 && !seen[i + cols] && cells[i + cols] === bg)
+      (seen[i + cols] = 1), stack.push(i + cols);
+  }
+}
+
+/**
+ * Dark outline: the darkest bead on the board repaints every cell that
+ * touches an empty one, tracing the cut-out subject's silhouette — the
+ * shape stays readable even where edge sampling dragged the rim light.
+ */
+function outlineEdges(cells: (string | null)[], cols: number, rows: number): void {
+  let darkest = '';
+  let minL = Infinity;
+  for (const c of cells) {
+    if (!c) continue;
+    const L = BEAD_L.get(c) ?? Infinity;
+    if (L < minL) {
+      minL = L;
+      darkest = c;
+    }
+  }
+  if (!darkest) return;
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const i = y * cols + x;
+      if (!cells[i]) continue;
+      const touchesEmpty =
+        (x > 0 && cells[i - 1] === null) ||
+        (x < cols - 1 && cells[i + 1] === null) ||
+        (y > 0 && cells[i - cols] === null) ||
+        (y < rows - 1 && cells[i + cols] === null);
+      if (touchesEmpty) cells[i] = darkest;
+    }
+  }
+}
+
 export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern {
   if (!img.width || !img.height || img.data.length < img.width * img.height * 4) {
     return { cols: 0, rows: 0, cells: [] };
@@ -507,7 +658,7 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
   }
 
   const max = opts.maxColors ?? BEAD_COLORS.length;
-  let cells: string[];
+  let cells: (string | null)[];
 
   if (opts.mode === 'dither') {
     // gradient pipeline: Floyd–Steinberg over the full palette, serpentine
@@ -575,6 +726,13 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
       rows,
     );
   }
+
+  // source-site post passes, in their order: merge near shades, then strip
+  // the edge-connected background, then trace the cut-out's edge dark — the
+  // outline needs the empties background removal produces
+  simplifyShades(cells, SIMPLIFY_T[opts.simplify ?? 'balanced']);
+  if (opts.removeBackground) removeBackgroundCells(cells, cols, rows);
+  if (opts.darkOutline) outlineEdges(cells, cols, rows);
 
   return { cols, rows, cells };
 }

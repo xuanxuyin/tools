@@ -1,23 +1,25 @@
 /**
  * Photo→pattern island tests against the real SSR markup from `astro build`
- * (the converter page). Runs the compiled island in happy-dom with synthetic
- * pixels fed straight through convertSample — no canvas decode needed:
- * the board renders pre-filled, the materials list starts counted, the
- * eraser edits the converted pattern, and option changes re-convert.
+ * (the converter page, source-site layout). Runs the compiled island in
+ * happy-dom with synthetic pixels fed straight through convertSample — no
+ * canvas decode needed: the static preview board renders with pegboard
+ * seams, the three panels and the per-color bead list carry the P-codes,
+ * pill changes re-convert, and "Edit in editor" hands the board to the
+ * editor page through sessionStorage.
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Window } from 'happy-dom';
+import { nearestBead } from '../lib/beadPalette';
 
 const htmlPath = resolve(
   fileURLToPath(import.meta.url),
   '../../../dist/photo-to-perler-bead-pattern/index.html',
 );
 
-const CELL_PX = 20;
-const GUTTER = 16;
+const RED_BEAD = nearestBead('#ff0000'); // Tangerine — lib guards pin this
 
 async function loadPage() {
   const html = readFileSync(htmlPath, 'utf8');
@@ -30,6 +32,15 @@ async function loadPage() {
     cb(0);
     return 0;
   };
+  // flush the settings debounce synchronously — pill clicks convert at once
+  (window as unknown as { setTimeout: typeof setTimeout }).setTimeout = ((
+    cb: TimerHandler,
+    _ms?: number,
+    ...rest: unknown[]
+  ) => {
+    (cb as () => void)();
+    return 0;
+  }) as typeof setTimeout;
   vi.resetModules();
   const { PhotoStudio } = await import('./photoBead');
 
@@ -55,40 +66,25 @@ function solid(w: number, h: number, r: number, g: number, b: number) {
   return { data, width: w, height: h };
 }
 
-function stubBoard(doc: Document, cols: number, rows: number) {
-  const svg = doc.querySelector('[data-bead-canvas]') as unknown as SVGSVGElement & {
-    getBoundingClientRect: () => DOMRect;
-  };
-  svg.getBoundingClientRect = () =>
-    ({
-      left: 0,
-      top: 0,
-      right: cols * CELL_PX,
-      bottom: rows * CELL_PX,
-      width: cols * CELL_PX,
-      height: rows * CELL_PX,
-      x: 0,
-      y: 0,
-      toJSON: () => ({}),
-    }) as DOMRect;
-  return svg;
+function fireClick(window: Window, el: Element) {
+  el.dispatchEvent(
+    new (window as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent('click', {
+      bubbles: true,
+    }),
+  );
 }
 
-function firePointer(window: Window, el: Element, type: string, cx: number, cy: number) {
-  const w = window as unknown as { PointerEvent?: typeof MouseEvent; MouseEvent: typeof MouseEvent };
-  const Ctor = w.PointerEvent ?? w.MouseEvent;
-  el.dispatchEvent(new Ctor(type, { bubbles: true, cancelable: true, clientX: cx, clientY: cy }));
+function fireChange(window: Window, el: Element) {
+  el.dispatchEvent(
+    new (window as unknown as { Event: typeof Event }).Event('change', { bubbles: true }),
+  );
 }
 
-const px = (col: number, row: number) => ({
-  cx: ((GUTTER + col * 10 + 5) * (29 * CELL_PX)) / (29 * 10 + GUTTER),
-  cy: ((GUTTER + row * 10 + 5) * (29 * CELL_PX)) / (29 * 10 + GUTTER),
-});
+/** The preview board svg — [data-photo-result] .photo-preview. */
+const board = (host: HTMLElement) => host.querySelector('.photo-preview');
 
-const listText = (doc: Document) =>
-  [...doc.querySelectorAll('[data-cv-list] li')].map((li) => li.textContent).join(' | ');
-
-const RED = '#fd5918'; // nearestBead('#ff0000') → Tangerine (lib guards pin this)
+const rowText = (host: HTMLElement) =>
+  [...host.querySelectorAll('[data-photo-color-list] .bead-row')].map((r) => r.textContent).join(' | ');
 
 describe('photo bead island (real SSR markup)', () => {
   let ctx: Awaited<ReturnType<typeof loadPage>>;
@@ -97,101 +93,122 @@ describe('photo bead island (real SSR markup)', () => {
     ctx = await loadPage();
   });
 
-  it('the SSR shell ships the controls, the empty stage and the how-to content', () => {
-    // the page is complete without JS: controls, status line, placeholder
+  it('the SSR shell ships the five setting groups, the empty stage and the how-to content', () => {
+    // the page is complete without JS: drop zone, pills, checks, status, placeholder
     expect(ctx.host.querySelector('[data-photo-drop]')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-file]')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-stage] .stage-empty')).toBeTruthy();
+    expect(ctx.host.querySelector('[data-photo-colors] > button.active')?.getAttribute('data-value')).toBe('12');
+    expect(ctx.host.querySelector('[data-photo-simplify] > button.active')?.getAttribute('data-value')).toBe('balanced');
+    expect(ctx.host.querySelector('[data-photo-size] > button.active')?.getAttribute('data-value')).toBe('auto');
+    expect((ctx.host.querySelector('[data-photo-bg]') as HTMLInputElement).checked).toBe(true);
+    expect((ctx.host.querySelector('[data-photo-outline]') as HTMLInputElement).checked).toBe(false);
+    expect(ctx.host.querySelector('[data-photo-custom-row]')?.classList.contains('hidden')).toBe(true);
     expect(ctx.document.querySelector('h1')?.textContent).toContain('Photo to Perler Bead Pattern');
   });
 
-  it('convertSample renders a full pre-filled board with counts from tick one', () => {
+  it('convertSample renders the preview board and all three panels from tick one', () => {
+    // background removal is on by default and a solid photo is ALL
+    // background — uncheck it so the board itself is the subject
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
-    const svg = ctx.host.querySelector('[data-bead-canvas]');
-    expect(svg?.getAttribute('data-cols')).toBe('29');
-    expect(svg?.getAttribute('data-rows')).toBe('29');
-    const cells = ctx.host.querySelectorAll('.cv-cell');
+    const svg = board(ctx.host)!;
+    expect(svg.getAttribute('viewBox')).toBe('0 0 290 290');
+    const cells = ctx.host.querySelectorAll('.pv-cell');
     expect(cells.length).toBe(29 * 29);
-    for (const c of cells) expect(c.getAttribute('fill')).toBe(RED);
-    // pre-filled board → list already counted by PaintCanvas's seed pass
-    expect(listText(ctx.document)).toContain('Tangerine ×841');
-    expect(listText(ctx.document)).toContain('841 of 841 beads painted');
+    for (const c of cells) expect(c.getAttribute('fill')).toBe(RED_BEAD.hex);
+    expect(ctx.host.querySelectorAll('.pv-peg').length).toBe(0);
+    // pattern summary + conversion panels with the source-site copy
+    const panels = ctx.host.querySelector('[data-photo-result]')!.textContent!;
+    expect(panels).toContain('Pattern summary');
+    expect(panels).toContain('29 × 29 beads');
+    expect(panels).toContain('1 pegboard — 1 × 1');
+    expect(panels).toContain('841 beads');
+    expect(panels).toContain('1 color');
+    expect(panels).toContain('Conversion');
+    expect(panels).toContain('Matched to the real 103-color bead line');
+    expect(panels).toContain('Auto: 29 beads');
     // status line reports the board
     expect(ctx.host.querySelector('[data-photo-status]')?.textContent).toContain('29 × 29');
   });
 
+  it('the bead list rows lead with the P-code, name, hex and count', () => {
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    const rows = ctx.host.querySelectorAll('[data-photo-color-list] .bead-row');
+    expect(rows.length).toBe(1);
+    const row = rows[0]!;
+    expect(row.querySelector('strong')?.textContent).toMatch(/^P\d+$/);
+    expect(row.textContent).toContain(RED_BEAD.name);
+    expect(row.textContent).toContain(RED_BEAD.hex);
+    expect(row.textContent).toContain('841');
+  });
+
   it('a wide photo maps onto fewer rows (aspect follows the picture)', () => {
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(40, 20, 255, 0, 0)); // 2:1 wide
-    const svg = ctx.host.querySelector('[data-bead-canvas]');
-    expect(svg?.getAttribute('data-cols')).toBe('29');
-    expect(svg?.getAttribute('data-rows')).toBe('15'); // round(20/40 × 29)
-    expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(29 * 15);
+    expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 290 150');
+    expect(ctx.host.querySelectorAll('.pv-cell').length).toBe(29 * 15);
   });
 
-  it('the converted pattern is editable: eraser rewrites cells and the list', () => {
+  it('a size pill click re-converts without a second upload', () => {
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
-    const svg = stubBoard(ctx.document, 29, 29);
-    (ctx.host.querySelector('[data-cv-tool="eraser"]') as HTMLElement).dispatchEvent(
-      new (ctx.window as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent('click', {
-        bubbles: true,
-      }),
-    );
-    firePointer(ctx.window, svg, 'pointerdown', px(10, 10).cx, px(10, 10).cy);
-    firePointer(ctx.window, svg, 'pointerup', px(10, 10).cx, px(10, 10).cy);
-    // erased cells go transparent on this page so the region underlay shows
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-size] > [data-value="58"]')!);
     expect(
-      ctx.host.querySelector('.cv-cell[data-cx="10"][data-cy="10"]')?.getAttribute('fill'),
-    ).toBe('transparent');
-    expect(listText(ctx.document)).toContain('Tangerine ×840');
-    expect(listText(ctx.document)).toContain('840 of 841 beads painted');
+      ctx.host.querySelector('[data-photo-size] > button.active')?.getAttribute('data-value'),
+    ).toBe('58');
+    expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 580 580');
+    expect(ctx.host.querySelectorAll('.pv-cell').length).toBe(58 * 58);
+    // one seam per direction on a 58-wide board — pegboard edges visible
+    expect(ctx.host.querySelectorAll('.pv-seam').length).toBe(2);
   });
 
-  it('clear all empties the board but the region underlay stays', () => {
+  it('custom width: valid input converts, invalid input holds the last board', () => {
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
-    // one low-opacity ghost rect per cell under the painted board
-    expect(ctx.host.querySelectorAll('.cv-ghost').length).toBe(29 * 29);
-    expect(ctx.host.querySelector('.cv-ghost')?.getAttribute('fill')).toBe(RED);
-    (ctx.host.querySelector('[data-cv-clear]') as HTMLElement).dispatchEvent(
-      new (ctx.window as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent('click', {
-        bubbles: true,
-      }),
-    );
-    // every cell turned transparent → the region tint shows through, so an
-    // emptied board still reads as a fill-it-yourself template
-    for (const c of ctx.host.querySelectorAll('.cv-cell')) {
-      expect(c.getAttribute('fill')).toBe('transparent');
-    }
-    expect(listText(ctx.document)).not.toContain('Tangerine');
+    // switch to Custom — the row appears with the SSR default of 58
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-size] > [data-value="custom"]')!);
+    expect(ctx.host.querySelector('[data-photo-custom-row]')?.classList.contains('hidden')).toBe(false);
+    expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 580 580');
+    // out-of-range width: error shows, previous board stays
+    const input = ctx.host.querySelector('[data-photo-custom-width]') as HTMLInputElement;
+    input.value = '5';
+    fireChange(ctx.window, input);
+    expect(ctx.host.querySelector('[data-photo-width-error]')?.classList.contains('hidden')).toBe(false);
+    expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 580 580');
+    // valid width converts
+    input.value = '40';
+    fireChange(ctx.window, input);
+    expect(ctx.host.querySelector('[data-photo-width-error]')?.classList.contains('hidden')).toBe(true);
+    expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 400 400');
   });
 
-  it('changing the board size re-converts without a second upload', () => {
+  it('remove background (shipped default) empties a solid photo completely', () => {
+    // a solid color IS the background — every cell becomes an empty peg and
+    // the bead list drops to nothing
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
-    const size = ctx.host.querySelector('[data-photo-size]') as unknown as HTMLSelectElement;
-    size.value = '58';
-    size.dispatchEvent(
-      new (ctx.window as unknown as { Event: typeof Event }).Event('change', { bubbles: true }),
-    );
-    const svg = ctx.host.querySelector('[data-bead-canvas]');
-    expect(svg?.getAttribute('data-cols')).toBe('58');
-    expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(58 * 58);
+    expect(ctx.host.querySelectorAll('.pv-cell').length).toBe(0);
+    expect(ctx.host.querySelectorAll('.pv-peg').length).toBe(29 * 29);
+    expect(ctx.host.querySelector('[data-photo-status]')?.textContent).toContain('0 beads');
+    expect(ctx.host.querySelectorAll('[data-photo-color-list] .bead-row').length).toBe(0);
   });
 
-  it('the sixteen-pegboard option converts to a 116-wide board', () => {
+  it('Edit in editor hands the whole board to the editor page', () => {
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
-    const size = ctx.host.querySelector('[data-photo-size]') as unknown as HTMLSelectElement;
-    size.value = '116';
-    size.dispatchEvent(
-      new (ctx.window as unknown as { Event: typeof Event }).Event('change', { bubbles: true }),
-    );
-    const svg = ctx.host.querySelector('[data-bead-canvas]');
-    expect(svg?.getAttribute('data-cols')).toBe('116'); // engine caps at 120
-    expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(116 * 116);
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-edit]')!);
+    const raw = ctx.window.sessionStorage.getItem('bead-editor:handoff');
+    expect(raw).toBeTruthy();
+    const hand = JSON.parse(raw!) as { width: number; height: number; grid: (string | null)[][] };
+    expect(hand.width).toBe(29);
+    expect(hand.height).toBe(29);
+    expect(hand.grid).toHaveLength(29);
+    expect(hand.grid[10]![10]).toBe(RED_BEAD.id);
+    expect(ctx.window.location.href).toContain('/bead-editor/');
   });
 
-  it('autoCols goes as wide as the photo can carry', () => {
-    // ≥2.2 source pixels per cell on the short edge, clamped to [29, 116] —
-    // structure resolution first: bigger boards measured CLEANER per cell
-    // than small ones, so only genuinely tiny pictures land below the cap
+  it('autoColCols math: ≥2.2 source pixels per cell, clamped to [29, 116]', () => {
     expect(ctx.PhotoStudio.autoCols(1600, 1200)).toBe(116); // any real photo caps out
     expect(ctx.PhotoStudio.autoCols(1200, 1600)).toBe(116); // portrait too
     expect(ctx.PhotoStudio.autoCols(387, 254)).toBe(115); // the busy web scene → near cap
@@ -200,35 +217,17 @@ describe('photo bead island (real SSR markup)', () => {
     expect(ctx.PhotoStudio.autoCols(60, 40)).toBe(29); // never below one pegboard
   });
 
-  it('Auto (the shipped default) converts to the exact-fit board for the photo', () => {
-    const size = ctx.host.querySelector('[data-photo-size]') as unknown as HTMLSelectElement;
-    expect(size.value).toBe('auto'); // the SSR default — no photo, no stale size
-    ctx.studio.convertSample(solid(200, 200, 255, 0, 0));
-    const svg = ctx.host.querySelector('[data-bead-canvas]');
-    expect(svg?.getAttribute('data-cols')).toBe('91'); // 200 ÷ 2.2 — no ladder snapping
-    expect(ctx.host.querySelectorAll('.cv-cell').length).toBe(91 * 91);
-    // hand-picking past the photo's detail still gets the heads-up
-    size.value = '116';
-    size.dispatchEvent(
-      new (ctx.window as unknown as { Event: typeof Event }).Event('change', { bubbles: true }),
-    );
-    expect(ctx.host.querySelector('[data-photo-status]')?.textContent).toContain(
-      'only carries about 91 beads of detail — Auto (91 wide)',
-    );
-  });
-
-  it('the touch-up row carries a Print pattern button that opens the print dialog', () => {
+  it('the action row carries Print pattern and it opens the print dialog', () => {
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
-    const btn = ctx.host.querySelector('[data-photo-print]') as HTMLElement;
-    expect(btn).toBeTruthy();
+    const actions = ctx.host.querySelector('.photo-actions')!;
+    expect(actions.querySelector('[data-photo-edit]')?.textContent).toContain('Edit in editor');
+    expect(actions.querySelector('[data-photo-png]')?.textContent).toContain('Download PNG');
+    const btn = actions.querySelector('[data-photo-print]') as HTMLElement;
     expect(btn.textContent).toContain('Print');
     const printSpy = vi.fn();
     (ctx.window as unknown as { print: () => void }).print = printSpy;
-    btn.dispatchEvent(
-      new (ctx.window as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent('click', {
-        bubbles: true,
-      }),
-    );
+    fireClick(ctx.window, btn);
     expect(printSpy).toHaveBeenCalledOnce();
   });
 });

@@ -6,9 +6,9 @@
 
 ---
 
-## 今天 · 2026-10-28（周三）
+## 今天 · 2026-10-29（周四）
 
-> 昨 10/27 六项全闭环归档（见下）。**周五 10/30 B 计划讨论门（还剩 2 天）**。今日主线 = 拼豆：P0 已上线，P3 量级门等你拉数。
+> 10/28~29 拼豆连场全闭环（103 色板 → 全量铺开 → 质量三刀 → 117 张 1:1 → 渲染 pegboard 化 → 缩略图 webp 化 → 竞品两页复刻）。**明天 10/30（周五）B 计划讨论门**。今日剩你的活：线上验收 + P3 拉量。
 
 - [x] 🤖 **拼豆 P0 ✅ 当日上线**：色板 48 假色 → **103 色 Perler 官方线**（P1~P103 购物码+官方色名+社区测量 hex）——购物清单从此指向真可买的珠子；图纸数据全部迁移重生成；201/201 测试 + 106 页 build 绿。明细 PLAN 10/28 行
 - [x] 🤖 **主页拼豆入口 ✅**（👤 指令）：工具卡（Photo to Bead）+ 品类卡板块（All/Animals/Food/Christmas/Easy）上线，此前首页零拼豆链接
@@ -22,10 +22,12 @@
 - [x] 🤖 **手绘 46 张全下 ✅**（👤 拍板"全下+圣诞页撤"）：站点变**纯爬图 106 张**（animals 52 / characters 41 / halloween 11 / quick makes 2）；圣诞+美食页 301→hub；首页 4 卡换 Animals/Characters/Halloween/Easy；165 页 + 205/205 测试绿；像素网格 importer（圣诞回补）排 11 月批
 - [x] 🤖 **对手站补齐 117/120 ✅**（👤 "120 张我都没看到"）：缺 14 张排除 IP 红线 3 张（mickey/minecraft-steve/pokeball）→ 编辑器页 RSC flight 直出图纸矩阵（比渲染图更纯，唯一 Oklab snap 一步）→ **11 张全进**：bee/purple-butterfly（animals 54）、boba-tea/french-fries/mushroom（food 4）、四色心（minis 5）、game-controller/green-creature（characters 43）；audit 加 zonesMin 豁免（2 色 mini 不吃 4-zone 地板）；176 页 + 205/205 绿。明细 PLAN 10/28 夜场第三场
 - [x] 🤖 **117 张全量 1:1 flight 重导 + 万圣节独立页 ✅**（👤 panda 对比"边界对不上，要和别人的一模一样"+ Blank canvas 轮廓不对 + 全图重审 + 万圣节）：webp 逆向三失真（过计数/色膨胀/空格误判）→ 编辑器 flight 矩阵全量重导，**panda-apple-mat 对账 49×50/1996 珠分毫不差**，Blank canvas 随源矩阵自动修正；**/perler-bead-halloween/ 独立页**（11 张迁 base + 301，对手无新图、"下架"实为缺分类页）；重导揪出 IP 红线漏网（flight 源名 Pikachu 混入，测试拦下）→ importer 泛化名管线修复 + zonesMin 三处打通；177 页 + 206/206 绿。明细 PLAN 10/29 第二场行
-- [ ] 👤 **线上验收 117 张 1:1 + 新渲染（Ctrl+F5）**：先开 [panda-apple-mat](https://tintbrew.com/perler-bead-animals/panda-apple-mat/) 对比[对手同张](https://perlerbeadpatterns.org/pattern/panda-apple-mat)——尺寸/珠数/边界应逐格一致（49×50/1996 珠）；**新看渲染**：Reference/Bead canvas 应为连续色块（格子无缝、颜色不断开）+ 空位灰底小圆孔，Bead canvas 打开即带图纸本色可逐珠改色；再扫 [/perler-bead-halloween/](https://tintbrew.com/perler-bead-halloween/) 与各分类页抽查；不对的报哪张
+- [ ] 👤 **线上验收拼豆全链（Ctrl+F5）**：① 116 张 1:1+新渲染：先开 [panda-apple-mat](https://tintbrew.com/perler-bead-animals/panda-apple-mat/) 对比[对手同张](https://perlerbeadpatterns.org/pattern/panda-apple-mat)——尺寸/珠数/边界应逐格一致（49×50/1996 珠）；Reference/Bead canvas 应为连续色块（格子无缝、颜色不断开）+ 空位灰底小圆孔，Bead canvas 打开即带图纸本色可逐珠改色；再扫 [/perler-bead-halloween/](https://tintbrew.com/perler-bead-halloween/) 与各分类页抽查（卡片现为 webp 缩略图）。② **photo 工具页新版**（[photo-to-perler-bead-pattern](https://tintbrew.com/photo-to-perler-bead-pattern/)）：拖图 → 三面板（Pattern summary / Conversion / Beads required per color，色行 = P 码+色名+hex+数量）+ 五设置 pills 改一次转一次。③ **/bead-editor/**（[bead-editor](https://tintbrew.com/bead-editor/)）：photo 页 "Edit in editor" 应整板跳过去；画一笔 / 搜索 P39 / 换尺寸 / Download PNG / 刷新后 draft 恢复。不对的报哪张哪步
 - [x] 🤖 **CF Pages 部署事故 ✅ 当日闭环**（👤 贴 Build log 实锤根因）：hub 页 25.3 MiB 超 **CF 单文件 25 MiB 硬限**（117 张卡全量 SVG 直渲），构建绿、资产校验挂——8b41962 起 5 个 commit 全没上线。修复 = BeadFigure `thumb` 模式（宽>40 的板 f×f 多数票合并，仅卡片位；detail 页每珠不动）：hub 25.3→8.7 MiB、animals 11.0→3.6、characters 12.0→3.8、首页 1.2→0.4；205/205 绿。明细 PLAN 10/28 夜场第四场
 - [x] 🤖 **photo→bead Auto 板号上线 ✅**（👤 "动态按每张图分辨率生成宽高"）：四档吸附 → **autoCols 精确匹配**，下拉默认 "Auto — best fit for this photo"，每张新照片自动重置；206/206 绿。最佳效果 demo 出图：合成高清照 → **Auto=116 板 11,484 珠** vs 58 板 2,842 珠（docs/demo_best_*.png），button_city Auto=32×21。明细 PLAN 10/29 行
 - [x] 🤖 **auto 阈值校准 ✅ 当日返工**（👤 "116 最清晰，很多图默认 auto 都看不清"）：**8→2.2 源像素/格**——首版公式理论先行被自己矩阵数据打脸（29 板孤立率 6.0% 反高于 116 板 4.8%，"超采样透噪"不成立；看不清主变量=格子数非噪点），结构分辨率优先：button_city 自动落 **115**、手机照片全落 116、只有真小图（<260px 短边）才降档；206/206 绿。明细 PLAN 10/29 (续) 行
+- [x] 🤖 **分类页缩略图 webp 化 + 目录修剪 ✅**（main `e59d0ad` 早间已推，本行补账）：thumbs.mjs 图纸→SVG→sharp 无损 webp 116 张 446K 落 public/pattern-thumbs，**hub 9.5M→92K** 彻底避开 CF Pages 25MiB 单文件哨，卡片清晰度对齐竞品；chicken-bro 下架（IP 标识性）+ bee 挪 minis 对齐源站，目录 **117→116**（animals 52 / minis 6）；207/207 绿 + 176 页 build。明细 PLAN 10/29 第四场行
+- [x] 🤖 **竞品 pattern-maker/editor 两页 1:1 复刻 ✅**（👤 "完全按照他的来做"+"我只要内容"）：photo 工具页 = 竞品三面板（Pattern summary / Conversion / **Beads required per color 色行带 P 码**）+ 五设置 pills（色数/simplification/宽度/去背景/描边）即改即转 + "Edit in editor" 整板跳编辑器；引擎尾部三 pass（并色分级/背景去除成空格/深色描边）；**/bead-editor/ 新页**（brush/eraser/pick/undo/mirror/103 珠搜索/zoom/draft 自动存/PNG/打印，handoff>draft>空板三级初始化）；P 码接入全部色清单；hub 广告 promo 卡删；**229/229 测试 + 177 页 build 绿**。明细 PLAN 10/29 第五场行
 - [ ] 👤 **AITDK 拉量（P3 立项门，插件拉完报数即可）**：`perler bead patterns`（主词复拉）+ `dog perler bead patterns` + `cat perler bead patterns` + `pokemon perler pattern` + `perler bead animals`（品类族抽查）—— **合计 ≥10K US/月 → P3 全量开工**（~100 题材页）；不到线则 P3 缩量做已有品类页深化
 - [ ] 顺手：photo→bead **拖图后不动任何下拉，看 Auto 效果**（button_city 会自动落 32×21；要看到真实水平拿 ≥800px 短边**单主体**照片试，Auto 会自动上 58~116）+ **docs/ 四张对比图本机看**：demo_best_source.png（合成高清照）vs demo_best_auto116.png / demo_best_58.png / button_city_repro_auto32.png；首页看新 4 卡；10/30 B 计划门材料已备齐（chartglade PLAN §6）
 

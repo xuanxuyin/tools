@@ -310,17 +310,56 @@ describe('bead pages in real dist markup', () => {
     expect(html).toContain('never leaves your device');
   });
 
-  it('hub links the converter; footer carries it under the bead family', () => {
+  it('the bead editor page ships its shell, SEO triple, print path and island', () => {
+    const html = readFileSync(resolve(distRoot, 'bead-editor/index.html'), 'utf8');
+    // SSR shell: board host, size controls, tools, color library, stats
+    expect(html).toContain('data-bead-editor');
+    expect(html).toContain('data-ed-canvas-host');
+    expect(html).toContain('data-ed-size');
+    expect(html).toContain('data-ed-tool="brush"');
+    expect(html).toContain('data-ed-search');
+    expect(html).toContain('data-ed-simplify');
+    expect(html).toContain('data-ed-png');
+    expect(html).toContain('data-ed-print');
+    // SEO triple + canonical, never noindex
+    expect(html).toContain('WebApplication');
+    expect(html).toContain('FAQPage');
+    expect(html).toContain('BreadcrumbList');
+    expect(html).toMatch(/rel="canonical" href="https:\/\/tintbrew\.com\/bead-editor\/"/);
+    expect(html).not.toContain('noindex');
+    // the two tool pages cross-link each other — the source-site pair
+    expect(html).toContain('href="/photo-to-perler-bead-pattern/"');
+    expect(html).toContain('href="/perler-bead-patterns/"');
+    // print contract: controls hide, board prints with exact colors
+    expect(html).toContain('@media print');
+    expect(html).toMatch(/\.ed-host \.ed-board[^{]*\{[^}]*width:\s*100%/);
+    expect(html).toMatch(/@media print\{[^{]*\.no-print/);
+    // the island chunk carries the real editor entry point
+    const chunkMatch = html.match(/src="(\/_astro\/bead-editor[^"]+\.js)"/);
+    expect(chunkMatch, 'editor island chunk').toBeTruthy();
+    const chunk = readFileSync(resolve(distRoot, chunkMatch![1]!.slice(1)), 'utf8');
+    expect(chunk).toContain('data-bead-editor');
+    // no-JS contract: the how-to prose is server-rendered content
+    expect(html).toContain('Design Your Own Perler Bead Patterns');
+    expect(html).toContain('How it works');
+  });
+
+  it('both tool pages live in the footer and sitemap (hub promo removed)', () => {
+    // the hub's photo promo is gone — content only (user call, 2026-10-29);
+    // the converter's one remaining hub-page link is the shared footer
     const hub = readFileSync(resolve(distRoot, 'perler-bead-patterns/index.html'), 'utf8');
-    expect(hub).toContain('href="/photo-to-perler-bead-pattern/"');
+    const hubLinks = hub.match(/href="\/photo-to-perler-bead-pattern\/"/g)?.length ?? 0;
+    expect(hubLinks).toBe(1); // footer only
+    expect(hub).not.toContain('photo-cta');
     const footer = readFileSync(resolve(distRoot, 'index.html'), 'utf8');
     expect(footer).toContain('/photo-to-perler-bead-pattern/');
-    // sitemap picks it up automatically
+    expect(footer).toContain('/bead-editor/');
     const sm0 = resolve(distRoot, 'sitemap-0.xml');
     const raw = readFileSync(sm0);
     const xml = raw.subarray(0, 2).equals(Buffer.from([0x1f, 0x8b]))
       ? gunzipSync(raw).toString('utf8')
       : raw.toString('utf8');
     expect(xml).toContain('/photo-to-perler-bead-pattern/');
+    expect(xml).toContain('/bead-editor/');
   });
 });

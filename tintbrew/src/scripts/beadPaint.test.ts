@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Window } from 'happy-dom';
+import { beadById } from '../lib/beadPalette';
 
 const htmlPath = resolve(
   fileURLToPath(import.meta.url),
@@ -238,18 +239,15 @@ describe('paint canvas island (real SSR markup)', () => {
     // first swatch chip carries its hex inline — use whatever the page ships
     const chip = ctx.document.querySelector('[data-cv-color]') as HTMLElement;
     const hex = chip.getAttribute('style')!.match(/#([0-9a-f]{6})/i)![0];
-    const name = chip
-      .getAttribute('data-cv-color')!
-      .split('-')
-      .map((w) => w[0]!.toUpperCase() + w.slice(1))
-      .join(' ');
+    // list rows lead with the P-code (user call, 2026-10-29)
+    const bead = beadById(chip.getAttribute('data-cv-color')!)!;
     fireClick(chip);
     const x = Math.floor((ctx.grid.run.x0 + ctx.grid.run.x1) / 2);
     const { cx, cy } = px(ctx.grid, x, ctx.grid.run.y);
     firePointer(ctx.window, svg, 'pointerdown', cx, cy);
     firePointer(ctx.window, svg, 'pointerup', cx, cy);
     expect(fillOf(ctx.document, x, ctx.grid.run.y)).toBe(hex);
-    expect(listText(ctx.document)).toContain(`${name} ×1`);
+    expect(listText(ctx.document)).toContain(`${bead.code} ${bead.name} ×1`);
     expect(listText(ctx.document)).toContain('1 of');
   });
 
@@ -264,7 +262,7 @@ describe('paint canvas island (real SSR markup)', () => {
     for (let c = mid; c <= mid + 4; c++) {
       expect(fillOf(ctx.document, c, ctx.grid.run.y)).toBe(BLACK);
     }
-    expect(listText(ctx.document)).toContain('Black ×5');
+    expect(listText(ctx.document)).toContain('P39 Black ×5');
 
     // a stroke across a peg hole paints both sides, the hole stays a hole
     const { y, a, b } = ctx.grid.gap;
@@ -282,7 +280,7 @@ describe('paint canvas island (real SSR markup)', () => {
     expect(fillOf(ctx.document, b, y)).toBe(BLACK);
     // 5 from the run + the newly crossed cells on the gap row
     const crossed = b - a + 1 - holes;
-    expect(listText(ctx.document)).toContain(`Black ×${5 + crossed}`);
+    expect(listText(ctx.document)).toContain(`P39 Black ×${5 + crossed}`);
   });
 
   it('diagonal drag paints an 8-connected stroke with no gaps', () => {
@@ -298,7 +296,7 @@ describe('paint canvas island (real SSR markup)', () => {
     for (let i = 0; i < len; i++) {
       expect(fillOf(ctx.document, x0 + i, y0 + i)).toBe(BLACK);
     }
-    expect(listText(ctx.document)).toContain(`Black ×${len}`);
+    expect(listText(ctx.document)).toContain(`P39 Black ×${len}`);
   });
 
   it('eraser drags beads back to white and clear-all resets the board', () => {
@@ -315,7 +313,7 @@ describe('paint canvas island (real SSR markup)', () => {
     firePointer(ctx.window, svg, 'pointerdown', px(ctx.grid, mid + 2, ctx.grid.run.y).cx, px(ctx.grid, mid + 2, ctx.grid.run.y).cy);
     firePointer(ctx.window, svg, 'pointerup', px(ctx.grid, mid + 2, ctx.grid.run.y).cx, px(ctx.grid, mid + 2, ctx.grid.run.y).cy);
     expect(fillOf(ctx.document, mid + 2, ctx.grid.run.y)).toBe(WHITE);
-    expect(listText(ctx.document)).toContain('Black ×4');
+    expect(listText(ctx.document)).toContain('P39 Black ×4');
 
     fireClick(ctx.document.querySelector('[data-cv-clear]')!);
     expect(fillOf(ctx.document, mid, ctx.grid.run.y)).toBe(WHITE);
@@ -339,7 +337,7 @@ describe('paint canvas island (real SSR markup)', () => {
     firePointer(ctx.window, svg, 'pointerup', px(ctx.grid, x, y).cx, px(ctx.grid, x, y).cy);
     expect(fillOf(ctx.document, x, y)).toBe(BLACK);
     expect(fillOf(ctx.document, cols - 1 - x, y)).toBe(BLACK);
-    expect(listText(ctx.document)).toContain('Black ×2');
+    expect(listText(ctx.document)).toContain('P39 Black ×2');
 
     // a drag mirrors cell by cell
     const dragLen = Math.min(3, ctx.grid.mirrorRun.len);
@@ -350,7 +348,7 @@ describe('paint canvas island (real SSR markup)', () => {
       expect(fillOf(ctx.document, x + i, y)).toBe(BLACK);
       expect(fillOf(ctx.document, cols - 1 - (x + i), y)).toBe(BLACK);
     }
-    expect(listText(ctx.document)).toContain(`Black ×${2 * dragLen}`);
+    expect(listText(ctx.document)).toContain(`P39 Black ×${2 * dragLen}`);
 
     // toggle off — strokes go back to one half only (solo = a fresh pair on
     // another row, untouched by the mirrored drag above)
@@ -361,7 +359,7 @@ describe('paint canvas island (real SSR markup)', () => {
     firePointer(ctx.window, svg, 'pointerup', px(ctx.grid, solo.x, solo.y).cx, px(ctx.grid, solo.x, solo.y).cy);
     expect(fillOf(ctx.document, solo.x, solo.y)).toBe(BLACK);
     expect(fillOf(ctx.document, cols - 1 - solo.x, solo.y)).toBe(WHITE);
-    expect(listText(ctx.document)).toContain(`Black ×${2 * dragLen + 1}`);
+    expect(listText(ctx.document)).toContain(`P39 Black ×${2 * dragLen + 1}`);
 
     // mirror + eraser wipes both halves in one pass
     fireClick(btn);
@@ -373,7 +371,7 @@ describe('paint canvas island (real SSR markup)', () => {
     // the solo tap painted one cell (mirror was off) — the mirrored erase
     // wipes it and would have wiped its unpainted twin, so the count lands
     // back on the mirrored drag's total
-    expect(listText(ctx.document)).toContain(`Black ×${2 * dragLen}`);
+    expect(listText(ctx.document)).toContain(`P39 Black ×${2 * dragLen}`);
   });
 
   it('picking a color switches the tool back to brush', () => {

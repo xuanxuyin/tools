@@ -4,7 +4,7 @@ import { SITE } from '../consts';
 
 const title = 'Photo to Perler Bead Pattern — Free Picture-to-Bead Converter | TintBrew';
 const description =
-  'Turn any photo into a printable fuse bead pattern. Pick a board size, get every bead matched to a real color, edit any cell, and print the pattern plus a bead count list. Nothing uploads.';
+  'Turn any photo into a printable fuse bead pattern. Up to 8, 12 or 16 colors, background removal and a dark outline, pegboard counts and a bead list with real P-codes. Nothing uploads.';
 
 const faqs = [
   {
@@ -13,19 +13,27 @@ const faqs = [
   },
   {
     q: 'What kind of photo works best?',
-    a: 'Pictures with one clear subject and a simple background — a pet face, a logo, a cartoon character. Busy backgrounds turn into bead noise at 29 × 29. The Auto board size matches the board to the detail your photo actually carries — bigger, sharper photos earn bigger boards automatically. If your photo has soft gradients (sunsets, skies), try the Dithered mode, which trades a little texture for much smoother shading.',
+    a: 'A bold subject on a light or transparent background is where the converter shines — clear shapes, only a few colors to juggle. Shaded, 3D-looking art carries subtle color, so push the bead width up and raise the color count to do it justice. Prefer the whole scene? Turn off Remove background and widen the board.',
   },
   {
-    q: 'Why do my gradients look banded?',
-    a: 'The real Perler line tops out at 103 colors, so every smooth gradient has to snap onto those steps. Dithered mode mixes neighboring beads the way printers mix dots, which restores the in-between shades at small board sizes.',
+    q: 'What does Color simplification do?',
+    a: 'It merges near-identical shades into one bead so the pattern has fewer, cleaner colors. Keep shades preserves the subtle steps, Bold collapses whole color families, and Balanced sits between the two. Every level keeps the colors you actually place on the board.',
   },
   {
-    q: 'What is the bead list for?',
-    a: 'It counts every bead on the board by color, like a shopping list — White ×210, Black ×96 and so on. The "Beads on hand" setting caps how many colors the pattern uses, so it fits the beads you actually own instead of calling for forty different bags.',
+    q: 'What do the P-codes in the bead list mean?',
+    a: 'Each of the 103 colors carries a P-code — the catalog number for this site’s bead line, shown next to the color name and its hex. Chips, canvas swatches and the bead list all use the same code, so P49 always means the same bead from the list to the pegboard.',
+  },
+  {
+    q: 'Why does the preview show lines through the pattern?',
+    a: 'Those seams mark pegboard edges — one large square pegboard holds 29 × 29 beads. A 58-wide pattern spans two boards across, and the seam lines show exactly where one board ends and the next snaps on, so you can split the work (and the boards) before you start placing.',
+  },
+  {
+    q: 'Can I fix a bead the converter got wrong?',
+    a: 'Yes — hit Edit in editor under the preview. The whole board carries over to the bead editor, where you can repaint any bead, erase, mirror strokes, simplify colors and export a PNG. Your work autosaves in the browser.',
   },
   {
     q: 'Does my photo get uploaded anywhere?',
-    a: 'No. The whole conversion runs in your browser — the picture never leaves your device, and the pattern disappears when you close the tab. Print it if you want to keep it.',
+    a: 'No. The whole conversion runs in your browser — the picture never leaves your device, and the pattern disappears when you close the tab. Print it or download the PNG if you want to keep it.',
   },
 ];
 
@@ -76,8 +84,9 @@ const jsonLd = [
   <section class="hero">
     <h1>Photo to Perler Bead Pattern</h1>
     <p class="lead">
-      Turn any picture into a bead board you can print. Drop in a photo, pick a board size, and every
-      bead lands on a real fuse-bead color — with a count list ready for your next bag of beads.
+      Upload an image and it converts into a bead board automatically — matched to real fuse-bead
+      colors, counted by color, and ready to print or finish in the editor. Adjust any setting and
+      the pattern regenerates on the spot. Nothing uploads; the photo never leaves your device.
     </p>
   </section>
 
@@ -94,85 +103,149 @@ const jsonLd = [
         <span>or click to browse — JPG, PNG, WebP</span>
       </div>
       <input type="file" accept="image/*" data-photo-file hidden />
-      <div class="photo-opts">
-        <label>
-          Board size
-          <select data-photo-size>
-            <option value="auto" selected>Auto — best fit for this photo</option>
-            <option value="29">29 × 29 — one pegboard</option>
-            <option value="58">58 × 58 — four pegboards</option>
-            <option value="87">87 × 87 — nine pegboards</option>
-            <option value="116">116 × 116 — sixteen pegboards</option>
-          </select>
+
+      <div class="settings">
+        <div class="setting">
+          <p class="setting-title">Maximum color count</p>
+          <div class="opt-pills" role="group" aria-label="Maximum color count" data-photo-colors>
+            <button type="button" data-value="8" aria-checked="false">8 colors</button>
+            <button type="button" data-value="12" class="active" aria-checked="true">12 colors</button>
+            <button type="button" data-value="16" aria-checked="false">16 colors</button>
+          </div>
+          <p class="setting-help">Up to this many bead colors — the bead list caps with it.</p>
+        </div>
+
+        <div class="setting">
+          <p class="setting-title">Color simplification</p>
+          <div class="opt-pills" role="group" aria-label="Color simplification" data-photo-simplify>
+            <button type="button" data-value="keep" aria-checked="false">Keep shades</button>
+            <button type="button" data-value="balanced" class="active" aria-checked="true">Balanced</button>
+            <button type="button" data-value="bold" aria-checked="false">Bold</button>
+          </div>
+          <p class="setting-help">
+            Merges near-identical shades into one bead so the pattern has fewer, cleaner colors.
+          </p>
+        </div>
+
+        <div class="setting">
+          <p class="setting-title">Bead width</p>
+          <div class="opt-pills" role="group" aria-label="Bead width" data-photo-size>
+            <button type="button" data-value="auto" class="active" aria-checked="true">Auto</button>
+            <button type="button" data-value="29" aria-checked="false">29 · Compact</button>
+            <button type="button" data-value="58" aria-checked="false">58 · Balanced</button>
+            <button type="button" data-value="87" aria-checked="false">87 · Detailed</button>
+            <button type="button" data-value="116" aria-checked="false">116 · Extra detailed</button>
+            <button type="button" data-value="custom" aria-checked="false">Custom</button>
+          </div>
+          <div class="custom-row hidden" data-photo-custom-row>
+            <input
+              type="number"
+              inputmode="numeric"
+              min="8"
+              max="120"
+              value="58"
+              aria-label="Custom bead width"
+              data-photo-custom-width
+            />
+            <span class="custom-unit">beads wide</span>
+          </div>
+          <p class="width-error hidden" data-photo-width-error role="alert">
+            Enter a width from 8 to 120 beads.
+          </p>
+        </div>
+
+        <label class="check-card">
+          <input type="checkbox" checked data-photo-bg />
+          <span class="check-body">
+            <strong>Remove background</strong>
+            <span>
+              Clears the solid color connected to the edges and leaves it off the bead count. Turn
+              it off to keep the whole scene.
+            </span>
+          </span>
         </label>
-        <label>
-          Look
-          <select data-photo-mode>
-            <option value="smooth">Smooth — clean color regions</option>
-            <option value="dither">Dithered — richer gradients</option>
-          </select>
+
+        <label class="check-card">
+          <input type="checkbox" data-photo-outline />
+          <span class="check-body">
+            <strong>Dark outline</strong>
+            <span>
+              Traces the cut-out subject's edge with the darkest bead on the board, so the shape
+              stays crisp even where sampling lightened the rim.
+            </span>
+          </span>
         </label>
-        <label>
-          Beads on hand
-          <select data-photo-colors>
-            <option value="24">24 colors — recommended</option>
-            <option value="103">All 103 colors</option>
-            <option value="16">16 colors</option>
-            <option value="10">10 colors</option>
-          </select>
-        </label>
-        <button type="button" class="btn" data-photo-convert>Convert</button>
+
+        <p class="auto-note">Changes apply automatically as you adjust the settings.</p>
       </div>
+
       <p class="photo-status" data-photo-status aria-live="polite">
         Pick a photo to start — it converts right on this page, nothing uploads.
       </p>
     </div>
     <div class="photo-stage" data-photo-stage>
       <div class="stage-empty">
-        Your pattern appears here — the full board, bead colors and counts, ready to print.
+        Your pattern preview will appear here — upload an image and the pattern generates
+        automatically.
       </div>
     </div>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-8);">
     <h2>How it works</h2>
+    <p>From image to bead pattern in four steps:</p>
     <ol>
       <li>
-        <strong>Pick a photo.</strong> Pets, faces and logos come out best — anything with one clear
-        subject and a simple background.
+        <strong>Upload your image.</strong> Drop in a photo, logo, drawing or piece of pixel art.
+        Clean shapes and strong contrast convert best, but you can refine anything after the fact.
       </li>
       <li>
-        <strong>Choose your board.</strong> Auto goes as wide as your photo can carry — most photos
-        earn the full sixteen-pegboard board, and only genuinely tiny pictures land smaller. 29 × 29
-        fits a single large square pegboard and makes an evening project. 58 × 58 spans four boards;
-        87 × 87 is a showpiece that wants a weekend; 116 × 116 (sixteen boards) holds a face's worth
-        of detail. The pattern follows your photo's shape — the board is as tall as the picture is.
+        <strong>Convert to a bead grid.</strong> The converter maps your image onto a pegboard
+        grid, snaps every cell to the closest real bead color, and shows a live preview you can
+        steer with the settings above.
       </li>
       <li>
-        <strong>Print and place.</strong> The pattern prints with row and column numbers every five
-        beads, plus a bead list that counts every color you need. One page, no signup, nothing to
-        install.
+        <strong>Refine the result.</strong> No converter nails every image — hit Edit in editor
+        and fix stray beads by hand: repaint, erase, mirror strokes, simplify colors.
+      </li>
+      <li>
+        <strong>Print or make it.</strong> The printed sheet carries the board with its pegboard
+        seams plus the bead list with P-codes — or download a PNG for your phone or tablet.
       </li>
     </ol>
 
-    <h2>Why the colors come out right</h2>
+    <h2>Different images, different settings</h2>
     <p>
-      Every cell is matched to the nearest real bead color by Oklab distance — a measure of how
-      different two colors <em>look</em>, not how different their numbers are. Most photo-to-bead
-      converters match raw RGB values, which is why their skin tones drift green and their reds go
-      muddy. The 103-color palette here mirrors the official Perler fuse-bead line, so what you see
-      on screen is what you can actually buy and place.
+      The converter does the heavy lifting, but a couple of settings decide how close the first
+      pass lands:
     </p>
-    <p>
-      Two details keep flat art crisp: cells that straddle an edge take the color that fills most
-      of them instead of a washed-out average of both sides, and a plain border around your photo
-      (screenshot background, scanner lid) is trimmed automatically so the design fills the board.
-    </p>
-    <p>
-      Wrong bead somewhere? The board is editable — tap any cell with the brush to repaint it, and
-      the count list updates as you go. <strong>Mirror</strong> paints both halves at once for
-      symmetric fixes.
-    </p>
+    <ul>
+      <li>
+        <strong>A clean, simple subject just works.</strong> One bold shape on a light background,
+        12 colors, Auto width — convert once and place beads.
+      </li>
+      <li>
+        <strong>Shaded, 3D-looking art needs more beads.</strong> Soft shading carries a lot of
+        subtle color; push the bead width up (87 or 116) and raise the color count to 16.
+      </li>
+      <li>
+        <strong>Want the whole scene? Keep it.</strong> Turn off Remove background so the
+        surroundings stay in, and widen the board — a full scene needs more beads than a cut-out.
+      </li>
+      <li>
+        <strong>Logos, text and icons.</strong> Keep shades + a dark outline keeps letterforms
+        readable at 29 wide; pixel art converts near-lossless at its native grid size with Custom
+        width.
+      </li>
+    </ul>
+
+    <h2>What your pattern includes</h2>
+    <ul>
+      <li>A printable pattern sheet with pegboard seams every 29 beads</li>
+      <li>Bead counts per color, each with its P-code, name and hex</li>
+      <li>Pegboard count — how many 29 × 29 boards the design spans</li>
+      <li>A PNG export and a one-click jump into the bead editor</li>
+    </ul>
 
     <h2>A note on what you convert</h2>
     <p>
@@ -234,32 +307,95 @@ const jsonLd = [
   .photo-drop.over {
     border-color: var(--accent, #b3552e);
   }
-  .photo-opts {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
+  .settings {
+    display: grid;
     gap: var(--sp-3);
     margin-top: var(--sp-3);
   }
-  .photo-opts label {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
+  .setting-title {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  .setting-help {
+    margin: 4px 0 0;
+    font-size: 0.82rem;
     color: var(--ink-soft, #666);
   }
-  .photo-opts select {
-    min-width: 190px;
-    padding: 8px 10px;
+  .opt-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .opt-pills button {
+    padding: 6px 12px;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 999px;
     background: var(--bg, #fff);
     font: inherit;
-    font-weight: 400;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.12s ease, background 0.12s ease;
   }
-  .photo-opts .btn {
-    align-self: end;
+  .opt-pills button:hover {
+    border-color: var(--accent, #b3552e);
+  }
+  .opt-pills button.active {
+    border-color: var(--accent, #b3552e);
+    background: #fffaf0;
+    box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
+    font-weight: 600;
+  }
+  .custom-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .custom-row input {
+    width: 90px;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font: inherit;
+  }
+  .width-error {
+    margin: 6px 0 0;
+    font-size: 0.82rem;
+    color: #b45309;
+  }
+  .check-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--paper, #fbfaf7);
+    cursor: pointer;
+  }
+  .check-card input {
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent, #b3552e);
+  }
+  .check-card .check-body {
+    display: grid;
+    gap: 2px;
+    font-size: 0.85rem;
+  }
+  .check-card .check-body span {
+    color: var(--ink-soft, #666);
+  }
+  .auto-note {
+    margin: 0;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--ink-soft, #666);
   }
   .photo-status {
     margin: var(--sp-3) 0 0;
@@ -278,14 +414,19 @@ const jsonLd = [
     color: var(--ink-soft, #666);
     font-style: italic;
   }
+  .hidden {
+    display: none !important;
+  }
 </style>
 
 <style is:global>
-  /* Runtime board built by scripts/photoBead.ts lives outside the scoped
-     tree — mirrors the BeadCanvas.astro blocks (scoped structure + global
-     cv-* rules) so both boards look and print identically. */
+  /* Runtime result built by scripts/photoBead.ts lives outside the scoped
+     tree — these rules mirror the source-site result layout: cream panels,
+     a paper preview board with peg holes and pegboard seams, and per-color
+     rows with the P-codes shoppers order by. */
   .photo-stage .paint-card {
-    position: relative;
+    display: grid;
+    gap: var(--sp-4);
   }
   .photo-stage .fig-card {
     margin: 0;
@@ -307,175 +448,109 @@ const jsonLd = [
     font-weight: 400;
     font-style: italic;
   }
-  .photo-stage .bead-fig {
+  .photo-stage .photo-preview {
     display: block;
     width: 100%;
     margin-inline: auto;
     height: auto;
-    /* pegboard simulation, same as BeadFigure: gray base + round holes */
-    background: #e2e4df;
+    background: #f4efe8;
     border-radius: 10px;
   }
-  .photo-stage .paint-body {
-    display: grid;
-    gap: var(--sp-4);
-    align-items: start;
+  .photo-stage .pv-cell {
+    stroke: rgba(0, 0, 0, 0.08);
+    stroke-width: 0.6;
   }
-  @media (min-width: 901px) {
-    .photo-stage .paint-body {
-      grid-template-columns: minmax(0, 1fr) 280px;
-    }
-    .photo-stage .paint-tools {
-      position: sticky;
-      top: 12px;
-    }
+  .photo-stage .pv-peg {
+    fill: #ffffff;
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 0.5;
   }
-  .photo-stage .paint-tools h3 {
-    font-size: 1.15rem;
-    margin-bottom: var(--sp-2);
+  .photo-stage .pv-seam {
+    stroke: rgba(0, 0, 0, 0.32);
+    stroke-width: 0.8;
   }
-  .photo-stage .tool-row {
+  .photo-stage .pv-border {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.18);
+    stroke-width: 1;
+  }
+  .photo-stage .photo-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin: 0 0 var(--sp-3);
   }
-  .photo-stage .tool-btn.active {
+  .photo-stage .act-primary {
     border-color: var(--accent, #b3552e);
     box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
-  }
-  .photo-stage .cv-palette {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 6px;
-    margin: 0 0 var(--sp-2);
-  }
-  .photo-stage .cv-swatch {
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.18);
-    cursor: pointer;
-    padding: 0;
-  }
-  .photo-stage .cv-swatch.active {
-    outline: 2px solid var(--accent, #b3552e);
-    outline-offset: 1px;
-  }
-  .photo-stage .cv-custom {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    color: var(--ink-soft, #666);
-    margin-bottom: var(--sp-2);
-  }
-  .photo-stage .cv-custom input {
-    width: 34px;
-    height: 26px;
-    padding: 0;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: none;
-    cursor: pointer;
-  }
-  .photo-stage .cv-custom-hint {
-    font-style: italic;
-  }
-
-  .bead-fig[data-bead-canvas] {
-    touch-action: none;
-    user-select: none;
-  }
-  .bead-fig[data-bead-canvas] .cv-ghost {
-    pointer-events: none;
-    fill-opacity: 0.25;
-    stroke: none;
-  }
-  .bead-fig[data-bead-canvas] .cv-label {
-    fill: rgba(0, 0, 0, 0.8);
-    font-size: 12px;
-    font-weight: 700;
-    font-family: ui-monospace, monospace;
-    text-anchor: middle;
-    dominant-baseline: central;
-    pointer-events: none;
-  }
-  .cv-cursor {
-    position: absolute;
-    z-index: 6;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: rgba(35, 35, 38, 0.92);
-    color: #fff;
-    font: 600 12px/1.3 ui-monospace, monospace;
-    letter-spacing: 0.02em;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.08s ease;
-    white-space: nowrap;
-  }
-  .cv-cursor.on {
-    opacity: 1;
-  }
-  .bead-fig[data-bead-canvas] .cv-cell {
-    stroke: rgba(0, 0, 0, 0.16);
-    stroke-width: 0.5;
-    cursor: crosshair;
-  }
-  .bead-fig[data-bead-canvas] .cv-cell.colored {
-    stroke: rgba(0, 0, 0, 0.12);
-  }
-  .cv-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .cv-list li {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px 6px 8px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--bg, #fff);
-    font-size: 0.9rem;
-  }
-  .cv-empty {
-    border-style: dashed;
-    font-size: 0.85rem;
-    color: var(--ink-soft, #666);
-  }
-  .cv-total {
-    border: none;
-    padding: 0;
-    background: none;
     font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--ink-soft, #666);
   }
-  .cv-item-swatch {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    flex: none;
+  .photo-stage .panel-grid {
+    display: grid;
+    gap: var(--sp-3);
   }
-  .photo-stage .cv-list-card h3 {
-    font-size: 1.15rem;
-    margin-bottom: var(--sp-2);
-  }
-  @media (min-width: 901px) {
-    .photo-stage .cv-list-card {
-      grid-column: 1 / -1; /* chips wrap full-width under the board */
+  @media (min-width: 701px) {
+    .photo-stage .panel-grid {
+      grid-template-columns: 1fr 1fr;
     }
   }
-
+  .photo-stage .panel-card {
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: #fffaf0;
+    font-size: 0.9rem;
+  }
+  .photo-stage .panel-label {
+    margin: 0 0 8px;
+    color: rgba(0, 0, 0, 0.45);
+    font-weight: 600;
+  }
+  .photo-stage .panel-lines p {
+    margin: 2px 0;
+  }
+  .photo-stage .panel-lines .strong {
+    font-weight: 700;
+  }
+  .photo-stage .panel-lines .warn {
+    color: #b45309;
+  }
+  .photo-stage .beads-card {
+    padding: 16px;
+  }
+  .photo-stage .panel-title {
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+  .photo-stage .bead-rows {
+    display: grid;
+    gap: 8px;
+  }
+  .photo-stage .bead-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 16px;
+    background: #fff;
+    font-size: 0.9rem;
+  }
+  .photo-stage .row-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    flex: none;
+  }
+  .photo-stage .row-label {
+    min-width: 0;
+    flex: 1;
+  }
+  .photo-stage .row-label strong {
+    margin-right: 4px;
+  }
+  .photo-stage .row-count {
+    font-weight: 600;
+  }
   .photo-stage .source-photo {
-    grid-column: 1 / -1;
     margin-bottom: var(--sp-2);
   }
   .photo-stage .source-label {
@@ -505,8 +580,6 @@ const jsonLd = [
     .no-print,
     .stage-empty,
     .keep-reading,
-    /* the print button exists to print the converted board — the marketing
-       copy above and below it never belongs on that sheet */
     .hero,
     .prose {
       display: none !important;
@@ -516,7 +589,7 @@ const jsonLd = [
       padding: 0;
     }
     .photo-stage .paint-card,
-    .photo-stage .cv-list-card,
+    .photo-stage .panel-card,
     .photo-stage .source-photo {
       break-inside: avoid;
       -webkit-print-color-adjust: exact;

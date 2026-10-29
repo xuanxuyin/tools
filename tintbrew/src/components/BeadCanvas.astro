@@ -137,8 +137,8 @@ grid.forEach((row, y) => {
             class:list={['cv-swatch', { active: b.id === 'black' }]}
             data-cv-color={b.id}
             style={`background:${b.hex}`}
-            title={b.name}
-            aria-label={`Paint with ${b.name}`}
+            title={`${b.code} ${b.name} (${b.hex})`}
+            aria-label={`Paint with ${b.code} ${b.name}`}
             aria-pressed={b.id === 'black' ? 'true' : 'false'}
           ></button>
         ))}
