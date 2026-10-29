@@ -106,7 +106,13 @@ describe('photo bead island (real SSR markup)', () => {
     expect(ctx.host.querySelector('[data-photo-drop]')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-file]')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-filename]')?.textContent).toContain('No image selected yet.');
-    expect(ctx.host.querySelector('[data-photo-source]')).toBeTruthy();
+    // source-photo slot: between the settings and the auto-apply note, with
+    // a visible placeholder before any upload (source-site position)
+    const slot = ctx.host.querySelector('[data-photo-source]')!;
+    expect(slot.querySelector('.source-empty')).toBeTruthy();
+    expect(slot.textContent).toContain('preview will appear here');
+    expect(ctx.host.querySelector('.settings')!.nextElementSibling).toBe(slot);
+    expect(slot.nextElementSibling?.classList.contains('auto-note')).toBe(true);
     expect(ctx.host.querySelector('[data-photo-stage] .stage-empty')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-colors] > button.active')?.getAttribute('data-value')).toBe('12');
     expect(ctx.host.querySelector('[data-photo-simplify] > button.active')?.getAttribute('data-value')).toBe('balanced');

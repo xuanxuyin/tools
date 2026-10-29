@@ -105,8 +105,6 @@ const jsonLd = [
         </div>
         <input type="file" accept="image/*" data-photo-file hidden />
 
-        <div class="source-slot" data-photo-source hidden></div>
-
         <div class="settings">
           <div class="setting">
             <p class="setting-title">Maximum color count</p>
@@ -195,9 +193,12 @@ const jsonLd = [
               </span>
             </span>
           </label>
-
-          <p class="auto-note">Changes apply automatically as you adjust the settings.</p>
         </div>
+
+        <div class="source-slot" data-photo-source>
+          <div class="source-empty">Your photo preview will appear here.</div>
+        </div>
+        <p class="auto-note">Changes apply automatically as you adjust the settings.</p>
 
         <p class="photo-status" data-photo-status aria-live="polite">
           Pick a photo to start — it converts right on this page, nothing uploads.
@@ -321,8 +322,8 @@ const jsonLd = [
   .upload-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
+    gap: 18px;
+    padding: 10px 14px;
     border: 1.5px dashed var(--border);
     border-radius: 12px;
     background: var(--paper, #fbfaf7);
@@ -457,8 +458,21 @@ const jsonLd = [
   .check-card .check-body span {
     color: var(--ink-soft, #666);
   }
+  /* source-photo slot sits between the settings and the auto-apply note —
+     the source-site position (user call: the original must show right
+     above "Changes apply automatically…"). Ships with a dashed placeholder
+     so the slot is visible before any upload. */
+  .source-empty {
+    padding: var(--sp-5) var(--sp-3);
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--ink-soft, #666);
+  }
   .auto-note {
-    margin: 0;
+    margin: var(--sp-3) 0 0;
     font-size: 0.82rem;
     font-style: italic;
     color: var(--ink-soft, #666);

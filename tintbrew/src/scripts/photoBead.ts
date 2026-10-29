@@ -211,16 +211,12 @@ export class PhotoStudio {
     el.setAttribute('title', name);
   }
 
-  /** The source photo preview lives in the LEFT column, under the upload
-   *  row — original on the left, converted board on the right. */
+  /** The source photo preview lives in the LEFT column, between the
+   *  settings and the auto-apply note — the source-site position. The slot
+   *  ships with a dashed placeholder; the upload swaps it for the photo. */
   private showSource(): void {
     const slot = this.root.querySelector('[data-photo-source]');
-    if (!slot) return;
-    if (!this.sourceUrl) {
-      slot.classList.add('hidden');
-      slot.innerHTML = '';
-      return;
-    }
+    if (!slot || !this.sourceUrl) return;
     slot.innerHTML = '';
     const label = document.createElement('p');
     label.className = 'source-label';
@@ -231,7 +227,6 @@ export class PhotoStudio {
     img.className = 'source-img';
     img.loading = 'lazy';
     slot.append(label, img);
-    slot.classList.remove('hidden');
   }
 
   private async load(file: File): Promise<void> {
