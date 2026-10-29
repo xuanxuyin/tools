@@ -68,7 +68,7 @@ describe('i18n against real SSR markup', () => {
     mod.setLang('zh');
     expect(document.documentElement.lang).toBe('zh-CN');
     expect(nav?.textContent?.trim()).toBe('调色混合器');
-    expect(document.querySelector('.lang-current')?.textContent?.trim()).toBe('中');
+    expect(document.querySelector('.lang-current')?.textContent?.trim()).toBe('简体中文');
     expect(document.querySelector('[data-lang="zh"]')?.getAttribute('aria-current')).toBe('true');
 
     mod.setLang('ko');
@@ -85,6 +85,14 @@ describe('i18n against real SSR markup', () => {
     expect(summary?.getAttribute('aria-label')).toBe('Language');
     mod.setLang('zh');
     expect(summary?.getAttribute('aria-label')).toBe('语言');
+  });
+
+  it('data-i18n-args fills {placeholders} per language word order', async () => {
+    const { document, mod } = await loadPage('index.html');
+    const all = document.querySelector('[data-i18n="home.allPatterns"]');
+    expect(all?.textContent?.trim()).toBe('All 116 patterns →');
+    mod.setLang('zh');
+    expect(all?.textContent?.trim()).toBe('全部 116 张图纸 →');
   });
 
   it('stored tb-lang applies on load (returning visitor, mix page)', async () => {

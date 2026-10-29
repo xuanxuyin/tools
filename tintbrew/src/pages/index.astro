@@ -43,8 +43,8 @@ const jsonLd = {
 
 <BaseLayout title={title} description={description} path="/" jsonLd={jsonLd}>
   <section class="hero">
-    <h1>Brew colors, precisely.</h1>
-    <p class="lead">
+    <h1 data-i18n="home.h1">Brew colors, precisely.</h1>
+    <p class="lead" data-i18n="home.lead">
       Mix any colors online in a perceptual color space, convert between every format, and get copy-ready
       CSS code. Free, instant, and private — everything runs in your browser.
     </p>
@@ -54,10 +54,10 @@ const jsonLd = {
 
   <section aria-label="Color tools" class="tool-grid">
     <a class="tool-card" href="/color-mixer">
-      <h2>Color Mixer</h2>
+      <h2 data-i18n="nav.mixer">Color Mixer</h2>
       <p>
-        Blend 2–5 colors with ratio sliders. Perceptual Oklab mixing matches how paint behaves, and every
-        result ships with HEX, RGB, HSL, CMYK and a CSS <code>color-mix()</code> snippet.
+        <span data-i18n="home.mixDescA">Blend 2–5 colors with ratio sliders. Perceptual Oklab mixing matches how paint behaves, and every result ships with HEX, RGB, HSL, CMYK and a CSS</span>{' '}
+        <code>color-mix()</code> <span data-i18n="home.mixDescB">snippet.</span>
       </p>
       <div class="card-demo" aria-hidden="true">
         <div class="demo-strip">
@@ -66,11 +66,11 @@ const jsonLd = {
           ))}
         </div>
       </div>
-      <span class="card-cta">Mix colors</span>
+      <span class="card-cta" data-i18n="home.mixCta">Mix colors</span>
     </a>
     <a class="tool-card" href="/color-converter">
-      <h2>Color Converter</h2>
-      <p>
+      <h2 data-i18n="nav.converter">Color Converter</h2>
+      <p data-i18n="home.convDesc">
         Paste a HEX code or dial in RGB, HSL or CMYK — every other format updates as you type, with
         one-click copy for each.
       </p>
@@ -84,11 +84,11 @@ const jsonLd = {
           </span>
         </div>
       </div>
-      <span class="card-cta">Convert a color</span>
+      <span class="card-cta" data-i18n="home.convCta">Convert a color</span>
     </a>
     <a class="tool-card" href="/photo-to-perler-bead-pattern/">
-      <h2>Photo to Bead Pattern</h2>
-      <p>
+      <h2 data-i18n="home.cardPhoto">Photo to Bead Pattern</h2>
+      <p data-i18n="home.photoDesc">
         Turn any photo into a fuse-bead board matched to a real 291-color bead line — Mardiy
         codes on the shopping list, printable grid and bead counts included.
       </p>
@@ -97,50 +97,50 @@ const jsonLd = {
           <BeadFigure view={bySlug('shiba')} mode="reference" thumb />
         </div>
       </div>
-      <span class="card-cta">Convert a photo</span>
+      <span class="card-cta" data-i18n="home.photoCta">Convert a photo</span>
     </a>
   </section>
 
   <section aria-label="Perler bead patterns" class="tool-grid bead-grid" style="margin-top: var(--sp-8);">
     <h2 class="grid-title">
       <span>
-        Perler bead patterns <span class="hint">— color work you can hold</span>
+        <span data-i18n="home.beadTitle">Perler bead patterns</span> <span class="hint" data-i18n="home.beadHint">— color work you can hold</span>
       </span>
-      <a class="all-link" href="/perler-bead-patterns/">All {BEAD_PATTERNS.length} patterns →</a>
+      <a class="all-link" href="/perler-bead-patterns/" data-i18n="home.allPatterns" data-i18n-args={JSON.stringify({ count: String(BEAD_PATTERNS.length) })}>All {BEAD_PATTERNS.length} patterns →</a>
     </h2>
     <a class="bead-card" href="/perler-bead-animals/">
       <span class="bead-thumb"><BeadFigure view={bySlug('shiba')} mode="reference" thumb /></span>
-      <span class="bead-count">{categoryCounts.animals} patterns</span>
-      <h3>Animals</h3>
-      <p>Corgis, shibas, cats and carrot bunnies — a whole kennel of community designs. Recolor any board online before you print.</p>
+      <span class="bead-count" data-i18n="home.nPatterns" data-i18n-args={JSON.stringify({ count: String(categoryCounts.animals) })}>{categoryCounts.animals} patterns</span>
+      <h3 data-i18n="home.catAnimals">Animals</h3>
+      <p data-i18n="home.animDesc">Corgis, shibas, cats and carrot bunnies — a whole kennel of community designs. Recolor any board online before you print.</p>
     </a>
     <a class="bead-card" href="/perler-bead-characters/">
       <span class="bead-thumb"><BeadFigure view={bySlug('blue-alien')} mode="reference" thumb /></span>
-      <span class="bead-count">{categoryCounts.characters} patterns</span>
-      <h3>Characters</h3>
-      <p>Big-eyed girls, chibi heroes and friendly spooks — portrait boards on real bead colors.</p>
+      <span class="bead-count" data-i18n="home.nPatterns" data-i18n-args={JSON.stringify({ count: String(categoryCounts.characters) })}>{categoryCounts.characters} patterns</span>
+      <h3 data-i18n="home.catCharacters">Characters</h3>
+      <p data-i18n="home.charDesc">Big-eyed girls, chibi heroes and friendly spooks — portrait boards on real bead colors.</p>
     </a>
     <a class="bead-card" href="/perler-bead-halloween/">
       <span class="bead-thumb"><BeadFigure view={bySlug('spooky-ghost')} mode="reference" thumb /></span>
-      <span class="bead-count">{categoryCounts.halloween} patterns</span>
-      <h3>Halloween</h3>
-      <p>Kawaii bats, witch cats and pumpkin ghosts — the spooky set on its own page.</p>
+      <span class="bead-count" data-i18n="home.nPatterns" data-i18n-args={JSON.stringify({ count: String(categoryCounts.halloween) })}>{categoryCounts.halloween} patterns</span>
+      <h3 data-i18n="home.catHalloween">Halloween</h3>
+      <p data-i18n="home.halloDesc">Kawaii bats, witch cats and pumpkin ghosts — the spooky set on its own page.</p>
     </a>
     <a class="bead-card" href="/easy-perler-bead-patterns/">
       <span class="bead-thumb"><BeadFigure view={bySlug('corgi-butt-peek')} mode="reference" thumb /></span>
-      <span class="bead-count">{easyPatterns.length} patterns</span>
-      <h3>Easy</h3>
-      <p>Small boards, big color areas — first-timers finish any of these in one sitting.</p>
+      <span class="bead-count" data-i18n="home.nPatterns" data-i18n-args={JSON.stringify({ count: String(easyPatterns.length) })}>{easyPatterns.length} patterns</span>
+      <h3 data-i18n="home.catEasy">Easy</h3>
+      <p data-i18n="home.easyDesc">Small boards, big color areas — first-timers finish any of these in one sitting.</p>
     </a>
     <p class="bead-more">
-      Plus quick makes — snacks, hearts and other small boards — on the
-      <a href="/perler-bead-patterns/">main pattern page</a>.
+      <span data-i18n="home.beadMoreA">Plus quick makes — snacks, hearts and other small boards — on the</span>{' '}
+      <a href="/perler-bead-patterns/" data-i18n="home.beadMoreLink">main pattern page</a>.
     </p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-8);">
-    <h2>What two colors make?</h2>
-    <p>
+    <h2 data-i18n="home.mixTitle">What two colors make?</h2>
+    <p data-i18n="home.mixIntro">
       Mixing colors isn't one question — screens blend light (additive) while paint blends pigments
       (subtractive), and the results differ. These guides answer the classic combinations with live
       examples, exact HEX codes, and ratio tables. The dot on each card is the real computed answer:
@@ -148,57 +148,57 @@ const jsonLd = {
     <div class="link-grid">
       <a class="link-tile" href="/mix/red-blue">
         <span class="dot" style={`background:${mixHex.get('red-blue')}`}></span>
-        What does red and blue make?
+        <span data-i18n="home.qRedBlue">What does red and blue make?</span>
       </a>
       <a class="link-tile" href="/mix/blue-yellow">
         <span class="dot" style={`background:${mixHex.get('blue-yellow')}`}></span>
-        What does blue and yellow make?
+        <span data-i18n="home.qBlueYellow">What does blue and yellow make?</span>
       </a>
       <a class="link-tile" href="/mix/red-green">
         <span class="dot" style={`background:${mixHex.get('red-green')}`}></span>
-        What does red and green make?
+        <span data-i18n="home.qRedGreen">What does red and green make?</span>
       </a>
       <a class="link-tile" href="/what-colors-make-brown">
         <span class="dot" style="background:#8a5a3b"></span>
-        What colors make brown? — every route
+        <span data-i18n="home.qBrown">What colors make brown? — every route</span>
       </a>
       <a class="link-tile" href="/mix/red-yellow">
         <span class="dot" style={`background:${mixHex.get('red-yellow')}`}></span>
-        What does red and yellow make?
+        <span data-i18n="home.qRedYellow">What does red and yellow make?</span>
       </a>
       <a class="link-tile" href="/mix/black-white">
         <span class="dot" style={`background:${mixHex.get('black-white')}`}></span>
-        What does black and white make?
+        <span data-i18n="home.qBlackWhite">What does black and white make?</span>
       </a>
     </div>
-    <p>Browse <a href="/mix">all color mixes</a> for the full list.</p>
+    <p><span data-i18n="home.browseA">Browse</span> <a href="/mix" data-i18n="home.allMixes">all color mixes</a> <span data-i18n="home.browseB">for the full list.</span></p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>Frosting and icing color guides</h2>
-    <p>
+    <h2 data-i18n="home.frostTitle">Frosting and icing color guides</h2>
+    <p data-i18n="home.frostIntro">
       Real-world mixing questions answered with computed swatches — the exact color each drop
       count or recipe lands on, not a photograph:
     </p>
     <div class="link-grid">
       <a class="link-tile" href="/how-to-make-black-frosting">
         <span class="dot" style="background:#2b2b2b"></span>
-        How to make black frosting
+        <span data-i18n="home.tBlackFrost">How to make black frosting</span>
       </a>
       <a class="link-tile" href="/how-to-make-brown-icing">
         <span class="dot" style="background:#7a4a2b"></span>
-        How to make brown icing — five ways
+        <span data-i18n="home.tBrownIcing">How to make brown icing — five ways</span>
       </a>
       <a class="link-tile" href="/icing-color-chart">
         <span class="dot" style="background:#ef8fb5"></span>
-        Icing color chart
+        <span data-i18n="home.tIcingChart">Icing color chart</span>
       </a>
       <a class="link-tile" href="/buttercream-color-chart">
         <span class="dot" style="background:#f6e3a1"></span>
-        Buttercream color chart
+        <span data-i18n="home.tButterChart">Buttercream color chart</span>
       </a>
     </div>
-    <p>See <a href="/color-guides">all color guides</a> for more.</p>
+    <p><span data-i18n="home.seeA">See</span> <a href="/color-guides" data-i18n="home.allGuides">all color guides</a> <span data-i18n="home.seeB">for more.</span></p>
   </section>
 </BaseLayout>
 

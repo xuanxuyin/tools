@@ -59,15 +59,22 @@ const label =
 ---
 
 {thumb ? (
-  <img
-    class="bead-thumb-img"
-    src={`/pattern-thumbs/${def.slug}.webp`}
-    width={def.width}
-    height={grid.length}
-    loading="lazy"
-    decoding="async"
-    alt={`${def.name} bead pattern in its default colors`}
-  />
+  (() => {
+    // real pixel size of the prebuilt webp — lockstep with scripts/beadgen/
+    // thumbs.mjs (px formula) so the intrinsic placeholder matches the file
+    const px = Math.max(20, Math.ceil(600 / def.width));
+    return (
+      <img
+        class="bead-thumb-img"
+        src={`/pattern-thumbs/${def.slug}.webp`}
+        width={def.width * px}
+        height={grid.length * px}
+        loading="lazy"
+        decoding="async"
+        alt={`${def.name} bead pattern in its default colors`}
+      />
+    );
+  })()
 ) : (
   <svg
     class="bead-fig"

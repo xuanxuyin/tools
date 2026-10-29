@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://tintbrew.com/sitemap-index.xml
+Sitemap: https://tintbrew.com/sitemap-images.xml

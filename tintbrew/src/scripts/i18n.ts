@@ -27,12 +27,24 @@ export function t(key: UiKey): string {
   return UI_STRINGS[lang][key] ?? UI_STRINGS.en[key] ?? key;
 }
 
-/** Swap every tagged node under `root` to the active language. */
+/** Swap every tagged node under `root` to the active language. A node may
+ *  carry data-i18n-args='{"name":"Panda"}' — {name} placeholders in the
+ *  dictionary string fill from it, so word order can differ per language
+ *  ("How to make the X" vs "X 怎么做"). */
 function apply(root: ParentNode = document) {
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n]')) {
     const key = el.dataset.i18n as UiKey;
     const s = UI_STRINGS[lang][key];
-    if (s) el.textContent = s;
+    if (!s) continue;
+    let args: Record<string, string> | undefined;
+    try {
+      args = el.dataset.i18nArgs ? (JSON.parse(el.dataset.i18nArgs) as Record<string, string>) : undefined;
+    } catch {
+      args = undefined;
+    }
+    el.textContent = args
+      ? s.replace(/\{(\w+)\}/g, (_, k: string) => args![k] ?? `{${k}}`)
+      : s;
   }
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-aria]')) {
     const key = el.dataset.i18nAria as UiKey;
@@ -43,12 +55,13 @@ function apply(root: ParentNode = document) {
   for (const btn of document.querySelectorAll<HTMLElement>('[data-lang]')) {
     btn.setAttribute('aria-current', btn.dataset.lang === lang ? 'true' : 'false');
   }
-  // the pill's short label (EN / 中 / 한) — textContent, not a data-i18n node,
-  // because it shows the ACTIVE language, not a translated string
+  // the pill shows the ACTIVE language's own name (English / 简体中文 /
+  // 한국어) — textContent, not a data-i18n node, because it is not a
+  // translated string (competitor pattern)
   const current = LANGS.find((l) => l.code === lang);
   if (current) {
     for (const el of document.querySelectorAll<HTMLElement>('.lang-current')) {
-      el.textContent = current.short;
+      el.textContent = current.label;
     }
   }
 }

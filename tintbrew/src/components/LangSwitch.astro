@@ -3,18 +3,18 @@
  * Language picker for the in-page UI switch (en/zh/ko, user call
  * 2026-10-29). <details> gives open/close with zero JS; scripts/i18n.ts
  * keeps aria-current in sync, applies the choice and closes the menu.
- * Dropdown pattern after perlerbeadpatterns.org's site-language menu.
+ * Visual pattern copied from perlerbeadpatterns.org's site-language menu
+ * (user call: match the competitor): full word + rotating caret in the
+ * pill, borderless list items edge-to-edge under a rounded sheet, the
+ * active row highlighted by fill rather than color alone.
  */
 import { LANGS } from '../data/uiStrings';
 ---
 
 <details class="lang-switch">
   <summary aria-label="Language" data-i18n-aria="lang.label">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <circle cx="12" cy="12" r="10"></circle>
-      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-    </svg>
-    <span class="lang-current">EN</span>
+    <span class="lang-current">English</span>
+    <span class="lang-caret" aria-hidden="true">▼</span>
   </summary>
   <ul class="lang-menu">
     {
@@ -32,22 +32,24 @@ import { LANGS } from '../data/uiStrings';
 <style>
   .lang-switch {
     position: relative;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
   }
 
   .lang-switch summary {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.3rem 0.6rem;
+    gap: 0.4rem;
+    padding: 0.38rem 0.85rem;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--surface);
-    color: var(--muted);
+    color: var(--text);
+    font-weight: 500;
     cursor: pointer;
     list-style: none;
     user-select: none;
     white-space: nowrap;
+    transition: background-color 0.15s ease;
   }
 
   .lang-switch summary::-webkit-details-marker {
@@ -55,51 +57,60 @@ import { LANGS } from '../data/uiStrings';
   }
 
   .lang-switch summary:hover {
-    color: var(--text);
-    border-color: var(--accent);
+    background: var(--accent-soft);
   }
 
-  .lang-switch[open] summary {
-    color: var(--accent);
-    border-color: var(--accent);
+  .lang-caret {
+    font-size: 10px;
+    color: var(--muted);
+    transition: transform 0.15s ease;
   }
 
+  .lang-switch[open] .lang-caret {
+    transform: rotate(180deg);
+  }
+
+  /* competitor shape: one rounded sheet, items edge-to-edge — the active
+     row reads by fill, the rest dim to 70% and lift on hover */
   .lang-menu {
     position: absolute;
     right: 0;
-    top: calc(100% + 6px);
+    top: calc(100% + 8px);
     z-index: 50;
-    min-width: 8.5rem;
-    padding: 4px;
+    min-width: 9rem;
+    padding: 0;
     margin: 0;
     border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius);
     background: var(--surface);
     box-shadow: 0 8px 24px rgb(28 25 23 / 0.12);
     list-style: none;
+    overflow: hidden;
   }
 
   .lang-menu button {
     display: block;
     width: 100%;
-    padding: 0.45rem 0.7rem;
+    padding: 0.55rem 1rem;
     border: 0;
-    border-radius: var(--radius-sm);
     background: transparent;
-    color: var(--muted);
+    color: var(--text);
+    opacity: 0.7;
     font: inherit;
-    font-weight: 600;
+    font-weight: 500;
     text-align: left;
     cursor: pointer;
+    transition: background-color 0.12s ease, opacity 0.12s ease;
   }
 
   .lang-menu button:hover {
     background: var(--accent-soft);
-    color: var(--text);
+    opacity: 1;
   }
 
   .lang-menu button[aria-current='true'] {
-    color: var(--accent);
     background: var(--accent-soft);
+    opacity: 1;
+    font-weight: 600;
   }
 </style>

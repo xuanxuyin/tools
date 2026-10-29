@@ -32,9 +32,11 @@ for (const bucket of ['animals', 'characters', 'food', 'halloween', 'minis']) {
       if (!hex) throw new Error(`${def.slug}: bead id "${z.color}" missing from src/lib/beadPalette.ts`);
       zoneHex[L] = hex;
     }
-    // ≥10 px per bead, and never narrower than 200 px, so minis stay crisp
-    // when cards scale them up
-    const px = Math.max(10, Math.ceil(200 / def.W));
+    // ≥20 px per bead, never narrower than 600 px — crisp when cards scale
+    // up AND large enough for Google Images thumbnails / og cards (image-SEO
+    // batch 2026-10-29). BeadFigure.astro mirrors this formula for the img
+    // aspect-ratio placeholder — change both together.
+    const px = Math.max(20, Math.ceil(600 / def.W));
     let pegs = '';
     let cells = '';
     def.rows.forEach((row, y) => {

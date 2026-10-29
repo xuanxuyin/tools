@@ -196,5 +196,15 @@ export function patternJsonLd(view: PatternView): Record<string, unknown>[] {
         acceptedAnswer: { '@type': 'Answer', text: f.a },
       })),
     },
+    // the prebuilt webp is the pattern's one real image URL (the on-page
+    // board is inline SVG) — declare it so image search has a machine-readable
+    // handle (user call 2026-10-29, image-SEO batch)
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ImageObject',
+      name: `${view.def.name} perler bead pattern`,
+      description: `Colored reference board — ${view.totalBeads} beads on a ${view.def.width}×${view.grid.length} grid.`,
+      contentUrl: `${SITE.url}/pattern-thumbs/${view.def.slug}.webp`,
+    },
   ];
 }
