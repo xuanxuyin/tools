@@ -61,8 +61,8 @@ const jsonLd = [
 
 <BaseLayout title={title} description={description} path="/color-converter" jsonLd={jsonLd}>
   <section class="hero">
-    <h1>Color Converter</h1>
-    <p class="lead">
+    <h1 data-i18n="ccv.h1">Color Converter</h1>
+    <p class="lead" data-i18n="ccv.lead">
       One color, four formats. Type or paste a value in HEX, RGB, HSL or CMYK — every other format
       updates as you type, each with a one-click copy button.
     </p>
@@ -73,31 +73,27 @@ const jsonLd = [
   <Converter syncUrl />
 
   <section class="prose" style="margin-top: var(--sp-8);">
-    <h2>Which color format do you need?</h2>
-    <p>
-      <strong>HEX</strong> (<code>#6d28d9</code>) is the web default — compact, copy-paste friendly,
-      and what CSS expects most often. <strong>RGB</strong> (<code>rgb(109, 40, 217)</code>) is the
+    <h2 data-i18n="ccv.fmtH">Which color format do you need?</h2>
+    <p><strong>HEX</strong> (<code>#6d28d9</code>) <span data-i18n="ccv.hexB">is the web default — compact, copy-paste friendly,
+      and what CSS expects most often. </span><strong>RGB</strong> (<code>rgb(109, 40, 217)</code>) <span data-i18n="ccv.rgbB">is the
       same color spelled as red, green and blue light, the format screens physically speak.
-      <strong>HSL</strong> (<code>hsl(263, 70%, 50%)</code>) describes hue, saturation and lightness —
-      the easiest format for humans to tweak. <strong>CMYK</strong> is how printers mix ink.
-    </p>
-    <p>
+      </span><strong>HSL</strong> (<code>hsl(263, 70%, 50%)</code>) <span data-i18n="ccv.hslB">describes hue, saturation and lightness —
+      the easiest format for humans to tweak. </span><strong>CMYK</strong> <span data-i18n="ccv.cmykB">is how printers mix ink.</span></p>
+    <p data-i18n="ccv.p2">
       Every row updates live and the closest named color appears under the preview, so you can
       sanity-check a code against a name like “Violet” before shipping it.
     </p>
-    <p>
-      Need to blend two colors instead? Use the <a href="/color-mixer">color mixer</a> for ratio-based
-      mixing with CSS <code>color-mix()</code> output.
-    </p>
+    <p><span data-i18n="ccv.p3a">Need to blend two colors instead? Use the </span><a href="/color-mixer" data-i18n="cg.lMixer">color mixer</a><span data-i18n="ccv.p3b"> for ratio-based
+      mixing with CSS </span><code>color-mix()</code><span data-i18n="ccv.p3c"> output.</span></p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>Frequently asked questions</h2>
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
-      {faqs.map((f) => (
+      {faqs.map((f, i) => (
         <details>
-          <summary>{f.q}</summary>
-          <p>{f.a}</p>
+          <summary data-i18n={`ccv.fq${i + 1}`}>{f.q}</summary>
+          <p data-i18n={`ccv.fa${i + 1}`}>{f.a}</p>
         </details>
       ))}
     </div>

@@ -9,41 +9,35 @@ const description =
 
 <BaseLayout title={`${title} | ${SITE.name}`} description={description} path="/about">
   <section class="hero">
-    <h1>About TintBrew</h1>
-    <p class="lead">{description}</p>
+    <h1 data-i18n="ab.h1">About TintBrew</h1>
+    <p class="lead" data-i18n="ab.lead">{description}</p>
   </section>
 
   <section class="prose">
-    <h2>Why another color tool?</h2>
-    <p>
-      Most online color mixers average raw red, green and blue values. That is how a screen adds
-      light — but it is not how mixing <em>looks</em>. TintBrew blends in <strong>Oklab</strong>, a
+    <h2 data-i18n="ab.whyH">Why another color tool?</h2>
+    <p><span data-i18n="ab.p1a">Most online color mixers average raw red, green and blue values. That is how a screen adds
+      light — but it is not how mixing </span><em data-i18n="ab.looks">looks</em><span data-i18n="ab.p1b">. TintBrew blends in </span><strong data-i18n="cmx.oklab">Oklab</strong><span data-i18n="ab.p1c">, a
       color space designed to match human perception, so a 50/50 mix lands on the shade your eye
-      treats as the true midpoint. The same math now powers CSS <code>color-mix()</code> in modern
-      browsers.
+      treats as the true midpoint. The same math now powers CSS </span><code>color-mix()</code><span data-i18n="ab.p1d"> in modern
+      browsers.</span>
     </p>
 
-    <h2>What you'll find here</h2>
+    <h2 data-i18n="ab.findH">What you'll find here</h2>
     <ul>
-      <li>
-        A <a href="/color-mixer">color mixer</a> for 2–5 colors with ratio sliders, HEX/RGB/HSL/CMYK
-        output and a copy-ready CSS snippet.
+      <li><span data-i18n="ab.li1a">A </span><a href="/color-mixer" data-i18n="ab.lMixer">color mixer</a><span data-i18n="ab.li1b"> for 2–5 colors with ratio sliders, HEX/RGB/HSL/CMYK
+      output and a copy-ready CSS snippet.</span>
       </li>
-      <li>
-        A <a href="/color-converter">color converter</a> that keeps all four formats in sync as you
-        type.
+      <li><span data-i18n="ab.li2a">A </span><a href="/color-converter" data-i18n="ab.lConv">color converter</a><span data-i18n="ab.li2b"> that keeps all four formats in sync as you
+      type.</span>
       </li>
-      <li>
-        A <a href="/mix">library of mix answers</a> — every classic pair, with exact codes, ratio
-        tables, tints and shades, and an explanation of what changes between paint and screens.
+      <li><span data-i18n="ab.li3a">A </span><a href="/mix" data-i18n="ab.lMix">library of mix answers</a><span data-i18n="ab.li3b"> — every classic pair, with exact codes, ratio
+      tables, tints and shades, and an explanation of what changes between paint and screens.</span>
       </li>
     </ul>
 
-    <h2>Principles</h2>
-    <p>
-      Everything runs in your browser — no accounts, no uploads, no tracking beyond cookieless
-      aggregate page-view counts. Tools are free and will stay free. Questions or suggestions?
-      <a href="/contact">Get in touch</a>.
+    <h2 data-i18n="ab.prinH">Principles</h2>
+    <p><span data-i18n="ab.prinP">Everything runs in your browser — no accounts, no uploads, no tracking beyond cookieless
+      aggregate page-view counts. Tools are free and will stay free. Questions or suggestions? </span><a href="/contact" data-i18n="ab.touch">Get in touch</a><span data-i18n="mix.period">.</span>
     </p>
   </section>
 </BaseLayout>

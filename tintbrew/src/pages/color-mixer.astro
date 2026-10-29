@@ -78,12 +78,10 @@ const jsonLd = [
   ogImage="/og/color-mixer.png"
 >
   <section class="hero">
-    <h1>Online Color Mixer</h1>
-    <p class="lead">
-      Blend 2–5 colors with exact ratios and get the result in HEX, RGB, HSL and CMYK — plus a
-      copy-ready CSS <code>color-mix()</code> snippet. Mixing happens perceptually (Oklab), so
-      blends look like real paint, not muddy screen math.
-    </p>
+    <h1 data-i18n="cmx.h1">Online Color Mixer</h1>
+    <p class="lead"><span data-i18n="cmx.leadA">Blend 2–5 colors with exact ratios and get the result in HEX, RGB, HSL and CMYK — plus a
+      copy-ready CSS </span><code>color-mix()</code><span data-i18n="cmx.leadB"> snippet. Mixing happens perceptually (Oklab), so
+      blends look like real paint, not muddy screen math.</span></p>
   </section>
 
   <ToolNav />
@@ -91,55 +89,52 @@ const jsonLd = [
   <Mixer syncUrl showModeToggle />
 
   <section class="prose" style="margin-top: var(--sp-8);">
-    <h2>How this color mixer works</h2>
-    <p>
+    <h2 data-i18n="cmx.howH">How this color mixer works</h2>
+    <p data-i18n="cmx.p1">
       Most online mixers average the raw red, green and blue channel values. That is how a screen
       mixes light — but it is not how <em>you</em> see color. A 50/50 RGB blend of black and white
       lands on the sRGB midpoint (128), which still looks closer to black than to white, and
       saturated pairs can turn muddy brown.
     </p>
-    <p>
-      This mixer defaults to <strong>Oklab</strong>, a perceptual color space that matches how
+    <p><span data-i18n="cmx.p2a">This mixer defaults to </span><strong data-i18n="cmx.oklab">Oklab</strong><span data-i18n="cmx.p2b">, a perceptual color space that matches how
       human vision weighs lightness and hue. Blends step evenly, midpoints stay vivid, and the
-      result matches what you would expect from mixing paint or ink. The
-      <strong>Average (RGB)</strong> toggle shows the naive math for comparison — try both on
-      black + white or red + blue.
-    </p>
-    <p>
+      result matches what you would expect from mixing paint or ink. The </span><strong data-i18n="cmx.avgRgb">Average (RGB)</strong><span data-i18n="cmx.p2c"> toggle shows the naive math for comparison — try both on
+      black + white or red + blue.</span></p>
+    <p data-i18n="cmx.p3">
       Each color has a ratio slider (0–10). Ratios are relative: 5 : 5 is the same as 1 : 1, and
       9 : 1 pulls the result strongly toward the first color. The gradient strip under the result
       previews the full blend path between your colors.
     </p>
 
-    <h2>Popular mixes</h2>
+    <h2 data-i18n="mix.popH">Popular mixes</h2>
     <div class="link-grid">
       <a class="link-tile" href="/mix/red-blue">
         <span class="dot" style={`background:${mixHex.get('red-blue')}`}></span>
-        Red + blue — the classic violet
+        <span data-i18n="cmx.t1">Red + blue — the classic violet</span>
       </a>
       <a class="link-tile" href="/mix/blue-yellow">
         <span class="dot" style={`background:${mixHex.get('blue-yellow')}`}></span>
-        Blue + yellow — screens say green
+        <span data-i18n="cmx.t2">Blue + yellow — screens say green</span>
       </a>
       <a class="link-tile" href="/mix/red-green">
         <span class="dot" style={`background:${mixHex.get('red-green')}`}></span>
-        Red + green — light vs. paint
+        <span data-i18n="cmx.t3">Red + green — light vs. paint</span>
       </a>
       <a class="link-tile" href="/mix/black-white">
         <span class="dot" style={`background:${mixHex.get('black-white')}`}></span>
-        Black + white — perceptual grays
+        <span data-i18n="cmx.t4">Black + white — perceptual grays</span>
       </a>
     </div>
-    <p>See the <a href="/mix">full list of color mixes</a> or convert a code in the <a href="/color-converter">color converter</a>.</p>
+    <p><span data-i18n="cmx.seeA">See the </span><a href="/mix" data-i18n="cmx.lFull">full list of color mixes</a><span data-i18n="cmx.seeB"> or convert a code in the </span><a href="/color-converter" data-i18n="mix.lConvTool">color converter</a><span data-i18n="mix.period">.</span></p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>Frequently asked questions</h2>
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
-      {faqs.map((f) => (
+      {faqs.map((f, i) => (
         <details>
-          <summary>{f.q}</summary>
-          <p>{f.a}</p>
+          <summary data-i18n={`cmx.fq${i + 1}`}>{f.q}</summary>
+          <p data-i18n={`cmx.fa${i + 1}`}>{f.a}</p>
         </details>
       ))}
     </div>

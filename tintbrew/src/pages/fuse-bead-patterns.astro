@@ -6,24 +6,31 @@ import { patternsByCategory } from '../lib/beadContent';
 const groups = [
   {
     label: 'Animals',
+    labelKey: 'bs.gAnL',
     href: '/perler-bead-animals/',
     blurb: 'Corgis, shibas, huskies, cats, carrot bunnies and pandas — community designs converted bead for bead.',
+    blurbKey: 'bs.fuAnB',
     patterns: patternsByCategory('animals'),
   },
   {
     label: 'Characters',
+    labelKey: 'bs.gChL',
     href: '/perler-bead-characters/',
     blurb: 'Big-eyed girls, chibi heroes and friendly spooks — portrait boards on real bead colors.',
+    blurbKey: 'bs.fuChB',
     patterns: patternsByCategory('characters'),
   },
   {
     label: 'Halloween',
+    labelKey: 'bs.gHaL',
     href: '/perler-bead-halloween/',
     blurb: 'Kawaii bats, witch cats and pumpkin ghosts — the spooky set on its own page.',
+    blurbKey: 'bs.fuHaB',
     patterns: patternsByCategory('halloween'),
   },
   {
     label: 'Quick Makes',
+    labelKey: 'bs.gQkL',
     blurb: 'Small boards for one quiet evening — snacks, hearts and other quick makes.',
     patterns: [...patternsByCategory('food'), ...patternsByCategory('minis')],
   },
@@ -31,12 +38,11 @@ const groups = [
 ---
 
 <BeadCategoryPage seo={BEAD_COLLECTION_SEO.fuse!} groups={groups}>
-  <p class="collection-strip">
-    Looking for something narrower?
-    <a href="/cute-perler-bead-patterns/">Cute patterns</a> ·
-    <a href="/small-perler-bead-patterns/">Small one-board patterns</a> ·
-    <a href="/easy-perler-bead-patterns/">Easy patterns</a> ·
-    <a href="/perler-bead-letters/">Letters &amp; numbers</a>
+  <p class="collection-strip"><span data-i18n="bs.fuNarrow">Looking for something narrower?</span>
+    <a href="/cute-perler-bead-patterns/" data-i18n="bs.fuCute">Cute patterns</a> ·
+    <a href="/small-perler-bead-patterns/" data-i18n="bs.fuSm">Small one-board patterns</a> ·
+    <a href="/easy-perler-bead-patterns/" data-i18n="bs.fuEz">Easy patterns</a> ·
+    <a href="/perler-bead-letters/" data-i18n="bs.fuLe">Letters &amp; numbers</a>
   </p>
 </BeadCategoryPage>
 

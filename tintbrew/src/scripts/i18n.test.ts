@@ -205,10 +205,55 @@ describe('cross-language sweep over dist pages', () => {
     expect(meta?.textContent).toMatch(/简单|中等/);
   });
 
-  it('photo page: hero lead swaps in zh (guide cards covered by ph.*/pg.*)', async () => {
+  it('photo page: h1 and hero lead swap in zh (guide cards covered by ph.*/pg.*)', async () => {
     const { document, mod } = await loadPage('photo-to-perler-bead-pattern/index.html');
     mod.setLang('zh');
+    expect(document.querySelector('[data-i18n="ph.h1"]')?.textContent).toBe('照片转拼豆图纸');
     expect(document.querySelector('[data-i18n="ph.lead"]')?.textContent).toContain('上传图片');
     expect(document.querySelector('[data-i18n="pg.faqTitle"]')?.textContent).toBe('常见问题');
+  });
+
+  it('color-guides hub: groups, tiles and more-links swap in zh (user call, batch 3)', async () => {
+    const { document, mod } = await loadPage('color-guides/index.html');
+    mod.setLang('zh');
+    expect(document.querySelector('[data-i18n="cg.h1"]')?.textContent).toBe('配色指南');
+    expect(document.querySelector('[data-i18n="cg.makeH"]')?.textContent).toBe('什么颜色能调出……');
+    // featured tile carries the whole translated page title
+    const tile = document.querySelector('.link-tile [data-i18n^="guide."]');
+    expect(tile?.textContent).toBe('什么颜色能调出棕色');
+    // overflow row: prefix + translated link title
+    const more = document.querySelector('.more-links');
+    expect(more?.textContent).toMatch(/更多：/);
+    expect(more?.textContent).toContain('什么颜色能调出蓝色');
+  });
+
+  it('color-mixer: h1, Oklab strong, tiles and FAQ swap in zh', async () => {
+    const { document, mod } = await loadPage('color-mixer/index.html');
+    mod.setLang('zh');
+    expect(document.querySelector('[data-i18n="cmx.h1"]')?.textContent).toBe('在线调色混合器');
+    expect(document.querySelector('[data-i18n="cmx.oklab"]')?.textContent).toBe('Oklab 色彩空间');
+    expect(document.querySelector('[data-i18n="cmx.t1"]')?.textContent).toContain('经典的紫罗兰');
+    expect(document.querySelector('[data-i18n="cmx.fq1"]')?.textContent).toContain('有什么区别');
+    // round trip back to English restores the SSR lead around <code>color-mix()</code>
+    mod.setLang('en');
+    const lead = document.querySelector('.lead');
+    expect(lead?.textContent).toContain('copy-ready CSS color-mix() snippet');
+  });
+
+  it('P3 pages: fuse group labels and letters stats swap in zh', async () => {
+    const fuse = await loadPage('fuse-bead-patterns/index.html');
+    fuse.mod.setLang('zh');
+    expect(fuse.document.querySelector('[data-i18n="bs.gAnL"]')?.textContent).toBe('动物');
+    expect(fuse.document.querySelector('[data-i18n="bs.fuNarrow"]')?.textContent).toBe(
+      '想找更细的分类？',
+    );
+
+    const letters = await loadPage('perler-bead-letters/index.html');
+    letters.mod.setLang('zh');
+    expect(letters.document.querySelector('h1')?.textContent).toBe('拼豆字母');
+    expect(letters.document.querySelector('[data-i18n="bl.boards"]')?.textContent).toContain(
+      '26 块板',
+    );
+    expect(letters.document.querySelector('[data-i18n="bl.demo"]')?.textContent).toContain('EMMA');
   });
 });

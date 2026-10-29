@@ -8,39 +8,35 @@ const description = 'TintBrew privacy policy: no accounts, aggregate analytics o
 
 <BaseLayout title={`${title} | ${SITE.name}`} description={description} path="/privacy">
   <section class="hero">
-    <h1>Privacy Policy</h1>
-    <p class="lead">Short version: TintBrew works entirely in your browser and collects no personal data.</p>
+    <h1 data-i18n="pv.h1">Privacy Policy</h1>
+    <p class="lead" data-i18n="pv.lead">Short version: TintBrew works entirely in your browser and collects no personal data.</p>
   </section>
 
   <section class="prose">
-    <h2>What we collect</h2>
-    <p>
-      Nothing that identifies you. TintBrew uses two aggregate analytics services:
-      <strong>Cloudflare Web Analytics</strong>, a cookieless service that reports aggregate page
-      views and referrers, and <strong>Google Analytics 4</strong>, which measures traffic and which
+    <h2 data-i18n="pv.collectH">What we collect</h2>
+    <p><span data-i18n="pv.collectA">Nothing that identifies you. TintBrew uses two aggregate analytics services: </span><strong>Cloudflare Web Analytics</strong><span data-i18n="pv.collectB">, a cookieless service that reports aggregate page
+      views and referrers, and </span><strong>Google Analytics 4</strong><span data-i18n="pv.collectC">, which measures traffic and which
       pages get used. Neither builds user profiles or sells your data. Your mixes, converted colors
-      and everything else you do on this site never leave your browser.
+      and everything else you do on this site never leave your browser.</span>
     </p>
 
-    <h2>Cookies</h2>
-    <p>
-      Google Analytics sets first-party cookies (<code>_ga</code> and <code>_ga_*</code>) to tell
+    <h2 data-i18n="pv.cookieH">Cookies</h2>
+    <p><span data-i18n="pv.cookieA">Google Analytics sets first-party cookies (</span><code>_ga</code><span data-i18n="pv.cookieB"> and </span><code>_ga_*</code><span data-i18n="pv.cookieC">) to tell
       returning visitors apart in aggregate reports. That is the only cookie use on this site — no
       advertising or tracking cookies. If advertising is added in the future, this policy will be
-      updated before any ad script goes live.
+      updated before any ad script goes live.</span>
     </p>
 
-    <h2>Third parties</h2>
-    <p>
+    <h2 data-i18n="pv.thirdH">Third parties</h2>
+    <p data-i18n="pv.thirdP">
       Pages are hosted on Cloudflare. Standard server logs (IP address, user agent, request time)
       are processed by Cloudflare solely to deliver the site and protect against abuse, and are
       not used for profiling.
     </p>
 
-    <h2>Contact</h2>
-    <p>
-      Questions about this policy? Write to <a href="mailto:hello@tintbrew.com">hello@tintbrew.com</a>.
+    <h2 data-i18n="ct.h1">Contact</h2>
+    <p><span data-i18n="pv.contactA">Questions about this policy? Write to </span><a href="mailto:hello@tintbrew.com">hello@tintbrew.com</a><span data-i18n="mix.period">.</span>
     </p>
-    <p><em>Last updated: September 2026</em></p>
+    <p><em data-i18n="pv.updated">Last updated: September 2026</em></p>
   </section>
 </BaseLayout>

@@ -83,12 +83,12 @@ const jsonLd = [
 
 <BaseLayout title={title} description={description} path="/hue-test" ogImage="/og/hue-test.png" jsonLd={jsonLd}>
   <section class="hero">
-    <h1>Hue Test</h1>
-    <p class="lead">
+    <h1 data-i18n="ht.h1">Hue Test</h1>
+    <p class="lead" data-i18n="ht.lead">
       Three rows of shuffled hues. Tap two tiles to swap them and rebuild each smooth gradient — the
       end anchors stay put, like the classic Farnsworth trays. Score when it looks right.
     </p>
-    <p class="note">
+    <p class="note" data-i18n="ht.note">
       A color-perception game, not a medical test — it cannot screen for color vision deficiency.
     </p>
   </section>
@@ -121,18 +121,16 @@ const jsonLd = [
     </div>
 
     <div class="hue-actions">
-      <button class="btn btn-primary" type="button" data-hue-score>Score my arrangement</button>
-      <button class="btn" type="button" data-hue-shuffle>Shuffle again</button>
-      <button class="btn" type="button" data-hue-reset>Reset</button>
+      <button class="btn btn-primary" type="button" data-hue-score data-i18n="ht.score">Score my arrangement</button>
+      <button class="btn" type="button" data-hue-shuffle data-i18n="ht.again">Shuffle again</button>
+      <button class="btn" type="button" data-hue-reset data-i18n="ht.reset">Reset</button>
     </div>
 
     <div class="hue-result" data-hue-result hidden>
-      <p class="hue-result-total">
-        Error score: <strong data-result-total>0</strong> / 150 — <strong data-result-tier></strong>
+      <p class="hue-result-total"><span data-i18n="ht.errScore">Error score:</span> <strong data-result-total>0</strong> / 150 — <strong data-result-tier></strong>
       </p>
       <p data-result-blurb></p>
-      <p class="hue-result-rows">
-        Trays: {rows.map((r) => <span><span data-result-row={r.row}>–</span>{r.row < rows.length - 1 ? ' · ' : ''}</span>)}
+      <p class="hue-result-rows"><span data-i18n="ht.trays">Trays:</span> {rows.map((r) => <span><span data-result-row={r.row}>–</span>{r.row < rows.length - 1 ? ' · ' : ''}</span>)}
       </p>
     </div>
 
@@ -177,28 +175,25 @@ const jsonLd = [
   </div>
 
   <section class="prose" style="margin-top: var(--sp-8);">
-    <h2>How the scoring works</h2>
-    <p>
+    <h2 data-i18n="ht.howH">How the scoring works</h2>
+    <p data-i18n="ht.p1">
       Every tile has a home slot between the anchors. When you score, each tile is charged the number
       of slots it sits away from home — a tile two positions off costs 2, whatever is between it and
       home. The row totals add up to your error score out of 150 (three trays × 50 for a fully
       reversed row). Perfect is 0, a single adjacent swap costs 2, and random play averages around
       100, so the ladder is unforgiving in a good way.
     </p>
-    <p>
-      The tiers: <strong>0</strong> Perfect · <strong>1–6</strong> Elite · <strong>7–15</strong> Sharp ·
-      <strong>16–30</strong> Solid · <strong>31–60</strong> Warming up · <strong>61+</strong> Scrambled.
+    <p><span data-i18n="ht.tiersA">The tiers: </span><strong>0</strong> <span data-i18n="ht.tPerfect">Perfect</span> · <strong>1–6</strong> <span data-i18n="ht.tElite">Elite</span> · <strong>7–15</strong> <span data-i18n="ht.tSharp">Sharp</span> ·
+      <strong>16–30</strong> <span data-i18n="ht.tSolid">Solid</span> · <strong>31–60</strong> <span data-i18n="ht.tWarm">Warming up</span> · <strong>61+</strong> <span data-i18n="ht.tScramb">Scrambled</span><span data-i18n="mix.period">.</span>
     </p>
-    <p>
-      The hues themselves come from Oklab hue — the same perceptual color model this site's
-      <a href="/color-mixer">color mixer</a> blends with — walked at constant lightness and chroma, so
-      every step between neighbors is a genuinely even perceptual step, not just an even RGB step.
+    <p><span data-i18n="ht.p3a">The hues themselves come from Oklab hue — the same perceptual color model this site's </span><a href="/color-mixer" data-i18n="cg.lMixer">color mixer</a><span data-i18n="ht.p3b"> blends with — walked at constant lightness and chroma, so
+      every step between neighbors is a genuinely even perceptual step, not just an even RGB step.</span>
     </p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>Why hue arrangement, and why this hurts (in a fun way)</h2>
-    <p>
+    <h2 data-i18n="ht.whyH">Why hue arrangement, and why this hurts (in a fun way)</h2>
+    <p data-i18n="ht.p4">
       Telling <em>red</em> from <em>blue</em> is easy; the eye's real resolution shows up in the
       in-between — deciding whether this olive sits before or after that chartreuse. That is exactly
       what capsule tests probe: the Farnsworth–Munsell 100 Hue Test has been the laboratory version
@@ -206,26 +201,24 @@ const jsonLd = [
       Designers use these tests to sanity-check calibrated eyes; everyone else uses them to argue
       about who sees color best.
     </p>
-    <p>
-      One honest caveat belongs in bold: <strong>this is a game, not a diagnostic</strong>. Screen
+    <p><span data-i18n="ht.p5a">One honest caveat belongs in bold: </span><strong data-i18n="ht.game">this is a game, not a diagnostic</strong><span data-i18n="ht.p5b">. Screen
       settings, room lighting and patience all move your score. If you need a real color vision
-      assessment, that is an optometrist's office, not a web page.
+      assessment, that is an optometrist's office, not a web page.</span>
     </p>
-    <p>
-      Ready for calmer colors? The <a href="/color-mixer">mixer</a> blends any two (or five) colors in
-      perceptual space, the <a href="/color-converter">converter</a> translates a color between HEX,
-      RGB, HSL and CMYK, and the <a href="/color-mixing-chart">color mixing chart</a> shows all 25
-      pairs at once.
+    <p><span data-i18n="ht.p6a">Ready for calmer colors? The </span><a href="/color-mixer" data-i18n="ht.lMixer">mixer</a><span data-i18n="ht.p6b"> blends any two (or five) colors in
+      perceptual space, the </span><a href="/color-converter" data-i18n="ht.lConv">converter</a><span data-i18n="ht.p6c"> translates a color between HEX,
+      RGB, HSL and CMYK, and the </span><a href="/color-mixing-chart" data-i18n="ht.lChart">color mixing chart</a><span data-i18n="ht.p6d"> shows all 25
+      pairs at once.</span>
     </p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>Frequently asked questions</h2>
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
-      {faqs.map((f) => (
+      {faqs.map((f, i) => (
         <details>
-          <summary>{f.q}</summary>
-          <p>{f.a}</p>
+          <summary data-i18n={`ht.fq${i + 1}`}>{f.q}</summary>
+          <p data-i18n={`ht.fa${i + 1}`}>{f.a}</p>
         </details>
       ))}
     </div>

@@ -67,8 +67,8 @@ const jsonLd = [
 
 <BaseLayout title={title} description={description} path="/color-guides" jsonLd={jsonLd}>
   <section class="hero">
-    <h1>Color guides</h1>
-    <p class="lead">
+    <h1 data-i18n="cg.h1">Color guides</h1>
+    <p class="lead" data-i18n="cg.lead">
       The classic color questions, answered with arithmetic instead of adjectives: what colors
       make brown, purple, green or orange, what colors go with them, plus recipe-style guides for
       frosting, icing and gel-color charts. Every swatch is computed with its HEX code — no
@@ -79,50 +79,46 @@ const jsonLd = [
 
   <ToolNav />
 
-  <section class="section-card guide-group first" aria-label="What colors make">
-    <h2>What colors make…</h2>
+  <section class="section-card guide-group first" aria-label="What colors make" data-i18n-aria="cg.makeH">
+    <h2 data-i18n="cg.makeH">What colors make…</h2>
     <div class="link-grid">
       {make.top.map((c) => (
         <a class="link-tile" href={`/${c.def.slug}`}>
           <span class="dot" style={`background:${c.heroHex}`}></span>
-          {c.def.h1}
+          <span data-i18n={`guide.${c.def.slug}`}>{c.def.h1}</span>
         </a>
       ))}
     </div>
-    <p class="more-links">
-      More:
-      {make.more.map((c, i) => (
+    <p class="more-links"><span data-i18n="cg.more">More:</span>{make.more.map((c, i) => (
         <Fragment>
           {i > 0 && <span class="sep">·</span>}
-          <a href={`/${c.def.slug}/`}>{c.def.h1}</a>
+          <a href={`/${c.def.slug}/`} data-i18n={`guide.${c.def.slug}`}>{c.def.h1}</a>
         </Fragment>
       ))}
     </p>
   </section>
 
-  <section class="section-card guide-group" aria-label="Frosting and icing guides">
-    <h2>Frosting &amp; icing guides</h2>
+  <section class="section-card guide-group" aria-label="Frosting and icing guides" data-i18n-aria="cg.bakeH">
+    <h2 data-i18n="cg.bakeH">Frosting &amp; icing guides</h2>
     <div class="link-grid">
       {baking.top.map((c) => (
         <a class="link-tile" href={`/${c.def.slug}`}>
           <span class="dot" style={`background:${c.heroHex}`}></span>
-          {c.def.h1}
+          <span data-i18n={`guide.${c.def.slug}`}>{c.def.h1}</span>
         </a>
       ))}
     </div>
-    <p class="more-links">
-      More:
-      {baking.more.map((c, i) => (
+    <p class="more-links"><span data-i18n="cg.more">More:</span>{baking.more.map((c, i) => (
         <Fragment>
           {i > 0 && <span class="sep">·</span>}
-          <a href={`/${c.def.slug}/`}>{c.def.h1}</a>
+          <a href={`/${c.def.slug}/`} data-i18n={`guide.${c.def.slug}`}>{c.def.h1}</a>
         </Fragment>
       ))}
     </p>
   </section>
 
-  <section class="section-card guide-group" aria-label="What colors go with">
-    <h2>What colors go with…</h2>
+  <section class="section-card guide-group" aria-label="What colors go with" data-i18n-aria="cg.goH">
+    <h2 data-i18n="cg.goH">What colors go with…</h2>
     <div class="link-grid">
       {outfits.top.map((o) => (
         <a class="link-tile" href={`/${o.def.slug}`}>
@@ -131,30 +127,28 @@ const jsonLd = [
               <span style={`background:${h}`}></span>
             ))}
           </span>
-          {o.def.h1}
+          <span data-i18n={`guide.${o.def.slug}`}>{o.def.h1}</span>
         </a>
       ))}
     </div>
-    <p class="more-links">
-      More:
-      {outfits.more.map((o, i) => (
+    <p class="more-links"><span data-i18n="cg.more">More:</span>{outfits.more.map((o, i) => (
         <Fragment>
           {i > 0 && <span class="sep">·</span>}
-          <a href={`/${o.def.slug}/`}>{o.def.h1}</a>
+          <a href={`/${o.def.slug}/`} data-i18n={`guide.${o.def.slug}`}>{o.def.h1}</a>
         </Fragment>
       ))}
     </p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>How these are built</h2>
-    <p>
-      Each swatch is a perceptual (Oklab) blend computed from the actual recipe: base frosting or
+    <h2 data-i18n="cg.howH">How these are built</h2>
+    <p><span data-i18n="cg.howA">Each swatch is a perceptual (Oklab) blend computed from the actual recipe: base frosting or
       paint plus gel or pigment at the stated amount. That is why two guides can promise the same
-      "brown" and show honestly different results. Want to run your own numbers? The
-      <a href="/color-mixer">color mixer</a> does the same arithmetic live, and the
-      <a href="/mix">color mixes directory</a> covers the classic two-color questions.
-    </p>
+      "brown" and show honestly different results. Want to run your own numbers? The </span><a
+        href="/color-mixer"
+        data-i18n="cg.lMixer">color mixer</a><span data-i18n="cg.howB"> does the same arithmetic live, and the </span><a
+        href="/mix"
+        data-i18n="cg.lMixDir">color mixes directory</a><span data-i18n="cg.howC"> covers the classic two-color questions.</span></p>
   </section>
 </BaseLayout>
 

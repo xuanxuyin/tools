@@ -8,21 +8,20 @@ const description = 'Contact TintBrew: feedback, feature requests, and bug repor
 
 <BaseLayout title={`${title} | ${SITE.name}`} description={description} path="/contact">
   <section class="hero">
-    <h1>Contact</h1>
-    <p class="lead">
+    <h1 data-i18n="ct.h1">Contact</h1>
+    <p class="lead" data-i18n="ct.lead">
       Found a bug, a wrong mix value, or a color pair we should cover? We read everything.
     </p>
   </section>
 
   <section class="prose">
-    <h2>Email</h2>
-    <p>
-      <a href="mailto:hello@tintbrew.com">hello@tintbrew.com</a> — for feedback, feature requests,
+    <h2 data-i18n="ct.emailH">Email</h2>
+    <p><a href="mailto:hello@tintbrew.com">hello@tintbrew.com</a><span data-i18n="ct.emailP"> — for feedback, feature requests,
       and corrections. Please include the page URL and the values you expected if you're reporting
-      a mix or conversion.
+      a mix or conversion.</span>
     </p>
-    <h2>Before you write</h2>
-    <p>
+    <h2 data-i18n="ct.beforeH">Before you write</h2>
+    <p data-i18n="ct.beforeP">
       If a mix looks different from what you get with paint, check the “Paint vs. screen” section
       on that mix page — screens add light while pigments subtract it, and both answers are
       correct in their own medium.

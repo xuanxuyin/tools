@@ -92,12 +92,12 @@ const jsonLd = [
 >
   <section class="hero">
     <p class="crumbs">
-      <a href="/">Home</a> <span aria-hidden="true">›</span>
-      <a href="/color-guides">Color Guides</a> <span aria-hidden="true">›</span>
-      <span>Color Mixing Chart</span>
+      <a href="/" data-i18n="crumb.home">Home</a> <span aria-hidden="true">›</span>
+      <a href="/color-guides" data-i18n="crumb.guides">Color Guides</a> <span aria-hidden="true">›</span>
+      <span data-i18n="cmc.h1">Color Mixing Chart</span>
     </p>
-    <h1>Color Mixing Chart</h1>
-    <p class="lead">
+    <h1 data-i18n="cmc.h1">Color Mixing Chart</h1>
+    <p class="lead" data-i18n="cmc.lead">
       Every color on this site against every other, in one grid. Find your two colors, read the
       cell — that swatch is the computed 50/50 blend with its HEX code, not a photograph. Linked
       cells open a full page for that pair.
@@ -105,15 +105,15 @@ const jsonLd = [
   </section>
 
   <section class="chart-wrap">
-    <div class="chart-scroll" role="region" aria-label="Color mixing matrix" tabindex="0">
+    <div class="chart-scroll" role="region" aria-label="Color mixing matrix" data-i18n-aria="cmc.matrixAria" tabindex="0">
       <table class="mix-chart">
         <thead>
           <tr>
-            <th scope="col"><span class="visually-hidden">Color</span></th>
+            <th scope="col"><span class="visually-hidden" data-i18n="cmc.colorTh">Color</span></th>
             {colors.map((c) => (
               <th scope="col">
                 <span class="chip" style={`background:${c.hex}`} aria-hidden="true"></span>
-                <span class="chip-name">{c.name}</span>
+                <span class="chip-name" data-i18n={`color.${c.id}`}>{c.name}</span>
               </th>
             ))}
           </tr>
@@ -123,7 +123,7 @@ const jsonLd = [
             <tr>
               <th scope="row">
                 <span class="chip" style={`background:${row.hex}`} aria-hidden="true"></span>
-                <span class="chip-name">{row.name}</span>
+                <span class="chip-name" data-i18n={`color.${row.id}`}>{row.name}</span>
               </th>
               {colors.map((col) => {
                 if (row.id === col.id) {
@@ -166,31 +166,31 @@ const jsonLd = [
         </tbody>
       </table>
     </div>
-    <button type="button" data-print>Print this chart</button>
+    <button type="button" data-print data-i18n="cmc.print">Print this chart</button>
   </section>
 
   <section class="prose">
-    <h2>How to read the chart</h2>
-    <p>
+    <h2 data-i18n="cmc.howH">How to read the chart</h2>
+    <p data-i18n="cmc.p1">
       Pick one color across the top and one down the side; the cell where they meet is their
       equal-parts blend, computed in Oklab — a perceptual space that mirrors how human vision
       weighs color, so mid-blends land where your eye expects them instead of where raw RGB math
       would put them. The diagonal is each color unmixed.
     </p>
-    <p>
+    <p data-i18n="cmc.p2">
       Each swatch is a five-stop ratio strip, not a single color. It runs from the row color at
       75% (left) through the 50/50 blend (middle, the HEX printed under the cell) to the column
       color at 75% (right) — so one cell answers "what does more of one do?" without opening
       anything. Hover a cell for the full ratio readout.
     </p>
-    <p>
+    <p data-i18n="cmc.p3">
       Not every pair mixes the same way in paint and in light. Complementary pairs (red-green,
       blue-orange, yellow-purple) cancel toward brown and gray; neighbors (blue-green,
       yellow-orange) blend cleanly. For the pairs that behave differently on screens versus in
       paint, the linked pages carry the full explanation — the chart shows the paint-side answer,
       which is what most mixing questions mean.
     </p>
-    <p>
+    <p data-i18n="cmc.p4">
       Every cell lists its HEX code, so the chart doubles as a lookup: find the blend you want,
       copy the code, and use it anywhere. The color converter turns any of these codes into RGB,
       HSL and more.
@@ -198,21 +198,21 @@ const jsonLd = [
   </section>
 
   <section class="prose">
-    <h2>Frequently asked questions</h2>
-    {faqs.map((f) => (
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
+    {faqs.map((f, i) => (
       <details>
-        <summary>{f.q}</summary>
-        <p>{f.a}</p>
+        <summary data-i18n={`cmc.fq${i + 1}`}>{f.q}</summary>
+        <p data-i18n={`cmc.fa${i + 1}`}>{f.a}</p>
       </details>
     ))}
   </section>
 
   <section class="prose">
-    <h2>Keep going</h2>
+    <h2 data-i18n="sec.keepH">Keep going</h2>
     <ul>
-      <li><a href="/color-mixer/">Mix any two colors live, with ratio control</a></li>
-      <li><a href="/color-guides/">All head-word color guides</a> (brown, purple, teal, gold and more)</li>
-      <li><a href="/color-converter/">Convert any HEX code to RGB, HSL, CMYK</a></li>
+      <li><a href="/color-mixer/" data-i18n="cmc.k1">Mix any two colors live, with ratio control</a></li>
+      <li><a href="/color-guides/" data-i18n="cmc.k2">All head-word color guides</a> <span data-i18n="cmc.k2b">(brown, purple, teal, gold and more)</span></li>
+      <li><a href="/color-converter/" data-i18n="cmc.k3">Convert any HEX code to RGB, HSL, CMYK</a></li>
     </ul>
   </section>
 </BaseLayout>
@@ -260,6 +260,7 @@ const jsonLd = [
   .chip-name {
     font-size: 0.8rem;
     font-weight: 600;
+    text-transform: capitalize;
   }
 
   .mix-chart td {

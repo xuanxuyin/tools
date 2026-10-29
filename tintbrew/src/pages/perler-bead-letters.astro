@@ -53,66 +53,65 @@ const jsonLd = [
 <BaseLayout title={seo.title} description={seo.description} path={seo.path.replace(/\/$/, '')} jsonLd={jsonLd}>
   <section class="hero">
     <p class="crumbs">
-      <a href="/">Home</a> <span aria-hidden="true">›</span>
-      <a href="/perler-bead-patterns/">Perler Bead Patterns</a> <span aria-hidden="true">›</span>
-      <span>{seo.h1}</span>
+      <a href="/" data-i18n="a11y.home">Home</a> <span aria-hidden="true">›</span>
+      <a href="/perler-bead-patterns/" data-i18n="bs.hub">Perler Bead Patterns</a> <span aria-hidden="true">›</span>
+      <span data-i18n={seo.k?.h1}>{seo.h1}</span>
     </p>
-    <h1>{seo.h1}</h1>
-    <p class="lead">{lead}</p>
+    <h1 data-i18n={seo.k?.h1}>{seo.h1}</h1>
+    <p class="lead" data-i18n={seo.k?.intro[0]}>{lead}</p>
     <p class="stat-row" aria-label="Sheet facts">
-      <span class="stat"><strong>36</strong> glyphs — A to Z, 0 to 9</span>
-      <span class="stat"><strong>{totalCount}</strong> beads for the whole sheet</span>
-      <span class="stat">one letter ≈ <strong>1 in</strong> tall</span>
-      <span class="stat">all <strong>free</strong> to print</span>
+      <span class="stat"><strong>36</strong> <span data-i18n="bl.statGlyphs">glyphs — A to Z, 0 to 9</span></span>
+      <span class="stat"><strong>{totalCount}</strong> <span data-i18n="bl.statBeads">beads for the whole sheet</span></span>
+      <span class="stat"><span data-i18n="bl.statInA">one letter ≈ </span><strong data-i18n="bl.statIn">1 in</strong><span data-i18n="bl.statInB"> tall</span></span>
+      <span class="stat"><span data-i18n="bs.statFreeA">all</span> <strong data-i18n="bs.statFreeM">free</strong> <span data-i18n="bs.statFreeB">to print</span></span>
     </p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-4);">
-    {prose.map((p) => <p>{p}</p>)}
-    <p>
+    {prose.map((p, i) => <p data-i18n={seo.k?.intro[i + 1]}>{p}</p>)}
+    <p data-i18n="bl.demo" data-i18n-args={JSON.stringify({ name: DEMO_NAME, n: String(demoBeads) })}>
       Try it with a name: <strong>{DEMO_NAME}</strong> spells out in {demoBeads} beads across four
       boards — print the sheet once and you have every letter it needs. The count under each glyph
       below is exact, so a tub of assorted beads covers dozens of names.
     </p>
-    <p>
-      <a href="/easy-perler-bead-patterns/">First time placing from a grid?</a> Start with the
-      single-color letters here, then move to the two-color minis —
-      <a href="/small-perler-bead-patterns/">all the small boards live here</a>.
+    <p><a href="/easy-perler-bead-patterns/" data-i18n="bl.ftA">First time placing from a grid?</a> <span data-i18n="bl.ftB">Start with the
+      single-color letters here, then move to the two-color minis —</span>
+      <a href="/small-perler-bead-patterns/" data-i18n="bl.ftC">all the small boards live here</a><span data-i18n="mix.period">.</span>
     </p>
   </section>
 
   <section class="glyph-section" style="margin-top: var(--sp-6);">
-    <h2>Letters A–Z <span class="count">— 26 boards</span></h2>
+    <h2><span data-i18n="bl.letH">Letters A–Z</span> <span class="count" data-i18n="bl.boards" data-i18n-args={JSON.stringify({ n: '26' })}>— 26 boards</span></h2>
     <div class="glyph-grid">
       {letters.map((g) => (
         <div class="glyph-card">
           <BeadFigure view={g} mode="reference" />
           <span class="glyph-name">{g.def.name.replace('Letter ', '')}</span>
-          <span class="glyph-meta">{g.totalBeads} beads · {g.regions[0]!.label}</span>
+          <span class="glyph-meta">{g.totalBeads} <span data-i18n="bl.beads">beads</span> · {g.regions[0]!.label}</span>
         </div>
       ))}
     </div>
   </section>
 
   <section class="glyph-section" style="margin-top: var(--sp-6);">
-    <h2>Numbers 0–9 <span class="count">— 10 boards</span></h2>
+    <h2><span data-i18n="bl.numH">Numbers 0–9</span> <span class="count" data-i18n="bl.boards" data-i18n-args={JSON.stringify({ n: '10' })}>— 10 boards</span></h2>
     <div class="glyph-grid">
       {digits.map((g) => (
         <div class="glyph-card">
           <BeadFigure view={g} mode="reference" />
           <span class="glyph-name">{g.def.name.replace('Number ', '')}</span>
-          <span class="glyph-meta">{g.totalBeads} beads · {g.regions[0]!.label}</span>
+          <span class="glyph-meta">{g.totalBeads} <span data-i18n="bl.beads">beads</span> · {g.regions[0]!.label}</span>
         </div>
       ))}
     </div>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
-    <h2>FAQ</h2>
-    {seo.faqs.map((f) => (
+    <h2 data-i18n="bs.faqH">FAQ</h2>
+    {seo.faqs.map((f, i) => (
       <details class="faq">
-        <summary>{f.q}</summary>
-        <p>{f.a}</p>
+        <summary data-i18n={seo.k?.fq[i]}>{f.q}</summary>
+        <p data-i18n={seo.k?.fa[i]}>{f.a}</p>
       </details>
     ))}
   </section>

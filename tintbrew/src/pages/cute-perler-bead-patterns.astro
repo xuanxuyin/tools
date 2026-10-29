@@ -6,14 +6,17 @@ import { cutePatterns } from '../lib/beadContent';
 const groups = [
   {
     label: 'Cute animals',
+    labelKey: 'bs.cuteAn',
     patterns: cutePatterns.filter((p) => p.def.category === 'animals'),
   },
   {
     label: 'Cute characters',
+    labelKey: 'bs.cuteCh',
     patterns: cutePatterns.filter((p) => p.def.category === 'characters'),
   },
   {
     label: 'Cute quick makes',
+    labelKey: 'bs.cuteQk',
     patterns: cutePatterns.filter(
       (p) => p.def.category === 'minis' || p.def.category === 'food',
     ),

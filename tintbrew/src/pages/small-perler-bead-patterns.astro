@@ -8,12 +8,16 @@ import { smallPatterns } from '../lib/beadContent';
 const groups = [
   {
     label: 'Minis — under 20 beads wide',
+    labelKey: 'bs.smMin',
     blurb: 'Keychain and magnet scale. Most clear a small 16×16 square board with room to spare.',
+    blurbKey: 'bs.smMinB',
     patterns: smallPatterns.filter((p) => p.def.width < 20),
   },
   {
     label: 'One-board designs — 20 to 29 wide',
+    labelKey: 'bs.smOne',
     blurb: 'The full footprint of a single large interlocking pegboard, no snapping boards together.',
+    blurbKey: 'bs.smOneB',
     patterns: smallPatterns.filter((p) => p.def.width >= 20),
   },
 ];
