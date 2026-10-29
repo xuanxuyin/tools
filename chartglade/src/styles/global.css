@@ -1460,11 +1460,12 @@ svg {
   border: none;
 }
 
-.cbn-fact {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--ink);
-}
+/* NOTE: no .cbn-fact rule here on purpose. The paintArt SVG pipeline sets
+   font-size as a presentation attribute per cell (width-fitted); a CSS rule
+   on the same class name would silently override it — exactly the bug shipped
+   2026-10-29 (old span-era .cbn-fact{font-size:.72rem} pinned every fact at
+   0.72rem, spilling out of the cells). paintArt.test.ts guards the dist HTML
+   against this rule coming back. */
 
 /* Halloween cursive words: label + trace/write cells */
 
@@ -1541,10 +1542,6 @@ svg {
 
   .cbn-grid {
     max-width: 7.4in;
-  }
-
-  .cbn-fact {
-    font-size: 9pt;
   }
 
   .cbn-swatch {

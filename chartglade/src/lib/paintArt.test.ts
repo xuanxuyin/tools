@@ -1,4 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { PUMPKIN_ADDITION, GHOST_MULTIPLICATION } from '../data/halloween';
 import { TREE_ADDITION, SNOWMAN_MULTIPLICATION, usedKeys } from '../data/christmas';
 import { TURKEY_ADDITION, PIE_MULTIPLICATION } from '../data/thanksgiving';
@@ -81,3 +84,19 @@ describe('referenceSvg', () => {
     expect(svg).not.toContain('cbn-fact'); // the finished picture shows no math
   });
 });
+
+const DIST = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', 'dist');
+const cbnPages = ['halloween-color-by-number', 'thanksgiving-color-by-number', 'christmas-color-by-number'];
+
+describe.skipIf(!existsSync(resolve(DIST, 'halloween-color-by-number', 'index.html')))(
+  'no CSS rule may fight the SVG font-size attributes (dist)',
+  () => {
+    // Shipped bug 2026-10-29: the old span-era rule `.cbn-fact{font-size:.72rem}`
+    // (and its print twin at 9pt) outranked the per-cell presentation attribute,
+    // pinning EVERY fact at one size and spilling them out of the cells.
+    it.each(cbnPages)('%s: dist CSS carries no .cbn-fact rule', (page) => {
+      const html = readFileSync(resolve(DIST, page, 'index.html'), 'utf8');
+      expect(html).not.toMatch(/\.cbn-fact\s*\{/);
+    });
+  },
+);
