@@ -167,4 +167,105 @@ post 522 / page 41 / category 9。分类法：**calendars 154**（月历回溯�
 - **AI 爬虫封禁**（robots 封 12 家）：成熟站防御动作，DR0 流量优先，照抄无收益
 - **InkPx 式五垂直混合**：见 §5.4
 
+---
+
+## 7. 全站五路对标批 — 2026-10-29（👤 "每页内容对标大站，现在太简陋" + "探索大站什么内容量大，做成单页上量"）
+
+> 触发：thankful worksheet 被用户点名"太丑"（当日已按竞品形态重做：秋叶+描红+4 编号句式框+画框，签到表换皮废除）。5 路并行子代理实抓（webReader/代理 curl 过 CF），Superstar 933 页 + Math-Salamanders 882 页 + DadsWorksheets 760+ 页 sitemap 全量计数，K5 cursive 91 URL 精确计数。原始 sitemap 数据存 `D:\tmp\cgsm\`（3.3MB+6.5MB，不入库）。
+
+### 7.1 Superstar Worksheets — 933 页纯 page 矩阵站（板块 URL 排名）
+
+**Sitemap 全量【实测 10/29，Yoast 单分片 page-sitemap.xml，lastmod 10/28】**：933 可索引页（零 blog 零 shop），图片声明 21,512 条 = **均 22.9 图/页**：
+
+| 板块 | 页数 | 板块 | 页数 |
+|---|---|---|---|
+| math-worksheets | 164 | holiday-seasons（**30 hub**：16 节日+4 季+8 特殊日+2 里程碑） | 30 |
+| coloring-pages | 102 | alphabet / grammar / sight-words / mazes | 27/25/22/22 |
+| **templates（手工轮廓实体矩阵）** | 100 | writing / kindergarten / prompts / crafts / cbn | 21/21/19/18/17 |
+| science（动物 17/植物 13/器官 7） | 62 | wordsearch（主题×9 级难度，每主题页 20 谜题） | 16 |
+| reading | 43 | vowels（长短元音×5 元音词表） | 14 |
+| cursive | 33 | tracing（26 字母描红） | 32 |
+
+**簇级形态【实勘】**：
+- **cursive**：26 字母页 × 每页 **7 练习形态**（mat/海报/大小写/大写专/小写专/渐进描红/连写 chart）× DN+ZB 双字体 ≈ 14 PDF/字母；每字母页 **13 张内容图** + 笔画 how-to ~200 词 + 连写教学 ~130 词；hub 挂 days-of-week/months/planets 整套收藏页
+- **sight words**（22 URL 树）：hub + 年级 5 + 年级 worksheets 5 + Dolch 支 4 + Fry 支 3 + 活动 4（flashcards/bingo/games/tracing）；**220 词零每词页**，全收在年级页"每变体一块一图"（kindergarten 页 13 min read、约 20 块、~20 图）；**assessment 是独立页形态**（教师版+学生卡+按季度）
+- **holiday**：节日 hub = 全站最深页形态（Halloween hub 27+ 件/41 图/18 min read），按活动类型分节（crossword→maze→worksheets→math→coloring→crafts→fine motor→puzzles→writing→games），每件 2-3 句使用场景（sub plans/early finishers/laminate）
+- **math multiplication**：变体不拆 URL（单页 10-12 变体），拆的是子品类 11 页（chart/wheels/flashcards/drills/games/BINGO/word problems）；细节页 26 图 14 min read，2020 年老页持续更新养排名
+- **name tracing 1 URL**：editable PDF 路线，31 条评论 = 需求清单（要 cursive 版/要换字体/姓名放不下——站长答 nope）
+
+**变现**：免费 PDF 直链无墙 + Mediavine 广告 + 付费 bundle 植入 + leadpages 邮箱捕获。robots `max-image-preview:large`。
+
+### 7.2 Math-Salamanders — 882 页平铺 SBI! 站
+
+**Sitemap 全量【实测 10/29，robots.txt 指路的单文件 RCgCU2iB.xml】**：图片声明 25,289 = **均 28.3 图/页**（高于 Superstar）；**robots 封 GPTBot/anthropic-ai/ClaudeBot 等 8 家 AI 爬虫**。板块：**grade×topic 笛卡尔积 ~130 页**（K~6 年级 × ~19 题维度，每年级固定 5 件套 games/help/worksheets/puzzles/quiz）、calculators 51（公式实体×计算器：area-of-X 13/volume-of-X 7）、times tables 63（**1-12 逐表**+15/20/25/30×30 放大+chart/grid/test/quiz 形态）、addition/subtraction 位数矩阵（2/3/4/5-digit × regrouping）、place value 26、number line **量程矩阵** 19（0-10/20/50/100/blank/negative/decimal/fraction 各一页）、节日×年级×题型三维 37（thanksgiving-math-{k..5th}）。
+
+**页级形态【实勘 3 页】**：欢迎段模板腔 → 学习路径叙述 → **PDF 缩略图网格（核心）** → "Which chart should I use" 选型大段（按年级/用途）→ 12+ 姊妹页链接（各配缩略图）→ How to Print 支持页入口×2；每段绑 "Elementary Math Benchmarks for Grade N" 原文；单表条页每表 4 PDF（color/bw × 10/12）；PV 页 5 范围 × 3 形式（数字槽/10 槽练习/eco 省墨）。同内容有 UK Year 1-6 / AU 镜像站（违反我们"只做美国"不学）。
+
+### 7.3 DadsWorksheets — 760+ 页，与我们同栈（Astro）
+
+**Sitemap 全量【实测 10/29】**：/worksheets/ 平铺 ~450（一练习主题一页）+ /charts/ 家族 ~138 + /puzzles/ ~51。对位家族：**乘法图族 34 URL**（1 主页+10 旧变体页+23 新子目录页，含 8 主题版 summer/space/animals/video-games/sports/dinosaur/dog/pink-swirl）+ multiplication-table singles 7；**place value 族 9 URL = wholes/periods × millions/billions/thousandths/millionths 2×4 矩阵**；hundred chart 12 / roman numerals 12（1-20/1-50/1-100/1-1000 四页 **10-18 仍更新 = 活板块**）/ primes 13（1-100/101-200/201-300/301-400/1-1000 范围矩阵）/ trig 16 / **coordinate plane 14（我们 graph-paper 簇完全没有的最大邻居）** / blank clock 10 / number line 10 / fraction/sqrt/exponent 各 4。
+
+**乘法主页形态【实勘】**：H1 即卖点（"86 High Resolution PDFs, 1-10, 1-12, 1-15 and More!"）→ 10 风格 section（bw/grid/proportioned/color/blank/shaded/口袋/30×30/50×50/100×100）每 section 链子页 → 底部 800+ 字教学。SVG 高清，prebid/gpt 重广告。
+
+### 7.4 K5 Learning — cursive 91 URL 精确矩阵【实测 sitemap】
+
+| 板块 | URL | 板块 | URL |
+|---|---|---|---|
+| cursive-alphabet（26+hub+guide） | 28 | letter-joins（bottom/bottom-e/top/top-e/c-shaped） | 6 |
+| cursive-words（a-words…z-words） | 27 | sentences（**单收藏页不分年级**） | 1 |
+| **passages（9 童谣 bo-peep/peter-piper…+11 主题 ocean/apples/baseball…）** | 21 | | |
+
+单字母页**极薄**：一句话+1 缩略 GIF+5 worksheet 链接（4/5 会员锁 $24/年），零教学文字。K5 靠 DR 杠会员制，不靠内容。**两家跑通的新矩阵只有：单词首字母 26、passages 实体 20、joins 5；sentences 两家都不拆页；数字草书两家都没有。**
+
+### 7.5 次级竞品速写
+
+- **GetWorksheet**（Next.js 生成器站，name-tracing 最直接竞手）：一次 10 名字/大小写四选/描红样式 dashed·dotted·grey/字号三档/1-6 行+跟写空行/Letter·A4/**Andika 字体**（单层 a/g 附教学理由）/"浏览器内绘制不上传"隐私句；同引擎切 sight-word 8 词页/spelling/句子页；底部 9 工具缩略图互链网格
+- **101planners**（sign-in 在位者）：每模板 **6 格式**（图/Word/填 PDF/GDocs/Excel/GSheets）；学校模板核心是 **18 学生×31 天月度格**+25 学生日表+5 天周格
+- **signinsheethub**（EMD 新站，**2026-10-23 上线站龄 6 天**）：三件套下载+大预览 PNG+**浏览器自定义器**（标题/列头/行数/横竖/直接填格）——sign-in 战场 Superstar 缺席、在位者一个 6 天站龄 = 窗口开着
+- **printabulls** 感恩节分类 11 帖**评论数 = 需求强度排序**【实勘】：**word scramble 37 条全类目第一** > I Am Thankful 12 > shopping lists/turkey templates 各 6 > bingo/placemats/place cards 各 4 > **word searches 3**；thankful 套装 ≥8 页变体（火鸡羽毛手工格式，与我们写作课取向分野）
+
+### 7.6 跨站机制总结
+
+1. **URL 策略三流派**：变体拆 URL 派（MS 10+ 页/簇、DW 34 页/族 —— SERP 占位多）/ 单页集齐派（Superstar 变体不拆、拆子品类 —— 单页权重集中）/ 碎片会员派（K5 91 薄页靠 DR）。**我们 = 单页集齐 + 对确有量的家族拆 URL（DW 双层结构）**，与 10/18 验收结论一致
+2. **图片密度基准 22.9~28.3 图/页**（MS>DW≈Superstar）；K5 极薄页也有 1 图配 pin:media。**图片 SEO 是这些站的结构性流量机器**，不是装饰——#17/#18 扩容密度照 23~28 对标（参考图表型页 6~12 张即可，§6.2 规律不卷）
+3. **程序化矩阵四型**（全部"一份数据 × 一个模板"）：实体枚举型（字母×4 模板族=104 页、templates 99 名词）、范围矩阵型（roman/primes/乘法 1-9~100×100、number line 量程、PV 2×4）、年级×活动笛卡尔型（grade×topic 130、sight words 年级×10 活动、节日×年级×题型）、主题×难度型（词搜主题×9 级，换词表即产线）。**最便宜的上量 = 给已验证枚举加第二/第三模板族，不是找新实体**
+4. **PDF 是 table stakes 但可后置**：竞品全 PDF 直链；我们浏览器直印是差异化，构建期出 PDF（headless 管线）作为台阶保留，短期 PNG 下载补齐即可
+5. **节日日历窗口**（§5.1 已有，竞品覆盖密度确认）：Christmas 两家最深 → **11/15 死线**；100th Day Superstar 专设 Classroom Milestones hub → 12/20 死线；Valentine's → 1/10
+
+### 7.7 chartglade 落位（两线：改版 × 上量）
+
+**A. 上量矩阵机会表**（在位者实锤 + 管线现成，按 确定性×页数 排）：
+
+| # | 矩阵 | 页数 | 引擎/数据 | 立项门 |
+|---|---|---|---|---|
+| A1 | **Christmas 簇**（词搜+涂色+scramble+Letter-to-Santa 写作纸+hub） | 4-6+hub | 全现成（scramble=PLACEMAT_SCRAMBLES 泛化） | **无需拉量，死线 11/15 进 11 月批** |
+| A2 | **乘法单表 matrix table-1..12** | +12 | mathCharts 参数化+[letter].astro 动态路由先例+每表规律文案 data | 无需拉量（multiplication chart 12.1K 在册，三站全重仓） |
+| A3 | **100th Day 簇**（百数表×PaintArt=mystery picture 竞品手工做不出）+ "I wish I had 100…" 写作纸 | 3-5+hub | 百数表+PaintArt 现成乘积 | 无需拉量，死线 12/20 进 12 月批 |
+| A4 | **节日词搜矩阵**（easter/valentine/st-patrick/spring/summer/winter/back-to-school 各 1 页起步） | +7~15 | wordSearch 引擎+新词表 | 随各节日簇走（valentine 1 月批） |
+| A5 | **sight words 年级×活动变体页**（flashcards/bingo/assessment/dolch-nouns） | +5~8 | sightWords.ts 数据在库+SightWordCards 扩 | 👤 拉量：各变体词族合计 ≥10K |
+| A6 | **数字 0-10 worksheet 家族 + 100/120 chart 变体** | +8~13 | mathCharts/hundred 引擎 | 👤 拉量 |
+| A7 | **number line 量程矩阵**（0-10/20/50/100/blank） | +6~10 | graphPaper SVG 刻度改参 | 👤 拉量 |
+| A8 | **telling time 钟面矩阵** | +6~9 | 新 SVG 钟面组件 | 👤 拉量 |
+| A9 | **coordinate plane 并入 graph-paper 簇** | +8~14 | graph paper 同源+轴标注层 | 👤 拉量（graph paper 词池邻居） |
+| A10 | **roman numerals 范围矩阵** | +5~8 | romanNumerals.ts 一下午 | 👤 拉量（DW 活板块但词量未测） |
+| A11 | **宝宝名字库 100~300 页**（renderNameSheetHtml 纯函数 getStaticPaths 预渲染） | 100-300 | 现成纯函数，三家竞手全空白 | 👤 拉量（emma/liam name tracing 采样聚合） |
+| A12 | **sign-in 月度考勤格**（18×31/25 学生×5 天） | +1~3 | 纯表格 | 👤 拉量（在位者弱：101planners+6 天站龄 EMD） |
+| A13 | **cursive copywork 矩阵**（童谣 9+主题 11） | +10~20 | trace-then-write 泛化 | 👤 拉量（K5 第三大矩阵） |
+
+**B. 改版差距清单**（内容质量对标，按簇）：
+
+| 簇 | 差距（竞品证据） | 改法 |
+|---|---|---|
+| 全站 | 图片：字母页 26 页 0 图、math 8 页 0 图、读写簇 26 页 1 图（Superstar 22.9 图/页） | #17 扩容第二波：sheet-images 管线跑 26 字母+math 簇+og:image 全站补齐 |
+| 全站 | 单页单 printable vs Superstar 每页 20 块（一变体一块一图） | PageDef 加 `variants[]`，ChartPage 渲染多变体锚点段（一次改造全簇受益） |
+| cursive | 缺连写教学（Superstar 每字母 ~130 词两段）+单词描红行+prev/next 链 | CursiveLetterDef 加 connect/words 字段；CursiveAZ 加 prev/next（26 页零新 URL 深化） |
+| 词搜 | 2 张/主题 vs Superstar 20 张 9 级难度；词表已内联 FAQ | 扩 3-4 档难度+每档节头+锚点；词表谜题旁再露一次 |
+| sight words | 每页 1 词卡 vs 年级页 20 块（含 assessment/双序表） | A5 拉量过后按 variants[] 出块；字母序/频率序双表零新数据 |
+| name tracing | 生成器单名固定结构 vs GetWorksheet 10 名字/case/行数/字号 | island 扩控件（纯客户端）；补 "My name is…" 句子页模式 |
+| sign-in | 无月度格、无自定义器（signinsheethub 6 天站龄在跑） | A12 拉量过后加月度格页+行数/横竖 island |
+| hub | 感恩节 hub ~300 词 vs 节日 hub 13-18 min read | hub 卡片下补 2-3 句使用场景（数据进 pages 数组）；#26 Calendar hub 已在 11 月批 |
+| 数学支柱 | 无选型指南段/无"How to Print"页/年级 benchmark 未显式 | MS 选型表 + extraSection 补顺序专文 + CCSS 标号显式化（纯文案） |
+
+**C. 明确不做**：Dolch 220 每词一页（两家头部都不做，薄内容风险最高）；cursive words 26 页矩阵（KD58 实测死）；cursive sentences 按年级拆页（两家都不拆）；数字草书（零在位者）；coloring 102/templates 100（漂出主题，§6.3 已裁）；年级×学科大网格（DR0 无底层支撑 = 空壳 hub）；UK/AU 镜像（只做美国）；MS calculators 交互工具族（非打印件场景）。
+
 **一句话**：两站把已立项的 #17/#18 从"单站参考"变"双实锤"（PDF 标配、图片密度上限 38.7/页），真增量集中在 10/25 批三项（PDF 下载、变体图 6~12 张、title 承诺）；词族胜负规律确认参考图表型是 chartglade 主场，cursive / sight words 两族两站均缺位 —— 既有 53 页矩阵路线不动。

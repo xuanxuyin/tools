@@ -8,7 +8,7 @@
 
 ## 今天 · 2026-10-29（周四）
 
-> 10/28~29 拼豆连场全闭环（103 色板 → 全量铺开 → 质量三刀 → 117 张 1:1 → 渲染 pegboard 化 → 缩略图 webp 化 → 竞品两页复刻 → 精度源码对标 → 291 Mardiy 换板）+ **第八场 UI 观感优化批**（首页/五旗舰页导航/按钮/卡片）+ **第九场收尾四刀**（默认勾选取消 / guides 精简 / 竞品底部三区块+手绘图 / 首页卡图示）+ **第十场观感统一**（guides 真减条目 8 卡+文字链 / 全站内容区块底框 / title.png 评估=不上站）。**明天 10/30（周五）B 计划讨论门**。今日剩你的活：线上验收 + P3 拉量。
+> 10/28~29 拼豆连场全闭环（103 色板 → 全量铺开 → 质量三刀 → 117 张 1:1 → 渲染 pegboard 化 → 缩略图 webp 化 → 竞品两页复刻 → 精度源码对标 → 291 Mardiy 换板）+ **第八场 UI 观感优化批**（首页/五旗舰页导航/按钮/卡片）+ **第九场收尾四刀**（默认勾选取消 / guides 精简 / 竞品底部三区块+手绘图 / 首页卡图示）+ **第十场观感统一**（guides 真减条目 8 卡+文字链 / 全站内容区块底框 / title.png 评估=不上站）＋ **chartglade 五路对标批**（thankful 页重做 + 大站 sitemap 全量逆向 → 上量矩阵 13 项落 BENCHMARKS §7）。**明天 10/30（周五）B 计划讨论门**。今日剩你的活：线上验收（tintbrew 拼豆 + chartglade thankful 截图）+ 两站拉量（P3 / 对标批 A5~A13）。
 
 - [x] 🤖 **拼豆 P0 ✅ 当日上线**：色板 48 假色 → **103 色 Perler 官方线**（P1~P103 购物码+官方色名+社区测量 hex）——购物清单从此指向真可买的珠子；图纸数据全部迁移重生成；201/201 测试 + 106 页 build 绿。明细 PLAN 10/28 行
 - [x] 🤖 **主页拼豆入口 ✅**（👤 指令）：工具卡（Photo to Bead）+ 品类卡板块（All/Animals/Food/Christmas/Easy）上线，此前首页零拼豆链接
@@ -33,6 +33,9 @@
 - [x] 🤖 **高流量页 UI 观感优化批 ✅**（👤 "首页排版和按钮使用体验优化" + "mixer/mix hub 也优化" + "按钮样式/页面导航/下方条目不好看"）：**Mixer**——ratio 读数徽章 + `Ratio 1 : 1 · 50 / 50` 总览行 + **Even (1:1) / Shuffle** 按钮（HSL 随机漂亮色防脏）+ 模式切换分段控件化 + blend strip caption；**全局**——.btn 立体化、.tool-card hover 抬升 + card-cta 箭头位移、Footer 链接 › hover 显形；**`ToolNav` 新组件**（hero 下五入口 pill 导航条）接入首页 + mixer/converter/mix/guides 四页（此前旗舰页互跳只靠 Footer）；**首页** 两个 ul → link-grid 色点 tile（mix 色点 = 引擎真实计算色）+ 工具卡 CTA；**mix hub** Popular/Every 分组 + 卡片抬升（`MixCard.astro` 抽组件）；**guides 卡** CTA；**237/237 测试 + 177 页 build 绿**。明细 PLAN 10/29 第八场行
 - [x] 🤖 **photo 转换器收尾四刀 + 首页图示升级 ✅**（👤 六指令连发）：**Remove bg / Dark outline 默认取消勾选**（HTML+island fallback+文案三处+测试反转三层一致）；**color-guides 精简**——18 卡去描述段落 → 三组 tile（make 10 / frosting 4 / go-with 4 带三色药丸条）；**photo 底部竞品三区块搬齐**——五张边框卡片（For the best results / How it works / What you can control / What your pattern includes / FAQ），每条目手绘 SSR SVG 小图（`DemoFigure.astro` 11 种，"左原图→右拼豆板"语法，零图片资产）；**首页三工具卡去三色条**——mixer=引擎现算 9 段渐变 / converter=同紫三格式行 / photo=真图纸；**237/237 测试 + 177 页 build 绿**。明细 PLAN 10/29 第九场行
 - [x] 🤖 **观感统一批 ✅**（👤 三指令）：**color-guides 真减条目**——18 卡 → 8 张主力卡 + 10 条 More 文字链（页面/内链/JSON-LD 全保）；**全站内容区块底框**——global.css `.prose` 一处加框 ~50 页生效 + `.section-card` 通用类 + Mixer/Converter 工具根框 + photo 页 shell 统一并补 ToolNav（旗舰六页导航齐）+ scenario chart 区套框；**title.png 评估**——238×242 真透明 kawaii 头像，技术可用但颜色站品牌不搭+版权不明，**不上站**。**237/237 测试 + 177 页 build 绿** + dist 实勘（8 tile / 根框 / ToolNav / .prose CSS 内联全在位）。明细 PLAN 10/29 第十场行
+- [x] 🤖 **chartglade 五路对标批 ✅**（👤 "每页内容对标大站太简陋" + "大站什么内容量大做成单页"）：Superstar 933 页 22.9 图/页 / Math-Salamanders 882 页 28.3 图/页 / DadsWorksheets 760+（同 Astro 栈）/ K5 cursive 91 URL —— sitemap 全量计数 + 跨站机制五条（图片密度是结构性流量机器 = 我方最大差距；程序化矩阵四型）→ [BENCHMARKS.md §7](./chartglade/BENCHMARKS.md)；**落位三表**：A 上量 13 项（**A1 Christmas 簇并 11 月批死线 11/15** / A2 乘法单表 +12 / A3 100th Day 12/20 / A5~A13 待拉量）、B 改版差距（variants[] 引擎改造 / cursive 深化 / 图片第二波）、C 明确不做；**连带重做 I Am Thankful For 页**（👤 点名太丑）：秋叶标题+描红句+4 句式框+画框，161 测试绿。明细 PLAN 10/29 行
+- [ ] 👤 **chartglade thankful 页验收（30 秒）**：打开 `chartglade/_screen.png` + `chartglade/_print.png`（屏幕/打印两形态）—— 秋叶标题 + Trace your starter 灰模句 + 4 个编号句式框 + 底部大画框；OK 回一句"上"，我走 push.bat 上 main（截图文件随后删）
+- [ ] 👤 **AITDK 拉量 · chartglade 对标批 A5~A13 立项门**（插件拉完报数即可，**各族合计 ≥10K US/月才立项**）：① `sight word flashcards` + `sight word bingo` + `sight word assessment` + `dolch nouns` ② `number worksheets 0-10` + `120 chart` ③ `number line 0-20` ④ `telling time worksheets` ⑤ `coordinate plane worksheets` ⑥ `roman numerals chart` ⑦ `name tracing emma` + `name tracing liam`（名字库采样）⑧ `monthly attendance sheet` ⑨ `cursive passages`
 - [ ] 👤 **AITDK 拉量（P3 立项门，插件拉完报数即可）**：`perler bead patterns`（主词复拉）+ `dog perler bead patterns` + `cat perler bead patterns` + `pokemon perler pattern` + `perler bead animals`（品类族抽查）—— **合计 ≥10K US/月 → P3 全量开工**（~100 题材页）；不到线则 P3 缩量做已有品类页深化
 - [ ] 顺手：photo→bead **拖图后不动任何下拉，看 Auto 效果**（button_city 会自动落 32×21；要看到真实水平拿 ≥800px 短边**单主体**照片试，Auto 会自动上 58~116）；**UI 批观感扫一遍**（首页 / color-mixer / color-converter / mix / color-guides 五页：hero 下新导航条、mixer 的 Even/Shuffle/比例读数、**首页三工具卡新图示带**、Footer hover；[color-guides](https://tintbrew.com/color-guides/) 现在是三组轻 tile 不再是描述长墙）；docs/ 过程对比图 **17 张已清**（只留 title.png 吉祥物，用途待拍板）；10/30 B 计划门材料已备齐（chartglade PLAN §6）
 
@@ -124,7 +127,7 @@
 | 日期 | 事件 |
 |---|---|
 | 10/30（周五） | ⭐ **10 月底 B 计划讨论门**：前提已修正 = 外线 18 封在途（首批 5+follow-up 5+二批 8）+ 迄今零回音 → 讨论开（单问：加火力 or 止损）；C 组 pitch 4 封发出与否也入判读 |
-| 11 月 | chartglade 11 月批：视力表 2 页小簇（V1.8 已提前至 10/05）+ 谱纸生成器 + 作曲工具岛（9/25 立项，12.6K 词池）+ cursive 深化 2 页（9/24 立项）+ Teaching Calendar hub 候选；构成以 10/27 排序结论为准 ｜ tintbrew：**拼豆 P1+P2（11/2~6 周：自由尺寸 8~120 + PNG 下载/分板打印 + 背景去除/裁剪）随轻批上线赶圣诞手工窗** + V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
+| 11 月 | chartglade 11 月批（11/12 上线窗，`nov-predev` 弹药 85 页已备）：#24 place value 深化 + #25 mult 2 页 + #26 Teaching Calendar hub + #20 cursive 深化 2 页 + **#28 Christmas 簇加车（死线 11/15）** + #32 图片扩容第二波搭车 ｜ tintbrew：**拼豆 P1+P2（11/2~6 周：自由尺寸 8~120 + PNG 下载/分板打印 + 背景去除/裁剪）随轻批上线赶圣诞手工窗** + V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
 | 2027-01-31 | **双站止损线复盘**（chartglade <3K 且零词 top 30；tintbrew <5K 且零词 top 30 → 停投） |
 
 ---
