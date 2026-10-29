@@ -1,14 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BeadFigure from '../components/BeadFigure.astro';
+import ToolNav from '../components/ToolNav.astro';
 import { BEAD_PATTERNS } from '../data/beadPatterns';
 import { categoryCounts, easyPatterns, patternContents } from '../lib/beadContent';
+import { mixes } from '../data/mixes';
+import { buildMixContent } from '../lib/mixContent';
 import { SITE } from '../consts';
 
 // one flagship board per category stands in for the whole set — the figures
 // render server-side from the same pattern data as the gallery pages, so the
 // homepage shows real bead art with zero image assets
 const bySlug = (slug: string) => patternContents.find((p) => p.def.slug === slug)!;
+
+// decorative dots for the mix links carry the REAL computed answer color,
+// same engine the mix pages use — not a hand-picked approximation
+const mixHex = new Map(mixes.map((m) => {
+  const c = buildMixContent(m);
+  return [c.slug, c.resultHex] as const;
+}));
 
 const title = 'TintBrew — Mix Colors Online & Convert HEX, RGB, HSL, CMYK';
 const description =
@@ -32,6 +42,8 @@ const jsonLd = {
     </p>
   </section>
 
+  <ToolNav />
+
   <section aria-label="Color tools" class="tool-grid">
     <a class="tool-card" href="/color-mixer">
       <h2>Color Mixer</h2>
@@ -44,6 +56,7 @@ const jsonLd = {
         <span style="background:#8b5cf6"></span>
         <span style="background:#3b82f6"></span>
       </div>
+      <span class="card-cta">Mix colors</span>
     </a>
     <a class="tool-card" href="/color-converter">
       <h2>Color Converter</h2>
@@ -56,6 +69,7 @@ const jsonLd = {
         <span style="background:#fbbf24"></span>
         <span style="background:#fde68a"></span>
       </div>
+      <span class="card-cta">Convert a color</span>
     </a>
     <a class="tool-card" href="/photo-to-perler-bead-pattern/">
       <h2>Photo to Bead Pattern</h2>
@@ -68,6 +82,7 @@ const jsonLd = {
         <span style="background:#fd5918"></span>
         <span style="background:#4dab64"></span>
       </div>
+      <span class="card-cta">Convert a photo</span>
     </a>
   </section>
 
@@ -112,17 +127,35 @@ const jsonLd = {
     <h2>What two colors make?</h2>
     <p>
       Mixing colors isn't one question — screens blend light (additive) while paint blends pigments
-      (subtractive), and the results differ. Our mix guides answer the classic combinations with live
-      examples, exact HEX codes, and ratio tables:
+      (subtractive), and the results differ. These guides answer the classic combinations with live
+      examples, exact HEX codes, and ratio tables. The dot on each card is the real computed answer:
     </p>
-    <ul>
-      <li><a href="/mix/red-blue">What color does red and blue make?</a></li>
-      <li><a href="/mix/blue-yellow">What color does blue and yellow make?</a></li>
-      <li><a href="/mix/red-green">What color does red and green make?</a></li>
-      <li><a href="/what-colors-make-brown">What colors make brown?</a> — every route, computed</li>
-      <li><a href="/mix/red-yellow">What color does red and yellow make?</a></li>
-      <li><a href="/mix/black-white">What color does black and white make?</a></li>
-    </ul>
+    <div class="link-grid">
+      <a class="link-tile" href="/mix/red-blue">
+        <span class="dot" style={`background:${mixHex.get('red-blue')}`}></span>
+        What does red and blue make?
+      </a>
+      <a class="link-tile" href="/mix/blue-yellow">
+        <span class="dot" style={`background:${mixHex.get('blue-yellow')}`}></span>
+        What does blue and yellow make?
+      </a>
+      <a class="link-tile" href="/mix/red-green">
+        <span class="dot" style={`background:${mixHex.get('red-green')}`}></span>
+        What does red and green make?
+      </a>
+      <a class="link-tile" href="/what-colors-make-brown">
+        <span class="dot" style="background:#8a5a3b"></span>
+        What colors make brown? — every route
+      </a>
+      <a class="link-tile" href="/mix/red-yellow">
+        <span class="dot" style={`background:${mixHex.get('red-yellow')}`}></span>
+        What does red and yellow make?
+      </a>
+      <a class="link-tile" href="/mix/black-white">
+        <span class="dot" style={`background:${mixHex.get('black-white')}`}></span>
+        What does black and white make?
+      </a>
+    </div>
     <p>Browse <a href="/mix">all color mixes</a> for the full list.</p>
   </section>
 
@@ -132,12 +165,24 @@ const jsonLd = {
       Real-world mixing questions answered with computed swatches — the exact color each drop
       count or recipe lands on, not a photograph:
     </p>
-    <ul>
-      <li><a href="/how-to-make-black-frosting">How to make black frosting</a> (that's actually black)</li>
-      <li><a href="/how-to-make-brown-icing">How to make brown icing</a> — five ways, exact colors</li>
-      <li><a href="/icing-color-chart">Icing color chart</a> — gel drops to HEX codes</li>
-      <li><a href="/buttercream-color-chart">Buttercream color chart</a> — with the yellow shift explained</li>
-    </ul>
+    <div class="link-grid">
+      <a class="link-tile" href="/how-to-make-black-frosting">
+        <span class="dot" style="background:#2b2b2b"></span>
+        How to make black frosting
+      </a>
+      <a class="link-tile" href="/how-to-make-brown-icing">
+        <span class="dot" style="background:#7a4a2b"></span>
+        How to make brown icing — five ways
+      </a>
+      <a class="link-tile" href="/icing-color-chart">
+        <span class="dot" style="background:#ef8fb5"></span>
+        Icing color chart
+      </a>
+      <a class="link-tile" href="/buttercream-color-chart">
+        <span class="dot" style="background:#f6e3a1"></span>
+        Buttercream color chart
+      </a>
+    </div>
     <p>See <a href="/color-guides">all color guides</a> for more.</p>
   </section>
 </BaseLayout>

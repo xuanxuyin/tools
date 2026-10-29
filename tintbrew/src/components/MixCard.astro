@@ -1,0 +1,89 @@
+---
+import { buildMixContent } from '../lib/mixContent';
+
+/**
+ * One mix tile for the /mix directory — swatch equation (a → b = result),
+ * the question, and the computed answer. Styles live here (not on the
+ * directory page) because Astro scoping stops at this component's elements.
+ */
+interface Props {
+  c: ReturnType<typeof buildMixContent>;
+}
+
+const { c } = Astro.props;
+---
+
+<a class="mix-card" href={`/mix/${c.slug}`}>
+  <span class="mix-card-swatches" aria-hidden="true">
+    <span style={`background:${c.a.hex}`} />
+    <span style={`background:${c.b.hex}`} />
+    <span class="mix-card-arrow">→</span>
+    <span class="mix-card-result" style={`background:${c.resultHex}`} />
+  </span>
+  <span class="mix-card-q">What does {c.a.name.toLowerCase()} and {c.b.name.toLowerCase()} make?</span>
+  <span class="mix-card-a">
+    {c.resultName} <code>{c.resultHex}</code>
+  </span>
+</a>
+
+<style>
+  .mix-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    text-decoration: none;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .mix-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgb(109 40 217 / 0.1);
+    transform: translateY(-2px);
+  }
+
+  .mix-card-swatches {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: var(--sp-1);
+  }
+
+  .mix-card-swatches > span {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .mix-card-arrow {
+    width: auto !important;
+    height: auto !important;
+    border: 0 !important;
+    background: none !important;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .mix-card-q {
+    font-weight: 600;
+  }
+
+  .mix-card-a {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .mix-card-a code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+  }
+</style>

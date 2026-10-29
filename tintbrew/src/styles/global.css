@@ -173,19 +173,33 @@ a:hover {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--sp-1);
-  padding: 0.45rem 0.9rem;
+  padding: 0.5rem 0.95rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 600;
   line-height: 1.4;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  color: var(--text);
+  box-shadow: 0 1px 2px rgb(28 25 23 / 0.05);
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
 }
 
 .btn:hover {
   border-color: var(--accent);
+  box-shadow: 0 2px 10px rgb(109 40 217 / 0.14);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
 .btn-primary {
@@ -196,6 +210,7 @@ a:hover {
 
 .btn-primary:hover {
   filter: brightness(1.08);
+  box-shadow: 0 3px 12px rgb(109 40 217 / 0.3);
 }
 
 .btn[aria-disabled='true'],
@@ -396,12 +411,13 @@ input[type='range']::-moz-range-thumb {
 }
 
 .site-header nav a {
-  padding: 0.35rem 0.7rem;
+  padding: 0.4rem 0.75rem;
   border-radius: var(--radius-sm);
   text-decoration: none;
   color: var(--muted);
-  font-weight: 500;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
 .site-header nav a:hover {
@@ -439,18 +455,31 @@ input[type='range']::-moz-range-thumb {
   padding: 0;
   margin-top: var(--sp-2);
   display: grid;
-  gap: 0.35rem;
+  gap: 0.45rem;
 }
 
 .footer-grid a {
   color: var(--muted);
   text-decoration: none;
   font-size: 0.92rem;
+  transition: color 0.15s ease, padding-left 0.15s ease;
+}
+
+.footer-grid a::before {
+  content: '\203A'; /* › */
+  color: var(--accent);
+  opacity: 0;
+  margin-right: 0.15rem;
+  transition: opacity 0.15s ease;
 }
 
 .footer-grid a:hover {
   color: var(--accent);
-  text-decoration: underline;
+  padding-left: 0.2rem;
+}
+
+.footer-grid a:hover::before {
+  opacity: 1;
 }
 
 .footer-bottom {
@@ -488,19 +517,24 @@ input[type='range']::-moz-range-thumb {
 }
 
 .tool-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: inherit;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--sp-4);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
 .tool-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 4px 20px rgb(109 40 217 / 0.08);
+  box-shadow: 0 4px 20px rgb(109 40 217 / 0.1);
+  transform: translateY(-2px);
 }
 
 .tool-card h2 {
@@ -512,17 +546,79 @@ input[type='range']::-moz-range-thumb {
   font-size: 0.95rem;
 }
 
+/* the explicit "this is a button" affordance at the card foot — hover on
+   the card lights it up like a CTA */
+.card-cta {
+  margin-top: var(--sp-2);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.card-cta::after {
+  content: ' \2192'; /* → */
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.tool-card:hover .card-cta::after {
+  transform: translateX(3px);
+}
+
 .swatch-strip {
   display: flex;
   height: 3rem;
   border-radius: var(--radius-sm);
   overflow: hidden;
-  margin-top: var(--sp-3);
+  margin-top: auto;
   border: 1px solid var(--border);
 }
 
 .swatch-strip > span {
   flex: 1;
+}
+
+/* Link-list tiles (homepage + mixer page) — a plain <ul> of related-page
+   links upgraded to cards; the dot carries the real computed answer color */
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.link-tile {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.link-tile:hover {
+  border-color: var(--accent);
+  box-shadow: 0 3px 14px rgb(109 40 217 / 0.12);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.dot {
+  flex: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  border: 1px solid rgb(0 0 0 / 0.12);
 }
 
 /* --------------------------------------------------------------------------

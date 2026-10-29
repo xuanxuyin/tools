@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Converter from '../components/Converter.astro';
+import ToolNav from '../components/ToolNav.astro';
 import { SITE } from '../consts';
 
 const title = 'Color Converter — HEX to RGB, HSL & CMYK (Both Ways) | TintBrew';
@@ -66,6 +67,8 @@ const jsonLd = [
       updates as you type, each with a one-click copy button.
     </p>
   </section>
+
+  <ToolNav />
 
   <Converter syncUrl />
 

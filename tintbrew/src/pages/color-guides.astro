@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { scenarioContents } from '../lib/scenarioContent';
 import { outfitContents } from '../lib/outfitContent';
+import ToolNav from '../components/ToolNav.astro';
 import { SITE } from '../consts';
 
 const title = 'Color Guides — Mixing & Pairing Answers With Exact HEX | TintBrew';
@@ -42,6 +43,8 @@ const jsonLd = [
     </p>
   </section>
 
+  <ToolNav />
+
   <section class="tool-grid" aria-label="Mixing guides">
     {scenarioContents.map((c) => (
       <a class="tool-card" href={`/${c.def.slug}`}>
@@ -52,6 +55,7 @@ const jsonLd = [
           <span style={`background:${c.def.mixerColors[0]}`}></span>
           <span style={`background:${c.def.mixerColors[1] ?? c.def.mixerColors[0]}`}></span>
         </div>
+        <span class="card-cta">See the answer</span>
       </a>
     ))}
   </section>
@@ -66,6 +70,7 @@ const jsonLd = [
             <span style={`background:${h}`}></span>
           ))}
         </div>
+        <span class="card-cta">See the pairings</span>
       </a>
     ))}
   </section>

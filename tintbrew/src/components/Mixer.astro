@@ -63,6 +63,10 @@ const steps = mixSteps(rgbs, 9).map(rgbToHex);
 const weights = normalizeWeights(ratios);
 const pctA = Math.round((weights[0]! / (weights[0]! + (weights[1] ?? 0))) * 100);
 const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
+// one-glance ratio summary: "Ratio 5 : 3 · 63% / 37%" — the sliders say how
+// much of each color goes in, this line says what that means
+const pcts = weights.map((w) => Math.round(w * 100));
+const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
 ---
 
 <section
@@ -95,15 +99,18 @@ const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
                 autocomplete="off"
                 aria-label={`Hex value for color ${i + 1}`}
               />
-              <input
-                type="range"
-                min="0"
-                max="10"
-                step="1"
-                value={ratios[i]}
-                data-ratio
-                aria-label={`Mixing ratio for color ${i + 1}`}
-              />
+              <div class="ratio-wrap">
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="1"
+                  value={ratios[i]}
+                  data-ratio
+                  aria-label={`Mixing ratio for color ${i + 1}`}
+                />
+                <output class="ratio-val" data-ratio-val>{ratios[i]}</output>
+              </div>
               <button
                 type="button"
                 class="btn btn-remove"
@@ -117,9 +124,28 @@ const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
           ))
         }
       </div>
+      <p class="mix-ratio-line" data-ratio-line>{ratioLine}</p>
       <div class="mixer-actions">
         <button type="button" class="btn" data-add disabled={colors.length >= 5}>
           + Add color
+        </button>
+        <button
+          type="button"
+          class="btn"
+          data-even
+          aria-label="Reset every ratio to an even mix"
+          title="Reset every ratio to an even mix"
+        >
+          1 : 1
+        </button>
+        <button
+          type="button"
+          class="btn"
+          data-shuffle
+          aria-label="Shuffle in a random set of colors"
+          title="Shuffle in a random set of colors"
+        >
+          Shuffle
         </button>
         {
           showModeToggle && (
@@ -172,6 +198,7 @@ const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
         </div>
       </dl>
 
+      <p class="steps-caption">Blend path between your colors</p>
       <div class="steps-strip" data-steps aria-hidden="true">
         {steps.map((s) => <span style={`background:${s}`} />)}
       </div>
@@ -206,7 +233,10 @@ const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
       autocomplete="off"
       aria-label="Hex value"
     />
-    <input type="range" min="0" max="10" step="1" value="1" data-ratio aria-label="Mixing ratio" />
+    <div class="ratio-wrap">
+      <input type="range" min="0" max="10" step="1" value="1" data-ratio aria-label="Mixing ratio" />
+      <output class="ratio-val" data-ratio-val>1</output>
+    </div>
     <button type="button" class="btn btn-remove" data-remove aria-label="Remove this color">✕</button>
   </div>
 </template>
@@ -282,6 +312,36 @@ const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
     text-transform: lowercase;
   }
 
+  /* slider + live readout side by side — the number makes the 0–10 scale
+     legible without hunting for the thumb position */
+  .ratio-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-width: 0;
+  }
+
+  .ratio-val {
+    flex: none;
+    min-width: 1.7rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.15rem 0.3rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+  }
+
+  .mix-ratio-line {
+    margin-top: var(--sp-2);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
   .btn-remove {
     padding: 0.35rem 0.6rem;
   }
@@ -294,15 +354,40 @@ const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
     align-items: center;
   }
 
+  /* segmented control: one pill, two seats — the active mode reads as a
+     switch position instead of two parallel buttons */
   .mode-toggle {
     display: inline-flex;
-    gap: var(--sp-1);
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    margin-left: auto;
+  }
+
+  .mode-toggle .btn {
+    border: 0;
+    background: transparent;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+    box-shadow: none;
+  }
+
+  .mode-toggle .btn:active {
+    transform: none;
+  }
+
+  .mode-toggle .btn:hover {
+    border: 0;
+    background: var(--accent-soft);
   }
 
   .mode-toggle .btn[aria-pressed='true'] {
-    border-color: var(--accent);
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
     color: var(--accent);
-    background: var(--accent-soft);
+    font-weight: 600;
   }
 
   /* --- result --- */
@@ -325,6 +410,13 @@ const snippet = colorMixSnippet(colors[0]!, colors[1] ?? colors[0]!, pctA);
 
   .result-values {
     margin-top: var(--sp-3);
+  }
+
+  .steps-caption {
+    margin-top: var(--sp-3);
+    margin-bottom: calc(-1 * var(--sp-2));
+    font-size: 0.78rem;
+    color: var(--muted);
   }
 
   .steps-strip {

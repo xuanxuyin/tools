@@ -8,6 +8,7 @@ import {
   colorMixSnippet,
   formatCss,
   hexToRgb,
+  hslToRgb,
   mixSteps,
   normalizeHex,
   normalizeWeights,
@@ -23,6 +24,18 @@ const MIN_COLORS = 2;
 const MAX_COLORS = 5;
 const STEP_COUNT = 9;
 const NEW_ROW_COLORS = ['#22c55e', '#f59e0b', '#a855f7'];
+
+/** A random but always-presentable color: random hue, lively saturation,
+ *  mid lightness — pure-random RGB lands on mud far too often. */
+function randomPrettyHex(): string {
+  return rgbToHex(
+    hslToRgb({
+      h: Math.floor(Math.random() * 360),
+      s: 0.65 + Math.random() * 0.25,
+      l: 0.35 + Math.random() * 0.25,
+    }),
+  );
+}
 
 class MixerIsland {
   private root: HTMLElement;
@@ -103,6 +116,8 @@ class MixerIsland {
       colorInput.value = hex;
       hexInput.value = hex;
       rangeInput.value = String(this.ratios[i] ?? 1);
+      const ratioVal = node.querySelector<HTMLOutputElement>('[data-ratio-val]');
+      if (ratioVal) ratioVal.textContent = String(this.ratios[i] ?? 1);
       swatch.style.background = hex;
       colorInput.setAttribute('aria-label', `Pick color ${i + 1}`);
       hexInput.setAttribute('aria-label', `Hex value for color ${i + 1}`);
@@ -144,6 +159,13 @@ class MixerIsland {
     this.setValue('rgb', formatCss('rgb', result));
     this.setValue('hsl', formatCss('hsl', result));
     this.setValue('cmyk', formatCss('cmyk', result));
+
+    // one-glance ratio summary under the rows
+    const ratioLine = this.root.querySelector<HTMLElement>('[data-ratio-line]');
+    if (ratioLine) {
+      const pcts = weights.map((w) => Math.round(w * 100));
+      ratioLine.textContent = `Ratio ${this.ratios.join(' : ')} · ${pcts.join(' / ')}`;
+    }
 
     const stepsEl = this.root.querySelector<HTMLElement>('[data-steps]');
     if (stepsEl) {
@@ -229,6 +251,8 @@ class MixerIsland {
       const rangeInput = target.closest<HTMLInputElement>('[data-ratio]');
       if (rangeInput) {
         this.ratios[i] = Math.max(0, Math.round(Number(rangeInput.value)));
+        const val = row.querySelector<HTMLOutputElement>('[data-ratio-val]');
+        if (val) val.textContent = String(this.ratios[i]);
         this.render();
         return;
       }
@@ -279,6 +303,23 @@ class MixerIsland {
       if (addBtn && !addBtn.disabled && this.colors.length < MAX_COLORS) {
         this.colors.push(NEW_ROW_COLORS[this.colors.length % NEW_ROW_COLORS.length]!);
         this.ratios.push(1);
+        this.rebuildRows();
+        this.render();
+        return;
+      }
+
+      // 1 : 1 — every ratio back to even, colors untouched
+      if (target.closest('[data-even]')) {
+        this.ratios = this.colors.map(() => 1);
+        this.rebuildRows();
+        this.render();
+        return;
+      }
+
+      // Shuffle — same row count, fresh random colors and ratios
+      if (target.closest('[data-shuffle]')) {
+        this.colors = this.colors.map(() => randomPrettyHex());
+        this.ratios = this.colors.map(() => 1 + Math.floor(Math.random() * 9));
         this.rebuildRows();
         this.render();
         return;

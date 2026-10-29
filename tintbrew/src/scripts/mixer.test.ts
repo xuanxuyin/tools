@@ -137,6 +137,46 @@ describe('mixer island (real SSR markup)', () => {
     expect(lastCall).toContain('colors=%23ff0000%2C%233b82f6');
     expect(lastCall).toContain('ratios=1%2C3');
   });
+
+  it('ratio badge and summary line track slider edits', () => {
+    const line = ctx.document.querySelector('[data-ratio-line]')!;
+    expect(line.textContent).toBe('Ratio 1 : 1 · 50 / 50'); // SSR summary
+    const row = rows(ctx.document)[0]!;
+    const range = row.querySelector('[data-ratio]') as HTMLInputElement;
+    range.value = '7';
+    fire(range, 'input');
+    expect(row.querySelector('[data-ratio-val]')!.textContent).toBe('7');
+    expect(line.textContent).toMatch(/^Ratio 7 : 1 · \d+ \/ \d+$/);
+  });
+
+  it('the 1 : 1 button resets every ratio to an even mix', () => {
+    const range = rows(ctx.document)[0]!.querySelector('[data-ratio]') as HTMLInputElement;
+    range.value = '9';
+    fire(range, 'input'); // skew first so the reset has visible work to do
+    const even = ctx.document.querySelector('[data-even]') as HTMLButtonElement;
+    fire(even, 'click');
+    const ranges = rows(ctx.document).map(
+      (r) => r.querySelector('[data-ratio]') as HTMLInputElement,
+    );
+    expect(ranges.map((r) => r.value)).toEqual(['1', '1']);
+    expect(ctx.document.querySelector('[data-ratio-line]')!.textContent).toBe(
+      'Ratio 1 : 1 · 50 / 50',
+    );
+  });
+
+  it('Shuffle keeps the row count and fills valid colors and ratios', () => {
+    const before = rows(ctx.document).length;
+    const shuffle = ctx.document.querySelector('[data-shuffle]') as HTMLButtonElement;
+    fire(shuffle, 'click');
+    expect(rows(ctx.document)).toHaveLength(before);
+    const hexes = rows(ctx.document).map(
+      (r) => (r.querySelector('[data-hex]') as HTMLInputElement).value,
+    );
+    for (const h of hexes) expect(h).toMatch(/^#[0-9a-f]{6}$/i);
+    expect(ctx.document.querySelector('[data-ratio-line]')!.textContent).toMatch(
+      /^Ratio \d+( : \d+)+ · \d+( \/ \d+)+$/,
+    );
+  });
 });
 
 describe('mixer island URL restore', () => {
