@@ -1,0 +1,31 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import WordSearchSheet from '../components/printables/WordSearchSheet.astro';
+import { CHRISTMAS_WORDS_EASY, CHRISTMAS_WORDS_HARD, christmasPages } from '../data/christmas';
+
+const def = christmasPages.find((p) => p.slug === 'christmas-word-search')!;
+---
+
+<ChartPage def={def}>
+  <WordSearchSheet
+    puzzles={[
+      {
+        title: 'Easy Christmas Word Search',
+        audience: 'Kindergarten – Grade 2 · words run right, down, and diagonally',
+        words: CHRISTMAS_WORDS_EASY,
+        rows: 12,
+        cols: 12,
+        seed: 20261225,
+      },
+      {
+        title: 'Hard Christmas Word Search',
+        audience: 'Grades 3–5 · words run in all eight directions, backwards too',
+        words: CHRISTMAS_WORDS_HARD,
+        rows: 13,
+        cols: 13,
+        seed: 20261226,
+        hard: true,
+      },
+    ]}
+  />
+</ChartPage>

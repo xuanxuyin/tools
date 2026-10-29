@@ -12,6 +12,7 @@ export interface PageDef {
     | 'graph-paper'
     | 'halloween'
     | 'thanksgiving'
+    | 'christmas'
     | 'sign-in-sheets';
   h1: string;
   metaTitle: string;

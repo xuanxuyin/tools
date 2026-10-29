@@ -2139,3 +2139,139 @@ svg {
   }
 }
 
+/* ===== Christmas cluster (letter to Santa writing paper) ===== */
+
+.santa-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.santa-title {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  text-align: center;
+  margin: 0;
+  color: #8f2c33; /* deep berry — prints as dark gray in black and white */
+}
+
+.santa-greeting {
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: var(--sp-1) 0 0;
+}
+
+.santa-frame {
+  margin: 0;
+}
+
+.santa-model {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  line-height: 1.15;
+  color: #b9b5a8;
+  margin: 0 0 var(--sp-1);
+}
+
+.santa-line {
+  height: 1.7rem;
+  border-bottom: 2px dotted var(--line-strong);
+  margin: 0 0 var(--sp-2);
+}
+
+.santa-close {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
+.santa-model-signoff {
+  margin: 0;
+}
+
+.santa-line-name {
+  flex: 1;
+  height: 1.9rem;
+  margin-bottom: 0;
+}
+
+/* The draw section grows to fill whatever the letter leaves over */
+
+.santa-draw {
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.santa-draw h3 {
+  font-size: 0.95rem;
+  margin: 0 0 var(--sp-2);
+  color: #8f2c33;
+}
+
+.santa-draw-box {
+  flex: 1;
+  min-height: 2.6in;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+}
+
+/* Print pass — the letter fills exactly one letter page */
+
+@media print {
+  .santa-sheet {
+    height: 9.9in;
+    box-sizing: border-box;
+  }
+
+  .santa-title {
+    font-size: 17pt;
+    color: #000 !important;
+  }
+
+  .santa-greeting {
+    font-size: 19pt;
+  }
+
+  .santa-model {
+    font-size: 15.5pt;
+    color: #999 !important;
+  }
+
+  .santa-line {
+    height: 22pt;
+    border-color: #000 !important;
+    margin-bottom: 6pt;
+  }
+
+  .santa-close {
+    margin-top: 8pt;
+  }
+
+  .santa-close .santa-line {
+    height: 24pt;
+  }
+
+  .santa-draw {
+    border-color: #000 !important;
+    padding: 6pt;
+  }
+
+  .santa-draw h3 {
+    font-size: 10.5pt;
+    color: #000 !important;
+  }
+
+  .santa-draw-box {
+    border-color: #000 !important;
+    border-style: solid;
+    min-height: 2.2in;
+  }
+}
+
