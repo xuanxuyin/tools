@@ -101,9 +101,9 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   )}
 
   {c.chart && (
-    <section style="margin-top: var(--sp-6);">
+    <section class="section-card" style="margin-top: var(--sp-6);">
       <h2>{def.listHeading}</h2>
-      <div class="chart-notes prose">
+      <div class="chart-notes">
         {def.chartIntro.map((p) => <p>{p}</p>)}
         <p class="chart-base">
           <span class="base-swatch" style={`background:${c.chart.baseHex}`} aria-hidden="true"></span>
@@ -333,8 +333,15 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   }
 
   /* --- chart --- */
+  /* no .prose class here — the section-card already frames the whole chart
+     area, so only the paragraph rhythm is borrowed back */
   .chart-notes {
     margin-bottom: var(--sp-4);
+    max-width: 46rem;
+  }
+
+  .chart-notes p {
+    margin-top: var(--sp-3);
   }
 
   .chart-base {

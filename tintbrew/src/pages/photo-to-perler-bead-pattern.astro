@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DemoFigure from '../components/DemoFigure.astro';
+import ToolNav from '../components/ToolNav.astro';
 import { SITE } from '../consts';
 
 const title = 'Photo to Perler Bead Pattern — Free Picture-to-Bead Converter | TintBrew';
@@ -90,6 +91,8 @@ const jsonLd = [
       the pattern regenerates on the spot. Nothing uploads; the photo never leaves your device.
     </p>
   </section>
+
+  <ToolNav />
 
   <section class="tool-shell" data-photo-bead>
     <div class="pm-grid">
@@ -397,9 +400,9 @@ const jsonLd = [
 <style>
   .tool-shell {
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--radius);
     padding: var(--sp-4);
-    background: var(--bg, #fff);
+    background: var(--surface, #fff);
   }
   /* every guide block gets its own framed card — one border per section so
      the long bottom half reads as blocks instead of a wall (user call,

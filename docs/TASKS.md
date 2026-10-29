@@ -8,7 +8,7 @@
 
 ## 今天 · 2026-10-29（周四）
 
-> 10/28~29 拼豆连场全闭环（103 色板 → 全量铺开 → 质量三刀 → 117 张 1:1 → 渲染 pegboard 化 → 缩略图 webp 化 → 竞品两页复刻 → 精度源码对标 → 291 Mardiy 换板）+ **第八场 UI 观感优化批**（首页/五旗舰页导航/按钮/卡片）+ **第九场收尾四刀**（默认勾选取消 / guides 精简 / 竞品底部三区块+手绘图 / 首页卡图示）。**明天 10/30（周五）B 计划讨论门**。今日剩你的活：线上验收 + P3 拉量。
+> 10/28~29 拼豆连场全闭环（103 色板 → 全量铺开 → 质量三刀 → 117 张 1:1 → 渲染 pegboard 化 → 缩略图 webp 化 → 竞品两页复刻 → 精度源码对标 → 291 Mardiy 换板）+ **第八场 UI 观感优化批**（首页/五旗舰页导航/按钮/卡片）+ **第九场收尾四刀**（默认勾选取消 / guides 精简 / 竞品底部三区块+手绘图 / 首页卡图示）+ **第十场观感统一**（guides 真减条目 8 卡+文字链 / 全站内容区块底框 / title.png 评估=不上站）。**明天 10/30（周五）B 计划讨论门**。今日剩你的活：线上验收 + P3 拉量。
 
 - [x] 🤖 **拼豆 P0 ✅ 当日上线**：色板 48 假色 → **103 色 Perler 官方线**（P1~P103 购物码+官方色名+社区测量 hex）——购物清单从此指向真可买的珠子；图纸数据全部迁移重生成；201/201 测试 + 106 页 build 绿。明细 PLAN 10/28 行
 - [x] 🤖 **主页拼豆入口 ✅**（👤 指令）：工具卡（Photo to Bead）+ 品类卡板块（All/Animals/Food/Christmas/Easy）上线，此前首页零拼豆链接
@@ -32,6 +32,7 @@
 - [x] 🤖 **photo 转换器/editor 换 291 色 Mardiy 色板 ✅**（👤 "同图同参结果还是不一样，再探索"根因闭环 + "24 color / All 103 档怎么没了"找回）：竞品实为**完整 291 色 Mardiy 表**（A1…ZG8，第六场记的 172 是数错），管线逐行一致、色板是唯一差异 → 引擎/岛/editor 色库全换 `mardPalette.ts`，色数档 **8/12/16/24/All 291**（24/All 找回+扩容），图纸页 116 张 P 码体系不动；全站文案换口径；**234/234 测试 + 177 页 build 绿**。明细 PLAN 10/29 第七场行
 - [x] 🤖 **高流量页 UI 观感优化批 ✅**（👤 "首页排版和按钮使用体验优化" + "mixer/mix hub 也优化" + "按钮样式/页面导航/下方条目不好看"）：**Mixer**——ratio 读数徽章 + `Ratio 1 : 1 · 50 / 50` 总览行 + **Even (1:1) / Shuffle** 按钮（HSL 随机漂亮色防脏）+ 模式切换分段控件化 + blend strip caption；**全局**——.btn 立体化、.tool-card hover 抬升 + card-cta 箭头位移、Footer 链接 › hover 显形；**`ToolNav` 新组件**（hero 下五入口 pill 导航条）接入首页 + mixer/converter/mix/guides 四页（此前旗舰页互跳只靠 Footer）；**首页** 两个 ul → link-grid 色点 tile（mix 色点 = 引擎真实计算色）+ 工具卡 CTA；**mix hub** Popular/Every 分组 + 卡片抬升（`MixCard.astro` 抽组件）；**guides 卡** CTA；**237/237 测试 + 177 页 build 绿**。明细 PLAN 10/29 第八场行
 - [x] 🤖 **photo 转换器收尾四刀 + 首页图示升级 ✅**（👤 六指令连发）：**Remove bg / Dark outline 默认取消勾选**（HTML+island fallback+文案三处+测试反转三层一致）；**color-guides 精简**——18 卡去描述段落 → 三组 tile（make 10 / frosting 4 / go-with 4 带三色药丸条）；**photo 底部竞品三区块搬齐**——五张边框卡片（For the best results / How it works / What you can control / What your pattern includes / FAQ），每条目手绘 SSR SVG 小图（`DemoFigure.astro` 11 种，"左原图→右拼豆板"语法，零图片资产）；**首页三工具卡去三色条**——mixer=引擎现算 9 段渐变 / converter=同紫三格式行 / photo=真图纸；**237/237 测试 + 177 页 build 绿**。明细 PLAN 10/29 第九场行
+- [x] 🤖 **观感统一批 ✅**（👤 三指令）：**color-guides 真减条目**——18 卡 → 8 张主力卡 + 10 条 More 文字链（页面/内链/JSON-LD 全保）；**全站内容区块底框**——global.css `.prose` 一处加框 ~50 页生效 + `.section-card` 通用类 + Mixer/Converter 工具根框 + photo 页 shell 统一并补 ToolNav（旗舰六页导航齐）+ scenario chart 区套框；**title.png 评估**——238×242 真透明 kawaii 头像，技术可用但颜色站品牌不搭+版权不明，**不上站**。**237/237 测试 + 177 页 build 绿** + dist 实勘（8 tile / 根框 / ToolNav / .prose CSS 内联全在位）。明细 PLAN 10/29 第十场行
 - [ ] 👤 **AITDK 拉量（P3 立项门，插件拉完报数即可）**：`perler bead patterns`（主词复拉）+ `dog perler bead patterns` + `cat perler bead patterns` + `pokemon perler pattern` + `perler bead animals`（品类族抽查）—— **合计 ≥10K US/月 → P3 全量开工**（~100 题材页）；不到线则 P3 缩量做已有品类页深化
 - [ ] 顺手：photo→bead **拖图后不动任何下拉，看 Auto 效果**（button_city 会自动落 32×21；要看到真实水平拿 ≥800px 短边**单主体**照片试，Auto 会自动上 58~116）；**UI 批观感扫一遍**（首页 / color-mixer / color-converter / mix / color-guides 五页：hero 下新导航条、mixer 的 Even/Shuffle/比例读数、**首页三工具卡新图示带**、Footer hover；[color-guides](https://tintbrew.com/color-guides/) 现在是三组轻 tile 不再是描述长墙）；docs/ 过程对比图 **17 张已清**（只留 title.png 吉祥物，用途待拍板）；10/30 B 计划门材料已备齐（chartglade PLAN §6）
 

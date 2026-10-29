@@ -9,11 +9,39 @@ const title = 'Color Guides — Mixing & Pairing Answers With Exact HEX | TintBr
 const description =
   'Every classic color question answered with computed swatches: what colors make brown, purple, green or orange, what colors go with them, plus frosting, icing and gel-color charts.';
 
-// the directory is a directory: tiles point, pages explain (user call,
-// 2026-10-29 — full meta paragraphs on every card made the wall of cards
-// unreadable)
+// the directory is a directory: featured tiles point, a plain-link row
+// carries the rest (user call, 2026-10-29 — eighteen tiles in a wall was
+// still too many; every page keeps its link, most just don't get a card)
+const featuredMake = new Set([
+  'what-colors-make-brown',
+  'what-colors-make-purple',
+  'what-colors-make-green',
+  'what-colors-make-orange',
+]);
+const featuredBaking = new Set([
+  'how-to-make-black-frosting',
+  'how-to-make-brown-icing',
+]);
+const featuredOutfit = new Set([
+  'what-colors-go-with-brown',
+  'what-colors-go-with-green',
+]);
+
 const makeGuides = scenarioContents.filter((c) => c.def.slug.startsWith('what-colors-make-'));
-const bakingGuides = scenarioContents.filter((c) => !c.def.slug.startsWith('what-colors-make-'));
+const bakingGuides = scenarioContents.filter(
+  (c) => !c.def.slug.startsWith('what-colors-make-'),
+);
+const pick = (list: typeof scenarioContents, featured: Set<string>) => {
+  const isFeatured = (slug: string) =>
+    featured.size === 0 ? true : featured.has(slug);
+  return {
+    top: list.filter((c) => isFeatured(c.def.slug)),
+    more: list.filter((c) => !isFeatured(c.def.slug)),
+  };
+};
+const make = pick(makeGuides, featuredMake);
+const baking = pick(bakingGuides, featuredBaking);
+const outfits = pick(outfitContents, featuredOutfit);
 
 const jsonLd = [
   {
@@ -51,41 +79,74 @@ const jsonLd = [
 
   <ToolNav />
 
-  <section class="link-grid guides-grid" aria-label="What colors make">
-    <h2 class="guides-group-title">What colors make…</h2>
-    {makeGuides.map((c) => (
-      <a class="link-tile" href={`/${c.def.slug}`}>
-        <span class="dot" style={`background:${c.heroHex}`}></span>
-        {c.def.h1}
-      </a>
-    ))}
+  <section class="section-card guide-group first" aria-label="What colors make">
+    <h2>What colors make…</h2>
+    <div class="link-grid">
+      {make.top.map((c) => (
+        <a class="link-tile" href={`/${c.def.slug}`}>
+          <span class="dot" style={`background:${c.heroHex}`}></span>
+          {c.def.h1}
+        </a>
+      ))}
+    </div>
+    <p class="more-links">
+      More:
+      {make.more.map((c, i) => (
+        <Fragment>
+          {i > 0 && <span class="sep">·</span>}
+          <a href={`/${c.def.slug}/`}>{c.def.h1}</a>
+        </Fragment>
+      ))}
+    </p>
   </section>
 
-  <section class="link-grid guides-grid" aria-label="Frosting and icing guides">
-    <h2 class="guides-group-title">Frosting &amp; icing guides</h2>
-    {bakingGuides.map((c) => (
-      <a class="link-tile" href={`/${c.def.slug}`}>
-        <span class="dot" style={`background:${c.heroHex}`}></span>
-        {c.def.h1}
-      </a>
-    ))}
+  <section class="section-card guide-group" aria-label="Frosting and icing guides">
+    <h2>Frosting &amp; icing guides</h2>
+    <div class="link-grid">
+      {baking.top.map((c) => (
+        <a class="link-tile" href={`/${c.def.slug}`}>
+          <span class="dot" style={`background:${c.heroHex}`}></span>
+          {c.def.h1}
+        </a>
+      ))}
+    </div>
+    <p class="more-links">
+      More:
+      {baking.more.map((c, i) => (
+        <Fragment>
+          {i > 0 && <span class="sep">·</span>}
+          <a href={`/${c.def.slug}/`}>{c.def.h1}</a>
+        </Fragment>
+      ))}
+    </p>
   </section>
 
-  <section class="link-grid guides-grid" aria-label="What colors go with">
-    <h2 class="guides-group-title">What colors go with…</h2>
-    {outfitContents.map((o) => (
-      <a class="link-tile" href={`/${o.def.slug}`}>
-        <span class="mini-strip" aria-hidden="true">
-          {o.heroStrip.slice(0, 3).map((h) => (
-            <span style={`background:${h}`}></span>
-          ))}
-        </span>
-        {o.def.h1}
-      </a>
-    ))}
+  <section class="section-card guide-group" aria-label="What colors go with">
+    <h2>What colors go with…</h2>
+    <div class="link-grid">
+      {outfits.top.map((o) => (
+        <a class="link-tile" href={`/${o.def.slug}`}>
+          <span class="mini-strip" aria-hidden="true">
+            {o.heroStrip.slice(0, 3).map((h) => (
+              <span style={`background:${h}`}></span>
+            ))}
+          </span>
+          {o.def.h1}
+        </a>
+      ))}
+    </div>
+    <p class="more-links">
+      More:
+      {outfits.more.map((o, i) => (
+        <Fragment>
+          {i > 0 && <span class="sep">·</span>}
+          <a href={`/${o.def.slug}/`}>{o.def.h1}</a>
+        </Fragment>
+      ))}
+    </p>
   </section>
 
-  <section class="prose" style="margin-top: var(--sp-8);">
+  <section class="prose" style="margin-top: var(--sp-6);">
     <h2>How these are built</h2>
     <p>
       Each swatch is a perceptual (Oklab) blend computed from the actual recipe: base frosting or
@@ -98,24 +159,41 @@ const jsonLd = [
 </BaseLayout>
 
 <style>
-  /* group headings inside the tile grids — span the full row like the mix
-     directory; first group sits flush under the hero, later ones get air */
-  .guides-grid {
-    margin-top: var(--sp-6);
+  /* three framed groups stack with air between them; the first sits flush
+     under the hero + tool nav */
+  .guide-group {
+    margin-top: var(--sp-5);
   }
 
-  .guides-grid:first-of-type {
+  .guide-group.first {
     margin-top: var(--sp-4);
   }
 
-  .guides-group-title {
-    grid-column: 1 / -1;
-    margin: 0;
+  .guide-group h2 {
+    margin: 0 0 var(--sp-3);
     font-size: 1.15rem;
   }
 
-  .guides-grid + .guides-grid .guides-group-title {
-    margin-top: var(--sp-3);
+  /* the plain-link overflow row: every page keeps its link, just not a card */
+  .more-links {
+    margin: var(--sp-3) 0 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .more-links a {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .more-links a:hover {
+    text-decoration: underline;
+  }
+
+  .more-links .sep {
+    margin: 0 0.4rem;
+    color: var(--border);
   }
 
   /* pairing tiles carry a 3-swatch strip instead of the single answer dot —

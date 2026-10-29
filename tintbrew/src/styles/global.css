@@ -120,8 +120,33 @@ a:hover {
   padding-inline: var(--sp-4);
 }
 
+/* Content sections sit in framed cards on the warm page background — each
+   region of a page (how-it-works, FAQ, directory group) gets its own box so
+   the structure reads at a glance (user call, 2026-10-29: "每一块内容加一个
+   底框，不然很乱"). Same treatment the photo page's guide cards use. */
 .prose {
   max-width: 46rem;
+  padding: var(--sp-4) var(--sp-4) var(--sp-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.prose > h2:first-child {
+  margin-top: 0;
+}
+
+/* Same frame for non-prose regions (tile directories) — pair with .prose
+   spacing manually since this class only draws the box */
+.section-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: var(--sp-4) var(--sp-4) var(--sp-5);
+}
+
+.section-card > h2:first-child {
+  margin-top: 0;
 }
 
 .prose p,

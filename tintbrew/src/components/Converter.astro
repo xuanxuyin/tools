@@ -115,6 +115,15 @@ const nearest = nearestColorName(rgb);
 </script>
 
 <style>
+  /* the tool wears the same framed card as the surrounding prose sections —
+     no naked band mid-page (user call, 2026-10-29) */
+  .converter {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: var(--sp-4);
+  }
+
   .converter-grid {
     display: grid;
     gap: var(--sp-4);
