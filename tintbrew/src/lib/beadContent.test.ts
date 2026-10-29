@@ -201,13 +201,15 @@ describe('bead pages in real dist markup', () => {
       expect(html).toContain('@media print');
       expect(html).toContain('FAQPage');
       expect(html).toContain(`${p.totalBeads} beads`);
-      // free-paint canvas: silhouette cells white + peg holes, tools present
+      // editable canvas: the pattern preloaded in color (one data-bead per
+      // cell) on a pegboard with holes, tools present
       expect(html).toContain('data-bead-canvas');
       expect(html).toContain('data-cv-tool="brush"');
       expect(html).toContain('data-cv-tool="eraser"');
       expect(html).toContain('data-cv-clear');
       expect(html).toContain('data-cv-custom');
       expect((html.match(/class="cv-cell/g) ?? []).length).toBe(p.totalBeads);
+      expect((html.match(/data-bead="/g) ?? []).length).toBe(p.totalBeads);
       const pegCount = p.def.width * p.grid.length - p.totalBeads;
       expect((html.match(/class="cv-peg"/g) ?? []).length).toBe(pegCount);
       // island data source: one chip per region, counts present

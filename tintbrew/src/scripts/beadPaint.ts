@@ -1,11 +1,11 @@
 /**
- * Free-paint island for the blank bead canvas. The SSR figure already
- * carries the paintable cells (the pattern silhouette, all white) and the
- * peg holes; this script adds the play: a brush and an eraser, pointer
- * drag interpolated with an 8-connected line so fast or diagonal strokes
- * leave no gaps, the 103 real bead colors (custom input snapped to the
- * nearest bead, same Oklab engine as everywhere else), clear-all, and a
- * live materials list built from the painted cells alone.
+ * Free-paint island for the bead canvas. The SSR figure already carries the
+ * cells (the pattern preloaded in its real colors, tagged with data-bead)
+ * and the peg holes; this script adds the play: a brush and an eraser,
+ * pointer drag interpolated with an 8-connected line so fast or diagonal
+ * strokes leave no gaps, the 103 real bead colors (custom input snapped to
+ * the nearest bead, same Oklab engine as everywhere else), clear-all, and a
+ * live materials list built from what's on the board.
  */
 import { normalizeHex } from '../lib/color';
 import { BEAD_COLORS, beadById, nearestBead } from '../lib/beadPalette';
@@ -54,11 +54,18 @@ export class PaintCanvas {
     for (const el of this.svg.querySelectorAll<SVGRectElement>('.cv-cell')) {
       const idx = Number(el.dataset.cy) * cols + Number(el.dataset.cx);
       this.cells.set(idx, el);
-      // a photo-pattern board ships with its cells already filled — adopt
-      // them as painted so the list reflects the converted image from tick one
-      const fill = (el.getAttribute('fill') ?? WHITE_HEX).toLowerCase();
-      if (fill !== WHITE_HEX) {
-        this.painted.set(idx, BEAD_ID_BY_HEX.get(fill) ?? nearestBead(fill).id);
+      // pattern boards ship each cell with its bead id — a genuine White
+      // zone would read as "unpainted" through the fill check alone.
+      // Photo boards instead carry only the fill: adopt it as painted so
+      // the list reflects the converted image from tick one.
+      const seeded = el.dataset.bead;
+      if (seeded) {
+        this.painted.set(idx, seeded);
+      } else {
+        const fill = (el.getAttribute('fill') ?? WHITE_HEX).toLowerCase();
+        if (fill !== WHITE_HEX) {
+          this.painted.set(idx, BEAD_ID_BY_HEX.get(fill) ?? nearestBead(fill).id);
+        }
       }
     }
 
@@ -240,6 +247,7 @@ export class PaintCanvas {
     } else {
       el.setAttribute('fill', this.erasedFill);
       el.classList.remove('colored');
+      el.removeAttribute('data-bead'); // a re-seeded cell must not resurrect
       this.painted.delete(idx);
     }
   }
@@ -248,6 +256,7 @@ export class PaintCanvas {
     for (const el of this.cells.values()) {
       el.setAttribute('fill', this.erasedFill);
       el.classList.remove('colored');
+      el.removeAttribute('data-bead');
     }
     this.painted.clear();
     this.queueList();

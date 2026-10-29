@@ -1,16 +1,19 @@
 ---
 /**
- * Free-paint canvas: the pattern silhouette as an all-white pegboard. Third
- * studio card — pick a bead color, then click or drag in any of the eight
- * directions to paint; the eraser turns beads back to white; a live
- * materials list counts what you placed (scripts/beadPaint.ts).
- * No-JS/print contract: the SSR figure is already a complete blank
- * template of the shape — printable as a "draw your own colors" sheet.
+ * Editable canvas: the pattern itself, preloaded in its real colors on a
+ * gray pegboard — the same "open it in the editor" experience as the source
+ * site. Third studio card — pick a bead color, then click or drag in any of
+ * the eight directions to repaint bead by bead; the eraser turns beads back
+ * to white; a live materials list counts what's on the board
+ * (scripts/beadPaint.ts).
+ * No-JS/print contract: the SSR figure is the complete colored pattern —
+ * printable as a working chart. Erase or Clear all yields the blank
+ * pegboard for painting your own version.
  */
 import type { PatternView } from '../lib/beadContent';
 import { BEAD_COLORS, beadById } from '../lib/beadPalette';
 
-// blank-cell fill: the real White bead hex, so the paint island's
+// erased-cell fill: the real White bead hex, so the paint island's
 // "fill === white means unpainted" check can never drift from this template
 const WHITE_HEX = beadById('white')!.hex;
 
@@ -34,11 +37,20 @@ for (let c = 5; c <= def.width; c += 5) colTicks.push(c);
 const rowTicks: number[] = []; // every-5 row numbers along the left edge
 for (let r = 5; r <= grid.length; r += 5) rowTicks.push(r);
 
-const paintable: { x: number; y: number }[] = [];
+// every cell ships preloaded with its zone's bead — the island seeds its
+// materials list from data-bead (a genuine White zone would read as
+// "unpainted" through the fill check alone)
+const regionByKey = new Map(view.regions.map((r) => [r.key, r]));
+const paintable: { x: number; y: number; hex: string; beadId: string }[] = [];
 const pegs: { x: number; y: number }[] = [];
 grid.forEach((row, y) => {
   for (let x = 0; x < def.width; x++) {
-    (row[x]! !== '.' ? paintable : pegs).push({ x: x * U, y: y * U });
+    const ch = row[x]!;
+    if (ch === '.') pegs.push({ x: x * U, y: y * U });
+    else {
+      const r = regionByKey.get(ch)!;
+      paintable.push({ x: x * U, y: y * U, hex: r.hex, beadId: r.beadId });
+    }
   }
 });
 ---
@@ -47,7 +59,7 @@ grid.forEach((row, y) => {
   <div class="paint-body">
     <figure class="fig-card">
       <figcaption>
-        Blank canvas <span class="hint">your colors, bead by bead</span>
+        Bead canvas <span class="hint">the pattern itself — repaint any bead</span>
       </figcaption>
       <svg
         class="bead-fig"
@@ -72,33 +84,33 @@ grid.forEach((row, y) => {
           ))}
         </g>
         {pegs.map((p) => (
-          <circle class="cv-peg" cx={p.x + G + U / 2} cy={p.y + G + U / 2} r={1.1} />
+          <circle class="cv-peg" cx={p.x + G + U / 2} cy={p.y + G + U / 2} r={1.6} />
         ))}
         {paintable.map((c) => (
           <rect
-            class="cv-cell"
+            class="cv-cell colored"
             data-cx={c.x / U}
             data-cy={c.y / U}
-            x={c.x + G + 0.8}
-            y={c.y + G + 0.8}
-            width={U - 1.6}
-            height={U - 1.6}
-            rx={2.6}
-            fill={WHITE_HEX}
+            data-bead={c.beadId}
+            x={c.x + G}
+            y={c.y + G}
+            width={U}
+            height={U}
+            fill={c.hex}
           />
         ))}
       </svg>
     </figure>
 
     <div class="paint-tools no-print">
-      <h3>Draw your own version</h3>
+      <h3>Make it yours, bead by bead</h3>
       <p class="side-note">
-        Every bead of the {def.name.toLowerCase()} is white and waiting. Pick a color,
-        then click — or drag in any of the eight directions — and the brush carries it
-        along your stroke. Turn on <strong>Mirror</strong> and every stroke lands on both
-        halves of the board at once, so symmetric designs paint in half the time. The
-        eraser wipes beads back to white, and the list below counts exactly what you've
-        placed.
+        The board opens as the {def.name.toLowerCase()} itself, every color area where it
+        belongs. Pick a color, then click — or drag in any of the eight directions — and
+        the brush carries it along your stroke. Turn on <strong>Mirror</strong> and every
+        stroke lands on both halves of the board at once, so symmetric designs repaint in
+        half the time. The eraser wipes beads back to white, <strong>Clear all</strong>
+        empties the whole board, and the list below always counts exactly what's on it.
       </p>
       <div class="tool-row" role="group" aria-label="Paint tools">
         <button type="button" class="btn tool-btn active" data-cv-tool="brush" aria-pressed="true">
@@ -174,7 +186,8 @@ grid.forEach((row, y) => {
     width: 100%; /* without this the svg falls back to intrinsic ~416px, shrinking every label */
     margin-inline: auto; /* centers the board when the max-width cap binds (minis) */
     height: auto;
-    background: var(--paper, #fbfaf7);
+    /* pegboard simulation, same as BeadFigure: gray base + round holes */
+    background: #e2e4df;
     border-radius: 10px;
   }
   .paint-body {
@@ -258,7 +271,7 @@ grid.forEach((row, y) => {
     user-select: none;
   }
   .bead-fig[data-bead-canvas] .cv-peg {
-    fill: rgba(0, 0, 0, 0.12);
+    fill: rgba(0, 0, 0, 0.15);
     pointer-events: none;
   }
   .bead-fig[data-bead-canvas] .cv-label {
@@ -288,13 +301,10 @@ grid.forEach((row, y) => {
   .cv-cursor.on {
     opacity: 1;
   }
+  /* contiguous cells, no stroke: color areas read as one solid picture
+     (user call 2026-10-29 — match the source-site editor rendering) */
   .bead-fig[data-bead-canvas] .cv-cell {
-    stroke: rgba(0, 0, 0, 0.16);
-    stroke-width: 0.5;
     cursor: crosshair;
-  }
-  .bead-fig[data-bead-canvas] .cv-cell.colored {
-    stroke: rgba(0, 0, 0, 0.12);
   }
   .cv-list {
     margin: 0;

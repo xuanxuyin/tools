@@ -1,9 +1,11 @@
 /**
  * Paint-canvas island tests against the real SSR markup from `astro build`
- * (the corgi-butt-peek page — a small 19-wide grid, easy on happy-dom).
- * Runs the compiled island: tap paints one bead, a drag paints the whole
- * 8-connected stroke and skips empty peg holes, eraser wipes back to white,
- * clear-all resets, and the live list counts exactly what was placed.
+ * (the corgi-butt-peek page — a small 17-wide grid, easy on happy-dom).
+ * The board ships preloaded with the pattern's own colors (data-bead per
+ * cell); interactive tests clear it first, then run the compiled island:
+ * tap paints one bead, a drag paints the whole 8-connected stroke and
+ * skips empty peg holes, eraser wipes back to white, clear-all resets, and
+ * the live list counts exactly what was placed.
  * All stroke targets are found from the built DOM (longest runs, gaps,
  * diagonals), so swapping the fixture pattern never breaks the geometry.
  */
@@ -21,7 +23,7 @@ const htmlPath = resolve(
 const CELL_PX = 20; // stubbed layout: COLS × 20px wide board
 const GUTTER = 16; // coordinate gutter in viewBox units (BeadCanvas.astro)
 const BLACK = '#323234'; // default brush bead hex
-const WHITE = '#eaefee'; // unpainted paintable cell
+const WHITE = '#eaefee'; // erased fill — an unpainted cell
 
 /** Geometry read off the built page: which grid positions carry a cell. */
 interface Grid {
@@ -181,7 +183,7 @@ describe('paint canvas island (real SSR markup)', () => {
     ctx = await loadPage();
   });
 
-  it('every pattern bead ships as a white paintable cell with peg holes around it', () => {
+  it('every pattern bead ships preloaded in color with peg holes around it', () => {
     const { document: doc, grid } = ctx;
     const cells = doc.querySelectorAll('.cv-cell');
     const pegs = doc.querySelectorAll('.cv-peg');
@@ -192,8 +194,13 @@ describe('paint canvas island (real SSR markup)', () => {
     expect(grid.diag.len).toBeGreaterThanOrEqual(4);
     expect(grid.gap.b).toBeGreaterThan(grid.gap.a);
     expect(grid.mirrorRun.len).toBeGreaterThanOrEqual(3);
+    // preloaded board: colored cells tagged with their bead id, list seeded
     const mid = Math.floor((grid.run.x0 + grid.run.x1) / 2);
-    expect(fillOf(doc, mid, grid.run.y)).toBe(WHITE);
+    const el = doc.querySelector(`.cv-cell[data-cx="${mid}"][data-cy="${grid.run.y}"]`)!;
+    expect(el.classList.contains('colored')).toBe(true);
+    expect(el.getAttribute('data-bead')).toBeTruthy();
+    expect(fillOf(doc, mid, grid.run.y)).not.toBe(WHITE);
+    expect(listText(doc)).toContain(`${cells.length} of ${cells.length} beads painted`);
     expect(doc.querySelector('[data-cv-tool="brush"]')!.classList.contains('active')).toBe(true);
 
     // every-5 coordinate labels along the top and left edges
@@ -227,6 +234,7 @@ describe('paint canvas island (real SSR markup)', () => {
 
   it('tap paints one bead with the selected color', () => {
     const svg = stubBoard(ctx.document, ctx.grid);
+    fireClick(ctx.document.querySelector('[data-cv-clear]')!); // empty the preloaded board first
     // first swatch chip carries its hex inline — use whatever the page ships
     const chip = ctx.document.querySelector('[data-cv-color]') as HTMLElement;
     const hex = chip.getAttribute('style')!.match(/#([0-9a-f]{6})/i)![0];
@@ -247,6 +255,7 @@ describe('paint canvas island (real SSR markup)', () => {
 
   it('drag carries the color along the stroke and skips peg holes', () => {
     const svg = stubBoard(ctx.document, ctx.grid);
+    fireClick(ctx.document.querySelector('[data-cv-clear]')!); // empty the preloaded board first
     const mid = Math.floor((ctx.grid.run.x0 + ctx.grid.run.x1) / 2);
     firePointer(ctx.window, svg, 'pointerdown', px(ctx.grid, mid, ctx.grid.run.y).cx, px(ctx.grid, mid, ctx.grid.run.y).cy);
     firePointer(ctx.window, svg, 'pointermove', px(ctx.grid, mid + 4, ctx.grid.run.y).cx, px(ctx.grid, mid + 4, ctx.grid.run.y).cy);
@@ -278,6 +287,7 @@ describe('paint canvas island (real SSR markup)', () => {
 
   it('diagonal drag paints an 8-connected stroke with no gaps', () => {
     const svg = stubBoard(ctx.document, ctx.grid);
+    fireClick(ctx.document.querySelector('[data-cv-clear]')!); // empty the preloaded board first
     const { x0, y0, len } = ctx.grid.diag;
     const x1 = x0 + len - 1;
     const y1 = y0 + len - 1;
@@ -293,6 +303,7 @@ describe('paint canvas island (real SSR markup)', () => {
 
   it('eraser drags beads back to white and clear-all resets the board', () => {
     const svg = stubBoard(ctx.document, ctx.grid);
+    fireClick(ctx.document.querySelector('[data-cv-clear]')!); // empty the preloaded board first
     const mid = Math.floor((ctx.grid.run.x0 + ctx.grid.run.x1) / 2);
     firePointer(ctx.window, svg, 'pointerdown', px(ctx.grid, mid, ctx.grid.run.y).cx, px(ctx.grid, mid, ctx.grid.run.y).cy);
     firePointer(ctx.window, svg, 'pointermove', px(ctx.grid, mid + 4, ctx.grid.run.y).cx, px(ctx.grid, mid + 4, ctx.grid.run.y).cy);
@@ -314,6 +325,7 @@ describe('paint canvas island (real SSR markup)', () => {
 
   it('mirror mode paints the mirrored cell on every stroke and eraser pass', () => {
     const svg = stubBoard(ctx.document, ctx.grid);
+    fireClick(ctx.document.querySelector('[data-cv-clear]')!); // empty the preloaded board first
     const { cols } = ctx.grid;
     const btn = ctx.document.querySelector('[data-cv-mirror]')!;
 

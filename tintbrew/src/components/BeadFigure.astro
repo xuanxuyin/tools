@@ -9,8 +9,11 @@
  *               fill from those vars, so one assignment recolors a whole
  *               zone with zero per-bead DOM work.
  *
- * No-JS guarantee: the blank figure still shows every zone divided and
- * labeled, and the printed sheet is a complete template on its own.
+ * Board rendering matches the source-site editor (user call, 2026-10-29):
+ * beads are contiguous full cells — no inset, no rounding — so color areas
+ * read as one solid picture, and empty cells are gray pegboard with a small
+ * round peg hole. No-JS guarantee unchanged: the blank figure still shows
+ * every zone divided and labeled, printable as a complete template.
  */
 import type { PatternView } from '../lib/beadContent';
 
@@ -64,10 +67,12 @@ const w = cols * U;
 const h = rows.length * U;
 
 const cells: { x: number; y: number; key: string }[] = [];
+const holes: { x: number; y: number }[] = [];
 rows.forEach((row, y) => {
   for (let x = 0; x < row.length; x++) {
     const ch = row[x]!;
     if (ch !== '.') cells.push({ x: x * U, y: y * U, key: ch });
+    else holes.push({ x: x * U, y: y * U });
   }
 });
 
@@ -88,27 +93,30 @@ const label =
   role="img"
   aria-label={label}
 >
+  <g class="bd-pegs" aria-hidden="true">
+    {holes.map((p) => (
+      <circle class="bd-peg" cx={p.x + U / 2} cy={p.y + U / 2} r={1.6} />
+    ))}
+  </g>
   {cells.map((c) => {
     const hex = hexFor(c.key);
     return mode === 'reference' ? (
       <rect
         class="bd bd-fill"
         data-region={c.key}
-        x={c.x + 0.8}
-        y={c.y + 0.8}
-        width={U - 1.6}
-        height={U - 1.6}
-        rx={2.6}
+        x={c.x}
+        y={c.y}
+        width={U}
+        height={U}
         fill={hex}
       />
     ) : (
       <g class="bd bd-blank" data-region={c.key}>
         <rect
-          x={c.x + 0.8}
-          y={c.y + 0.8}
-          width={U - 1.6}
-          height={U - 1.6}
-          rx={2.6}
+          x={c.x}
+          y={c.y}
+          width={U}
+          height={U}
           fill={hex}
           fill-opacity="0.14"
           stroke={hex}
@@ -137,8 +145,13 @@ const label =
     display: block;
     width: 100%;
     height: auto;
-    background: var(--paper, #fbfaf7);
+    /* pegboard simulation: gray base with round peg holes where no bead
+       sits — same look as the source-site editor (user call, 2026-10-29) */
+    background: #e2e4df;
     border-radius: 10px;
+  }
+  .bead-fig .bd-peg {
+    fill: rgba(0, 0, 0, 0.15);
   }
   .bead-fig .bd-key {
     font-size: 4.6px;
