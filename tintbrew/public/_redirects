@@ -55,3 +55,10 @@
 /perler-bead-patterns/witch-hat-black-cat/ /perler-bead-halloween/witch-hat-black-cat/ 301
 /perler-bead-patterns/witch-hat-pumpkin /perler-bead-halloween/witch-hat-pumpkin/ 301
 /perler-bead-patterns/witch-hat-pumpkin/ /perler-bead-halloween/witch-hat-pumpkin/ 301
+
+# 2026-10-29 catalog trims: chicken-bro dropped (too brand-recognizable),
+# bee moved to minis to match the source site's "small" category
+/perler-bead-animals/chicken-bro /perler-bead-animals/ 301
+/perler-bead-animals/chicken-bro/ /perler-bead-animals/ 301
+/perler-bead-animals/bee /perler-bead-patterns/bee/ 301
+/perler-bead-animals/bee/ /perler-bead-patterns/bee/ 301

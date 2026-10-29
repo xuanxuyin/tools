@@ -21,12 +21,13 @@ interface Props {
   view: PatternView;
   mode: 'reference' | 'blank';
   /**
-   * Card-thumbnail mode. Boards wider than 40 beads collapse each f×f
-   * block to its majority zone — at 150px card size the loss is invisible,
-   * and hub/gallery pages stay far under Cloudflare Pages' 25 MiB
-   * single-file cap (the all-bead hub hit 25.3 MiB and every deploy
-   * failed at asset validation). Detail pages never pass thumb: every
-   * bead always renders there.
+   * Card-thumbnail mode: renders the prebuilt webp from
+   * scripts/beadgen/thumbs.mjs (public/pattern-thumbs/<slug>.webp) instead
+   * of the inline SVG. Cards used to inline a decimated SVG to stay under
+   * Cloudflare's 25 MiB single-file cap and read as rough next to the
+   * source site's bitmaps — full-resolution image files fix both (the
+   * decimation majority-vote lives in git history if ever needed again).
+   * Detail pages never pass thumb: every bead always renders inline there.
    */
   thumb?: boolean;
 }
@@ -35,40 +36,12 @@ const { view, mode, thumb = false } = Astro.props;
 const U = 10; // viewBox units per bead cell
 const { grid, def } = view;
 
-let rows = grid;
-if (thumb && def.width > 40) {
-  const f = Math.ceil(def.width / 40);
-  const out: string[] = [];
-  for (let y = 0; y < grid.length; y += f) {
-    let line = '';
-    for (let x = 0; x < def.width; x += f) {
-      const counts = new Map<string, number>();
-      for (let dy = 0; dy < f && y + dy < grid.length; dy++) {
-        for (let dx = 0; dx < f && x + dx < def.width; dx++) {
-          const ch = grid[y + dy]![x + dx]!;
-          counts.set(ch, (counts.get(ch) ?? 0) + 1);
-        }
-      }
-      // majority non-empty key; '.' only wins when empty pegs strictly
-      // outnumber it, so one-bead outlines survive the decimation
-      let best = '.';
-      let n = 0;
-      for (const [ch, c] of counts) {
-        if (ch !== '.' && c > n) { n = c; best = ch; }
-      }
-      line += (counts.get('.') ?? 0) > n ? '.' : best;
-    }
-    out.push(line);
-  }
-  rows = out;
-}
-const cols = rows[0]?.length ?? def.width;
-const w = cols * U;
-const h = rows.length * U;
+const w = def.width * U;
+const h = grid.length * U;
 
 const cells: { x: number; y: number; key: string }[] = [];
 const holes: { x: number; y: number }[] = [];
-rows.forEach((row, y) => {
+grid.forEach((row, y) => {
   for (let x = 0; x < row.length; x++) {
     const ch = row[x]!;
     if (ch !== '.') cells.push({ x: x * U, y: y * U, key: ch });
@@ -85,14 +58,25 @@ const label =
     : `${def.name} bead template, zones outlined for coloring`;
 ---
 
-<svg
-  class="bead-fig"
-  data-bead-mode={mode}
-  data-pattern={def.slug}
-  viewBox={`0 0 ${w} ${h}`}
-  role="img"
-  aria-label={label}
->
+{thumb ? (
+  <img
+    class="bead-thumb-img"
+    src={`/pattern-thumbs/${def.slug}.webp`}
+    width={def.width}
+    height={grid.length}
+    loading="lazy"
+    decoding="async"
+    alt={`${def.name} bead pattern in its default colors`}
+  />
+) : (
+  <svg
+    class="bead-fig"
+    data-bead-mode={mode}
+    data-pattern={def.slug}
+    viewBox={`0 0 ${w} ${h}`}
+    role="img"
+    aria-label={label}
+  >
   <g class="bd-pegs" aria-hidden="true">
     {holes.map((p) => (
       <circle class="bd-peg" cx={p.x + U / 2} cy={p.y + U / 2} r={1.6} />
@@ -139,8 +123,16 @@ const label =
     );
   })}
 </svg>
+)}
 
 <style>
+  /* card thumbnail: the prebuilt webp carries its own pegboard background */
+  .bead-thumb-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
   .bead-fig {
     display: block;
     width: 100%;

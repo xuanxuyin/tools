@@ -103,7 +103,7 @@ const jsonLd = {
       <p>Small boards, big color areas — first-timers finish any of these in one sitting.</p>
     </a>
     <p class="bead-more">
-      Plus quick makes — an apple-orchard scene and a finger-heart mini — on the
+      Plus quick makes — snacks, hearts and other small boards — on the
       <a href="/perler-bead-patterns/">main pattern page</a>.
     </p>
   </section>
@@ -220,12 +220,18 @@ const jsonLd = {
 <style is:global>
   /* BeadFigure's own scoped `.bead-fig { width: 100%; height: auto }` fills
      the card — on the homepage the figure must fit INSIDE a fixed-height
-     thumb instead, keeping each board's aspect via its viewBox. Global (not
-     scoped) because .bead-fig is rendered by the child component and never
-     carries this page's scope id. */
+     thumb instead, keeping each board's aspect (svg via viewBox, img via
+     object-fit). Global (not scoped) because both are rendered by the child
+     component and never carry this page's scope id. */
   .bead-thumb .bead-fig {
     width: auto;
     max-width: 100%;
     height: 100%;
+  }
+  .bead-thumb .bead-thumb-img {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 </style>

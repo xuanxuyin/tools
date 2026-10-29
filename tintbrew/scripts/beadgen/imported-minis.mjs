@@ -3,6 +3,31 @@
 // with scripts/beadgen/import-manifest.json.
 export const IMPORTED_MINIS = [
   {
+    slug: 'bee',
+    name: 'Bee',
+    category: 'minis',
+    difficulty: 'easy',
+    W: 9,
+    H: 6,
+    mirror: false,
+    zonesMin: 3,
+    tagline: 'A 9 × 6 board in 3 colors — lemon does the heavy lifting.',
+    blurb: 'The Bee spans 9 × 6 beads — about 1.8 inches wide on the board — 36 beads across 3 colors, every one counted in the list below. Print the grid for the pegboard, or place it here in the browser and repaint any color before you commit.',
+    zones: {
+      A: { label: 'lemon', color: 'lemon' },
+      B: { label: 'toasted marshmallow', color: 'toasted-marshmallow' },
+      C: { label: 'dark spruce', color: 'dark-spruce' },
+    },
+    rows: [
+      '...AAA...',
+      '..AAAAA..',
+      '.BCCCCCB.',
+      'BBAAAAABB',
+      'BBCCCCCBB',
+      '...AAA...',
+    ],
+  },
+  {
     slug: 'red-heart',
     name: 'Red Heart',
     category: 'minis',

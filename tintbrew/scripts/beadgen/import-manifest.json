@@ -13,7 +13,7 @@
     },
     "manual-bee": {
       "slug": "bee",
-      "category": "animals"
+      "category": "minis"
     },
     "manual2-purple-butterfly": {
       "slug": "purple-butterfly",
@@ -113,9 +113,6 @@
       "category": "animals"
     },
     "catnap-clementine": {
-      "category": "animals"
-    },
-    "chicken-bro": {
       "category": "animals"
     },
     "collie-crew": {

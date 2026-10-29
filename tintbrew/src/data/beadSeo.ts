@@ -26,7 +26,7 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
   description:
     'Free fuse bead patterns for every level: dogs, cats, bunnies, pandas, chibi characters and a Halloween set. Recolor any area with the real 103-color Perler line, then print the template and its bead list.',
   intro: [
-    '117 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 116-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
+    '116 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 116-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
     'What makes these different from a normal pattern grid: every area of a design — fur, frosting, scarf, eyes — is its own zone. Tap a zone and try any of the 103 real bead colors before you commit. The bead list updates live, so you know exactly how many of each color to pull from the jar.',
     'When a design looks right, print it. The printed sheet gives you the empty template in zone outlines plus the shopping list of beads, and it fits on one letter-size page.',
   ],
@@ -58,11 +58,11 @@ export const BEAD_CATEGORY_SEO: Record<string, BeadSeoDef> = {
   animals: {
     path: '/perler-bead-animals/',
     h1: 'Perler Bead Animals',
-    title: '54 Free Perler Bead Animal Patterns — Corgi, Cat, Bunny & More',
+    title: '52 Free Perler Bead Animal Patterns — Corgi, Cat, Bunny & More',
     description:
       'Free perler bead animal patterns: corgi, shiba, husky, golden retriever, orange cat, calico kittens, carrot bunnies, pandas and more — all converted from community designs. Recolor each animal online, then print the template.',
     intro: [
-      'Fifty-four animal boards converted bead by bead from community designs onto the real 103-color Perler line — a whole kennel of corgis, shibas, huskies and golden retrievers, orange cats and calico kittens, carrot bunnies, pandas, lambs and penguins, from 9 beads wide up to 116. Each one separates fur, inner ears, eyes, nose and mouth into their own zones — so a cheddar corgi becomes a gray one in two clicks, without redrawing anything.',
+      'Fifty-two animal boards converted bead by bead from community designs onto the real 103-color Perler line — a whole kennel of corgis, shibas, huskies and golden retrievers, orange cats and calico kittens, carrot bunnies, pandas, lambs and penguins, from 9 beads wide up to 116. Each one separates fur, inner ears, eyes, nose and mouth into their own zones — so a cheddar corgi becomes a gray one in two clicks, without redrawing anything.',
       'Start with Corgi Butt Peek (17 beads wide) or a cozy carrot bunny if this is your first board: mostly one color with a few details. Save the 116-wide showpiece for after placing beads from a printed grid feels natural.',
     ],
     faqs: [

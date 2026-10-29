@@ -45,19 +45,21 @@ const BANNED = [
 ];
 
 describe('bead pattern data integrity', () => {
-  it('117 patterns across six categories with locked minimums', () => {
+  it('116 patterns across six categories with locked minimums', () => {
     // all-imported catalog since 2026-10-28: the 46 vector-authored designs
     // went offline. Since the 2026-10-29 flight re-import every one of the
-    // 117 grids comes from the community site's RSC flight data verbatim —
-    // sizes, boundaries and bead counts match the source 1:1
-    expect(BEAD_PATTERNS).toHaveLength(117);
-    expect(patternContents).toHaveLength(117);
+    // grids comes from the community site's RSC flight data verbatim —
+    // sizes, boundaries and bead counts match the source 1:1. Same-day
+    // trims: chicken-bro dropped (too brand-recognizable), bee moved to
+    // minis to match the source site's "small" category
+    expect(BEAD_PATTERNS).toHaveLength(116);
+    expect(patternContents).toHaveLength(116);
     expect(categoryCounts).toEqual({
-      animals: 54,
+      animals: 52,
       food: 4,
       christmas: 0,
       halloween: 11,
-      minis: 5,
+      minis: 6,
       characters: 43,
     });
     expect(easyPatterns.length).toBe(48);
@@ -136,6 +138,11 @@ describe('bead pattern data integrity', () => {
     expect(apple.url).toBe('/perler-bead-patterns/apple-fuji-scene/');
     const heart = patternContents.find((p) => p.def.slug === 'finger-heart-hand')!;
     expect(heart.url).toBe('/perler-bead-patterns/finger-heart-hand/');
+    // bee followed the source site into the "small" category — minis
+    // patterns live under the hub base
+    const bee = patternContents.find((p) => p.def.slug === 'bee')!;
+    expect(bee.url).toBe('/perler-bead-patterns/bee/');
+    expect(patternContents.find((p) => p.def.slug === 'chicken-bro')).toBeUndefined();
   });
 
   it('finished sizes are 5mm-per-bead math', () => {
@@ -167,12 +174,22 @@ describe('bead pattern data integrity', () => {
       expect(haystacks.includes(banned), `no "${banned}"`).toBe(false);
     }
   });
+
+  it('every pattern has a prebuilt webp thumbnail', () => {
+    // cards render the prebuilt full-resolution bitmap since 2026-10-29
+    // (scripts/beadgen/thumbs.mjs) — a missing file means a broken card img
+    const thumbsRoot = resolve(fileURLToPath(import.meta.url), '../../../public/pattern-thumbs');
+    for (const p of patternContents) {
+      expect(existsSync(resolve(thumbsRoot, `${p.def.slug}.webp`)), `${p.def.slug}.webp`).toBe(true);
+    }
+  });
 });
 
 describe('bead pages in real dist markup', () => {
-  it('hub + all four galleries ship figures, zone-divided templates and JSON-LD', () => {
-    // food + christmas galleries retired 2026-10-28 (301 → hub);
-    // halloween opened its own gallery 2026-10-29
+  it('hub + all four galleries ship thumbnail cards and JSON-LD', () => {
+    // food + christmas galleries retired 2026-10-28 (301 → hub); halloween
+    // opened its own gallery 2026-10-29. Cards render the prebuilt webp
+    // thumbnails since 2026-10-29 — inline SVG figures live on detail pages
     const pages = [
       '/perler-bead-patterns/index.html',
       '/perler-bead-animals/index.html',
@@ -182,12 +199,13 @@ describe('bead pages in real dist markup', () => {
     ];
     for (const page of pages) {
       const html = readFileSync(resolve(distRoot, page.slice(1)), 'utf8');
-      expect(html).toContain('bead-fig');
+      expect((html.match(/class="bead-thumb-img"/g) ?? []).length).toBeGreaterThanOrEqual(6);
+      expect(html).toMatch(/src="\/pattern-thumbs\/[a-z0-9-]+\.webp"/);
       expect(html).toContain('FAQPage');
       expect(html).toContain('BreadcrumbList');
-      expect(html).toMatch(/data-bead-mode="reference"/);
-      expect((html.match(/data-bead-mode="reference"/g) ?? []).length).toBeGreaterThanOrEqual(6);
     }
+    // the thumbnail files themselves ship with the site
+    expect(existsSync(resolve(distRoot, 'pattern-thumbs/shiba.webp'))).toBe(true);
   });
 
   it('every pattern detail page carries the studio, chips, list and print path', () => {
@@ -250,7 +268,7 @@ describe('bead pages in real dist markup', () => {
     expect(sm).toContain('<sitemap>');
   });
 
-  it('sitemap file lists all 117 pattern URLs', () => {
+  it('sitemap file lists all 116 pattern URLs', () => {
     // sitemap-0.xml is gzipped when large; Astro writes plain when small
     const sm0 = resolve(distRoot, 'sitemap-0.xml');
     const raw = readFileSync(sm0);
