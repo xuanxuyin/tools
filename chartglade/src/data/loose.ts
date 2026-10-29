@@ -21,6 +21,12 @@ export const loosePages: PageDef[] = [
       'Circles, the traditional fraction picture, hide all of that: wedge angles are hard to compare across different denominators, and nothing lines up with anything. Strips also fold — physically halving the 1/2 bar makes 1/4, and halving again makes 1/8 — which turns the equivalence table into a discovery instead of a lecture. Print on cardstock if you can; strips get handled.',
     ],
     printNote: 'All strips fit one letter page, portrait.',
+    sheetImage: {
+      src: '/images/fraction-strips-printable.png',
+      alt: 'Free printable fraction chart — labeled fraction strips for comparing fractions and finding equivalents, on one letter-size page.',
+      width: 2016,
+      height: 1016,
+    },
     tips: [
       {
         title: 'Fold, don\'t tell',
@@ -79,6 +85,12 @@ export const loosePages: PageDef[] = [
       'The chart earns its year-long wall spot through games rather than drills. Skip-count coloring (color every second number, watch the columns emerge) teaches the 2s pattern without a times table in sight. Missing-number puzzles — a chart with holes — turn writing numbers into detective work. And mystery-number clues ("I am more than 40, less than 60, and my digits add to 10") hit number sense, inequality and addition in one five-minute warm-up.',
     ],
     printNote: 'One letter page, portrait. Also prints fine as a desk strip.',
+    sheetImage: {
+      src: '/images/hundred-chart-printable.png',
+      alt: 'Free printable 100 chart — numbers 1 through 100 in a ten by ten grid for counting practice, on one letter-size page.',
+      width: 2016,
+      height: 858,
+    },
     tips: [
       {
         title: 'Color the skip counts',
@@ -138,6 +150,12 @@ export const loosePages: PageDef[] = [
       'The hop method is how the line teaches addition: to solve 4 + 3, put a finger on 4, then hop three ticks to the right, saying each landing number aloud — 5, 6, 7. Subtraction reverses the walk. Two things are silently happening: the child is practicing the count-on strategy (start at 4, not at 1) and learning that adding is motion in a direction. Both transfer directly to the hundred chart and the ruler.',
     ],
     printNote: 'One line per letter page, landscape orientation.',
+    sheetImage: {
+      src: '/images/number-line-printable.png',
+      alt: 'Free printable number line — a classroom counting number line in landscape orientation, on one letter-size page.',
+      width: 2016,
+      height: 490,
+    },
     landscape: true,
     tips: [
       {
@@ -197,6 +215,12 @@ export const loosePages: PageDef[] = [
       'The strategies matter more than the grid. Plus-one is the next number in the count. Doubles are memorized fast (they rhyme: four and four, door). Near-doubles lean on them (6+7 is double-six plus one). And make-a-ten is the workhorse: 8+5 becomes 8+2+3, landing on 10+3, which everyone knows. A child running those three strategies stops needing fingers mid-second-grade — the chart is where the strategies get pointed at.',
     ],
     printNote: 'One letter page, portrait. Doubles diagonal prints as light gray.',
+    sheetImage: {
+      src: '/images/addition-chart-printable.png',
+      alt: 'Free printable addition chart — an addition facts grid with the doubles diagonal shaded, on one letter-size page.',
+      width: 2016,
+      height: 1202,
+    },
     interactive: true,
     tips: [
       {

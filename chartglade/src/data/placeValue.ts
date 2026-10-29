@@ -94,6 +94,12 @@ export const placeValuePages: PageDef[] = [
       'Reading decimals trips people up until they learn the trick: read the whole-number part normally, say "and" for the decimal point, then read the decimal digits as if they were a whole number and name the final column. 42.607 becomes "forty-two and six hundred seven thousandths." Reserving "and" for the decimal point (instead of saying it inside big whole numbers) is the habit that makes this foolproof.',
     ],
     printNote: 'Fits one letter page, portrait.',
+    sheetImage: {
+      src: '/images/decimal-place-value-chart-printable.png',
+      alt: 'Free printable decimal place value chart — labeled columns for ones, tenths, hundredths and thousandths, on one letter-size page.',
+      width: 2016,
+      height: 434,
+    },
     interactive: true,
     tips: [
       {
@@ -154,6 +160,12 @@ export const placeValuePages: PageDef[] = [
       'The classic move is to build the chart with your class instead of before it: write the place names, drop digits into the columns one at a time, and let the value callouts get filled in as students figure them out. A chart the class built is checked constantly; a chart the teacher hung is decoration. Print this one blank of its callouts if you want that experience, or filled if the wall is needed tomorrow.',
     ],
     printNote: 'Letter portrait; scale up at the printer for a poster (see tips).',
+    sheetImage: {
+      src: '/images/place-value-anchor-chart-printable.png',
+      alt: 'Free printable place value anchor chart — a bold classroom wall version of the ones to millions chart, on one letter-size page.',
+      width: 2016,
+      height: 454,
+    },
     tips: [
       {
         title: 'Print it poster-size with your printer',
@@ -213,6 +225,12 @@ export const placeValuePages: PageDef[] = [
       'The first-month routine that works: dictate a number out loud ("four million, three hundred two thousand, one hundred seventy-five"), students write it into the blank chart, then everyone reads their chart back digit by digit with values. Wrong answers are almost always a digit in the wrong column, which the chart makes instantly visible — that visibility is the entire point.',
     ],
     printNote: 'Prints as two letter pages: the filled reference, then the blank write-in version.',
+    sheetImage: {
+      src: '/images/place-value-chart-printable.png',
+      alt: 'Free printable place value chart — the filled ones to millions reference chart, with a blank write-in version on the second printed page.',
+      width: 2016,
+      height: 600,
+    },
     tips: [
       {
         title: 'Half-page journal inserts',

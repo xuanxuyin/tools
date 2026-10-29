@@ -24,11 +24,27 @@ const DIST = resolve(ROOT, 'dist');
 const OUT = resolve(ROOT, 'public', 'images');
 
 const SHOTS = [
-  { page: 'multiplication-chart', file: 'multiplication-chart-1-12-printable' },
-  { page: 'place-value-chart', file: 'place-value-chart-to-millions-printable' },
-  { page: 'kindergarten-sight-words', file: 'kindergarten-sight-words-printable' },
-  { page: 'cursive-alphabet', file: 'cursive-alphabet-chart-printable' },
-  { page: 'alphabet-chart', file: 'alphabet-chart-printable' },
+  // Wave 1 (2026-09-18, the five pillar pages) is NOT re-shot: its PNGs are on
+  // disk and their pages have since gained in-page islands whose DOM order
+  // could shift the first .printable. Only wave 2 (PLAN #32, the 2026-10-29
+  // benchmark batch: math cluster + halloween + the 26-letter matrix) runs.
+  { page: 'multiplication-chart-blank', file: 'blank-multiplication-chart-printable' },
+  { page: 'multiplication-chart-1-15', file: 'multiplication-chart-1-15-printable' },
+  { page: 'multiplication-chart-1-20', file: 'multiplication-chart-1-20-printable' },
+  { page: 'decimal-place-value-chart', file: 'decimal-place-value-chart-printable' },
+  { page: 'place-value-anchor-chart', file: 'place-value-anchor-chart-printable' },
+  { page: 'place-value-chart-printable', file: 'place-value-chart-printable-blank' },
+  { page: 'hundred-chart', file: 'hundred-chart-printable' },
+  { page: 'number-line-printable', file: 'number-line-printable' },
+  { page: 'addition-chart', file: 'addition-chart-printable' },
+  { page: 'fraction-chart', file: 'fraction-strips-printable' },
+  { page: 'halloween-word-search', file: 'halloween-word-search-printable' },
+  { page: 'halloween-color-by-number', file: 'halloween-color-by-number-printable' },
+  { page: 'halloween-cursive-practice', file: 'halloween-cursive-practice-printable' },
+  ...'abcdefghijklmnopqrstuvwxyz'.split('').map((l) => ({
+    page: `cursive/${l}`,
+    file: `cursive-letter-${l}-worksheet`,
+  })),
 ];
 
 const MIME = {

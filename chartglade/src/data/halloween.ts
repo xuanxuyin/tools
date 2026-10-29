@@ -109,6 +109,12 @@ export const halloweenPages: PageDef[] = [
       'The harder puzzle turns on the full eight directions, which is the standard upper-elementary format. Words like SKELETON and OCTOBER run long, so finding them takes systematic scanning: down each column, across each row, then the diagonals. Teachers use these as October morning work, Halloween-party-day seatwork that still counts as reading, and early-finisher bins — the seasonal vocabulary (costume, potion, phantom) rides along with the scanning practice.',
     ],
     printNote: 'Two puzzles, one letter page each (portrait). Word lists print under each grid.',
+    sheetImage: {
+      src: '/images/halloween-word-search-printable.png',
+      alt: 'Free printable Halloween word search — easy and hard puzzles with their word lists printed under each grid, on letter-size pages.',
+      width: 2016,
+      height: 2064,
+    },
     tips: [
       {
         title: 'Front-load the vocabulary',
@@ -166,6 +172,12 @@ export const halloweenPages: PageDef[] = [
       'The jack-o’-lantern sheet uses sums to 12 (addition within 20, the grade 1-2 sweet spot), and the ghost sheet uses products from the easiest tier (multiplication within 12, grades 3-4). Both pictures read clearly even in the marker-heavy hands of a class party, and the ghost is deliberately forgiving — large body regions of a single product mean early success while the face details hold the attention.',
     ],
     printNote: 'Two sheets, one letter page each (portrait). Crayon-friendly; color legend prints in color.',
+    sheetImage: {
+      src: '/images/halloween-color-by-number-printable.png',
+      alt: 'Free printable Halloween color by number — pumpkin addition and ghost multiplication math-fact coloring sheets with a color legend.',
+      width: 2016,
+      height: 4710,
+    },
     tips: [
       {
         title: 'Color the legend first',
@@ -224,6 +236,12 @@ export const halloweenPages: PageDef[] = [
       'The sheet keeps the trace-then-write rhythm that makes practice stick: two dotted models to build the muscle memory, then blank baselines where the word must be produced from memory. Tracing alone drifts into drawing; writing alone drifts into frustration. Alternating the two, word by word, is the routine that carries a new letterform into a student’s daily handwriting.',
     ],
     printNote: 'One letter page, portrait. Lowercase models in a dotted-style cursive font.',
+    sheetImage: {
+      src: '/images/halloween-cursive-practice-printable.png',
+      alt: 'Free printable Halloween cursive practice — trace-then-write sheets with spooky lowercase words in a dotted cursive font, on letter-size pages.',
+      width: 2016,
+      height: 2096,
+    },
     tips: [
       {
         title: 'Say the strokes while tracing',

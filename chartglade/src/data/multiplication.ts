@@ -98,6 +98,12 @@ export const multiplicationPages: PageDef[] = [
       'The routine matters more than the sheet. Filling the chart row by row works better than sweeping across, because a row is one times-table at a time; the pattern carries several cells and memory has to reach for the rest. A completed chart then self-checks against the filled version — kids grade their own, which is itself more retrieval — and the same sheet doubles as a record: date it, keep it, beat it next month.',
     ],
     printNote: 'One blank grid per letter page, portrait.',
+    sheetImage: {
+      src: '/images/blank-multiplication-chart-printable.png',
+      alt: 'Free printable blank multiplication chart — an empty 12 by 12 times-table grid with header row and column for fill-in practice, on one letter-size page.',
+      width: 2016,
+      height: 1042,
+    },
     tips: [
       {
         title: 'Partial fills beat whole-sheet slogs',
@@ -157,6 +163,12 @@ export const multiplicationPages: PageDef[] = [
       'The 13-15 columns also carry real-world weight: 15 is the money number (quarters, quarter-hours, 15% tips later on), 14 is the fortnight, and 13 × 4 is the number of weeks in a year. Numbers with jobs are easier to remember than numbers on a worksheet, which is why this chart keeps those three columns instead of stopping at the conventional 12.',
     ],
     printNote: 'One letter page, landscape (the print button rotates it for you).',
+    sheetImage: {
+      src: '/images/multiplication-chart-1-15-printable.png',
+      alt: 'Free printable multiplication chart 1-15 — a filled 15 by 15 times table in landscape orientation, on one letter-size page.',
+      width: 2016,
+      height: 1030,
+    },
     landscape: true,
     interactive: true,
     tips: [
@@ -218,6 +230,12 @@ export const multiplicationPages: PageDef[] = [
       'Printing is the engineering problem: 21 columns to a row including headers. This sheet prints landscape on one letter page with cell sizes tuned to stay readable at arm\'s length — smaller than the 1-12 chart by design. If it will live on a wall, print it once at a copy shop at 11×17 and the cells land back at full size.',
     ],
     printNote: 'One letter page, landscape. Copy-shop 11×17 for wall use.',
+    sheetImage: {
+      src: '/images/multiplication-chart-1-20-printable.png',
+      alt: 'Free printable multiplication chart 1-20 — a filled 20 by 20 times table for grades 4 through 8, landscape on one letter-size page.',
+      width: 2016,
+      height: 1268,
+    },
     landscape: true,
     interactive: true,
     tips: [
