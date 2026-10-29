@@ -1,0 +1,28 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import ColorByNumberSheet from '../components/printables/ColorByNumberSheet.astro';
+import { christmasPages, SNOWMAN_MULTIPLICATION, TREE_ADDITION } from '../data/christmas';
+
+const def = christmasPages.find((p) => p.slug === 'christmas-color-by-number')!;
+---
+
+<ChartPage def={def}>
+  <ColorByNumberSheet
+    editions={[
+      {
+        title: 'Christmas Tree — Color by Addition',
+        audience: 'Grades 1–2 · add, then match the sum to a color',
+        art: TREE_ADDITION,
+        mode: 'add',
+        factLabel: 'sum',
+      },
+      {
+        title: 'Snowman — Color by Multiplication',
+        audience: 'Grades 3–4 · multiply, then match the product to a color',
+        art: SNOWMAN_MULTIPLICATION,
+        mode: 'mul',
+        factLabel: 'product',
+      },
+    ]}
+  />
+</ChartPage>

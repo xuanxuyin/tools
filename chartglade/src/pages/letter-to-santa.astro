@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import LetterToSantaSheet from '../components/printables/LetterToSantaSheet.astro';
+import { christmasPages } from '../data/christmas';
+
+const def = christmasPages.find((p) => p.slug === 'letter-to-santa')!;
+---
+
+<ChartPage def={def}>
+  <LetterToSantaSheet />
+</ChartPage>

@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+
+const pages = [
+  {
+    href: '/christmas-word-search/',
+    h2: 'Christmas Word Search',
+    blurb:
+      'Two printable puzzles — easy (K-2, forwards only) and hard (3-5, all eight directions) — with word lists that double as December vocabulary.',
+  },
+  {
+    href: '/christmas-color-by-number/',
+    h2: 'Christmas Color by Number',
+    blurb:
+      'A Christmas tree addition sheet and a snowman multiplication sheet: solve the fact in every cell, match the answer to the color key, reveal the picture.',
+  },
+  {
+    href: '/letter-to-santa/',
+    h2: 'Letter to Santa Template',
+    blurb:
+      'A write-a-letter-to-Santa page with three sentence frames, a "Love," signature line and a drawing box — Christmas writing practice that survives the last week before break.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Christmas', item: `${SITE.url}/christmas-printables/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Christmas Printables (Free, No Sign-Up) | ChartGlade"
+  description="Free printable Christmas activities for K-5: a two-level word search, math-facts color by number sheets and a letter to Santa template. Print from any browser."
+  path="/christmas-printables"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Christmas</span>
+  </nav>
+
+  <section class="hero">
+    <h1>Christmas Printables</h1>
+    <p class="lead">
+      Three classroom-ready Christmas activities — a two-level word search, a math-facts
+      coloring sheet and a letter-to-Santa writing template — each printable straight from
+      the browser on letter paper. No sign-up, no watermark, and each one earns its place
+      in the lesson plan, not just the party.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="card-grid">
+      {pages.map((p) => (
+        <a class="card" href={p.href}>
+          <h2>{p.h2}</h2>
+          <p>{p.blurb}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="prose section">
+    <h2>One December, three ways to keep kids learning</h2>
+    <p>
+      The activities share their vocabulary on purpose: scan the words in the
+      <a href="/christmas-word-search/">word search</a>, compute with the season in the
+      <a href="/christmas-color-by-number/">color by number</a>, and turn the same ideas
+      into writing on the <a href="/letter-to-santa/">letter to Santa</a>. Repetition
+      across formats is how seasonal vocabulary sticks past the holidays — and it lets one
+      printed packet run three stations while the class is wound up for break.
+    </p>
+    <p>
+      Every sheet is print-first: plain letter paper, black-and-white friendly (the
+      coloring legend names its colors as well as showing them), and paired with teaching
+      notes on its page. The seasonal wing started with
+      <a href="/halloween/">Halloween printables</a> and
+      <a href="/thanksgiving-printables/">Thanksgiving printables</a>; the rest of the
+      year, the same engine runs our <a href="/charts/">math charts</a>,
+      <a href="/sight-words/">sight words</a> and <a href="/cursive/">cursive worksheets</a>.
+    </p>
+    <h2>Two December traditions we folded in rather than printed separately</h2>
+    <p>
+      <strong>The wish-list conversation.</strong> Every family has one in early December,
+      and it wants exactly what the <a href="/letter-to-santa/">letter template</a>
+      produces: one wish with a reason attached. Run the "because" aloud first — ask why
+      over dinner — then let the letter be where the polished answer lives. The frame does
+      the structuring, the child does the wanting, and no separate brainstorm sheet is
+      needed.
+    </p>
+    <p>
+      <strong>The classroom party rotation.</strong> A December party runs best as
+      stations, and these three are the stations: word search table, coloring table,
+      letter-writing table, each with its own paper and zero teacher prep. Ten minutes a
+      rotation keeps the sugar from taking over, and every station produces something that
+      goes home in a folder instead of the trash.
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,50 @@
+---
+/**
+ * Letter to Santa writing paper (Christmas cluster): the ThankfulSheet
+ * design language in Christmas colors — printed sentence frames in the
+ * hand font, dotted writing lines underneath, a "Love," signature row and
+ * a drawing box that fills the rest of the printed page.
+ */
+
+interface FrameSpec {
+  /** Printed model the student completes on the line below. */
+  label: string;
+  /** Second half of a split frame ("because …") — its own model + line. */
+  continuation?: string;
+}
+
+const frames: FrameSpec[] = [
+  { label: 'For Christmas, I would like', continuation: 'because' },
+  { label: 'This year I am proud that' },
+  { label: 'One question I have for you is' },
+];
+---
+
+<div class="santa-sheet">
+  <p class="santa-title">Letter to Santa</p>
+  <div class="signin-meta">
+    <span class="signin-meta-field">Name<span class="write-line write-line-long" aria-hidden="true"></span></span>
+    <span class="signin-meta-field">Date<span class="write-line" aria-hidden="true"></span></span>
+  </div>
+  <p class="santa-greeting">Dear Santa,</p>
+  {frames.map((f) => (
+    <div class="santa-frame">
+      <p class="santa-model">{f.label}</p>
+      <p class="santa-line" aria-hidden="true"></p>
+      {f.continuation && (
+        <p class="santa-model">{f.continuation}</p>
+      )}
+      {f.continuation && (
+        <p class="santa-line" aria-hidden="true"></p>
+      )}
+    </div>
+  ))}
+  <div class="santa-close">
+    <span class="santa-model santa-model-signoff">Love,</span>
+    <span class="santa-line santa-line-name" aria-hidden="true"></span>
+  </div>
+  <section class="santa-draw" aria-label="Draw something for Santa">
+    <h3>Draw something for Santa</h3>
+    <div class="santa-draw-box"></div>
+  </section>
+</div>
