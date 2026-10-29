@@ -13,6 +13,7 @@
 import { photoToPattern, type PhotoPattern, type PhotoSimplify, type SampleImage } from '../lib/photoToPattern';
 import { mardById } from '../lib/mardPalette';
 import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
+import { printZone } from './printZone';
 
 const U = 10; // viewBox units per cell
 const HANDOFF_KEY = 'bead-editor:handoff';
@@ -113,8 +114,9 @@ export class PhotoStudio {
       this.scheduleConvert(DEBOUNCE_PRESET_MS);
       return;
     }
+    // the button means "print the pattern board" — not the whole page
     if (target.closest('[data-photo-print]')) {
-      window.print();
+      printZone('preview');
       return;
     }
     if (target.closest('[data-photo-png]')) {

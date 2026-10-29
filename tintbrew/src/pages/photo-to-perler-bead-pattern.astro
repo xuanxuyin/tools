@@ -401,7 +401,7 @@ const jsonLd = [
   .tool-shell {
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: var(--sp-4);
+    padding: var(--sp-5);
     background: var(--surface, #fff);
   }
   /* every guide block gets its own framed card — one border per section so
@@ -417,7 +417,7 @@ const jsonLd = [
     border: 1px solid var(--border);
     border-radius: 14px;
     background: var(--surface);
-    padding: var(--sp-4);
+    padding: var(--sp-5);
   }
   .guide-card > h2 {
     margin-top: 0;
@@ -850,7 +850,9 @@ const jsonLd = [
     .stage-empty,
     .keep-reading,
     .hero,
-    .prose {
+    .prose,
+    .tool-nav,
+    .guide-stack {
       display: none !important;
     }
     .tool-shell {
@@ -865,6 +867,14 @@ const jsonLd = [
       break-inside: avoid;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
+    }
+
+    /* "Print pattern" prints ONLY the pattern preview board — the settings
+       panel, bead list and every guide section stay on screen. html's
+       data-print-zone is set at runtime by scripts/printZone.ts. */
+    html[data-print-zone='preview'] main > *:not(.tool-shell),
+    html[data-print-zone='preview'] .photo-stage > *:not(.paint-card) {
+      display: none !important;
     }
   }
 </style>

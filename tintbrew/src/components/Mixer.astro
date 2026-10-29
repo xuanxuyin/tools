@@ -253,15 +253,19 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
-    padding: var(--sp-4);
+    padding: var(--sp-5);
   }
 
   .mixer--compact {
-    padding: var(--sp-3);
+    padding: var(--sp-4);
   }
 
   .mixer-grid {
     display: grid;
+    /* pin the single-column (mobile) track to the container width — an auto
+       track inherits the rows' intrinsic width (~414px) and blows past a
+       390px viewport (overflow detection, 2026-10-29) */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--sp-4);
     margin-top: var(--sp-3);
   }

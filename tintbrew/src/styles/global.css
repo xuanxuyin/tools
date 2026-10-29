@@ -126,7 +126,7 @@ a:hover {
    底框，不然很乱"). Same treatment the photo page's guide cards use. */
 .prose {
   max-width: 46rem;
-  padding: var(--sp-4) var(--sp-4) var(--sp-5);
+  padding: var(--sp-5) var(--sp-5) var(--sp-6);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -142,7 +142,7 @@ a:hover {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
-  padding: var(--sp-4) var(--sp-4) var(--sp-5);
+  padding: var(--sp-5) var(--sp-5) var(--sp-6);
 }
 
 .section-card > h2:first-child {
@@ -549,7 +549,7 @@ input[type='range']::-moz-range-thumb {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: var(--sp-4);
+  padding: var(--sp-5);
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease,
@@ -700,9 +700,17 @@ input[type='range']::-moz-range-thumb {
   }
 }
 
-/* Phones: tighten the desktop-sized hero padding */
+/* Phones: tighten the desktop-sized hero padding, and keep the framed
+   sections at one notch — 2rem of side padding costs too much of a
+   390px screen (user call, 2026-10-29: content sat too close to the
+   frame on desktop; phones keep the previous rhythm) */
 @media (max-width: 40rem) {
   .hero {
     padding-block: var(--sp-6) var(--sp-4);
+  }
+
+  .prose,
+  .section-card {
+    padding: var(--sp-4) var(--sp-4) var(--sp-5);
   }
 }

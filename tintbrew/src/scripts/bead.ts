@@ -9,6 +9,7 @@
  */
 import { normalizeHex } from '../lib/color';
 import { BEAD_COLORS, beadById, beadListFrom, nearestBead } from '../lib/beadPalette';
+import { printZone } from './printZone';
 
 interface ZoneState {
   hex: string;
@@ -122,6 +123,14 @@ class BeadStudio {
     if (target.closest('[data-reset]')) {
       this.reset();
       closePicker();
+      return;
+    }
+
+    // zone print buttons carry the target block; plain data-print still
+    // means "print the whole sheet"
+    const zoneBtn = target.closest<HTMLElement>('[data-print-zone]');
+    if (zoneBtn) {
+      printZone(zoneBtn.dataset.printZone!);
       return;
     }
 

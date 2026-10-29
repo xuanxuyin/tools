@@ -99,7 +99,7 @@ const jsonLd = [
 
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2>Related mixes</h2>
-    <RelatedMixes related={c.related} />
+    <RelatedMixes related={c.related.slice(0, 3)} />
     <p style="margin-top: var(--sp-3);">
       See <a href="/mix">all color mixes</a> for the full directory.
     </p>

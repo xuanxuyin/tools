@@ -75,7 +75,8 @@ const zoneTotal = view.regions.length;
         <h2>Pick a zone, pick a bead</h2>
         <div class="studio-actions no-print">
           <button type="button" class="btn" data-reset>Reset to reference</button>
-          <button type="button" class="btn" data-print>Print template</button>
+          <button type="button" class="btn" data-print-zone="reference">Print reference</button>
+          <button type="button" class="btn" data-print-zone="blank">Print to color</button>
         </div>
       </div>
       <ul class="zone-list">
@@ -222,7 +223,7 @@ const zoneTotal = view.regions.length;
     margin: 0;
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: var(--sp-3);
+    padding: var(--sp-4);
     background: var(--bg, #fff);
   }
   .fig-card figcaption {
@@ -438,5 +439,17 @@ const zoneTotal = view.regions.length;
     .studio, .studio-grid { display: block; }
     .fig-card { break-inside: avoid; border: none; padding: 0; page-break-after: always; }
     .studio-side h2, .studio-list h2 { font-size: 1rem; }
+
+    /* Zone-print buttons print ONE board — the reference sheet or the blank
+       color-it-yourself sheet. Ordinary Ctrl+P keeps the full sheet. The
+       rules are global because <html data-print-zone> is set at runtime. */
+    html[data-print-zone] main > section:not(.studio),
+    html[data-print-zone] .studio-side,
+    html[data-print-zone] .studio-list,
+    html[data-print-zone] .paint-card { display: none !important; }
+    html[data-print-zone='reference'] .fig-blank { display: none !important; }
+    html[data-print-zone='blank'] .fig-card:not(.fig-blank) { display: none !important; }
+    html[data-print-zone] .fig-card { page-break-after: auto; }
+    html[data-print-zone] .fig-card figcaption { display: none; }
   }
 </style>

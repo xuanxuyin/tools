@@ -266,11 +266,10 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   <section class="prose no-print" style="margin-top: var(--sp-6);">
     <h2>Keep reading</h2>
     <ul class="keep-reading">
-      {def.related.map((r) => (
+      {def.related.slice(0, 3).map((r) => (
         <li><a href={r.href}>{r.label}</a></li>
       ))}
       <li><a href="/color-guides">All color guides</a></li>
-      <li><a href="/mix">All color mixes</a></li>
     </ul>
   </section>
 </BaseLayout>
