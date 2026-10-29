@@ -1,0 +1,105 @@
+---
+/**
+ * Language picker for the in-page UI switch (en/zh/ko, user call
+ * 2026-10-29). <details> gives open/close with zero JS; scripts/i18n.ts
+ * keeps aria-current in sync, applies the choice and closes the menu.
+ * Dropdown pattern after perlerbeadpatterns.org's site-language menu.
+ */
+import { LANGS } from '../data/uiStrings';
+---
+
+<details class="lang-switch">
+  <summary aria-label="Language" data-i18n-aria="lang.label">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </svg>
+    <span class="lang-current">EN</span>
+  </summary>
+  <ul class="lang-menu">
+    {
+      LANGS.map((l) => (
+        <li>
+          <button type="button" data-lang={l.code} aria-current={l.code === 'en' ? 'true' : 'false'}>
+            {l.label}
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<style>
+  .lang-switch {
+    position: relative;
+    font-size: 0.82rem;
+  }
+
+  .lang-switch summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .lang-switch summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang-switch summary:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .lang-switch[open] summary {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .lang-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    z-index: 50;
+    min-width: 8.5rem;
+    padding: 4px;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    box-shadow: 0 8px 24px rgb(28 25 23 / 0.12);
+    list-style: none;
+  }
+
+  .lang-menu button {
+    display: block;
+    width: 100%;
+    padding: 0.45rem 0.7rem;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .lang-menu button:hover {
+    background: var(--accent-soft);
+    color: var(--text);
+  }
+
+  .lang-menu button[aria-current='true'] {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+</style>

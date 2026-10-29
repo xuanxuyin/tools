@@ -43,10 +43,10 @@ const nearest = nearestColorName(rgb);
       <label class="c-picker-row">
         <span class="c-picker-swatch" data-c-picker-swatch style={`background:${hexCss}`} aria-hidden="true"></span>
         <input type="color" data-c-picker value={hexCss} aria-label="Pick a color" />
-        <span>Pick visually</span>
+        <span data-i18n="conv.pick">Pick visually</span>
       </label>
       <p class="c-name">
-        Closest name: <strong data-c-name>{nearest.name}</strong>
+        <span data-i18n="conv.closest">Closest name:</span> <strong data-c-name>{nearest.name}</strong>
         <span class="c-name-swatch" data-c-name-swatch style={`background:${nearest.hex}`} aria-hidden="true"></span>
       </p>
     </div>
@@ -98,12 +98,14 @@ const nearest = nearestColorName(rgb);
         <CopyButton value={cmykCss} label="CMYK value" />
       </div>
 
-      <p class="c-hint" data-c-hint>Type or paste a value in any format — the others update as you go.</p>
+      <p class="c-hint" data-c-hint data-i18n="conv.hint">
+        Type or paste a value in any format — the others update as you go.
+      </p>
 
       {syncUrl && (
         <p class="share-row">
           <CopyButton link label="shareable link" />
-          <span>The link opens the converter with this exact color.</span>
+          <span data-i18n="conv.shareNote">The link opens the converter with this exact color.</span>
         </p>
       )}
     </div>

@@ -1,11 +1,12 @@
 ---
 import { SITE } from '../consts';
+import LangSwitch from './LangSwitch.astro';
 
 const nav = [
-  { href: '/color-mixer', label: 'Color Mixer' },
-  { href: '/color-converter', label: 'Color Converter' },
-  { href: '/hue-test', label: 'Hue Test' },
-  { href: '/mix', label: 'Color Mixes' },
+  { href: '/color-mixer', label: 'Color Mixer', i18n: 'nav.mixer' },
+  { href: '/color-converter', label: 'Color Converter', i18n: 'nav.converter' },
+  { href: '/hue-test', label: 'Hue Test', i18n: 'nav.hueTest' },
+  { href: '/mix', label: 'Color Mixes', i18n: 'nav.mixes' },
 ];
 
 const normalize = (p: string) => p.replace(/\/+$/, '') || '/';
@@ -25,11 +26,12 @@ const current = normalize(Astro.url.pathname);
     <nav aria-label="Main navigation">
       {
         nav.map((item) => (
-          <a href={item.href} aria-current={current === normalize(item.href) ? 'page' : undefined}>
+          <a href={item.href} aria-current={current === normalize(item.href) ? 'page' : undefined} data-i18n={item.i18n}>
             {item.label}
           </a>
         ))
       }
     </nav>
+    <LangSwitch />
   </div>
 </header>

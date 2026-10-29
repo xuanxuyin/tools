@@ -59,7 +59,8 @@ grid.forEach((row, y) => {
   <div class="paint-body">
     <figure class="fig-card">
       <figcaption>
-        Bead canvas <span class="hint">the pattern itself — repaint any bead</span>
+        <span data-i18n="pat.canvas">Bead canvas</span>{' '}
+        <span class="hint" data-i18n="pat.canvasHint">the pattern itself — repaint any bead</span>
       </figcaption>
       <svg
         class="bead-fig"
@@ -113,10 +114,10 @@ grid.forEach((row, y) => {
         empties the whole board, and the list below always counts exactly what's on it.
       </p>
       <div class="tool-row" role="group" aria-label="Paint tools">
-        <button type="button" class="btn tool-btn active" data-cv-tool="brush" aria-pressed="true">
+        <button type="button" class="btn tool-btn active" data-cv-tool="brush" aria-pressed="true" data-i18n="ed.brush">
           Brush
         </button>
-        <button type="button" class="btn tool-btn" data-cv-tool="eraser" aria-pressed="false">
+        <button type="button" class="btn tool-btn" data-cv-tool="eraser" aria-pressed="false" data-i18n="ed.eraser">
           Eraser
         </button>
         <button
@@ -125,10 +126,11 @@ grid.forEach((row, y) => {
           data-cv-mirror
           aria-pressed="false"
           title="Every stroke lands on the mirrored cell too"
+          data-i18n="ed.mirror"
         >
           Mirror
         </button>
-        <button type="button" class="btn tool-btn" data-cv-clear>Clear all</button>
+        <button type="button" class="btn tool-btn" data-cv-clear data-i18n="ed.clear">Clear all</button>
       </div>
       <div class="cv-palette" role="group" aria-label="Bead colors">
         {BEAD_COLORS.map((b) => (

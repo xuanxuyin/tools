@@ -6,11 +6,11 @@
  * Pure SSR, no island.
  */
 const links = [
-  { href: '/color-mixer', label: 'Color Mixer' },
-  { href: '/color-converter', label: 'Converter' },
-  { href: '/mix/', label: 'Color Mixes' },
-  { href: '/color-guides/', label: 'Guides' },
-  { href: '/perler-bead-patterns/', label: 'Bead Patterns' },
+  { href: '/color-mixer', label: 'Color Mixer', i18n: 'nav.mixer' },
+  { href: '/color-converter', label: 'Converter', i18n: 'nav.converter' },
+  { href: '/mix/', label: 'Color Mixes', i18n: 'nav.mixes' },
+  { href: '/color-guides/', label: 'Guides', i18n: 'toolnav.guides' },
+  { href: '/perler-bead-patterns/', label: 'Bead Patterns', i18n: 'toolnav.patterns' },
 ];
 
 const normalize = (p: string) => p.replace(/\/+$/, '') || '/';
@@ -20,7 +20,7 @@ const current = normalize(Astro.url.pathname);
 <nav class="tool-nav" aria-label="Site tools">
   {
     links.map((l) => (
-      <a href={l.href} aria-current={current === normalize(l.href) ? 'page' : undefined}>
+      <a href={l.href} aria-current={current === normalize(l.href) ? 'page' : undefined} data-i18n={l.i18n}>
         {l.label}
       </a>
     ))

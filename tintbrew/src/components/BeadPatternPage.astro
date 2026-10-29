@@ -60,23 +60,26 @@ const zoneTotal = view.regions.length;
   <section class="studio" data-bead-studio data-pattern={def.slug}>
     <div class="studio-grid">
       <figure class="fig-card">
-        <figcaption>Reference</figcaption>
+        <figcaption data-i18n="pat.reference">Reference</figcaption>
         <BeadFigure view={view} mode="reference" />
       </figure>
 
       <figure class="fig-card fig-blank">
-        <figcaption>Color it yourself <span class="hint">tap any zone</span></figcaption>
+        <figcaption>
+          <span data-i18n="pat.blank">Color it yourself</span>{' '}
+          <span class="hint" data-i18n="pat.blankHint">tap any zone</span>
+        </figcaption>
         <BeadFigure view={view} mode="blank" />
       </figure>
     </div>
 
     <div class="studio-side">
       <div class="studio-head">
-        <h2>Pick a zone, pick a bead</h2>
+        <h2 data-i18n="pat.pickZone">Pick a zone, pick a bead</h2>
         <div class="studio-actions no-print">
-          <button type="button" class="btn" data-reset>Reset to reference</button>
-          <button type="button" class="btn" data-print-zone="reference">Print reference</button>
-          <button type="button" class="btn" data-print-zone="blank">Print to color</button>
+          <button type="button" class="btn" data-reset data-i18n="pat.reset">Reset to reference</button>
+          <button type="button" class="btn" data-print-zone="reference" data-i18n="pat.printRef">Print reference</button>
+          <button type="button" class="btn" data-print-zone="blank" data-i18n="pat.printBlank">Print to color</button>
         </div>
       </div>
       <ul class="zone-list">
@@ -115,7 +118,7 @@ const zoneTotal = view.regions.length;
     <BeadCanvas view={view} />
 
     <div class="studio-list">
-      <h2>Beads you'll need</h2>
+      <h2 data-i18n="pat.beadsNeeded">Beads you'll need</h2>
       <p class="side-note">Updates live as you recolor. Counts assume single-sided ironing.</p>
       <ul class="bead-list" data-bead-list>
         {view.beadList.map((e) => (

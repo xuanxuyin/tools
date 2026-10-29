@@ -126,7 +126,7 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
       </div>
       <p class="mix-ratio-line" data-ratio-line>{ratioLine}</p>
       <div class="mixer-actions">
-        <button type="button" class="btn" data-add disabled={colors.length >= 5}>
+        <button type="button" class="btn" data-add disabled={colors.length >= 5} data-i18n="mixer.add">
           + Add color
         </button>
         <button
@@ -144,16 +144,31 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
           data-shuffle
           aria-label="Shuffle in a random set of colors"
           title="Shuffle in a random set of colors"
+          data-i18n="mixer.shuffle"
         >
           Shuffle
         </button>
         {
           showModeToggle && (
             <div class="mode-toggle" role="group" aria-label="Mixing mode">
-              <button type="button" class="btn" data-mode-btn data-mode-value="oklab" aria-pressed="true">
+              <button
+                type="button"
+                class="btn"
+                data-mode-btn
+                data-mode-value="oklab"
+                aria-pressed="true"
+                data-i18n="mixer.modeOklab"
+              >
                 Perceptual (Oklab)
               </button>
-              <button type="button" class="btn" data-mode-btn data-mode-value="rgb" aria-pressed="false">
+              <button
+                type="button"
+                class="btn"
+                data-mode-btn
+                data-mode-value="rgb"
+                aria-pressed="false"
+                data-i18n="mixer.modeRgb"
+              >
                 Average (RGB)
               </button>
             </div>
@@ -198,7 +213,7 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
         </div>
       </dl>
 
-      <p class="steps-caption">Blend path between your colors</p>
+      <p class="steps-caption" data-i18n="mixer.steps">Blend path between your colors</p>
       <div class="steps-strip" data-steps aria-hidden="true">
         {steps.map((s) => <span style={`background:${s}`} />)}
       </div>
@@ -211,7 +226,7 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
       {syncUrl && (
         <p class="share-row">
           <CopyButton link label="shareable link" />
-          <span>The link carries this exact mix — colors, ratios and mode.</span>
+          <span data-i18n="mixer.shareNote">The link carries this exact mix — colors, ratios and mode.</span>
         </p>
       )}
     </div>

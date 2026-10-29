@@ -104,23 +104,23 @@ const jsonLd = [
           tabindex="0"
           aria-label="Choose a photo, or drop one here"
         >
-          <span class="choose-btn">Choose image</span>
-          <span class="file-name" data-photo-filename>No image selected yet.</span>
+          <span class="choose-btn" data-i18n="ph.choose">Choose image</span>
+          <span class="file-name" data-photo-filename data-i18n="ph.noFile">No image selected yet.</span>
         </div>
         <input type="file" accept="image/*" data-photo-file hidden />
 
         <div class="source-slot" data-photo-source>
-          <div class="source-empty">Your photo preview will appear here.</div>
+          <div class="source-empty" data-i18n="ph.sourceEmpty">Your photo preview will appear here.</div>
         </div>
-        <p class="auto-note">Changes apply automatically as you adjust the settings.</p>
+        <p class="auto-note" data-i18n="ph.autoNote">Changes apply automatically as you adjust the settings.</p>
 
         <p class="photo-status" data-photo-status aria-live="polite">
-          Pick a photo to start — it converts right on this page, nothing uploads.
+          <span data-i18n="ph.status">Pick a photo to start — it converts right on this page, nothing uploads.</span>
         </p>
 
         <div class="settings">
           <div class="setting">
-            <p class="setting-title">Maximum color count</p>
+            <p class="setting-title" data-i18n="ph.maxColors">Maximum color count</p>
             <div class="opt-pills" role="group" aria-label="Maximum color count" data-photo-colors>
               <button type="button" data-value="8" aria-checked="false">Up to 8</button>
               <button type="button" data-value="12" class="active" aria-checked="true">Up to 12</button>
@@ -132,7 +132,7 @@ const jsonLd = [
           </div>
 
           <div class="setting">
-            <p class="setting-title">Color simplification</p>
+            <p class="setting-title" data-i18n="ph.simplify">Color simplification</p>
             <div class="opt-pills" role="group" aria-label="Color simplification" data-photo-simplify>
               <button type="button" data-value="keep" aria-checked="false">Keep shades</button>
               <button type="button" data-value="balanced" class="active" aria-checked="true">Balanced</button>
@@ -144,10 +144,10 @@ const jsonLd = [
           </div>
 
           <div class="setting">
-            <p class="setting-title">Bead width</p>
+            <p class="setting-title" data-i18n="ph.width">Bead width</p>
             <div class="width-duo">
               <div class="width-box">
-                <p class="width-box-title">Presets</p>
+                <p class="width-box-title" data-i18n="ph.presets">Presets</p>
                 <div class="opt-pills" role="group" aria-label="Bead width presets" data-photo-size>
                   <button type="button" data-value="auto" class="active" aria-checked="true">Auto</button>
                   <button type="button" data-value="29" aria-checked="false">29 · Compact</button>
@@ -190,7 +190,7 @@ const jsonLd = [
           <label class="check-card">
             <input type="checkbox" data-photo-bg />
             <span class="check-body">
-              <strong>Remove background</strong>
+              <strong data-i18n="ph.removeBg">Remove background</strong>
               <span>
                 Clears the solid color connected to the edges and leaves it off the bead count. Turn
                 it on to cut the subject out of its background.
@@ -201,7 +201,7 @@ const jsonLd = [
           <label class="check-card">
             <input type="checkbox" data-photo-outline />
             <span class="check-body">
-              <strong>Dark outline</strong>
+              <strong data-i18n="ph.outline">Dark outline</strong>
               <span>
                 Traces the cut-out subject's edge with the darkest bead in the palette, so the shape
                 stays crisp even where sampling lightened the rim.
@@ -211,7 +211,7 @@ const jsonLd = [
         </div>
       </div>
       <div class="photo-stage" data-photo-stage>
-        <div class="stage-empty">
+        <div class="stage-empty" data-i18n="ph.stageEmpty">
           Your pattern preview will appear here — upload an image and the pattern generates
           automatically.
         </div>

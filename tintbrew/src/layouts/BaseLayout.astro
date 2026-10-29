@@ -45,15 +45,17 @@ const gaId = SITE.gaMeasurementId;
     }
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
     <Header />
     <main id="main" class="container">
       <slot />
     </main>
     <Footer />
-    <!-- Global delegated copy handler (used by mixer/converter value rows) -->
+    <!-- Global delegated copy handler (used by mixer/converter value rows)
+         + in-page UI language switch (data-i18n swap, one URL for all) -->
     <script>
       import '../scripts/copy';
+      import '../scripts/i18n';
     </script>
     {
       cfToken && (

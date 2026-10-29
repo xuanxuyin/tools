@@ -15,11 +15,11 @@ const { value, label, link } = Astro.props;
 ---
 
 {link ? (
-  <button type="button" class="btn btn-copy" data-copy-link aria-label={`Copy ${label ?? 'link'}`}>
+  <button type="button" class="btn btn-copy" data-copy-link aria-label={`Copy ${label ?? 'link'}`} data-i18n="btn.copyLink">
     Copy link
   </button>
 ) : (
-  <button type="button" class="btn btn-copy" data-copy={value} aria-label={`Copy ${label ?? 'value'}`}>
+  <button type="button" class="btn btn-copy" data-copy={value} aria-label={`Copy ${label ?? 'value'}`} data-i18n="btn.copy">
     Copy
   </button>
 )}

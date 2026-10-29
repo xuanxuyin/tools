@@ -136,12 +136,12 @@ const jsonLd = [
         <div class="ed-group">
           <span class="ed-label">Tools</span>
           <div class="tool-row" role="group" aria-label="Editor tools">
-            <button type="button" class="btn tool-btn active" data-ed-tool="brush" aria-pressed="true">Brush</button>
-            <button type="button" class="btn tool-btn" data-ed-tool="eraser" aria-pressed="false">Eraser</button>
-            <button type="button" class="btn tool-btn" data-ed-tool="pick" aria-pressed="false">Pick color</button>
-            <button type="button" class="btn tool-btn" data-ed-undo>Undo</button>
-            <button type="button" class="btn tool-btn" data-ed-mirror aria-pressed="false" title="Every stroke lands on the mirrored cell too">Mirror</button>
-            <button type="button" class="btn tool-btn" data-ed-reset>Reset</button>
+            <button type="button" class="btn tool-btn active" data-ed-tool="brush" aria-pressed="true" data-i18n="ed.brush">Brush</button>
+            <button type="button" class="btn tool-btn" data-ed-tool="eraser" aria-pressed="false" data-i18n="ed.eraser">Eraser</button>
+            <button type="button" class="btn tool-btn" data-ed-tool="pick" aria-pressed="false" data-i18n="ed.pick">Pick color</button>
+            <button type="button" class="btn tool-btn" data-ed-undo data-i18n="ed.undo">Undo</button>
+            <button type="button" class="btn tool-btn" data-ed-mirror aria-pressed="false" title="Every stroke lands on the mirrored cell too" data-i18n="ed.mirror">Mirror</button>
+            <button type="button" class="btn tool-btn" data-ed-reset data-i18n="ed.reset">Reset</button>
           </div>
         </div>
 
@@ -164,8 +164,8 @@ const jsonLd = [
         </div>
 
         <div class="ed-group ed-actions">
-          <button type="button" class="btn act-primary" data-ed-png>Download PNG</button>
-          <button type="button" class="btn" data-ed-print>Print pattern</button>
+          <button type="button" class="btn act-primary" data-ed-png data-i18n="ed.png">Download PNG</button>
+          <button type="button" class="btn" data-ed-print data-i18n="ed.print">Print pattern</button>
         </div>
       </div>
     </div>

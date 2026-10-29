@@ -14,6 +14,7 @@ import { photoToPattern, type PhotoPattern, type PhotoSimplify, type SampleImage
 import { mardById } from '../lib/mardPalette';
 import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
 import { printZone } from './printZone';
+import { t } from './i18n';
 
 const U = 10; // viewBox units per cell
 const HANDOFF_KEY = 'bead-editor:handoff';
@@ -379,16 +380,17 @@ export class PhotoStudio {
     const actions = document.createElement('div');
     actions.className = 'photo-actions no-print';
     actions.innerHTML = `
-      <button type="button" class="btn act-primary" data-photo-edit>Edit in editor</button>
-      <button type="button" class="btn" data-photo-png>Download PNG</button>
-      <button type="button" class="btn" data-photo-print>Print pattern</button>
+      <button type="button" class="btn act-primary" data-photo-edit data-i18n="ph.edit">${t('ph.edit')}</button>
+      <button type="button" class="btn" data-photo-png data-i18n="ph.png">${t('ph.png')}</button>
+      <button type="button" class="btn" data-photo-print data-i18n="ph.print">${t('ph.print')}</button>
     `;
 
     const figure = document.createElement('figure');
     figure.className = 'fig-card';
     const caption = document.createElement('figcaption');
     const capTitle = document.createElement('span');
-    capTitle.textContent = 'Pattern preview';
+    capTitle.textContent = t('ph.preview');
+    capTitle.setAttribute('data-i18n', 'ph.preview');
     const capHint = document.createElement('span');
     capHint.className = 'hint';
     capHint.textContent = `${p.cols} × ${p.rows} beads — seams mark the pegboards`;
