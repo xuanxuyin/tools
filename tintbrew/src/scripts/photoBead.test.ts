@@ -106,13 +106,18 @@ describe('photo bead island (real SSR markup)', () => {
     expect(ctx.host.querySelector('[data-photo-drop]')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-file]')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-filename]')?.textContent).toContain('No image selected yet.');
-    // source-photo slot: between the settings and the auto-apply note, with
-    // a visible placeholder before any upload (source-site position)
+    // source-photo slot: between the upload row and the settings, ahead of
+    // the auto-apply note and the status line, with a visible placeholder
+    // before any upload (user-pinned source-site order, 2026-10-29)
     const slot = ctx.host.querySelector('[data-photo-source]')!;
     expect(slot.querySelector('.source-empty')).toBeTruthy();
     expect(slot.textContent).toContain('preview will appear here');
-    expect(ctx.host.querySelector('.settings')!.nextElementSibling).toBe(slot);
-    expect(slot.nextElementSibling?.classList.contains('auto-note')).toBe(true);
+    expect(slot.previousElementSibling?.matches('input[data-photo-file]')).toBe(true);
+    const note = slot.nextElementSibling!;
+    expect(note.classList.contains('auto-note')).toBe(true);
+    const status = note.nextElementSibling!;
+    expect(status.matches('[data-photo-status]')).toBe(true);
+    expect(status.nextElementSibling?.classList.contains('settings')).toBe(true);
     expect(ctx.host.querySelector('[data-photo-stage] .stage-empty')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-colors] > button.active')?.getAttribute('data-value')).toBe('12');
     expect(ctx.host.querySelector('[data-photo-simplify] > button.active')?.getAttribute('data-value')).toBe('balanced');

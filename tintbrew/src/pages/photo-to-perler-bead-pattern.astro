@@ -105,6 +105,15 @@ const jsonLd = [
         </div>
         <input type="file" accept="image/*" data-photo-file hidden />
 
+        <div class="source-slot" data-photo-source>
+          <div class="source-empty">Your photo preview will appear here.</div>
+        </div>
+        <p class="auto-note">Changes apply automatically as you adjust the settings.</p>
+
+        <p class="photo-status" data-photo-status aria-live="polite">
+          Pick a photo to start — it converts right on this page, nothing uploads.
+        </p>
+
         <div class="settings">
           <div class="setting">
             <p class="setting-title">Maximum color count</p>
@@ -194,15 +203,6 @@ const jsonLd = [
             </span>
           </label>
         </div>
-
-        <div class="source-slot" data-photo-source>
-          <div class="source-empty">Your photo preview will appear here.</div>
-        </div>
-        <p class="auto-note">Changes apply automatically as you adjust the settings.</p>
-
-        <p class="photo-status" data-photo-status aria-live="polite">
-          Pick a photo to start — it converts right on this page, nothing uploads.
-        </p>
       </div>
       <div class="photo-stage" data-photo-stage>
         <div class="stage-empty">
