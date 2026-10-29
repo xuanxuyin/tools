@@ -91,102 +91,123 @@ const jsonLd = [
   </section>
 
   <section class="tool-shell" data-photo-bead>
-    <div class="photo-controls no-print">
-      <div
-        class="photo-drop"
-        data-photo-drop
-        role="button"
-        tabindex="0"
-        aria-label="Choose a photo, or drop one here"
-      >
-        <strong>Drop a photo here</strong>
-        <span>or click to browse — JPG, PNG, WebP</span>
-      </div>
-      <input type="file" accept="image/*" data-photo-file hidden />
-
-      <div class="settings">
-        <div class="setting">
-          <p class="setting-title">Maximum color count</p>
-          <div class="opt-pills" role="group" aria-label="Maximum color count" data-photo-colors>
-            <button type="button" data-value="8" aria-checked="false">8 colors</button>
-            <button type="button" data-value="12" class="active" aria-checked="true">12 colors</button>
-            <button type="button" data-value="16" aria-checked="false">16 colors</button>
-          </div>
-          <p class="setting-help">Up to this many bead colors — the bead list caps with it.</p>
+    <div class="pm-grid">
+      <div class="pm-left no-print">
+        <div
+          class="upload-row"
+          data-photo-drop
+          role="button"
+          tabindex="0"
+          aria-label="Choose a photo, or drop one here"
+        >
+          <span class="choose-btn">Choose image</span>
+          <span class="file-name" data-photo-filename>No image selected yet.</span>
         </div>
+        <input type="file" accept="image/*" data-photo-file hidden />
 
-        <div class="setting">
-          <p class="setting-title">Color simplification</p>
-          <div class="opt-pills" role="group" aria-label="Color simplification" data-photo-simplify>
-            <button type="button" data-value="keep" aria-checked="false">Keep shades</button>
-            <button type="button" data-value="balanced" class="active" aria-checked="true">Balanced</button>
-            <button type="button" data-value="bold" aria-checked="false">Bold</button>
-          </div>
-          <p class="setting-help">
-            Merges near-identical shades into one bead so the pattern has fewer, cleaner colors.
-          </p>
-        </div>
+        <div class="source-slot" data-photo-source hidden></div>
 
-        <div class="setting">
-          <p class="setting-title">Bead width</p>
-          <div class="opt-pills" role="group" aria-label="Bead width" data-photo-size>
-            <button type="button" data-value="auto" class="active" aria-checked="true">Auto</button>
-            <button type="button" data-value="29" aria-checked="false">29 · Compact</button>
-            <button type="button" data-value="58" aria-checked="false">58 · Balanced</button>
-            <button type="button" data-value="87" aria-checked="false">87 · Detailed</button>
-            <button type="button" data-value="116" aria-checked="false">116 · Extra detailed</button>
-            <button type="button" data-value="custom" aria-checked="false">Custom</button>
+        <div class="settings">
+          <div class="setting">
+            <p class="setting-title">Maximum color count</p>
+            <div class="opt-pills" role="group" aria-label="Maximum color count" data-photo-colors>
+              <button type="button" data-value="8" aria-checked="false">Up to 8</button>
+              <button type="button" data-value="12" class="active" aria-checked="true">Up to 12</button>
+              <button type="button" data-value="16" aria-checked="false">Up to 16</button>
+            </div>
+            <p class="setting-help">Up to this many bead colors — the bead list caps with it.</p>
           </div>
-          <div class="custom-row hidden" data-photo-custom-row>
-            <input
-              type="number"
-              inputmode="numeric"
-              min="8"
-              max="120"
-              value="58"
-              aria-label="Custom bead width"
-              data-photo-custom-width
-            />
-            <span class="custom-unit">beads wide</span>
-          </div>
-          <p class="width-error hidden" data-photo-width-error role="alert">
-            Enter a width from 8 to 120 beads.
-          </p>
-        </div>
 
-        <label class="check-card">
-          <input type="checkbox" checked data-photo-bg />
-          <span class="check-body">
-            <strong>Remove background</strong>
-            <span>
-              Clears the solid color connected to the edges and leaves it off the bead count. Turn
-              it off to keep the whole scene.
+          <div class="setting">
+            <p class="setting-title">Color simplification</p>
+            <div class="opt-pills" role="group" aria-label="Color simplification" data-photo-simplify>
+              <button type="button" data-value="keep" aria-checked="false">Keep shades</button>
+              <button type="button" data-value="balanced" class="active" aria-checked="true">Balanced</button>
+              <button type="button" data-value="bold" aria-checked="false">Bold</button>
+            </div>
+            <p class="setting-help">
+              Merges near-identical shades into one bead so the pattern has fewer, cleaner colors.
+            </p>
+          </div>
+
+          <div class="setting">
+            <p class="setting-title">Bead width</p>
+            <div class="width-duo">
+              <div class="width-box">
+                <p class="width-box-title">Presets</p>
+                <div class="opt-pills" role="group" aria-label="Bead width presets" data-photo-size>
+                  <button type="button" data-value="auto" class="active" aria-checked="true">Auto</button>
+                  <button type="button" data-value="29" aria-checked="false">29 · Compact</button>
+                  <button type="button" data-value="58" aria-checked="false">58 · Balanced</button>
+                  <button type="button" data-value="87" aria-checked="false">87 · Detailed</button>
+                  <button type="button" data-value="116" aria-checked="false">116 · Extra detailed</button>
+                </div>
+              </div>
+              <div class="width-box">
+                <div class="opt-pills" role="group" aria-label="Custom bead width">
+                  <button
+                    type="button"
+                    data-value="custom"
+                    data-photo-custom-toggle
+                    aria-checked="false"
+                  >
+                    Custom
+                  </button>
+                </div>
+                <div class="custom-row hidden" data-photo-custom-row>
+                  <input
+                    type="number"
+                    inputmode="numeric"
+                    min="10"
+                    max="200"
+                    value="58"
+                    aria-label="Custom bead width"
+                    data-photo-custom-width
+                  />
+                  <span class="custom-unit">beads wide</span>
+                </div>
+                <p class="setting-help">Enter 10 to 200 beads.</p>
+              </div>
+            </div>
+            <p class="width-error hidden" data-photo-width-error role="alert">
+              Enter a width from 10 to 200 beads.
+            </p>
+          </div>
+
+          <label class="check-card">
+            <input type="checkbox" checked data-photo-bg />
+            <span class="check-body">
+              <strong>Remove background</strong>
+              <span>
+                Clears the solid color connected to the edges and leaves it off the bead count. Turn
+                it off to keep the whole scene.
+              </span>
             </span>
-          </span>
-        </label>
+          </label>
 
-        <label class="check-card">
-          <input type="checkbox" data-photo-outline />
-          <span class="check-body">
-            <strong>Dark outline</strong>
-            <span>
-              Traces the cut-out subject's edge with the darkest bead on the board, so the shape
-              stays crisp even where sampling lightened the rim.
+          <label class="check-card">
+            <input type="checkbox" checked data-photo-outline />
+            <span class="check-body">
+              <strong>Dark outline</strong>
+              <span>
+                Traces the cut-out subject's edge with the darkest bead in the palette, so the shape
+                stays crisp even where sampling lightened the rim.
+              </span>
             </span>
-          </span>
-        </label>
+          </label>
 
-        <p class="auto-note">Changes apply automatically as you adjust the settings.</p>
+          <p class="auto-note">Changes apply automatically as you adjust the settings.</p>
+        </div>
+
+        <p class="photo-status" data-photo-status aria-live="polite">
+          Pick a photo to start — it converts right on this page, nothing uploads.
+        </p>
       </div>
-
-      <p class="photo-status" data-photo-status aria-live="polite">
-        Pick a photo to start — it converts right on this page, nothing uploads.
-      </p>
-    </div>
-    <div class="photo-stage" data-photo-stage>
-      <div class="stage-empty">
-        Your pattern preview will appear here — upload an image and the pattern generates
-        automatically.
+      <div class="photo-stage" data-photo-stage>
+        <div class="stage-empty">
+          Your pattern preview will appear here — upload an image and the pattern generates
+          automatically.
+        </div>
       </div>
     </div>
   </section>
@@ -282,30 +303,53 @@ const jsonLd = [
     padding: var(--sp-4);
     background: var(--bg, #fff);
   }
-  .photo-drop {
+  /* source-site layout: photo + settings left, result right — originals and
+     the converted board sit side by side for direct comparison (user call,
+     2026-10-29); narrow screens stack the same order */
+  .pm-grid {
+    display: grid;
+    gap: var(--sp-4);
+  }
+  @media (min-width: 981px) {
+    .pm-grid {
+      grid-template-columns: minmax(340px, 5fr) minmax(0, 6fr);
+      align-items: start;
+    }
+  }
+  /* compact upload row — a dashed card the size of a setting, not a hero
+     banner (user call: the drop zone was eating the page) */
+  .upload-row {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: var(--sp-6) var(--sp-4);
-    border: 2px dashed var(--border);
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1.5px dashed var(--border);
     border-radius: 12px;
     background: var(--paper, #fbfaf7);
     cursor: pointer;
-    text-align: center;
     transition: border-color 0.12s ease;
   }
-  .photo-drop strong {
-    font-size: 1.1rem;
+  .upload-row:hover,
+  .upload-row:focus-visible,
+  .upload-row.over {
+    border-color: var(--accent, #b3552e);
   }
-  .photo-drop span {
+  .choose-btn {
+    flex: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #1c1c1c;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .file-name {
+    min-width: 0;
     font-size: 0.85rem;
     color: var(--ink-soft, #666);
-  }
-  .photo-drop:hover,
-  .photo-drop:focus-visible,
-  .photo-drop.over {
-    border-color: var(--accent, #b3552e);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .settings {
     display: grid;
@@ -346,6 +390,28 @@ const jsonLd = [
     background: #fffaf0;
     box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
     font-weight: 600;
+  }
+  /* bead width lives in two separate cards — Presets and Custom are peer
+     options, not one merged pill row (user call, 2026-10-29) */
+  .width-duo {
+    display: grid;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .width-box {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--paper, #fbfaf7);
+  }
+  .width-box .opt-pills {
+    margin-top: 0;
+  }
+  .width-box-title {
+    margin: 0 0 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--ink-soft, #666);
   }
   .custom-row {
     display: flex;
@@ -404,7 +470,12 @@ const jsonLd = [
     min-height: 1.4em;
   }
   .photo-stage {
-    margin-top: var(--sp-4);
+    margin-top: 0;
+  }
+  @media (max-width: 980px) {
+    .photo-stage {
+      margin-top: var(--sp-2);
+    }
   }
   .stage-empty {
     padding: var(--sp-8) var(--sp-4);
@@ -550,19 +621,22 @@ const jsonLd = [
   .photo-stage .row-count {
     font-weight: 600;
   }
-  .photo-stage .source-photo {
-    margin-bottom: var(--sp-2);
+  /* source photo lives in the LEFT column next to the settings — runtime
+     DOM carries no scoping attribute, so its rules sit here like the
+     board's (user call: compare original and board side by side) */
+  .pm-left .source-slot {
+    margin-top: var(--sp-3);
   }
-  .photo-stage .source-label {
+  .pm-left .source-slot .source-label {
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--ink-soft, #666);
     margin: 0 0 var(--sp-1);
   }
-  .photo-stage .source-img {
+  .pm-left .source-slot .source-img {
     display: block;
     max-width: 100%;
-    max-height: 260px;
+    max-height: 240px;
     width: auto;
     border-radius: 10px;
     border: 1px solid var(--border);
@@ -588,9 +662,11 @@ const jsonLd = [
       border: none;
       padding: 0;
     }
+    .pm-grid {
+      display: block;
+    }
     .photo-stage .paint-card,
-    .photo-stage .panel-card,
-    .photo-stage .source-photo {
+    .photo-stage .panel-card {
       break-inside: avoid;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;

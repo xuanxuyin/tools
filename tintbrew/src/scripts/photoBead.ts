@@ -1,12 +1,13 @@
 /**
  * Photo → bead-pattern island, laid out like the source-site pattern maker
- * (user call, 2026-10-29): upload → auto-convert, steer with five settings
- * (color count, shade simplification, bead width, background removal, dark
- * outline), and read the result off three panels — pattern summary,
- * conversion info, and beads required per color with the P-codes shoppers
- * order by. The preview itself is a crisp non-editable board with pegboard
- * seams every 29 cells; fixing a stray bead happens one click away in the
- * editor (sessionStorage handoff), exactly like the source site.
+ * (user call, 2026-10-29): photo and settings in the left column, the
+ * converted board in the right one, so the original and the pattern sit
+ * side by side for direct comparison. Upload is a compact Choose-image row;
+ * bead width comes as two separate options — Presets pills and a Custom
+ * entry with its own number input (10 to 200). Background removal and the
+ * dark outline ship checked, like the source site. The preview is a crisp
+ * non-editable board with pegboard seams every 29 cells; fixing a stray
+ * bead happens one click away in the editor (sessionStorage handoff).
  * Everything stays in the browser — the photo is never uploaded anywhere.
  */
 import { photoToPattern, type PhotoPattern, type PhotoSimplify, type SampleImage } from '../lib/photoToPattern';
@@ -15,20 +16,28 @@ import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
 
 const U = 10; // viewBox units per cell
 const HANDOFF_KEY = 'bead-editor:handoff';
-const DEBOUNCE_MS = 180;
-const DECODE_CAP = 1600;
-const MIN_CUSTOM = 8;
-const MAX_CUSTOM = 120;
+/** Source-site timings: presets land near-instantly, the custom number
+ *  field waits for the typing to settle before re-converting. */
+const DEBOUNCE_PRESET_MS = 80;
+const DEBOUNCE_CUSTOM_MS = 260;
+const DECODE_CAP = 2048;
+const MIN_CUSTOM = 10;
+const MAX_CUSTOM = 200;
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
 
-/** Width presets shown as pills — same ladder as the source site. */
+/** Width presets — same ladder as the source site; Custom is a separate
+ *  option (its own card + number input), not a seventh pill. */
 export const WIDTH_PRESETS: { value: string; label: string }[] = [
   { value: 'auto', label: 'Auto' },
   { value: '29', label: '29 · Compact' },
   { value: '58', label: '58 · Balanced' },
   { value: '87', label: '87 · Detailed' },
   { value: '116', label: '116 · Extra detailed' },
-  { value: 'custom', label: 'Custom' },
 ];
+
+/** The width pills span two containers (Presets box + Custom box) — one
+ *  mutually exclusive group across both. */
+const WIDTH_PILL_SEL = '[data-photo-size] > button, [data-photo-custom-toggle]';
 
 export class PhotoStudio {
   private source: SampleImage | null = null;
@@ -43,6 +52,7 @@ export class PhotoStudio {
     fileInput.addEventListener('change', () => {
       const file = fileInput.files?.[0];
       if (file) void this.load(file);
+      fileInput.value = '';
     });
     dropZone.addEventListener('click', () => fileInput.click());
     dropZone.addEventListener('keydown', (e) => {
@@ -71,8 +81,14 @@ export class PhotoStudio {
     // every setting re-converts on its own — no Convert button to hunt for
     root.addEventListener('change', (e) => {
       const t = e.target as HTMLElement;
-      if (t.matches('[data-photo-bg], [data-photo-outline], [data-photo-custom-width]')) {
-        this.scheduleConvert();
+      if (t.matches('[data-photo-bg], [data-photo-outline]')) {
+        this.scheduleConvert(DEBOUNCE_PRESET_MS);
+      }
+    });
+    root.addEventListener('input', (e) => {
+      const t = e.target as HTMLElement;
+      if (t.matches('[data-photo-custom-width]')) {
+        this.scheduleConvert(DEBOUNCE_CUSTOM_MS);
       }
     });
   }
@@ -80,14 +96,21 @@ export class PhotoStudio {
   private onClick(e: Event): void {
     const target = e.target as HTMLElement | null;
     if (!target) return;
-    const pill = target.closest<HTMLButtonElement>('[data-photo-colors] > button, [data-photo-simplify] > button, [data-photo-size] > button');
+    const pill = target.closest<HTMLButtonElement>(
+      '[data-photo-colors] > button, [data-photo-simplify] > button, [data-photo-size] > button, [data-photo-custom-toggle]',
+    );
     if (pill) {
-      pill.parentElement!.querySelectorAll('button').forEach((b) => {
+      const group = pill.closest('[data-photo-colors]')
+        ? '[data-photo-colors] > button'
+        : pill.closest('[data-photo-simplify]')
+          ? '[data-photo-simplify] > button'
+          : WIDTH_PILL_SEL; // width pills: Presets box + Custom toggle, one group
+      this.root.querySelectorAll(group).forEach((b) => {
         b.classList.toggle('active', b === pill);
         b.setAttribute('aria-checked', b === pill ? 'true' : 'false');
       });
       this.updateCustomRow();
-      this.scheduleConvert();
+      this.scheduleConvert(DEBOUNCE_PRESET_MS);
       return;
     }
     if (target.closest('[data-photo-print]')) {
@@ -109,20 +132,25 @@ export class PhotoStudio {
     if (target.closest('[data-photo-edit]')) this.openInEditor();
   }
 
-  /** The custom-width input only makes sense on the Custom preset. */
+  private isCustomMode(): boolean {
+    return this.root
+      .querySelector('[data-photo-custom-toggle]')
+      ?.classList.contains('active') === true;
+  }
+
+  /** The custom-width input only makes sense on the Custom option. */
   private updateCustomRow(): void {
     const row = this.root.querySelector('[data-photo-custom-row]');
     if (!row) return;
-    const active = this.root.querySelector('[data-photo-size] > button.active')?.getAttribute('data-value');
-    row.classList.toggle('hidden', active !== 'custom');
+    row.classList.toggle('hidden', !this.isCustomMode());
   }
 
   private status(): HTMLElement {
     return this.root.querySelector('[data-photo-status]')!;
   }
 
-  private pillGroup(key: string): string {
-    return this.root.querySelector(`${key} > button.active`)?.getAttribute('data-value') ?? '';
+  private groupValue(sel: string): string {
+    return this.root.querySelector(`${sel}.active`)?.getAttribute('data-value') ?? '';
   }
 
   private opts(): {
@@ -133,13 +161,12 @@ export class PhotoStudio {
     removeBackground: boolean;
     darkOutline: boolean;
   } {
-    const sizeVal = this.pillGroup('[data-photo-size]');
     const custom = Number(
       (this.root.querySelector<HTMLInputElement>('[data-photo-custom-width]')?.value ?? '').trim(),
     );
     const error = this.root.querySelector('[data-photo-width-error]');
     let cols: number;
-    if (sizeVal === 'custom') {
+    if (this.isCustomMode()) {
       if (!Number.isFinite(custom) || custom < MIN_CUSTOM || custom > MAX_CUSTOM) {
         error?.classList.remove('hidden');
         cols = -1; // signal: hold the last board until the input is valid
@@ -149,24 +176,62 @@ export class PhotoStudio {
       }
     } else {
       error?.classList.add('hidden');
+      const sizeVal = this.groupValue('[data-photo-size] > button');
       cols =
-        sizeVal === 'auto'
+        sizeVal === 'auto' || !sizeVal
           ? this.source
             ? PhotoStudio.autoCols(this.source.width, this.source.height)
             : BOARD_SIZE
           : Number(sizeVal) || BOARD_SIZE;
     }
-    const simplifyVal = this.pillGroup('[data-photo-simplify]');
+    const simplifyVal = this.groupValue('[data-photo-simplify] > button');
     const bg = this.root.querySelector<HTMLInputElement>('[data-photo-bg]');
     const outline = this.root.querySelector<HTMLInputElement>('[data-photo-outline]');
     return {
       cols,
       mode: 'smooth',
-      maxColors: Number(this.pillGroup('[data-photo-colors]')) || 12,
+      maxColors: Number(this.groupValue('[data-photo-colors] > button')) || 12,
       simplify: simplifyVal === 'keep' || simplifyVal === 'bold' ? simplifyVal : 'balanced',
       removeBackground: bg ? bg.checked : true,
-      darkOutline: outline?.checked ?? false,
+      darkOutline: outline ? outline.checked : true,
     };
+  }
+
+  /** Filename truncation for the compact upload row — cap keeps the row on
+   *  one line; the full name rides along as the title. */
+  private setFilename(name: string | null): void {
+    const el = this.root.querySelector('[data-photo-filename]');
+    if (!el) return;
+    if (!name) {
+      el.textContent = 'No image selected yet.';
+      el.removeAttribute('title');
+      return;
+    }
+    el.textContent = name.length > 28 ? `${name.slice(0, 27)}…` : name;
+    el.setAttribute('title', name);
+  }
+
+  /** The source photo preview lives in the LEFT column, under the upload
+   *  row — original on the left, converted board on the right. */
+  private showSource(): void {
+    const slot = this.root.querySelector('[data-photo-source]');
+    if (!slot) return;
+    if (!this.sourceUrl) {
+      slot.classList.add('hidden');
+      slot.innerHTML = '';
+      return;
+    }
+    slot.innerHTML = '';
+    const label = document.createElement('p');
+    label.className = 'source-label';
+    label.textContent = 'Your source photo';
+    const img = document.createElement('img');
+    img.src = this.sourceUrl;
+    img.alt = 'Your uploaded photo — compare it with the converted pattern';
+    img.className = 'source-img';
+    img.loading = 'lazy';
+    slot.append(label, img);
+    slot.classList.remove('hidden');
   }
 
   private async load(file: File): Promise<void> {
@@ -175,11 +240,17 @@ export class PhotoStudio {
       status.textContent = 'That file is not an image — pick a JPG, PNG or WebP.';
       return;
     }
+    if (file.size > MAX_FILE_BYTES) {
+      status.textContent = 'That image is over 10 MB — shrink it a little and try again.';
+      return;
+    }
     if (this.sourceUrl) URL.revokeObjectURL(this.sourceUrl);
     this.sourceUrl = URL.createObjectURL(file);
     status.textContent = 'Reading your photo…';
     try {
       this.source = await this.decode(file);
+      this.setFilename(file.name);
+      this.showSource();
       // a fresh photo resets the width to Auto, like the source site
       const auto = this.root.querySelector<HTMLButtonElement>('[data-photo-size] > [data-value="auto"]');
       auto?.click();
@@ -195,7 +266,10 @@ export class PhotoStudio {
     return Math.min(116, Math.max(29, Math.round(Math.min(width, height) / 2.2)));
   }
 
-  /** File → RGBA pixels. Decodes locally; nothing leaves the browser. */
+  /** File → RGBA pixels. Decodes locally; nothing leaves the browser.
+   *  Downscale to 2048 on the long edge with smoothing on — nearest-drop
+   *  throws away pixels and costs the converter detail (source-site
+   *  behavior, 2026-10-29 fidelity pass). */
   private async decode(file: File): Promise<SampleImage> {
     let w = 0;
     let h = 0;
@@ -229,7 +303,8 @@ export class PhotoStudio {
     canvas.height = ch;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) throw new Error('no 2d context');
-    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
     draw(ctx);
     bmp?.close();
     const img = ctx.getImageData(0, 0, cw, ch);
@@ -244,10 +319,10 @@ export class PhotoStudio {
 
   /** Debounced re-convert — settings changes arrive in bursts while a user
    *  walks the pills; one conversion per settle keeps the page responsive. */
-  private scheduleConvert(): void {
+  private scheduleConvert(ms: number): void {
     if (!this.source) return;
     window.clearTimeout(this.timer);
-    this.timer = window.setTimeout(() => this.convert(), DEBOUNCE_MS);
+    this.timer = window.setTimeout(() => this.convert(), ms);
   }
 
   private convert(): void {
@@ -271,13 +346,16 @@ export class PhotoStudio {
     const beads = pattern.cells.filter(Boolean).length;
     const colors = new Set(pattern.cells.filter(Boolean)).size;
     status.textContent = `Pattern generated — ${pattern.cols} × ${pattern.rows}, ${beads.toLocaleString('en-US')} beads in ${colors} ${colors === 1 ? 'color' : 'colors'}. Open it in the editor to fix any bead.`;
-    this.root
-      .querySelector('[data-photo-stage]')
-      ?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
+    if (window.matchMedia('(max-width: 980px)').matches) {
+      this.root
+        .querySelector('[data-photo-stage]')
+        ?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
+    }
   }
 
-  /** The result block: action row, the crisp preview board, the summary and
-   *  conversion panels, and the per-color bead list with P-codes. */
+  /** The result column: the crisp preview board with its actions, the
+   *  summary and conversion panels, and the per-color bead list with
+   *  P-codes. The source photo stays in the left column. */
   private render(p: PhotoPattern, opts: { cols: number; maxColors: number; simplify: string }): void {
     const stage = this.root.querySelector<HTMLElement>('[data-photo-stage]')!;
     stage.innerHTML = '';
@@ -287,12 +365,11 @@ export class PhotoStudio {
     const bh = Math.ceil(p.rows / BOARD_SIZE);
     const suggested = this.source ? PhotoStudio.autoCols(this.source.width, this.source.height) : p.cols;
     const overwiden = opts.cols > suggested;
-    const sizeLabel =
-      this.pillGroup('[data-photo-size]') === 'custom'
-        ? `Custom bead width: ${opts.cols}`
-        : this.pillGroup('[data-photo-size]') === 'auto'
-          ? `Auto: ${opts.cols} beads — the detail this photo carries`
-          : `Preset width: ${opts.cols} beads`;
+    const sizeLabel = this.isCustomMode()
+      ? `Custom bead width: ${opts.cols}`
+      : this.groupValue('[data-photo-size] > button') === 'auto'
+        ? `Auto: ${opts.cols} beads — the detail this photo carries`
+        : `Preset width: ${opts.cols} beads`;
 
     const card = document.createElement('div');
     card.className = 'paint-card';
@@ -373,24 +450,7 @@ export class PhotoStudio {
     }
     listCard.append(listTitle, list);
 
-    // source photo thumbnail — compare the original to the board while
-    // tweaking settings. The URL is only set via the real upload path.
-    if (this.sourceUrl) {
-      const sourceCard = document.createElement('div');
-      sourceCard.className = 'source-photo';
-      const sourceLabel = document.createElement('p');
-      sourceLabel.className = 'source-label';
-      sourceLabel.textContent = 'Your source photo';
-      const sourceImg = document.createElement('img');
-      sourceImg.src = this.sourceUrl;
-      sourceImg.alt = 'Your uploaded photo — use it as a reference while converting';
-      sourceImg.className = 'source-img';
-      sourceImg.loading = 'lazy';
-      sourceCard.append(sourceLabel, sourceImg);
-      card.append(sourceCard, figure, actions, summary, listCard);
-    } else {
-      card.append(figure, actions, summary, listCard);
-    }
+    card.append(figure, actions, summary, listCard);
     stage.appendChild(card);
   }
 

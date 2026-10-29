@@ -1,5 +1,6 @@
 /**
- * Photo→pattern engine guards. Images are hand-built (solid halves,
+ * Photo→pattern engine guards, rebuilt for the source-site pipeline
+ * (2026-10-29 fidelity pass). Images are hand-built (solid halves,
  * gradients, transparent) — no canvas needed anywhere.
  */
 import { describe, expect, it } from 'vitest';
@@ -82,6 +83,11 @@ describe('photoToPattern', () => {
     expect(out.rows).toBe(10);
   });
 
+  it('clamps the board width to [8, 200] like the source site', () => {
+    expect(photoToPattern(solid(20, 20, '#008000'), { cols: 4, mode: 'smooth' }).cols).toBe(8);
+    expect(photoToPattern(solid(20, 20, '#008000'), { cols: 500, mode: 'smooth' }).cols).toBe(200);
+  });
+
   it('splits a half-and-half photo into exactly two bead columns', () => {
     const out = photoToPattern(split(40, 20, '#ff0000', '#0000ff'), {
       cols: 20,
@@ -94,6 +100,23 @@ describe('photoToPattern', () => {
       for (let x = 0; x < out.cols; x++) {
         expect(out.cells[y * out.cols + x]).toBe(x < out.cols / 2 ? red : blue);
       }
+    }
+  });
+
+  it('area resampling lands exact splits — pixel-aligned cells stay pure', () => {
+    // 16px wide photo, 8 cells wide: each cell covers exactly two pixels
+    // with integer boundaries — left column pure red, right column pure
+    // blue, no float spill across the split
+    const out = photoToPattern(split(16, 16, '#ff0000', '#0000ff'), {
+      cols: 8,
+      mode: 'smooth',
+      simplify: 'keep',
+    });
+    const red = nearestBead('#ff0000').id;
+    const blue = nearestBead('#0000ff').id;
+    for (let y = 0; y < out.rows; y++) {
+      expect(out.cells[y * out.cols]).toBe(red);
+      expect(out.cells[y * out.cols + 7]).toBe(blue);
     }
   });
 
@@ -127,6 +150,39 @@ describe('photoToPattern', () => {
     expect(new Set(out.cells).size).toBeLessThanOrEqual(16);
   });
 
+  it('fitLimit drops the redundant sibling shade, never the far color', () => {
+    // 1:1 mapping (20px wide photo, 20 cells): red field + blue field, then
+    // a lone yellow column and a lone orange column sitting next to each
+    // other. Capped at 3: yellow/orange are mutual nearest neighbors, so
+    // the smaller count×distance kills one of them — but red and blue, the
+    // picture's actual colors, must both survive
+    const w = 20;
+    const h = 10;
+    const colors = { red: '#ff0000', blue: '#0000ff', yellow: '#ffff00', orange: '#ff8000' };
+    const data = new Uint8ClampedArray(w * h * 4);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const hex = x <= 12 ? colors.red : x <= 15 ? colors.blue : x === 16 ? colors.yellow : x === 17 ? colors.orange : colors.blue;
+        const c = hexToRgb(hex);
+        const i = (y * w + x) * 4;
+        data[i] = c.r;
+        data[i + 1] = c.g;
+        data[i + 2] = c.b;
+        data[i + 3] = 255;
+      }
+    }
+    const out = photoToPattern({ data, width: w, height: h }, {
+      cols: w,
+      mode: 'smooth',
+      simplify: 'keep',
+      maxColors: 3,
+    });
+    const ids = new Set(out.cells);
+    expect(ids.size, [...ids].join(',')).toBe(3);
+    expect(ids.has(nearestBead(colors.red).id)).toBe(true);
+    expect(ids.has(nearestBead(colors.blue).id)).toBe(true);
+  });
+
   it('dither mode preserves the photo average color within a small error', () => {
     // 50% black / 50% white photo: Floyd–Steinberg must conserve the board's
     // mean luminance. Measured against the reachable mean (nearest dark bead
@@ -153,10 +209,17 @@ describe('photoToPattern', () => {
     expect(whiteShare).toBeLessThan(0.6);
   });
 
-  it('composites transparency onto white (transparent photo → white beads)', () => {
+  it('a transparent photo becomes empty pegboard — no white padding', () => {
+    // source-site behavior (2026-10-29): cells averaging under 24 alpha are
+    // empty pegboard, so transparent PNG cut-outs keep their shape instead
+    // of gaining a white bead rectangle
     const out = photoToPattern(solid(10, 10, '#ff0000', 0), { cols: 10, mode: 'smooth' });
-    const white = nearestBead('#ffffff').id;
-    for (const id of out.cells) expect(id).toBe(white);
+    expect(out.cells.every((id) => id === null)).toBe(true);
+  });
+
+  it('faint-but-present alpha (100) still converts to its bead', () => {
+    const out = photoToPattern(solid(10, 10, '#ff0000', 100), { cols: 10, mode: 'smooth' });
+    expect(out.cells.every((id) => id === nearestBead('#ff0000').id)).toBe(true);
   });
 
   it('returns an empty board for degenerate input instead of throwing', () => {
@@ -214,14 +277,13 @@ describe('photoToPattern', () => {
     }
   });
 
-  it('a mirrored photo converts to a mirrored board (region pipeline symmetry)', () => {
-    // the old per-cell snapping let sampling asymmetries flip mirror cells
-    // to different beads; the region pipeline must hold mirror equality
-    // for every cell, not just on average
+  it('a mirrored photo converts to a mirrored board (pipeline symmetry)', () => {
+    // mirror cells are pixel-identical, so resampling + matching must hold
+    // mirror equality for every cell, not just on average
     const out = photoToPattern(mirrored(40, 20), {
       cols: 20,
       mode: 'smooth',
-      simplify: 'keep', // region-pipeline symmetry, not the merge pass
+      simplify: 'keep', // pipeline symmetry, not the merge pass
     });
     for (let y = 0; y < out.rows; y++) {
       for (let x = 0; x < out.cols; x++) {
@@ -231,34 +293,37 @@ describe('photoToPattern', () => {
         ).toBe(out.cells[y * out.cols + (out.cols - 1 - x)]);
       }
     }
-    // and the mirror image isn't degenerate — a gradient yields ≥3 regions
+    // and the mirror image isn't degenerate — a gradient yields ≥3 beads
     expect(new Set(out.cells).size).toBeGreaterThanOrEqual(3);
   });
 
-  it('an isolated off-color pixel is absorbed by its region (despeckle)', () => {
-    // one far-off pixel (yellow in a blue field) becomes its own cluster
-    // center, but the 3×3 majority vote eats it back into the region
+  it('a 1:1 photo stays faithful: an off-color pixel keeps its own cell', () => {
+    // the source-site pipeline has no despeckle — at native grid size every
+    // cell IS one pixel, so a stray yellow pixel in a blue field stays
+    // yellow on the board (faithfulness beats smoothing; the bead editor
+    // handles deliberate fixes)
     const img = solid(20, 20, '#3366cc');
     const i = (10 * 20 + 10) * 4;
     img.data[i] = 255;
     img.data[i + 1] = 255;
     img.data[i + 2] = 0;
-    const out = photoToPattern(img, { cols: 20, mode: 'smooth' });
-    expect(out.cells[10 * 20 + 10]).toBe(out.cells[0]);
-    expect(new Set(out.cells).size).toBe(1);
+    const out = photoToPattern(img, { cols: 20, mode: 'smooth', simplify: 'keep' });
+    expect(out.cells[10 * 20 + 10]).toBe(nearestBead('#ffff00').id);
+    // the field around it is untouched blue
+    expect(out.cells[0]).toBe(nearestBead('#3366cc').id);
+    expect(out.cells[10 * 20 + 11]).toBe(nearestBead('#3366cc').id);
   });
 
-  it('a noisy flat photo yields no confetti — zero isolated cells', () => {
-    // regression pin (button_city repro): JPEG/anti-aliasing jitter at a few
-    // source pixels per cell used to flip scattered cells to sibling beads —
-    // the "很花" board. The bead merge + majority votes + isolated adoption
-    // must leave not one cell whose 8 neighbors all wear a different bead.
+  it('a noisy flat photo stays one bead family — area averaging eats the jitter', () => {
+    // ±12/channel JPEG-style noise on a flat field: every cell averages
+    // ~11 source pixels, so the jitter lands inside one bead's basin and
+    // the board reads as a single clean color
     const w = 96;
     const data = new Uint8ClampedArray(w * w * 4);
     let seed = 12345; // deterministic LCG — same board every run
     const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff - 0.5);
     for (let p = 0; p < w * w; p++) {
-      const n = rnd() * 24; // ±12 per channel: bucket-crossing noise
+      const n = rnd() * 24; // ±12 per channel
       data[p * 4] = 51 + n;
       data[p * 4 + 1] = 102 + n;
       data[p * 4 + 2] = 204 + n;
@@ -268,82 +333,24 @@ describe('photoToPattern', () => {
       cols: 29,
       mode: 'smooth',
     });
-    let isolated = 0;
-    for (let y = 0; y < out.rows; y++) {
-      for (let x = 0; x < out.cols; x++) {
-        const id = out.cells[y * out.cols + x]!;
-        let same = 0;
-        for (let dy = -1; dy <= 1; dy++) {
-          for (let dx = -1; dx <= 1; dx++) {
-            if (!dx && !dy) continue;
-            const nx = x + dx;
-            const ny = y + dy;
-            if (nx < 0 || nx >= out.cols || ny < 0 || ny >= out.rows) continue;
-            if (out.cells[ny * out.cols + nx] === id) same++;
-          }
-        }
-        if (same === 0) isolated++;
-      }
-    }
-    expect(isolated, `${isolated} isolated cells on a flat noisy field`).toBe(0);
-    expect(new Set(out.cells).size).toBeLessThanOrEqual(3);
+    expect(new Set(out.cells).size, [...new Set(out.cells)].join(',')).toBeLessThanOrEqual(3);
   });
 
-  it('edge cells take their dominant color, not the mean (no outline mud)', () => {
-    // every 4×4 pixel block carries exactly 1 black outline pixel (spaced
-    // so no edge line of the image is uniform white — the margin trim has
-    // nothing to grab). The mean (L≈0.94) is fine here, but the same
-    // dominant-color rule is what keeps a real 50/50 outline cell off the
-    // muddy Light Gray the mean would pick.
-    const w = 32;
-    const data = new Uint8ClampedArray(w * w * 4);
-    for (let y = 0; y < w; y++) {
-      for (let x = 0; x < w; x++) {
-        const i = (y * w + x) * 4;
-        const black = x % 4 === 2 && y % 4 === 2;
-        data[i] = black ? 0 : 255;
-        data[i + 1] = black ? 0 : 255;
-        data[i + 2] = black ? 0 : 255;
-        data[i + 3] = 255;
-      }
-    }
-    const out = photoToPattern({ data, width: w, height: w }, { cols: 8, mode: 'smooth' });
-    const white = nearestBead('#ffffff').id;
-    expect(new Set(out.cells)).toEqual(new Set([white]));
-  });
-
-  it('trims a uniform screenshot margin so the art fills the board', () => {
-    // 40×40 white page with a 20×20 red card centered: the board must be
-    // the card, not a fifth-size card floating in white beads
-    const w = 40;
-    const data = new Uint8ClampedArray(w * w * 4).fill(255);
-    for (let y = 10; y < 30; y++) {
-      for (let x = 10; x < 30; x++) {
-        const i = (y * w + x) * 4;
-        data[i] = 255;
-        data[i + 1] = 0;
-        data[i + 2] = 0;
-      }
-    }
-    const out = photoToPattern({ data, width: w, height: w }, { cols: 8, mode: 'smooth' });
-    expect(out.rows).toBe(8); // square art on a square board after trim
-    const red = nearestBead('#ff0000').id;
-    const white = nearestBead('#ffffff').id;
-    expect(new Set(out.cells)).toEqual(new Set([red]));
-    expect(red).not.toBe(white);
-  });
-
-  it('a contested ring is content, not a margin — no trim on a half-split image', () => {
-    // half black / half white: the ring is 50/50, so no side may lose
-    // pixels even though the left columns are uniformly black
+  it('a half-and-half image keeps both halves — no trim, no ring rule', () => {
+    // the source-site pipeline never crops: the board is the photo's full
+    // frame at the requested width. The black half's bead is read off the
+    // board itself — under the chroma-guard distance a pure-gray source
+    // picks the palette's no-chroma black, which need not be the bead the
+    // plain-Oklab nearestBead() would name
     const out = photoToPattern(split(60, 60, '#000000', '#ffffff'), {
       cols: 12,
       mode: 'smooth',
     });
     expect(out.cols).toBe(12);
     expect(out.rows).toBe(12);
-    const black = nearestBead('#000000').id;
+    const black = out.cells[0]!;
     const white = nearestBead('#ffffff').id;
+    expect(black).not.toBe(white);
     for (let y = 0; y < out.rows; y++) {
       for (let x = 0; x < out.cols; x++) {
         expect(out.cells[y * out.cols + x]).toBe(x < out.cols / 2 ? black : white);
@@ -375,9 +382,8 @@ describe('photoToPattern', () => {
   });
 
   /** Shared bg-removal fixture: white field, red subject centered, a black
-   *  4×4 block in the corner — big enough to own its cells (a single pixel
-   *  would be outvoted at cell sampling) and to keep every trim row/column
-   *  under the ≥99%-borderline, so the trim pass stays out of the way. */
+   *  4×4 block in the corner — big enough to own its cells at 2px/cell and
+   *  distinct enough to survive as its own bead. */
   function subjectOnWhite(): SampleImage {
     const w = 40;
     const data = new Uint8ClampedArray(w * w * 4).fill(255);
@@ -413,8 +419,13 @@ describe('photoToPattern', () => {
     // the subject survived intact in bead red
     const red = nearestBead('#ff0000').id;
     expect(cells.filter((c) => c === red).length).toBeGreaterThan(0);
-    // the board is subject + corner block + holes, no stray background ids
-    expect(new Set(cells)).toEqual(new Set([red, null, nearestBead('#000000').id]));
+    // the board is subject + corner block + holes, no stray background ids.
+    // The corner block's bead is read off cell (0,0) — under the
+    // chroma-guard distance pure black maps to the palette's no-chroma
+    // black bead, not necessarily plain-Oklab nearestBead()'s pick
+    const corner = cells[0] as string;
+    expect(corner).toBeTruthy();
+    expect(new Set(cells)).toEqual(new Set([red, null, corner]));
   });
 
   it('removeBackground stays off without the flag — same board, zero nulls', () => {
@@ -426,7 +437,42 @@ describe('photoToPattern', () => {
     expect(out.cells.some((c) => c === null)).toBe(false);
   });
 
-  it('darkOutline traces every empty-adjacent cell with the darkest bead on the board', () => {
+  it('a same-color island inside the subject survives background removal', () => {
+    // white field, red ring subject, white eye in the middle: the eye is
+    // white too, but it never touches the border — flood fill from the
+    // edges must leave it standing
+    const w = 40;
+    const data = new Uint8ClampedArray(w * w * 4).fill(255);
+    for (let y = 8; y < 32; y++) {
+      for (let x = 8; x < 32; x++) {
+        const i = (y * w + x) * 4;
+        data[i + 1] = 0;
+        data[i + 2] = 0;
+      }
+    }
+    for (let y = 18; y < 22; y++) {
+      for (let x = 18; x < 22; x++) {
+        const i = (y * w + x) * 4;
+        data[i] = 255;
+        data[i + 1] = 255;
+        data[i + 2] = 255;
+      }
+    }
+    const out = photoToPattern({ data, width: w, height: w }, {
+      cols: 20,
+      mode: 'smooth',
+      simplify: 'keep',
+      removeBackground: true,
+    });
+    const cells = out.cells as (string | null)[];
+    // the eye sits at source pixels 18..21 → cells (9..10, 9..10)
+    const eyeIdx = 9 * out.cols + 9;
+    expect(cells[eyeIdx]).toBe(nearestBead('#ffffff').id);
+    // the outer ring of the same white went empty
+    expect(cells[0]).toBe(null);
+  });
+
+  it('darkOutline traces every empty-adjacent cell with the palette-global darkest bead', () => {
     const out = photoToPattern(subjectOnWhite(), {
       cols: 20,
       mode: 'smooth',
@@ -435,13 +481,15 @@ describe('photoToPattern', () => {
       darkOutline: true,
     });
     const cells = out.cells as (string | null)[];
-    const ids = [...new Set(cells.filter((c): c is string => c !== null))];
-    // darkest on board = min Oklab L
-    const darkest = ids.reduce((dk, id) => {
-      const l = rgbToOklab(hexToRgb(BEAD_COLORS.find((b) => b.id === id)!.hex)).L;
-      const lDk = rgbToOklab(hexToRgb(BEAD_COLORS.find((b) => b.id === dk)!.hex)).L;
-      return l < lDk ? id : dk;
-    });
+    // source-site rule: the outline bead is the PALETTE's darkest, fixed —
+    // not whatever the photo happened to place on the board
+    const darkest = BEAD_COLORS.reduce((dk, b) => {
+      const l = (p: string) => {
+        const c = hexToRgb(p);
+        return (0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b) / 255;
+      };
+      return l(b.hex) < l(BEAD_COLORS.find((x) => x.id === dk)!.hex) ? b.id : dk;
+    }, BEAD_COLORS[0]!.id);
     for (let y = 0; y < out.rows; y++) {
       for (let x = 0; x < out.cols; x++) {
         const id = cells[y * out.cols + x];
@@ -456,5 +504,21 @@ describe('photoToPattern', () => {
     }
     // the outline actually fired somewhere (subject edges exist)
     expect(cells.filter((c) => c === darkest).length).toBeGreaterThan(0);
+  });
+
+  it('darkOutline reserves a seat: effective cap is maxColors − 1', () => {
+    // two strong fields + outline on, cap 2: the picture gets 1 bead and
+    // the outline owns the other seat — board shows ≤2 ids total
+    const out = photoToPattern(split(40, 20, '#ff0000', '#0000ff'), {
+      cols: 20,
+      mode: 'smooth',
+      maxColors: 2,
+      darkOutline: true,
+    });
+    // no empties without removeBackground → outline paints nothing, but the
+    // palette still capped one lower: exactly one picture bead remains
+    const ids = new Set(out.cells);
+    expect(ids.size).toBe(1);
+    expect(out.cells.every((c) => c !== null)).toBe(true);
   });
 });

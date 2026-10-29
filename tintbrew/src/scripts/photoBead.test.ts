@@ -80,6 +80,13 @@ function fireChange(window: Window, el: Element) {
   );
 }
 
+/** The custom-width field re-converts on 'input' (source-site timing). */
+function fireInput(window: Window, el: Element) {
+  el.dispatchEvent(
+    new (window as unknown as { Event: typeof Event }).Event('input', { bubbles: true }),
+  );
+}
+
 /** The preview board svg — [data-photo-result] .photo-preview. */
 const board = (host: HTMLElement) => host.querySelector('.photo-preview');
 
@@ -93,16 +100,31 @@ describe('photo bead island (real SSR markup)', () => {
     ctx = await loadPage();
   });
 
-  it('the SSR shell ships the five setting groups, the empty stage and the how-to content', () => {
-    // the page is complete without JS: drop zone, pills, checks, status, placeholder
+  it('the SSR shell ships the two-column layout, the setting groups, the empty stage and the how-to content', () => {
+    // the page is complete without JS: upload row, pills, checks, status, placeholder
+    expect(ctx.host.querySelector('.pm-grid')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-drop]')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-file]')).toBeTruthy();
+    expect(ctx.host.querySelector('[data-photo-filename]')?.textContent).toContain('No image selected yet.');
+    expect(ctx.host.querySelector('[data-photo-source]')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-stage] .stage-empty')).toBeTruthy();
     expect(ctx.host.querySelector('[data-photo-colors] > button.active')?.getAttribute('data-value')).toBe('12');
     expect(ctx.host.querySelector('[data-photo-simplify] > button.active')?.getAttribute('data-value')).toBe('balanced');
     expect(ctx.host.querySelector('[data-photo-size] > button.active')?.getAttribute('data-value')).toBe('auto');
+    // bead width ships as TWO options: Presets pills (no Custom among them)
+    // + a separate Custom entry with its own input (user call, 2026-10-29)
+    expect(ctx.host.querySelectorAll('[data-photo-size] > button')).toHaveLength(5);
+    expect(
+      [...ctx.host.querySelectorAll('[data-photo-size] > button')].some((b) =>
+        b.getAttribute('data-value') === 'custom'),
+    ).toBe(false);
+    expect(ctx.host.querySelector('[data-photo-custom-toggle]')).toBeTruthy();
+    const custom = ctx.host.querySelector('[data-photo-custom-width]') as HTMLInputElement;
+    expect(custom.min).toBe('10');
+    expect(custom.max).toBe('200');
+    // both post-passes ship checked, like the source site
     expect((ctx.host.querySelector('[data-photo-bg]') as HTMLInputElement).checked).toBe(true);
-    expect((ctx.host.querySelector('[data-photo-outline]') as HTMLInputElement).checked).toBe(false);
+    expect((ctx.host.querySelector('[data-photo-outline]') as HTMLInputElement).checked).toBe(true);
     expect(ctx.host.querySelector('[data-photo-custom-row]')?.classList.contains('hidden')).toBe(true);
     expect(ctx.document.querySelector('h1')?.textContent).toContain('Photo to Perler Bead Pattern');
   });
@@ -164,24 +186,32 @@ describe('photo bead island (real SSR markup)', () => {
     expect(ctx.host.querySelectorAll('.pv-seam').length).toBe(2);
   });
 
-  it('custom width: valid input converts, invalid input holds the last board', () => {
+  it('custom width: the separate Custom option converts, invalid input holds the last board', () => {
     fireClick(ctx.window, ctx.host.querySelector('[data-photo-bg]')!);
     ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
-    // switch to Custom — the row appears with the SSR default of 58
-    fireClick(ctx.window, ctx.host.querySelector('[data-photo-size] > [data-value="custom"]')!);
+    // click Custom — its OWN option, outside the Presets box: the input row
+    // appears with the SSR default of 58 and converts right away
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-custom-toggle]')!);
     expect(ctx.host.querySelector('[data-photo-custom-row]')?.classList.contains('hidden')).toBe(false);
     expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 580 580');
     // out-of-range width: error shows, previous board stays
     const input = ctx.host.querySelector('[data-photo-custom-width]') as HTMLInputElement;
     input.value = '5';
-    fireChange(ctx.window, input);
+    fireInput(ctx.window, input);
     expect(ctx.host.querySelector('[data-photo-width-error]')?.classList.contains('hidden')).toBe(false);
     expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 580 580');
     // valid width converts
     input.value = '40';
-    fireChange(ctx.window, input);
+    fireInput(ctx.window, input);
     expect(ctx.host.querySelector('[data-photo-width-error]')?.classList.contains('hidden')).toBe(true);
     expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 400 400');
+    // back to a preset pill: Custom deactivates, its row hides again
+    fireClick(ctx.window, ctx.host.querySelector('[data-photo-size] > [data-value="29"]')!);
+    expect(
+      ctx.host.querySelector('[data-photo-custom-toggle]')?.classList.contains('active'),
+    ).toBe(false);
+    expect(ctx.host.querySelector('[data-photo-custom-row]')?.classList.contains('hidden')).toBe(true);
+    expect(board(ctx.host)!.getAttribute('viewBox')).toBe('0 0 290 290');
   });
 
   it('remove background (shipped default) empties a solid photo completely', () => {
