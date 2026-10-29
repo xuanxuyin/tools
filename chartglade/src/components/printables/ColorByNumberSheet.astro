@@ -1,10 +1,15 @@
 ---
-import {
-  GHOST_MULTIPLICATION,
-  PUMPKIN_ADDITION,
-  factsFor,
-  type PaintArt,
-} from '../../data/halloween';
+/**
+ * Color-by-number worksheet sheet, rendered through lib/paintArt.ts (the
+ * tintbrew-style data-matrix -> SVG pipeline, user call 2026-10-29). Each
+ * edition prints: header, color legend, the worksheet SVG (white rounded
+ * cells, facts only — no color leaks the answer), and a name/date line.
+ * The finished-picture reference renders right under the legend but is
+ * no-print: on screen it shows what the math reveals; on paper the student
+ * still has to earn it.
+ */
+import { PUMPKIN_ADDITION, GHOST_MULTIPLICATION, type PaintArt } from '../../data/halloween';
+import { buildFactGrid, worksheetSvg, referenceSvg } from '../../lib/paintArt';
 
 export interface EditionSpec {
   title: string;
@@ -45,22 +50,20 @@ const sheets = editions.map((spec) => {
     .map(Number)
     .filter((k) => used.has(k))
     .sort((a, b) => a - b);
-  const cols = art.cells[0]?.length ?? 0;
-  // Same cell index picks the same fact every build — printed pages stay stable.
-  const factGrid = art.cells.map((row, r) =>
-    row.map((key, c) => {
-      if (key === 0) return null;
-      const pool = factsFor(key, mode);
-      const fact = pool[(r * cols + c) % pool.length]!;
-      return { key, fact };
-    }),
-  );
-  return { ...spec, keys, factGrid, op: mode === 'mul' ? '×' : '+' };
+  const factGrid = buildFactGrid(art, mode);
+  const op = mode === 'mul' ? '×' : '+';
+  return {
+    ...spec,
+    keys,
+    op,
+    worksheet: worksheetSvg(art, factGrid, op),
+    reference: referenceSvg(art),
+  };
 });
 ---
 
 <div class="cbn-sheets">
-  {sheets.map(({ title, audience, art, keys, factGrid, factLabel, op }, i) => (
+  {sheets.map(({ title, audience, art, keys, factLabel, op, worksheet, reference }, i) => (
     <section class:list={['cbn-sheet', { 'sheet-break': i > 0 }]} aria-label={title}>
       <header class="cbn-head">
         <h2>{title}</h2>
@@ -74,20 +77,37 @@ const sheets = editions.map((spec) => {
           </span>
         ))}
       </div>
-      <div class="cbn-grid" style={`--cbn-cols:${art.cells[0]?.length ?? 0}`}>
-        {factGrid.map((row) =>
-          row.map((cell, idx) =>
-            cell ? (
-              <span class="cbn-cell">
-                <span class="cbn-fact">{cell.fact.a}{op}{cell.fact.b}</span>
-              </span>
-            ) : (
-              <span class="cbn-cell cbn-blank" aria-hidden="true"></span>
-            ),
-          ),
-        )}
-      </div>
+      <figure class="cbn-ref no-print">
+        <figcaption>Finished picture — solve the {factLabel}s to reveal it</figcaption>
+        <div class="cbn-ref-art" set:html={reference} />
+      </figure>
+      <div class="cbn-board" set:html={worksheet} />
       <p class="cbn-name">Name: ______________________ &nbsp;&nbsp; Date: ____________</p>
     </section>
   ))}
 </div>
+
+<style is:global>
+  /* is:global on purpose: a scoped block would inject data-astro-cid attrs
+     into the legend markup and break the dist guards' regexes, and the
+     set:html SVGs sit outside the scoped cascade anyway. Only the wrappers
+     are styled here — the SVGs carry their own presentation attributes. */
+  .cbn-board {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .cbn-ref {
+    margin: 0 auto 10px;
+    max-width: 320px;
+  }
+  .cbn-ref figcaption {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #667;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  @media print {
+    .cbn-ref { display: none; } /* belt and braces under the global .no-print */
+  }
+</style>

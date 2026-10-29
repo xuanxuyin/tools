@@ -33,7 +33,7 @@ const SHOTS = [
   { page: 'multiplication-chart-1-20', file: 'multiplication-chart-1-20-printable' },
   { page: 'decimal-place-value-chart', file: 'decimal-place-value-chart-printable' },
   { page: 'place-value-anchor-chart', file: 'place-value-anchor-chart-printable' },
-  { page: 'place-value-chart-printable', file: 'place-value-chart-printable-blank' },
+  { page: 'place-value-chart-printable', file: 'place-value-chart-printable' },
   { page: 'hundred-chart', file: 'hundred-chart-printable' },
   { page: 'number-line-printable', file: 'number-line-printable' },
   { page: 'addition-chart', file: 'addition-chart-printable' },
@@ -58,6 +58,13 @@ const MIME = {
   '.txt': 'text/plain',
 };
 
+// Optional substring filter: `npm run sheet-images -- halloween-color`
+// re-shoots just the pages whose slug matches (used when one sheet's
+// rendering changed and a full 39-shot pass is waste).
+const only = process.argv[2];
+const shots = only ? SHOTS.filter((s) => s.page.includes(only)) : SHOTS;
+if (only) console.log(`filtered to ${shots.length} shot(s) matching "${only}"`);
+
 const server = createServer((req, res) => {
   let pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
   if (pathname.endsWith('/')) pathname += 'index.html';
@@ -79,7 +86,7 @@ mkdirSync(OUT, { recursive: true });
 
 try {
   const dims = {};
-  for (const { page, file } of SHOTS) {
+  for (const { page, file } of shots) {
     const ctx = await browser.newContext({
       viewport: { width: 1280, height: 1000 },
       deviceScaleFactor: 2,

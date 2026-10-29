@@ -22,15 +22,10 @@ export const HALLOWEEN_WORDS_HARD: string[] = [
 /* Color-by-number art: 0 = leave blank, other digits are legend keys. */
 /* ------------------------------------------------------------------ */
 
-export interface PaintArt {
-  name: string;
-  /** rows of legend keys; 0 means the cell stays white */
-  cells: number[][];
-  /** key -> CSS color the printed swatch shows */
-  palette: Record<number, string>;
-  /** key -> color name as printed in the legend */
-  legend: Record<number, string>;
-}
+// PaintArt + factsFor now live in lib/paintArt.ts (the SVG rendering
+// pipeline); re-exported here so every existing import keeps working.
+export type { PaintArt } from '../lib/paintArt';
+export { factsFor } from '../lib/paintArt';
 
 /** Jack-o'-lantern, 13x13. Addition edition: every key is a sum. */
 export const PUMPKIN_ADDITION: PaintArt = {
@@ -75,19 +70,6 @@ export const GHOST_MULTIPLICATION: PaintArt = {
   legend: { 6: 'white', 10: 'black', 12: 'purple' },
 };
 
-/** Facts for a legend key so every cell shows a fresh-but-checkable problem. */
-export function factsFor(key: number, mode: 'add' | 'mul'): { a: number; b: number }[] {
-  if (mode === 'add') {
-    const facts: { a: number; b: number }[] = [];
-    for (let a = 1; a < key; a++) facts.push({ a, b: key - a });
-    return facts;
-  }
-  const facts: { a: number; b: number }[] = [];
-  for (let a = 1; a <= key; a++) {
-    if (key % a === 0) facts.push({ a, b: key / a });
-  }
-  return facts;
-}
 
 /* ------------------------------------------------------------------ */
 /* Page defs                                                           */
@@ -174,9 +156,9 @@ export const halloweenPages: PageDef[] = [
     printNote: 'Two sheets, one letter page each (portrait). Crayon-friendly; color legend prints in color.',
     sheetImage: {
       src: '/images/halloween-color-by-number-printable.png',
-      alt: 'Free printable Halloween color by number — pumpkin addition and ghost multiplication math-fact coloring sheets with a color legend.',
+      alt: 'Free printable Halloween color by number — pumpkin addition and ghost multiplication math-fact coloring sheets with a color legend and finished-picture previews.',
       width: 2016,
-      height: 4710,
+      height: 4858,
     },
     tips: [
       {
