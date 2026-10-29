@@ -6,7 +6,7 @@
  * showed updated dates. These pin both fixes.
  */
 import { describe, expect, it } from 'vitest';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CONTENT_UPDATED } from '../consts';
@@ -44,5 +44,20 @@ describe.skipIf(!existsSync(DIST))('freshness signals (real dist)', () => {
   it('sitemap carries lastmod for every URL', () => {
     const xml = readFileSync(resolve(DIST, 'sitemap-0.xml'), 'utf8');
     expect(xml).toContain(`<lastmod>${CONTENT_UPDATED}`);
+  });
+});
+
+describe.skipIf(!existsSync(DIST))('no leaked undefined/NaN in any attribute or text (real dist)', () => {
+  // Shipped bug 2026-10-29: CursiveAlphabet's famOf missed 6 letters and their
+  // data-fact rendered a literal "undefined" — invisible to innerText audits
+  // because it sat in an attribute until a click surfaced it.
+  it('no dist page contains the literal undefined/NaN outside code samples', () => {
+    const pages = readdirSync(DIST, { recursive: true })
+      .filter((f) => String(f).endsWith('index.html'))
+      .map((f) => resolve(DIST, String(f)));
+    for (const p of pages) {
+      const html = readFileSync(p, 'utf8');
+      expect(html, p).not.toMatch(/"undefined|>undefined<|\bundefined\.|>NaN<|"NaN/);
+    }
   });
 });

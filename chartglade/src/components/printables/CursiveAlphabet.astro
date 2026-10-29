@@ -9,18 +9,24 @@ const caps = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
 const lows = [...'abcdefghijklmnopqrstuvwxyz'];
 
 // Stroke families — the grouping nearly all American cursive programs share.
+// All 26 letters map (audit 2026-10-29: e/j/o/p/r/s were missing and their
+// fact text rendered a literal "undefined" on click).
 const FAMILIES = {
-  curve: 'the curve family (c, a, d, g, q — all begin with the same over-curve)',
+  curve: 'the curve family (c, a, d, g, q, o, e — all begin with the same over-curve)',
   line: 'the straight-line family (i, t, u, w — downstrokes that retrace)',
   loop: 'the loop family (l, h, b, k, f — tall loops that climb and return)',
-  hill: 'the hill family (n, m, v, x, y, z — over-and-back humps)',
+  hill: 'the hill family (n, m, v, x, y, z, r — over-and-back humps)',
+  dip: 'the dip family (p, j — strokes that dive below the baseline and swim back up)',
+  small: 'the small-curve family (s — one little curve between the lines)',
 } as const;
 
 const famOf: Record<string, keyof typeof FAMILIES> = {
-  c: 'curve', a: 'curve', d: 'curve', g: 'curve', q: 'curve',
+  c: 'curve', a: 'curve', d: 'curve', g: 'curve', q: 'curve', o: 'curve', e: 'curve',
   i: 'line', t: 'line', u: 'line', w: 'line',
   l: 'loop', h: 'loop', b: 'loop', k: 'loop', f: 'loop',
-  n: 'hill', m: 'hill', v: 'hill', x: 'hill', y: 'hill', z: 'hill',
+  n: 'hill', m: 'hill', v: 'hill', x: 'hill', y: 'hill', z: 'hill', r: 'hill',
+  p: 'dip', j: 'dip',
+  s: 'small',
 };
 
 const fact = (cap: string, low: string) =>
@@ -42,7 +48,7 @@ const DEFAULT_FACT = 'Click a letter pair to see its stroke family.';
 
 <h3 class="trace-heading">Tracing strip — lowercase, stroke families in order</h3>
 <div class="trace-strip">
-  {[...'cadgq', ...'ituvw', ...'lhbkf', ...'nmvxyz'].map((l) => (
+  {[...'cadgqoe', ...'ituw', ...'lhbkf', ...'nmvxyzr', ...'pj', ...'s'].map((l) => (
     <div class="trace-cell">
       <div class="glyph">{l}</div>
       <div class="baseline"></div>

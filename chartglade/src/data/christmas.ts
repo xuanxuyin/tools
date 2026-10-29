@@ -114,7 +114,7 @@ export const christmasPages: PageDef[] = [
     h1: 'Christmas Word Search',
     metaTitle: 'Christmas Word Search — 2 Free Printable Puzzles (K-5) | ChartGlade',
     metaDescription:
-      'Free printable Christmas word search in two levels: an easy K-2 puzzle with forwards words and a grade 3-5 puzzle with all eight directions. Print and go.',
+      'Free printable Christmas word search in two levels — K-2 forwards words, grade 3-5 all eight directions. Seasonal words from SANTA to GINGERBREAD; print and go.',
     lead:
       'Two Christmas word searches, one letter page each: an easy puzzle for kindergarten through second grade (words run right, down and diagonally only) and a harder one for grades 3-5 (all eight directions, backwards included). The lists stick to classroom-safe December vocabulary — santa, stocking, reindeer, gingerbread — so the hunt doubles as vocabulary work for the last stretch before winter break.',
     introHeading: 'What each level asks of the solver',

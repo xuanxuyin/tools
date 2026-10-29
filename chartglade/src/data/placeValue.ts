@@ -83,7 +83,7 @@ export const placeValuePages: PageDef[] = [
     slug: 'decimal-place-value-chart',
     hub: 'charts',
     h1: 'Decimal Place Value Chart',
-    metaTitle: 'Decimal Place Value Chart (Printable, Tenths to Millionths) | ChartGlade',
+    metaTitle: 'Decimal Place Value Chart (Printable, to Thousandths) | ChartGlade',
     metaDescription:
       'Free printable decimal place value chart from hundred thousands to thousandths, with the decimal point, money examples, and how to read decimals out loud.',
     lead:
@@ -169,7 +169,7 @@ export const placeValuePages: PageDef[] = [
     tips: [
       {
         title: 'Print it poster-size with your printer',
-        body: 'Use your printer\'s "poster" or "tile" mode to split the page across 4 sheets, then tape. Kinkos-style shops can also print 18×24 from the same file. The design scales because it is plain black line.',
+        body: 'Use your printer\'s "poster" or "tile" mode to split the page across 4 sheets, then tape. Kinko\'s-style shops can also print 18×24 from the same file. The design scales because it is plain black line.',
       },
       {
         title: 'Color the periods, keep the rest black',

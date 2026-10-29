@@ -143,7 +143,7 @@ export const halloweenPages: PageDef[] = [
     slug: 'halloween-color-by-number',
     hub: 'halloween',
     h1: 'Halloween Color by Number',
-    metaTitle: 'Halloween Color by Number — Free Printable Math Facts Sheets | ChartGlade',
+    metaTitle: 'Halloween Color by Number — Free Printable Math Sheets | ChartGlade',
     metaDescription:
       'Free printable Halloween color by number worksheets with real math inside: a jack-o-lantern addition sheet and a ghost multiplication sheet. Solve, match, color — K-5.',
     lead:
@@ -207,11 +207,11 @@ export const halloweenPages: PageDef[] = [
     slug: 'halloween-cursive-practice',
     hub: 'halloween',
     h1: 'Halloween Cursive Practice',
-    metaTitle: 'Halloween Cursive Practice — Free Printable Cursive Words Sheet | ChartGlade',
+    metaTitle: 'Halloween Cursive Practice — Free Printable Words Sheet | ChartGlade',
     metaDescription:
-      'Free printable Halloween cursive worksheet: trace and write seasonal words like pumpkin, ghost and spooky in cursive. Dotted-model tracing rows for grades 2-5.',
+      'Free printable Halloween cursive worksheet: trace and write seasonal words like pumpkin, skeleton and haunted in cursive. Dotted-model tracing rows for grades 2-5.',
     lead:
-      'Cursive practice with words kids actually want to write in October: pumpkin, ghost, spooky, skeleton. Each word gets a tracing row with dotted models followed by blank baselines for independent writing — the same trace-then-write routine as our letter sheets, now in Halloween vocabulary.',
+      'Cursive practice with words kids actually want to write in October: pumpkin, skeleton, haunted, cobweb. Each word gets a tracing row with dotted models followed by blank baselines for independent writing — the same trace-then-write routine as our letter sheets, now in Halloween vocabulary.',
     introHeading: 'Seasonal words, year-round technique',
     intro: [
       'Motivation is the scarce resource in handwriting practice, and October hands it to you for free: the words on this sheet are the ones students are already asking to spell. A word like pumpkin covers a useful stroke curriculum in seven letters — the p’s descenders, the k’s connectors, the double-n bounce — while feeling like play rather than penmanship.',
@@ -245,7 +245,7 @@ export const halloweenPages: PageDef[] = [
     faqs: [
       {
         q: 'What words are on the sheet?',
-        a: 'Two levels: bat, cat, hat, moon, ghost, candy, witch and spooky for younger writers; pumpkin, october, costume, skeleton, phantom, spider, mummy and monster for grades 3-5.',
+        a: 'Two levels: bat, cat, hat, owl, web, moon, corn and fall for younger writers; pumpkin, october, costume, skeleton, phantom, potion, haunted and cobweb for grades 3-5.',
       },
       {
         q: 'What grade is Halloween cursive practice for?',

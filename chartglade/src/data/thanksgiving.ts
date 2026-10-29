@@ -195,7 +195,7 @@ export const thanksgivingPages: PageDef[] = [
     h1: 'Thanksgiving Word Search',
     metaTitle: 'Thanksgiving Word Search — 2 Free Printable Puzzles (K-5) | ChartGlade',
     metaDescription:
-      'Free printable Thanksgiving word search in two levels: an easy K-2 puzzle with forwards words and a grade 3-5 puzzle with all eight directions. Print and go.',
+      'A free printable Thanksgiving word search with two grids — easy K-2 and grade 3-5. Feast words like CORNUCOPIA and GRATITUDE; answers included.',
     lead:
       'Two Thanksgiving word searches on one page each: an easy puzzle for kindergarten through second grade (words hide right, down and diagonally only) and a harder one for grades 3-5 (words run in all eight directions, backwards included). The word lists are real November vocabulary — harvest, gratitude, cornucopia — so the hunt doubles as a vocabulary lesson.',
     introHeading: 'What each level asks of the solver',
@@ -287,11 +287,11 @@ export const thanksgivingPages: PageDef[] = [
     faqs: [
       {
         q: 'Is this a real math worksheet?',
-        a: 'Yes — every cell contains an addition or multiplication fact, and its answer maps to a legend color. The turkey drills addition facts with sums to 12; the pumpkin pie drills multiplication facts with products to 12. Coloring without solving gets the picture wrong.',
+        a: 'Yes — every cell contains an addition or multiplication fact, and its answer maps to a legend color. The turkey, pumpkin, and maple leaf sheets drill addition facts with sums to 12; the pumpkin pie and acorn sheets drill multiplication facts with products to 12. Coloring without solving gets the picture wrong.',
       },
       {
         q: 'What grades is it for?',
-        a: 'The addition turkey fits grades 1-2 (facts within 20, sums capped at 12); the multiplication pie fits grades 3-4 (facts through 12). Both print on one letter page each.',
+        a: 'The addition turkey and pumpkin sheets fit grades 1-2 (facts within 20, sums capped at 12); the maple leaf steps up to grades 2-3; the multiplication pie and acorn fit grades 3-4 (facts through 12). All five sheets print on one letter page each.',
       },
       {
         q: 'Can I print it in black and white?',
@@ -372,7 +372,7 @@ export const thanksgivingPages: PageDef[] = [
     slug: 'thanksgiving-placemat-printable',
     hub: 'thanksgiving',
     h1: 'Thanksgiving Placemat',
-    metaTitle: 'Thanksgiving Placemat Printable — Free Kids Activity Sheet | ChartGlade',
+    metaTitle: 'Thanksgiving Placemat Printable — Free Activity Sheet | ChartGlade',
     metaDescription:
       'Free printable Thanksgiving placemat for kids: a word scramble, tic-tac-toe and a draw-your-feast box on one letter page. Set the kids\' table in minutes.',
     lead:

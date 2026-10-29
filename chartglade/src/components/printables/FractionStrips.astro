@@ -9,6 +9,12 @@ interface Props {
 
 const { max = 12, title } = Astro.props;
 const dens = fractionDenominators(max);
+
+// Spoken forms for screen readers — no "one-5ths" coinages (audit 2026-10-29)
+const ORDINALS: Record<number, string> = {
+  2: 'halves', 3: 'thirds', 4: 'fourths', 5: 'fifths', 6: 'sixths',
+  7: 'sevenths', 8: 'eighths', 9: 'ninths', 10: 'tenths', 11: 'elevenths', 12: 'twelfths',
+};
 ---
 
 {title && <p class="sheet-title">{title}</p>}
@@ -25,7 +31,7 @@ const dens = fractionDenominators(max);
       <div
         class="fraction-bar"
         role="img"
-        aria-label={`One whole bar divided into ${d} equal parts, showing ${d} ${d === 2 ? 'halves' : d === 3 ? 'thirds' : d === 4 ? 'fourths' : `one-${d}ths`}`}
+        aria-label={`One whole bar divided into ${d} equal parts, showing ${d} ${ORDINALS[d] ?? `${d}ths`}`}
       >
         {Array.from({ length: d }, () => <span></span>)}
       </div>

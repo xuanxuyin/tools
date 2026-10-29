@@ -79,7 +79,7 @@ export const graphPaperPages: GraphPaperDef[] = [
     h1: 'Half-Inch Graph Paper',
     metaTitle: 'Half-Inch Graph Paper (Free Printable, K-3) | ChartGlade',
     metaDescription:
-      'Free printable half-inch graph paper — big 1/2 inch squares for kindergarten through third grade: block letters, name writing, bar graphs and counting. Prints from the browser.',
+      'Free printable half-inch graph paper — big 1/2 inch squares for K-3: block letters, name writing, bar graphs and counting. Prints from the browser.',
     lead:
       'Half-inch graph paper is the young-kid grid: squares twice the size of standard, so block letters, counting boxes and first bar graphs fit hands that are still learning to control a pencil. One letter sheet, printed straight from this page.',
     introHeading: 'Big squares for small hands',
@@ -131,7 +131,7 @@ export const graphPaperPages: GraphPaperDef[] = [
     h1: '1 cm Graph Paper',
     metaTitle: '1 cm Graph Paper (Free Printable Centimeter Grid) | ChartGlade',
     metaDescription:
-      'Free printable 1 cm graph paper — true centimeter squares for metric measurement, science labs and unit-cube math. Prints at actual size from your browser, letter sheet.',
+      'Free printable 1 cm graph paper — true centimeter squares for metric measurement, science labs and unit-cube math. Prints at actual size, letter sheet.',
     lead:
       'Centimeter graph paper with uniform one-centimeter squares — the grid American science classes and metric measurement units run on, and the exact size of the plastic unit cubes stacked on them. Prints at true size, one letter page.',
     introHeading: 'The metric grid',
@@ -235,7 +235,7 @@ export const graphPaperPages: GraphPaperDef[] = [
     h1: 'Dot Grid Paper',
     metaTitle: 'Dot Grid Paper (Free Printable 5mm Dots) | ChartGlade',
     metaDescription:
-      'Free printable dot grid paper — 5mm dot spacing instead of lines, the gentler grid for sketching, coordinate pictures and notes. Prints from your browser, one letter sheet.',
+      'Free printable dot grid paper — 5mm dots instead of lines, a gentler grid for sketching, coordinate pictures and notes. Prints from your browser.',
     lead:
       'Dot grid paper replaces lines with dots at 5 millimeter spacing — all the alignment of a grid, none of the cage. The standard sheet for sketching, coordinate mystery pictures, and older students taking structured notes. One letter page.',
     introHeading: 'A grid that gets out of the way',
@@ -287,7 +287,7 @@ export const graphPaperPages: GraphPaperDef[] = [
     h1: 'Isometric Graph Paper',
     metaTitle: 'Isometric Graph Paper (Free Printable, 1/4 Inch) | ChartGlade',
     metaDescription:
-      'Free printable isometric graph paper — equilateral triangle grid for 3D drawing: cubes, buildings, volume work. Prints true size from your browser on one letter sheet.',
+      'Free printable isometric graph paper — equilateral triangle grid for 3D drawing: cubes, buildings, volume work. Prints true size, one letter sheet.',
     lead:
       'Isometric graph paper is built for the third dimension: a grid of equilateral triangles whose three line directions are exactly the axes of an isometric cube. Draw straight along the lines and whatever you build looks solid. One letter sheet, 1/4 inch triangles.',
     introHeading: 'How the triangle grid makes 3D easy',

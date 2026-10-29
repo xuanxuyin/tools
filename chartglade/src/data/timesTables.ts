@@ -487,7 +487,7 @@ const SEEDS: TableSeed[] = [
     lead: 'The 11 times table is 11, 22, 33, 44, 55, 66, 77, 88, 99, 110, 121, 132 — through 9 it is the digit repeated (11 × 4 = 44), which makes it the confidence table students meet right after the 10s. 11 × 11 = 121 lands a palindrome.',
     introHeading: 'The confidence table',
     intro: [
-      'Through 11 × 9, the rule is irresistible: repeat the digit. 11 × 7 = 77, no thinking required. That makes the 11s the best fluency-builder in the chart — students who have struggled with the 6s and 7s get a whole table where the answers arrive instantly, and the feeling of “I know all of these” is worth more pedagogically than the facts themselves. Confidence is a input to memorization, not a byproduct.',
+      'Through 11 × 9, the rule is irresistible: repeat the digit. 11 × 7 = 77, no thinking required. That makes the 11s the best fluency-builder in the chart — students who have struggled with the 6s and 7s get a whole table where the answers arrive instantly, and the feeling of “I know all of these” is worth more pedagogically than the facts themselves. Confidence is an input to memorization, not a byproduct.',
       'The pattern breaks exactly twice, and both breaks are gifts. 11 × 10 = 110 follows the 10s rule (one shift), and 11 × 11 = 121 is a palindrome — read it forward or backward — plus a perfect square, the square of eleven. 11 × 12 = 132 is the one fact in the row that genuinely needs a look: build it as 10 × 12 plus 1 × 12 (120 + 12). Pointing at where patterns break, and why, is how students learn that patterns are observations, not laws.',
     ],
     tips: [

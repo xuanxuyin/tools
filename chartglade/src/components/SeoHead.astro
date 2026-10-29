@@ -36,24 +36,34 @@ const datedItems = jsonLdItems.map((item) =>
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
 {noindex ? (
   <meta name="robots" content="noindex, nofollow" />
 ) : (
-  <meta name="robots" content="max-image-preview:large" />
+  <>
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="max-image-preview:large" />
+  </>
 )}
 
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content={SITE.name} />
-<meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
-<meta property="og:url" content={canonical} />
-{ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
+{!noindex && (
+  <>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </>
+)}
+{!noindex && ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={description} />
-{ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
+{!noindex && (
+  <>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
+  </>
+)}
 
 {gsc && <meta name="google-site-verification" content={gsc} />}
 {pinterest && <meta name="p:domain_verify" content={pinterest} />}

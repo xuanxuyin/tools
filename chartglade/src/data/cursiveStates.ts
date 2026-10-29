@@ -96,7 +96,7 @@ export const statesPage: PageDef = {
   slug: 'states-that-require-cursive',
   hub: 'cursive',
   h1: 'States That Require Cursive',
-  metaTitle: 'Which States Require Cursive in School? 2026 50-State Tracker | ChartGlade',
+  metaTitle: 'Which States Require Cursive? 2026 50-State Tracker | ChartGlade',
   metaDescription:
     '50-state cursive law tracker: 19 states require cursive by statute, 8 more by standards — with bill numbers and sources. Updated October 2026.',
   lead:

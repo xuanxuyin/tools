@@ -16,7 +16,7 @@ export const formulaSheetPages: PageDef[] = [
     h1: 'Geometry Formula Sheet',
     metaTitle: 'Geometry Formula Sheet (Free Printable) | ChartGlade',
     metaDescription:
-      'Free printable geometry formula sheet — perimeter, area, volume, surface area and the Pythagorean theorem, every formula with a worked example, on one landscape letter page.',
+      'Free printable geometry formula sheet — perimeter, area, volume and the Pythagorean theorem, each formula with a worked example, one landscape page.',
     lead:
       'Every geometry formula middle school actually uses — area and perimeter of the 2-D figures, volume and surface area of prisms, cylinders, cones and spheres, plus the Pythagorean theorem — on one printable page. Each formula ships with a worked example, because a formula you have never watched produce a number is a formula you will freeze on mid-test.',
     introHeading: 'Why every formula carries a worked example',
@@ -80,7 +80,7 @@ export const formulaSheetPages: PageDef[] = [
     h1: 'Algebra Formula Sheet',
     metaTitle: 'Algebra Formula Sheet & Cheat Sheet (Free Printable) | ChartGlade',
     metaDescription:
-      'Free printable algebra formula sheet and reference sheet — slope, linear equations, the quadratic formula, exponent laws and factoring patterns, each with a worked example on one page.',
+      'Free printable algebra formula sheet — slope, linear equations, the quadratic formula, exponent laws and factoring patterns, each with a worked example.',
     lead:
       'The Algebra 1 essentials on one page: slope and the three forms of a linear equation, the quadratic formula and discriminant, distance and midpoint, the six exponent laws, and the FOIL and factoring patterns. Every formula comes with a worked example you can use as a self-check — cover the answer, run the numbers, uncover.',
     introHeading: 'A reference sheet that doubles as a quiz',

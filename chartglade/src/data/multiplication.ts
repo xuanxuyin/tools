@@ -13,7 +13,7 @@ export const multiplicationPages: PageDef[] = [
     h1: 'Multiplication Chart',
     metaTitle: 'Multiplication Chart 1-12 (Free Printable) | ChartGlade',
     metaDescription:
-      'Free printable multiplication chart 1-12 with the perfect-square diagonal marked, click-to-check facts, a mad-minute drill maker — and how to use the chart without it becoming a crutch.',
+      'Free printable multiplication chart 1-12 with the perfect-square diagonal marked, click-to-check facts and a mad-minute drill maker.',
     lead:
       'The classic 1-12 multiplication chart, ready to print on one letter page. Click any cell to check the fact; the shaded diagonal marks the perfect squares. Below the chart: a mad-minute generator for timed drill sheets (addition, subtraction, multiplication or mixed, answer key included), the order kids actually memorize facts in, and how to use the chart as a bridge rather than a crutch.',
     introHeading: 'One chart, half the memorization',
@@ -67,7 +67,7 @@ export const multiplicationPages: PageDef[] = [
       },
       {
         q: 'What is a mad minute, and how does the drill maker work?',
-        a: 'A mad minute is the classic timed fluency drill: as many problems as possible in 60 seconds. The generator on this page lays out 30 or 60 problems in addition, subtraction, multiplication or mixed operations, for numbers up to 10, 12 or 20 — pick the settings, print, and the answer key prints on its own page. The default sheet prints even with JavaScript off.',
+        a: 'A mad minute is the classic timed fluency drill: as many problems as possible in 60 seconds. The generator on this page lays out 30 or 60 problems in addition, subtraction, multiplication or mixed operations, for numbers up to 10 or 12 — pick the settings, print, and the answer key prints on its own page. The default sheet prints even with JavaScript off.',
       },
       {
         q: 'Is this chart free to print?',
@@ -194,7 +194,7 @@ export const multiplicationPages: PageDef[] = [
     faqs: [
       {
         q: 'Why use a multiplication chart that goes to 15?',
-        a: 'The 13-15 columns cover derived-fact practice for grades 4-6 and the numbers that show up in real problems: 15 for quarters and time, 14 for fortnights and weeks-per-year. It is a reference for building strategies, not a bigger memorization assignment.',
+        a: 'The 13-15 columns cover derived-fact practice for grades 4-6 and the numbers that show up in real problems: 15 for quarters and time, 14 for fortnights. It is a reference for building strategies, not a bigger memorization assignment.',
       },
       {
         q: 'Do students need to memorize facts past 12 × 12?',
@@ -269,7 +269,7 @@ export const multiplicationPages: PageDef[] = [
       },
       {
         q: 'How many facts are on a 20 × 20 chart?',
-        a: '400 cells — though the mirror symmetry means only 210 unique products (the 20 perfect squares plus both triangles of the mirror). Spotting that symmetry is a good pattern hunt all by itself.',
+        a: '400 cells — though the mirror symmetry means only 210 unique products (the 20 perfect squares plus one triangle of the mirror). Spotting that symmetry is a good pattern hunt all by itself.',
       },
       {
         q: 'Which grades use this chart?',

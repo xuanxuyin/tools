@@ -3,16 +3,25 @@ import { existsSync, readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  ACORN_MULTIPLICATION,
+  MAPLE_LEAF_ADDITION,
   PIE_MULTIPLICATION,
   PLACEMAT_SCRAMBLES,
+  PUMPKIN_ADDITION_TG,
   THANKSGIVING_WORDS_EASY,
   THANKSGIVING_WORDS_HARD,
   TURKEY_ADDITION,
   thanksgivingPages,
   usedKeys,
 } from './thanksgiving';
+import type { PaintArt } from './halloween';
 import { factsFor, GHOST_MULTIPLICATION } from './halloween';
 import { DIRS_EASY, findWord, generateWordSearch } from '../lib/wordSearch';
+
+// The five CBN editions on the page (2026-10-29 expansion) — the dist guard
+// derives its expectations from these instead of a hand-typed key list.
+const ADD_ARTS: PaintArt[] = [TURKEY_ADDITION, PUMPKIN_ADDITION_TG, MAPLE_LEAF_ADDITION];
+const MUL_ARTS: PaintArt[] = [PIE_MULTIPLICATION, ACORN_MULTIPLICATION];
 
 /**
  * Thanksgiving cluster guards (10/25 batch, PLAN §3 #19). Data-level tests
@@ -269,11 +278,11 @@ describe.skipIf(!allBuilt)('thanksgiving dist guards (real dist)', () => {
       Number(m[1]),
     );
     expect([...legendKeys].sort((a, b) => a - b)).toEqual(
-      [...usedKeys(TURKEY_ADDITION), ...usedKeys(PIE_MULTIPLICATION)].sort((a, b) => a - b),
+      [...ADD_ARTS, ...MUL_ARTS].flatMap((art) => usedKeys(art)).sort((a, b) => a - b),
     );
 
-    const addKeys = new Set(usedKeys(TURKEY_ADDITION));
-    const mulKeys = new Set(usedKeys(PIE_MULTIPLICATION));
+    const addKeys = new Set(ADD_ARTS.flatMap((art) => usedKeys(art)));
+    const mulKeys = new Set(MUL_ARTS.flatMap((art) => usedKeys(art)));
     const facts = [...html.matchAll(/class="cbn-fact">(\d+)([+×])(\d+)</g)];
     expect(facts.length).toBeGreaterThan(80);
     for (const [, a, op, b] of facts) {
