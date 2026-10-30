@@ -139,9 +139,9 @@ describe('i18n against real SSR markup', () => {
   it('data-i18n-args fills {placeholders} per language word order', async () => {
     const { document, mod } = await loadPage('index.html');
     const all = document.querySelector('[data-i18n="home.allPatterns"]');
-    expect(all?.textContent?.trim()).toBe('All 116 patterns →');
+    expect(all?.textContent?.trim()).toBe('All 115 patterns →');
     mod.setLang('zh');
-    expect(all?.textContent?.trim()).toBe('全部 116 张图纸 →');
+    expect(all?.textContent?.trim()).toBe('全部 115 张图纸 →');
   });
 
   it('stored tb-lang applies on load (returning visitor, mix page)', async () => {

@@ -30,6 +30,11 @@ interface Props {
 const { seo, groups } = Astro.props;
 const [lead, ...prose] = seo.intro;
 const totalCount = groups.reduce((s, g) => s + g.patterns.length, 0);
+// colors actually used by the boards on THIS page — the full catalog runs 84,
+// so a hardcoded count here would be wrong on every landing but one
+const colorCount = new Set(
+  groups.flatMap((g) => g.patterns.flatMap((p) => p.regions.map((r) => r.hex))),
+).size;
 
 const jsonLd = [
   {
@@ -70,7 +75,7 @@ const jsonLd = [
         <span data-i18n="bs.statFreeB">to print</span>
       </span>
       <span class="stat">
-        <strong>32</strong>
+        <strong>{colorCount}</strong>
         <span data-i18n="bs.statColors">bead colors</span>
       </span>
     </p>

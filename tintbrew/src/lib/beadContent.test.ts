@@ -48,17 +48,17 @@ const BANNED = [
 ];
 
 describe('bead pattern data integrity', () => {
-  it('116 patterns across six categories with locked minimums', () => {
+  it('115 patterns across six categories with locked minimums', () => {
     // all-imported catalog since 2026-10-28: the 46 vector-authored designs
     // went offline. Since the 2026-10-29 flight re-import every one of the
     // grids comes from the community site's RSC flight data verbatim —
     // sizes, boundaries and bead counts match the source 1:1. Same-day
     // trims: chicken-bro dropped (too brand-recognizable), bee moved to
     // minis to match the source site's "small" category
-    expect(BEAD_PATTERNS).toHaveLength(116);
-    expect(patternContents).toHaveLength(116);
+    expect(BEAD_PATTERNS).toHaveLength(115);
+    expect(patternContents).toHaveLength(115);
     expect(categoryCounts).toEqual({
-      animals: 52,
+      animals: 51,
       food: 4,
       christmas: 0,
       halloween: 11,
@@ -364,7 +364,7 @@ describe('bead pages in real dist markup', () => {
     }
   });
 
-  it('sitemap file lists all 116 pattern URLs', () => {
+  it('sitemap file lists all 115 pattern URLs', () => {
     // sitemap-0.xml is gzipped when large; Astro writes plain when small
     const sm0 = resolve(distRoot, 'sitemap-0.xml');
     const raw = readFileSync(sm0);

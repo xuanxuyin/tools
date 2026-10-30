@@ -31,7 +31,7 @@ const groups = [
   {
     label: 'Quick Makes',
     labelKey: 'bs.gQkL',
-    blurb: 'Small boards for one quiet evening — snacks, hearts and other quick makes.',
+    blurb: 'Snacks, hearts and other quick makes — mostly small boards for one quiet evening.',
     blurbKey: 'bs.gQkB',
     patterns: [...patternsByCategory('food'), ...patternsByCategory('minis')],
   },
@@ -39,13 +39,12 @@ const groups = [
 ---
 
 <BeadCategoryPage seo={BEAD_HUB_SEO} groups={groups}>
-  <p class="collection-strip">
-    Or browse the catalog by vibe:
-    <a href="/cute-perler-bead-patterns/">Cute</a> ·
-    <a href="/small-perler-bead-patterns/">Small — one board</a> ·
-    <a href="/easy-perler-bead-patterns/">Easy</a> ·
-    <a href="/fuse-bead-patterns/">Fuse bead patterns</a> ·
-    <a href="/perler-bead-letters/">Letters &amp; numbers</a>
+  <p class="collection-strip"><span data-i18n="bs.hubVibe">Or browse the catalog by vibe:</span>
+    <a href="/cute-perler-bead-patterns/" data-i18n="bs.fuCute">Cute patterns</a> ·
+    <a href="/small-perler-bead-patterns/" data-i18n="bs.fuSm">Small one-board patterns</a> ·
+    <a href="/easy-perler-bead-patterns/" data-i18n="bs.fuEz">Easy patterns</a> ·
+    <a href="/fuse-bead-patterns/" data-i18n="bs.cFz">Fuse bead patterns</a> ·
+    <a href="/perler-bead-letters/" data-i18n="bs.fuLe">Letters &amp; numbers</a>
   </p>
 </BeadCategoryPage>
 

@@ -163,7 +163,7 @@ const CUTE_SLUGS = [
   'corgi-butt-peek',
   'corgi-cocoa-cup',
   'shiba-loaf-nap',
-  'husky-puppy',
+  'flower-patch-puppy',
   'bichon',
   'garden-lamb',
   'corn-snack-penguin',

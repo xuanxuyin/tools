@@ -738,7 +738,7 @@ export const outfitPages: OutfitDef[] = [
     related: [
       { href: '/what-colors-make-purple/', label: 'What colors make purple (every route)' },
       { href: '/what-colors-go-with-burgundy/', label: 'What colors go with burgundy' },
-      { href: '/mix/purple-white/', label: 'Purple and white: the lavender ladder, every ratio' },
+      { href: '/mix/purple-pink/', label: 'Purple and pink: the orchid blend' },
       { href: '/color-guides/', label: 'All color guides' },
     ],
   },

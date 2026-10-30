@@ -1295,7 +1295,7 @@ export const scenarios: ScenarioDef[] = [
     mixerColors: ['#ff0000', '#a52a2a'],
     related: [
       { href: '/what-colors-make-red/', label: 'What colors make red (the primary truth)' },
-      { href: '/mix/red-purple/', label: 'Red and purple: the burgundy blend' },
+      { href: '/mix/purple-red/', label: 'Red and purple: the burgundy blend' },
       { href: '/how-to-make-brown-icing/', label: 'How to make brown icing' },
       { href: '/color-guides/', label: 'All color guides' },
     ],
@@ -1384,7 +1384,7 @@ export const scenarios: ScenarioDef[] = [
     mixerColors: ['#ffa500', '#ffffff'],
     related: [
       { href: '/mix/orange-white/', label: 'Orange and white: the base blend' },
-      { href: '/mix/pink-yellow/', label: 'Pink and yellow: the rosy route' },
+      { href: '/mix/orange-yellow/', label: 'Orange and yellow: the sunny side of peach' },
       { href: '/mix/red-white/', label: 'Red and white make pink' },
       { href: '/color-guides/', label: 'All color guides' },
     ],

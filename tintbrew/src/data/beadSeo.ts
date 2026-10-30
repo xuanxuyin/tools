@@ -37,7 +37,7 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
   description:
     'Free fuse bead patterns for every level: dogs, cats, bunnies, pandas, chibi characters and a Halloween set. Recolor any area with the real 103-color Perler line, then print the template and its bead list.',
   intro: [
-    '116 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 116-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
+    '115 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 116-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
     'What makes these different from a normal pattern grid: every area of a design — fur, frosting, scarf, eyes — is its own zone. Tap a zone and try any of the 103 real bead colors before you commit. The bead list updates live, so you know exactly how many of each color to pull from the jar.',
     'When a design looks right, print it. The printed sheet gives you the empty template in zone outlines plus the shopping list of beads, and it fits on one letter-size page.',
   ],
@@ -215,7 +215,7 @@ export const BEAD_COLLECTION_SEO: Record<string, BeadSeoDef> = {
     intro: [
       'Thirty-six of the sweetest boards in the catalog, pulled from every category — carrot bunnies and pandas, calico kittens and loafing shibas, corgis mid-peek, kawaii characters and a set of two-color mini hearts. The through-line is round shapes, big color areas and faces that read from across a room.',
       'Every board keeps its zones separate — fur, inner ear, eyes, cheeks — so the cute stays when you change it. Turn the carrot bunny pastel pink, give the corgi a mint scarf, make the heart lavender instead of cherry. The bead list updates the moment you pick.',
-      'Most cute designs sit in the 17-to-30-bead range: one or two large pegboards, finishable in an evening, and small enough to turn into keychains and fridge magnets once ironed.',
+      'Sizes run from 6-bead-wide minis to an 87-bead-wide showpiece. Most boards finish in an evening; the minis and 30-and-under designs turn into keychains and fridge magnets, and the big character portraits become wall and shelf pieces.',
     ],
     faqs: [
       {
@@ -249,14 +249,14 @@ export const BEAD_COLLECTION_SEO: Record<string, BeadSeoDef> = {
     description:
       'Free small perler bead patterns that fit a single pegboard: minis under 20 beads wide plus one-board designs up to 29 wide. Keychain and magnet scale — recolor online, then print.',
     intro: [
-      'Everything here fits on pegboards you already own: minis under 20 beads wide that clear a small square board, and one-board designs up to 29 wide that fit a single large interlocking pegboard. No snapping boards together, no counting out four tubs of beads for one project.',
-      'Small is the fun scale. These are after-school boards — 27 to about 500 beads each — and the finished pieces land in keychain, magnet and desk-charm territory. They are also how beginners build the habit of reading a grid before placing a single bead.',
+      'Everything here fits on pegboards you already own: minis under 20 beads wide — the tiniest clear a small 16×16 square board — and one-board designs up to 29 wide that fit a single large interlocking pegboard. No snapping boards together, no counting out four tubs of beads for one project.',
+      'Small is the fun scale. These are after-school boards — 18 to just over 900 beads each — and the finished pieces land in keychain, magnet and desk-charm territory. They are also how beginners build the habit of reading a grid before placing a single bead.',
       'Every pattern prints on one letter page with its zone outlines and bead list, and every board recolors online first — pick colors you actually have in the jar, then commit.',
     ],
     faqs: [
       {
         q: 'What counts as a small perler pattern?',
-        a: 'On this page, anything up to 29 beads wide — the footprint of one large interlocking pegboard. The minis run under 20 wide and fit the small 16×16 square boards too.',
+        a: 'On this page, anything up to 29 beads wide — the footprint of one large interlocking pegboard. The minis run under 20 wide; the tiniest also fit the small 16×16 square boards.',
       },
       {
         q: 'How long does a small pattern take?',
@@ -286,7 +286,7 @@ export const BEAD_COLLECTION_SEO: Record<string, BeadSeoDef> = {
       'Free fuse bead patterns — animals, characters, Halloween and quick makes, all matched to a real 103-color line. Works with any 5mm fuse beads: recolor online, print and iron.',
     intro: [
       'Fuse beads are the craft’s real name — 5mm plastic beads that fuse into a solid picture under an iron. Perler is just the brand most US households know, so the same boards get called perler patterns, hama patterns or melty bead patterns depending on who you ask. They are all the same 5mm grid, and every pattern here works with whichever brand is in your jar.',
-      'The catalog runs 116 boards across animals, characters, a Halloween set and quick makes, from 6-bead-wide starters to 116-wide portraits. Each one is converted bead by bead and matched to a real 103-color bead line, so the shopping list names colors you can actually buy — from any major brand, since their palettes overlap heavily.',
+      'The catalog runs 115 boards across animals, characters, a Halloween set and quick makes, from 6-bead-wide starters to 116-wide portraits. Each one is converted bead by bead and matched to a real 103-color bead line, so the shopping list names colors you can actually buy — from any major brand, since their palettes overlap heavily.',
       'Pick a board, repaint any area in the browser, print the template and its bead list on one letter page, and place beads straight off the sheet.',
     ],
     faqs: [
