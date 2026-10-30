@@ -20,6 +20,7 @@ import { COLOR_NAMES } from '../data/colorNamesI18n';
 import { namedColors } from '../lib/colorName';
 import { scenarioContents } from '../lib/scenarioContent';
 import { outfitContents } from '../lib/outfitContent';
+import { mixes } from '../data/mixes';
 
 const dist = resolve(fileURLToPath(import.meta.url), '../../../dist');
 const readPage = (rel: string) => readFileSync(resolve(dist, rel), 'utf8');
@@ -79,15 +80,20 @@ describe('uiStrings dictionary', () => {
   ]);
 
   it('zh values carry Han characters (no English leaks)', () => {
+    // punctuation-only split segments (', " / ). ) are not leaks — only
+    // Latin letters signal untranslated English
     const leaks = Object.keys(UI_STRINGS.zh).filter(
-      (k) => !SYMBOL_ONLY.has(k) && !HAN.test(UI_STRINGS.zh[k as UiKey]),
+      (k) => !SYMBOL_ONLY.has(k) && !HAN.test(UI_STRINGS.zh[k as UiKey]) && /[A-Za-z]/.test(UI_STRINGS.zh[k as UiKey]),
     );
     expect(leaks).toEqual([]);
   });
 
   it('ko values carry Hangul (no English leaks)', () => {
     const leaks = Object.keys(UI_STRINGS.ko).filter(
-      (k) => !SYMBOL_ONLY.has(k) && !HANGUL.test(UI_STRINGS.ko[k as UiKey]),
+      (k) =>
+        !SYMBOL_ONLY.has(k) &&
+        !HANGUL.test(UI_STRINGS.ko[k as UiKey]) &&
+        /[A-Za-z]/.test(UI_STRINGS.ko[k as UiKey]),
     );
     expect(leaks).toEqual([]);
   });
@@ -267,6 +273,10 @@ describe('guide long-copy dictionaries', () => {
       });
       d.related.forEach((r, i) => (en[`${p}r${i + 1}`] = r.label));
     }
+    // mix additiveNote prose — same key shape the [slug] template emits
+    for (const def of mixes) {
+      if (def.additiveNote) en[`mn.${def.a}-${def.b}`] = def.additiveNote;
+    }
     return en;
   }
 
@@ -396,6 +406,63 @@ describe('guide long-copy switch over dist pages', () => {
     // round trip: the read restores the exact SSR sentence (numbers included)
     mod.setLang('en');
     expect(document.querySelector('.combo-read')?.textContent).toBe(readEn);
+  });
+
+  it('hue-test: caption/noscript segments, tier label, polar aria, anchor titles swap in zh + round trip', async () => {
+    const { document, mod } = await loadPage('hue-test/index.html');
+    const capEn = document.querySelector('figcaption')?.textContent;
+    const nojsEn = document.querySelector('[data-i18n="ht.nojsA"]')?.textContent;
+    const anchorEn = document.querySelector('.hue-anchor')?.getAttribute('title');
+    mod.setLang('zh');
+    const cap = document.querySelector('figcaption')?.textContent ?? '';
+    expect(cap).toContain('误差扇——每块磁贴一根辐条');
+    // the shipped-shuffle sentence keeps the number + tier label in place
+    expect(cap).toMatch(/这是出厂打乱（得分 \d+，"/);
+    expect(cap).toContain('"）；点击 给我的排列打分');
+    const nojs = document.querySelector('[data-i18n="ht.nojsA"]')?.textContent ?? '';
+    expect(nojs).toContain('评分需要 JavaScript');
+    // tier blurb segment (right of the em dash in the noscript sentence)
+    expect(document.querySelector('noscript')?.textContent ?? '').toContain('" — ');
+    expect(document.querySelector('.hue-anchor')?.getAttribute('title')).toMatch(/^固定锚点 #/);
+    expect(document.querySelector('.hue-tile')?.getAttribute('aria-label')).toMatch(/^色相磁贴 #/);
+    expect(document.querySelector('.polar-wrap svg')?.getAttribute('aria-label')).toBe(
+      '色相误差极坐标图：每块磁贴一根彩色辐条，辐条越长偏差越大',
+    );
+    mod.setLang('en');
+    expect(document.querySelector('figcaption')?.textContent).toBe(capEn);
+    expect(document.querySelector('[data-i18n="ht.nojsA"]')?.textContent).toBe(nojsEn);
+    expect(document.querySelector('.hue-anchor')?.getAttribute('title')).toBe(anchorEn);
+  });
+
+  it('color-mixing-chart: cell tooltips (diag, linked, unlinked) swap in zh + round trip', async () => {
+    const { document, mod } = await loadPage('color-mixing-chart/index.html');
+    const diag = document.querySelector('td.diag');
+    const link = document.querySelector('.mix-chart a[data-i18n-title]');
+    const plain = document.querySelector('td[data-i18n-title="cmc.tipT"]');
+    mod.setLang('zh');
+    expect(diag?.getAttribute('title')).toMatch(/（原色）$/);
+    const linkTip = link?.getAttribute('title') ?? '';
+    expect(linkTip).toContain('色带从偏 ');
+    expect(linkTip).toContain('中间色 = #');
+    expect(linkTip.endsWith('— 完整页面')).toBe(true);
+    const plainTip = plain?.getAttribute('title') ?? '';
+    expect(plainTip).toContain('中间色 = #');
+    expect(plainTip.endsWith('— 完整页面')).toBe(false);
+    mod.setLang('en');
+    expect(diag?.getAttribute('title')).toMatch(/ as-is$/);
+    expect(link?.getAttribute('title')).toMatch(/ — full page$/);
+  });
+
+  it('mix red-blue: additiveNote prose + FAQ #3 answer swap via mn.* + round trip', async () => {
+    const { document, mod } = await loadPage('mix/red-blue/index.html');
+    const noteEn = document.querySelector('[data-i18n="mn.red-blue"]')?.textContent;
+    mod.setLang('zh');
+    const note = document.querySelector('[data-i18n="mn.red-blue"]')?.textContent ?? '';
+    expect(note).toContain('红和蓝都是光的原色');
+    // FAQ #3 on additive pages answers with the same mn.* prose
+    expect(document.querySelectorAll('.faq details p')[2]?.textContent).toBe(note);
+    mod.setLang('en');
+    expect(document.querySelector('[data-i18n="mn.red-blue"]')?.textContent).toBe(noteEn);
   });
 });
 

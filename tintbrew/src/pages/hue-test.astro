@@ -98,7 +98,13 @@ const jsonLd = [
       {
         rows.map((row) => (
           <div class="hue-row">
-            <span class="hue-anchor" style={`--c: ${row.anchors[0].hex}`} title={`Fixed anchor ${row.anchors[0].hex}`} />
+            <span
+              class="hue-anchor"
+              style={`--c: ${row.anchors[0].hex}`}
+              data-i18n-title="ht.anchorT"
+              data-i18n-args={JSON.stringify({ h: row.anchors[0].hex })}
+              title={`Fixed anchor ${row.anchors[0].hex}`}
+            />
             <div class="hue-tiles" data-tiles data-row={row.row}>
               {row.tiles.map((t) => (
                 <button
@@ -109,12 +115,20 @@ const jsonLd = [
                   data-hue={t.hue.toFixed(2)}
                   style={`--c: ${t.hex}`}
                   aria-pressed="false"
+                  data-i18n-aria="ht.tileT"
+                  data-i18n-args={JSON.stringify({ h: t.hex })}
                   aria-label={`Hue tile ${t.hex}`}
                   title={t.hex}
                 />
               ))}
             </div>
-            <span class="hue-anchor" style={`--c: ${row.anchors[1].hex}`} title={`Fixed anchor ${row.anchors[1].hex}`} />
+            <span
+              class="hue-anchor"
+              style={`--c: ${row.anchors[1].hex}`}
+              data-i18n-title="ht.anchorT"
+              data-i18n-args={JSON.stringify({ h: row.anchors[1].hex })}
+              title={`Fixed anchor ${row.anchors[1].hex}`}
+            />
           </div>
         ))
       }
@@ -140,6 +154,7 @@ const jsonLd = [
         width="340"
         height="340"
         role="img"
+        data-i18n-aria="ht.polarAria"
         aria-label="Polar chart of hue errors: one colored spoke per tile, longer spokes mean bigger misses"
       >
         <circle cx={CX} cy={CY} r={R0 + 5 * UNIT} class="guide" />
@@ -160,16 +175,23 @@ const jsonLd = [
         }
       </svg>
       <figcaption>
-        The error fan — one spoke per tile, drawn at the tile's hue; the longer the spoke, the further
-        that tile sat from home. This is the shipped shuffle (it scores {demo.total}, “{demoTier.label}”);
-        hit <em>Score my arrangement</em> to redraw it with yours.
+        <span data-i18n="ht.capA"
+          >The error fan — one spoke per tile, drawn at the tile's hue; the longer the spoke, the further that tile sat from home. </span
+        ><span data-i18n="ht.capB">This is the shipped shuffle (it scores </span>{demo.total}<span data-i18n="ht.capC"
+          >, “</span
+        ><span data-i18n={`ht.${demoTier.key}`}>{demoTier.label}</span><span data-i18n="ht.capD">”); hit </span
+        ><em data-i18n="ht.score">Score my arrangement</em><span data-i18n="ht.capE"> to redraw it with yours.</span>
       </figcaption>
     </figure>
 
     <noscript>
       <p class="note">
-        The grader needs JavaScript. Without it this page still shows a full worked example: the
-        arrangement above scores {demo.total} of 150 (“{demoTier.label}” — {demoTier.blurb.toLowerCase()}).
+        <span data-i18n="ht.nojsA"
+          >The grader needs JavaScript. Without it this page still shows a full worked example: the arrangement above scores </span
+        >{demo.total}<span data-i18n="ht.nojsB"> of 150 (“</span><span data-i18n={`ht.${demoTier.key}`}
+          >{demoTier.label}</span
+        ><span data-i18n="ht.nojsC">” — </span><span data-i18n={`ht.${demoTier.key}b`}>{demoTier.blurb}</span
+        ><span data-i18n="ht.nojsD">).</span>
       </p>
     </noscript>
   </div>

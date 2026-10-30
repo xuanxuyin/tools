@@ -106,7 +106,8 @@ describe.skipIf(!pageReady)('hue test page (real dist markup)', () => {
   });
 
   it('shows the shipped demo score as a real computed value', () => {
-    expect(html).toContain(`scores ${scoreAll().total} of 150`);
+    // the number sits between the split i18n segments of the noscript note
+    expect(html).toContain(`scores </span>${scoreAll().total}<span`);
   });
 
   it('is wired into header and footer navigation', () => {

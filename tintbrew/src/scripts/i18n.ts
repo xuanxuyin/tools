@@ -66,8 +66,8 @@ export function tArgs(key: UiKey, args: Record<string, string>): string {
 }
 
 /** Keyed string read for runtime builders that rebuild SSR-tagged nodes
- *  (outfit swap): guide keys (gw./ow.) come from GUIDE_TEXTS with `en` as
- *  the caller-supplied SSR fallback, anything else is a UI key via t(). */
+ *  (outfit swap): guide keys (gw./ow./mn.) come from GUIDE_TEXTS with `en`
+ *  as the caller-supplied SSR fallback, anything else is a UI key via t(). */
 export function tg(key: string, en: string): string {
   if (GUIDE_KEY.test(key)) return lang === 'en' ? en : GUIDE_TEXTS[lang][key] ?? en;
   return UI_STRINGS[lang][key as UiKey] ?? en;
@@ -83,12 +83,13 @@ function fill(el: HTMLElement, s: string): string {
   return args ? fillArgs(s, args) : s;
 }
 
-/** Guide-content keys (gw./ow. — the long hand-written page copy from
- *  data/scenarios.ts + outfitPalettes.ts). Their English edition is NOT in
- *  the client bundle: the first pass snapshots each node's SSR text into
- *  data-i18n-en, and switching back to English restores that snapshot —
- *  byte-identical to what the server shipped. */
-const GUIDE_KEY = /^(gw|ow)\./;
+/** Guide-content keys (gw./ow./mn. — the long hand-written page copy from
+ *  data/scenarios.ts + outfitPalettes.ts + the additiveNote prose from
+ *  data/mixes.ts). Their English edition is NOT in the client bundle: the
+ *  first pass snapshots each node's SSR text into data-i18n-en, and
+ *  switching back to English restores that snapshot — byte-identical to
+ *  what the server shipped. */
+const GUIDE_KEY = /^(gw|ow|mn)\./;
 
 /** Swap every tagged node under `root` to the active language. A node may
  *  carry data-i18n-args='{"name":"Panda"}' — {name} placeholders in the

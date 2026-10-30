@@ -117,6 +117,8 @@ export function scoreAll(rows: HueRowDef[] = buildRows()): { total: number; rows
 }
 
 export interface HueTier {
+  /** i18n key suffix — `ht.${key}` (label) and `ht.${key}b` (blurb) */
+  key: string;
   label: string;
   blurb: string;
 }
@@ -124,10 +126,31 @@ export interface HueTier {
 /** Tiers are footrule-based, so they're strict: pure random play lands
  *  around ~100 of 150. Each adjacent swap costs 2 — the ladder is honest. */
 export function tierFor(total: number): HueTier {
-  if (total <= 0) return { label: 'Perfect', blurb: 'Every tile home. Professional color-vision territory.' };
-  if (total <= 6) return { label: 'Elite', blurb: 'At most three adjacent swaps away from perfect — a sharp eye for hue steps.' };
-  if (total <= 15) return { label: 'Sharp', blurb: 'Mostly ordered with a few local slips — the range most designers land in.' };
-  if (total <= 30) return { label: 'Solid', blurb: 'The big arcs are right; neighboring hues are blending for you.' };
-  if (total <= 60) return { label: 'Warming up', blurb: 'Some rows came together, others scattered — lighting and screen calibration matter here.' };
-  return { label: 'Scrambled', blurb: 'The hues ran circles around you. Try brighter lighting, check your screen, and run it again.' };
+  if (total <= 0)
+    return { key: 'tPerfect', label: 'Perfect', blurb: 'Every tile home. Professional color-vision territory.' };
+  if (total <= 6)
+    return {
+      key: 'tElite',
+      label: 'Elite',
+      blurb: 'At most three adjacent swaps away from perfect — a sharp eye for hue steps.',
+    };
+  if (total <= 15)
+    return {
+      key: 'tSharp',
+      label: 'Sharp',
+      blurb: 'Mostly ordered with a few local slips — the range most designers land in.',
+    };
+  if (total <= 30)
+    return { key: 'tSolid', label: 'Solid', blurb: 'The big arcs are right; neighboring hues are blending for you.' };
+  if (total <= 60)
+    return {
+      key: 'tWarm',
+      label: 'Warming up',
+      blurb: 'Some rows came together, others scattered — lighting and screen calibration matter here.',
+    };
+  return {
+    key: 'tScramb',
+    label: 'Scrambled',
+    blurb: 'The hues ran circles around you. Try brighter lighting, check your screen, and run it again.',
+  };
 }

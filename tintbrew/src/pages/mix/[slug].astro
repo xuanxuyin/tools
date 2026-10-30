@@ -98,7 +98,11 @@ const jsonLd = [
 
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2 data-i18n="mix.mediumH">Paint vs. screen: why the medium matters</h2>
-    {def.additiveNote ? <p>{def.additiveNote}</p> : <p data-i18n="mix.mediumP">{c.faqs[2]!.a}</p>}
+    {def.additiveNote ? (
+      <p data-i18n={`mn.${def.a}-${def.b}`}>{def.additiveNote}</p>
+    ) : (
+      <p data-i18n="mix.mediumP">{c.faqs[2]!.a}</p>
+    )}
 
     <h2 data-i18n="mix.aboutH">About these two colors</h2>
     <p>
@@ -139,7 +143,17 @@ const jsonLd = [
             data-i18n-args={JSON.stringify({ a: c.a.id, b: c.b.id, short: c.shortResult })}
           >{f.q}</summary>
           <p
-            data-i18n={i === 0 ? 'mix.fa1' : i === 1 ? 'mix.fa2' : i === 2 && !def.additiveNote ? 'mix.mediumP' : i === 3 ? 'mix.fa4' : undefined}
+            data-i18n={i === 0
+              ? 'mix.fa1'
+              : i === 1
+                ? 'mix.fa2'
+                : i === 2
+                  ? def.additiveNote
+                    ? `mn.${def.a}-${def.b}`
+                    : 'mix.mediumP'
+                  : i === 3
+                    ? 'mix.fa4'
+                    : undefined}
             data-i18n-args={i === 0
               ? JSON.stringify({
                   a: c.a.id,

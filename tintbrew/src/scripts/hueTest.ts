@@ -5,6 +5,8 @@
  * (spokes are keyed by tile id, so no DOM rebuilds).
  */
 import { tierFor } from '../lib/hueTest';
+import { t } from './i18n';
+import type { UiKey } from '../data/uiStrings';
 
 const POLAR_CX = 170;
 const POLAR_CY = 170;
@@ -125,10 +127,11 @@ class HueTestIsland {
       panel.hidden = false;
       const totalEl = panel.querySelector<HTMLElement>('[data-result-total]');
       if (totalEl) totalEl.textContent = String(total);
+      // tier name + blurb render in the CURRENT language (ht.<tier> keys)
       const tierEl = panel.querySelector<HTMLElement>('[data-result-tier]');
-      if (tierEl) tierEl.textContent = tier.label;
+      if (tierEl) tierEl.textContent = t(`ht.${tier.key}` as UiKey);
       const blurbEl = panel.querySelector<HTMLElement>('[data-result-blurb]');
-      if (blurbEl) blurbEl.textContent = tier.blurb;
+      if (blurbEl) blurbEl.textContent = t(`ht.${tier.key}b` as UiKey);
       perRow.forEach((rowTotal, i) => {
         const el = panel.querySelector<HTMLElement>(`[data-result-row="${i}"]`);
         if (el) el.textContent = String(rowTotal);

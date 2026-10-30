@@ -128,7 +128,12 @@ const jsonLd = [
               {colors.map((col) => {
                 if (row.id === col.id) {
                   return (
-                    <td class="diag" title={`${row.name} as-is`}>
+                    <td
+                      class="diag"
+                      data-i18n-title="cmc.diagT"
+                      data-i18n-args={JSON.stringify({ v: row.name })}
+                      title={`${row.name} as-is`}
+                    >
                       <span class="cell-swatch" style={`background:${row.hex}`}></span>
                       <span class="cell-hex">{row.hex.slice(1)}</span>
                     </td>
@@ -138,10 +143,10 @@ const jsonLd = [
                 const hex = blend.get(key)!;
                 const slug = pageOf.get(key);
                 const strip = ratioHex(row.hex, col.hex);
-                const tip = `${row.name} + ${col.name} — strip runs ${row.name}-heavy to ${col.name}-heavy, 75/25 to 25/75; middle stop = ${hex}`;
+                const tipArgs = JSON.stringify({ a: row.name, b: col.name, hex });
                 return slug ? (
                   <td>
-                    <a href={`/mix/${slug}/`} title={`${tip} — full page`}>
+                    <a href={`/mix/${slug}/`} data-i18n-title="cmc.tipPageT" data-i18n-args={tipArgs} title={`${row.name} + ${col.name} — strip runs ${row.name}-heavy to ${col.name}-heavy, 75/25 to 25/75; middle stop = ${hex} — full page`}>
                       <span class="cell-strip">
                         {strip.map((h) => (
                           <span style={`background:${h}`}></span>
@@ -151,7 +156,7 @@ const jsonLd = [
                     </a>
                   </td>
                 ) : (
-                  <td title={tip}>
+                  <td data-i18n-title="cmc.tipT" data-i18n-args={tipArgs} title={`${row.name} + ${col.name} — strip runs ${row.name}-heavy to ${col.name}-heavy, 75/25 to 25/75; middle stop = ${hex}`}>
                     <span class="cell-strip">
                       {strip.map((h) => (
                         <span style={`background:${h}`}></span>
