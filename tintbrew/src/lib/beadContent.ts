@@ -61,6 +61,28 @@ export const CATEGORY_LABEL: Record<BeadCategory, string> = {
   characters: 'Characters',
 };
 
+/** i18n key mirroring pegboardsFor()'s branches, so detail FAQ #3 can swap
+ *  the pegboard phrase per language with the same width cutoffs. */
+export function pegboardsKey(w: number): string {
+  if (w <= 16) return 'pat.peg1';
+  if (w <= 29) return 'pat.peg2';
+  if (w <= 58) return 'pat.peg3';
+  return 'pat.peg4';
+}
+
+/** Map a hand-written pattern tagline onto its i18n template key + args.
+ *  All 116 catalog taglines follow exactly three shapes (guard-pinned in
+ *  i18n.test.ts); anything else returns null and stays English SSR-side. */
+export function parseTagline(tag: string): { key: string; args: Record<string, string> } | null {
+  let m = tag.match(/^(\d[\d,]*) beads, (\d+) colors, mostly (.+?) and (.+?)\.?$/);
+  if (m) return { key: 'bs.tagMostly', args: { n: m[1], m: m[2], a: m[3], b: m[4] } };
+  m = tag.match(/^Built on (.+?) and (.+?) — ([\d,]+) beads across a (\d+)-wide board\.?$/);
+  if (m) return { key: 'bs.tagBuilt', args: { a: m[1], b: m[2], n: m[3], w: m[4] } };
+  m = tag.match(/^A (\d+) × (\d+) board in (\d+) colors — (.+?) does the heavy lifting\.?$/);
+  if (m) return { key: 'bs.tagBoard', args: { w: m[1], h: m[2], m: m[3], c: m[4] } };
+  return null;
+}
+
 export function patternUrl(p: BeadPatternDef): string {
   return `${CATEGORY_BASE[p.category]}${p.slug}/`;
 }

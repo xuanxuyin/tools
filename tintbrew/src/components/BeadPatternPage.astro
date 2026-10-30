@@ -12,9 +12,10 @@ import { beadById } from '../lib/beadPalette';
 import {
   CATEGORY_LABEL,
   categoryCounts,
-  patternFaqs,
   patternJsonLd,
   patternsByCategory,
+  pegboardsFor,
+  pegboardsKey,
   totalPatternCount,
   type PatternView,
 } from '../lib/beadContent';
@@ -25,7 +26,6 @@ interface Props {
 
 const { view } = Astro.props;
 const { def } = view;
-const faqs = patternFaqs(view);
 const related = patternsByCategory(def.category)
   .filter((p) => p.def.slug !== def.slug)
   .slice(0, 4);
@@ -42,14 +42,31 @@ const zoneTotal = view.regions.length;
   <section class="hero">
     <p class="crumbs">
       <a href="/" data-i18n="crumb.home">Home</a> <span aria-hidden="true">›</span>
-      <a href="/perler-bead-patterns/">Perler Bead Patterns</a>
+      <a href="/perler-bead-patterns/" data-i18n="bs.hub">Perler Bead Patterns</a>
       <span aria-hidden="true">›</span>
-      <a href={`../`}>{CATEGORY_LABEL[def.category]}</a>
+      <a href={`../`} data-i18n={`cat.${def.category}`}>{CATEGORY_LABEL[def.category]}</a>
       <span aria-hidden="true">›</span>
-      <span>{def.name}</span>
+      <span data-i18n="bs.nameT" data-i18n-args={JSON.stringify({ n: def.name })}>{def.name}</span>
     </p>
-    <h1>{def.name} <span data-i18n="pat.h1">Perler Bead Pattern</span></h1>
-    <p class="lead">{def.blurb}</p>
+    <h1>
+      <span data-i18n="bs.nameT" data-i18n-args={JSON.stringify({ n: def.name })}>{def.name}</span>{' '}
+      <span data-i18n="pat.h1">Perler Bead Pattern</span>
+    </h1>
+    <p
+      class="lead"
+      data-i18n="pat.blurbT"
+      data-i18n-args={JSON.stringify({
+        name: def.name,
+        w: String(def.width),
+        h: String(view.grid.length),
+        // beadSizeInches() renders "2.2 in" — the templates add their own unit
+        in: view.widthIn.replace(' in', ''),
+        n: view.totalBeads.toLocaleString('en-US'),
+        m: String(view.beadList.length),
+      })}
+    >
+      {def.blurb}
+    </p>
     <p class="stat-row" aria-label="Pattern facts">
       <span class="stat"><strong>{view.totalBeads}</strong> <span data-i18n="pat.statBeads">beads</span></span>
       <span class="stat"><strong>{view.widthIn} × {view.heightIn}</strong> <span data-i18n="pat.statFinished">finished</span></span>
@@ -99,9 +116,10 @@ const zoneTotal = view.regions.length;
             >
               <span class="zone-swatch" style={`background:${r.hex}`}></span>
               <span class="zone-meta">
-                <span class="zone-label">{r.label}</span>
+                <span class="zone-label" data-i18n="bs.colT" data-i18n-args={JSON.stringify({ c: r.label })}>{r.label}</span>
                 <span class="zone-bead">
-                  <strong class="bead-code">{beadById(r.beadId)?.code}</strong> {r.beadName}
+                  <strong class="bead-code">{beadById(r.beadId)?.code}</strong>{' '}
+                  <span data-i18n="bs.colT" data-i18n-args={JSON.stringify({ c: r.beadName })}>{r.beadName}</span>
                 </span>
               </span>
               <span class="zone-count">×{r.count}</span>
@@ -109,7 +127,7 @@ const zoneTotal = view.regions.length;
           </li>
         ))}
       </ul>
-      <p class="side-note">
+      <p class="side-note" data-i18n="pat.zoneNote">
         Tap a zone (or the template itself), then pick from the 32 standard bead colors or a
         custom one, snapped to the bead you'd actually buy — the template above, the chip
         and the materials list all update together.
@@ -120,12 +138,15 @@ const zoneTotal = view.regions.length;
 
     <div class="studio-list">
       <h2 data-i18n="pat.beadsNeeded">Beads you'll need</h2>
-      <p class="side-note">Updates live as you recolor. Counts assume single-sided ironing.</p>
+      <p class="side-note" data-i18n="pat.listNote">Updates live as you recolor. Counts assume single-sided ironing.</p>
       <ul class="bead-list" data-bead-list>
         {view.beadList.map((e) => (
           <li>
             <span class="list-swatch" style={`background:${e.bead.hex}`}></span>
-            <span><strong class="bead-code">{e.bead.code}</strong> {e.bead.name} ×{e.count}</span>
+            <span>
+              <strong class="bead-code">{e.bead.code}</strong>{' '}
+              <span data-i18n="bs.colT" data-i18n-args={JSON.stringify({ c: e.bead.name })}>{e.bead.name}</span> ×{e.count}
+            </span>
           </li>
         ))}
       </ul>
@@ -136,35 +157,85 @@ const zoneTotal = view.regions.length;
     <h2 data-i18n="pat.howMake" data-i18n-args={JSON.stringify({ name: def.name })}>How to make the {def.name}</h2>
     <ol class="steps">
       <li>
-        <strong>Print or load the template.</strong> The zone letters in the blank template
-        match the zone list above — every bead knows which zone it belongs to.
+        <strong data-i18n="pat.st1t">Print or load the template.</strong>{' '}
+        <span data-i18n="pat.st1b">
+          The zone letters in the blank template match the zone list above — every bead knows
+          which zone it belongs to.
+        </span>
       </li>
       <li>
-        <strong>Pull the beads.</strong> {view.beadList
-          .map((b) => `${b.bead.name} ×${b.count}`)
-          .join(', ')} — that's {view.totalBeads} beads for the reference colors, plus a
-        few spares if you're customizing.
+        <strong data-i18n="pat.st2t">Pull the beads.</strong>{' '}
+        {view.beadList.map((b, i) => (
+          <Fragment>
+            {i > 0 && ', '}
+            <span data-i18n="bs.colT" data-i18n-args={JSON.stringify({ c: b.bead.name })}>{b.bead.name}</span> ×{b.count}
+          </Fragment>
+        ))}{' '}
+        <span data-i18n="pat.st2b" data-i18n-args={JSON.stringify({ n: String(view.totalBeads) })}>
+          — that's {view.totalBeads} beads for the reference colors, plus a few spares if you're
+          customizing.
+        </span>
       </li>
       <li>
-        <strong>Place by zone.</strong> Work one zone at a time on a
-        {def.width}×{view.grid.length} area of your pegboard; the letters keep you oriented
-        even if you invent your own palette.
+        <strong data-i18n="pat.st3t">Place by zone.</strong>{' '}
+        <span data-i18n="pat.st3b" data-i18n-args={JSON.stringify({ w: String(def.width), t: String(view.grid.length) })}>
+          Work one zone at a time on a {def.width}×{view.grid.length} area of your pegboard; the
+          letters keep you oriented even if you invent your own palette.
+        </span>
       </li>
       <li>
-        <strong>Iron both sides.</strong> Ironing paper over the beads, medium heat, no
-        steam, 20–30 seconds per side, then weight it under a book while it cools.
+        <strong data-i18n="pat.st4t">Iron both sides.</strong>{' '}
+        <span data-i18n="pat.st4b">
+          Ironing paper over the beads, medium heat, no steam, 20–30 seconds per side, then
+          weight it under a book while it cools.
+        </span>
       </li>
     </ol>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2 data-i18n="pat.faqTitle">FAQ</h2>
-    {faqs.map((f) => (
-      <details class="faq">
-        <summary>{f.q}</summary>
-        <p>{f.a}</p>
-      </details>
-    ))}
+    <details class="faq">
+      <summary data-i18n="pat.fq1" data-i18n-args={JSON.stringify({ name: def.name })}>
+        How many beads does the {def.name} pattern need?
+      </summary>
+      <p>
+        <span data-i18n="pat.fa1a" data-i18n-args={JSON.stringify({ n: String(view.totalBeads) })}>
+          {view.totalBeads} beads total:
+        </span>{' '}
+        {view.beadList.map((b, i) => (
+          <Fragment>
+            {i > 0 && ', '}
+            <span data-i18n="bs.colT" data-i18n-args={JSON.stringify({ c: b.bead.name })}>{b.bead.name}</span> ×{b.count}
+          </Fragment>
+        ))}
+        <span data-i18n="pat.fa1b" data-i18n-args={JSON.stringify({ in: view.widthIn.replace(' in', '') })}>
+          . The finished piece measures about {view.widthIn} wide.
+        </span>
+      </p>
+    </details>
+    <details class="faq">
+      <summary data-i18n="pat.fq2" data-i18n-args={JSON.stringify({ name: def.name })}>
+        Is the {def.name} pattern good for beginners?
+      </summary>
+      <p data-i18n={def.difficulty === 'easy' ? 'pat.fa2easy' : 'pat.fa2med'} data-i18n-args={JSON.stringify({ z: String(zoneTotal) })}>
+        {def.difficulty === 'easy'
+          ? `Yes — it is marked easy: ${zoneTotal} color zones and no fiddly single-bead details beyond the standard ones. Most first-timers finish it in one sitting.`
+          : `It is a medium design: ${zoneTotal} color zones and a few single-bead details. Comfortable after one or two easy patterns.`}
+      </p>
+    </details>
+    <details class="faq">
+      <summary data-i18n="pat.fq3" data-i18n-args={JSON.stringify({ name: def.name })}>
+        What pegboard size does the {def.name} use?
+      </summary>
+      <p>
+        <span data-i18n="pat.fa3a" data-i18n-args={JSON.stringify({ w: String(def.width), t: String(view.grid.length) })}>
+          The grid is {def.width} beads wide by {view.grid.length} tall — plan on
+        </span>{' '}
+        <span data-i18n={pegboardsKey(def.width)}>{pegboardsFor(def.width)}</span>
+        <span data-i18n="pat.fa3b">.</span>
+      </p>
+    </details>
   </section>
 
   {related.length > 0 && (
@@ -178,8 +249,10 @@ const zoneTotal = view.regions.length;
         {related.map((p) => (
           <a class="related-card" href={p.url}>
             <BeadFigure view={p} mode="reference" thumb />
-            <span class="related-name">{p.def.name}</span>
-            <span class="related-meta">{p.totalBeads} beads · {p.def.difficulty}</span>
+            <span class="related-name" data-i18n="bs.nameT" data-i18n-args={JSON.stringify({ n: p.def.name })}>{p.def.name}</span>
+            <span class="related-meta" data-i18n="pat.relMeta" data-i18n-args={JSON.stringify({ n: String(p.totalBeads), d: p.def.difficulty })}>
+              {p.totalBeads} beads · {p.def.difficulty}
+            </span>
           </a>
         ))}
       </div>

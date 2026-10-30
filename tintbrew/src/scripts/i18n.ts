@@ -14,6 +14,7 @@
  * LangSwitch.astro owns the visible control; this module owns state.
  */
 import { UI_STRINGS, MIX_RESULTS, LANGS, type Lang, type UiKey } from '../data/uiStrings';
+import { BEAD_NAMES, BEAD_COLORS } from '../data/beadI18n';
 const STORE_KEY = 'tb-lang';
 const HTML_LANG: Record<Lang, string> = { en: 'en', zh: 'zh-CN', ko: 'ko' };
 
@@ -28,11 +29,12 @@ export function t(key: UiKey): string {
 }
 
 /** Fill {name} placeholders in dictionary string `s`. Placeholder VALUES that
- *  name a color, a difficulty enum, an outfit role, or a hand-written
- *  mix-result phrase resolve through their dictionaries, so "red" renders
- *  as 红 / 빨강, "easy" as 简单, and "purple (a muted violet)" as
- *  紫色（偏灰的紫罗兰） automatically; a capitalized arg ("Red" in
- *  "Red + Blue") stays capitalized after resolution. */
+ *  name a color, a difficulty enum, an outfit role, a hand-written
+ *  mix-result phrase, a bead pattern name, or a Perler color resolve through
+ *  their dictionaries, so "red" renders as 红 / 빨강, "easy" as 简单,
+ *  "purple (a muted violet)" as 紫色（偏灰的紫罗兰）, and "Purple Butterfly"
+ *  as 紫蝴蝶 automatically; a capitalized arg ("Red" in "Red + Blue") stays
+ *  capitalized after resolution. */
 function fillArgs(s: string, args: Record<string, string>): string {
   return s.replace(/\{(\w+)\}/g, (_, k: string) => {
     const v = args[k];
@@ -42,7 +44,9 @@ function fillArgs(s: string, args: Record<string, string>): string {
       UI_STRINGS[lang][`color.${lower}` as UiKey] ??
       UI_STRINGS[lang][`diff.${lower}` as UiKey] ??
       UI_STRINGS[lang][`role.${v}` as UiKey] ??
+      UI_STRINGS[lang][`cat.${lower}` as UiKey] ??
       (lang === 'en' ? undefined : MIX_RESULTS[lang][v]) ??
+      (lang === 'en' ? undefined : BEAD_NAMES[lang][v] ?? BEAD_COLORS[lang][lower]) ??
       v;
     return v[0] === v[0]!.toUpperCase() && resolved[0] !== resolved[0]!.toUpperCase()
       ? resolved[0]!.toUpperCase() + resolved.slice(1)

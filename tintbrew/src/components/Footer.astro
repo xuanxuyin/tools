@@ -20,8 +20,8 @@ const beadLinks = [
   BEAD_CATEGORY_SEO.characters!,
   BEAD_CATEGORY_SEO.halloween!,
   BEAD_CATEGORY_SEO.easy!,
-  // collection landings (2026-10-29 P3 pool expansion) — not i18n-tagged yet;
-  // the second multilingual wave picks these up with the rest of the new UI
+  // collection landings (2026-10-29 P3 pool expansion) — every BeadSeoDef
+  // entry carries k.h1 (bs.*), so the footer column swaps via the dictionary
   BEAD_COLLECTION_SEO.cute!,
   BEAD_COLLECTION_SEO.small!,
   BEAD_COLLECTION_SEO.fuse!,
@@ -68,20 +68,27 @@ const year = new Date().getFullYear();
       <div>
         <h3 data-i18n="foot.guides">Color guides</h3>
         <ul>
-          {guides.map((g) => <li><a href={`/${g.slug}`}>{g.h1}</a></li>)}
+          {guides.map((g) => <li><a href={`/${g.slug}`} data-i18n={`guide.${g.slug}`}>{g.h1}</a></li>)}
           <li><a href="/color-guides" data-i18n="foot.allGuides">All guides</a></li>
         </ul>
       </div>
       <div>
         <h3 data-i18n="foot.beads">Bead patterns</h3>
         <ul>
-          {beadLinks.map((b) => (
-            <li>
-              <a href={b.path} data-i18n={b.path === '/photo-to-perler-bead-pattern/' ? 'home.cardPhoto' : b.path === '/bead-editor/' ? 'foot.editor' : undefined}>
-                {b.h1}
-              </a>
-            </li>
-          ))}
+          {beadLinks.map((b) => {
+            const key = 'k' in b && b.k?.h1
+              ? b.k.h1
+              : b.path === '/photo-to-perler-bead-pattern/'
+                ? 'home.cardPhoto'
+                : b.path === '/bead-editor/'
+                  ? 'foot.editor'
+                  : undefined;
+            return (
+              <li>
+                <a href={b.path} data-i18n={key}>{b.h1}</a>
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div>

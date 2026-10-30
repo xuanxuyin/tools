@@ -10,6 +10,7 @@
 import { normalizeHex } from '../lib/color';
 import { BEAD_COLORS, beadById, beadListFrom, nearestBead } from '../lib/beadPalette';
 import { printZone } from './printZone';
+import { t, tArgs } from './i18n';
 
 interface ZoneState {
   hex: string;
@@ -154,8 +155,8 @@ class BeadStudio {
     if (hint) {
       hint.textContent =
         bead.hex === hex
-          ? `exact match: ${bead.name}`
-          : `${hex} → nearest bead: ${bead.name}`;
+          ? tArgs('pat.pickerExact', { c: bead.name })
+          : tArgs('pat.pickerNear', { hex, c: bead.name });
     }
   }
 
@@ -171,7 +172,7 @@ class BeadStudio {
     if (label) {
       const title = document.createElement('p');
       title.className = 'picker-title';
-      title.textContent = `${label} zone`;
+      title.textContent = tArgs('pat.pickerZone', { z: label });
       picker.appendChild(title);
     }
 
@@ -184,7 +185,7 @@ class BeadStudio {
       b.dataset.beadPick = bead.id;
       b.style.background = bead.hex;
       b.title = bead.name;
-      b.setAttribute('aria-label', `Color zone with ${bead.name}`);
+      b.setAttribute('aria-label', tArgs('pat.pickerAria', { c: bead.name }));
       if (zone && bead.id === zone.beadId) {
         b.classList.add('active');
         b.setAttribute('aria-pressed', 'true');
@@ -200,17 +201,17 @@ class BeadStudio {
     input.type = 'color';
     input.dataset.custom = '';
     input.value = zone?.hex ?? '#888888';
-    input.setAttribute('aria-label', 'Pick a custom color for this zone');
+    input.setAttribute('aria-label', t('pat.pickerCustomAria'));
     row.appendChild(input);
     const hint = document.createElement('span');
     hint.className = 'picker-hint';
-    hint.textContent = `current: ${zone ? (beadById(zone.beadId)?.name ?? zone.hex) : ''}`;
+    hint.textContent = tArgs('pat.pickerCur', { c: zone ? (beadById(zone.beadId)?.name ?? zone.hex) : '' });
     row.appendChild(hint);
     const use = document.createElement('button');
     use.type = 'button';
     use.className = 'picker-use';
     use.dataset.beadUse = '';
-    use.textContent = 'Use color';
+    use.textContent = t('pat.pickerUse');
     row.appendChild(use);
     picker.appendChild(row);
 
@@ -296,10 +297,18 @@ class BeadStudio {
       swatch.className = 'list-swatch';
       swatch.style.background = e.bead.hex;
       const text = document.createElement('span');
-      text.textContent = `${e.bead.name} ×${e.count}`;
+      // carry the i18n attrs so a later language switch re-swaps the
+      // runtime-rebuilt list (apply() sweeps [data-i18n] document-wide)
+      const name = document.createElement('span');
+      name.dataset.i18n = 'bs.colT';
+      name.dataset.i18nArgs = JSON.stringify({ c: e.bead.name });
+      name.textContent = e.bead.name;
+      text.appendChild(name);
+      text.appendChild(document.createTextNode(` ×${e.count}`));
       if (!e.exact) {
         const approx = document.createElement('em');
-        approx.textContent = '≈ custom';
+        approx.dataset.i18n = 'pat.approx';
+        approx.textContent = t('pat.approx');
         approx.className = 'list-approx';
         text.appendChild(approx);
       }

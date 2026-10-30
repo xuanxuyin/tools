@@ -7,7 +7,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BeadFigure from './BeadFigure.astro';
-import type { PatternView } from '../lib/beadContent';
+import { parseTagline, type PatternView } from '../lib/beadContent';
 import type { BeadSeoDef } from '../data/beadSeo';
 import { SITE } from '../consts';
 
@@ -97,20 +97,33 @@ const jsonLd = [
       </h2>
       {g.blurb && <p class="group-blurb" data-i18n={g.blurbKey}>{g.blurb}</p>}
       <div class="card-grid">
-        {g.patterns.map((p) => (
-          <a class="pattern-card" href={p.url}>
-            <BeadFigure view={p} mode="reference" thumb />
-            <span class="card-name">{p.def.name}</span>
-            <span class="card-tag">{p.def.tagline}</span>
-            <span
-              class="card-meta"
-              data-i18n="bs.cardMeta"
-              data-i18n-args={JSON.stringify({ n: String(p.totalBeads), z: String(p.regions.length), d: p.def.difficulty })}
-            >
-              {p.totalBeads} beads · {p.regions.length} zones · {p.def.difficulty}
-            </span>
-          </a>
-        ))}
+        {g.patterns.map((p) => {
+          // taglines are 100% template-shaped (guard test); the null branch
+          // is the safety net for a future free-form tagline
+          const tag = parseTagline(p.def.tagline);
+          return (
+            <a class="pattern-card" href={p.url}>
+              <BeadFigure view={p} mode="reference" thumb />
+              <span class="card-name" data-i18n="bs.nameT" data-i18n-args={JSON.stringify({ n: p.def.name })}>
+                {p.def.name}
+              </span>
+              {tag ? (
+                <span class="card-tag" data-i18n={tag.key} data-i18n-args={JSON.stringify(tag.args)}>
+                  {p.def.tagline}
+                </span>
+              ) : (
+                <span class="card-tag">{p.def.tagline}</span>
+              )}
+              <span
+                class="card-meta"
+                data-i18n="bs.cardMeta"
+                data-i18n-args={JSON.stringify({ n: String(p.totalBeads), z: String(p.regions.length), d: p.def.difficulty })}
+              >
+                {p.totalBeads} beads · {p.regions.length} zones · {p.def.difficulty}
+              </span>
+            </a>
+          );
+        })}
       </div>
     </section>
   ))}

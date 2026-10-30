@@ -29,9 +29,9 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
     <p class="crumbs">
       <a href="/" data-i18n="crumb.home">Home</a> <span aria-hidden="true">›</span>
       <a href="/color-guides" data-i18n="crumb.guides">Color Guides</a> <span aria-hidden="true">›</span>
-      <span>{def.h1}</span>
+      <span data-i18n={`guide.${def.slug}`}>{def.h1}</span>
     </p>
-    <h1>{def.h1}</h1>
+    <h1 data-i18n={`guide.${def.slug}`}>{def.h1}</h1>
     <p class="lead">{def.lead}</p>
 
     <div class="hero-answer" aria-label="The answer at a glance" data-i18n-aria="a11y.answer">

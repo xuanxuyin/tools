@@ -4,18 +4,19 @@ import { BEAD_CATEGORY_SEO } from '../data/beadSeo';
 import { patternsByCategory } from '../lib/beadContent';
 import type { BeadCategory } from '../lib/beadTypes';
 
-const labels: Record<BeadCategory, string> = {
-  minis: 'Start here — minis',
-  animals: 'Easy animals',
-  food: 'Easy food',
-  christmas: 'Easy Christmas',
-  halloween: 'Easy Halloween',
-  characters: 'Easy characters',
+const labels: Record<BeadCategory, { label: string; labelKey: string }> = {
+  minis: { label: 'Start here — minis', labelKey: 'bs.ezStart' },
+  animals: { label: 'Easy animals', labelKey: 'bs.ezAn' },
+  food: { label: 'Easy food', labelKey: 'bs.ezFood' },
+  christmas: { label: 'Easy Christmas', labelKey: 'bs.ezXmas' },
+  halloween: { label: 'Easy Halloween', labelKey: 'bs.ezHal' },
+  characters: { label: 'Easy characters', labelKey: 'bs.ezCh' },
 };
 const order: BeadCategory[] = ['minis', 'animals', 'food', 'christmas', 'halloween', 'characters'];
 const groups = order
   .map((cat) => ({
-    label: labels[cat],
+    label: labels[cat].label,
+    labelKey: labels[cat].labelKey,
     patterns: patternsByCategory(cat).filter((p) => p.def.difficulty === 'easy'),
   }))
   .filter((g) => g.patterns.length > 0);

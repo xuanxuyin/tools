@@ -11,6 +11,10 @@ import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import { Window } from 'happy-dom';
 import { UI_STRINGS, type UiKey } from '../data/uiStrings';
+import { BEAD_PATTERNS } from '../data/beadPatterns';
+import { parseTagline } from '../lib/beadContent';
+import { BEAD_COLORS as PALETTE_LINE } from '../lib/beadPalette';
+import { BEAD_NAMES, BEAD_COLORS } from '../data/beadI18n';
 
 const dist = resolve(fileURLToPath(import.meta.url), '../../../dist');
 const readPage = (rel: string) => readFileSync(resolve(dist, rel), 'utf8');
@@ -53,7 +57,16 @@ describe('uiStrings dictionary', () => {
   // is pure ASCII is almost always an untranslated leak; same for ko.
   // Placeholder-only / pure-punctuation values are exempt by design (zh
   // full-width punctuation alone qualifies — trailing '。' segments).
-  const SYMBOL_ONLY = new Set(['mix.heroEq', 'mix.cardA', 'mix.period']);
+  const SYMBOL_ONLY = new Set([
+    'mix.heroEq',
+    'mix.cardA',
+    'mix.period',
+    // identity templates — the translation happens on the {arg}, not the string
+    'bs.nameT',
+    'bs.colT',
+    // ko tail sentence is a bare period (zh '。' carries full-width punctuation)
+    'pat.fa3b',
+  ]);
   const HAN = /[一-鿿，。！？；：·（）“”——…]/;
   const HANGUL = /[가-힯]/;
 
@@ -129,6 +142,43 @@ describe('i18n against real SSR markup', () => {
     const html = readPage('bead-editor/index.html');
     for (const key of ['ed.brush', 'ed.eraser', 'ed.pick', 'ed.undo', 'ed.mirror', 'ed.reset', 'ed.png', 'ed.print']) {
       expect(html, key).toContain(`data-i18n="${key}"`);
+    }
+  });
+});
+
+/** Bead universe (user call, 2026-10-30): every catalog name, tagline and
+ *  color word must carry zh/ko translations before the build ships — a new
+ *  pattern that forgets its dictionary rows fails here, not in prod. */
+describe('bead i18n coverage', () => {
+  it('every pattern name translates in zh and ko', () => {
+    for (const p of BEAD_PATTERNS) {
+      expect(BEAD_NAMES.zh[p.name], p.slug).toBeTruthy();
+      expect(BEAD_NAMES.ko[p.name], p.slug).toBeTruthy();
+    }
+  });
+
+  it('every tagline parses into a template and every color word translates', () => {
+    for (const p of BEAD_PATTERNS) {
+      const tag = parseTagline(p.tagline);
+      expect(tag, p.slug).not.toBeNull();
+      for (const v of Object.values(tag!.args)) {
+        if (/^\d[\d,]*$/.test(v)) continue;
+        expect(BEAD_COLORS.zh[v.toLowerCase()], `${p.slug}:${v}`).toBeTruthy();
+        expect(BEAD_COLORS.ko[v.toLowerCase()], `${p.slug}:${v}`).toBeTruthy();
+      }
+    }
+  });
+
+  it('every Perler palette color and region label translates', () => {
+    for (const b of PALETTE_LINE) {
+      expect(BEAD_COLORS.zh[b.name.toLowerCase()], b.code).toBeTruthy();
+      expect(BEAD_COLORS.ko[b.name.toLowerCase()], b.code).toBeTruthy();
+    }
+    for (const p of BEAD_PATTERNS) {
+      for (const r of Object.values(p.regions)) {
+        expect(BEAD_COLORS.zh[r.label.toLowerCase()], `${p.slug}:${r.label}`).toBeTruthy();
+        expect(BEAD_COLORS.ko[r.label.toLowerCase()], `${p.slug}:${r.label}`).toBeTruthy();
+      }
     }
   });
 });
@@ -255,5 +305,86 @@ describe('cross-language sweep over dist pages', () => {
       '26 块板',
     );
     expect(letters.document.querySelector('[data-i18n="bl.demo"]')?.textContent).toContain('EMMA');
+  });
+
+  it('footer: guides and beads columns swap every link in zh (user call, batch 4)', async () => {
+    const { document, mod } = await loadPage('index.html');
+    mod.setLang('zh');
+    const footer = document.querySelector('.site-footer')!;
+    // color-guides column: 18 guide links take guide.<slug>
+    const guidesCol = footer.querySelector('[data-i18n="foot.guides"]')?.parentElement;
+    const guideLinks = [...(guidesCol?.querySelectorAll('a') ?? [])].map((a) => a.textContent);
+    expect(guideLinks).toContain('什么颜色能调出棕色');
+    expect(guideLinks).toContain('酒红色配什么颜色好看');
+    expect(guideLinks.every((t) => /[一-鿿]/.test(t ?? ''))).toBe(true);
+    // beads column: every link (hub, categories, collections, tools) swaps
+    const beadsCol = footer.querySelector('[data-i18n="foot.beads"]')?.parentElement;
+    const beadLinks = [...(beadsCol?.querySelectorAll('a') ?? [])].map((a) => a.textContent);
+    expect(beadLinks).toContain('免费拼豆图纸');
+    expect(beadLinks).toContain('可爱拼豆图纸');
+    expect(beadLinks.every((t) => /[一-鿿]/.test(t ?? ''))).toBe(true);
+  });
+
+  it('bead category page: group label, card names, taglines all swap in zh (user call, batch 5)', async () => {
+    const { document, mod } = await loadPage('perler-bead-animals/index.html');
+    mod.setLang('zh');
+    // the group header the user screenshotted: "Animal patterns — 52 张"
+    expect(document.querySelector('.gallery h2 [data-i18n="bs.catAn"]')?.textContent).toBe('动物图纸');
+    const first = document.querySelector('.pattern-card')!;
+    expect(first.querySelector('.card-name')?.textContent).toBe('紫蝴蝶');
+    expect(first.querySelector('.card-tag')?.textContent).toBe(
+      '61 颗珠、2 种颜色，主要是李子紫和霜彩丁香紫。',
+    );
+    const names = [...document.querySelectorAll('.card-name')].map((n) => n.textContent);
+    expect(names.length).toBeGreaterThan(40);
+    expect(names.every((n) => /[一-鿿]/.test(n ?? ''))).toBe(true);
+    const tags = [...document.querySelectorAll('.card-tag')].map((n) => n.textContent);
+    expect(tags.every((n) => /[一-鿿]/.test(n ?? ''))).toBe(true);
+  });
+
+  it('pattern detail: crumbs, h1, lead, zones, steps, FAQ, bead list swap in zh', async () => {
+    const { document, mod } = await loadPage('perler-bead-animals/purple-butterfly/index.html');
+    mod.setLang('zh');
+    expect(document.querySelector('h1')?.textContent).toContain('紫蝴蝶');
+    expect(document.querySelector('.lead')?.textContent).toContain('占 11 × 8 格');
+    const crumbs = [...document.querySelectorAll('.crumbs a')].map((a) => a.textContent);
+    expect(crumbs).toContain('免费拼豆图纸');
+    expect(crumbs).toContain('动物');
+    expect(document.querySelector('.zone-label')?.textContent).toBe('李子紫');
+    expect(document.querySelector('.steps')?.textContent).toContain('备珠');
+    expect(document.querySelector('.steps')?.textContent).toContain('两面熨');
+    const faq = document.querySelector('.faq')?.textContent ?? '';
+    expect(faq).toContain('紫蝴蝶图纸需要多少颗珠子？');
+    expect(faq).toContain('。成品宽约 2.2 英寸。');
+    // the SSR materials list swaps too (the runtime rebuild carries the same attrs)
+    expect(document.querySelector('[data-bead-list]')?.textContent).toContain('李子紫');
+    expect(document.querySelector('.related-name')?.textContent ?? '').toMatch(/[一-鿿]/);
+    // round trip: the en template rebuilds the exact SSR blurb (unit included)
+    mod.setLang('en');
+    expect(document.querySelector('.lead')?.textContent).toContain(
+      'The Purple Butterfly spans 11 × 8 beads — about 2.2 inches wide on the board',
+    );
+    expect(document.querySelector('.faq')?.textContent).toContain(
+      '. The finished piece measures about 2.2 in wide.',
+    );
+  });
+
+  it('easy gallery: every group label swaps in zh', async () => {
+    const { document, mod } = await loadPage('easy-perler-bead-patterns/index.html');
+    mod.setLang('zh');
+    const labels = [...document.querySelectorAll('.gallery h2 [data-i18n^="bs.ez"]')].map(
+      (h) => h.textContent,
+    );
+    expect(labels).toContain('从这里开始——迷你款');
+    expect(labels.length).toBeGreaterThan(3);
+  });
+
+  it('scenario + outfit pages swap h1 and crumb tail in zh (batch 5)', async () => {
+    const scn = await loadPage('what-colors-make-brown/index.html');
+    scn.mod.setLang('zh');
+    expect(scn.document.querySelector('h1')?.textContent).toBe('什么颜色能调出棕色');
+    const outfit = await loadPage('what-colors-go-with-burgundy/index.html');
+    outfit.mod.setLang('zh');
+    expect(outfit.document.querySelector('h1')?.textContent).toBe('酒红色配什么颜色好看');
   });
 });
