@@ -15,6 +15,8 @@
  */
 import { UI_STRINGS, MIX_RESULTS, LANGS, type Lang, type UiKey } from '../data/uiStrings';
 import { BEAD_NAMES, BEAD_COLORS } from '../data/beadI18n';
+import { COLOR_NAMES } from '../data/colorNamesI18n';
+import { GUIDE_TEXTS } from '../data/guideTexts';
 const STORE_KEY = 'tb-lang';
 const HTML_LANG: Record<Lang, string> = { en: 'en', zh: 'zh-CN', ko: 'ko' };
 
@@ -45,8 +47,11 @@ function fillArgs(s: string, args: Record<string, string>): string {
       UI_STRINGS[lang][`diff.${lower}` as UiKey] ??
       UI_STRINGS[lang][`role.${v}` as UiKey] ??
       UI_STRINGS[lang][`cat.${lower}` as UiKey] ??
+      UI_STRINGS[lang][`pr.${lower}` as UiKey] ??
+      UI_STRINGS[lang][v as UiKey] ??
       (lang === 'en' ? undefined : MIX_RESULTS[lang][v]) ??
       (lang === 'en' ? undefined : BEAD_NAMES[lang][v] ?? BEAD_COLORS[lang][lower]) ??
+      (lang === 'en' ? undefined : COLOR_NAMES[lang][lower]) ??
       v;
     return v[0] === v[0]!.toUpperCase() && resolved[0] !== resolved[0]!.toUpperCase()
       ? resolved[0]!.toUpperCase() + resolved.slice(1)
@@ -60,6 +65,14 @@ export function tArgs(key: UiKey, args: Record<string, string>): string {
   return fillArgs(UI_STRINGS[lang][key] ?? UI_STRINGS.en[key] ?? key, args);
 }
 
+/** Keyed string read for runtime builders that rebuild SSR-tagged nodes
+ *  (outfit swap): guide keys (gw./ow.) come from GUIDE_TEXTS with `en` as
+ *  the caller-supplied SSR fallback, anything else is a UI key via t(). */
+export function tg(key: string, en: string): string {
+  if (GUIDE_KEY.test(key)) return lang === 'en' ? en : GUIDE_TEXTS[lang][key] ?? en;
+  return UI_STRINGS[lang][key as UiKey] ?? en;
+}
+
 function fill(el: HTMLElement, s: string): string {
   let args: Record<string, string> | undefined;
   try {
@@ -70,32 +83,58 @@ function fill(el: HTMLElement, s: string): string {
   return args ? fillArgs(s, args) : s;
 }
 
+/** Guide-content keys (gw./ow. — the long hand-written page copy from
+ *  data/scenarios.ts + outfitPalettes.ts). Their English edition is NOT in
+ *  the client bundle: the first pass snapshots each node's SSR text into
+ *  data-i18n-en, and switching back to English restores that snapshot —
+ *  byte-identical to what the server shipped. */
+const GUIDE_KEY = /^(gw|ow)\./;
+
 /** Swap every tagged node under `root` to the active language. A node may
  *  carry data-i18n-args='{"name":"Panda"}' — {name} placeholders in the
  *  dictionary string fill from it, so word order can differ per language
  *  ("How to make the X" vs "X 怎么做"). All four mechanisms (text, aria,
  *  placeholder, title) share the same args handling. */
+/** Attribute strings may name guide copy too (method-chip tooltips). Guide
+ *  keys are not in UI_STRINGS: snapshot the SSR attribute on first sight
+ *  (data-i18n-attr-en) and restore it for en, mirroring the textContent
+ *  snapshot in apply(). */
+function attrString(el: HTMLElement, attr: string, key: string): string | undefined {
+  if (GUIDE_KEY.test(key)) {
+    if (el.dataset.i18nAttrEn === undefined) el.dataset.i18nAttrEn = el.getAttribute(attr) ?? '';
+    return lang === 'en' ? el.dataset.i18nAttrEn || undefined : GUIDE_TEXTS[lang][key];
+  }
+  return UI_STRINGS[lang][key as UiKey];
+}
+
 function apply(root: ParentNode = document) {
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n]')) {
-    const key = el.dataset.i18n as UiKey;
-    const s = UI_STRINGS[lang][key];
+    const key = el.dataset.i18n as string;
+    if (GUIDE_KEY.test(key)) {
+      if (el.dataset.i18nEn === undefined) el.dataset.i18nEn = el.textContent ?? '';
+      if (lang === 'en') {
+        el.textContent = fill(el, el.dataset.i18nEn);
+      } else {
+        const s = GUIDE_TEXTS[lang][key];
+        if (s) el.textContent = fill(el, s);
+      }
+      continue;
+    }
+    const s = UI_STRINGS[lang][key as UiKey];
     if (!s) continue;
     el.textContent = fill(el, s);
   }
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-aria]')) {
-    const key = el.dataset.i18nAria as UiKey;
-    const s = UI_STRINGS[lang][key];
+    const s = attrString(el, 'aria-label', el.dataset.i18nAria as string);
     if (s) el.setAttribute('aria-label', fill(el, s));
   }
   // inputs carry translatable placeholder / title attributes the same way
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-placeholder]')) {
-    const key = el.dataset.i18nPlaceholder as UiKey;
-    const s = UI_STRINGS[lang][key];
+    const s = attrString(el, 'placeholder', el.dataset.i18nPlaceholder as string);
     if (s) el.setAttribute('placeholder', fill(el, s));
   }
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-title]')) {
-    const key = el.dataset.i18nTitle as UiKey;
-    const s = UI_STRINGS[lang][key];
+    const s = attrString(el, 'title', el.dataset.i18nTitle as string);
     if (s) el.setAttribute('title', fill(el, s));
   }
   document.documentElement.lang = HTML_LANG[lang];

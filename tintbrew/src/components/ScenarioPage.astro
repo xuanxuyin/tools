@@ -32,7 +32,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
       <span data-i18n={`guide.${def.slug}`}>{def.h1}</span>
     </p>
     <h1 data-i18n={`guide.${def.slug}`}>{def.h1}</h1>
-    <p class="lead">{def.lead}</p>
+    <p class="lead" data-i18n={`gw.${def.slug}.lead`}>{def.lead}</p>
 
     <div class="hero-answer" aria-label="The answer at a glance" data-i18n-aria="a11y.answer">
       <span class="hero-swatches" aria-hidden="true">
@@ -44,7 +44,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
         <span class="hero-arrow">→</span>
         <span class="hero-result" style={`background:${c.heroHex}`}></span>
       </span>
-      <strong>{c.heroLabel}</strong>
+      <strong data-i18n={c.chart ? `gw.${def.slug}.hero` : `gw.${def.slug}.ans`}>{c.heroLabel}</strong>
       <code>{c.heroHex}</code>
     </div>
   </section>
@@ -53,35 +53,41 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
 
   {def.intro.length > 0 && (
     <section class="prose" style="margin-top: var(--sp-6);">
-      <h2>{def.introHeading}</h2>
-      {def.intro.map((p) => <p>{p}</p>)}
+      <h2 data-i18n={`gw.${def.slug}.introH`}>{def.introHeading}</h2>
+      {def.intro.map((p, i) => (
+        <p data-i18n={`gw.${def.slug}.i${i + 1}`}>{p}</p>
+      ))}
     </section>
   )}
 
   {c.methods.length > 0 && (
     <section class="prose" style="margin-top: var(--sp-6);">
-      <h2>{def.listHeading}</h2>
+      <h2 data-i18n={`gw.${def.slug}.listH`}>{def.listHeading}</h2>
       <p data-i18n="sc.methodsP">
         Every result below is computed in a perceptual color space: the swatch is the blend your
         eye sees, with the HEX code next to it. Click any code to copy it.
       </p>
       <div class="methods">
-        {c.methods.map((m) => (
+        {c.methods.map((m, i) => (
           <article class="method">
-            <h3>{m.name}</h3>
-            <p>{m.summary}</p>
+            <h3 data-i18n={`gw.${def.slug}.m${i + 1}n`}>{m.name}</h3>
+            <p data-i18n={`gw.${def.slug}.m${i + 1}s`}>{m.summary}</p>
             <div class="method-strip">
-              {m.mix.map((part) => (
-                <span class="method-chip" title={part.label}>
+              {m.mix.map((part, j) => (
+                <span
+                  class="method-chip"
+                  title={part.label}
+                  data-i18n-title={`gw.${def.slug}.m${i + 1}c${j + 1}`}
+                >
                   <span class="chip-swatch" style={`background:${part.hex}`} aria-hidden="true"></span>
-                  <span class="chip-label">{part.label}</span>
+                  <span class="chip-label" data-i18n={`gw.${def.slug}.m${i + 1}c${j + 1}`}>{part.label}</span>
                 </span>
               ))}
               <span class="method-arrow" aria-hidden="true">→</span>
               <span class="method-result">
                 <span class="result-swatch-sm" style={`background:${m.resultHex}`} aria-hidden="true"></span>
                 <span class="result-meta">
-                  <strong>{m.resultName}</strong>
+                  <strong data-i18n="cn.nameT" data-i18n-args={JSON.stringify({ v: m.resultName })}>{m.resultName}</strong>
                   <button
                     type="button"
                     class="btn btn-copy method-hex"
@@ -95,7 +101,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
                 </span>
               </span>
             </div>
-            <p class="method-note">{m.note}</p>
+            <p class="method-note" data-i18n={`gw.${def.slug}.m${i + 1}o`}>{m.note}</p>
           </article>
         ))}
       </div>
@@ -104,13 +110,17 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
 
   {c.chart && (
     <section class="section-card" style="margin-top: var(--sp-6);">
-      <h2>{def.listHeading}</h2>
+      <h2 data-i18n={`gw.${def.slug}.listH`}>{def.listHeading}</h2>
       <div class="chart-notes">
-        {def.chartIntro.map((p) => <p>{p}</p>)}
+        {def.chartIntro.map((p, i) => (
+          <p data-i18n={`gw.${def.slug}.ci${i + 1}`}>{p}</p>
+        ))}
         <p class="chart-base">
           <span class="base-swatch" style={`background:${c.chart.baseHex}`} aria-hidden="true"></span>
           <span>
-            <strong>{c.chart.baseName}</strong> — {c.chart.baseBlurb}
+            <strong data-i18n={`gw.${def.slug}.base`}>{c.chart.baseName}</strong>
+            {' — '}
+            <span data-i18n={`gw.${def.slug}.baseB`}>{c.chart.baseBlurb}</span>
           </span>
         </p>
       </div>
@@ -121,9 +131,9 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
             <div class="chart-gel">
               <span class="gel-dot" style={`background:${row.gel.hex}`} aria-hidden="true"></span>
               <div>
-                <strong>{row.gel.name}<span data-i18n="sc.gelWord"> gel</span></strong>
+                <strong><span style="text-transform: capitalize" data-i18n={`color.${row.gel.name.toLowerCase()}`}>{row.gel.name}</span><span data-i18n="sc.gelWord"> gel</span></strong>
                 <span class="gel-brand">{row.gel.brand}</span>
-                <p>{row.gel.note}</p>
+                <p data-i18n={`gw.gel.${row.gel.name.toLowerCase()}.n`}>{row.gel.note}</p>
               </div>
             </div>
             <div class="chart-cells">
@@ -143,7 +153,7 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
                   >
                     {cell.hex}
                   </button>
-                  <span class="cell-name">{cell.name}</span>
+                  <span class="cell-name" data-i18n="cn.nameT" data-i18n-args={JSON.stringify({ v: cell.name })}>{cell.name}</span>
                 </div>
               ))}
             </div>
@@ -156,9 +166,10 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2 data-i18n="sec.tipsH">Practical tips</h2>
     <ul class="tips">
-      {def.tips.map((t) => (
+      {def.tips.map((t, i) => (
         <li>
-          <strong>{t.title}.</strong> {t.body}
+          <strong data-i18n={`gw.${def.slug}.t${i + 1}t`}>{t.title}.</strong>{' '}
+          <span data-i18n={`gw.${def.slug}.t${i + 1}b`}>{t.body}</span>
         </li>
       ))}
     </ul>
@@ -167,10 +178,10 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
-      {def.faqs.map((f) => (
+      {def.faqs.map((f, i) => (
         <details>
-          <summary>{f.q}</summary>
-          <p>{f.a}</p>
+          <summary data-i18n={`gw.${def.slug}.f${i + 1}q`}>{f.q}</summary>
+          <p data-i18n={`gw.${def.slug}.f${i + 1}a`}>{f.a}</p>
         </details>
       ))}
     </div>
@@ -179,8 +190,8 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2 data-i18n="sec.keepH">Keep reading</h2>
     <ul class="keep-reading">
-      {def.related.slice(0, 3).map((r) => (
-        <li><a href={r.href}>{r.label}</a></li>
+      {def.related.slice(0, 3).map((r, i) => (
+        <li><a href={r.href} data-i18n={`gw.${def.slug}.r${i + 1}`}>{r.label}</a></li>
       ))}
       <li><a href="/color-guides" data-i18n="sec.allGuides">All color guides</a></li>
     </ul>

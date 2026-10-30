@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Mixer from './Mixer.astro';
 import OutfitFigure from './OutfitFigure.astro';
 import { outfitJsonLd, type OutfitView } from '../lib/outfitContent';
-import { comboReadHexes, ladderFrom } from '../lib/pairingRead';
+import { comboReadHexes, comboReadParts, ladderFrom } from '../lib/pairingRead';
 import { hexToRgb } from '../lib/color';
 import { nearestColorName } from '../lib/colorName';
 
@@ -30,17 +30,19 @@ const roleLabel: Record<string, string> = {
 
 // "Style it yourself" starter outfit: the anchor color up top, easy neutrals
 // below. Same card markup as the combos, so the swap island binds to it too.
-const studioHexes: { role: string; label: string; hex: string }[] = [
-  { role: 'top', label: `${def.baseName} top`, hex: def.baseHex },
-  { role: 'pants', label: 'charcoal trousers', hex: '#3b3936' },
-  { role: 'shoes', label: 'ivory sneakers', hex: '#f1ede6' },
-  { role: 'accent', label: 'gold pendant', hex: '#c9a24b' },
+// labelKey feeds the runtime rebuild after a swap (scripts/outfit.ts).
+const studioHexes: { role: string; label: string; labelKey: string; hex: string }[] = [
+  { role: 'top', label: `${def.baseName} top`, labelKey: `ow.${def.slug}.top`, hex: def.baseHex },
+  { role: 'pants', label: 'charcoal trousers', labelKey: 'of.stPants', hex: '#3b3936' },
+  { role: 'shoes', label: 'ivory sneakers', labelKey: 'of.stShoes', hex: '#f1ede6' },
+  { role: 'accent', label: 'gold pendant', labelKey: 'of.stAcc', hex: '#c9a24b' },
 ];
 const studioItems = studioHexes.map((it) => ({
   ...it,
   name: nearestColorName(hexToRgb(it.hex)).name,
 }));
 const studioRead = comboReadHexes(studioItems);
+const studioParts = comboReadParts(studioItems);
 const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
 ---
 
@@ -58,7 +60,7 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
       <span data-i18n={`guide.${def.slug}`}>{def.h1}</span>
     </p>
     <h1 data-i18n={`guide.${def.slug}`}>{def.h1}</h1>
-    <p class="lead">{def.lead}</p>
+    <p class="lead" data-i18n={`ow.${def.slug}.lead`}>{def.lead}</p>
 
     <div class="hero-answer" aria-label="The anchor color at a glance" data-i18n-aria="a11y.anchor">
       <span class="hero-swatches" aria-hidden="true">
@@ -66,7 +68,7 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
         <span class="hero-plus">+</span>
         {v.heroStrip.slice(1).map((h) => <span style={`background:${h}`}></span>)}
       </span>
-      <strong>{def.baseName}</strong>
+      <strong data-i18n={`ow.${def.slug}.base`}>{def.baseName}</strong>
       <code>{def.baseHex}</code>
     </div>
   </section>
@@ -76,13 +78,15 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   </div>
 
   <section class="prose no-print" style="margin-top: var(--sp-6);">
-    <h2>{def.introHeading}</h2>
-    {def.intro.map((p) => <p>{p}</p>)}
+    <h2 data-i18n={`ow.${def.slug}.introH`}>{def.introHeading}</h2>
+    {def.intro.map((p, i) => (
+      <p data-i18n={`ow.${def.slug}.i${i + 1}`}>{p}</p>
+    ))}
   </section>
 
   <section class="combos-section" style="margin-top: var(--sp-6);">
     <div class="combos-head no-print">
-      <h2>{def.combosHeading}</h2>
+      <h2 data-i18n={`ow.${def.slug}.combosH`}>{def.combosHeading}</h2>
       <p data-i18n="of.combosP">
         Each card shows the outfit on a figure, the exact swatches with copyable HEX codes, and a
         computed read-out: the Oklab lightness gap and hue relation between the anchor piece and
@@ -96,15 +100,20 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
     </div>
 
     <div class="combos">
-      {v.combos.map((c) => (
+      {v.combos.map((c, k) => (
         <article class="combo-card">
           <OutfitFigure items={c.items} />
           <div class="combo-body">
-            <h3>{c.name}</h3>
-            <p class="combo-scene">{c.scene}</p>
+            <h3 data-i18n={`ow.${def.slug}.cb${k + 1}n`}>{c.name}</h3>
+            <p class="combo-scene" data-i18n={`ow.${def.slug}.cb${k + 1}sc`}>{c.scene}</p>
             <ul class="combo-swatches">
               {c.items.map((it, i) => (
-                <li data-index={i} data-role={it.role} data-label={it.label}>
+                <li
+                  data-index={i}
+                  data-role={it.role}
+                  data-label={it.label}
+                  data-label-key={`ow.${def.slug}.cb${k + 1}it${i + 1}`}
+                >
                   <button
                     type="button"
                     class="combo-swatch"
@@ -119,9 +128,12 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
                   <span class="combo-meta">
                     <span class="combo-role" data-i18n={`role.${it.role}`}>{roleLabel[it.role] ?? it.role}</span>
                     <span class="combo-label">
-                      {it.label}
+                      <span data-i18n={`ow.${def.slug}.cb${k + 1}it${i + 1}`}>{it.label}</span>
                       {!it.label.toLowerCase().includes(it.name.toLowerCase()) && (
-                        <em> · {it.name}</em>
+                        <em>
+                          {' · '}
+                          <span data-i18n="cn.nameT" data-i18n-args={JSON.stringify({ v: it.name })}>{it.name}</span>
+                        </em>
                       )}
                     </span>
                     <button
@@ -138,8 +150,8 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
                 </li>
               ))}
             </ul>
-            <p class="combo-note">{c.note}</p>
-            <p class="combo-read">{c.read}</p>
+            <p class="combo-note" data-i18n={`ow.${def.slug}.cb${k + 1}o`}>{c.note}</p>
+            <p class="combo-read" data-i18n="of.readT" data-i18n-args={JSON.stringify(comboReadParts(c.items))}>{c.read}</p>
             <div class="combo-ladder" aria-hidden="true">
               {c.ladder.map((h) => <span style={`background:${h}`}></span>)}
             </div>
@@ -163,7 +175,12 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
         <p class="combo-scene" data-i18n="of.studioH">Style it yourself</p>
         <ul class="combo-swatches">
           {studioItems.map((it, i) => (
-            <li data-index={i} data-role={it.role} data-label={it.label}>
+            <li
+              data-index={i}
+              data-role={it.role}
+              data-label={it.label}
+              data-label-key={it.labelKey}
+            >
               <button
                 type="button"
                 class="combo-swatch"
@@ -178,8 +195,13 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
               <span class="combo-meta">
                 <span class="combo-role" data-i18n={`role.${it.role}`}>{roleLabel[it.role] ?? it.role}</span>
                 <span class="combo-label">
-                  {it.label}
-                  {!it.label.toLowerCase().includes(it.name.toLowerCase()) && <em> · {it.name}</em>}
+                  <span data-i18n={it.labelKey}>{it.label}</span>
+                  {!it.label.toLowerCase().includes(it.name.toLowerCase()) && (
+                    <em>
+                      {' · '}
+                      <span data-i18n="cn.nameT" data-i18n-args={JSON.stringify({ v: it.name })}>{it.name}</span>
+                    </em>
+                  )}
                 </span>
                 <button
                   type="button"
@@ -195,7 +217,7 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
             </li>
           ))}
         </ul>
-        <p class="combo-read">{studioRead}</p>
+        <p class="combo-read" data-i18n="of.readT" data-i18n-args={JSON.stringify(studioParts)}>{studioRead}</p>
         <div class="combo-ladder" aria-hidden="true">
           {studioLadder.map((h) => <span style={`background:${h}`}></span>)}
         </div>
@@ -210,23 +232,30 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
       question. Ladders show the Oklab blend between the first three colors.
     </p>
     <div class="decor-grid">
-      {v.decor.map((d) => (
+      {v.decor.map((d, m) => (
         <article class="decor-card">
-          <h3>{d.name}</h3>
+          <h3 data-i18n={`ow.${def.slug}.dc${m + 1}n`}>{d.name}</h3>
           <div class="decor-swatches">
-            {d.colors.map((col) => (
-              <span class="decor-swatch" style={`background:${col.hex}`} title={col.label}>
+            {d.colors.map((col, j) => (
+              <span
+                class="decor-swatch"
+                style={`background:${col.hex}`}
+                title={col.label}
+                data-i18n-title={`ow.${def.slug}.dc${m + 1}c${j + 1}`}
+              >
                 <span class="decor-hex">{col.hex}</span>
               </span>
             ))}
           </div>
           <ul class="decor-labels">
-            {d.colors.map((col) => <li>{col.label}</li>)}
+            {d.colors.map((col, j) => (
+              <li data-i18n={`ow.${def.slug}.dc${m + 1}c${j + 1}`}>{col.label}</li>
+            ))}
           </ul>
           <div class="combo-ladder" aria-hidden="true">
             {d.ladder.map((h) => <span style={`background:${h}`}></span>)}
           </div>
-          <p class="decor-note">{d.note}</p>
+          <p class="decor-note" data-i18n={`ow.${def.slug}.dc${m + 1}o`}>{d.note}</p>
         </article>
       ))}
     </div>
@@ -235,16 +264,16 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2 data-i18n="of.avoidH">What doesn’t go with it</h2>
     <div class="avoid-grid">
-      {v.avoid.map((a) => (
+      {v.avoid.map((a, n) => (
         <article class="avoid-card">
           <div class="avoid-head">
             <span class="avoid-swatch" style={`background:${a.hex}`} aria-hidden="true"></span>
             <div>
-              <h3>{a.name}</h3>
+              <h3 data-i18n={`ow.${def.slug}.av${n + 1}n`}>{a.name}</h3>
               <code>{a.hex}</code>
             </div>
           </div>
-          <p>{a.why}</p>
+          <p data-i18n={`ow.${def.slug}.av${n + 1}w`}>{a.why}</p>
         </article>
       ))}
     </div>
@@ -253,9 +282,10 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   <section class="prose no-print" style="margin-top: var(--sp-6);">
     <h2 data-i18n="sec.tipsH">Practical tips</h2>
     <ul class="tips">
-      {def.tips.map((t) => (
+      {def.tips.map((t, i) => (
         <li>
-          <strong>{t.title}.</strong> {t.body}
+          <strong data-i18n={`ow.${def.slug}.t${i + 1}t`}>{t.title}.</strong>{' '}
+          <span data-i18n={`ow.${def.slug}.t${i + 1}b`}>{t.body}</span>
         </li>
       ))}
     </ul>
@@ -264,10 +294,10 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   <section class="prose no-print" style="margin-top: var(--sp-6);">
     <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
-      {def.faqs.map((f) => (
+      {def.faqs.map((f, i) => (
         <details>
-          <summary>{f.q}</summary>
-          <p>{f.a}</p>
+          <summary data-i18n={`ow.${def.slug}.f${i + 1}q`}>{f.q}</summary>
+          <p data-i18n={`ow.${def.slug}.f${i + 1}a`}>{f.a}</p>
         </details>
       ))}
     </div>
@@ -276,8 +306,8 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   <section class="prose no-print" style="margin-top: var(--sp-6);">
     <h2 data-i18n="sec.keepH">Keep reading</h2>
     <ul class="keep-reading">
-      {def.related.slice(0, 3).map((r) => (
-        <li><a href={r.href}>{r.label}</a></li>
+      {def.related.slice(0, 3).map((r, i) => (
+        <li><a href={r.href} data-i18n={`ow.${def.slug}.r${i + 1}`}>{r.label}</a></li>
       ))}
       <li><a href="/color-guides" data-i18n="sec.allGuides">All color guides</a></li>
     </ul>

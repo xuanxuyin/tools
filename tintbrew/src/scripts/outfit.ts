@@ -8,7 +8,8 @@
  */
 import { hexToRgb, normalizeHex } from '../lib/color';
 import { nearestColorName } from '../lib/colorName';
-import { comboReadHexes, ladderFrom } from '../lib/pairingRead';
+import { comboReadParts, ladderFrom } from '../lib/pairingRead';
+import { t, tArgs, tg } from './i18n';
 
 const PRESET_CAP = 18;
 
@@ -79,7 +80,7 @@ class OutfitCard {
       chip.dataset.preset = hex;
       chip.style.background = hex;
       chip.title = hex;
-      chip.setAttribute('aria-label', `Use ${hex}`);
+      chip.setAttribute('aria-label', tArgs('of.pickerUse', { h: hex }));
       picker.appendChild(chip);
     }
 
@@ -89,9 +90,9 @@ class OutfitCard {
     input.type = 'color';
     input.dataset.custom = '';
     input.value = '#808080';
-    input.setAttribute('aria-label', 'Pick a custom color');
+    input.setAttribute('aria-label', t('of.pickerCustomAria'));
     customLabel.appendChild(input);
-    customLabel.append('custom');
+    customLabel.append(t('of.pickerCustom'));
     picker.appendChild(customLabel);
 
     li.appendChild(picker);
@@ -108,24 +109,41 @@ class OutfitCard {
     const chip = li.querySelector<HTMLElement>('.combo-swatch');
     if (chip) chip.style.background = hex;
 
+    // advisory label, rebuilt in the CURRENT language; the new nodes carry
+    // their i18n keys (+ pre-seeded data-i18n-en) so a later language
+    // switch still finds and re-translates them
+    const label = li.dataset.label ?? '';
+    const labelKey = li.dataset.labelKey ?? '';
+    const displayLabel = labelKey ? tg(labelKey, label) : label;
+    const labelEl = li.querySelector('.combo-label');
+    if (labelEl) {
+      const name = nearestColorName(hexToRgb(hex)).name;
+      labelEl.replaceChildren();
+      const text = document.createElement('span');
+      if (labelKey) {
+        text.dataset.i18n = labelKey;
+        text.dataset.i18nEn = label;
+      }
+      text.textContent = displayLabel;
+      labelEl.appendChild(text);
+      if (!label.toLowerCase().includes(name.toLowerCase())) {
+        const em = document.createElement('em');
+        em.append(' · ');
+        const nm = document.createElement('span');
+        nm.dataset.i18n = 'cn.nameT';
+        nm.dataset.i18nArgs = JSON.stringify({ v: name });
+        nm.textContent = tArgs('cn.nameT', { v: name });
+        em.appendChild(nm);
+        labelEl.appendChild(em);
+      }
+    }
+
     const hexBtn = li.querySelector<HTMLButtonElement>('.combo-hex');
     if (hexBtn) {
       hexBtn.textContent = hex;
       hexBtn.dataset.copy = hex;
-      hexBtn.setAttribute('aria-label', `Copy ${li.dataset.label ?? 'item'} hex code`);
-    }
-
-    // advisory nearest-name sublabel, same dedup rule as the template
-    const label = li.dataset.label ?? '';
-    const labelEl = li.querySelector('.combo-label');
-    if (labelEl) {
-      const name = nearestColorName(hexToRgb(hex)).name;
-      labelEl.replaceChildren(label);
-      if (!label.toLowerCase().includes(name.toLowerCase())) {
-        const em = document.createElement('em');
-        em.textContent = ` · ${name}`;
-        labelEl.appendChild(em);
-      }
+      hexBtn.dataset.i18nArgs = JSON.stringify({ label: displayLabel });
+      hexBtn.setAttribute('aria-label', tArgs('of.copyAria', { label: displayLabel }));
     }
 
     // the figure: every part tagged with this role takes the new color
@@ -137,7 +155,11 @@ class OutfitCard {
     }
 
     const read = this.card.querySelector<HTMLElement>('.combo-read');
-    if (read) read.textContent = comboReadHexes(this.hexes);
+    if (read) {
+      const parts = { ...comboReadParts(this.hexes) };
+      read.dataset.i18nArgs = JSON.stringify(parts);
+      read.textContent = tArgs('of.readT', parts);
+    }
 
     const ladder = this.card.querySelector<HTMLElement>('.combo-ladder');
     if (ladder) {

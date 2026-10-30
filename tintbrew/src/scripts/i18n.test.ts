@@ -15,6 +15,11 @@ import { BEAD_PATTERNS } from '../data/beadPatterns';
 import { parseTagline } from '../lib/beadContent';
 import { BEAD_COLORS as PALETTE_LINE } from '../lib/beadPalette';
 import { BEAD_NAMES, BEAD_COLORS } from '../data/beadI18n';
+import { GUIDE_TEXTS } from '../data/guideTexts';
+import { COLOR_NAMES } from '../data/colorNamesI18n';
+import { namedColors } from '../lib/colorName';
+import { scenarioContents } from '../lib/scenarioContent';
+import { outfitContents } from '../lib/outfitContent';
 
 const dist = resolve(fileURLToPath(import.meta.url), '../../../dist');
 const readPage = (rel: string) => readFileSync(resolve(dist, rel), 'utf8');
@@ -35,6 +40,10 @@ async function loadPage(rel: string, stored?: string) {
   const mod = await import('./i18n');
   return { window, document: document as unknown as Document, mod };
 }
+
+// script detection shared by the dictionary and guide sweeps below
+const HAN = /[一-鿿，。！？；：·（）“”——…]/;
+const HANGUL = /[가-힯]/;
 
 describe('uiStrings dictionary', () => {
   it('every key exists in all three languages, non-empty', () => {
@@ -64,11 +73,10 @@ describe('uiStrings dictionary', () => {
     // identity templates — the translation happens on the {arg}, not the string
     'bs.nameT',
     'bs.colT',
+    'cn.nameT',
     // ko tail sentence is a bare period (zh '。' carries full-width punctuation)
     'pat.fa3b',
   ]);
-  const HAN = /[一-鿿，。！？；：·（）“”——…]/;
-  const HANGUL = /[가-힯]/;
 
   it('zh values carry Han characters (no English leaks)', () => {
     const leaks = Object.keys(UI_STRINGS.zh).filter(
@@ -180,6 +188,214 @@ describe('bead i18n coverage', () => {
         expect(BEAD_COLORS.ko[r.label.toLowerCase()], `${p.slug}:${r.label}`).toBeTruthy();
       }
     }
+  });
+});
+
+/** Guide long-copy dictionaries (user call, 2026-10-30: no half-translated
+ *  batches, no deferrals — scenario 14 + outfit 4 pages get full zh/ko
+ *  prose). The English side is GENERATED here from the same data files the
+ *  templates render, so the dictionaries can never drift from the page
+ *  content: a new method, tip or FAQ without its zh/ko rows fails here. */
+describe('guide long-copy dictionaries', () => {
+  function guideEn(): Record<string, string> {
+    const en: Record<string, string> = {};
+    for (const c of scenarioContents) {
+      const d = c.def;
+      const p = `gw.${d.slug}.`;
+      en[`${p}lead`] = d.lead;
+      en[`${p}introH`] = d.introHeading;
+      d.intro.forEach((s, i) => (en[`${p}i${i + 1}`] = s));
+      en[`${p}listH`] = d.listHeading;
+      en[`${p}${c.chart ? 'hero' : 'ans'}`] = c.heroLabel;
+      (d.methods ?? []).forEach((m, i) => {
+        const q = `${p}m${i + 1}`;
+        en[`${q}n`] = m.name;
+        en[`${q}s`] = m.summary;
+        m.mix.forEach((part, j) => (en[`${q}c${j + 1}`] = part.label));
+        en[`${q}o`] = m.note;
+      });
+      if (d.chart) {
+        d.chartIntro.forEach((s, i) => (en[`${p}ci${i + 1}`] = s));
+        en[`${p}base`] = d.chart.baseName;
+        en[`${p}baseB`] = d.chart.baseBlurb;
+        for (const gel of d.chart.gels) en[`gw.gel.${gel.name.toLowerCase()}.n`] = gel.note;
+      }
+      d.tips.forEach((t, i) => {
+        // the template bakes the trailing period into the tagged <strong>
+        en[`${p}t${i + 1}t`] = `${t.title}.`;
+        en[`${p}t${i + 1}b`] = t.body;
+      });
+      d.faqs.forEach((f, i) => {
+        en[`${p}f${i + 1}q`] = f.q;
+        en[`${p}f${i + 1}a`] = f.a;
+      });
+      d.related.forEach((r, i) => (en[`${p}r${i + 1}`] = r.label));
+    }
+    for (const v of outfitContents) {
+      const d = v.def;
+      const p = `ow.${d.slug}.`;
+      en[`${p}lead`] = d.lead;
+      en[`${p}introH`] = d.introHeading;
+      d.intro.forEach((s, i) => (en[`${p}i${i + 1}`] = s));
+      en[`${p}combosH`] = d.combosHeading;
+      en[`${p}base`] = d.baseName;
+      en[`${p}top`] = `${d.baseName} top`;
+      d.combos.forEach((c, k) => {
+        const q = `${p}cb${k + 1}`;
+        en[`${q}n`] = c.name;
+        en[`${q}sc`] = c.scene;
+        c.items.forEach((it, j) => (en[`${q}it${j + 1}`] = it.label));
+        en[`${q}o`] = c.note;
+      });
+      d.decor.forEach((dc, m) => {
+        const q = `${p}dc${m + 1}`;
+        en[`${q}n`] = dc.name;
+        dc.colors.forEach((col, j) => (en[`${q}c${j + 1}`] = col.label));
+        en[`${q}o`] = dc.note;
+      });
+      d.avoid.forEach((a, n) => {
+        en[`${p}av${n + 1}n`] = a.name;
+        en[`${p}av${n + 1}w`] = a.why;
+      });
+      d.tips.forEach((t, i) => {
+        en[`${p}t${i + 1}t`] = `${t.title}.`;
+        en[`${p}t${i + 1}b`] = t.body;
+      });
+      d.faqs.forEach((f, i) => {
+        en[`${p}f${i + 1}q`] = f.q;
+        en[`${p}f${i + 1}a`] = f.a;
+      });
+      d.related.forEach((r, i) => (en[`${p}r${i + 1}`] = r.label));
+    }
+    return en;
+  }
+
+  it('zh/ko key sets mirror the en generator exactly (no missing, no stale)', () => {
+    const en = guideEn();
+    expect(Object.keys(en).length).toBeGreaterThan(1000);
+    for (const [k, v] of Object.entries(en)) expect(v, k).toBeTruthy();
+    expect(new Set(Object.keys(GUIDE_TEXTS.zh))).toEqual(new Set(Object.keys(en)));
+    expect(new Set(Object.keys(GUIDE_TEXTS.ko))).toEqual(new Set(Object.keys(en)));
+  });
+
+  it('every zh value carries Han, every ko value carries Hangul', () => {
+    const zhLeaks = Object.entries(GUIDE_TEXTS.zh).filter(([, v]) => !HAN.test(v));
+    expect(zhLeaks.map(([k]) => k)).toEqual([]);
+    const koLeaks = Object.entries(GUIDE_TEXTS.ko).filter(([, v]) => !HANGUL.test(v));
+    expect(koLeaks.map(([k]) => k)).toEqual([]);
+  });
+
+  it('COLOR_NAMES covers every named engine color (result names + cell names)', () => {
+    expect(namedColors.length).toBe(117);
+    for (const n of namedColors) {
+      expect(COLOR_NAMES.zh[n.name.toLowerCase()], n.name).toBeTruthy();
+      expect(COLOR_NAMES.ko[n.name.toLowerCase()], n.name).toBeTruthy();
+    }
+  });
+});
+
+/** Batch 6 dist sweep (user call, 2026-10-30): the scenario and outfit
+ *  templates now swap their FULL prose — lead, answer, methods, chips,
+ *  chart copy, read sentences, decor, avoid, tips, FAQ, related — and a
+ *  round trip back to English restores the SSR text byte-for-byte. */
+describe('guide long-copy switch over dist pages', () => {
+  it('what-colors-make-brown (method page): full chain swaps in zh + round trip', async () => {
+    const { document, mod } = await loadPage('what-colors-make-brown/index.html');
+    const leadEn = document.querySelector('.lead')?.textContent;
+    const tipEn = document.querySelector('.tips strong')?.textContent;
+    mod.setLang('zh');
+    expect(document.querySelector('.lead')?.textContent).toContain('棕色不是颜色调浑时的意外');
+    expect(document.querySelector('.hero-answer strong')?.textContent).toBe('暖栗棕色');
+    expect(document.querySelector('[data-i18n="gw.what-colors-make-brown.introH"]')?.textContent).toBe(
+      '为什么这么多颜色都能调出棕色',
+    );
+    expect(document.querySelector('[data-i18n="gw.what-colors-make-brown.i1"]')?.textContent).toContain(
+      '棕色并不占一个位置',
+    );
+    expect(document.querySelector('[data-i18n="gw.what-colors-make-brown.m1n"]')?.textContent).toBe('红 + 绿');
+    expect(document.querySelector('[data-i18n="gw.what-colors-make-brown.m1s"]')?.textContent).toContain('经典答案');
+    expect(document.querySelector('[data-i18n="gw.what-colors-make-brown.m1c1"]')?.textContent).toBe('红');
+    // guide key on an attribute: the chip tooltip swaps too
+    expect(document.querySelector('.method-chip')?.getAttribute('title')).toBe('红');
+    expect(document.querySelector('[data-i18n="gw.what-colors-make-brown.m1o"]')?.textContent).toContain('主力棕色');
+    // method result names ride the COLOR_NAMES chain (cn.nameT identity + args)
+    const results = [...document.querySelectorAll('.result-meta strong')].map((s) => s.textContent ?? '');
+    expect(results.length).toBe(5);
+    expect(results.every((s) => /[一-鿿]/.test(s))).toBe(true);
+    // tip title keeps its baked-in trailing 。; FAQ + related fully Chinese
+    expect(document.querySelector('.tips strong')?.textContent).toBe('暖棕与冷棕。');
+    expect(document.querySelector('.faq')?.textContent).toContain('哪两种颜色能调出棕色？');
+    expect(document.querySelector('.keep-reading')?.textContent).toContain('红配绿：经典棕色，每种比例');
+    // round trip: lead and tip restore the SSR text exactly
+    mod.setLang('en');
+    expect(document.querySelector('.lead')?.textContent).toBe(leadEn);
+    expect(document.querySelector('.tips strong')?.textContent).toBe(tipEn);
+    // the ko side of the same chain (guide dictionaries verified as key sets
+    // above; this pins the swap path end-to-end in Korean too)
+    mod.setLang('ko');
+    expect(document.querySelector('.hero-answer strong')?.textContent).toBe('따뜻한 밤나무 갈색');
+    expect(document.querySelector('[data-i18n="gw.what-colors-make-brown.m1n"]')?.textContent).toBe(
+      '빨강 + 초록',
+    );
+    expect(document.querySelector('.tips strong')?.textContent).toBe('따뜻한 갈색 vs 차가운 갈색.');
+  });
+
+  it('icing-color-chart (chart page): hero/chart copy/gel note/cell names swap + round trip', async () => {
+    const { document, mod } = await loadPage('icing-color-chart/index.html');
+    const heroEn = document.querySelector('.hero-answer strong')?.textContent;
+    mod.setLang('zh');
+    expect(document.querySelector('.hero-answer strong')?.textContent).toBe('白色皇家糖霜里加 4 滴红色凝胶');
+    expect(document.querySelector('[data-i18n="gw.icing-color-chart.ci1"]')?.textContent).toContain(
+      '凝胶是浓缩膏',
+    );
+    expect(document.querySelector('[data-i18n="gw.icing-color-chart.base"]')?.textContent).toBe('白色皇家糖霜');
+    expect(document.querySelector('[data-i18n="gw.icing-color-chart.baseB"]')?.textContent).toContain('香草皇家糖霜');
+    expect(document.querySelector('[data-i18n="gw.gel.red.n"]')?.textContent).toContain('深红靠的是静置时间');
+    // every chart cell's nearest-name rides COLOR_NAMES
+    const cells = [...document.querySelectorAll('.cell-name')].map((c) => c.textContent ?? '');
+    expect(cells.length).toBeGreaterThan(30);
+    expect(cells.every((s) => /[一-鿿]/.test(s))).toBe(true);
+    // the gel name takes color.* — zh shows 红, CSS keeps en capitalized
+    expect(document.querySelector('.chart-gel strong span')?.textContent).toBe('红');
+    mod.setLang('en');
+    expect(document.querySelector('.hero-answer strong')?.textContent).toBe(heroEn);
+    expect(document.querySelector('.chart-gel strong span')?.textContent).toBe('red');
+  });
+
+  it('what-colors-go-with-brown (outfit page): cards/decor/avoid/read sentence swap + read round trip', async () => {
+    const { document, mod } = await loadPage('what-colors-go-with-brown/index.html');
+    const readEn = document.querySelector('.combo-read')?.textContent;
+    mod.setLang('zh');
+    expect(document.querySelector('.lead')?.textContent).toContain('十套穿搭');
+    expect(document.querySelector('.hero-answer strong')?.textContent).toBe('栗棕色');
+    // studio anchor label rides ow.<slug>.top
+    expect(document.querySelector('[data-i18n="ow.what-colors-go-with-brown.top"]')?.textContent).toBe('栗棕色上衣');
+    expect(document.querySelector('[data-i18n="ow.what-colors-go-with-brown.cb1n"]')?.textContent).toBe(
+      '日晒棕休闲裤、白T、棕色乐福鞋',
+    );
+    // the computed read sentence fills color names + pr.* enums per language
+    const read = document.querySelector('.combo-read')?.textContent ?? '';
+    expect(read).toMatch(/^Oklab 读数：.+亮度差/);
+    expect(read).toContain('对比');
+    // all 11 cards (10 combos + studio): title, scene, note, read all Chinese
+    const cards = [...document.querySelectorAll('.combo-card')];
+    expect(cards.length).toBe(11);
+    for (const card of cards) {
+      expect(card.querySelector('h3')?.textContent ?? '').toMatch(/[一-鿿]/);
+      const note = card.querySelector('.combo-note');
+      if (note) expect(note.textContent ?? '').toMatch(/[一-鿿]/);
+      expect(card.querySelector('.combo-read')?.textContent ?? '').toMatch(/[一-鿿]/);
+    }
+    // decor / avoid / faq
+    expect(document.querySelector('[data-i18n="ow.what-colors-go-with-brown.dc1n"]')?.textContent).toBe(
+      '皮革、奶油、橄榄',
+    );
+    expect(document.querySelector('.avoid-card h3')?.textContent).toBe('亮橙');
+    expect(document.querySelector('.avoid-card p')?.textContent).toMatch(/[一-鿿]/);
+    expect(document.querySelector('.faq')?.textContent).toMatch(/[一-鿿]/);
+    // round trip: the read restores the exact SSR sentence (numbers included)
+    mod.setLang('en');
+    expect(document.querySelector('.combo-read')?.textContent).toBe(readEn);
   });
 });
 

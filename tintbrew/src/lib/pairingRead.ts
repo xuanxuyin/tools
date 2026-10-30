@@ -9,6 +9,7 @@
  */
 import { hexToRgb, mixSteps, rgbToHex, rgbToOklab, type RGB } from './color';
 import { nearestColorName } from './colorName';
+import { UI_STRINGS, type UiKey } from '../data/uiStrings';
 
 export function oklabHue(hex: string): number {
   const { a, b } = rgbToOklab(hexToRgb(hex));
@@ -47,12 +48,29 @@ function gapWord(gap: number): string {
   return 'low';
 }
 
-/**
- * The one-sentence "why it works" line: anchor vs its furthest partner in
- * lightness. Accepts bare hex strings (client island) or `{ hex }` items
- * (build-time combo data) so both sides share one implementation.
- */
-export function comboReadHexes(items: readonly ({ hex: string } | string)[]): string {
+/** Structured parts of the why-line, for the i18n template (`of.readT`).
+ *  `word` and `rel` carry dictionary keys (pr.high… / pr.relN…) so the
+ *  template's fillArgs resolves them per language; `a`/`b` are lowercase
+ *  color names that resolve through the COLOR_NAMES chain. */
+export interface ComboReadParts {
+  a: string;
+  la: string;
+  b: string;
+  lb: string;
+  gap: string;
+  word: string;
+  rel: string;
+}
+
+/** pairingRelation phrases → the pr.* keys that translate them. */
+const REL_KEY: Record<string, UiKey> = {
+  'a neutral anchoring the color': 'pr.relN',
+  'a same-family hue echo': 'pr.relEcho',
+  'an opposite-hue contrast': 'pr.relOpp',
+  'a balanced mid-wheel contrast': 'pr.relMid',
+};
+
+export function comboReadParts(items: readonly ({ hex: string } | string)[]): ComboReadParts {
   const hexOf = (x: { hex: string } | string) => (typeof x === 'string' ? x : x.hex);
   const anchor = hexOf(items[0]!);
   let partner = items.length > 1 ? hexOf(items[1]!) : anchor;
@@ -67,9 +85,27 @@ export function comboReadHexes(items: readonly ({ hex: string } | string)[]): st
   const la = oklabLightness(anchor);
   const lp = oklabLightness(partner);
   const lower = (hex: string) => nearestColorName(hexToRgb(hex)).name.toLowerCase();
+  return {
+    a: lower(anchor),
+    la: la.toFixed(2),
+    b: lower(partner),
+    lb: lp.toFixed(2),
+    gap: maxGap.toFixed(2),
+    word: gapWord(maxGap),
+    rel: REL_KEY[pairingRelation(anchor, partner)] ?? 'pr.relMid',
+  };
+}
+
+/**
+ * The one-sentence "why it works" line: anchor vs its furthest partner in
+ * lightness. Accepts bare hex strings (client island) or `{ hex }` items
+ * (build-time combo data) so both sides share one implementation.
+ */
+export function comboReadHexes(items: readonly ({ hex: string } | string)[]): string {
+  const p = comboReadParts(items);
   return (
-    `Oklab read: ${lower(anchor)} (L ${la.toFixed(2)}) vs ${lower(partner)} (L ${lp.toFixed(2)}) — ` +
-    `a ${maxGap.toFixed(2)} lightness gap (${gapWord(maxGap)} contrast), ${pairingRelation(anchor, partner)}.`
+    `Oklab read: ${p.a} (L ${p.la}) vs ${p.b} (L ${p.lb}) — ` +
+    `a ${p.gap} lightness gap (${p.word} contrast), ${UI_STRINGS.en[p.rel]}.`
   );
 }
 
