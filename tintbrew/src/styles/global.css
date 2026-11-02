@@ -795,6 +795,7 @@ input[type='range']::-moz-range-thumb {
   font-size: 0.85rem;
 }
 .gal-thumb {
+  aspect-ratio: 1 / 1; /* one uniform frame — mixed-size boards letterbox inside */
   padding: 6px;
   background: #f7f5f1;
   border: 1px solid var(--border);
@@ -804,7 +805,7 @@ input[type='range']::-moz-range-thumb {
 .gal-thumb svg {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 .gal-rank {
   position: absolute;
@@ -925,6 +926,11 @@ input[type='range']::-moz-range-thumb {
   flex: 0 0 auto;
   font-size: 0.8rem;
   color: var(--muted);
+}
+/* the byline shrinks with ellipsis — a long nick must not push the likes out */
+.gal-minimeta .gal-nick {
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 /* --------------------------------------------------------------------------

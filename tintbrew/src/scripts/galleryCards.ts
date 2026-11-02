@@ -19,10 +19,12 @@ export interface GalleryPiece {
   hidden?: boolean;
 }
 
-/** Pegboard thumbnail — the SVG scales to the card width. */
+/** Pegboard thumbnail. Aspect ratio is NOT inline — every card gets the
+ *  same square frame from CSS, so a mixed-size top-10 reads as one even
+ *  grid (the SVG letterboxes inside, centered). */
 export function thumbHtml(p: GalleryPiece): string {
   const svg = buildBoardSvg({ cols: p.width, rows: p.height, cells: p.cells });
-  return `<div class="gal-thumb" style="aspect-ratio:${p.width}/${p.height}">${svg}</div>`;
+  return `<div class="gal-thumb">${svg}</div>`;
 }
 
 /** Byline: "by BeadFan42" (the "by" word translates, the nick never does). */
@@ -58,7 +60,8 @@ export function cardHtml(p: GalleryPiece, rank: number | null): string {
 }
 
 /** Mini card for the home-page top 10 — no buttons, whole card is the
- *  link into the gallery. */
+ *  link into the gallery. Still carries the byline: authors show up
+ *  everywhere their work does. */
 export function miniCardHtml(p: GalleryPiece, rank: number): string {
   return (
     `<li class="gal-mini">` +
@@ -66,6 +69,7 @@ export function miniCardHtml(p: GalleryPiece, rank: number): string {
     rankHtml(rank) +
     thumbHtml(p) +
     `<div class="gal-minimeta"><strong>${escapeHtml(p.name)}</strong>` +
+    bylineHtml(p.nick) +
     `<span class="gal-minilikes"><span class="gal-heart" aria-hidden="true">♥</span> ${p.likes}</span></div>` +
     `</a></li>`
   );

@@ -303,6 +303,10 @@ describe('home-page top-10 block (dist/index.html)', () => {
     const minis = doc.querySelectorAll('[data-home-gallery-list] .gal-mini');
     expect(minis).toHaveLength(2);
     expect(minis[0]!.querySelector('a')?.getAttribute('href')).toBe('/gallery/');
+    // every card shows its author…
+    expect(minis[0]!.querySelector('.gal-nick')?.textContent).toContain('Ann');
+    // …and thumbnails share one uniform square frame (no per-piece inline ratio)
+    expect(minis[0]!.querySelector('.gal-thumb')?.getAttribute('style')).toBeNull();
     expect(doc.querySelector('[data-home-gallery] [data-gal-like]')).toBeNull();
   });
 
