@@ -10,7 +10,7 @@
  * is spent.
  */
 import type { GalleryPiece } from './galleryCards';
-import { miniCardHtml } from './galleryCards';
+import { applyLikedState, likeFeedback, miniCardHtml, rememberLiked } from './galleryCards';
 import { galleryUuid, markVoted, votedThisHour } from './deviceId';
 import { t } from './i18n';
 
@@ -40,6 +40,8 @@ if (zone && listEl) {
         if (res.ok) {
           const count = btn.querySelector('[data-gal-likes]');
           if (count) count.textContent = String(Number(count.textContent ?? '0') + 1);
+          likeFeedback(btn);
+          rememberLiked(pieceId);
           markVoted();
           disablePills(listEl);
         } else if (res.status === 429) {
@@ -62,6 +64,7 @@ if (zone && listEl) {
       if (!Array.isArray(data.pieces) || !data.pieces.length) return;
       listEl.innerHTML = data.pieces.map((p, i) => miniCardHtml(p, i + 1)).join('');
       zone.hidden = false;
+      applyLikedState(listEl);
       if (votedThisHour()) disablePills(listEl);
     } catch {
       /* gallery unreachable — the home page simply stays without it */

@@ -833,12 +833,152 @@ input[type='range']::-moz-range-thumb {
   line-height: 0;
   filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.35));
 }
+/* Labeled spec-sheet meta ("NAME  Rainstorm" / "ARTIST  BeadFan42") —
+   a 2×2 grid keeps labels in a neat left column regardless of value
+   length. The block sits on a soft lilac wash so the card reads as two
+   layers: white artwork on top, caption plate below. */
+.gal-meta {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.55rem;
+  row-gap: 0.15rem;
+  align-items: baseline;
+}
+.gal-label {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgb(255 255 255 / 0.72);
+  border-radius: 6px;
+  padding: 0.14em 0.55em;
+}
+.gal-meta .gal-nick {
+  font-size: 0.85rem;
+}
 .gal-heart {
+  display: inline-flex;
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+.gal-heart svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.gal-like {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  padding: 0.4rem 0.95rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+.gal-like .gal-count {
+  display: inline-block;
+  min-width: 1.2em;
+  text-align: left;
+}
+.gal-like:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #f5f0ff, #fdeef6);
+  box-shadow: var(--shadow-sm);
+}
+.gal-like:hover .gal-heart {
   color: var(--accent-2);
 }
+.gal-like.is-liked .gal-heart {
+  color: var(--accent-2);
+}
+.gal-like.is-liked .gal-heart svg path {
+  fill: currentColor;
+}
+.gal-like.is-liked {
+  background: linear-gradient(135deg, #f5f0ff, #fdeef6);
+}
 .gal-like[aria-disabled='true'] {
-  opacity: 0.55;
+  opacity: 0.6;
   cursor: default;
+}
+/* One-shot celebration (galleryCards.likeFeedback): heart pop, count
+   bump, spark hearts drifting up. */
+.gal-like.is-pop .gal-heart {
+  animation: gal-pop 0.45s cubic-bezier(0.2, 2.2, 0.4, 1);
+}
+.gal-like.is-pop .gal-count {
+  animation: gal-bump 0.4s ease;
+}
+@keyframes gal-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.5) rotate(-10deg);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes gal-bump {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.gal-spark {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  color: var(--accent-2);
+  pointer-events: none;
+  animation: gal-spark 0.7s ease-out forwards;
+}
+.gal-spark svg path {
+  fill: currentColor;
+  stroke: none;
+}
+@keyframes gal-spark {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.4);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--sx, 0px)), -34px) scale(1.1) rotate(var(--sr, 0deg));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gal-like.is-pop .gal-heart,
+  .gal-like.is-pop .gal-count,
+  .gal-spark {
+    animation: none;
+  }
+  .gal-spark {
+    display: none;
+  }
 }
 .gal-report[aria-disabled='true'] {
   opacity: 0.55;
@@ -872,20 +1012,17 @@ input[type='range']::-moz-range-thumb {
   align-items: center;
   gap: var(--sp-2) var(--sp-3);
   padding: var(--sp-2) var(--sp-3);
-  border-top: 1px solid var(--border);
+  background: linear-gradient(180deg, #f8f5fd, #f2edfa);
+  border-top: 1px solid #e8e1f7;
 }
-.gal-info {
-  min-width: 0;
+.gal-cardbar .gal-meta {
   flex: 1 1 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
 }
 .gal-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .gal-nick {
   overflow: hidden;
@@ -937,6 +1074,8 @@ input[type='range']::-moz-range-thumb {
   display: grid;
   gap: 0.1rem;
   min-width: 0;
+  background: linear-gradient(180deg, #f8f5fd, #f2edfa);
+  border-top: 1px solid #e8e1f7;
 }
 .gal-mini-name {
   overflow: hidden;
@@ -945,25 +1084,19 @@ input[type='range']::-moz-range-thumb {
   font-size: 1.02rem;
 }
 .gal-minimeta .gal-nick {
-  font-size: 0.85rem;
-  padding-right: 4.5rem; /* the Like pill parks over this row's right end */
+  padding-right: 5.5rem; /* the Like pill parks over this row's right end */
 }
+/* On mini cards the pill parks bottom-right over the meta block —
+   drop its border so it reads as floating on the card surface. */
 .gal-mini .gal-like {
   position: absolute;
-  bottom: 0.5rem;
-  right: 0.55rem;
+  bottom: 0.45rem;
+  right: 0.5rem;
   z-index: 2;
-  background: rgb(255 255 255 / 0.92);
+  font-size: 0.95rem;
+  padding: 0.32rem 0.8rem;
   border: none;
-  border-radius: 999px;
-  padding: 0.28rem 0.65rem;
-  font-size: 0.85rem;
-  font-weight: 700;
   box-shadow: var(--shadow-xs);
-  color: var(--text);
-}
-.gal-mini .gal-like:hover {
-  background: #fff;
 }
 
 /* --------------------------------------------------------------------------

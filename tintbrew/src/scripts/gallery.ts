@@ -7,7 +7,7 @@
  */
 import { t } from './i18n';
 import type { UiKey } from '../data/uiStrings';
-import { cardHtml, type GalleryPiece } from './galleryCards';
+import { applyLikedState, cardHtml, likeFeedback, rememberLiked, type GalleryPiece } from './galleryCards';
 import { galleryUuid, markVoted, votedThisHour } from './deviceId';
 
 class GalleryIsland {
@@ -59,6 +59,7 @@ class GalleryIsland {
       : '';
     this.mineEl.innerHTML =
       `<h2 data-i18n="gal.mineH">${t('gal.mineH')}</h2>` + note + cardHtml(this.mine, rank >= 0 ? rank + 1 : null);
+    applyLikedState(this.mineEl);
     this.refreshVoteState();
   }
 
@@ -69,6 +70,7 @@ class GalleryIsland {
       return;
     }
     this.listEl.innerHTML = this.pieces.map((p, i) => cardHtml(p, i + 1)).join('');
+    applyLikedState(this.listEl);
     this.refreshVoteState();
   }
 
@@ -125,6 +127,8 @@ class GalleryIsland {
             if (el) el.textContent = String(total);
           });
         }
+        likeFeedback(btn);
+        rememberLiked(pieceId);
         markVoted();
         this.refreshVoteState();
       } else if (res.status === 429) {

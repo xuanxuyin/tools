@@ -136,7 +136,12 @@ describe('gallery island (real markup + stubbed API)', () => {
     // top-3 get medal SVGs (gold/silver/bronze), the rest keep the #N pill
     expect(cards[0]!.querySelector('.gal-rank-medal svg')).toBeTruthy();
     expect(cards[1]!.querySelector('.gal-rank-medal svg')).toBeTruthy();
+    // info is a labeled spec sheet: NAME / ARTIST rows
+    const labels = [...cards[0]!.querySelectorAll('.gal-label')].map((el) => el.textContent);
+    expect(labels).toEqual(['Name', 'Artist']);
     expect(cards[0]!.querySelector('.gal-name')?.textContent).toBe('Rainbow Cat');
+    // the Like button carries a real heart SVG, not a text glyph
+    expect(cards[0]!.querySelector('.gal-like .gal-heart svg')).toBeTruthy();
     expect(cards[0]!.querySelector('[data-gal-likes]')?.textContent).toBe('12');
     expect(doc.querySelector('[data-gallery-list] .gal-empty')).toBeNull();
   });
@@ -170,9 +175,24 @@ describe('gallery island (real markup + stubbed API)', () => {
     expect(window.localStorage.getItem('tb-gallery:voted-hour')).toBe(
       new Date().toISOString().slice(0, 13),
     );
+    // the like lands with a celebration: filled heart + spark burst
+    expect(like.classList.contains('is-liked')).toBe(true);
+    expect(like.querySelectorAll('.gal-spark').length).toBeGreaterThanOrEqual(1);
+    expect(window.localStorage.getItem('tb-gallery:liked-piece')).toBe('top1');
     const likes = doc.querySelectorAll('[data-gal-like]');
     expect(likes).toHaveLength(2);
     likes.forEach((b) => expect(b.getAttribute('aria-disabled')).toBe('true'));
+  });
+
+  it('a reload repaints the liked piece’s heart as filled', async () => {
+    const { window, document: doc } = await loadPage('gallery/index.html', fetchMock);
+    window.localStorage.setItem('tb-gallery:liked-piece', 'top2');
+    await import('./gallery');
+    await flush();
+    const liked = doc.querySelectorAll('[data-gallery-list] .gal-card')[1]!.querySelector('.gal-like')!;
+    expect(liked.classList.contains('is-liked')).toBe(true);
+    const other = doc.querySelectorAll('[data-gallery-list] .gal-card')[0]!.querySelector('.gal-like')!;
+    expect(other.classList.contains('is-liked')).toBe(false);
   });
 
   it('a 429 vote shows the one-per-hour note and still marks the hour spent', async () => {
@@ -345,6 +365,10 @@ describe('home-page gallery block (dist/index.html)', () => {
 
     expect(like.querySelector('[data-gal-likes]')?.textContent).toBe('10');
     expect(window.localStorage.getItem('tb-gallery:voted-hour')).toBe(new Date().toISOString().slice(0, 13));
+    // landed likes celebrate: filled heart + spark burst + remembered id
+    expect(like.classList.contains('is-liked')).toBe(true);
+    expect(like.querySelectorAll('.gal-spark').length).toBeGreaterThanOrEqual(1);
+    expect(window.localStorage.getItem('tb-gallery:liked-piece')).toBe('a');
     // both pills disabled for the rest of the hour
     const pills = doc.querySelectorAll('[data-home-gallery-list] [data-gal-like]');
     expect(pills).toHaveLength(2);
