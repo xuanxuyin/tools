@@ -84,6 +84,43 @@ function mirrored(w: number, h: number): SampleImage {
   return { data, width: w, height: h };
 }
 
+/** Left block ends at an ODD column, so the board cell straddling the seam
+ *  averages mixed pixels — the exact resampler blend the cleanup targets. */
+function offsetSplit(w: number, h: number, left: string, right: string, seam: number): SampleImage {
+  const l = hexToRgb(left);
+  const r = hexToRgb(right);
+  const data = new Uint8ClampedArray(w * h * 4);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const c = x < seam ? l : r;
+      const i = (y * w + x) * 4;
+      data[i] = c.r;
+      data[i + 1] = c.g;
+      data[i + 2] = c.b;
+      data[i + 3] = 255;
+    }
+  }
+  return { data, width: w, height: h };
+}
+
+/** Horizontal linear gradient between two hexes. */
+function hgradient(w: number, h: number, from: string, to: string): SampleImage {
+  const a = hexToRgb(from);
+  const b = hexToRgb(to);
+  const data = new Uint8ClampedArray(w * h * 4);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const t = x / (w - 1);
+      const i = (y * w + x) * 4;
+      data[i] = Math.round(a.r + (b.r - a.r) * t);
+      data[i + 1] = Math.round(a.g + (b.g - a.g) * t);
+      data[i + 2] = Math.round(a.b + (b.b - a.b) * t);
+      data[i + 3] = 255;
+    }
+  }
+  return { data, width: w, height: h };
+}
+
 describe('photoToPattern', () => {
   it('fills a solid photo with the nearest single bead', () => {
     const img = solid(40, 40, '#ff0000');
@@ -533,5 +570,35 @@ describe('photoToPattern', () => {
     const ids = new Set(out.cells);
     expect(ids.size).toBe(1);
     expect(out.cells.every((c) => c !== null)).toBe(true);
+  });
+
+  describe('blend-band cleanup (smooth mode)', () => {
+    it('a hard color seam keeps only the two field beads — no phantom third band', () => {
+      // seam inside one cell's span → the resampler averages a purple middle
+      // that the picture never had; the cleanup must fold it back into a field
+      const out = photoToPattern(offsetSplit(64, 32, '#ff0000', '#0000ff', 31), {
+        cols: 16,
+        mode: 'smooth',
+        simplify: 'keep',
+      });
+      const ids = new Set(out.cells);
+      expect(ids.size).toBe(2);
+      const mid = out.cells[4 * out.cols + 7]!;
+      const leftField = out.cells[4 * out.cols + 5]!;
+      const rightField = out.cells[4 * out.cols + 10]!;
+      expect(mid === leftField || mid === rightField).toBe(true);
+    });
+
+    it('a gradient keeps its shades — cleanup never flattens a ramp', () => {
+      const out = photoToPattern(hgradient(64, 32, '#ff0000', '#0000ff'), {
+        cols: 16,
+        mode: 'smooth',
+        simplify: 'keep',
+      });
+      const ids = new Set(out.cells);
+      expect(ids.size).toBeGreaterThanOrEqual(3);
+      // and the ramp still runs from red-ish to blue-ish across the board
+      expect(out.cells[4 * out.cols]!).not.toBe(out.cells[4 * out.cols + out.cols - 1]!);
+    });
   });
 });

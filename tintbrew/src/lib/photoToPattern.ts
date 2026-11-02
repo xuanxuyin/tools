@@ -385,6 +385,73 @@ function spread(
   }
 }
 
+/** Oklab distance between two palette beads (same metric as mergeShades). */
+function beadDist(a: BeadEntry, b: BeadEntry): number {
+  return Math.hypot(a.lab.L - b.lab.L, a.lab.a - b.lab.a, a.lab.b - b.lab.b);
+}
+
+/** Slack for the collinearity test below — the matched bead of a true mix
+ *  sits ON the p1–p2 segment (palette quantization wobbles it slightly), a
+ *  real third color sits far OFF it. Scale-free: works the same for a
+ *  red|blue seam (d≈0.28) and a red|dark-red one (d≈0.05). */
+const SEG_T = 1.25;
+
+/**
+ * Blend-band cleanup (smooth mode): the area-weighted resample turns every
+ * color seam into a strip of cells whose average is neither side — those
+ * then match a third bead the picture never had. A cell folds into the
+ * nearer block when two block colors dominate its 8-neighborhood (the main
+ * one covering ≥2 cells, so single-pixel detail can't trigger it), it isn't
+ * itself one of the two, and it lies ON the p1–p2 segment: d(cur,p1) +
+ * d(cur,p2) ≤ d(p1,p2)·SEG_T. The collinearity guard carries the load — a
+ * mix at ANY ratio (25/75, 50/50, 90/10) stays on the segment, while a real
+ * third color (outline bead, stray dot, different hue) sits far off it and
+ * never qualifies. Gradients never trigger: their cells match to many
+ * singleton beads, so no ≥2 block forms. Wide seams whose own color becomes
+ * the majority keep themselves. The seam snaps to one side instead of
+ * sprouting a phantom band.
+ */
+function refineBlendCells(grid: (BeadEntry | null)[][], cols: number, rows: number): void {
+  const snap = grid.map((row) => row.slice());
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const cur = snap[y]![x]!;
+      if (!cur) continue;
+      const counts = new Map<string, { bead: BeadEntry; n: number }>();
+      for (let dy = -1; dy <= 1; dy++) {
+        const ny = y + dy;
+        if (ny < 0 || ny >= rows) continue;
+        for (let dx = -1; dx <= 1; dx++) {
+          if (!dx && !dy) continue;
+          const nx = x + dx;
+          if (nx < 0 || nx >= cols) continue;
+          const nb = snap[ny]![nx]!;
+          if (!nb) continue;
+          const e = counts.get(nb.id);
+          if (e) e.n++;
+          else counts.set(nb.id, { bead: nb, n: 1 });
+        }
+      }
+      let p1: { bead: BeadEntry; n: number } | null = null;
+      let p2: { bead: BeadEntry; n: number } | null = null;
+      for (const e of counts.values()) {
+        if (!p1 || e.n > p1.n) {
+          p2 = p1;
+          p1 = e;
+        } else if (!p2 || e.n > p2.n) {
+          p2 = e;
+        }
+      }
+      if (!p1 || !p2 || p1.n < 2 || p2.n < 1) continue;
+      if (cur.id === p1.bead.id || cur.id === p2.bead.id) continue;
+      const d1 = beadDist(cur, p1.bead);
+      const d2 = beadDist(cur, p2.bead);
+      if (d1 + d2 > beadDist(p1.bead, p2.bead) * SEG_T) continue;
+      grid[y]![x] = d1 <= d2 ? p1.bead : p2.bead;
+    }
+  }
+}
+
 export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern {
   if (!img.width || !img.height || img.data.length < img.width * img.height * 4) {
     return { cols: 0, rows: 0, cells: [] };
@@ -446,6 +513,7 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
 
   // shade merge, then the color cap — anything changed re-matches the whole
   // board against the survivors, so no cell keeps a bead that left the list
+  if (opts.mode !== 'dither') refineBlendCells(grid, cols, rows);
   const before = usesOf(grid);
   let uses = mergeShades(before, MERGE_T[opts.simplify ?? 'balanced']);
   const limit = opts.maxColors ?? MARD_COLORS.length;
