@@ -158,12 +158,11 @@ a:hover {
 /* Same frame for non-prose regions (tile directories) — pair with .prose
    spacing manually since this class only draws the box */
 /* Same frame for non-prose regions (tile directories) — pair with .prose
-   spacing manually since this class only draws the box. Warm panel tint so
-   directory regions read differently from white prose text regions. */
+   spacing manually since this class only draws the box. */
 .section-card {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--panel);
+  background: var(--surface);
   padding: var(--sp-5) var(--sp-5) var(--sp-6);
   box-shadow: var(--shadow-xs);
 }
@@ -173,9 +172,17 @@ a:hover {
 }
 
 /* Region differentiation (user call 2026-11-03: "每个区域都是一样的底，
-   内容没有区分") — opt-in wash for alternating sections on hand-written
-   pages. Same frame, warm panel fill. */
+   内容没有区分"). Long framed runs — mix/scenario/chart templates render
+   4–6 .prose cards back to back — read as one flat wall of identical
+   boxes. Alternate every second direct-child section onto the warm panel
+   fill so consecutive regions separate; nth-of-type counts <section>
+   siblings so the hero/mixer in the sequence keep it stable. Manual
+   .band marks a specific region on hand-written pages. */
 .band {
+  background: var(--panel);
+}
+main > section.prose:nth-of-type(even),
+main > section.section-card:nth-of-type(even) {
   background: var(--panel);
 }
 
@@ -1096,12 +1103,15 @@ input[type='range']::-moz-range-thumb {
 }
 /* Like-economy wallet (2026-11-03): credits + slot usage + the expand
    action, on the same dark plum plate language as the caption bars. */
+/* Wallet panel: two big stats + divider + expand button, with real
+   breathing room (user call 2026-11-03 — everything was squeezed onto one
+   hairline row). The note lives below the panel with its own gap. */
 .gal-wallet {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--sp-2) var(--sp-3);
-  padding: var(--sp-2) var(--sp-3);
+  gap: var(--sp-3) var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
   background: linear-gradient(135deg, #2c2440, #1e1930);
   border-radius: var(--radius-sm);
   color: #fff;
@@ -1110,8 +1120,23 @@ input[type='range']::-moz-range-thumb {
 .gal-wallet-stat {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.3rem;
-  font-size: 0.9rem;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+}
+.gal-wallet-stat strong {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.gal-wallet-credits .gal-heart {
+  font-size: 1.3rem;
+  color: var(--accent-2);
+}
+.gal-wallet-sep {
+  flex: none;
+  width: 1px;
+  height: 1.7rem;
+  background: rgb(255 255 255 / 0.22);
 }
 .gal-wallet-credits {
   font-weight: 700;
@@ -1126,7 +1151,7 @@ input[type='range']::-moz-range-thumb {
   margin-left: auto;
 }
 .gal-wallet-note {
-  margin: var(--sp-1) 0 0;
+  margin: var(--sp-2) 0 0;
   font-size: 0.8rem;
   color: var(--muted);
 }

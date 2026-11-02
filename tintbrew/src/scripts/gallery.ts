@@ -83,6 +83,7 @@ class GalleryIsland {
       `<div class="gal-wallet">` +
       `<span class="gal-wallet-stat gal-wallet-credits"><span class="gal-heart">♥</span> <strong>${credits}</strong> ` +
       `<span data-i18n="gal.creditsW">${t('gal.creditsW')}</span></span>` +
+      `<span class="gal-wallet-sep" aria-hidden="true"></span>` +
       `<span class="gal-wallet-stat">${tArgs('gal.slotUse' as UiKey, { used: String(this.mine.length), slots: String(slots) })}</span>` +
       `<button type="button" class="btn btn-sm gal-expand" data-gal-expand${canExpand ? '' : ' aria-disabled="true"'}` +
       ` data-i18n="gal.expand" title="${t('gal.walletNote')}">${t('gal.expand')}</button>` +
