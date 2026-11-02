@@ -821,8 +821,12 @@ input[type='range']::-moz-range-thumb {
   text-align: center;
 }
 /* Medal badge for ranks 1–3 — no pill chrome, the SVG carries the shape;
-   the drop-shadow keeps it legible even over a white-bead board. */
+   the drop-shadow keeps it legible even over a white-bead board. Slightly
+   tighter inset and smaller than the #N pill so it reads as a stamp on
+   the board, not a headline. */
 .gal-rank-medal {
+  top: 6px;
+  left: 6px;
   min-width: 0;
   padding: 0;
   background: none;
@@ -905,7 +909,7 @@ input[type='range']::-moz-range-thumb {
   font-size: 0.9rem;
 }
 /* Mini card: the card look lives on the <li>; the thumbnail + byline are
-   the link, the Like pill floats over the thumbnail's top-right corner as
+   the link, the Like pill floats over the card's bottom-right corner as
    a real button (a button can't nest in a link), and the info block reads
    as two stacked lines — bold name, muted "by nick". */
 .gal-mini {
@@ -942,10 +946,11 @@ input[type='range']::-moz-range-thumb {
 }
 .gal-minimeta .gal-nick {
   font-size: 0.85rem;
+  padding-right: 4.5rem; /* the Like pill parks over this row's right end */
 }
 .gal-mini .gal-like {
   position: absolute;
-  top: 0.55rem;
+  bottom: 0.5rem;
   right: 0.55rem;
   z-index: 2;
   background: rgb(255 255 255 / 0.92);

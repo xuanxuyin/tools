@@ -155,6 +155,37 @@ function checkerboard(w: number, h: number, stripePx = 2): SampleImage {
   return { data, width: w, height: h };
 }
 
+/** Hard seam softened by a linear blur band `blurPx` wide, straddling the
+ *  seam like an out-of-focus camera edge. Real photos never have a
+ *  one-pixel boundary — quantization must not turn the transition band
+ *  into its own bead. */
+function blurredSplit(w: number, h: number, left: string, right: string, seam: number, blurPx = 2): SampleImage {
+  const l = hexToRgb(left);
+  const r = hexToRgb(right);
+  const data = new Uint8ClampedArray(w * h * 4);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      let c: { r: number; g: number; b: number };
+      if (x < seam - Math.floor(blurPx / 2)) c = l;
+      else if (x > seam + Math.ceil(blurPx / 2)) c = r;
+      else {
+        const t = (x - (seam - Math.floor(blurPx / 2))) / (blurPx + 1);
+        c = {
+          r: Math.round(l.r + (r.r - l.r) * t),
+          g: Math.round(l.g + (r.g - l.g) * t),
+          b: Math.round(l.b + (r.b - l.b) * t),
+        };
+      }
+      data[i] = c.r;
+      data[i + 1] = c.g;
+      data[i + 2] = c.b;
+      data[i + 3] = 255;
+    }
+  }
+  return { data, width: w, height: h };
+}
+
 describe('photoToPattern', () => {
   it('fills a solid photo with the nearest single bead', () => {
     const img = solid(40, 40, '#ff0000');
@@ -678,6 +709,47 @@ describe('photoToPattern', () => {
       // the whole board read as "no votes" and fell to the black fallback
       const out = photoToPattern(solid(40, 40, '#ff0000'), { cols: 29, mode: 'smooth' });
       expect(new Set(out.cells)).toEqual(new Set([nearestMardId('#ff0000')]));
+    });
+
+    it('a camera-blurred seam stays two beads — the blur band never becomes a phantom middle', () => {
+      // regression (2026-11-02): k-means faithfully clustered the ~2px
+      // transition band at every real-photo edge and snapped it to a
+      // middle bead the picture never had; small collinear clusters now
+      // absorb into the two fields they came from
+      const out = photoToPattern(blurredSplit(64, 32, '#ff0000', '#0000ff', 32, 2), {
+        cols: 16,
+        mode: 'smooth',
+        simplify: 'keep',
+      });
+      const allowed = new Set([nearestMardId('#ff0000'), nearestMardId('#0000ff')]);
+      for (const id of out.cells) expect(allowed.has(id)).toBe(true);
+    });
+
+    it('a real three-field picture keeps all three beads — absorption only eats blur bands', () => {
+      // guard for the absorption pass: a genuine middle block sits between
+      // red and blue and is as big as its neighbors, so it must survive
+      const w = 60;
+      const h = 30;
+      const img = (() => {
+        const data = new Uint8ClampedArray(w * h * 4);
+        const cols = [hexToRgb('#ff0000'), hexToRgb('#ff9900'), hexToRgb('#0000ff')];
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const c = cols[Math.min(2, Math.floor(x / 20))]!;
+            const i = (y * w + x) * 4;
+            data[i] = c.r;
+            data[i + 1] = c.g;
+            data[i + 2] = c.b;
+            data[i + 3] = 255;
+          }
+        }
+        return { data, width: w, height: h } satisfies SampleImage;
+      })();
+      const out = photoToPattern(img, { cols: 15, mode: 'smooth', simplify: 'keep' });
+      const ids = new Set(out.cells);
+      expect(ids).toContain(nearestMardId('#ff0000'));
+      expect(ids).toContain(nearestMardId('#ff9900'));
+      expect(ids).toContain(nearestMardId('#0000ff'));
     });
   });
 });

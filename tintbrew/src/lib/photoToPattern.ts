@@ -313,6 +313,58 @@ function quantizeBeads(img: SampleImage): Uint16Array {
     }
   }
 
+  /**
+   * Blend-band absorption, the cluster-level twin of refineBlendCells.
+   * Real photos never have hard seams — the lens blurs every boundary into
+   * a few rows of genuinely mixed pixels, and k-means faithfully gives that
+   * blur its own cluster, which snaps to a bead the picture never contained
+   * (user call, 2026-11-02: "颜色界限还是识别还是不对"). A small cluster whose
+   * center sits ON the segment between its two nearest surviving clusters
+   * is exactly such a blur: d(c,a)+d(c,b) ≤ d(a,b)·ABSORB_T means collinear,
+   * and it only qualifies when it's markedly smaller than both flanks — a
+   * real middle color (an orange block between red and blue) is as big as
+   * its neighbors and stays. The stamp pass below re-points absorbed
+   * clusters' pixels to whichever flank is nearer.
+   */
+  const ABSORB_T = 1.15;
+  const ABSORB_RATIO = 0.5;
+  const absorbA = new Int16Array(k).fill(-1);
+  const absorbB = new Int16Array(k).fill(-1);
+  const cdist = (c: number, o: number): number => {
+    const dL = centers[c * 3]! - centers[o * 3]!;
+    const da = centers[c * 3 + 1]! - centers[o * 3 + 1]!;
+    const db = centers[c * 3 + 2]! - centers[o * 3 + 2]!;
+    return Math.sqrt(dL * dL + da * da + db * db);
+  };
+  for (let c = 0; c < k; c++) {
+    if (counts[c] === 0) continue;
+    let a = -1;
+    let b = -1;
+    let da = Infinity;
+    let db = Infinity;
+    for (let o = 0; o < k; o++) {
+      if (o === c || counts[o] === 0) continue;
+      const d = cdist(c, o);
+      if (d < da) {
+        b = a;
+        db = da;
+        a = o;
+        da = d;
+      } else if (d < db) {
+        b = o;
+        db = d;
+      }
+    }
+    if (a < 0 || b < 0) continue;
+    if (
+      da + db <= cdist(a, b) * ABSORB_T &&
+      counts[c]! <= Math.min(counts[a]!, counts[b]!) * ABSORB_RATIO
+    ) {
+      absorbA[c] = a;
+      absorbB[c] = b;
+    }
+  }
+
   // snap each center to its bead, then stamp every pixel with it
   const centerBead = new Uint16Array(k);
   for (let c = 0; c < k; c++) {
@@ -322,9 +374,13 @@ function quantizeBeads(img: SampleImage): Uint16Array {
   for (let i = 0; i < n; i++) {
     if (data[i * 4 + 3]! < 32) continue;
     pixelLab(data, i * 4, scratch, 0);
+    // blur clusters (absorbA set) aren't candidates, so a blur-band pixel
+    // lands on whichever flank center is genuinely nearest — the whole band
+    // splits back into the two fields it came from
     let best = 0;
     let bestD = Infinity;
     for (let c = 0; c < k; c++) {
+      if (absorbA[c] >= 0) continue;
       const dL = scratch[0]! - centers[c * 3]!;
       const da = scratch[1]! - centers[c * 3 + 1]!;
       const db = scratch[2]! - centers[c * 3 + 2]!;
