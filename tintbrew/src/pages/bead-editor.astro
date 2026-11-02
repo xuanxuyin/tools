@@ -188,7 +188,35 @@ const jsonLd = [
             title="One pegboard per sheet, with a bead-list cover page"
             data-i18n-title="ed.printBoardsHelp"
           >Print boards</button>
+          <button
+            type="button"
+            class="btn hidden"
+            data-ed-publish
+            data-i18n="ed.publish"
+            data-i18n-aria="ed.publishHelp"
+            aria-label="Publish to the community gallery"
+            title="Share this board on the gallery — one piece per person"
+            data-i18n-title="ed.publishHelp"
+          >Publish</button>
         </div>
+      </div>
+
+      <div class="ed-publish hidden" data-ed-publish-panel>
+        <p class="ed-pub-title" data-i18n="gal.pubTitle">Publish to the community gallery</p>
+        <p class="ed-pub-note" data-i18n="gal.pubNote">One piece per person — publishing a new one replaces your current piece and resets its likes.</p>
+        <label class="ed-pub-field">
+          <span data-i18n="gal.pubName">Piece name</span>
+          <input class="text-input" type="text" maxlength="40" data-ed-publish-name data-i18n-placeholder="gal.pubNamePh" placeholder="My creation" />
+        </label>
+        <label class="ed-pub-field">
+          <span data-i18n="gal.pubNick">Your nickname</span>
+          <input class="text-input" type="text" maxlength="20" data-ed-publish-nick data-i18n-placeholder="gal.pubNickPh" placeholder="BeadFan42" />
+        </label>
+        <div class="ed-pub-row">
+          <button type="button" class="btn btn-primary" data-ed-publish-submit data-i18n="gal.pubSubmit">Publish it</button>
+          <button type="button" class="btn" data-ed-publish-cancel data-i18n="gal.pubCancel">Cancel</button>
+        </div>
+        <p class="ed-pub-status" data-ed-publish-status aria-live="polite"></p>
       </div>
     </div>
 
@@ -407,6 +435,51 @@ const jsonLd = [
   .ed-listcard h2 { font-size: 1.15rem; margin-bottom: var(--sp-2); }
   .ed-listcard { margin-top: var(--sp-3); }
   .hidden { display: none !important; }
+
+  /* Publish-to-gallery panel (UGC, 2026-11-02) — hidden until the Publish
+     button is pressed; the island toggles [hidden] via the .hidden class. */
+  .ed-publish {
+    margin-top: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-2, #db2777);
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    display: grid;
+    gap: var(--sp-2);
+  }
+  .ed-pub-title {
+    margin: 0;
+    font-weight: 700;
+  }
+  .ed-pub-note {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--ink-soft, #666);
+  }
+  .ed-pub-field {
+    display: grid;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    max-width: 22rem;
+  }
+  .ed-pub-field .text-input {
+    font-weight: 400;
+  }
+  .ed-pub-row {
+    display: flex;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+  }
+  .ed-pub-status {
+    margin: 0;
+    min-height: 1.2em;
+    font-size: 0.9rem;
+  }
+  .ed-pub-status a {
+    color: var(--accent);
+  }
 </style>
 
 <style is:global>

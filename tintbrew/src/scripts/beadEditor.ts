@@ -15,6 +15,7 @@ import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
 import { buildBoardPrintPages, type BeadTally } from '../lib/beadPrint';
 import { printZone } from './printZone';
 import { t as uiT } from './i18n';
+import { galleryUuid } from './deviceId';
 
 const U = 10; // viewBox units per cell — same as every board on the site
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -380,9 +381,73 @@ export class BeadEditor {
     return counts;
   }
 
+  // ------------------------------------------------------------------
+  // Publish to the community gallery (UGC, 2026-11-02) — the SSR-hidden
+  // panel lives in bead-editor.astro; this just toggles it and posts.
+  // ------------------------------------------------------------------
+
+  private openPublish(): void {
+    const panel = this.root.querySelector('[data-ed-publish-panel]');
+    if (!panel) return;
+    panel.classList.remove('hidden');
+    (panel.querySelector('[data-ed-publish-name]') as HTMLInputElement | null)?.focus();
+  }
+
+  private closePublish(): void {
+    this.root.querySelector('[data-ed-publish-panel]')?.classList.add('hidden');
+  }
+
+  private async publish(): Promise<void> {
+    const status = this.root.querySelector('[data-ed-publish-status]');
+    const panel = this.root.querySelector('[data-ed-publish-panel]');
+    const nameEl = panel?.querySelector('[data-ed-publish-name]') as HTMLInputElement | null;
+    const nickEl = panel?.querySelector('[data-ed-publish-nick]') as HTMLInputElement | null;
+    const submit = panel?.querySelector('[data-ed-publish-submit]') as HTMLButtonElement | null;
+    const nick = nickEl?.value.trim() ?? '';
+    const name = nameEl?.value.trim() || 'My creation';
+    if (!nick) {
+      if (status) status.textContent = uiT('gal.errNick');
+      return;
+    }
+    if (window.localStorage.getItem('tb-gallery:piece-id') && !window.confirm(uiT('gal.replaceConfirm'))) return;
+
+    submit?.setAttribute('aria-disabled', 'true');
+    try {
+      const res = await fetch('/api/gallery/publish', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ uuid: galleryUuid(), name, nick, width: this.W, height: this.H, grid: this.grid }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { id?: string };
+      if (res.ok && data.id) {
+        window.localStorage.setItem('tb-gallery:piece-id', data.id);
+        if (status) {
+          status.replaceChildren(document.createTextNode(uiT('gal.pubDone') + ' '));
+          const a = document.createElement('a');
+          a.href = '/gallery/';
+          a.textContent = uiT('gal.viewLink');
+          status.appendChild(a);
+        }
+        window.setTimeout(() => this.closePublish(), 2500);
+      } else if (res.status === 429) {
+        if (status) status.textContent = uiT('gal.errRate');
+      } else if (res.status === 400) {
+        if (status) status.textContent = uiT('gal.errInvalid');
+      } else {
+        if (status) status.textContent = uiT('gal.errNetwork');
+      }
+    } catch {
+      if (status) status.textContent = uiT('gal.errNetwork');
+    } finally {
+      submit?.removeAttribute('aria-disabled');
+    }
+  }
+
   private syncStats(): void {
     const stats = this.root.querySelector('[data-ed-stats]');
     const beads = this.grid.flat().filter(Boolean).length;
+    // Publish only makes sense with something on the board
+    this.root.querySelector('[data-ed-publish]')?.classList.toggle('hidden', beads === 0);
     const colors = this.counts().size;
     const bw = Math.ceil(this.W / BOARD_SIZE);
     const bh = Math.ceil(this.H / BOARD_SIZE);
@@ -611,6 +676,18 @@ export class BeadEditor {
       // single 29×29 pegboard (P1, 2026-11-02)
       if (t.closest('[data-ed-print-boards]')) {
         this.printBoards();
+        return;
+      }
+      if (t.closest('[data-ed-publish]')) {
+        this.openPublish();
+        return;
+      }
+      if (t.closest('[data-ed-publish-cancel]')) {
+        this.closePublish();
+        return;
+      }
+      if (t.closest('[data-ed-publish-submit]')) {
+        void this.publish();
         return;
       }
       const swatch = t.closest<HTMLButtonElement>('[data-ed-color]');

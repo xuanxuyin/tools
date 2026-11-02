@@ -117,6 +117,16 @@ const jsonLd = {
     </a>
   </section>
 
+  <section class="home-gallery" data-home-gallery hidden>
+    <h2 class="grid-title">
+      <span>
+        <span data-i18n="home.galH">Community gallery</span> <span class="hint" data-i18n="home.galHint">— made by visitors, ranked by likes</span>
+      </span>
+      <a class="all-link" href="/gallery/" data-i18n="home.galCta">View the gallery →</a>
+    </h2>
+    <ol class="home-gal-list" data-home-gallery-list></ol>
+  </section>
+
   <section aria-label="Perler bead patterns" class="tool-grid bead-grid" style="margin-top: var(--sp-8);">
     <h2 class="grid-title">
       <span>
@@ -427,6 +437,30 @@ const jsonLd = {
   }
 </style>
 
+<style>
+  /* Community gallery top-10 (runtime-injected by homeGallery; ships hidden
+     and only appears when the API has pieces — an outage never touches home) */
+  .home-gallery {
+    margin-top: var(--sp-8);
+  }
+  .home-gallery[hidden] {
+    display: none;
+  }
+  .home-gal-list {
+    list-style: none;
+    margin: var(--sp-3) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    gap: var(--sp-3);
+  }
+  @media (max-width: 40rem) {
+    .home-gal-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
+
 <style is:global>
   /* BeadFigure's own scoped `.bead-fig { width: 100%; height: auto }` fills
      the card — on the homepage the figure must fit INSIDE a fixed-height
@@ -456,3 +490,7 @@ const jsonLd = {
     object-fit: contain;
   }
 </style>
+
+<script>
+  import '../scripts/homeGallery';
+</script>

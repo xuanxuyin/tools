@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = 'Bead Gallery — Player-Made Perler Bead Boards, Ranked | TintBrew';
+const description =
+  'Real pegboard designs made by TintBrew visitors, ranked by likes. Draw yours in the free bead editor, hit Publish, and climb the board — no account needed.';
+
+const faqs = [
+  {
+    q: 'How do I get my board into the gallery?',
+    a: 'Open the bead editor, paint any board from 8×8 up to 160×160, then hit the Publish button. Give your piece a name, pick a nickname, confirm — it appears in the ranking immediately. Publishing is free and needs no account.',
+  },
+  {
+    q: 'How often can I like a piece?',
+    a: 'Each visitor gets one like per hour, and it can go to any piece in the gallery. That keeps the ranking about what people genuinely enjoy rather than who can click fastest. The counter updates the moment your like lands.',
+  },
+  {
+    q: 'Can I publish more than one piece?',
+    a: 'One piece per person. Publishing a new piece replaces your current one, and its like count starts over — the confirm dialog reminds you before anything is overwritten, so you can back out.',
+  },
+  {
+    q: 'Do I need an account or sign-up?',
+    a: 'No. Your identity is a random ID that lives in your own browser — the server only ever stores a scrambled hash of it, never your email or any login. Pick any nickname to show with your piece; clearing your browser storage removes your piece and your votes.',
+  },
+  {
+    q: 'What happens if someone publishes something inappropriate?',
+    a: 'Every card has a Report button. Three reports auto-hide a piece from the gallery while it is reviewed, and anything that breaks the vibe stays hidden. You can also just replace your own piece with a new design at any time.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TintBrew Bead Gallery',
+    url: `${SITE.url}/gallery/`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript for the live ranking',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Bead Gallery', item: `${SITE.url}/gallery/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/gallery" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1 data-i18n="gal.h1">Bead gallery</h1>
+    <p class="lead" data-i18n="gal.lead">
+      Boards made by real visitors, ranked by likes. Draw yours in the bead editor, hit Publish, and
+      see how far it climbs — the top ten show on our home page.
+    </p>
+    <p class="note" data-i18n="gal.note">
+      One piece per person · one like per hour · no account, no cost.
+    </p>
+  </section>
+
+  <div class="gallery" data-gallery>
+    <p class="gal-status" data-gallery-status aria-live="polite" hidden></p>
+
+    <section class="gal-mine" data-gallery-mine>
+      <h2 data-i18n="gal.mineH">Your piece</h2>
+      <p class="gal-minenone">
+        <span data-i18n="gal.mineNoneA">You haven't published yet.</span>
+        <a href="/bead-editor/" data-i18n="gal.lEditor">Open the bead editor</a>
+        <span data-i18n="gal.mineNoneB">, draw something, and hit Publish — it takes about a minute.</span>
+      </p>
+    </section>
+
+    <section>
+      <h2 data-i18n="gal.rankH">Top boards</h2>
+      <ol class="gal-list" data-gallery-list>
+        <li class="gal-empty" data-i18n="gal.loading">Loading the gallery…</li>
+      </ol>
+      <noscript>
+        <p class="note">
+          <span data-i18n="gal.nojs">The live ranking needs JavaScript. Everything else on this page — how publishing
+          works, the rules, the FAQ — reads fine without it.</span>
+        </p>
+      </noscript>
+    </section>
+  </div>
+
+  <section class="prose" style="margin-top: var(--sp-8);">
+    <h2 data-i18n="gal.howH">How the gallery works</h2>
+    <p><strong data-i18n="gal.how1H">Draw.</strong><span data-i18n="gal.how1B">
+      Open the bead editor and paint any board — from a 29×29 single pegboard to 160×160 wall art.
+      Every one of the 291 Mardiy bead colors is in the library, and Mirror mode paints both halves at once.</span></p>
+    <p><strong data-i18n="gal.how2H">Publish.</strong><span data-i18n="gal.how2B">
+      Hit Publish, name your piece, pick a nickname, confirm. It goes live instantly and enters the
+      ranking at zero likes. Publishing a new piece later replaces your old one (the confirm dialog
+      warns you first) and resets its like count.</span></p>
+    <p><strong data-i18n="gal.how3H">Collect likes.</strong><span data-i18n="gal.how3B">
+      Every visitor can spend one like per hour on any piece they like. The most-liked boards sit at
+      the top of this ranking — and the top ten appear on the TintBrew home page, so a great design
+      gets seen by everyone who visits the site.</span></p>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
+    <div class="faq">
+      {faqs.map((f, i) => (
+        <details>
+          <summary data-i18n={`gal.fq${i + 1}`}>{f.q}</summary>
+          <p data-i18n={`gal.fa${i + 1}`}>{f.a}</p>
+        </details>
+      ))}
+    </div>
+    <p style="margin-top: var(--sp-4);">
+      <span data-i18n="gal.readyA">Feeling inspired? The </span><a href="/bead-editor/" data-i18n="gal.lEditor2">bead editor</a
+      ><span data-i18n="gal.readyB"> is the fastest route from an idea to a printable, publishable board — and if you'd
+      rather start from a picture, the </span><a href="/photo-to-perler-bead-pattern/" data-i18n="gal.lPhoto"
+        >photo converter</a
+      ><span data-i18n="gal.readyC"> builds one for you.</span>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .gallery {
+    margin-top: var(--sp-6);
+    display: grid;
+    gap: var(--sp-6);
+  }
+  .gal-status {
+    margin: 0;
+    padding: var(--sp-2) var(--sp-3);
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+  }
+  /* mine + list internals are injected by the island — :global required */
+  .gal-mine :global(.gal-card) {
+    max-width: 22rem;
+  }
+  .gal-mine :global(.gal-minenone) {
+    color: var(--muted);
+    margin: 0;
+  }
+  .gal-mine :global(.gal-underreview) {
+    margin-bottom: var(--sp-2);
+  }
+  .gal-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+    gap: var(--sp-3);
+  }
+  @media (max-width: 40rem) {
+    .gal-list {
+      grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    }
+  }
+</style>
+
+<script>
+  import '../scripts/gallery';
+</script>

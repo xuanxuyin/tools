@@ -11,7 +11,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Window } from 'happy-dom';
 import { MARD_COLORS, mardById } from '../lib/mardPalette';
 import { rgbToOklab, hexToRgb } from '../lib/color';
@@ -444,5 +444,109 @@ describe('bead editor island (real SSR markup)', () => {
     expect(pages[1]!.getAttribute('data-bp-page')).toBe('1');
     expect(pages[4]!.getAttribute('data-bp-page')).toBe('4');
     expect(pages[4]!.getAttribute('data-bp-total')).toBe('4');
+  });
+});
+
+describe('publish to community gallery (UGC flow)', () => {
+  let ctx: Ctx;
+
+  beforeEach(async () => {
+    ctx = await loadPage();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: async () => ({ id: 'abc123def456' }),
+        } as Response),
+      ),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  /** paint one bead at (x,y) with the default black brush */
+  function paint(x: number, y: number) {
+    const { svg } = newEditor(ctx);
+    firePointer(ctx.window, svg, 'pointerdown', px(x, y).cx, px(x, y).cy);
+    firePointer(ctx.window, svg, 'pointerup', px(x, y).cx, px(x, y).cy);
+    return svg;
+  }
+
+  it('the Publish button stays hidden on an empty board and reveals once beads land', () => {
+    const pub = ctx.host.querySelector('[data-ed-publish]') as HTMLElement;
+    expect(pub.classList.contains('hidden')).toBe(true);
+    paint(2, 2);
+    expect(pub.classList.contains('hidden')).toBe(false);
+  });
+
+  it('clicking Publish opens the panel; empty nickname shows the validation note', () => {
+    paint(2, 2);
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish]') as Element);
+    const panel = ctx.host.querySelector('[data-ed-publish-panel]') as HTMLElement;
+    expect(panel.classList.contains('hidden')).toBe(false);
+
+    fireClick(ctx.window, panel.querySelector('[data-ed-publish-submit]') as Element);
+    const status = ctx.host.querySelector('[data-ed-publish-status]')!.textContent ?? '';
+    expect(status).toContain('nickname');
+    expect(vi.mocked(globalThis.fetch)).not.toHaveBeenCalled();
+  });
+
+  it('a filled form posts grid+name+nick and stores the returned piece id', async () => {
+    paint(2, 2);
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish]') as Element);
+    const panel = ctx.host.querySelector('[data-ed-publish-panel]') as HTMLElement;
+    const name = panel.querySelector('[data-ed-publish-name]') as HTMLInputElement;
+    const nick = panel.querySelector('[data-ed-publish-nick]') as HTMLInputElement;
+    name.value = 'My star';
+    nick.value = 'Tester';
+
+    fireClick(ctx.window, panel.querySelector('[data-ed-publish-submit]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+
+    const call = vi.mocked(globalThis.fetch).mock.calls[0]!;
+    expect(String(call[0])).toBe('/api/gallery/publish');
+    const body = JSON.parse((call[1] as RequestInit).body as string);
+    expect(body.name).toBe('My star');
+    expect(body.nick).toBe('Tester');
+    expect(body.width).toBe(29);
+    expect(body.height).toBe(29);
+    expect(body.grid).toHaveLength(29);
+    expect(body.uuid).toMatch(/^[0-9a-f-]{36}$/);
+    expect(ctx.window.localStorage.getItem('tb-gallery:piece-id')).toBe('abc123def456');
+    expect(ctx.host.querySelector('[data-ed-publish-status]')!.textContent).toContain('Published!');
+    const link = ctx.host.querySelector('[data-ed-publish-status] a') as HTMLAnchorElement;
+    expect(link.getAttribute('href')).toBe('/gallery/');
+  });
+
+  it('republishing asks before overwriting, and a declined confirm never posts', async () => {
+    ctx.window.localStorage.setItem('tb-gallery:piece-id', 'existing000001');
+    (ctx.window as unknown as { confirm: (s?: string) => boolean }).confirm = () => false;
+    paint(3, 3);
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish]') as Element);
+    (ctx.host.querySelector('[data-ed-publish-nick]') as HTMLInputElement).value = 'Tester';
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish-submit]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+    expect(vi.mocked(globalThis.fetch)).not.toHaveBeenCalled();
+  });
+
+  it('a 429 publish shows the rate-limit note; a network error shows the generic one', async () => {
+    paint(1, 1);
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish]') as Element);
+    (ctx.host.querySelector('[data-ed-publish-nick]') as HTMLInputElement).value = 'Tester';
+    vi.mocked(globalThis.fetch).mockImplementationOnce(() =>
+      Promise.resolve({ ok: false, status: 429, json: async () => ({ error: 'rate-limited' }) } as Response),
+    );
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish-submit]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+    expect(ctx.host.querySelector('[data-ed-publish-status]')!.textContent).toContain('Too many publishes');
+
+    vi.mocked(globalThis.fetch).mockImplementationOnce(() => Promise.reject(new Error('down')));
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish-submit]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+    expect(ctx.host.querySelector('[data-ed-publish-status]')!.textContent).toContain('Couldn’t reach');
   });
 });

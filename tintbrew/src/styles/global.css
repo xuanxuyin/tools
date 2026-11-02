@@ -769,6 +769,135 @@ input[type='range']::-moz-range-thumb {
 }
 
 /* --------------------------------------------------------------------------
+   Community gallery cards (2026-11-02 UGC launch)
+
+   Shared by the /gallery/ ranking and the home-page top-10 block. The card
+   DOM is injected at runtime by the islands, so these live in global.css —
+   Astro scoped styles would never match injected markup.
+   -------------------------------------------------------------------------- */
+.btn-sm {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.85rem;
+}
+.gal-thumb {
+  padding: 6px;
+  background: #f7f5f1;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+.gal-thumb svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.gal-rank {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  min-width: 1.7em;
+  padding: 0.1em 0.4em;
+  border-radius: 999px;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+}
+.gal-heart {
+  color: var(--accent-2);
+}
+.gal-like[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: default;
+}
+.gal-report[aria-disabled='true'] {
+  opacity: 0.55;
+}
+.gal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+.gal-cardbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border-top: 1px solid var(--border);
+}
+.gal-info {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.gal-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+.gal-nick {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.gal-empty {
+  padding: var(--sp-4);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  text-align: center;
+}
+.gal-underreview {
+  padding: var(--sp-2) var(--sp-3);
+  border-left: 3px solid #d97706;
+  background: #fffbeb;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+}
+.gal-mini a {
+  position: relative;
+  display: block;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.gal-mini a:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.gal-minimeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-1);
+  padding: var(--sp-2);
+}
+.gal-minimeta strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+.gal-minilikes {
+  flex: 0 0 auto;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
    Print chrome safety net (2026-11-02 redesign)
 
    Hides site chrome on paper for EVERY page. Deliberately does NOT hide
