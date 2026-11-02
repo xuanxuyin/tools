@@ -16,8 +16,8 @@ const faqs = [
     a: 'Each visitor gets one like per hour, and it can go to any piece in the gallery. That keeps the ranking about what people genuinely enjoy rather than who can click fastest. The counter updates the moment your like lands.',
   },
   {
-    q: 'Can I publish more than one piece?',
-    a: 'One piece per person. Publishing a new piece replaces your current one, and its like count starts over — the confirm dialog reminds you before anything is overwritten, so you can back out.',
+    q: 'How many pieces can I have?',
+    a: 'Your gallery starts with one slot and holds up to five. Each like another visitor leaves on your pieces earns you a credit, and 100 credits unlock one more slot. Deleting a piece frees its slot right away — its likes are not refunded.',
   },
   {
     q: 'Do I need an account or sign-up?',
@@ -25,7 +25,7 @@ const faqs = [
   },
   {
     q: 'What happens if someone publishes something inappropriate?',
-    a: 'Every card has a Report button. Three reports auto-hide a piece from the gallery while it is reviewed, and anything that breaks the vibe stays hidden. You can also just replace your own piece with a new design at any time.',
+    a: 'Every card has a Report button. Three reports auto-hide a piece from the gallery while it is reviewed, and anything that breaks the vibe stays hidden. You can also delete your own pieces at any time to free up gallery slots.',
   },
 ];
 
@@ -69,7 +69,7 @@ const jsonLd = [
       see how far it climbs — the top ten show on our home page.
     </p>
     <p class="note" data-i18n="gal.note">
-      One piece per person · one like per hour · no account, no cost.
+      One like per hour · likes earn credits · credits unlock gallery slots · no account, no cost.
     </p>
   </section>
 
@@ -77,7 +77,7 @@ const jsonLd = [
     <p class="gal-status" data-gallery-status aria-live="polite" hidden></p>
 
     <section class="gal-mine" data-gallery-mine>
-      <h2 data-i18n="gal.mineH">Your piece</h2>
+      <h2 data-i18n="gal.mineH">Your gallery</h2>
       <p class="gal-minenone">
         <span data-i18n="gal.mineNoneA">You haven't published yet.</span>
         <a href="/bead-editor/" data-i18n="gal.lEditor">Open the bead editor</a>
@@ -106,12 +106,12 @@ const jsonLd = [
       Every one of the 291 Mardiy bead colors is in the library, and Mirror mode paints both halves at once.</span></p>
     <p><strong data-i18n="gal.how2H">Publish.</strong><span data-i18n="gal.how2B">
       Hit Publish, name your piece, pick a nickname, confirm. It goes live instantly and enters the
-      ranking at zero likes. Publishing a new piece later replaces your old one (the confirm dialog
-      warns you first) and resets its like count.</span></p>
+      ranking at zero likes. Your gallery starts with one slot — likes from other visitors earn
+      credits, and 100 credits unlock one more slot for your next piece.</span></p>
     <p><strong data-i18n="gal.how3H">Collect likes.</strong><span data-i18n="gal.how3B">
       Every visitor can spend one like per hour on any piece they like. The most-liked boards sit at
       the top of this ranking — and the top ten appear on the TintBrew home page, so a great design
-      gets seen by everyone who visits the site.</span></p>
+      gets seen by everyone who visits the site. Likes from others also credit your wallet.</span></p>
   </section>
 
   <section class="prose" style="margin-top: var(--sp-6);">

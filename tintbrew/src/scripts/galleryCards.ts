@@ -62,7 +62,7 @@ function rankHtml(rank: number | null): string {
           ? ['#9aa3ad', '#c6cdd6']
           : ['#b06a32', '#d18d54'];
     const medal =
-      `<svg viewBox="0 0 26 32" width="20" height="25" aria-hidden="true">` +
+      `<svg viewBox="0 0 26 32" width="24" height="30" aria-hidden="true">` +
       `<path d="M5 1h5l3 8-6-2z" fill="#c0392b"/><path d="M21 1h-5l-3 8 6-2z" fill="#a83226"/>` +
       `<circle cx="13" cy="20" r="10" fill="${disc}"/><circle cx="13" cy="20" r="7" fill="${inner}"/>` +
       `<path d="M13 15.5l1.4 2.9 3.2.4-2.3 2.2.5 3.1-2.8-1.5-2.8 1.5.5-3.1-2.3-2.2 3.2-.4z" fill="#fff"/>` +
@@ -135,8 +135,15 @@ export function likeFeedback(btn: HTMLButtonElement): void {
 /** Full card for the /gallery/ ranking. Like/Report carry data-i18n
  *  attributes so a later language switch rewrites them in place. The
  *  "Open in editor" link (2026-11-02) is the remix loop: the editor's
- *  ?from=<id> entry loads the piece onto a live board. */
-export function cardHtml(p: GalleryPiece, rank: number | null): string {
+ *  ?from=<id> entry loads the piece onto a live board. opts.mine adds the
+ *  Delete action (2026-11-03 slot economy: removing a piece frees its
+ *  gallery slot) and drops Report — you don't report yourself. */
+export function cardHtml(p: GalleryPiece, rank: number | null, opts?: { mine?: boolean }): string {
+  const tail = opts?.mine
+    ? `<button type="button" class="btn btn-sm gal-del" data-gal-del data-i18n="gal.del"` +
+      ` title="${escapeHtml(t('gal.delT'))}">${escapeHtml(t('gal.del'))}</button>`
+    : `<button type="button" class="btn btn-sm gal-report" data-gal-report data-i18n="gal.report"` +
+      ` title="${escapeHtml(t('gal.reportT'))}">${escapeHtml(t('gal.report'))}</button>`;
   return (
     `<li class="gal-card" data-piece="${escapeHtml(p.id)}">` +
     rankHtml(rank) +
@@ -146,8 +153,7 @@ export function cardHtml(p: GalleryPiece, rank: number | null): string {
     `<a class="btn btn-sm gal-edit" href="/bead-editor/?from=${encodeURIComponent(p.id)}" ` +
     `data-i18n="gal.openEd" title="${escapeHtml(t('gal.openEdT'))}">${escapeHtml(t('gal.openEd'))}</a>` +
     likeBtnHtml(p) +
-    `<button type="button" class="btn btn-sm gal-report" data-gal-report data-i18n="gal.report"` +
-    ` title="${escapeHtml(t('gal.reportT'))}">${escapeHtml(t('gal.report'))}</button>` +
+    tail +
     `</div></li>`
   );
 }

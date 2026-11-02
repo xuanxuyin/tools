@@ -2,6 +2,11 @@
  * POST /api/gallery/like — one vote per device per UTC hour, whatever the
  * target. vote_log's composite PK does the dedup: a conflict leaves
  * meta.changes at 0 → 429. Body: { uuid, pieceId }.
+ *
+ * Like economy (2026-11-03): every vote bumps the piece's likes; when the
+ * voter is NOT the author, the author's credit wallet also gains +1 —
+ * credits only buy gallery slots (see slot.ts). Self-votes pass (the like
+ * counts) but never mint credits.
  */
 import { hourBucket } from './_kernel';
 import type { Ctx } from './_shared';
@@ -24,11 +29,29 @@ export async function onRequestPost(ctx: Ctx): Promise<Response> {
     .run();
   if ((vote.meta?.changes ?? 0) === 0) return json({ error: 'one-per-hour' }, 429);
 
+  const target = await db
+    .prepare('SELECT device_hash FROM creations WHERE piece_id = ? AND hidden = 0')
+    .bind(pieceId)
+    .first<{ device_hash: string }>();
+  if (!target) return json({ error: 'not-found' }, 404);
+
   const bump = await db
     .prepare('UPDATE creations SET likes = likes + 1 WHERE piece_id = ? AND hidden = 0')
     .bind(pieceId)
     .run();
   if ((bump.meta?.changes ?? 0) === 0) return json({ error: 'not-found' }, 404);
+
+  // a like from someone else credits the author's wallet (self-votes don't
+  // mint credits — that inflow guard is what keeps credits honest)
+  if (target.device_hash !== hash) {
+    await db
+      .prepare(
+        `INSERT INTO authors (device_hash, credits, slots, created_at) VALUES (?, 1, 1, ?)
+         ON CONFLICT(device_hash) DO UPDATE SET credits = credits + 1`,
+      )
+      .bind(target.device_hash, Date.now())
+      .run();
+  }
 
   return json({ ok: true });
 }

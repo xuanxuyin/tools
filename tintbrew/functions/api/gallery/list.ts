@@ -1,9 +1,10 @@
 /**
  * GET /api/gallery/list?limit=100&d=<uuid>
- * Ranked list (likes desc, tie-break: first published ranks first) + the
- * caller's own piece if the uuid matches one. Cells come back decoded so
- * the island renders directly; corrupt rows degrade to nulls instead of
- * failing the list.
+ * Ranked list (likes desc, tie-break: first published ranks first), the
+ * caller's gallery (every piece, any state — hidden ones show "under
+ * review" to their author), and their wallet (credits/slots). Cells come
+ * back decoded so the island renders directly; corrupt rows degrade to
+ * nulls instead of failing the list.
  */
 import { decodeCells } from './_kernel';
 import type { Ctx, D1Db } from './_shared';
@@ -51,17 +52,24 @@ export async function onRequestGet(ctx: Ctx): Promise<Response> {
     .all<Row>();
   const pieces = (ranked.results ?? []).map(piece);
 
-  // mine: any state (hidden pieces still show as "under review" to their author)
-  let mine: ReturnType<typeof piece> | null = null;
+  // mine: every piece in any state + the like-economy wallet (credits and
+  // gallery slots). Absent uuid → null wallet, empty gallery.
+  let mine: ReturnType<typeof piece>[] = [];
+  let wallet: { credits: number; slots: number } | null = null;
   const d = url.searchParams.get('d');
   if (d && typeof d === 'string' && d.length >= 8 && d.length <= 64) {
     const hash = await deviceHash(ctx.env, d);
     const own = await db
-      .prepare(`SELECT ${COLUMNS} FROM creations WHERE device_hash = ?`)
+      .prepare(`SELECT ${COLUMNS} FROM creations WHERE device_hash = ? ORDER BY created_at DESC`)
       .bind(hash)
-      .first<Row>();
-    if (own) mine = piece(own);
+      .all<Row>();
+    mine = (own.results ?? []).map(piece);
+    const w = await db
+      .prepare('SELECT credits, slots FROM authors WHERE device_hash = ?')
+      .bind(hash)
+      .first<{ credits: number; slots: number }>();
+    if (w) wallet = { credits: w.credits, slots: w.slots };
   }
 
-  return json({ pieces, mine });
+  return json({ pieces, mine, wallet });
 }

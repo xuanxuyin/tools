@@ -113,7 +113,6 @@ async function submit(root: HTMLElement, getBoard: () => PublishBoard | null): P
     if (status) status.textContent = t('gal.errNick');
     return;
   }
-  if (window.localStorage.getItem('tb-gallery:piece-id') && !window.confirm(t('gal.replaceConfirm'))) return;
 
   submitBtn?.setAttribute('aria-disabled', 'true');
   try {
@@ -145,6 +144,9 @@ async function submit(root: HTMLElement, getBoard: () => PublishBoard | null): P
         status.appendChild(a);
       }
       window.setTimeout(() => close(root), 2500);
+    } else if (res.status === 409) {
+      // gallery full — the wallet panel on /gallery/ is the fix path
+      if (status) status.textContent = t('gal.slotFull');
     } else if (res.status === 429) {
       if (status) status.textContent = t('gal.errRate');
     } else if (res.status === 400) {

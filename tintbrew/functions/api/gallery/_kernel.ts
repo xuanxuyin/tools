@@ -36,6 +36,18 @@ export const GALLERY_LIMITS = {
   maxNick: 20,
 } as const;
 
+// ------------------------------------------------------------- economy ----
+// Like economy (2026-11-03): every like a piece receives bumps its count;
+// likes from OTHERS also credit the author's wallet (+1). Credits have a
+// single use — buying extra gallery slots. Self-votes count as likes but
+// never mint credits, so the only inflow is genuine outside appreciation.
+export const ECONOMY = {
+  /** credits burned to unlock one more gallery slot */
+  slotCost: 100,
+  /** hard cap on gallery slots per author */
+  maxSlots: 5,
+} as const;
+
 // ------------------------------------------------------------ palette ----
 
 const INDEX_BY_ID = new Map(MARD_COLORS.map((b, i) => [b.id, i]));

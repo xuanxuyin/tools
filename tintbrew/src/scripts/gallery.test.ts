@@ -290,6 +290,92 @@ describe('my piece (mine zone)', () => {
     await flush();
     copies.forEach((el) => expect(el.textContent).toBe('6'));
   });
+
+  it('every own piece gets a Delete (no Report), and the wallet panel gates Expand on 100 credits', async () => {
+    fetchMock.mockImplementation(() =>
+      Promise.resolve(
+        jsonResponse({
+          pieces: [piece('top1', 'Rainbow Cat', 'Ada', 12)],
+          mine: [piece('m1', 'Alpha', 'Me', 40), piece('m2', 'Beta', 'Me', 3)],
+          wallet: { credits: 120, slots: 2 },
+        }),
+      ),
+    );
+    const { document: doc } = await loadPage('gallery/index.html', fetchMock);
+    await import('./gallery');
+    await flush();
+    const mineCards = doc.querySelectorAll('[data-gallery-mine] .gal-card');
+    expect(mineCards).toHaveLength(2);
+    mineCards.forEach((c) => {
+      expect(c.querySelector('[data-gal-del]')).toBeTruthy();
+      expect(c.querySelector('[data-gal-report]')).toBeNull();
+    });
+    const wallet = doc.querySelector('.gal-wallet')!;
+    expect(wallet.textContent).toContain('120');
+    expect(wallet.textContent).toContain('2 of 2 slots used');
+    // 120 ≥ 100 and 2 < 5 — expandable
+    expect(wallet.querySelector('[data-gal-expand]')?.getAttribute('aria-disabled')).toBeNull();
+  });
+
+  it('expand is disabled below 100 credits or at the 5-slot cap', async () => {
+    fetchMock.mockImplementation(() =>
+      Promise.resolve(jsonResponse({ pieces: [], mine: [piece('m1', 'Alpha', 'Me', 3)], wallet: { credits: 40, slots: 5 } })),
+    );
+    const { document: doc } = await loadPage('gallery/index.html', fetchMock);
+    await import('./gallery');
+    await flush();
+    expect(doc.querySelector('[data-gal-expand]')?.getAttribute('aria-disabled')).toBe('true');
+  });
+
+  it('expanding spends 100 credits, shows the done note and reloads the island', async () => {
+    let wallet = { credits: 120, slots: 2 };
+    fetchMock.mockImplementation((input: string | URL | Request) => {
+      const url = String(input);
+      if (url.includes('/api/gallery/slot')) {
+        wallet = { credits: 20, slots: 3 };
+        return Promise.resolve(jsonResponse({ ok: true, credits: 20, slots: 3 }));
+      }
+      if (url.includes('/api/gallery/list')) {
+        return Promise.resolve(
+          jsonResponse({ pieces: [], mine: [piece('m1', 'Alpha', 'Me', 3)], wallet }),
+        );
+      }
+      return Promise.resolve(jsonResponse({ ok: true }));
+    });
+    const { document: doc } = await loadPage('gallery/index.html', fetchMock);
+    await import('./gallery');
+    await flush();
+    (doc.querySelector('[data-gal-expand]') as HTMLButtonElement).click();
+    await flush();
+    const call = fetchMock.mock.calls.find(([u]) => String(u).includes('/api/gallery/slot'));
+    expect(call).toBeTruthy();
+    expect(JSON.parse((call![1] as RequestInit).body as string)).toEqual({ uuid: expect.stringMatching(/^[0-9a-f-]{36}$/) });
+    expect(doc.querySelector('[data-gallery-status]')?.textContent).toContain('expanded');
+    // the island reloaded: the panel now shows the spent wallet
+    expect(doc.querySelector('.gal-wallet')?.textContent).toContain('20');
+  });
+
+  it('delete confirms, posts the piece id and reloads', async () => {
+    fetchMock.mockImplementation((input: string | URL | Request) => {
+      const url = String(input);
+      if (url.includes('/api/gallery/delete')) {
+        return Promise.resolve(jsonResponse({ ok: true, used: 0 }));
+      }
+      if (url.includes('/api/gallery/list')) {
+        return Promise.resolve(jsonResponse({ pieces: [], mine: [piece('m1', 'Alpha', 'Me', 3)], wallet: { credits: 3, slots: 1 } }));
+      }
+      return Promise.resolve(jsonResponse({ ok: true }));
+    });
+    const { document: doc } = await loadPage('gallery/index.html', fetchMock);
+    await import('./gallery');
+    await flush();
+    (doc.querySelector('[data-gal-del]') as HTMLButtonElement).click();
+    await flush();
+    const call = fetchMock.mock.calls.find(([u]) => String(u).includes('/api/gallery/delete'));
+    expect(call).toBeTruthy();
+    expect(JSON.parse((call![1] as RequestInit).body as string).pieceId).toBe('m1');
+    expect(doc.querySelector('[data-gallery-status]')?.textContent).toContain('deleted');
+  });
 });
 
 describe('home-page gallery block (dist/index.html)', () => {

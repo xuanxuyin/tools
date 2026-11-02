@@ -6,6 +6,12 @@
 
 ---
 
+## 今天 · 2026-11-03（周一）
+
+- [ ] 👤 **tintbrew D1 迁移 SQL（赞经济上线前置，5 分钟）**：Cloudflare 控制台 → Storage & Databases → D1 → tintbrew 库 → Console，把 `tintbrew/functions/schema.sql` **底部注释里的 6 条迁移 SQL 按序逐条执行**（creations 重建支持多作品 + 建 authors 钱包表）。不跑 = 线上 like/publish 会报错（authors 表不存在）。
+
+---
+
 ## 今天 · 2026-10-30（周五）
 
 > 10/28~29 拼豆连场全闭环（103 色板 → 全量铺开 → 质量三刀 → 117 张 1:1 → 渲染 pegboard 化 → 缩略图 webp 化 → 竞品两页复刻 → 精度源码对标 → 291 Mardiy 换板）+ **第八场 UI 观感优化批**（首页/五旗舰页导航/按钮/卡片）+ **第九场收尾四刀**（默认勾选取消 / guides 精简 / 竞品底部三区块+手绘图 / 首页卡图示）+ **第十场观感统一**（guides 真减条目 8 卡+文字链 / 全站内容区块底框 / title.png 评估=不上站）+ **第十一场底框批补刀**（手机溢出实证归零 / 外框 padding 升档防贴边 / 底部链接再砍 3+1 / **分区打印**——pattern 页 Print reference+Print to color 双钮、photo 页只打预览板）＋ **chartglade 五路对标批**（thankful 页重做 + 大站 sitemap 全量逆向 → 上量矩阵 13 项落 BENCHMARKS §7）。**今天 10/30（周五）⭐ B 计划讨论门**——线上验收（tintbrew 拼豆 + chartglade thankful）与两站拉量（P3 / 对标批 A5~A13）✅ 全完成，材料备齐（chartglade PLAN §6）只差你报 C 组 4 封 pitch 发送状态 → **✅ 已拍板：外线不加火力收口（C 组撤销、11/2 follow-up 同砍），主线转 11 月批**。

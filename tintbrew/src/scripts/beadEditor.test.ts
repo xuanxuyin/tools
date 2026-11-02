@@ -522,15 +522,21 @@ describe('publish to community gallery (UGC flow)', () => {
     expect(link.getAttribute('href')).toBe('/gallery/');
   });
 
-  it('republishing asks before overwriting, and a declined confirm never posts', async () => {
+  it('publishing never asks a replace confirm anymore (slot economy: pieces just add), and a 409 shows the slot-full note', async () => {
+    // pre-economy flow confirmed before overwriting; since the slot economy
+    // (2026-11-03) a publish simply adds a piece, and the only refusal is
+    // the server-side slot-full 409
     ctx.window.localStorage.setItem('tb-gallery:piece-id', 'existing000001');
-    (ctx.window as unknown as { confirm: (s?: string) => boolean }).confirm = () => false;
     paint(3, 3);
     fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish]') as Element);
     (ctx.host.querySelector('[data-ed-publish-nick]') as HTMLInputElement).value = 'Tester';
+    vi.mocked(globalThis.fetch).mockImplementationOnce(() =>
+      Promise.resolve({ ok: false, status: 409, json: async () => ({ error: 'slot-full' }) } as Response),
+    );
     fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish-submit]') as Element);
     await new Promise((r) => setTimeout(r, 0));
-    expect(vi.mocked(globalThis.fetch)).not.toHaveBeenCalled();
+    expect(vi.mocked(globalThis.fetch)).toHaveBeenCalled();
+    expect(ctx.host.querySelector('[data-ed-publish-status]')!.textContent).toContain('gallery is full');
   });
 
   it('a 429 publish shows the rate-limit note; a network error shows the generic one', async () => {
