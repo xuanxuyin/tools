@@ -3,10 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BeadFigure from '../components/BeadFigure.astro';
 import ToolNav from '../components/ToolNav.astro';
 import { BEAD_PATTERNS } from '../data/beadPatterns';
+import { colors } from '../data/colors';
 import { categoryCounts, easyPatterns, patternContents } from '../lib/beadContent';
 import { mixes } from '../data/mixes';
 import { buildMixContent } from '../lib/mixContent';
 import { formatCss, hexToRgb, mixSteps, rgbToHex } from '../lib/color';
+import { ICONS } from '../lib/icons';
 import { SITE } from '../consts';
 
 // one flagship board per category stands in for the whole set — the figures
@@ -14,11 +16,14 @@ import { SITE } from '../consts';
 // homepage shows real bead art with zero image assets
 const bySlug = (slug: string) => patternContents.find((p) => p.def.slug === slug)!;
 
-// decorative dots for the mix links carry the REAL computed answer color,
-// same engine the mix pages use — not a hand-picked approximation
-const mixHex = new Map(mixes.map((m) => {
+const hexById = new Map(colors.map((c) => [c.id, c.hex]));
+
+// mix-link chips carry the REAL computed answer (chip ring) plus the two
+// input colors (chip halves), all from the same engine the mix pages use —
+// "A + B = R" at a glance, not a hand-picked approximation
+const mixChip = new Map(mixes.map((m) => {
   const c = buildMixContent(m);
-  return [c.slug, c.resultHex] as const;
+  return [c.slug, { a: hexById.get(m.a) ?? '#ccc', b: hexById.get(m.b) ?? '#ccc', r: c.resultHex }] as const;
 }));
 
 // card demos are real tool output, not decoration (user call, 2026-10-29):
@@ -28,16 +33,17 @@ const blendPath = mixSteps([hexToRgb('#ef4444'), hexToRgb('#3b82f6')], 9).map(rg
 const convRgb = hexToRgb('#6d28d9');
 const convRows = ['#6d28d9', formatCss('rgb', convRgb), formatCss('hsl', convRgb)];
 
-const title = 'TintBrew — Mix Colors Online & Convert HEX, RGB, HSL, CMYK';
+const title = 'TintBrew — Color Mixer, Converter & Free Perler Bead Patterns';
 const description =
-  'Free online color mixer that blends colors perceptually (Oklab), plus a HEX/RGB/HSL/CMYK converter. See exactly what two colors make — with live ratios and code snippets.';
+  'Free color mixer (perceptual Oklab blending), a HEX/RGB/HSL/CMYK converter, photo-to-perler-bead-pattern maker and 114 printable bead patterns. See exactly what two colors make — with live ratios and code snippets.';
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: SITE.name,
   url: SITE.url,
-  description: SITE.description,
+  description:
+    'Free color tools and perler bead patterns: perceptual color mixing, HEX/RGB/HSL/CMYK conversion, photo-to-bead-pattern maker, printable bead boards and a community gallery.',
 };
 ---
 
@@ -45,10 +51,11 @@ const jsonLd = {
   <section class="hero home-hero">
     <div class="hero-blob blob-a" aria-hidden="true"></div>
     <div class="hero-blob blob-b" aria-hidden="true"></div>
-    <h1 data-i18n="home.h1">Brew colors, precisely.</h1>
+    <h1 data-i18n="home.h1">Mix colors, make perler bead patterns.</h1>
     <p class="lead" data-i18n="home.lead">
-      Mix any colors online in a perceptual color space, convert between every format, and get copy-ready
-      CSS code. Free, instant, and private — everything runs in your browser.
+      Blend colors in a perceptual color space, convert every format, turn a photo into a perler bead
+      pattern, and publish your boards to the community gallery. Free, instant, private — everything
+      runs in your browser.
     </p>
     <div class="hero-badges">
       <span class="badge" data-i18n="home.badgeFree">Free</span>
@@ -62,7 +69,7 @@ const jsonLd = {
   <section aria-label="Color tools" class="tool-grid">
     <a class="tool-card" href="/color-mixer">
       <span class="tool-icon" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11M6 4.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M10.5 8m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M5 11.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0" /></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.mixer} /></svg>
       </span>
       <h2 data-i18n="nav.mixer">Color Mixer</h2>
       <p>
@@ -80,7 +87,7 @@ const jsonLd = {
     </a>
     <a class="tool-card" href="/color-converter">
       <span class="tool-icon" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5h7m0 0L9.7 3.7m1.8 1.8-1.8 1.8M11.5 10.5h-7m0 0 1.8-1.8m-1.8 1.8 1.8 1.8" /></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.converter} /></svg>
       </span>
       <h2 data-i18n="nav.converter">Color Converter</h2>
       <p data-i18n="home.convDesc">
@@ -101,7 +108,7 @@ const jsonLd = {
     </a>
     <a class="tool-card" href="/photo-to-perler-bead-pattern/">
       <span class="tool-icon" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5A1.5 1.5 0 0 1 3.5 3h3l1.5 2h4.5A1.5 1.5 0 0 1 14 6.5v5A1.5 1.5 0 0 1 12.5 13h-9A1.5 1.5 0 0 1 2 11.5v-7z" /><circle cx="8" cy="8.5" r="2" /></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.photo} /></svg>
       </span>
       <h2 data-i18n="home.cardPhoto">Photo to Bead Pattern</h2>
       <p data-i18n="home.photoDesc">
@@ -164,43 +171,44 @@ const jsonLd = {
     </p>
   </section>
 
-  <section class="prose" style="margin-top: var(--sp-8);">
+  <section class="prose band" style="margin-top: var(--sp-8);">
     <h2 data-i18n="home.mixTitle">What two colors make?</h2>
     <p data-i18n="home.mixIntro">
       Mixing colors isn't one question — screens blend light (additive) while paint blends pigments
       (subtractive), and the results differ. These guides answer the classic combinations with live
-      examples, exact HEX codes, and ratio tables. The dot on each card is the real computed answer:
+      examples, exact HEX codes, and ratio tables. Each chip splits into the two colors you start
+      with, ringed by the real computed answer:
     </p>
     <div class="link-grid">
       <a class="link-tile" href="/mix/red-blue">
-        <span class="dot" style={`background:${mixHex.get('red-blue')}`}></span>
+        <span class="dot dot-mix" style={`--a:${mixChip.get('red-blue')?.a};--b:${mixChip.get('red-blue')?.b};--r:${mixChip.get('red-blue')?.r}`}></span>
         <span data-i18n="home.qRedBlue">What does red and blue make?</span>
       </a>
       <a class="link-tile" href="/mix/blue-yellow">
-        <span class="dot" style={`background:${mixHex.get('blue-yellow')}`}></span>
+        <span class="dot dot-mix" style={`--a:${mixChip.get('blue-yellow')?.a};--b:${mixChip.get('blue-yellow')?.b};--r:${mixChip.get('blue-yellow')?.r}`}></span>
         <span data-i18n="home.qBlueYellow">What does blue and yellow make?</span>
       </a>
       <a class="link-tile" href="/mix/red-green">
-        <span class="dot" style={`background:${mixHex.get('red-green')}`}></span>
+        <span class="dot dot-mix" style={`--a:${mixChip.get('red-green')?.a};--b:${mixChip.get('red-green')?.b};--r:${mixChip.get('red-green')?.r}`}></span>
         <span data-i18n="home.qRedGreen">What does red and green make?</span>
       </a>
       <a class="link-tile" href="/what-colors-make-brown">
-        <span class="dot" style="background:#8a5a3b"></span>
+        <span class="dot dot-mix" style="--a:#d97706;--b:#1d4ed8;--r:#8a5a3b"></span>
         <span data-i18n="home.qBrown">What colors make brown? — every route</span>
       </a>
       <a class="link-tile" href="/mix/red-yellow">
-        <span class="dot" style={`background:${mixHex.get('red-yellow')}`}></span>
+        <span class="dot dot-mix" style={`--a:${mixChip.get('red-yellow')?.a};--b:${mixChip.get('red-yellow')?.b};--r:${mixChip.get('red-yellow')?.r}`}></span>
         <span data-i18n="home.qRedYellow">What does red and yellow make?</span>
       </a>
       <a class="link-tile" href="/mix/black-white">
-        <span class="dot" style={`background:${mixHex.get('black-white')}`}></span>
+        <span class="dot dot-mix" style={`--a:${mixChip.get('black-white')?.a};--b:${mixChip.get('black-white')?.b};--r:${mixChip.get('black-white')?.r}`}></span>
         <span data-i18n="home.qBlackWhite">What does black and white make?</span>
       </a>
     </div>
     <p><span data-i18n="home.browseA">Browse</span> <a href="/mix" data-i18n="home.allMixes">all color mixes</a> <span data-i18n="home.browseB">for the full list.</span></p>
   </section>
 
-  <section class="prose" style="margin-top: var(--sp-6);">
+  <section class="prose band" style="margin-top: var(--sp-6);">
     <h2 data-i18n="home.frostTitle">Frosting and icing color guides</h2>
     <p data-i18n="home.frostIntro">
       Real-world mixing questions answered with computed swatches — the exact color each drop

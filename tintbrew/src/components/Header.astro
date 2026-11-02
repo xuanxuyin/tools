@@ -1,4 +1,5 @@
 ---
+import { ICONS } from '../lib/icons';
 import { SITE } from '../consts';
 import LangSwitch from './LangSwitch.astro';
 
@@ -10,37 +11,37 @@ const nav = [
     href: '/color-mixer',
     label: 'Color Mixer',
     i18n: 'nav.mixer',
-    icon: 'M2.5 4.5h11M2.5 8h11M2.5 11.5h11M6 4.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M10.5 8m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M5 11.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0',
+    icon: ICONS.mixer,
   },
   {
     href: '/color-converter',
     label: 'Color Converter',
     i18n: 'nav.converter',
-    icon: 'M4.5 5.5h7m0 0L9.7 3.7m1.8 1.8-1.8 1.8M11.5 10.5h-7m0 0 1.8-1.8m-1.8 1.8 1.8 1.8',
+    icon: ICONS.converter,
   },
   {
     href: '/hue-test',
     label: 'Hue Test',
     i18n: 'nav.hueTest',
-    icon: 'M8 2.8a5.2 5.2 0 1 1 0 10.4a5.2 5.2 0 0 1 0-10.4zM8 6.4a1.6 1.6 0 1 1 0 3.2a1.6 1.6 0 0 1 0-3.2z',
+    icon: ICONS.hueTest,
   },
   {
     href: '/mix',
     label: 'Color Mixes',
     i18n: 'nav.mixes',
-    icon: 'M6 3.5a4.5 4.5 0 1 1 0 9a4.5 4.5 0 0 1 0-9zM10 3.5a4.5 4.5 0 1 1 0 9a4.5 4.5 0 0 1 0-9z',
+    icon: ICONS.mixes,
   },
   {
     href: '/color-guides/',
     label: 'Guides',
     i18n: 'toolnav.guides',
-    icon: 'M3 2.5h6a2 2 0 0 1 2 2v9H5a2 2 0 0 1-2-2v-9zM13 5.5v6a2 2 0 0 1-2 2',
+    icon: ICONS.guides,
   },
   {
     href: '/perler-bead-patterns/',
     label: 'Bead Patterns',
     i18n: 'toolnav.patterns',
-    icon: 'M2.5 2.5h4.5v4.5H2.5zM9 2.5h4.5v4.5H9zM2.5 9H7v4.5H2.5zM9 9h4.5v4.5H9z',
+    icon: ICONS.patterns,
   },
 ];
 
@@ -69,9 +70,7 @@ const current = normalize(Astro.url.pathname);
       {
         nav.map((item) => (
           <a href={item.href} aria-current={current === normalize(item.href) ? 'page' : undefined}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d={item.icon} />
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={item.icon} />
             <span data-i18n={item.i18n}>{item.label}</span>
           </a>
         ))

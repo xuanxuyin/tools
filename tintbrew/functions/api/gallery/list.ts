@@ -53,22 +53,32 @@ export async function onRequestGet(ctx: Ctx): Promise<Response> {
   const pieces = (ranked.results ?? []).map(piece);
 
   // mine: every piece in any state + the like-economy wallet (credits and
-  // gallery slots). Absent uuid → null wallet, empty gallery.
+  // gallery slots). Absent uuid → null wallet, empty gallery. Each lookup
+  // fails soft: a pre-migration DB (no authors table) must never take the
+  // public ranking down with it — the ranking above renders regardless.
   let mine: ReturnType<typeof piece>[] = [];
   let wallet: { credits: number; slots: number } | null = null;
   const d = url.searchParams.get('d');
   if (d && typeof d === 'string' && d.length >= 8 && d.length <= 64) {
     const hash = await deviceHash(ctx.env, d);
-    const own = await db
-      .prepare(`SELECT ${COLUMNS} FROM creations WHERE device_hash = ? ORDER BY created_at DESC`)
-      .bind(hash)
-      .all<Row>();
-    mine = (own.results ?? []).map(piece);
-    const w = await db
-      .prepare('SELECT credits, slots FROM authors WHERE device_hash = ?')
-      .bind(hash)
-      .first<{ credits: number; slots: number }>();
-    if (w) wallet = { credits: w.credits, slots: w.slots };
+    try {
+      const own = await db
+        .prepare(`SELECT ${COLUMNS} FROM creations WHERE device_hash = ? ORDER BY created_at DESC`)
+        .bind(hash)
+        .all<Row>();
+      mine = (own.results ?? []).map(piece);
+    } catch {
+      mine = [];
+    }
+    try {
+      const w = await db
+        .prepare('SELECT credits, slots FROM authors WHERE device_hash = ?')
+        .bind(hash)
+        .first<{ credits: number; slots: number }>();
+      if (w) wallet = { credits: w.credits, slots: w.slots };
+    } catch {
+      wallet = null; // pre-migration DB — the wallet UI simply stays hidden
+    }
   }
 
   return json({ pieces, mine, wallet });

@@ -55,14 +55,16 @@ export function metaHtml(name: string, nick: string, nameClass: string): string 
 function rankHtml(rank: number | null): string {
   if (!rank) return '';
   if (rank <= 3) {
-    const [disc, inner] =
+    // First place reads first: its medal is a full size step up (user call
+    // 2026-11-03 — the tiny badge didn't read as "you won this").
+    const [disc, inner, w, h] =
       rank === 1
-        ? ['#e8a925', '#f7c948']
+        ? ['#e8a925', '#f7c948', 38, 47]
         : rank === 2
-          ? ['#9aa3ad', '#c6cdd6']
-          : ['#b06a32', '#d18d54'];
+          ? ['#9aa3ad', '#c6cdd6', 30, 37]
+          : ['#b06a32', '#d18d54', 30, 37];
     const medal =
-      `<svg viewBox="0 0 26 32" width="24" height="30" aria-hidden="true">` +
+      `<svg viewBox="0 0 26 32" width="${w}" height="${h}" aria-hidden="true">` +
       `<path d="M5 1h5l3 8-6-2z" fill="#c0392b"/><path d="M21 1h-5l-3 8 6-2z" fill="#a83226"/>` +
       `<circle cx="13" cy="20" r="10" fill="${disc}"/><circle cx="13" cy="20" r="7" fill="${inner}"/>` +
       `<path d="M13 15.5l1.4 2.9 3.2.4-2.3 2.2.5 3.1-2.8-1.5-2.8 1.5.5-3.1-2.3-2.2 3.2-.4z" fill="#fff"/>` +
@@ -159,10 +161,11 @@ export function cardHtml(p: GalleryPiece, rank: number | null, opts?: { mine?: b
 }
 
 /** Mini card for the home-page top 9. The thumbnail + name/byline link
- *  into the gallery; the Like pill floats over the card's bottom-right
- *  corner as a real button (a button can't live inside a link), so the
- *  home page votes directly. Info reads as a labeled spec sheet —
- *  Name / Artist rows. */
+ *  into the gallery; the Like pill lives as a centered row at the foot of
+ *  the caption plate (user call 2026-11-03: centered in the bottom bar,
+ *  not parked in a corner) — still outside the link, so the home page
+ *  votes directly. Info reads as a labeled spec sheet — Name / Artist
+ *  rows. */
 export function miniCardHtml(p: GalleryPiece, rank: number): string {
   return (
     `<li class="gal-mini" data-piece="${escapeHtml(p.id)}">` +
@@ -172,8 +175,8 @@ export function miniCardHtml(p: GalleryPiece, rank: number): string {
     `</a>` +
     `<div class="gal-minimeta">` +
     metaHtml(p.name, p.nick, 'gal-mini-name') +
-    `</div>` +
     likeBtnHtml(p) +
+    `</div>` +
     `</li>`
   );
 }

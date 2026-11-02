@@ -8,7 +8,7 @@
 
 ## 今天 · 2026-11-03（周一）
 
-- [ ] 👤 **tintbrew D1 迁移 SQL（赞经济上线前置，5 分钟）**：Cloudflare 控制台 → Storage & Databases → D1 → tintbrew 库 → Console，把 `tintbrew/functions/schema.sql` **底部注释里的 6 条迁移 SQL 按序逐条执行**（creations 重建支持多作品 + 建 authors 钱包表）。不跑 = 线上 like/publish 会报错（authors 表不存在）。
+- [ ] 👤 **tintbrew D1 迁移 SQL（⇧ 已升为今日必做——11/3 实锤它已造成线上功能静默失效）**：Cloudflare 控制台 → Storage & Databases → D1 → tintbrew 库 → Console，把 `tintbrew/functions/schema.sql` **底部注释里的 6 条迁移 SQL 按序逐条执行**（creations 重建支持多作品 + 建 authors 钱包表）。**不跑的后果（实测）**：/gallery/ 曾因钱包查询炸掉整页不显示热门作品（11/3 已加容错兜底，列表恢复但钱包面板隐藏）；点赞积分、100 积分扩画廊位、发布第二件作品**全部静默不生效**。跑完即全部解锁。
 
 ---
 
