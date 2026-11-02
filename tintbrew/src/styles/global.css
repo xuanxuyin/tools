@@ -869,8 +869,8 @@ input[type='range']::-moz-range-thumb {
 }
 /* Medal badge for ranks 1–3 — pinned to the card's top-left CORNER and
    hanging halfway off it, like a real medal clipped over the edge (user
-   call 2026-11-03). First place renders a full size step up (38×47 vs
-   30×37, galleryCards.rankHtml) so the winner reads at a glance. Needs
+   call 2026-11-03). All three render the same 32×40 size (user clarified:
+   scale the set up uniformly, don't supersize gold). Needs
    overflow:visible on the card and a negative offset; z-index keeps the
    overhang above neighbouring cards. */
 .gal-rank-medal {

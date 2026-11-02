@@ -55,16 +55,17 @@ export function metaHtml(name: string, nick: string, nameClass: string): string 
 function rankHtml(rank: number | null): string {
   if (!rank) return '';
   if (rank <= 3) {
-    // First place reads first: its medal is a full size step up (user call
-    // 2026-11-03 — the tiny badge didn't read as "you won this").
-    const [disc, inner, w, h] =
+    // All three medals render the SAME size (user call 2026-11-03: scale the
+    // whole set up uniformly, don't supersize first place) — only the metal
+    // colors differ.
+    const [disc, inner] =
       rank === 1
-        ? ['#e8a925', '#f7c948', 38, 47]
+        ? ['#e8a925', '#f7c948']
         : rank === 2
-          ? ['#9aa3ad', '#c6cdd6', 30, 37]
-          : ['#b06a32', '#d18d54', 30, 37];
+          ? ['#9aa3ad', '#c6cdd6']
+          : ['#b06a32', '#d18d54'];
     const medal =
-      `<svg viewBox="0 0 26 32" width="${w}" height="${h}" aria-hidden="true">` +
+      `<svg viewBox="0 0 26 32" width="32" height="40" aria-hidden="true">` +
       `<path d="M5 1h5l3 8-6-2z" fill="#c0392b"/><path d="M21 1h-5l-3 8 6-2z" fill="#a83226"/>` +
       `<circle cx="13" cy="20" r="10" fill="${disc}"/><circle cx="13" cy="20" r="7" fill="${inner}"/>` +
       `<path d="M13 15.5l1.4 2.9 3.2.4-2.3 2.2.5 3.1-2.8-1.5-2.8 1.5.5-3.1-2.3-2.2 3.2-.4z" fill="#fff"/>` +
