@@ -405,4 +405,44 @@ describe('bead editor island (real SSR markup)', () => {
     fireClick(ctx.window, ctx.host.querySelector('[data-ed-print]')!);
     expect(printSpy).toHaveBeenCalledOnce();
   });
+
+  it('Print boards stays hidden while the board fits one pegboard', () => {
+    // blank 29 × 29 boot — a single sheet needs no per-board slicing
+    newEditor(ctx);
+    expect(ctx.host.querySelector('[data-ed-print-boards]')?.classList.contains('hidden')).toBe(true);
+  });
+
+  it('a 58 × 58 handoff offers Print boards; clicking mounts cover + sheets in <main>', () => {
+    // every instance binds the host root — one editor per test keeps the
+    // click path single-fire (see newEditor)
+    const grid = Array.from({ length: 58 }, () => Array<string | null>(58).fill('mard-h7'));
+    ctx.window.sessionStorage.setItem(
+      'bead-editor:handoff',
+      JSON.stringify({ width: 58, height: 58, grid }),
+    );
+    newEditor(ctx);
+    const btn = ctx.host.querySelector('[data-ed-print-boards]') as HTMLElement;
+    expect(btn.classList.contains('hidden')).toBe(false);
+    // printZone tags <html> with the boards zone for the print CSS and
+    // clears it right after the (synchronous) dialog — capture it in-flight
+    let zoneDuringPrint: string | undefined;
+    const printSpy = vi.fn(() => {
+      zoneDuringPrint = (globalThis as unknown as { document: Document }).document.documentElement.dataset.printZone;
+    });
+    (ctx.window as unknown as { print: () => void }).print = printSpy;
+    fireClick(ctx.window, btn);
+    expect(printSpy).toHaveBeenCalledOnce();
+    expect(zoneDuringPrint).toBe('boards');
+    // afterprint cleanup ran — the zone tag never leaks into a later print
+    expect((globalThis as unknown as { document: Document }).document.documentElement.dataset.printZone).toBeUndefined();
+    const sheets = ctx.document.querySelector('[data-print-boards]')!;
+    expect(sheets.parentElement?.tagName.toLowerCase()).toBe('main');
+    const pages = sheets.querySelectorAll('.board-page');
+    expect(pages.length).toBe(5); // cover + 4 boards
+    expect(pages[0]!.querySelector('.bp-cover-title')?.textContent).toContain('4 pegboards');
+    expect(pages[1]!.querySelector('.bp-board-head')?.textContent).toContain('Board 1 of 2');
+    expect(pages[1]!.getAttribute('data-bp-page')).toBe('1');
+    expect(pages[4]!.getAttribute('data-bp-page')).toBe('4');
+    expect(pages[4]!.getAttribute('data-bp-total')).toBe('4');
+  });
 });

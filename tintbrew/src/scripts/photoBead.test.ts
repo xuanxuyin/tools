@@ -133,7 +133,17 @@ describe('photo bead island (real SSR markup)', () => {
     expect(slot.querySelector('.source-empty')).toBeTruthy();
     expect(slot.textContent).toContain('preview will appear here');
     expect(slot.previousElementSibling?.matches('input[data-photo-file]')).toBe(true);
-    const note = slot.nextElementSibling!;
+    // crop row + crop editor follow the slot (P2, 2026-11-02), both hidden
+    // until a photo lands; the auto-apply note comes after them
+    const cropBtns = slot.nextElementSibling!;
+    expect(cropBtns.matches('[data-photo-crop-btns]')).toBe(true);
+    expect(cropBtns.classList.contains('hidden')).toBe(true);
+    const cropLayer = cropBtns.nextElementSibling!;
+    expect(cropLayer.matches('[data-photo-crop-layer]')).toBe(true);
+    expect(cropLayer.classList.contains('hidden')).toBe(true);
+    expect(cropLayer.querySelector('[data-photo-crop-box]')).toBeTruthy();
+    expect(cropLayer.querySelectorAll('.crop-h')).toHaveLength(8);
+    const note = cropLayer.nextElementSibling!;
     expect(note.classList.contains('auto-note')).toBe(true);
     const status = note.nextElementSibling!;
     expect(status.matches('[data-photo-status]')).toBe(true);
@@ -307,5 +317,114 @@ describe('photo bead island (real SSR markup)', () => {
     (ctx.window as unknown as { print: () => void }).print = printSpy;
     fireClick(ctx.window, btn);
     expect(printSpy).toHaveBeenCalledOnce();
+  });
+
+  it('clampRect keeps crops inside the image, at least MIN_CROP, as integers', () => {
+    const clamp = ctx.PhotoStudio.clampRect;
+    // negative origin snaps to the corner, sub-min sizes lift to 32
+    expect(clamp({ x: -10, y: -5, w: 4, h: 4 }, 300, 200)).toEqual({ x: 0, y: 0, w: 32, h: 32 });
+    // oversize dims clamp to the image itself
+    expect(clamp({ x: 0, y: 0, w: 999, h: 999 }, 300, 200)).toEqual({ x: 0, y: 0, w: 300, h: 200 });
+    // origin pulled back so the rect never spills past the right/bottom edge
+    expect(clamp({ x: 290, y: 190, w: 32, h: 32 }, 300, 200)).toEqual({ x: 268, y: 168, w: 32, h: 32 });
+    // floats round
+    expect(clamp({ x: 10.6, y: 5.2, w: 32.4, h: 33.7 }, 300, 200)).toEqual({ x: 11, y: 5, w: 32, h: 34 });
+  });
+
+  it('crop narrows the conversion to the framed region and Reset brings the whole photo back', () => {
+    // left half red, right half blue — the crop frame takes the red half
+    const w = 160;
+    const h = 120;
+    const data = new Uint8ClampedArray(w * h * 4);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        const [r, g, b] = x < w / 2 ? [255, 0, 0] : [0, 0, 255];
+        data[i] = r;
+        data[i + 1] = g;
+        data[i + 2] = b;
+        data[i + 3] = 255;
+      }
+    }
+    ctx.studio.convertSample({ data, width: w, height: h });
+    // crop to the left (red) half — Apply drives a reconvert through the
+    // same path, so re-running convertSample after setting the crop rect
+    // exercises the identical code path
+    const s = ctx.studio as unknown as {
+      cropRect: { x: number; y: number; w: number; h: number } | null;
+    };
+    s.cropRect = { x: 0, y: 0, w: 80, h: 120 };
+    ctx.studio.convertSample({ data, width: w, height: h });
+    const svg = board(ctx.host)!;
+    // Auto width follows the cropped frame: 80/2.2 → 36 wide, aspect keeps 54 rows
+    expect(svg.getAttribute('viewBox')).toBe('0 0 360 540');
+    expect(ctx.host.querySelectorAll('.pv-cell').length).toBeGreaterThan(0);
+    for (const c of ctx.host.querySelectorAll<HTMLSpanElement>('.pv-cell'))
+      expect(c.getAttribute('fill')).toBe(RED_BEAD.hex);
+    // reset clears the crop and rebuilds the full board (both halves back;
+    // the seam column averages to a blend bead, so ≥2 colors with red+blue)
+    s.cropRect = null;
+    ctx.studio.convertSample({ data, width: w, height: h });
+    const fills = new Set(
+      [...ctx.host.querySelectorAll<HTMLSpanElement>('.pv-cell')].map((c) => c.getAttribute('fill')),
+    );
+    expect(fills.has(RED_BEAD.hex)).toBe(true);
+    expect(fills.size).toBeGreaterThanOrEqual(2);
+  });
+
+  it('Print boards: hidden on a single pegboard, offered past one, and it mounts the print sheets', () => {
+    // 29 × 29 — one pegboard, no boards button
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    expect(ctx.host.querySelector('[data-photo-print-boards]')).toBeNull();
+    expect(ctx.document.querySelector('[data-print-boards]')).toBeNull();
+
+    // the 58 pill → 58 × 29, two boards across; the button appears and
+    // clicking mounts the cover sheet + board sheets at the end of <main>
+    const w = 60;
+    const h = 30;
+    const data = new Uint8ClampedArray(w * h * 4);
+    for (let i = 0; i < w * h; i++) {
+      data[i * 4] = 255;
+      data[i * 4 + 1] = 0;
+      data[i * 4 + 2] = 0;
+      data[i * 4 + 3] = 255;
+    }
+    ctx.studio.convertSample({ data, width: w, height: h });
+    const pill = ctx.host.querySelector('[data-photo-size] > [data-value="58"]') as HTMLElement;
+    fireClick(ctx.window, pill);
+    const boardsBtn = ctx.host.querySelector('[data-photo-print-boards]') as HTMLElement;
+    expect(boardsBtn).toBeTruthy();
+    const root = document.documentElement;
+    root.dataset.printZone = 'boards';
+    fireClick(ctx.window, boardsBtn);
+    const sheets = ctx.document.querySelector('[data-print-boards]')!;
+    expect(sheets.parentElement?.tagName.toLowerCase()).toBe('main');
+    const pages = sheets.querySelectorAll('.board-page');
+    expect(pages.length).toBe(3); // cover + 2 boards (29 rows tall → one row of boards)
+    expect(pages[0]!.classList.contains('board-cover')).toBe(true);
+    expect(pages[0]!.querySelector('.bp-cover-title')?.textContent).toContain('2 pegboards');
+    expect(pages[1]!.querySelector('.bp-board-head')?.textContent).toContain('Board 1 of 2');
+    expect(pages[1]!.getAttribute('data-bp-page')).toBe('1');
+    expect(pages[2]!.getAttribute('data-bp-page')).toBe('2');
+    // the cover list mirrors the single-color tally
+    expect(pages[0]!.querySelectorAll('.bp-row').length).toBe(1);
+    delete root.dataset.printZone;
+    // a re-print replaces the old sheets instead of stacking them
+    fireClick(ctx.window, boardsBtn);
+    expect(ctx.document.querySelectorAll('[data-print-boards]')).toHaveLength(1);
+  });
+
+  it('the crop buttons row wakes up on upload and Reset hides until a crop applies', () => {
+    // no photo yet → the row stays hidden
+    expect(ctx.host.querySelector('[data-photo-crop-btns]')?.classList.contains('hidden')).toBe(true);
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    // convertSample skips the upload path — simulate the visible state it drives
+    const s = ctx.studio as unknown as { sourceUrl: string | null; updateCropButtons(): void };
+    s.sourceUrl = 'blob:photo';
+    s.updateCropButtons();
+    const row = ctx.host.querySelector('[data-photo-crop-btns]')!;
+    expect(row.classList.contains('hidden')).toBe(false);
+    // no crop applied → Reset stays hidden
+    expect(row.querySelector('[data-photo-crop-reset]')?.classList.contains('hidden')).toBe(true);
   });
 });

@@ -14,6 +14,7 @@ import { photoToPattern, type PhotoPattern, type PhotoSimplify, type SampleImage
 import { mardById } from '../lib/mardPalette';
 import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
 import { printZone } from './printZone';
+import { buildBoardPrintPages, type BeadTally } from '../lib/beadPrint';
 import { t } from './i18n';
 
 const U = 10; // viewBox units per cell
@@ -26,6 +27,9 @@ const DECODE_CAP = 2048;
 const MIN_CUSTOM = 10;
 const MAX_CUSTOM = 200;
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
+/** Smallest crop either axis may take, in full-image pixels — guards
+ *  accidental zero-area frames and degenerate conversions. */
+const MIN_CROP = 32;
 
 /** Width presets — same ladder as the source site; Custom is a separate
  *  option (its own card + number input), not a seventh pill. */
@@ -43,9 +47,15 @@ const WIDTH_PILL_SEL = '[data-photo-size] > button, [data-photo-custom-toggle]';
 
 export class PhotoStudio {
   private source: SampleImage | null = null;
+  /** The uncropped decode — crop edits re-slice from this, never from the
+   *  last crop, so repeated reframes don't compound rounding. */
+  private full: SampleImage | null = null;
+  /** Crop rectangle in full-image pixels; null = the whole photo. */
+  private cropRect: { x: number; y: number; w: number; h: number } | null = null;
   private pattern: PhotoPattern | null = null;
   private sourceUrl: string | null = null;
   private timer: number | undefined;
+  private cropBound = false;
 
   constructor(private root: HTMLElement) {
     const fileInput = root.querySelector<HTMLInputElement>('[data-photo-file]')!;
@@ -120,6 +130,12 @@ export class PhotoStudio {
       printZone('preview');
       return;
     }
+    // one sheet per physical pegboard — the whole-board print shrinks past
+    // 29 beads wide; this keeps every cell at full size (P1, 2026-11-02)
+    if (target.closest('[data-photo-print-boards]')) {
+      this.printBoards();
+      return;
+    }
     if (target.closest('[data-photo-png]')) {
       const p = this.pattern;
       if (p) {
@@ -130,6 +146,22 @@ export class PhotoStudio {
           'tintbrew-bead-pattern.png',
         );
       }
+      return;
+    }
+    if (target.closest('[data-photo-crop]')) {
+      this.openCrop();
+      return;
+    }
+    if (target.closest('[data-photo-crop-reset]')) {
+      this.resetCrop();
+      return;
+    }
+    if (target.closest('[data-photo-crop-apply]')) {
+      this.applyCrop();
+      return;
+    }
+    if (target.closest('[data-photo-crop-cancel]')) {
+      this.closeCrop();
       return;
     }
     if (target.closest('[data-photo-edit]')) this.openInEditor();
@@ -182,8 +214,8 @@ export class PhotoStudio {
       const sizeVal = this.groupValue('[data-photo-size] > button');
       cols =
         sizeVal === 'auto' || !sizeVal
-          ? this.source
-            ? PhotoStudio.autoCols(this.source.width, this.source.height)
+          ? this.croppedSource()
+            ? PhotoStudio.autoCols(this.croppedSource()!.width, this.croppedSource()!.height)
             : BOARD_SIZE
           : Number(sizeVal) || BOARD_SIZE;
     }
@@ -251,8 +283,11 @@ export class PhotoStudio {
     status.textContent = 'Reading your photo…';
     try {
       this.source = await this.decode(file);
+      this.full = this.source;
+      this.cropRect = null;
       this.setFilename(file.name);
       this.showSource();
+      this.updateCropButtons();
       // a fresh photo resets the width to Auto, like the source site
       const auto = this.root.querySelector<HTMLButtonElement>('[data-photo-size] > [data-value="auto"]');
       auto?.click();
@@ -328,13 +363,14 @@ export class PhotoStudio {
   }
 
   private convert(): void {
-    if (!this.source) return;
+    const view = this.croppedSource();
+    if (!view) return;
     const opts = this.opts();
     if (opts.cols < 1) return; // custom width mid-edit — keep the last board
     const status = this.status();
     let pattern: PhotoPattern;
     try {
-      pattern = photoToPattern(this.source, opts);
+      pattern = photoToPattern(view, opts);
     } catch {
       status.textContent = 'Conversion failed — try another photo.';
       return;
@@ -365,7 +401,8 @@ export class PhotoStudio {
     const colors = new Set(p.cells.filter(Boolean));
     const bw = Math.ceil(p.cols / BOARD_SIZE);
     const bh = Math.ceil(p.rows / BOARD_SIZE);
-    const suggested = this.source ? PhotoStudio.autoCols(this.source.width, this.source.height) : p.cols;
+    const view = this.croppedSource();
+    const suggested = view ? PhotoStudio.autoCols(view.width, view.height) : p.cols;
     const overwiden = opts.cols > suggested;
     const sizeLabel = this.isCustomMode()
       ? `Custom bead width: ${opts.cols}`
@@ -383,6 +420,7 @@ export class PhotoStudio {
       <button type="button" class="btn act-primary" data-photo-edit data-i18n="ph.edit">${t('ph.edit')}</button>
       <button type="button" class="btn" data-photo-png data-i18n="ph.png">${t('ph.png')}</button>
       <button type="button" class="btn" data-photo-print data-i18n="ph.print">${t('ph.print')}</button>
+      ${bw * bh > 1 ? `<button type="button" class="btn" data-photo-print-boards data-i18n="ph.printBoards" title="${t('ph.printBoardsHelp')}">${t('ph.printBoards')}</button>` : ''}
     `;
 
     const figure = document.createElement('figure');
@@ -520,10 +558,251 @@ export class PhotoStudio {
     return svg;
   }
 
+  /** The pixels the converter actually sees: the crop rectangle sliced out
+   *  of the uncropped decode. Row-sliced copy — ImageData-shaped output,
+   *  same contract photoToPattern expects. */
+  private croppedSource(): SampleImage | null {
+    const s = this.source;
+    if (!s) return null;
+    const c = this.cropRect;
+    if (!c) return s;
+    const src = s.data as Uint8ClampedArray;
+    const data = new Uint8ClampedArray(c.w * c.h * 4);
+    for (let y = 0; y < c.h; y++) {
+      const start = ((c.y + y) * s.width + c.x) * 4;
+      data.set(src.subarray(start, start + c.w * 4), y * c.w * 4);
+    }
+    return { data, width: c.w, height: c.h };
+  }
+
+  /** Clamp a crop rectangle into the image: inside bounds, at least
+   *  MIN_CROP px per side, integers. Exported via the class for tests. */
+  static clampRect(
+    r: { x: number; y: number; w: number; h: number },
+    maxW: number,
+    maxH: number,
+  ): { x: number; y: number; w: number; h: number } {
+    const w = Math.max(MIN_CROP, Math.min(Math.round(r.w), maxW));
+    const h = Math.max(MIN_CROP, Math.min(Math.round(r.h), maxH));
+    const x = Math.max(0, Math.min(Math.round(r.x), maxW - w));
+    const y = Math.max(0, Math.min(Math.round(r.y), maxH - h));
+    return { x, y, w, h };
+  }
+
+  private resetCrop(): void {
+    this.cropRect = null;
+    this.showSource();
+    this.convert();
+  }
+
+  private applyCrop(): void {
+    const img = this.root.querySelector<HTMLImageElement>('[data-photo-crop-img]');
+    const full = this.full;
+    if (!img || !full || !img.clientWidth) {
+      this.closeCrop();
+      return;
+    }
+    const box = this.cropBox;
+    const sx = full.width / img.clientWidth;
+    const sy = full.height / img.clientHeight;
+    const r = PhotoStudio.clampRect(
+      { x: box.x * sx, y: box.y * sy, w: box.w * sx, h: box.h * sy },
+      full.width,
+      full.height,
+    );
+    this.cropRect = r.w === full.width && r.h === full.height ? null : r;
+    this.closeCrop();
+    this.showSource();
+    this.convert();
+  }
+
+  private closeCrop(): void {
+    this.root.querySelector('[data-photo-crop-layer]')?.classList.add('hidden');
+    this.updateCropButtons();
+  }
+
+  private openCrop(): void {
+    const layer = this.root.querySelector<HTMLElement>('[data-photo-crop-layer]');
+    const img = this.root.querySelector<HTMLImageElement>('[data-photo-crop-img]');
+    if (!layer || !img || !this.sourceUrl || !this.source) return;
+    img.src = this.sourceUrl;
+    layer.classList.remove('hidden');
+    this.bindCropDrag(img);
+    // seed the frame: the current crop if there is one, else the whole photo
+    const sx = img.clientWidth / this.source.width;
+    const sy = img.clientHeight / this.source.height;
+    const r = this.cropRect ?? { x: 0, y: 0, w: this.source.width, h: this.source.height };
+    this.setCropBox({ x: r.x * sx, y: r.y * sy, w: r.w * sx, h: r.h * sy });
+    this.updateCropButtons();
+  }
+
+  /** Update the crop buttons row: nothing without a photo; Reset only when
+   *  a crop is actually applied. */
+  private updateCropButtons(): void {
+    const row = this.root.querySelector<HTMLElement>('[data-photo-crop-btns]');
+    if (!row) return;
+    row.classList.toggle('hidden', !this.sourceUrl);
+    row.querySelector('[data-photo-crop-reset]')?.classList.toggle('hidden', !this.cropRect);
+  }
+
+  /** The live crop frame in DISPLAY pixels (the shown image's coordinate
+   *  space) — the pointer handlers work here; Apply rescales to full. */
+  private cropBox = { x: 0, y: 0, w: 0, h: 0 };
+
+  private setCropBox(b: { x: number; y: number; w: number; h: number }): void {
+    this.cropBox = b;
+    const el = this.root.querySelector<HTMLElement>('[data-photo-crop-box]');
+    if (!el) return;
+    el.style.left = `${b.x}px`;
+    el.style.top = `${b.y}px`;
+    el.style.width = `${b.w}px`;
+    el.style.height = `${b.h}px`;
+  }
+
+  /** Pointer-based frame dragging: move, eight resize handles, and drag a
+   *  fresh frame out of the dimmed area. Pointer events cover touch — the
+   *  stage disables touch-action so a drag never scrolls the page. */
+  private bindCropDrag(img: HTMLImageElement): void {
+    if (this.cropBound) return;
+    this.cropBound = true;
+    const stage = this.root.querySelector<HTMLElement>('[data-photo-crop-stage]');
+    const boxEl = this.root.querySelector<HTMLElement>('[data-photo-crop-box]');
+    if (!stage || !boxEl) return;
+    let mode: string | null = null;
+    let sx = 0;
+    let sy = 0;
+    let b0 = this.cropBox;
+    const minDisp = () =>
+      (MIN_CROP / (this.full?.width ?? 1)) * (img.clientWidth || 1);
+    const clampBox = (b: { x: number; y: number; w: number; h: number }) => {
+      const dw = img.clientWidth;
+      const dh = img.clientHeight;
+      const min = minDisp();
+      const w = Math.max(min, Math.min(b.w, dw));
+      const h = Math.max(min, Math.min(b.h, dh));
+      return {
+        x: Math.max(0, Math.min(b.x, dw - w)),
+        y: Math.max(0, Math.min(b.y, dh - h)),
+        w,
+        h,
+      };
+    };
+    stage.addEventListener('pointerdown', (e) => {
+      if (!img.clientWidth) return;
+      const rect = stage.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+      const b = this.cropBox;
+      const inBox = px >= b.x && px <= b.x + b.w && py >= b.y && py <= b.y + b.h;
+      if (inBox) {
+        // pick the strongest handle claim, else move the whole frame
+        const T = 14;
+        const n = py - b.y < T;
+        const s2 = b.y + b.h - py < T;
+        const w = px - b.x < T;
+        const e2 = b.x + b.w - px < T;
+        mode = n || s2 || w || e2 ? `${n ? 'n' : ''}${s2 ? 's' : ''}${w ? 'w' : ''}${e2 ? 'e' : ''}` : 'move';
+      } else {
+        mode = 'new';
+        this.setCropBox({ x: px, y: py, w: 0, h: 0 });
+      }
+      sx = px;
+      sy = py;
+      b0 = { ...this.cropBox };
+      stage.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    stage.addEventListener('pointermove', (e) => {
+      if (!mode) return;
+      const rect = stage.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+      const dx = px - sx;
+      const dy = py - sy;
+      const min = minDisp();
+      let b: { x: number; y: number; w: number; h: number };
+      if (mode === 'move') {
+        b = { ...b0, x: b0.x + dx, y: b0.y + dy };
+      } else if (mode === 'new') {
+        b = {
+          x: Math.min(sx, px),
+          y: Math.min(sy, py),
+          w: Math.abs(px - sx),
+          h: Math.abs(py - sy),
+        };
+      } else {
+        b = { ...b0 };
+        let left = b0.x;
+        let top = b0.y;
+        let right = b0.x + b0.w;
+        let bottom = b0.y + b0.h;
+        if (mode.includes('w')) left = Math.min(px, right - min);
+        if (mode.includes('e')) right = Math.max(px, left + min);
+        if (mode.includes('n')) top = Math.min(py, bottom - min);
+        if (mode.includes('s')) bottom = Math.max(py, top + min);
+        b = { x: left, y: top, w: right - left, h: bottom - top };
+      }
+      this.setCropBox(clampBox(b));
+    });
+    const end = () => {
+      mode = null;
+    };
+    stage.addEventListener('pointerup', end);
+    stage.addEventListener('pointercancel', end);
+  }
+
+  /** One sheet per physical pegboard: a cover page with the bead list,
+   *  then each 29×29 board at full cell size with its coordinates. The
+   *  container mounts at the end of <main>, hidden;
+   *  html[data-print-zone='boards'] un-hides it and hides every other
+   *  main child on paper (page-level global print blocks). */
+  private printBoards(): void {
+    const p = this.pattern;
+    if (!p) return;
+    const mount = document.querySelector('main') ?? document.body;
+    mount.querySelector('[data-print-boards]')?.remove();
+    const counts = new Map<string, number>();
+    for (const id of p.cells) if (id) counts.set(id, (counts.get(id) ?? 0) + 1);
+    const tally: BeadTally[] = [...counts.entries()]
+      .map(([id, count]) => {
+        const bead = mardById(id)!;
+        return { code: bead.code, hex: bead.hex, count };
+      })
+      .sort((a, b) => b.count - a.count);
+    const bw = Math.ceil(p.cols / BOARD_SIZE);
+    const bh = Math.ceil(p.rows / BOARD_SIZE);
+    const pages = buildBoardPrintPages({
+      cols: p.cols,
+      rows: p.rows,
+      cellAt: (y, x) => mardById(p.cells[y * p.cols + x] ?? '')?.hex ?? null,
+      tally,
+      labels: {
+        cover: t('ph.bpCover')
+          .replace('{cols}', String(p.cols))
+          .replace('{rows}', String(p.rows))
+          .replace('{boards}', String(bw * bh)),
+        coverList: t('ph.bpList'),
+        board: (pg) =>
+          t('ph.bpBoard')
+            .replace('{bx}', String(pg.bx + 1))
+            .replace('{bw}', String(bw))
+            .replace('{by}', String(pg.by + 1))
+            .replace('{bh}', String(bh))
+            .replace('{x1}', String(pg.x0 + 1))
+            .replace('{x2}', String(pg.x0 + pg.cols))
+            .replace('{y1}', String(pg.y0 + 1))
+            .replace('{y2}', String(pg.y0 + pg.rows))
+            .replace('{page}', String(pg.page))
+            .replace('{total}', String(Math.ceil(p.cols / BOARD_SIZE) * Math.ceil(p.rows / BOARD_SIZE))),
+      },
+    });
+    mount.appendChild(pages);
+    printZone('boards');
+  }
+
   /** Hand the converted board to the editor page — the source site's
    *  sessionStorage handoff, same key shape our editor reads. */
-  private openInEditor(): void {
-    const p = this.pattern;
+  private openInEditor(): void {    const p = this.pattern;
     if (!p) return;
     const grid: (string | null)[][] = [];
     for (let y = 0; y < p.rows; y++) {

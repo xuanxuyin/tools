@@ -12,6 +12,9 @@ import { MARD_COLORS, mardById } from '../lib/mardPalette';
 import { paintLine, type PaintCell } from '../lib/beadPaint';
 import { rgbToOklab, hexToRgb, normalizeHex, type Oklab } from '../lib/color';
 import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
+import { buildBoardPrintPages, type BeadTally } from '../lib/beadPrint';
+import { printZone } from './printZone';
+import { t as uiT } from './i18n';
 
 const U = 10; // viewBox units per cell — same as every board on the site
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -122,6 +125,7 @@ export class BeadEditor {
     this.renderLibrary('');
     this.bind();
     this.syncStats();
+    this.updateBoardsButton();
   }
 
   private emptyGrid(w: number, h: number): Grid {
@@ -313,6 +317,59 @@ export class BeadEditor {
   private afterEdit(): void {
     this.syncStats();
     this.autosave();
+    this.updateBoardsButton();
+  }
+
+  /** "Print boards" only earns its place once the design outgrows one
+   *  pegboard — below that the plain print already fills a single sheet. */
+  private updateBoardsButton(): void {
+    const btn = this.root.querySelector('[data-ed-print-boards]');
+    btn?.classList.toggle('hidden', this.W <= BOARD_SIZE && this.H <= BOARD_SIZE);
+  }
+
+  /** Cover sheet with the bead list, then each 29×29 pegboard at full cell
+   *  size with its coordinates (lib/beadPrint.ts). The container mounts at
+   *  the end of <main>, hidden; html[data-print-zone='boards'] un-hides it
+   *  and hides every other main child on paper. */
+  private printBoards(): void {
+    const mount = document.querySelector('main') ?? document.body;
+    mount.querySelector('[data-print-boards]')?.remove();
+    const tally: BeadTally[] = [...this.counts().entries()]
+      .map(([id, count]) => {
+        const bead = mardById(id)!;
+        return { code: bead.code, hex: bead.hex, count };
+      })
+      .sort((a, b) => b.count - a.count);
+    const bw = Math.ceil(this.W / BOARD_SIZE);
+    const bh = Math.ceil(this.H / BOARD_SIZE);
+    const total = bw * bh;
+    const pages = buildBoardPrintPages({
+      cols: this.W,
+      rows: this.H,
+      cellAt: (y, x) => mardById(this.grid[y]?.[x] ?? '')?.hex ?? null,
+      tally,
+      labels: {
+        cover: uiT('ed.bpCover')
+          .replace('{w}', String(this.W))
+          .replace('{h}', String(this.H))
+          .replace('{boards}', String(total)),
+        coverList: uiT('ed.bpList'),
+        board: (pg) =>
+          uiT('ed.bpBoard')
+            .replace('{bx}', String(pg.bx + 1))
+            .replace('{bw}', String(bw))
+            .replace('{by}', String(pg.by + 1))
+            .replace('{bh}', String(bh))
+            .replace('{x1}', String(pg.x0 + 1))
+            .replace('{x2}', String(pg.x0 + pg.cols))
+            .replace('{y1}', String(pg.y0 + 1))
+            .replace('{y2}', String(pg.y0 + pg.rows))
+            .replace('{page}', String(pg.page))
+            .replace('{total}', String(total)),
+      },
+    });
+    mount.appendChild(pages);
+    printZone('boards');
   }
 
   private counts(): Map<string, number> {
@@ -548,6 +605,12 @@ export class BeadEditor {
       }
       if (t.closest('[data-ed-print]')) {
         window.print();
+        return;
+      }
+      // one sheet per physical pegboard — shows once the board outgrows a
+      // single 29×29 pegboard (P1, 2026-11-02)
+      if (t.closest('[data-ed-print-boards]')) {
+        this.printBoards();
         return;
       }
       const swatch = t.closest<HTMLButtonElement>('[data-ed-color]');
