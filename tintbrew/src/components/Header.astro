@@ -2,11 +2,46 @@
 import { SITE } from '../consts';
 import LangSwitch from './LangSwitch.astro';
 
+// Icons live OUTSIDE the [data-i18n] span on purpose: i18n apply() rewrites
+// the tagged node's textContent, which would wipe any child SVG on language
+// switch. SVGs carry no <title>/<text> — i18n.test pins the link text.
 const nav = [
-  { href: '/color-mixer', label: 'Color Mixer', i18n: 'nav.mixer' },
-  { href: '/color-converter', label: 'Color Converter', i18n: 'nav.converter' },
-  { href: '/hue-test', label: 'Hue Test', i18n: 'nav.hueTest' },
-  { href: '/mix', label: 'Color Mixes', i18n: 'nav.mixes' },
+  {
+    href: '/color-mixer',
+    label: 'Color Mixer',
+    i18n: 'nav.mixer',
+    icon: 'M2.5 4.5h11M2.5 8h11M2.5 11.5h11M6 4.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M10.5 8m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M5 11.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0',
+  },
+  {
+    href: '/color-converter',
+    label: 'Color Converter',
+    i18n: 'nav.converter',
+    icon: 'M4.5 5.5h7m0 0L9.7 3.7m1.8 1.8-1.8 1.8M11.5 10.5h-7m0 0 1.8-1.8m-1.8 1.8 1.8 1.8',
+  },
+  {
+    href: '/hue-test',
+    label: 'Hue Test',
+    i18n: 'nav.hueTest',
+    icon: 'M8 2.8a5.2 5.2 0 1 1 0 10.4a5.2 5.2 0 0 1 0-10.4zM8 6.4a1.6 1.6 0 1 1 0 3.2a1.6 1.6 0 0 1 0-3.2z',
+  },
+  {
+    href: '/mix',
+    label: 'Color Mixes',
+    i18n: 'nav.mixes',
+    icon: 'M6 3.5a4.5 4.5 0 1 1 0 9a4.5 4.5 0 0 1 0-9zM10 3.5a4.5 4.5 0 1 1 0 9a4.5 4.5 0 0 1 0-9z',
+  },
+  {
+    href: '/color-guides/',
+    label: 'Guides',
+    i18n: 'toolnav.guides',
+    icon: 'M3 2.5h6a2 2 0 0 1 2 2v9H5a2 2 0 0 1-2-2v-9zM13 5.5v6a2 2 0 0 1-2 2',
+  },
+  {
+    href: '/perler-bead-patterns/',
+    label: 'Bead Patterns',
+    i18n: 'toolnav.patterns',
+    icon: 'M2.5 2.5h4.5v4.5H2.5zM9 2.5h4.5v4.5H9zM2.5 9H7v4.5H2.5zM9 9h4.5v4.5H9z',
+  },
 ];
 
 const normalize = (p: string) => p.replace(/\/+$/, '') || '/';
@@ -17,17 +52,27 @@ const current = normalize(Astro.url.pathname);
   <div class="container header-inner">
     <a class="brand" href="/" aria-label={`${SITE.name} — home`}>
       <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true">
-        <rect width="64" height="64" rx="14" fill="#6d28d9"></rect>
-        <circle cx="25" cy="34" r="13" fill="#fb7185"></circle>
-        <circle cx="39" cy="34" r="13" fill="#38bdf8" opacity="0.82"></circle>
+        <defs>
+          <linearGradient id="tb-logo" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#7c3aed"></stop>
+            <stop offset="0.5" stop-color="#a855f7"></stop>
+            <stop offset="1" stop-color="#db2777"></stop>
+          </linearGradient>
+        </defs>
+        <rect width="64" height="64" rx="16" fill="url(#tb-logo)"></rect>
+        <circle cx="25" cy="34" r="13" fill="#ffffff" opacity="0.9"></circle>
+        <circle cx="39" cy="34" r="13" fill="#ffffff" opacity="0.55"></circle>
       </svg>
       <span>TintBrew</span>
     </a>
     <nav aria-label="Main navigation">
       {
         nav.map((item) => (
-          <a href={item.href} aria-current={current === normalize(item.href) ? 'page' : undefined} data-i18n={item.i18n}>
-            {item.label}
+          <a href={item.href} aria-current={current === normalize(item.href) ? 'page' : undefined}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d={item.icon} />
+            </svg>
+            <span data-i18n={item.i18n}>{item.label}</span>
           </a>
         ))
       }

@@ -8,12 +8,18 @@
   --surface: #ffffff;
   --text: #1c1917;
   --muted: #57534e;
-  --accent: #6d28d9;
+  --accent: #7c3aed;
+  --accent-2: #db2777;
   --accent-contrast: #ffffff;
-  --accent-soft: #ede9fe;
+  --accent-soft: #f3e8ff;
+  --gradient: linear-gradient(120deg, #7c3aed, #a855f7 50%, #db2777);
   --border: #e7e5e4;
-  --radius: 12px;
-  --radius-sm: 8px;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow-xs: 0 1px 2px rgb(28 25 23 / 0.05);
+  --shadow-sm: 0 2px 8px rgb(28 25 23 / 0.06);
+  --shadow-md: 0 6px 20px rgb(28 25 23 / 0.1);
+  --shadow-lg: 0 12px 36px rgb(28 25 23 / 0.14);
   --sp-1: 0.25rem;
   --sp-2: 0.5rem;
   --sp-3: 1rem;
@@ -48,6 +54,10 @@ body {
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* hero color blobs bleed past the container — clip without creating a
+     scroll container (unlike overflow-x: hidden, keeps position: sticky) */
+  overflow-x: clip;
 }
 
 img,
@@ -72,6 +82,7 @@ h4 {
   line-height: 1.25;
   text-wrap: balance;
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 h1 {
@@ -131,6 +142,7 @@ a:hover {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: var(--shadow-xs);
 }
 
 .prose > h2:first-child {
@@ -144,6 +156,7 @@ a:hover {
   border-radius: var(--radius);
   background: var(--surface);
   padding: var(--sp-5) var(--sp-5) var(--sp-6);
+  box-shadow: var(--shadow-xs);
 }
 
 .section-card > h2:first-child {
@@ -210,7 +223,7 @@ a:hover {
   font-weight: 600;
   line-height: 1.4;
   color: var(--text);
-  box-shadow: 0 1px 2px rgb(28 25 23 / 0.05);
+  box-shadow: var(--shadow-xs);
   transition:
     border-color 0.15s ease,
     background 0.15s ease,
@@ -220,7 +233,7 @@ a:hover {
 
 .btn:hover {
   border-color: var(--accent);
-  box-shadow: 0 2px 10px rgb(109 40 217 / 0.14);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn:active {
@@ -229,14 +242,14 @@ a:hover {
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: linear-gradient(120deg, #7c3aed, #9333ea);
   color: var(--accent-contrast);
-  border-color: var(--accent);
+  border-color: transparent;
 }
 
 .btn-primary:hover {
   filter: brightness(1.08);
-  box-shadow: 0 3px 12px rgb(109 40 217 / 0.3);
+  box-shadow: 0 3px 12px rgb(124 58 237 / 0.35);
 }
 
 .btn[aria-disabled='true'],
@@ -360,6 +373,7 @@ input[type='range']::-moz-range-thumb {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface);
+  box-shadow: var(--shadow-xs);
   margin-top: var(--sp-2);
 }
 
@@ -406,7 +420,15 @@ input[type='range']::-moz-range-thumb {
   z-index: 50;
   background: rgb(250 250 249 / 0.92);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
+}
+
+/* gradient hairline under the sticky header instead of a flat border */
+.site-header::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, #7c3aed, #a855f7 40%, #db2777 75%, transparent);
+  opacity: 0.55;
 }
 
 .header-inner {
@@ -414,7 +436,7 @@ input[type='range']::-moz-range-thumb {
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-3);
-  min-height: 3.6rem;
+  min-height: 3.8rem;
   flex-wrap: wrap;
   padding-block: var(--sp-2);
 }
@@ -437,6 +459,9 @@ input[type='range']::-moz-range-thumb {
 }
 
 .site-header nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.4rem 0.75rem;
   border-radius: var(--radius-sm);
   text-decoration: none;
@@ -444,6 +469,17 @@ input[type='range']::-moz-range-thumb {
   font-weight: 600;
   font-size: 0.92rem;
   transition: color 0.15s ease, background 0.15s ease;
+}
+
+.site-header nav a svg {
+  flex: none;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+
+.site-header nav a:hover svg,
+.site-header nav a[aria-current='page'] svg {
+  opacity: 1;
 }
 
 .site-header nav a:hover {
@@ -458,8 +494,8 @@ input[type='range']::-moz-range-thumb {
 
 .site-footer {
   margin-top: var(--sp-8);
-  border-top: 1px solid var(--border);
-  background: var(--surface);
+  background: #1c1917;
+  color: #d6d3d1;
 }
 
 .footer-grid {
@@ -473,7 +509,7 @@ input[type='range']::-moz-range-thumb {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--muted);
+  color: #a8a29e;
 }
 
 .footer-grid ul {
@@ -485,7 +521,7 @@ input[type='range']::-moz-range-thumb {
 }
 
 .footer-grid a {
-  color: var(--muted);
+  color: #d6d3d1;
   text-decoration: none;
   font-size: 0.92rem;
   transition: color 0.15s ease, padding-left 0.15s ease;
@@ -493,14 +529,14 @@ input[type='range']::-moz-range-thumb {
 
 .footer-grid a::before {
   content: '\203A'; /* › */
-  color: var(--accent);
+  color: #c4b5fd;
   opacity: 0;
   margin-right: 0.15rem;
   transition: opacity 0.15s ease;
 }
 
 .footer-grid a:hover {
-  color: var(--accent);
+  color: #c4b5fd;
   padding-left: 0.2rem;
 }
 
@@ -510,8 +546,8 @@ input[type='range']::-moz-range-thumb {
 
 .footer-bottom {
   padding-block: var(--sp-3);
-  border-top: 1px solid var(--border);
-  color: var(--muted);
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  color: #a8a29e;
   font-size: 0.85rem;
   display: flex;
   justify-content: space-between;
@@ -551,6 +587,7 @@ input[type='range']::-moz-range-thumb {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--sp-5);
+  box-shadow: var(--shadow-xs);
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease,
@@ -559,8 +596,23 @@ input[type='range']::-moz-range-thumb {
 
 .tool-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 4px 20px rgb(109 40 217 / 0.1);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+}
+
+/* gradient icon head — the .tool-icon wrapper carries the SVG so the icon
+   never sits inside a [data-i18n] node (apply() wipes textContent) */
+.tool-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: var(--gradient);
+  color: #fff;
+  margin-bottom: var(--sp-3);
+  flex: none;
 }
 
 .tool-card h2 {
@@ -634,7 +686,7 @@ input[type='range']::-moz-range-thumb {
 
 .link-tile:hover {
   border-color: var(--accent);
-  box-shadow: 0 3px 14px rgb(109 40 217 / 0.12);
+  box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
   text-decoration: none;
 }
@@ -713,5 +765,23 @@ input[type='range']::-moz-range-thumb {
   .prose,
   .section-card {
     padding: var(--sp-4) var(--sp-4) var(--sp-5);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Print chrome safety net (2026-11-02 redesign)
+
+   Hides site chrome on paper for EVERY page. Deliberately does NOT hide
+   .hero — scenario pages, mix pages and the bead pattern pages keep their
+   title / computed answer / stats inside .hero, and those must survive
+   printing. Page-level print blocks (BeadPatternPage, editor, photo, chart,
+   outfit) stay in place and add their own finer rules on top of this.
+   -------------------------------------------------------------------------- */
+@media print {
+  .site-header,
+  .site-footer,
+  .tool-nav,
+  .skip-link {
+    display: none !important;
   }
 }

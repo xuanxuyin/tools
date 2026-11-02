@@ -4,6 +4,13 @@ import { SITE } from '../consts';
 
 const title = 'Page Not Found';
 const description = 'That page does not exist. Here are the color tools you were probably looking for.';
+
+const links = [
+  { href: '/color-mixer', name: 'Color Mixer', desc: 'Blend 2–5 colors with exact ratios' },
+  { href: '/color-converter', name: 'Color Converter', desc: 'HEX, RGB, HSL, CMYK in sync' },
+  { href: '/mix', name: 'All color mixes', desc: 'What any two colors make' },
+  { href: '/perler-bead-patterns/', name: 'Bead patterns', desc: '115 free perler bead designs' },
+];
 ---
 
 <BaseLayout title={`404 — ${title} | ${SITE.name}`} description={description} path="/404" noindex>
@@ -14,15 +21,65 @@ const description = 'That page does not exist. Here are the color tools you were
     </p>
   </section>
 
-  <section class="prose">
-    <ul>
-      <li><a href="/color-mixer">Color Mixer</a> — blend 2–5 colors with exact ratios</li>
-      <li><a href="/color-converter">Color Converter</a> — HEX, RGB, HSL, CMYK in sync</li>
-      <li><a href="/mix">All color mixes</a> — what any two colors make</li>
-      <li>
-        Or start with a classic: <a href="/mix/red-blue">what red and blue make</a>,
-        <a href="/mix/blue-yellow">what blue and yellow make</a>
-      </li>
-    </ul>
+  <section class="notfound-grid">
+    {
+      links.map((l) => (
+        <a class="notfound-card" href={l.href}>
+          <span class="nf-name">{l.name}</span>
+          <span class="nf-desc">{l.desc}</span>
+        </a>
+      ))
+    }
   </section>
+
+  <p class="nf-classic">
+    Or start with a classic: <a href="/mix/red-blue">what red and blue make</a>,
+    <a href="/mix/blue-yellow">what blue and yellow make</a>.
+  </p>
 </BaseLayout>
+
+<style>
+  .notfound-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--sp-3);
+    margin-top: var(--sp-4);
+  }
+
+  .notfound-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: var(--sp-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-xs);
+    text-decoration: none;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .notfound-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+  }
+
+  .nf-name {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .nf-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .nf-classic {
+    margin-top: var(--sp-5);
+    color: var(--muted);
+  }
+</style>

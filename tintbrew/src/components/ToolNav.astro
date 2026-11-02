@@ -4,13 +4,41 @@
  * so the flagship pages are always one tap from each other (user call,
  * 2026-10-29: page-to-page navigation was buried in footer links only).
  * Pure SSR, no island.
+ *
+ * Icons sit OUTSIDE the [data-i18n] span: i18n apply() rewrites the tagged
+ * node's textContent and would wipe a child SVG on language switch.
  */
 const links = [
-  { href: '/color-mixer', label: 'Color Mixer', i18n: 'nav.mixer' },
-  { href: '/color-converter', label: 'Converter', i18n: 'nav.converter' },
-  { href: '/mix/', label: 'Color Mixes', i18n: 'nav.mixes' },
-  { href: '/color-guides/', label: 'Guides', i18n: 'toolnav.guides' },
-  { href: '/perler-bead-patterns/', label: 'Bead Patterns', i18n: 'toolnav.patterns' },
+  {
+    href: '/color-mixer',
+    label: 'Color Mixer',
+    i18n: 'nav.mixer',
+    icon: 'M2.5 4.5h11M2.5 8h11M2.5 11.5h11M6 4.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M10.5 8m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M5 11.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0',
+  },
+  {
+    href: '/color-converter',
+    label: 'Converter',
+    i18n: 'nav.converter',
+    icon: 'M4.5 5.5h7m0 0L9.7 3.7m1.8 1.8-1.8 1.8M11.5 10.5h-7m0 0 1.8-1.8m-1.8 1.8 1.8 1.8',
+  },
+  {
+    href: '/mix/',
+    label: 'Color Mixes',
+    i18n: 'nav.mixes',
+    icon: 'M6 3.5a4.5 4.5 0 1 1 0 9a4.5 4.5 0 0 1 0-9zM10 3.5a4.5 4.5 0 1 1 0 9a4.5 4.5 0 0 1 0-9z',
+  },
+  {
+    href: '/color-guides/',
+    label: 'Guides',
+    i18n: 'toolnav.guides',
+    icon: 'M3 2.5h6a2 2 0 0 1 2 2v9H5a2 2 0 0 1-2-2v-9zM13 5.5v6a2 2 0 0 1-2 2',
+  },
+  {
+    href: '/perler-bead-patterns/',
+    label: 'Bead Patterns',
+    i18n: 'toolnav.patterns',
+    icon: 'M2.5 2.5h4.5v4.5H2.5zM9 2.5h4.5v4.5H9zM2.5 9H7v4.5H2.5zM9 9h4.5v4.5H9z',
+  },
 ];
 
 const normalize = (p: string) => p.replace(/\/+$/, '') || '/';
@@ -20,8 +48,11 @@ const current = normalize(Astro.url.pathname);
 <nav class="tool-nav" aria-label="Site tools">
   {
     links.map((l) => (
-      <a href={l.href} aria-current={current === normalize(l.href) ? 'page' : undefined} data-i18n={l.i18n}>
-        {l.label}
+      <a href={l.href} aria-current={current === normalize(l.href) ? 'page' : undefined}>
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d={l.icon} />
+        </svg>
+        <span data-i18n={l.i18n}>{l.label}</span>
       </a>
     ))
   }
@@ -36,6 +67,9 @@ const current = normalize(Astro.url.pathname);
   }
 
   .tool-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     padding: 0.4rem 0.85rem;
     border: 1px solid var(--border);
     border-radius: 999px;
@@ -45,7 +79,14 @@ const current = normalize(Astro.url.pathname);
     font-size: 0.88rem;
     font-weight: 600;
     white-space: nowrap;
+    box-shadow: var(--shadow-xs);
     transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .tool-nav a svg {
+    flex: none;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
   }
 
   .tool-nav a:hover {
@@ -54,10 +95,18 @@ const current = normalize(Astro.url.pathname);
     background: var(--accent-soft);
   }
 
+  .tool-nav a:hover svg {
+    opacity: 1;
+  }
+
   .tool-nav a[aria-current='page'] {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: var(--accent-soft);
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(120deg, #7c3aed, #a855f7);
     cursor: default;
+  }
+
+  .tool-nav a[aria-current='page'] svg {
+    opacity: 1;
   }
 </style>

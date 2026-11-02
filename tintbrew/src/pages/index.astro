@@ -42,18 +42,28 @@ const jsonLd = {
 ---
 
 <BaseLayout title={title} description={description} path="/" jsonLd={jsonLd}>
-  <section class="hero">
+  <section class="hero home-hero">
+    <div class="hero-blob blob-a" aria-hidden="true"></div>
+    <div class="hero-blob blob-b" aria-hidden="true"></div>
     <h1 data-i18n="home.h1">Brew colors, precisely.</h1>
     <p class="lead" data-i18n="home.lead">
       Mix any colors online in a perceptual color space, convert between every format, and get copy-ready
       CSS code. Free, instant, and private — everything runs in your browser.
     </p>
+    <div class="hero-badges">
+      <span class="badge" data-i18n="home.badgeFree">Free</span>
+      <span class="badge" data-i18n="home.badgeNoSignup">No sign-up</span>
+      <span class="badge" data-i18n="home.badgeBrowser">Runs in your browser</span>
+    </div>
   </section>
 
   <ToolNav />
 
   <section aria-label="Color tools" class="tool-grid">
     <a class="tool-card" href="/color-mixer">
+      <span class="tool-icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11M6 4.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M10.5 8m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M5 11.5m-1.2 0a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0" /></svg>
+      </span>
       <h2 data-i18n="nav.mixer">Color Mixer</h2>
       <p>
         <span data-i18n="home.mixDescA">Blend 2–5 colors with ratio sliders. Perceptual Oklab mixing matches how paint behaves, and every result ships with HEX, RGB, HSL, CMYK and a CSS</span>{' '}
@@ -69,6 +79,9 @@ const jsonLd = {
       <span class="card-cta" data-i18n="home.mixCta">Mix colors</span>
     </a>
     <a class="tool-card" href="/color-converter">
+      <span class="tool-icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5h7m0 0L9.7 3.7m1.8 1.8-1.8 1.8M11.5 10.5h-7m0 0 1.8-1.8m-1.8 1.8 1.8 1.8" /></svg>
+      </span>
       <h2 data-i18n="nav.converter">Color Converter</h2>
       <p data-i18n="home.convDesc">
         Paste a HEX code or dial in RGB, HSL or CMYK — every other format updates as you type, with
@@ -87,6 +100,9 @@ const jsonLd = {
       <span class="card-cta" data-i18n="home.convCta">Convert a color</span>
     </a>
     <a class="tool-card" href="/photo-to-perler-bead-pattern/">
+      <span class="tool-icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5A1.5 1.5 0 0 1 3.5 3h3l1.5 2h4.5A1.5 1.5 0 0 1 14 6.5v5A1.5 1.5 0 0 1 12.5 13h-9A1.5 1.5 0 0 1 2 11.5v-7z" /><circle cx="8" cy="8.5" r="2" /></svg>
+      </span>
       <h2 data-i18n="home.cardPhoto">Photo to Bead Pattern</h2>
       <p data-i18n="home.photoDesc">
         Turn any photo into a fuse-bead board matched to a real 291-color bead line — Mardiy
@@ -203,6 +219,94 @@ const jsonLd = {
 </BaseLayout>
 
 <style>
+  /* ---------- homepage hero: gradient h1, soft color blobs, badges ----------
+     Scoped here on purpose — .hero is shared by 17 page types and the
+     gradient/blob treatment must not leak onto guide or pattern pages. */
+  .home-hero {
+    position: relative;
+  }
+
+  .home-hero h1 {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(52px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .blob-a {
+    width: 26rem;
+    height: 26rem;
+    top: -9rem;
+    right: -7rem;
+    background: radial-gradient(circle, rgb(124 58 237 / 0.28), transparent 70%);
+  }
+
+  .blob-b {
+    width: 20rem;
+    height: 20rem;
+    bottom: -7rem;
+    left: 52%;
+    background: radial-gradient(circle, rgb(219 39 119 / 0.22), transparent 70%);
+  }
+
+  .home-hero > h1,
+  .home-hero > p,
+  .home-hero > .hero-badges {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+    margin-top: var(--sp-4);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: var(--shadow-xs);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .badge::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--gradient);
+  }
+
+  @media print {
+    .home-hero h1 {
+      background: none;
+      color: var(--text);
+      -webkit-text-fill-color: currentColor;
+    }
+
+    .hero-blob,
+    .hero-badges {
+      display: none !important;
+    }
+  }
+
   /* the section heading lives inside the card grid — span it full width */
   .grid-title {
     grid-column: 1 / -1;
@@ -236,13 +340,16 @@ const jsonLd = {
     align-content: start;
     padding: var(--sp-3);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius);
     background: var(--bg, #fff);
     text-decoration: none;
     color: inherit;
+    box-shadow: var(--shadow-xs);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .bead-card:hover {
     border-color: var(--accent, #b3552e);
+    box-shadow: var(--shadow-sm);
   }
   .bead-thumb {
     display: flex;
