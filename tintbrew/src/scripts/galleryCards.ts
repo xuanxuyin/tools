@@ -60,17 +60,20 @@ export function cardHtml(p: GalleryPiece, rank: number | null): string {
 }
 
 /** Mini card for the home-page top 10 — no buttons, whole card is the
- *  link into the gallery. Still carries the byline: authors show up
- *  everywhere their work does. */
+ *  link into the gallery. Two meta rows: name+byline, then the like count
+ *  on its own line. */
 export function miniCardHtml(p: GalleryPiece, rank: number): string {
   return (
     `<li class="gal-mini">` +
     `<a href="/gallery/">` +
     rankHtml(rank) +
     thumbHtml(p) +
-    `<div class="gal-minimeta"><strong>${escapeHtml(p.name)}</strong>` +
+    `<div class="gal-minimeta">` +
+    `<div class="gal-minititle"><strong>${escapeHtml(p.name)}</strong>` +
     bylineHtml(p.nick) +
-    `<span class="gal-minilikes"><span class="gal-heart" aria-hidden="true">♥</span> ${p.likes}</span></div>` +
+    `</div>` +
+    `<span class="gal-minilikes"><span class="gal-heart" aria-hidden="true">♥</span> ${p.likes}</span>` +
+    `</div>` +
     `</a></li>`
   );
 }

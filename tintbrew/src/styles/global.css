@@ -909,14 +909,21 @@ input[type='range']::-moz-range-thumb {
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
 }
+/* Two meta rows: name+byline share the first line, the like count gets its
+   own — one cramped row read badly at mini-card widths. */
 .gal-minimeta {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-1);
+  flex-direction: column;
+  gap: 2px;
   padding: var(--sp-2);
 }
-.gal-minimeta strong {
+.gal-minititle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+.gal-minititle strong {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -927,7 +934,7 @@ input[type='range']::-moz-range-thumb {
   font-size: 0.8rem;
   color: var(--muted);
 }
-/* the byline shrinks with ellipsis — a long nick must not push the likes out */
+/* the byline shrinks with ellipsis — a long nick must not push the name out */
 .gal-minimeta .gal-nick {
   flex: 0 1 auto;
   min-width: 0;
