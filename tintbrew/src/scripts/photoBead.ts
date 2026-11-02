@@ -420,7 +420,7 @@ export class PhotoStudio {
       <button type="button" class="btn act-primary" data-photo-edit data-i18n="ph.edit">${t('ph.edit')}</button>
       <button type="button" class="btn" data-photo-png data-i18n="ph.png">${t('ph.png')}</button>
       <button type="button" class="btn" data-photo-print data-i18n="ph.print">${t('ph.print')}</button>
-      ${bw * bh > 1 ? `<button type="button" class="btn" data-photo-print-boards data-i18n="ph.printBoards" title="${t('ph.printBoardsHelp')}">${t('ph.printBoards')}</button>` : ''}
+      ${bw * bh > 1 ? `<button type="button" class="btn" data-photo-print-boards data-i18n="ph.printBoards" title="${t('ph.printBoardsHelp')}" data-i18n-title="ph.printBoardsHelp">${t('ph.printBoards')}</button>` : ''}
     `;
 
     const figure = document.createElement('figure');
