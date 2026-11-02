@@ -23,7 +23,9 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "happy-dom": "^20.14.0",
+    "jpeg-js": "^0.4.4",
     "pngjs": "^7.0.0",
+    "tsx": "^4.23.15",
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"
   }
