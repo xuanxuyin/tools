@@ -121,6 +121,23 @@ function hgradient(w: number, h: number, from: string, to: string): SampleImage 
   return { data, width: w, height: h };
 }
 
+/** Black/white checkerboard with the given stripe width in pixels. */
+function checkerboard(w: number, h: number, stripePx = 2): SampleImage {
+  const data = new Uint8ClampedArray(w * h * 4);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const on = (Math.floor(x / stripePx) + Math.floor(y / stripePx)) % 2 === 0;
+      const v = on ? 255 : 0;
+      const i = (y * w + x) * 4;
+      data[i] = v;
+      data[i + 1] = v;
+      data[i + 2] = v;
+      data[i + 3] = 255;
+    }
+  }
+  return { data, width: w, height: h };
+}
+
 describe('photoToPattern', () => {
   it('fills a solid photo with the nearest single bead', () => {
     const img = solid(40, 40, '#ff0000');
@@ -599,6 +616,26 @@ describe('photoToPattern', () => {
       expect(ids.size).toBeGreaterThanOrEqual(3);
       // and the ramp still runs from red-ish to blue-ish across the board
       expect(out.cells[4 * out.cols]!).not.toBe(out.cells[4 * out.cols + out.cols - 1]!);
+    });
+  });
+
+  describe('gamma-correct resampling (linear light)', () => {
+    it('a black/white checkerboard averages bright (~#BCBCBC), not the naive sRGB #808080', () => {
+      // mixing is physical: 50% white + 50% black is #BCBCBC in linear light;
+      // averaging raw sRGB numbers says #808080 and every soft region came
+      // out muddier than the photo. At 10 cols each cell spans 4px = one
+      // black + one white stripe in both axes, so the whole board is that
+      // one average.
+      const out = photoToPattern(checkerboard(40, 40), {
+        cols: 10,
+        mode: 'smooth',
+        simplify: 'keep',
+      });
+      const ids = new Set(out.cells);
+      expect(ids.size).toBe(1);
+      const rgb = hexToRgb(mardById(ids.values().next().value!)!.hex);
+      const gray = (rgb.r + rgb.g + rgb.b) / 3;
+      expect(gray).toBeGreaterThan(165); // sRGB mean would land near 128
     });
   });
 });

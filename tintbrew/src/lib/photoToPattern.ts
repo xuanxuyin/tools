@@ -29,7 +29,7 @@
  * 'dither' keeps a Floyd–Steinberg pipeline (Oklab error, serpentine scan)
  * for gradient-heavy pictures; the converter UI ships 'smooth'.
  */
-import { rgbToOklab, hexToRgb, type Oklab } from './color';
+import { rgbToOklab, hexToRgb, srgbToLinear, linearToSrgb, type Oklab } from './color';
 import { MARD_COLORS } from './mardPalette';
 
 export interface SampleImage {
@@ -138,13 +138,26 @@ interface Cell {
  *  the source-site cutoff for transparent backgrounds. */
 const EMPTY_ALPHA = 24;
 
+/** sRGB 0..255 → linear light, precomputed — every resampled pixel walks
+ *  this table, so gamma-correct averaging costs one array read per channel. */
+const LINEAR = (() => {
+  const t = new Float64Array(256);
+  for (let i = 0; i < 256; i++) t[i] = srgbToLinear(i / 255);
+  return t;
+})();
+
 /**
- * Area-weighted resample, the source-site way: cell (x, y) covers the float
- * rectangle [x·w/cols, (x+1)·w/cols) × [y·h/rows, (y+1)·h/rows) of source
- * pixels. Every pixel contributes by its exact intersecting area times its
- * alpha, so upscaling and awkward ratios stay unbiased — no pixel is dropped
- * (nearest-neighbor decode does) and none is double-counted. The cell color
- * is the alpha-weighted sRGB mean; cells averaging under 24 alpha are empty.
+ * Area-weighted resample: cell (x, y) covers the float rectangle
+ * [x·w/cols, (x+1)·w/cols) × [y·h/rows, (y+1)·h/rows) of source pixels.
+ * Every pixel contributes by its exact intersecting area times its alpha,
+ * so upscaling and awkward ratios stay unbiased — no pixel is dropped
+ * (nearest-neighbor decode does) and none is double-counted.
+ *
+ * The mean is taken in LINEAR light, not raw sRGB numbers: mixing is a
+ * physical operation on light, and gamma-compressed averages run dark and
+ * muddy (half white + half black is #BCBCBC in light, not #808080 — every
+ * blend seam in the board was dimmer than the photo it came from). Cells
+ * averaging under 24 alpha are empty.
  */
 function resampleCells(img: SampleImage, cols: number, rows: number): Cell[][] {
   const { data, width, height } = img;
@@ -160,9 +173,9 @@ function resampleCells(img: SampleImage, cols: number, rows: number): Cell[][] {
       const x1 = ((x + 1) * width) / cols;
       const px0 = Math.floor(x0);
       const px1 = Math.ceil(x1);
-      let r = 0;
-      let g = 0;
-      let b = 0;
+      let lr = 0;
+      let lg = 0;
+      let lb = 0;
       let aWeight = 0;
       let area = 0;
       for (let py = py0; py < py1; py++) {
@@ -176,9 +189,9 @@ function resampleCells(img: SampleImage, cols: number, rows: number): Cell[][] {
           const w = wx * wy;
           const i = (py * width + px) * 4;
           const a = data[i + 3]! / 255;
-          r += data[i]! * a * w;
-          g += data[i + 1]! * a * w;
-          b += data[i + 2]! * a * w;
+          lr += LINEAR[data[i]!] * a * w;
+          lg += LINEAR[data[i + 1]!] * a * w;
+          lb += LINEAR[data[i + 2]!] * a * w;
           aWeight += a * w;
           area += w;
         }
@@ -189,9 +202,9 @@ function resampleCells(img: SampleImage, cols: number, rows: number): Cell[][] {
         continue;
       }
       const rgb: [number, number, number] = [
-        Math.round(r / aWeight),
-        Math.round(g / aWeight),
-        Math.round(b / aWeight),
+        Math.round(linearToSrgb(lr / aWeight) * 255),
+        Math.round(linearToSrgb(lg / aWeight) * 255),
+        Math.round(linearToSrgb(lb / aWeight) * 255),
       ];
       row.push({ rgb, lab: rgbToOklab({ r: rgb[0], g: rgb[1], b: rgb[2] }), empty: false });
     }
