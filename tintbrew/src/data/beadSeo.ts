@@ -37,7 +37,7 @@ export const BEAD_HUB_SEO: BeadSeoDef = {
   description:
     'Free fuse bead patterns for every level: dogs, cats, bunnies, pandas, chibi characters and a Halloween set. Recolor any area with the real 103-color Perler line, then print the template and its bead list.',
   intro: [
-    '115 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 116-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
+    '114 designs across animals, characters, Halloween and quick makes — from 6-bead-wide starters that fit one pegboard to 116-bead-wide portraits. Every board is converted bead by bead from community designs and matched to the official 103-color Perler line, so the shopping list names colors you can actually buy.',
     'What makes these different from a normal pattern grid: every area of a design — fur, frosting, scarf, eyes — is its own zone. Tap a zone and try any of the 103 real bead colors before you commit. The bead list updates live, so you know exactly how many of each color to pull from the jar.',
     'When a design looks right, print it. The printed sheet gives you the empty template in zone outlines plus the shopping list of beads, and it fits on one letter-size page.',
   ],
@@ -286,7 +286,7 @@ export const BEAD_COLLECTION_SEO: Record<string, BeadSeoDef> = {
       'Free fuse bead patterns — animals, characters, Halloween and quick makes, all matched to a real 103-color line. Works with any 5mm fuse beads: recolor online, print and iron.',
     intro: [
       'Fuse beads are the craft’s real name — 5mm plastic beads that fuse into a solid picture under an iron. Perler is just the brand most US households know, so the same boards get called perler patterns, hama patterns or melty bead patterns depending on who you ask. They are all the same 5mm grid, and every pattern here works with whichever brand is in your jar.',
-      'The catalog runs 115 boards across animals, characters, a Halloween set and quick makes, from 6-bead-wide starters to 116-wide portraits. Each one is converted bead by bead and matched to a real 103-color bead line, so the shopping list names colors you can actually buy — from any major brand, since their palettes overlap heavily.',
+      'The catalog runs 114 boards across animals, characters, a Halloween set and quick makes, from 6-bead-wide starters to 116-wide portraits. Each one is converted bead by bead and matched to a real 103-color bead line, so the shopping list names colors you can actually buy — from any major brand, since their palettes overlap heavily.',
       'Pick a board, repaint any area in the browser, print the template and its bead list on one letter page, and place beads straight off the sheet.',
     ],
     faqs: [
