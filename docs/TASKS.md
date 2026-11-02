@@ -140,7 +140,8 @@
 | 日期 | 事件 |
 |---|---|
 | 10/30（周五） | ⭐ **B 计划讨论门 ✅ 已闭环（10/30 拍板）**：外线不加火力——C 组 4 封撤销（"前面 18 封零回复，发了没意义"）、11/2 follow-up 同砍、已发 18 封听其自然；止损线 2027-01-31 不动；主线转 11 月批 |
-| 11 月 | chartglade 11 月批（11/12 上线窗，`nov-predev` 弹药 85 页已备）：#24 place value 深化 + #25 mult 2 页 + #26 Teaching Calendar hub + #20 cursive 深化 2 页 + **#28 Christmas 簇加车（死线 11/15）** + #32 图片扩容第二波搭车 ｜ tintbrew：**拼豆 P1+P2（11/2~6 周：自由尺寸 8~120 + PNG 下载/分板打印 + 背景去除/裁剪）随轻批上线赶圣诞手工窗** + V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
+| 11/02（周一） | **tintbrew 11 月轻批开工日 ✅ 五连批当日上线**：P1 分板打印 + P2 裁剪（11 月批执行序①②）→ 全站视觉两轮（胶囊暖白风，对标 perlerbeadpatterns.org）→ UGC 发布闭环（官方模板选择器 + photo/模式页 Publish + 画廊 Open in editor remix）→ /gallery/ 三连 bug 修复（卡片两段式布局 + 点赞双实例同步 + 昵称记忆）。明细 PLAN 11/02 五行；👤 待验收：发布/点赞/视觉三类 |
+| 11 月 | chartglade 11 月批（11/12 上线窗，`nov-predev` 弹药 85 页已备）：#24 place value 深化 + #25 mult 2 页 + #26 Teaching Calendar hub + #20 cursive 深化 2 页 + **#28 Christmas 簇加车（死线 11/15）** + #32 图片扩容第二波搭车 ｜ tintbrew：~~拼豆 P1+P2~~ **✅ 11/2 已上线** ｜ V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
 | 2027-01-31 | **双站止损线复盘**（chartglade <3K 且零词 top 30；tintbrew <5K 且零词 top 30 → 停投） |
 
 ---

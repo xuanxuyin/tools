@@ -154,5 +154,27 @@ describe('pattern page self-boot publish (dist detail page)', () => {
     }
     // at least one bead published — the canonical pattern is not blank
     expect((body.grid as (string | null)[][]).some((row) => row.some(Boolean))).toBe(true);
+    // the nickname is remembered for the next publish
+    expect(window.localStorage.getItem('tb-gallery:nick')).toBe('Tester');
+  });
+
+  it('a remembered nickname prefills the panel on open', async () => {
+    const html = readFileSync(resolve(dist, pageRel), 'utf8');
+    const window = new Window({ url: `https://tintbrew.com/${pageRel.replace('index.html', '')}` });
+    const { document } = window;
+    document.write(html);
+    (globalThis as Record<string, unknown>).document = document;
+    (globalThis as Record<string, unknown>).window = window;
+    (globalThis as Record<string, unknown>).localStorage = window.localStorage;
+    window.localStorage.setItem('tb-gallery:nick', 'BeadFan42');
+    vi.resetModules();
+    await import('./galleryPublish');
+
+    const section = document.querySelector('[data-gal-pub-auto]')!;
+    (section.querySelector('[data-ed-publish]') as HTMLElement).dispatchEvent(
+      new (window as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent('click', { bubbles: true }),
+    );
+    const nickEl = section.querySelector('[data-ed-publish-nick]') as HTMLInputElement;
+    expect(nickEl.value).toBe('BeadFan42');
   });
 });

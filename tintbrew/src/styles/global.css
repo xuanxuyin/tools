@@ -829,6 +829,9 @@ input[type='range']::-moz-range-thumb {
 .gal-report[aria-disabled='true'] {
   opacity: 0.55;
 }
+.gal-report {
+  margin-left: auto;
+}
 /* "Open in editor" remix link — an <a> styled like its btn-sm siblings */
 .gal-edit {
   display: inline-flex;
@@ -846,18 +849,23 @@ input[type='range']::-moz-range-thumb {
   box-shadow: var(--shadow-xs);
   overflow: hidden;
 }
+/* Two-deck bar: name/byline owns the first row, the three actions wrap
+   onto the second — a single row squeezed the info column to zero and
+   clipped both the byline and the buttons. */
 .gal-cardbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-2);
+  gap: var(--sp-2) var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
   border-top: 1px solid var(--border);
 }
 .gal-info {
   min-width: 0;
-  flex: 1;
+  flex: 1 1 100%;
   display: flex;
   flex-direction: column;
+  gap: 1px;
 }
 .gal-name {
   overflow: hidden;

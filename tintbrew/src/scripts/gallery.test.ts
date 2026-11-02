@@ -245,6 +245,30 @@ describe('my piece (mine zone)', () => {
     await flush();
     expect(doc.querySelector('[data-gallery-mine] .gal-rank')?.textContent).toBe('#2');
   });
+
+  it('liking one copy repaints every copy of the same piece', async () => {
+    fetchMock.mockImplementation((input: string | URL | Request) => {
+      if (String(input).includes('/api/gallery/list')) {
+        return Promise.resolve(
+          jsonResponse({
+            pieces: [piece('top1', 'Rainbow Cat', 'Ada', 12), piece('mine1', 'Doom', 'Me', 5)],
+            mine: piece('mine1', 'Doom', 'Me', 5),
+          }),
+        );
+      }
+      return Promise.resolve(jsonResponse({ ok: true }));
+    });
+    const { document: doc } = await loadPage('gallery/index.html', fetchMock);
+    await import('./gallery');
+    await flush();
+    // the piece lives in two DOM copies: the ranking card + the mine-zone card
+    const copies = [...doc.querySelectorAll('[data-piece="mine1"] [data-gal-likes]')];
+    expect(copies).toHaveLength(2);
+    // like it from the mine-zone card
+    (doc.querySelector('[data-gallery-mine] [data-gal-like]') as HTMLButtonElement).click();
+    await flush();
+    copies.forEach((el) => expect(el.textContent).toBe('6'));
+  });
 });
 
 describe('home-page top-10 block (dist/index.html)', () => {

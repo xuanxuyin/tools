@@ -118,10 +118,23 @@ class GalleryIsland {
         body: JSON.stringify({ uuid: galleryUuid(), pieceId }),
       });
       if (res.ok) {
-        const count = btn.querySelector('[data-gal-likes]');
-        const piece = this.pieces.find((p) => p.id === pieceId) ?? this.mine;
+        // A piece renders twice on this page (own-piece shelf + ranking),
+        // so bump the model everywhere the id matches and repaint every
+        // counter copy — bumping only the clicked button left the twin
+        // card showing the old number.
+        const piece = this.pieces.find((p) => p.id === pieceId);
         if (piece) piece.likes += 1;
-        if (count) count.textContent = String((piece ? piece.likes : Number(count.textContent) + 1));
+        if (this.mine && this.mine.id === pieceId) {
+          this.mine.likes = piece ? piece.likes : this.mine.likes + 1;
+        }
+        const total = piece ? piece.likes : this.mine && this.mine.id === pieceId ? this.mine.likes : null;
+        if (total !== null) {
+          this.root.querySelectorAll<HTMLElement>('[data-piece]').forEach((card) => {
+            if (card.getAttribute('data-piece') !== pieceId) return;
+            const el = card.querySelector<HTMLElement>('[data-gal-likes]');
+            if (el) el.textContent = String(total);
+          });
+        }
         try {
           window.localStorage.setItem(VOTED_KEY, currentHour());
         } catch {

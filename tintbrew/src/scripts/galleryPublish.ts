@@ -22,6 +22,17 @@ export interface PublishBoard {
   grid: (string | null)[][];
 }
 
+/** Remembered nickname — typed once, prefilled on every later publish. */
+const NICK_KEY = 'tb-gallery:nick';
+
+function savedNick(): string {
+  try {
+    return window.localStorage.getItem(NICK_KEY) ?? '';
+  } catch {
+    return '';
+  }
+}
+
 export function mountPublishFlow(
   root: HTMLElement,
   getBoard: () => PublishBoard | null,
@@ -72,9 +83,12 @@ function open(root: HTMLElement): void {
   if (!panel) return;
   panel.classList.remove('hidden');
   const nameEl = panel.querySelector<HTMLInputElement>('[data-ed-publish-name]');
+  const nickEl = panel.querySelector<HTMLInputElement>('[data-ed-publish-nick]');
   // prefill once per session of the panel — the user's own edit wins
   const prefill = root.dataset.galPubName;
   if (nameEl && prefill && !nameEl.value) nameEl.value = prefill;
+  const nick = savedNick();
+  if (nickEl && nick && !nickEl.value) nickEl.value = nick;
   nameEl?.focus();
 }
 
@@ -118,6 +132,11 @@ async function submit(root: HTMLElement, getBoard: () => PublishBoard | null): P
     const data = (await res.json().catch(() => ({}))) as { id?: string };
     if (res.ok && data.id) {
       window.localStorage.setItem('tb-gallery:piece-id', data.id);
+      try {
+        window.localStorage.setItem(NICK_KEY, nick);
+      } catch {
+        /* private mode — the next publish just asks again */
+      }
       if (status) {
         status.replaceChildren(document.createTextNode(t('gal.pubDone') + ' '));
         const a = document.createElement('a');
