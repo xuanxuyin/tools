@@ -3,7 +3,7 @@
  * target. vote_log's composite PK does the dedup: a conflict leaves
  * meta.changes at 0 → 429. Body: { uuid, pieceId }.
  */
-import { hourBucket } from '../../../../src/lib/gallery';
+import { hourBucket } from './_kernel';
 import type { Ctx } from './_shared';
 import { deviceHash, json, readJson } from './_shared';
 

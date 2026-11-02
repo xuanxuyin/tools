@@ -4,7 +4,7 @@
  * the uuid matches one. Cells come back decoded so the island renders
  * directly; corrupt rows degrade to nulls instead of failing the list.
  */
-import { decodeCells } from '../../../../src/lib/gallery';
+import { decodeCells } from './_kernel';
 import type { Ctx, D1Db } from './_shared';
 import { deviceHash, json } from './_shared';
 

@@ -5,7 +5,7 @@
  * a new piece starts fresh, and the author saw the confirm dialog client-side.
  * Rate limit: 3 publishes per device per UTC hour (covers a replace).
  */
-import { encodeCells, hourBucket, newPieceId, validatePublish } from '../../../../src/lib/gallery';
+import { encodeCells, hourBucket, newPieceId, validatePublish } from './_kernel';
 import type { Ctx } from './_shared';
 import { deviceHash, json, readJson } from './_shared';
 
