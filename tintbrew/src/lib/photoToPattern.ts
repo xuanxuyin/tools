@@ -3,26 +3,34 @@
  * pipeline (user call, 2026-10-29: same settings must land the same fidelity
  * as theirs). Pure functions, no DOM.
  *
- *  1. Area-weighted resample: every board cell covers a float rectangle of
+ *  1. Identify-first quantization (smooth mode): up to 32 k-means clusters
+ *     group the photo's real colors, each cluster snaps to its nearest
+ *     palette bead, every pixel inherits its cluster's bead. Transparent
+ *     pixels (alpha < 32) carry no bead.
+ *  2. Area-weighted resample: every board cell covers a float rectangle of
  *     source pixels; each pixel contributes by its exact intersecting area,
- *     weighted by alpha. Cells whose average alpha lands under 24 become
- *     empty pegboard — transparent PNG backgrounds vanish for free.
- *  2. Full-palette match, per cell, in Oklab plus a chroma guard (the
+ *     weighted by alpha. Smooth mode takes the cell's MAJORITY bead —
+ *     discrete identification, no invented mix colors. Dither mode keeps
+ *     the linear-light mean as Floyd–Steinberg's continuous input. Cells
+ *     whose average alpha lands under 24 become empty pegboard —
+ *     transparent PNG backgrounds vanish for free.
+ *  3. Full-palette match, per cell, in Oklab plus a chroma guard (the
  *     source-site distance): gray cells can't be stolen by vivid beads, and
- *     sibling shades keep their saturation relationships.
- *  3. Shade merge (Keep/Balanced/Bold): while the closest pair of used beads
+ *     sibling shades keep their saturation relationships. Majority cells
+ *     already carry a bead's own Oklab, so this pass is a no-op for them.
+ *  4. Shade merge (Keep/Balanced/Bold): while the closest pair of used beads
  *     sits under the threshold, the less chromatic one folds into the more
  *     chromatic one. Nothing is pre-clustered — every cell keeps its global
  *     best match, which is where the fidelity lives.
- *  4. Color-count cap: while over the limit, drop the used bead with the
+ *  5. Color-count cap: while over the limit, drop the used bead with the
  *     smallest count × distance-to-its-nearest-neighbor — rare-but-redundant
  *     dies first, rare-but-unique survives — then re-match the whole board
  *     against the survivors. Dark outline reserves one seat for the darkest
  *     bead by capping the palette one lower.
- *  5. Remove background: the border ring's dominant bead flood-fills inward
+ *  6. Remove background: the border ring's dominant bead flood-fills inward
  *     through beads within RGB 36 of it; interior islands of the same color
  *     survive.
- *  6. Dark outline: non-empty cells touching an empty one get the palette's
+ *  7. Dark outline: non-empty cells touching an empty one get the palette's
  *     darkest bead — the silhouette stays crisp even where edge sampling
  *     lightened the rim.
  *
@@ -146,20 +154,216 @@ const LINEAR = (() => {
   return t;
 })();
 
+/* --------------------- identify-first quantization --------------------- */
+
+/** Quantization budget: k-means centers over a sampled pixel subset, and
+ *  the serpentine cap on iterations. 32 clusters absorb real photos' color
+ *  variety while staying far below the 291-bead palette. */
+const QUANT_K = 32;
+const QUANT_SAMPLES = 24000;
+const QUANT_ITERS = 16;
+
+/** Sentinel palette index: pixel too transparent to carry a bead. */
+const NO_BEAD = 0xffff;
+
+/** Pixel (RGBA at data offset i) → Oklab triple written flat into `o`.
+ *  Object-free on purpose: quantization walks millions of pixels, and a
+ *  `{…}` per pixel is GC churn. Same math as color.ts rgbToOklab. */
+function pixelLab(data: ArrayLike<number>, i: number, o: Float64Array, oi: number): void {
+  const lr = LINEAR[data[i]!]!;
+  const lg = LINEAR[data[i + 1]!]!;
+  const lb = LINEAR[data[i + 2]!]!;
+  const l = 0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb;
+  const m = 0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb;
+  const s = 0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb;
+  const l_ = Math.cbrt(l);
+  const m_ = Math.cbrt(m);
+  const s_ = Math.cbrt(s);
+  o[oi] = 0.2104542553 * l_ + 0.793617785 * m_ - 0.0040720468 * s_;
+  o[oi + 1] = 1.9779984951 * l_ - 2.428592205 * m_ + 0.4505937099 * s_;
+  o[oi + 2] = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.808675766 * s_;
+}
+
+const IDX_OF_BEAD = new Map(PALETTE.map((b, i) => [b, i]));
+
+/**
+ * Identify-first quantization (user call, 2026-11-02: "依然会有杂色…
+ * 识别的区域和原图有差异…颜色也有误差 — 寻找更精确的解决方案").
+ *
+ * Averaging colors across a cell INVENTS colors the picture never had; the
+ * precise order is identify first, count second. Up to 32 k-means clusters
+ * (Oklab space, deterministic farthest-point init — no RNG, so the same
+ * photo always converts to the same board) group the photo's real colors;
+ * every cluster snaps to its nearest palette bead; every pixel inherits
+ * its cluster's bead identity. The resampler then takes each cell's
+ * MAJORITY bead — a discrete count of real identifications — so a seam
+ * cell can't birth a third color, and a region's beads are the beads its
+ * pixels actually are. Transparent pixels (alpha < 32) carry NO_BEAD and
+ * drop out of every tally.
+ */
+function quantizeBeads(img: SampleImage): Uint16Array {
+  const { data, width, height } = img;
+  const n = width * height;
+  const out = new Uint16Array(n).fill(NO_BEAD);
+
+  // sample opaque pixels (stride-subsampled) into a flat Oklab pool
+  const step = Math.max(1, Math.floor(n / QUANT_SAMPLES));
+  const pool = new Float64Array(Math.ceil(n / step) * 3);
+  let m = 0;
+  const scratch = new Float64Array(3);
+  for (let i = 0; i < n; i += step) {
+    if (data[i * 4 + 3]! < 32) continue;
+    pixelLab(data, i * 4, scratch, 0);
+    pool[m * 3] = scratch[0]!;
+    pool[m * 3 + 1] = scratch[1]!;
+    pool[m * 3 + 2] = scratch[2]!;
+    m++;
+  }
+  if (m === 0) return out;
+  const k = Math.min(QUANT_K, m);
+
+  const centers = new Float64Array(k * 3);
+  // farthest-point init: c0 is sample 0; each next center is the sample
+  // whose distance to its nearest chosen center is largest. Fully
+  // deterministic (a seeded RNG could wobble the whole board).
+  centers[0] = pool[0]!;
+  centers[1] = pool[1]!;
+  centers[2] = pool[2]!;
+  const near = new Float64Array(m).fill(Infinity);
+  for (let c = 1; c < k; c++) {
+    const p = (c - 1) * 3;
+    let best = -1;
+    let bestD = -1;
+    for (let i = 0; i < m; i++) {
+      const dL = pool[i * 3]! - centers[p]!;
+      const da = pool[i * 3 + 1]! - centers[p + 1]!;
+      const db = pool[i * 3 + 2]! - centers[p + 2]!;
+      const d = dL * dL + da * da + db * db;
+      if (d < near[i]!) near[i] = d;
+      if (near[i]! > bestD) {
+        bestD = near[i]!;
+        best = i;
+      }
+    }
+    const q = c * 3;
+    if (best < 0 || bestD <= 0) {
+      // degenerate (identical samples): reuse center 0 — the empty-cluster
+      // guard below keeps the extra centers from stealing pixels
+      centers[q] = centers[0]!;
+      centers[q + 1] = centers[1]!;
+      centers[q + 2] = centers[2]!;
+    } else {
+      centers[q] = pool[best * 3]!;
+      centers[q + 1] = pool[best * 3 + 1]!;
+      centers[q + 2] = pool[best * 3 + 2]!;
+    }
+  }
+
+  // Lloyd iterations
+  const sums = new Float64Array(k * 3);
+  const counts = new Uint32Array(k);
+  for (let it = 0; it < QUANT_ITERS; it++) {
+    sums.fill(0);
+    counts.fill(0);
+    for (let i = 0; i < m; i++) {
+      let best = 0;
+      let bestD = Infinity;
+      for (let c = 0; c < k; c++) {
+        const dL = pool[i * 3]! - centers[c * 3]!;
+        const da = pool[i * 3 + 1]! - centers[c * 3 + 1]!;
+        const db = pool[i * 3 + 2]! - centers[c * 3 + 2]!;
+        const d = dL * dL + da * da + db * db;
+        if (d < bestD) {
+          bestD = d;
+          best = c;
+        }
+      }
+      sums[best * 3] += pool[i * 3]!;
+      sums[best * 3 + 1] += pool[i * 3 + 1]!;
+      sums[best * 3 + 2] += pool[i * 3 + 2]!;
+      counts[best]++;
+    }
+    for (let c = 0; c < k; c++) {
+      if (counts[c] === 0) {
+        // re-seed an empty cluster on the sample farthest from its center
+        let far = 0;
+        let farD = -1;
+        for (let i = 0; i < m; i++) {
+          let nd = Infinity;
+          for (let c2 = 0; c2 < k; c2++) {
+            const dL = pool[i * 3]! - centers[c2 * 3]!;
+            const da = pool[i * 3 + 1]! - centers[c2 * 3 + 1]!;
+            const db = pool[i * 3 + 2]! - centers[c2 * 3 + 2]!;
+            const d = dL * dL + da * da + db * db;
+            if (d < nd) nd = d;
+          }
+          if (nd > farD) {
+            farD = nd;
+            far = i;
+          }
+        }
+        centers[c * 3] = pool[far * 3]!;
+        centers[c * 3 + 1] = pool[far * 3 + 1]!;
+        centers[c * 3 + 2] = pool[far * 3 + 2]!;
+      } else {
+        centers[c * 3] = sums[c * 3]! / counts[c]!;
+        centers[c * 3 + 1] = sums[c * 3 + 1]! / counts[c]!;
+        centers[c * 3 + 2] = sums[c * 3 + 2]! / counts[c]!;
+      }
+    }
+  }
+
+  // snap each center to its bead, then stamp every pixel with it
+  const centerBead = new Uint16Array(k);
+  for (let c = 0; c < k; c++) {
+    const bead = nearestBead({ L: centers[c * 3]!, a: centers[c * 3 + 1]!, b: centers[c * 3 + 2]! }, null);
+    centerBead[c] = IDX_OF_BEAD.get(bead)!;
+  }
+  for (let i = 0; i < n; i++) {
+    if (data[i * 4 + 3]! < 32) continue;
+    pixelLab(data, i * 4, scratch, 0);
+    let best = 0;
+    let bestD = Infinity;
+    for (let c = 0; c < k; c++) {
+      const dL = scratch[0]! - centers[c * 3]!;
+      const da = scratch[1]! - centers[c * 3 + 1]!;
+      const db = scratch[2]! - centers[c * 3 + 2]!;
+      const d = dL * dL + da * da + db * db;
+      if (d < bestD) {
+        bestD = d;
+        best = c;
+      }
+    }
+    out[i] = centerBead[best]!;
+  }
+  return out;
+}
+
 /**
  * Area-weighted resample: cell (x, y) covers the float rectangle
- * [x·w/cols, (x+1)·w/cols) × [y·h/rows, (y+1)·h/rows) of source pixels.
- * Every pixel contributes by its exact intersecting area times its alpha,
- * so upscaling and awkward ratios stay unbiased — no pixel is dropped
- * (nearest-neighbor decode does) and none is double-counted.
+ * [x·w/cols, (x+1)·w/cols) × [y·h/rows, (y+1)·h/rows) of source pixels,
+ * each pixel contributing by its exact intersecting area times its alpha —
+ * no pixel dropped (nearest-neighbor decode does), none double-counted.
  *
- * The mean is taken in LINEAR light, not raw sRGB numbers: mixing is a
- * physical operation on light, and gamma-compressed averages run dark and
- * muddy (half white + half black is #BCBCBC in light, not #808080 — every
- * blend seam in the board was dimmer than the photo it came from). Cells
- * averaging under 24 alpha are empty.
+ * Two flavors:
+ *  • smooth (`beadIdx` given): the cell takes the MAJORITY bead of its
+ *    pixels — discrete identification beats averaging, which invents
+ *    colors. A dead-even tie falls to the left neighbor's bead (then the
+ *    top's), so a hard seam snaps to one side instead of sprouting a
+ *    phantom band; the linear-light mean decides only where no neighbor
+ *    exists. Cells averaging under 24 alpha are empty.
+ *  • dither (no `beadIdx`): the classic linear-light mean — gamma-plain
+ *    sRGB numbers average dark and muddy (half white + half black is
+ *    #BCBCBC in light, not #808080) — because Floyd–Steinberg wants a
+ *    continuous tone to diffuse error against.
  */
-function resampleCells(img: SampleImage, cols: number, rows: number): Cell[][] {
+/** Per-cell bead histogram, shared across cells. Float64 on purpose: the
+ *  tallies are fractional (alpha × pixel-area weights), and an integer
+ *  array silently truncates 0.386 → 0 — a whole cell of real beads then
+ *  reads as "no votes" (that was the phantom-black-bead bug). */
+const HIST = new Float64Array(PALETTE.length);
+
+function resampleCells(img: SampleImage, cols: number, rows: number, beadIdx?: Uint16Array): Cell[][] {
   const { data, width, height } = img;
   const grid: Cell[][] = [];
   for (let y = 0; y < rows; y++) {
@@ -178,6 +382,7 @@ function resampleCells(img: SampleImage, cols: number, rows: number): Cell[][] {
       let lb = 0;
       let aWeight = 0;
       let area = 0;
+      HIST.fill(0);
       for (let py = py0; py < py1; py++) {
         if (py < 0 || py >= height) continue;
         const wy = Math.min(y1, py + 1) - Math.max(y0, py);
@@ -194,11 +399,64 @@ function resampleCells(img: SampleImage, cols: number, rows: number): Cell[][] {
           lb += LINEAR[data[i + 2]!] * a * w;
           aWeight += a * w;
           area += w;
+          if (beadIdx) {
+            const bi = beadIdx[py * width + px]!;
+            if (bi !== NO_BEAD) HIST[bi] += a * w;
+          }
         }
       }
       const alpha = area === 0 ? 0 : (aWeight / area) * 255;
       if (aWeight === 0 || alpha < EMPTY_ALPHA) {
         row.push({ rgb: [0, 0, 0], lab: { L: 0, a: 0, b: 0 }, empty: true });
+        continue;
+      }
+      if (beadIdx) {
+        // majority bead, tie → left neighbor, tie → top neighbor, tie → mean
+        let best = -1;
+        let bestN = 0;
+        for (let c = 0; c < HIST.length; c++) {
+          if (HIST[c]! > bestN) {
+            bestN = HIST[c]!;
+            best = c;
+          }
+        }
+        let bead: BeadEntry;
+        if (best < 0) {
+          // every pixel was too transparent for a bead yet the cell averages
+          // ≥24 alpha (the 24..32 gray zone): fall back to the cell's mean
+          const rgb: [number, number, number] = [
+            Math.round(linearToSrgb(lr / aWeight) * 255),
+            Math.round(linearToSrgb(lg / aWeight) * 255),
+            Math.round(linearToSrgb(lb / aWeight) * 255),
+          ];
+          bead = nearestBead(rgbToOklab({ r: rgb[0], g: rgb[1], b: rgb[2] }), null);
+        } else {
+          let tied = false;
+          for (let c = 0; c < HIST.length; c++) {
+            if (c !== best && HIST[c] === bestN) {
+              tied = true;
+              break;
+            }
+          }
+          const left = x > 0 ? row[x - 1] : undefined;
+          const top = y > 0 ? grid[y - 1]![x] : undefined;
+          const neighbor = left && !left.empty ? left : top && !top.empty ? top : null;
+          if (!tied) {
+            bead = PALETTE[best]!;
+          } else if (neighbor) {
+            // a neighbor cell's lab IS a bead's lab (majority cells carry
+            // their bead's color), so nearest match returns that same bead
+            bead = nearestBead(neighbor.lab, null);
+          } else {
+            const rgb: [number, number, number] = [
+              Math.round(linearToSrgb(lr / aWeight) * 255),
+              Math.round(linearToSrgb(lg / aWeight) * 255),
+              Math.round(linearToSrgb(lb / aWeight) * 255),
+            ];
+            bead = nearestBead(rgbToOklab({ r: rgb[0], g: rgb[1], b: rgb[2] }), null);
+          }
+        }
+        row.push({ rgb: bead.rgb, lab: bead.lab, empty: false });
         continue;
       }
       const rgb: [number, number, number] = [
@@ -472,7 +730,10 @@ export function photoToPattern(img: SampleImage, opts: PhotoOpts): PhotoPattern 
   const cols = Math.max(MIN_COLS, Math.min(MAX_COLS, Math.round(opts.cols)));
   const rows = Math.max(1, Math.min(MAX_ROWS, Math.round((img.height / img.width) * cols)));
 
-  const cellGrid = resampleCells(img, cols, rows);
+  // smooth identifies first (quantize → majority); dither keeps the
+  // continuous mean as FS error-diffusion input
+  const beadIdx = opts.mode === 'smooth' ? quantizeBeads(img) : null;
+  const cellGrid = resampleCells(img, cols, rows, beadIdx ?? undefined);
 
   // first pass: every cell matched against the full palette
   let grid: (BeadEntry | null)[][] = cellGrid.map((row) =>

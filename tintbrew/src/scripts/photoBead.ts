@@ -379,11 +379,28 @@ export class PhotoStudio {
     this.timer = window.setTimeout(() => this.convert(), ms);
   }
 
+  /** Bumped on every convert request; a run finishing after a newer request
+   *  started discards itself, so stale boards never overwrite fresh edits. */
+  private convertGen = 0;
+
   private convert(): void {
     const view = this.croppedSource();
     if (!view) return;
     const opts = this.opts();
     if (opts.cols < 1) return; // custom width mid-edit — keep the last board
+    // smooth mode quantizes first — k-means over every pixel of the photo
+    // (~1s on a 6 MP shot) — so paint the status line before the heavy lift
+    const gen = ++this.convertGen;
+    this.status().textContent = 'Identifying colors…';
+    window.setTimeout(() => {
+      if (gen !== this.convertGen) return; // a newer edit superseded this run
+      this.runConvert(opts, gen);
+    }, 0);
+  }
+
+  private runConvert(opts: ReturnType<PhotoStudio['opts']>, gen: number): void {
+    const view = this.croppedSource();
+    if (!view) return;
     const status = this.status();
     let pattern: PhotoPattern;
     try {
@@ -392,6 +409,7 @@ export class PhotoStudio {
       status.textContent = 'Conversion failed — try another photo.';
       return;
     }
+    if (gen !== this.convertGen) return;
     if (!pattern.cells.length) {
       status.textContent = 'Conversion failed — try another photo.';
       return;
