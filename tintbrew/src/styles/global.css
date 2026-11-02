@@ -919,7 +919,7 @@ input[type='range']::-moz-range-thumb {
   color: inherit;
 }
 .gal-minimeta {
-  padding: var(--sp-2);
+  padding: 0.65rem 0.75rem 0.25rem;
 }
 .gal-minititle {
   display: flex;
@@ -932,16 +932,19 @@ input[type='range']::-moz-range-thumb {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
 }
 /* name left, byline right — each shrinks with ellipsis */
 .gal-minimeta .gal-nick {
   flex: 0 1 auto;
   min-width: 0;
+  font-size: 0.9rem;
 }
 .gal-mini .gal-like {
   align-self: flex-start;
-  margin: 0 var(--sp-2) var(--sp-2);
+  margin: 0 0.75rem 0.75rem;
+  padding: 0.4rem 1.05rem;
+  font-size: 0.95rem;
   font-weight: 600;
 }
 

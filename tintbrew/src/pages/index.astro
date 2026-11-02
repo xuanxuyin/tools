@@ -451,16 +451,11 @@ const jsonLd = {
     margin: var(--sp-3) 0 0;
     padding: 0;
     display: grid;
-    /* fixed column steps — a 10-piece board reads as one even 5+5 grid */
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: var(--sp-3);
+    /* fixed column steps, sized up (user: cards read too small at 5-up) */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--sp-4);
   }
-  @media (max-width: 56rem) {
-    .home-gal-list {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-  @media (max-width: 48rem) {
+  @media (max-width: 64rem) {
     .home-gal-list {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
