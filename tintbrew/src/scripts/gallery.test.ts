@@ -133,8 +133,9 @@ describe('gallery island (real markup + stubbed API)', () => {
     const { document: doc } = await boot();
     const cards = doc.querySelectorAll('[data-gallery-list] .gal-card');
     expect(cards).toHaveLength(2);
-    expect(cards[0]!.querySelector('.gal-rank')?.textContent).toBe('#1');
-    expect(cards[1]!.querySelector('.gal-rank')?.textContent).toBe('#2');
+    // top-3 get medal SVGs (gold/silver/bronze), the rest keep the #N pill
+    expect(cards[0]!.querySelector('.gal-rank-medal svg')).toBeTruthy();
+    expect(cards[1]!.querySelector('.gal-rank-medal svg')).toBeTruthy();
     expect(cards[0]!.querySelector('.gal-name')?.textContent).toBe('Rainbow Cat');
     expect(cards[0]!.querySelector('[data-gal-likes]')?.textContent).toBe('12');
     expect(doc.querySelector('[data-gallery-list] .gal-empty')).toBeNull();
@@ -243,7 +244,7 @@ describe('my piece (mine zone)', () => {
     const { document: doc } = await loadPage('gallery/index.html', fetchMock);
     await import('./gallery');
     await flush();
-    expect(doc.querySelector('[data-gallery-mine] .gal-rank')?.textContent).toBe('#2');
+    expect(doc.querySelector('[data-gallery-mine] .gal-rank-medal svg')).toBeTruthy();
   });
 
   it('liking one copy repaints every copy of the same piece', async () => {
@@ -310,6 +311,13 @@ describe('home-page gallery block (dist/index.html)', () => {
     expect(minis[0]!.querySelector('.gal-nick')?.textContent).toContain('Ann');
     // …and thumbnails share one uniform square frame (no per-piece inline ratio)
     expect(minis[0]!.querySelector('.gal-thumb')?.getAttribute('style')).toBeNull();
+    // medal badges for ranks 1–3, the #N pill from rank 4 on
+    expect(minis[0]!.querySelector('.gal-rank-medal svg')).toBeTruthy();
+    const { miniCardHtml } = await import('./galleryCards');
+    expect(miniCardHtml(piece('d', 'Fourth', 'Cy', 1), 4)).toContain('#4');
+    // info block stacks name (bold) over byline, Like pill floats on the thumb
+    expect(minis[0]!.querySelector('.gal-mini-name')?.textContent).toBe('First');
+    expect(minis[0]!.querySelector('.gal-like')?.className).toContain('gal-like');
   });
 
   it('mini cards carry a working Like pill: posts uuid+piece, bumps, spends the hour', async () => {

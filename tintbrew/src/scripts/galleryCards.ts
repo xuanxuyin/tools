@@ -33,7 +33,23 @@ export function bylineHtml(nick: string): string {
 }
 
 function rankHtml(rank: number | null): string {
-  return rank ? `<span class="gal-rank" aria-hidden="true">#${rank}</span>` : '';
+  if (!rank) return '';
+  if (rank <= 3) {
+    const [disc, inner] =
+      rank === 1
+        ? ['#e8a925', '#f7c948']
+        : rank === 2
+          ? ['#9aa3ad', '#c6cdd6']
+          : ['#b06a32', '#d18d54'];
+    const medal =
+      `<svg viewBox="0 0 26 32" width="26" height="32" aria-hidden="true">` +
+      `<path d="M5 1h5l3 8-6-2z" fill="#c0392b"/><path d="M21 1h-5l-3 8 6-2z" fill="#a83226"/>` +
+      `<circle cx="13" cy="20" r="10" fill="${disc}"/><circle cx="13" cy="20" r="7" fill="${inner}"/>` +
+      `<path d="M13 15.5l1.4 2.9 3.2.4-2.3 2.2.5 3.1-2.8-1.5-2.8 1.5.5-3.1-2.3-2.2 3.2-.4z" fill="#fff"/>` +
+      `</svg>`;
+    return `<span class="gal-rank gal-rank-medal" aria-hidden="true">${medal}</span>`;
+  }
+  return `<span class="gal-rank" aria-hidden="true">#${rank}</span>`;
 }
 
 /** Full card for the /gallery/ ranking. Like/Report carry data-i18n
@@ -59,17 +75,19 @@ export function cardHtml(p: GalleryPiece, rank: number | null): string {
   );
 }
 
-/** Mini card for the home-page top 10. The thumbnail + name/byline link
- *  into the gallery; the Like pill sits below them as a real button (a
- *  button can't live inside a link), so the home page can vote directly. */
+/** Mini card for the home-page top 9. The thumbnail + name/byline link
+ *  into the gallery; the Like pill floats over the thumbnail's top-right
+ *  corner as a real button (a button can't live inside a link), so the
+ *  home page votes directly. Info reads as two stacked lines — name in
+ *  bold, "by nick" in muted gray — instead of one crowded row. */
 export function miniCardHtml(p: GalleryPiece, rank: number): string {
   return (
     `<li class="gal-mini" data-piece="${escapeHtml(p.id)}">` +
     `<a href="/gallery/">` +
-    rankHtml(rank) +
     thumbHtml(p) +
-    `<div class="gal-minimeta"><div class="gal-minititle"><strong>${escapeHtml(p.name)}</strong>${bylineHtml(p.nick)}</div></div>` +
+    rankHtml(rank) +
     `</a>` +
+    `<div class="gal-minimeta"><strong class="gal-mini-name">${escapeHtml(p.name)}</strong>${bylineHtml(p.nick)}</div>` +
     `<button type="button" class="btn btn-sm gal-like" data-gal-like data-i18n-aria="gal.likeAria"` +
     ` data-i18n-title="gal.likeTitle" aria-label="${escapeHtml(t('gal.likeAria'))}"` +
     ` title="${escapeHtml(t('gal.likeTitle'))}">` +
