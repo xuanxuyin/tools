@@ -59,21 +59,21 @@ export function cardHtml(p: GalleryPiece, rank: number | null): string {
   );
 }
 
-/** Mini card for the home-page top 10 — no buttons, whole card is the
- *  link into the gallery. Two meta rows: name+byline, then the like count
- *  on its own line. */
+/** Mini card for the home-page top 10. The thumbnail + name/byline link
+ *  into the gallery; the Like pill sits below them as a real button (a
+ *  button can't live inside a link), so the home page can vote directly. */
 export function miniCardHtml(p: GalleryPiece, rank: number): string {
   return (
-    `<li class="gal-mini">` +
+    `<li class="gal-mini" data-piece="${escapeHtml(p.id)}">` +
     `<a href="/gallery/">` +
     rankHtml(rank) +
     thumbHtml(p) +
-    `<div class="gal-minimeta">` +
-    `<div class="gal-minititle"><strong>${escapeHtml(p.name)}</strong>` +
-    bylineHtml(p.nick) +
-    `</div>` +
-    `<span class="gal-minilikes"><span class="gal-heart" aria-hidden="true">♥</span> ${p.likes}</span>` +
-    `</div>` +
-    `</a></li>`
+    `<div class="gal-minimeta"><div class="gal-minititle"><strong>${escapeHtml(p.name)}</strong>${bylineHtml(p.nick)}</div></div>` +
+    `</a>` +
+    `<button type="button" class="btn btn-sm gal-like" data-gal-like data-i18n-aria="gal.likeAria"` +
+    ` data-i18n-title="gal.likeTitle" aria-label="${escapeHtml(t('gal.likeAria'))}"` +
+    ` title="${escapeHtml(t('gal.likeTitle'))}">` +
+    `<span class="gal-heart" aria-hidden="true">♥</span> <span data-gal-likes>${p.likes}</span></button>` +
+    `</li>`
   );
 }

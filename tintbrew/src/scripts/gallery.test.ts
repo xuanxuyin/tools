@@ -289,7 +289,7 @@ describe('home-page top-10 block (dist/index.html)', () => {
     expect(doc.querySelector('[data-home-gallery] [data-i18n="home.galH"]')?.textContent).toBe('Community gallery');
   });
 
-  it('reveals with mini cards when the API has pieces; no like buttons on home', async () => {
+  it('reveals with mini cards when the API has pieces', async () => {
     fetchMock.mockImplementation(() =>
       Promise.resolve(
         jsonResponse({ pieces: [piece('a', 'First', 'Ann', 9), piece('b', 'Second', 'Bo', 4)], mine: null }),
@@ -307,7 +307,52 @@ describe('home-page top-10 block (dist/index.html)', () => {
     expect(minis[0]!.querySelector('.gal-nick')?.textContent).toContain('Ann');
     // …and thumbnails share one uniform square frame (no per-piece inline ratio)
     expect(minis[0]!.querySelector('.gal-thumb')?.getAttribute('style')).toBeNull();
-    expect(doc.querySelector('[data-home-gallery] [data-gal-like]')).toBeNull();
+  });
+
+  it('mini cards carry a working Like pill: posts uuid+piece, bumps, spends the hour', async () => {
+    fetchMock.mockImplementation((input: string | URL | Request) => {
+      if (String(input).includes('/api/gallery/list')) {
+        return Promise.resolve(
+          jsonResponse({ pieces: [piece('a', 'First', 'Ann', 9), piece('b', 'Second', 'Bo', 4)], mine: null }),
+        );
+      }
+      return Promise.resolve(jsonResponse({ ok: true }));
+    });
+    const { document: doc, window } = await loadPage('index.html', fetchMock);
+    await import('./homeGallery');
+    await flush();
+
+    const like = doc.querySelector('[data-home-gallery-list] [data-gal-like]') as HTMLButtonElement;
+    like.click();
+    await flush();
+
+    const call = fetchMock.mock.calls.find(([u]) => String(u).includes('/api/gallery/like'));
+    expect(call).toBeTruthy();
+    const body = JSON.parse((call![1] as RequestInit).body as string);
+    expect(body.pieceId).toBe('a');
+    expect(body.uuid).toMatch(/^[0-9a-f-]{36}$/);
+
+    expect(like.querySelector('[data-gal-likes]')?.textContent).toBe('10');
+    expect(window.localStorage.getItem('tb-gallery:voted-hour')).toBe(new Date().toISOString().slice(0, 13));
+    // both pills disabled for the rest of the hour
+    const pills = doc.querySelectorAll('[data-home-gallery-list] [data-gal-like]');
+    expect(pills).toHaveLength(2);
+    pills.forEach((b) => expect(b.getAttribute('aria-disabled')).toBe('true'));
+  });
+
+  it('a spent hour disables the home pills without a click', async () => {
+    fetchMock.mockImplementation(() =>
+      Promise.resolve(
+        jsonResponse({ pieces: [piece('a', 'First', 'Ann', 9), piece('b', 'Second', 'Bo', 4)], mine: null }),
+      ),
+    );
+    const { document: doc, window } = await loadPage('index.html', fetchMock);
+    window.localStorage.setItem('tb-gallery:voted-hour', new Date().toISOString().slice(0, 13));
+    await import('./homeGallery');
+    await flush();
+    const pills = doc.querySelectorAll('[data-home-gallery-list] [data-gal-like]');
+    expect(pills).toHaveLength(2);
+    pills.forEach((b) => expect(b.getAttribute('aria-disabled')).toBe('true'));
   });
 
   it('stays hidden when the gallery is empty or unreachable', async () => {

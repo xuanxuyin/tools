@@ -8,17 +8,7 @@
 import { t } from './i18n';
 import type { UiKey } from '../data/uiStrings';
 import { cardHtml, type GalleryPiece } from './galleryCards';
-import { currentHour, galleryUuid } from './deviceId';
-
-const VOTED_KEY = 'tb-gallery:voted-hour';
-
-function votedThisHour(): boolean {
-  try {
-    return window.localStorage.getItem(VOTED_KEY) === currentHour();
-  } catch {
-    return false;
-  }
-}
+import { galleryUuid, markVoted, votedThisHour } from './deviceId';
 
 class GalleryIsland {
   private root: HTMLElement;
@@ -135,19 +125,11 @@ class GalleryIsland {
             if (el) el.textContent = String(total);
           });
         }
-        try {
-          window.localStorage.setItem(VOTED_KEY, currentHour());
-        } catch {
-          /* private mode — the server still enforces the cap */
-        }
+        markVoted();
         this.refreshVoteState();
       } else if (res.status === 429) {
         this.status(t('gal.oneVote'));
-        try {
-          window.localStorage.setItem(VOTED_KEY, currentHour());
-        } catch {
-          /* ignore */
-        }
+        markVoted();
         this.refreshVoteState();
       } else {
         this.status(t('gal.errNetwork'));
