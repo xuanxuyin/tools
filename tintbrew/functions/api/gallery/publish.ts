@@ -17,7 +17,7 @@ export async function onRequestPost(ctx: Ctx): Promise<Response> {
   if (!parsed.ok) return json({ error: parsed.reason }, 400);
 
   const db = ctx.env.GALLERY_DB;
-  const hash = await deviceHash(ctx.request, ctx.env, body.uuid as string);
+  const hash = await deviceHash(ctx.env, body.uuid as string);
 
   // rate limit — INSERT .. ON CONFLICT .. WHERE keeps changes at 0 past the cap
   const lim = await db

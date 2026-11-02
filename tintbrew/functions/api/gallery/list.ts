@@ -54,7 +54,7 @@ export async function onRequestGet(ctx: Ctx): Promise<Response> {
   let mine: ReturnType<typeof piece> | null = null;
   const d = url.searchParams.get('d');
   if (d && typeof d === 'string' && d.length >= 8 && d.length <= 64) {
-    const hash = await deviceHash(ctx.request, ctx.env, d);
+    const hash = await deviceHash(ctx.env, d);
     const own = await db
       .prepare(`SELECT ${COLUMNS} FROM creations WHERE device_hash = ?`)
       .bind(hash)

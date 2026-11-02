@@ -16,7 +16,7 @@ export async function onRequestPost(ctx: Ctx): Promise<Response> {
   }
 
   const db = ctx.env.GALLERY_DB;
-  const hash = await deviceHash(ctx.request, ctx.env, uuid);
+  const hash = await deviceHash(ctx.env, uuid);
 
   const vote = await db
     .prepare('INSERT INTO vote_log (device_hash, hour, piece_id) VALUES (?, ?, ?) ON CONFLICT(device_hash, hour) DO NOTHING')

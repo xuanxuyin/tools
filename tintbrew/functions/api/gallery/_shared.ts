@@ -41,11 +41,13 @@ export async function readJson(request: Request): Promise<Record<string, unknown
   }
 }
 
-/** SHA-256(salt|uuid|ip) — server-side device identity. The uuid never
- *  lands in the DB and the salt keeps precomputed tables useless. */
-export async function deviceHash(request: Request, env: Env, uuid: string): Promise<string> {
-  const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
-  const data = new TextEncoder().encode(`${env.DEVICE_SALT ?? ''}|${uuid}|${ip}`);
+/** SHA-256(salt|uuid) — server-side device identity. The uuid never lands
+ *  in the DB and the salt keeps precomputed tables useless. IP is
+ *  deliberately NOT mixed in: a home connection that changes its address
+ *  would fork the identity and silently break "one person, one piece"
+ *  (the replace-on-publish UPSERT would insert a second row instead). */
+export async function deviceHash(env: Env, uuid: string): Promise<string> {
+  const data = new TextEncoder().encode(`${env.DEVICE_SALT ?? ''}|${uuid}`);
   const digest = await crypto.subtle.digest('SHA-256', data);
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
 }
