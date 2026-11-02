@@ -23,9 +23,9 @@ const htmlPath = resolve(
 
 const BLACK_HEX = mardById('mard-h7')!.hex; // H7 — the line's exact #000000
 
-async function loadPage() {
+async function loadPage(url = 'https://tintbrew.com/bead-editor/') {
   const html = readFileSync(htmlPath, 'utf8');
-  const window = new Window({ url: 'https://tintbrew.com/bead-editor/' });
+  const window = new Window({ url });
   const { document } = window;
   document.write(html);
   (globalThis as Record<string, unknown>).document = document;
@@ -548,5 +548,183 @@ describe('publish to community gallery (UGC flow)', () => {
     fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish-submit]') as Element);
     await new Promise((r) => setTimeout(r, 0));
     expect(ctx.host.querySelector('[data-ed-publish-status]')!.textContent).toContain('Couldn’t reach');
+  });
+});
+
+describe('template picker (build-time catalog)', () => {
+  let ctx: Ctx;
+
+  const catalog = {
+    groups: [
+      {
+        cat: 'animals',
+        items: [
+          { slug: 'bear', name: 'Bear', cat: 'animals', w: 16, h: 2, rows: ['aaaa............', '................'], pal: { a: 'mard-h7' } },
+        ],
+      },
+      {
+        cat: 'halloween',
+        items: [
+          { slug: 'ghost', name: 'Ghost', cat: 'halloween', w: 12, h: 2, rows: ['bbbb........', '............'], pal: { b: 'mard-h13' } },
+        ],
+      },
+    ],
+  };
+
+  function stubFetch() {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((input: string | URL | Request) => {
+        const url = String(input);
+        if (url.includes('editor-templates.json')) {
+          return Promise.resolve({ ok: true, status: 200, json: async () => catalog } as Response);
+        }
+        return Promise.resolve({ ok: true, status: 200, json: async () => ({ id: 'x' }) } as Response);
+      }),
+    );
+  }
+
+  beforeEach(async () => {
+    ctx = await loadPage();
+    stubFetch();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('the Templates button opens the panel; chips render grouped by category', async () => {
+    newEditor(ctx);
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-tpl]') as Element);
+    const panel = ctx.host.querySelector('[data-ed-tpl-panel]') as HTMLElement;
+    expect(panel.classList.contains('hidden')).toBe(false);
+    await new Promise((r) => setTimeout(r, 0));
+
+    const groups = [...panel.querySelectorAll('.ed-tpl-group h4')].map((h) => h.textContent);
+    expect(groups.length).toBe(2);
+    const chips = [...panel.querySelectorAll('.tpl-chip')];
+    expect(chips).toHaveLength(2);
+    expect(chips[0]!.getAttribute('data-ed-tpl-slug')).toBe('bear');
+    expect(chips[0]!.textContent).toContain('Bear');
+    expect(chips[0]!.textContent).toContain('16×2');
+  });
+
+  it('clicking a chip loads it onto the empty board without a confirm and notes the size', async () => {
+    newEditor(ctx);
+    const confirmSpy = vi.fn(() => true);
+    (ctx.window as unknown as { confirm: (s?: string) => boolean }).confirm = confirmSpy;
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-tpl]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+    const chip = ctx.host.querySelector('[data-ed-tpl-slug="bear"]') as HTMLElement;
+    fireClick(ctx.window, chip);
+    await new Promise((r) => setTimeout(r, 0));
+
+    // empty board → no confirm gate; the board rebuilds at 16×16 with beads
+    expect(confirmSpy).not.toHaveBeenCalled();
+    const svg = ctx.host.querySelector('[data-ed-canvas]')!;
+    expect(svg.getAttribute('viewBox')).toBe('0 0 160 20');
+    expect(ctx.host.querySelectorAll('[data-ed-canvas] [fill="#000000"]').length).toBeGreaterThan(0);
+    const note = ctx.host.querySelector('[data-ed-note]')!;
+    expect(note.classList.contains('hidden')).toBe(false);
+    expect(note.textContent).toContain('Bear');
+    expect(note.textContent).toContain('16×2');
+    // panel closes after a successful load
+    expect((ctx.host.querySelector('[data-ed-tpl-panel]') as HTMLElement).classList.contains('hidden')).toBe(true);
+  });
+
+  it('a chip click with beads already on the board asks first; declining keeps the board', async () => {
+    const confirmSpy = vi.fn(() => false);
+    (ctx.window as unknown as { confirm: (s?: string) => boolean }).confirm = confirmSpy;
+    const { svg } = newEditor(ctx);
+    firePointer(ctx.window, svg, 'pointerdown', px(5, 5).cx, px(5, 5).cy);
+    firePointer(ctx.window, svg, 'pointerup', px(5, 5).cx, px(5, 5).cy);
+
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-tpl]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-tpl-slug="bear"]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+
+    expect(confirmSpy).toHaveBeenCalledOnce();
+    // still 29×29 — nothing replaced
+    expect(ctx.host.querySelector('[data-ed-canvas]')!.getAttribute('viewBox')).toBe('0 0 290 290');
+  });
+
+  it('a failed catalog fetch shows the fail note and an empty list', async () => {
+    newEditor(ctx);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.reject(new Error('down'))),
+    );
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-tpl]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+    const status = ctx.host.querySelector('[data-ed-tpl-status]')!;
+    expect(status.textContent).toContain('Couldn’t load');
+    expect(ctx.host.querySelectorAll('.tpl-chip')).toHaveLength(0);
+  });
+});
+
+describe('remix entry (?from=<pieceId>)', () => {
+  let ctx: Ctx;
+
+  const piece = {
+    pieces: [
+      {
+        id: 'remix000001',
+        name: 'Ghost by a friend',
+        nick: 'BeadFan42',
+        width: 12,
+        height: 12,
+        cells: Array.from({ length: 144 }, (_, i) => (i % 9 === 0 ? 'mard-h13' : null)),
+      },
+    ],
+  };
+
+  beforeEach(async () => {
+    ctx = await loadPage('https://tintbrew.com/bead-editor/?from=remix000001');
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((input: string | URL | Request) =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: async () => (String(input).includes('/api/gallery/list') ? piece : { id: 'x' }),
+        } as Response),
+      ),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('an empty board loads the linked piece straight away and credits the author', async () => {
+    const editor = new ctx.BeadEditor(ctx.host);
+    stubSvg(ctx.host);
+    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
+
+    const svg = ctx.host.querySelector('[data-ed-canvas]')!;
+    expect(svg.getAttribute('viewBox')).toBe('0 0 120 120');
+    expect(ctx.host.querySelectorAll('[data-ed-canvas] [fill]').length).toBeGreaterThan(0);
+    const note = ctx.host.querySelector('[data-ed-note]')!;
+    expect(note.textContent).toContain('Ghost by a friend');
+    expect(note.textContent).toContain('BeadFan42');
+    void editor;
+  });
+
+  it('a board with beads asks before replacing; declining keeps the draft', async () => {
+    const confirmSpy = vi.fn(() => false);
+    (ctx.window as unknown as { confirm: (s?: string) => boolean }).confirm = confirmSpy;
+    const editor = new ctx.BeadEditor(ctx.host);
+    const svg = stubSvg(ctx.host);
+    // paint before the async load resolves — the confirm gate must trigger
+    firePointer(ctx.window, svg, 'pointerdown', px(5, 5).cx, px(5, 5).cy);
+    firePointer(ctx.window, svg, 'pointerup', px(5, 5).cx, px(5, 5).cy);
+    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
+
+    expect(confirmSpy).toHaveBeenCalledOnce();
+    expect(svg.getAttribute('viewBox')).toBe('0 0 290 290');
+    void editor;
   });
 });

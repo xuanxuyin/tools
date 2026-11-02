@@ -8,7 +8,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BeadCanvas from './BeadCanvas.astro';
 import BeadFigure from './BeadFigure.astro';
+import GalleryPublishPanel from './GalleryPublishPanel.astro';
 import { beadById } from '../lib/beadPalette';
+import { nearestMardId } from '../lib/mardNearest';
 import {
   CATEGORY_LABEL,
   categoryCounts,
@@ -30,6 +32,16 @@ const related = patternsByCategory(def.category)
   .filter((p) => p.def.slug !== def.slug)
   .slice(0, 4);
 const zoneTotal = view.regions.length;
+// Publish-to-gallery payload (2026-11-02): the canonical reference pattern as
+// a build-time JSON — letters → Mard ids via the same Oklab nearest rule the
+// editor snaps custom colors by. Zone repaints on the page stay practice and
+// are NOT published; scripts/galleryPublish.ts reads this block.
+const galDef = JSON.stringify({
+  w: def.width,
+  h: view.grid.length,
+  rows: view.grid,
+  pal: Object.fromEntries(view.regions.map((r) => [r.key, nearestMardId(r.hex)])),
+});
 ---
 
 <BaseLayout
@@ -75,7 +87,8 @@ const zoneTotal = view.regions.length;
     </p>
   </section>
 
-  <section class="studio" data-bead-studio data-pattern={def.slug}>
+  <section class="studio" data-bead-studio data-pattern={def.slug} data-gal-pub-auto data-gal-pub-name={def.name}>
+    <script type="application/json" data-gal-def set:html={galDef} />
     <div class="studio-grid">
       <figure class="fig-card">
         <figcaption data-i18n="pat.reference">Reference</figcaption>
@@ -98,7 +111,9 @@ const zoneTotal = view.regions.length;
           <button type="button" class="btn" data-reset data-i18n="pat.reset">Reset to reference</button>
           <button type="button" class="btn" data-print-zone="reference" data-i18n="pat.printRef">Print reference</button>
           <button type="button" class="btn" data-print-zone="blank" data-i18n="pat.printBlank">Print to color</button>
+          <button type="button" class="btn" data-ed-publish data-i18n="ed.publish">Publish</button>
         </div>
+        <GalleryPublishPanel />
       </div>
       <ul class="zone-list">
         {view.regions.map((r) => (
@@ -272,6 +287,7 @@ const zoneTotal = view.regions.length;
 <script>
   import '../scripts/bead';
   import '../scripts/beadPaint';
+  import '../scripts/galleryPublish';
 </script>
 
 <style>
@@ -331,7 +347,7 @@ const zoneTotal = view.regions.length;
   .side-note { font-size: 0.9rem; color: var(--ink-soft, #666); margin: var(--sp-2) 0 0; }
   .zone-list {
     list-style: none;
-    margin: var(--sp-2) 0 0;
+    margin: var(--sp-3) 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -349,8 +365,12 @@ const zoneTotal = view.regions.length;
     cursor: pointer;
     text-align: left;
     font: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  .zone-chip:hover, .zone-chip.zone-open { border-color: var(--accent, #b3552e); }
+  .zone-chip:hover, .zone-chip.zone-open {
+    border-color: var(--accent, #7c3aed);
+    box-shadow: var(--shadow-sm);
+  }
   .zone-swatch {
     width: 22px; height: 22px;
     border-radius: 6px;
@@ -365,11 +385,11 @@ const zoneTotal = view.regions.length;
     font-weight: 700;
     font-size: 0.78em;
     letter-spacing: 0.02em;
-    color: var(--accent, #b3552e);
+    color: var(--accent, #7c3aed);
   }
   .zone-bead.zone-approx::after { content: ' ≈'; }
   .zone-count { font-size: 0.85rem; color: var(--ink-soft, #666); font-variant-numeric: tabular-nums; }
-  .studio-actions { display: flex; gap: var(--sp-2); }
+  .studio-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
   .bead-list {
     list-style: none;
     margin: 0;
@@ -402,7 +422,7 @@ const zoneTotal = view.regions.length;
     text-decoration: none;
     color: inherit;
   }
-  .related-card:hover { border-color: var(--accent, #b3552e); }
+  .related-card:hover { border-color: var(--accent, #7c3aed); }
   .related-name { font-weight: 600; }
   .related-meta { font-size: 0.8rem; color: var(--ink-soft, #666); }
   .keep-reading ul { padding-left: 1.2rem; }

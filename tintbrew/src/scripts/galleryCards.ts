@@ -35,7 +35,9 @@ function rankHtml(rank: number | null): string {
 }
 
 /** Full card for the /gallery/ ranking. Like/Report carry data-i18n
- *  attributes so a later language switch rewrites them in place. */
+ *  attributes so a later language switch rewrites them in place. The
+ *  "Open in editor" link (2026-11-02) is the remix loop: the editor's
+ *  ?from=<id> entry loads the piece onto a live board. */
 export function cardHtml(p: GalleryPiece, rank: number | null): string {
   return (
     `<li class="gal-card" data-piece="${escapeHtml(p.id)}">` +
@@ -43,6 +45,8 @@ export function cardHtml(p: GalleryPiece, rank: number | null): string {
     thumbHtml(p) +
     `<div class="gal-cardbar">` +
     `<div class="gal-info"><strong class="gal-name">${escapeHtml(p.name)}</strong>${bylineHtml(p.nick)}</div>` +
+    `<a class="btn btn-sm gal-edit" href="/bead-editor/?from=${encodeURIComponent(p.id)}" ` +
+    `data-i18n="gal.openEd" title="${escapeHtml(t('gal.openEdT'))}">${escapeHtml(t('gal.openEd'))}</a>` +
     `<button type="button" class="btn btn-sm gal-like" data-gal-like data-i18n-aria="gal.likeAria" ` +
     `data-i18n-title="gal.likeTitle" aria-label="${escapeHtml(t('gal.likeAria'))}" ` +
     `title="${escapeHtml(t('gal.likeTitle'))}">` +

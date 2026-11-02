@@ -15,6 +15,7 @@ import { mardById } from '../lib/mardPalette';
 import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
 import { printZone } from './printZone';
 import { buildBoardPrintPages, type BeadTally } from '../lib/beadPrint';
+import { mountPublishFlow, type PublishBoard } from './galleryPublish';
 import { t } from './i18n';
 
 const U = 10; // viewBox units per cell
@@ -90,6 +91,9 @@ export class PhotoStudio {
     window.addEventListener('drop', (e) => e.preventDefault());
 
     root.addEventListener('click', (e) => this.onClick(e));
+    // shared publish-to-gallery flow (2026-11-02): the converted pattern can
+    // go straight to the community gallery without a detour through the editor
+    mountPublishFlow(root, () => this.publishBoard());
     // every setting re-converts on its own — no Convert button to hunt for
     root.addEventListener('change', (e) => {
       const t = e.target as HTMLElement;
@@ -248,6 +252,19 @@ export class PhotoStudio {
     }
     el.textContent = name.length > 28 ? `${name.slice(0, 27)}…` : name;
     el.setAttribute('title', name);
+    // the publish panel prefill: the photo's name without its extension
+    const stem = name.replace(/\.[^.]+$/, '').trim();
+    if (stem) this.root.dataset.galPubName = stem;
+  }
+
+  /** The current pattern as a publishable board — null until a photo has
+   *  been converted (the shared flow shows gal.errInvalid on null). */
+  private publishBoard(): PublishBoard | null {
+    const p = this.pattern;
+    if (!p) return null;
+    const grid: (string | null)[][] = [];
+    for (let y = 0; y < p.rows; y++) grid.push(p.cells.slice(y * p.cols, (y + 1) * p.cols));
+    return { width: p.cols, height: p.rows, grid };
   }
 
   /** The source photo preview lives in the LEFT column, between the
@@ -417,10 +434,11 @@ export class PhotoStudio {
     const actions = document.createElement('div');
     actions.className = 'photo-actions no-print';
     actions.innerHTML = `
-      <button type="button" class="btn act-primary" data-photo-edit data-i18n="ph.edit">${t('ph.edit')}</button>
+      <button type="button" class="btn btn-primary" data-photo-edit data-i18n="ph.edit">${t('ph.edit')}</button>
       <button type="button" class="btn" data-photo-png data-i18n="ph.png">${t('ph.png')}</button>
       <button type="button" class="btn" data-photo-print data-i18n="ph.print">${t('ph.print')}</button>
       ${bw * bh > 1 ? `<button type="button" class="btn" data-photo-print-boards data-i18n="ph.printBoards" title="${t('ph.printBoardsHelp')}" data-i18n-title="ph.printBoardsHelp">${t('ph.printBoards')}</button>` : ''}
+      <button type="button" class="btn" data-ed-publish data-i18n="ed.publish" title="${t('ed.publishHelp')}" data-i18n-title="ed.publishHelp">${t('ed.publish')}</button>
     `;
 
     const figure = document.createElement('figure');

@@ -10,7 +10,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Window } from 'happy-dom';
 import { MARD_COLORS, type MardColor } from '../lib/mardPalette';
 import { hexToRgb, rgbToOklab } from '../lib/color';
@@ -426,5 +426,75 @@ describe('photo bead island (real SSR markup)', () => {
     expect(row.classList.contains('hidden')).toBe(false);
     // no crop applied → Reset stays hidden
     expect(row.querySelector('[data-photo-crop-reset]')?.classList.contains('hidden')).toBe(true);
+  });
+});
+
+describe('publish to gallery from the converter (shared flow)', () => {
+  let ctx: Awaited<ReturnType<typeof loadPage>>;
+
+  beforeEach(async () => {
+    ctx = await loadPage();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: async () => ({ id: 'photo000001' }),
+        } as Response),
+      ),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('no pattern yet → Publish is absent; after a conversion the button opens the panel', () => {
+    expect(ctx.host.querySelector('[data-ed-publish]')).toBeNull();
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    const pub = ctx.host.querySelector('[data-ed-publish]') as HTMLElement;
+    expect(pub).toBeTruthy();
+    fireClick(ctx.window, pub);
+    const panel = ctx.host.querySelector('[data-ed-publish-panel]') as HTMLElement;
+    expect(panel.classList.contains('hidden')).toBe(false);
+  });
+
+  it('the photo filename prefills the piece name; submit posts the converted grid', async () => {
+    // the upload path names the piece — drive setFilename directly (load()
+    // is the only caller, and it also needs a File object)
+    const s = ctx.studio as unknown as { setFilename(n: string | null): void };
+    s.setFilename('sunny_cat.png');
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+
+    fireClick(ctx.window, ctx.host.querySelector('[data-ed-publish]') as Element);
+    const panel = ctx.host.querySelector('[data-ed-publish-panel]') as HTMLElement;
+    expect((panel.querySelector('[data-ed-publish-name]') as HTMLInputElement).value).toBe('sunny_cat');
+    (panel.querySelector('[data-ed-publish-nick]') as HTMLInputElement).value = 'Tester';
+
+    fireClick(ctx.window, panel.querySelector('[data-ed-publish-submit]') as Element);
+    await new Promise((r) => setTimeout(r, 0));
+
+    const call = vi.mocked(globalThis.fetch).mock.calls[0]!;
+    expect(String(call[0])).toBe('/api/gallery/publish');
+    const body = JSON.parse((call[1] as RequestInit).body as string);
+    expect(body.name).toBe('sunny_cat');
+    expect(body.nick).toBe('Tester');
+    expect(body.width).toBeGreaterThan(0);
+    expect(body.grid).toHaveLength(body.height);
+    const ids = new Set(MARD_COLORS.map((b) => b.id));
+    for (const row of body.grid as (string | null)[])
+      for (const cell of row) if (cell !== null) expect(ids.has(cell)).toBe(true);
+    expect(ctx.window.localStorage.getItem('tb-gallery:piece-id')).toBe('photo000001');
+  });
+
+  it('a null board (no conversion yet) is unreachable — the button only exists after one', () => {
+    // defensive pin: the action row that carries the Publish button is
+    // rebuilt inside render(), which only runs on a successful conversion
+    ctx.studio.convertSample(solid(30, 30, 255, 0, 0));
+    expect(ctx.host.querySelector('.photo-actions [data-ed-publish]')).toBeTruthy();
+    // and after every re-conversion the button survives the rebuild
+    ctx.studio.convertSample(solid(40, 20, 255, 0, 0));
+    expect(ctx.host.querySelector('.photo-actions [data-ed-publish]')).toBeTruthy();
   });
 });

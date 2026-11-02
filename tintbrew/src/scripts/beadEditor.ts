@@ -11,11 +11,12 @@
 import { MARD_COLORS, mardById } from '../lib/mardPalette';
 import { paintLine, type PaintCell } from '../lib/beadPaint';
 import { rgbToOklab, hexToRgb, normalizeHex, type Oklab } from '../lib/color';
+import { nearestMardId } from '../lib/mardNearest';
 import { BOARD_SIZE, downloadBoardPng } from '../lib/beadBoardRender';
 import { buildBoardPrintPages, type BeadTally } from '../lib/beadPrint';
 import { printZone } from './printZone';
-import { t as uiT } from './i18n';
-import { galleryUuid } from './deviceId';
+import { t as uiT, tArgs } from './i18n';
+import { fetchPiece, gridFromRows, mountPublishFlow } from './galleryPublish';
 
 const U = 10; // viewBox units per cell — same as every board on the site
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -25,29 +26,36 @@ const UNDO_CAP = 50;
 /** Shade-merge threshold for the editor's Simplify colors button. */
 const SIMPLIFY_T = 0.08;
 
-/** id → Oklab for the merge pass and custom-hex snapping. */
+/** id → Oklab for the merge pass. Custom-hex snapping uses the shared
+ *  nearestMardId (lib/mardNearest) — the same rule everywhere. */
 const LAB: Map<string, Oklab> = new Map(
   MARD_COLORS.map((b) => [b.id, rgbToOklab(hexToRgb(b.hex))]),
 );
 
-/** Nearest Mardiy bead to a hex — plain Oklab distance (no chroma guard:
- *  this is a brush picker, not the converter's matcher). */
-function nearestMardId(hex: string): string {
-  const lab = rgbToOklab(hexToRgb(hex));
-  let best = MARD_COLORS[0]!.id;
-  let bestD = Infinity;
-  for (const b of MARD_COLORS) {
-    const l = LAB.get(b.id)!;
-    const d = Math.hypot(lab.L - l.L, lab.a - l.a, lab.b - l.b);
-    if (d < bestD) {
-      bestD = d;
-      best = b.id;
-    }
-  }
-  return best;
+type Grid = (string | null)[][];
+
+/** One entry of the build-time template catalog (editor-templates.json). */
+interface TemplateEntry {
+  slug: string;
+  name: string;
+  cat: string;
+  w: number;
+  h: number;
+  rows: string[];
+  pal: Record<string, string>;
 }
 
-type Grid = (string | null)[][];
+/** Template group headers reuse the bead-hub labels where they exist; the
+ *  rest get dedicated keys. 'misc' is the fallback for future categories. */
+const CATEGORY_KEYS: Record<string, string> = {
+  animals: 'bs.an',
+  characters: 'bs.ch',
+  halloween: 'bs.ha',
+  food: 'ed.catFood',
+  minis: 'ed.catMinis',
+  christmas: 'ed.catChristmas',
+  misc: 'ed.catMisc',
+};
 
 interface Handoff {
   width: number;
@@ -127,6 +135,10 @@ export class BeadEditor {
     this.bind();
     this.syncStats();
     this.updateBoardsButton();
+    // a gallery link (?from=<pieceId>) may swap the board in asynchronously —
+    // it confirms before overwriting, so it's safe to fire after the draft
+    // is already on the board
+    void this.maybeLoadFromUrl();
   }
 
   private emptyGrid(w: number, h: number): Grid {
@@ -382,66 +394,125 @@ export class BeadEditor {
   }
 
   // ------------------------------------------------------------------
-  // Publish to the community gallery (UGC, 2026-11-02) — the SSR-hidden
-  // panel lives in bead-editor.astro; this just toggles it and posts.
+  // Publish + templates + remix (UGC, 2026-11-02; templates 2026-11-02).
+  // The publish POST lives in scripts/galleryPublish.ts, shared with the
+  // photo converter and the studio pages — this class only supplies the
+  // board and handles the template picker + ?from=<pieceId> remix entry.
   // ------------------------------------------------------------------
 
-  private openPublish(): void {
-    const panel = this.root.querySelector('[data-ed-publish-panel]');
+  private board(): { width: number; height: number; grid: Grid } {
+    return { width: this.W, height: this.H, grid: this.grid };
+  }
+
+  /** Replace the whole board (template / gallery piece). Fresh undo stack —
+   *  a snapshot of a differently-sized board would corrupt undo. */
+  private replaceBoard(width: number, height: number, grid: Grid): void {
+    this.W = width;
+    this.H = height;
+    this.grid = grid.map((row) => row.map((id) => (id && mardById(id) ? id : null)));
+    this.undoStack = [];
+    this.buildBoard();
+    this.afterEdit();
+  }
+
+  private openTemplates(): void {
+    const panel = this.root.querySelector('[data-ed-tpl-panel]');
     if (!panel) return;
     panel.classList.remove('hidden');
-    (panel.querySelector('[data-ed-publish-name]') as HTMLInputElement | null)?.focus();
+    void this.renderTemplateList();
   }
 
-  private closePublish(): void {
-    this.root.querySelector('[data-ed-publish-panel]')?.classList.add('hidden');
+  private closeTemplates(): void {
+    this.root.querySelector('[data-ed-tpl-panel]')?.classList.add('hidden');
   }
 
-  private async publish(): Promise<void> {
-    const status = this.root.querySelector('[data-ed-publish-status]');
-    const panel = this.root.querySelector('[data-ed-publish-panel]');
-    const nameEl = panel?.querySelector('[data-ed-publish-name]') as HTMLInputElement | null;
-    const nickEl = panel?.querySelector('[data-ed-publish-nick]') as HTMLInputElement | null;
-    const submit = panel?.querySelector('[data-ed-publish-submit]') as HTMLButtonElement | null;
-    const nick = nickEl?.value.trim() ?? '';
-    const name = nameEl?.value.trim() || 'My creation';
-    if (!nick) {
-      if (status) status.textContent = uiT('gal.errNick');
+  private tplFetch: Promise<TemplateEntry[]> | null = null;
+
+  /** The template catalog is a build-time JSON (editor-templates.json,
+   *  Perler patterns already mapped to Mardiy ids) — fetched lazily on
+   *  first open so the editor bundle stays lean. */
+  private templates(): Promise<TemplateEntry[]> {
+    this.tplFetch ??= fetch('/editor-templates.json')
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((d: { groups: { items: TemplateEntry[] }[] }) => d.groups.flatMap((g) => g.items))
+      .catch(() => {
+        this.tplFetch = null;
+        return [] as TemplateEntry[];
+      });
+    return this.tplFetch;
+  }
+
+  private async renderTemplateList(): Promise<void> {
+    const list = this.root.querySelector('[data-ed-tpl-list]');
+    const status = this.root.querySelector('[data-ed-tpl-status]');
+    if (!list) return;
+    const items = await this.templates();
+    if (!items.length) {
+      if (status) status.textContent = uiT('ed.tplFail');
       return;
     }
-    if (window.localStorage.getItem('tb-gallery:piece-id') && !window.confirm(uiT('gal.replaceConfirm'))) return;
-
-    submit?.setAttribute('aria-disabled', 'true');
-    try {
-      const res = await fetch('/api/gallery/publish', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ uuid: galleryUuid(), name, nick, width: this.W, height: this.H, grid: this.grid }),
-      });
-      const data = (await res.json().catch(() => ({}))) as { id?: string };
-      if (res.ok && data.id) {
-        window.localStorage.setItem('tb-gallery:piece-id', data.id);
-        if (status) {
-          status.replaceChildren(document.createTextNode(uiT('gal.pubDone') + ' '));
-          const a = document.createElement('a');
-          a.href = '/gallery/';
-          a.textContent = uiT('gal.viewLink');
-          status.appendChild(a);
-        }
-        window.setTimeout(() => this.closePublish(), 2500);
-      } else if (res.status === 429) {
-        if (status) status.textContent = uiT('gal.errRate');
-      } else if (res.status === 400) {
-        if (status) status.textContent = uiT('gal.errInvalid');
-      } else {
-        if (status) status.textContent = uiT('gal.errNetwork');
-      }
-    } catch {
-      if (status) status.textContent = uiT('gal.errNetwork');
-    } finally {
-      submit?.removeAttribute('aria-disabled');
+    if (status) status.textContent = '';
+    if ((list as HTMLElement).dataset.done === '1') return;
+    (list as HTMLElement).dataset.done = '1';
+    const byCat = new Map<string, TemplateEntry[]>();
+    for (const it of items) {
+      const arr = byCat.get(it.cat) ?? [];
+      arr.push(it);
+      byCat.set(it.cat, arr);
     }
+    list.replaceChildren(
+      ...[...byCat].map(([cat, entries]) => {
+        const group = document.createElement('div');
+        group.className = 'ed-tpl-group';
+        const h = document.createElement('h4');
+        h.textContent = uiT(CATEGORY_KEYS[cat] ?? 'ed.catMisc');
+        const chips = document.createElement('div');
+        chips.className = 'ed-tpl-chips';
+        for (const it of entries) {
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'tpl-chip';
+          chip.dataset.edTplSlug = it.slug;
+          chip.append(it.name);
+          const dim = document.createElement('span');
+          dim.className = 'tpl-dim';
+          dim.textContent = ` ${it.w}×${it.h}`;
+          chip.append(dim);
+          chips.append(chip);
+        }
+        group.append(h, chips);
+        return group;
+      }),
+    );
   }
+
+  private async loadTemplate(slug: string): Promise<void> {
+    const items = await this.templates();
+    const tpl = items.find((t) => t.slug === slug);
+    const status = this.root.querySelector('[data-ed-tpl-status]');
+    if (!tpl) {
+      if (status) status.textContent = uiT('ed.tplFail');
+      return;
+    }
+    if (this.grid.flat().some(Boolean) && !window.confirm(uiT('ed.tplConfirm'))) return;
+    this.closeTemplates();
+    this.replaceBoard(tpl.w, tpl.h, gridFromRows(tpl.rows, tpl.pal));
+    this.note(tArgs('ed.tplLoaded', { a: tpl.name, b: `${tpl.w}×${tpl.h}` }));
+  }
+
+  /** Gallery remix: /bead-editor/?from=<pieceId> loads another player's
+   *  published piece onto the board to repaint. Missing/failed lookups
+   *  leave the editor untouched (draft still shows). */
+  private async maybeLoadFromUrl(): Promise<void> {
+    const from = new URLSearchParams(window.location.search).get('from');
+    if (!from) return;
+    const piece = await fetchPiece(from);
+    if (!piece) return;
+    if (this.grid.flat().some(Boolean) && !window.confirm(uiT('ed.tplConfirm'))) return;
+    this.replaceBoard(piece.width, piece.height, piece.grid);
+    this.note(tArgs('ed.fromLoaded', { a: piece.name, b: piece.nick }));
+  }
+
 
   private syncStats(): void {
     const stats = this.root.querySelector('[data-ed-stats]');
@@ -612,6 +683,9 @@ export class BeadEditor {
     this.setTool('brush');
     this.setActiveBead(this.beadId);
 
+    // shared with the photo converter + studio pages (scripts/galleryPublish.ts)
+    mountPublishFlow(this.root, () => this.board());
+
     this.root.addEventListener('click', (e) => {
       const t = e.target as HTMLElement | null;
       if (!t) return;
@@ -678,16 +752,17 @@ export class BeadEditor {
         this.printBoards();
         return;
       }
-      if (t.closest('[data-ed-publish]')) {
-        this.openPublish();
+      if (t.closest('[data-ed-tpl]')) {
+        this.openTemplates();
         return;
       }
-      if (t.closest('[data-ed-publish-cancel]')) {
-        this.closePublish();
+      if (t.closest('[data-ed-tpl-cancel]')) {
+        this.closeTemplates();
         return;
       }
-      if (t.closest('[data-ed-publish-submit]')) {
-        void this.publish();
+      const tplChip = t.closest<HTMLElement>('[data-ed-tpl-slug]');
+      if (tplChip) {
+        void this.loadTemplate(tplChip.dataset.edTplSlug!);
         return;
       }
       const swatch = t.closest<HTMLButtonElement>('[data-ed-color]');

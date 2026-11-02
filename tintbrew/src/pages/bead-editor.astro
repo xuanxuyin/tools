@@ -8,6 +8,7 @@
  * instructions and FAQ either way.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import GalleryPublishPanel from '../components/GalleryPublishPanel.astro';
 import { SITE } from '../consts';
 
 const title = 'Perler Bead Pattern Editor — Design Your Own From Scratch | TintBrew';
@@ -109,6 +110,10 @@ const jsonLd = [
   <section class="tool-shell" data-bead-editor>
     <div class="ed-top no-print">
       <div class="ed-group">
+        <span class="ed-label" data-i18n="ed.tplBtn">Templates</span>
+        <button type="button" class="btn" data-ed-tpl data-i18n="ed.tplOpen">Start from a template</button>
+      </div>
+      <div class="ed-group">
         <label class="ed-label" for="ed-size" data-i18n="ed.boardSize">Board size</label>
         <select id="ed-size" data-ed-size>
           <option value="29x29" data-i18n="ed.o29">29 × 29 — 1 board</option>
@@ -176,7 +181,7 @@ const jsonLd = [
         </div>
 
         <div class="ed-group ed-actions">
-          <button type="button" class="btn act-primary" data-ed-png data-i18n="ed.png">Download PNG</button>
+          <button type="button" class="btn btn-primary" data-ed-png data-i18n="ed.png">Download PNG</button>
           <button type="button" class="btn" data-ed-print data-i18n="ed.print">Print pattern</button>
           <button
             type="button"
@@ -201,22 +206,16 @@ const jsonLd = [
         </div>
       </div>
 
-      <div class="ed-publish hidden" data-ed-publish-panel>
-        <p class="ed-pub-title" data-i18n="gal.pubTitle">Publish to the community gallery</p>
-        <p class="ed-pub-note" data-i18n="gal.pubNote">One piece per person — publishing a new one replaces your current piece and resets its likes.</p>
-        <label class="ed-pub-field">
-          <span data-i18n="gal.pubName">Piece name</span>
-          <input class="text-input" type="text" maxlength="40" data-ed-publish-name data-i18n-placeholder="gal.pubNamePh" placeholder="My creation" />
-        </label>
-        <label class="ed-pub-field">
-          <span data-i18n="gal.pubNick">Your nickname</span>
-          <input class="text-input" type="text" maxlength="20" data-ed-publish-nick data-i18n-placeholder="gal.pubNickPh" placeholder="BeadFan42" />
-        </label>
+      <GalleryPublishPanel />
+
+      <div class="ed-tpl hidden" data-ed-tpl-panel>
+        <p class="ed-pub-title" data-i18n="ed.tplTitle">Start from a template</p>
+        <p class="ed-pub-note" data-i18n="ed.tplNote">Pick one of our patterns as your starting point — repaint it, reshape it, make it yours.</p>
+        <div class="ed-tpl-list" data-ed-tpl-list></div>
         <div class="ed-pub-row">
-          <button type="button" class="btn btn-primary" data-ed-publish-submit data-i18n="gal.pubSubmit">Publish it</button>
-          <button type="button" class="btn" data-ed-publish-cancel data-i18n="gal.pubCancel">Cancel</button>
+          <button type="button" class="btn" data-ed-tpl-cancel data-i18n="gal.pubCancel">Cancel</button>
         </div>
-        <p class="ed-pub-status" data-ed-publish-status aria-live="polite"></p>
+        <p class="ed-pub-status" data-ed-tpl-status aria-live="polite"></p>
       </div>
     </div>
 
@@ -384,13 +383,14 @@ const jsonLd = [
   }
   .tool-row { display: flex; flex-wrap: wrap; gap: 8px; }
   .tool-btn.active {
-    border-color: var(--accent, #b3552e);
-    box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
+    border-color: var(--accent, #7c3aed);
+    background: var(--accent-soft, #f3e8ff);
+    box-shadow: inset 0 0 0 1px var(--accent, #7c3aed);
   }
   .ed-active-row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
   .ed-active {
-    width: 26px;
-    height: 26px;
+    width: 34px;
+    height: 34px;
     flex: none;
     border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, 0.18);
@@ -421,11 +421,7 @@ const jsonLd = [
     background: none;
     cursor: pointer;
   }
-  .ed-actions .act-primary {
-    border-color: var(--accent, #b3552e);
-    box-shadow: inset 0 0 0 1px var(--accent, #b3552e);
-    font-weight: 600;
-  }
+  .ed-actions { flex-wrap: wrap; }
   .ed-stats {
     margin: var(--sp-3) 0 0;
     font-size: 0.9rem;
@@ -436,50 +432,52 @@ const jsonLd = [
   .ed-listcard { margin-top: var(--sp-3); }
   .hidden { display: none !important; }
 
-  /* Publish-to-gallery panel (UGC, 2026-11-02) — hidden until the Publish
-     button is pressed; the island toggles [hidden] via the .hidden class. */
-  .ed-publish {
+  /* Start-from-a-template panel — same box language as the publish panel
+     (whose styles live in GalleryPublishPanel.astro, scoped there). */
+  .ed-tpl {
     margin-top: var(--sp-3);
     padding: var(--sp-3) var(--sp-4);
     border: 1px solid var(--border);
-    border-left: 3px solid var(--accent-2, #db2777);
+    border-left: 3px solid var(--accent, #7c3aed);
     background: var(--surface);
     border-radius: var(--radius-sm);
     display: grid;
     gap: var(--sp-2);
   }
-  .ed-pub-title {
-    margin: 0;
-    font-weight: 700;
-  }
-  .ed-pub-note {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--ink-soft, #666);
-  }
-  .ed-pub-field {
+  .ed-tpl .ed-pub-title { margin: 0; font-weight: 700; }
+  .ed-tpl .ed-pub-note { margin: 0; font-size: 0.85rem; color: var(--ink-soft, #666); }
+  .ed-tpl .ed-pub-row { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+  .ed-tpl .ed-pub-status { margin: 0; min-height: 1.2em; font-size: 0.9rem; }
+  .ed-tpl-list {
     display: grid;
-    gap: 0.25rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    max-width: 22rem;
+    gap: 10px;
+    max-height: 46vh;
+    overflow: auto;
   }
-  .ed-pub-field .text-input {
-    font-weight: 400;
-  }
-  .ed-pub-row {
-    display: flex;
-    gap: var(--sp-2);
-    flex-wrap: wrap;
-  }
-  .ed-pub-status {
+  .ed-tpl-group h4 {
     margin: 0;
-    min-height: 1.2em;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
   }
-  .ed-pub-status a {
-    color: var(--accent);
+  .ed-tpl-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .tpl-chip {
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
   }
+  .tpl-chip:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .tpl-dim { font-weight: 400; font-size: 0.78rem; color: var(--muted); }
+
+  /* The color library: the sidebar was 300px wide with 8 slim columns —
+     swatches you couldn't see or hit (user report, 2026-11-02). Wider
+     sidebar, 5 columns, tall scroll area. */
+  .ed-body { grid-template-columns: minmax(0, 1fr) 340px; }
 </style>
 
 <style is:global>
@@ -517,10 +515,13 @@ const jsonLd = [
   }
   .ed-library {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 6px;
-    max-height: 260px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    max-height: 44vh;
     overflow: auto;
+  }
+  @media (max-width: 960px) {
+    .ed-library { grid-template-columns: repeat(8, 1fr); max-height: 36vh; }
   }
   [data-bead-editor] .cv-swatch {
     width: 100%;
@@ -531,7 +532,7 @@ const jsonLd = [
     padding: 0;
   }
   [data-bead-editor] .cv-swatch.active {
-    outline: 2px solid var(--accent, #b3552e);
+    outline: 2px solid var(--accent, #7c3aed);
     outline-offset: 1px;
   }
   [data-bead-editor] .cv-empty {

@@ -4,18 +4,24 @@
    ========================================================================== */
 
 :root {
-  --bg: #fafaf9;
+  /* Warm cream palette + oversized radii, after the perlerbeadpatterns.org
+     teardown (2026-11-02): the incumbent runs #fffdf8 page / #fffaf0 panels,
+     28px card corners, hairline black/10 borders, pill buttons in black and
+     white with color reserved for accents. We mirror that skeleton and keep
+     the violet/pink brand for links, icons and the hero. */
+  --bg: #fffdf8;
   --surface: #ffffff;
+  --panel: #fffaf0;
   --text: #1c1917;
   --muted: #57534e;
   --accent: #7c3aed;
   --accent-2: #db2777;
   --accent-contrast: #ffffff;
-  --accent-soft: #f3e8ff;
+  --accent-soft: #f1e6ff;
   --gradient: linear-gradient(120deg, #7c3aed, #a855f7 50%, #db2777);
-  --border: #e7e5e4;
-  --radius: 16px;
-  --radius-sm: 10px;
+  --border: rgb(28 25 23 / 0.12);
+  --radius: 26px;
+  --radius-sm: 13px;
   --shadow-xs: 0 1px 2px rgb(28 25 23 / 0.05);
   --shadow-sm: 0 2px 8px rgb(28 25 23 / 0.06);
   --shadow-md: 0 6px 20px rgb(28 25 23 / 0.1);
@@ -209,14 +215,18 @@ a:hover {
    Shared elements (buttons, inputs, cards, code)
    -------------------------------------------------------------------------- */
 
+/* Pill buttons in the incumbent's skeleton: black solid for the primary
+   action, white with a hairline border for the rest, hover nudges the
+   background only (no glow, no gradient — that readed as noise in the last
+   pass). Violet stays for links, icons and focus rings. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--sp-1);
-  padding: 0.5rem 0.95rem;
+  padding: 0.5rem 1.15rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   background: var(--surface);
   cursor: pointer;
   font-size: 0.88rem;
@@ -232,7 +242,7 @@ a:hover {
 }
 
 .btn:hover {
-  border-color: var(--accent);
+  background: rgb(28 25 23 / 0.05);
   box-shadow: var(--shadow-sm);
 }
 
@@ -242,14 +252,15 @@ a:hover {
 }
 
 .btn-primary {
-  background: linear-gradient(120deg, #7c3aed, #9333ea);
-  color: var(--accent-contrast);
-  border-color: transparent;
+  background: var(--text);
+  color: #fffdf8;
+  border-color: var(--text);
 }
 
 .btn-primary:hover {
-  filter: brightness(1.08);
-  box-shadow: 0 3px 12px rgb(124 58 237 / 0.35);
+  background: rgb(28 25 23 / 0.8);
+  border-color: rgb(28 25 23 / 0.8);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn[aria-disabled='true'],
@@ -418,7 +429,8 @@ input[type='range']::-moz-range-thumb {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgb(250 250 249 / 0.92);
+  /* warm page tint + blur — kept in sync with --bg by hand (rgb of #fffdf8) */
+  background: rgb(255 253 248 / 0.92);
   backdrop-filter: blur(8px);
 }
 
@@ -583,19 +595,21 @@ input[type='range']::-moz-range-thumb {
   flex-direction: column;
   text-decoration: none;
   color: inherit;
-  background: var(--surface);
+  background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--sp-5);
   box-shadow: var(--shadow-xs);
   transition:
     border-color 0.15s ease,
+    background 0.15s ease,
     box-shadow 0.15s ease,
     transform 0.15s ease;
 }
 
 .tool-card:hover {
-  border-color: var(--accent);
+  border-color: rgb(28 25 23 / 0.2);
+  background: var(--surface);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
@@ -685,7 +699,8 @@ input[type='range']::-moz-range-thumb {
 }
 
 .link-tile:hover {
-  border-color: var(--accent);
+  border-color: rgb(28 25 23 / 0.2);
+  background: rgb(28 25 23 / 0.04);
   box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
   text-decoration: none;
@@ -813,6 +828,13 @@ input[type='range']::-moz-range-thumb {
 }
 .gal-report[aria-disabled='true'] {
   opacity: 0.55;
+}
+/* "Open in editor" remix link — an <a> styled like its btn-sm siblings */
+.gal-edit {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  text-decoration: none;
 }
 .gal-card {
   position: relative;
