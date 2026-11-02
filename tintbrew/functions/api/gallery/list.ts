@@ -1,8 +1,9 @@
 /**
  * GET /api/gallery/list?limit=100&d=<uuid>
- * Ranked list (likes desc, then most recent) + the caller's own piece if
- * the uuid matches one. Cells come back decoded so the island renders
- * directly; corrupt rows degrade to nulls instead of failing the list.
+ * Ranked list (likes desc, tie-break: first published ranks first) + the
+ * caller's own piece if the uuid matches one. Cells come back decoded so
+ * the island renders directly; corrupt rows degrade to nulls instead of
+ * failing the list.
  */
 import { decodeCells } from './_kernel';
 import type { Ctx, D1Db } from './_shared';
@@ -45,7 +46,7 @@ export async function onRequestGet(ctx: Ctx): Promise<Response> {
   const db: D1Db = ctx.env.GALLERY_DB;
 
   const ranked = await db
-    .prepare(`SELECT ${COLUMNS} FROM creations WHERE hidden = 0 ORDER BY likes DESC, updated_at DESC LIMIT ?`)
+    .prepare(`SELECT ${COLUMNS} FROM creations WHERE hidden = 0 ORDER BY likes DESC, created_at ASC LIMIT ?`)
     .bind(limit)
     .all<Row>();
   const pieces = (ranked.results ?? []).map(piece);

@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS creations (
   updated_at INTEGER NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_creations_rank ON creations (hidden, likes DESC, updated_at DESC);
+-- ranking scan: likes desc, tie-break first-published-first (created_at asc)
+CREATE INDEX IF NOT EXISTS idx_creations_rank ON creations (hidden, likes DESC, created_at ASC);
 
 -- one vote per device per UTC hour, whatever the target piece
 CREATE TABLE IF NOT EXISTS vote_log (
