@@ -1,11 +1,13 @@
 /**
- * Home-page top-10 block (user call, 2026-11-02: "排行榜放主页吸引玩家").
- * The section ships hidden; it only appears when the API returns at least
- * one piece, so a fresh install keeps the home page clean and an API
- * outage never breaks the home page. Each mini card carries a working Like
- * pill (user call, same day: "Community gallery 里不能直接点赞吗") — same
- * one-like-per-UTC-hour budget as the gallery page, enforced client-side
- * by disabling every pill once the hour's vote is spent.
+ * Home-page gallery block (user call, 2026-11-02: "排行榜放主页吸引玩家"),
+ * top 9 in a 3-column grid of big cards (user call, same day: "改成3列大
+ * 卡片，然后用前9个即可"). The section ships hidden; it only appears when
+ * the API returns at least one piece, so a fresh install keeps the home
+ * page clean and an API outage never breaks the home page. Each mini card
+ * carries a working Like pill (user call, same day: "Community gallery
+ * 里不能直接点赞吗") — same one-like-per-UTC-hour budget as the gallery
+ * page, enforced client-side by disabling every pill once the hour's vote
+ * is spent.
  */
 import type { GalleryPiece } from './galleryCards';
 import { miniCardHtml } from './galleryCards';
@@ -54,7 +56,7 @@ if (zone && listEl) {
 
   void (async () => {
     try {
-      const res = await fetch('/api/gallery/list?limit=10');
+      const res = await fetch('/api/gallery/list?limit=9');
       if (!res.ok) return;
       const data = (await res.json()) as { pieces: GalleryPiece[] };
       if (!Array.isArray(data.pieces) || !data.pieces.length) return;

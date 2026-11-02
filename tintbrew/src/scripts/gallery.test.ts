@@ -5,8 +5,8 @@
  *  - the gallery island running against that real markup with a stubbed
  *    API: ranking render, XSS-safe name/nick, own-piece zone (including
  *    the under-review state), the one-like-per-hour flow and Report.
- *  The home-page top-10 block gets the same treatment with its contract:
- *  ships hidden, only reveals when the API returns pieces.
+ *  The home-page gallery block (top-9 big cards) gets the same treatment
+ *  with its contract: ships hidden, only reveals when the API returns pieces.
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -271,7 +271,7 @@ describe('my piece (mine zone)', () => {
   });
 });
 
-describe('home-page top-10 block (dist/index.html)', () => {
+describe('home-page gallery block (dist/index.html)', () => {
   let fetchMock: FetchMock;
   beforeEach(() => {
     fetchMock = vi.fn();
@@ -300,6 +300,9 @@ describe('home-page top-10 block (dist/index.html)', () => {
     await flush();
     const zone = doc.querySelector('[data-home-gallery]') as unknown as HTMLElement;
     expect(zone.hidden).toBe(false);
+    // the home grid is 3 big cards × 3 rows — ask for exactly 9
+    const listUrl = fetchMock.mock.calls.find(([u]) => String(u).includes('/api/gallery/list'))![0];
+    expect(String(listUrl)).toBe('/api/gallery/list?limit=9');
     const minis = doc.querySelectorAll('[data-home-gallery-list] .gal-mini');
     expect(minis).toHaveLength(2);
     expect(minis[0]!.querySelector('a')?.getAttribute('href')).toBe('/gallery/');

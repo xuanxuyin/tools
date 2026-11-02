@@ -438,8 +438,9 @@ const jsonLd = {
 </style>
 
 <style>
-  /* Community gallery top-10 (runtime-injected by homeGallery; ships hidden
-     and only appears when the API has pieces — an outage never touches home) */
+  /* Community gallery top-9, 3-column big cards (runtime-injected by
+     homeGallery; ships hidden and only appears when the API has pieces —
+     an outage never touches home) */
   .home-gallery {
     margin-top: var(--sp-8);
   }
@@ -451,18 +452,18 @@ const jsonLd = {
     margin: var(--sp-3) 0 0;
     padding: 0;
     display: grid;
-    /* fixed column steps, sized up (user: cards read too small at 5-up) */
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* three big cards (user: "改成3列大卡片，然后用前9个") — a clean 3×3 */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--sp-4);
   }
   @media (max-width: 64rem) {
     .home-gal-list {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   @media (max-width: 40rem) {
     .home-gal-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
     }
   }
 </style>
