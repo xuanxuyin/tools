@@ -70,6 +70,9 @@ const current = normalize(Astro.url.pathname);
     gap: var(--sp-1);
     flex-wrap: wrap;
     margin-top: var(--sp-3);
+    /* pills are a sub-nav for the tool below — without this they sit flat
+       on the tool panel's top edge (user call, 2026-11-03) */
+    margin-bottom: var(--sp-4);
   }
 
   .tool-nav a {

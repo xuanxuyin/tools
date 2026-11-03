@@ -464,11 +464,14 @@ const jsonLd = [
   }
   .guide-card > h2 {
     margin-top: 0;
+    margin-bottom: var(--sp-2);
   }
   .guide-sub {
     color: var(--muted);
     font-weight: 600;
-    margin-top: calc(-1 * var(--sp-2));
+    /* was pulled up with a negative margin onto the h2 — title and subtitle
+       read as one glued line (user call, 2026-11-03) */
+    margin-top: 0;
   }
   .guide-card > p:not(.guide-sub):not(.fine-print):not(.keep-reading) {
     max-width: 46rem;
@@ -476,25 +479,25 @@ const jsonLd = [
   .guide-items {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: var(--sp-3);
-    margin-top: var(--sp-3);
+    gap: var(--sp-4);
+    margin-top: var(--sp-4);
   }
   .guide-item {
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: var(--sp-3);
+    padding: var(--sp-4);
     background: var(--bg);
     display: flex;
     flex-direction: column;
   }
   .guide-item h3 {
     font-size: 0.98rem;
-    margin: var(--sp-2) 0 0;
+    margin: var(--sp-3) 0 0;
   }
   .guide-item p {
     font-size: 0.9rem;
     color: var(--muted);
-    margin-top: 0.4rem;
+    margin-top: 0.5rem;
   }
   .demo-chips {
     display: flex;
