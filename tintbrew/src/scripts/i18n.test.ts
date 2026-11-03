@@ -77,6 +77,8 @@ describe('uiStrings dictionary', () => {
     'cn.nameT',
     // ko tail sentence is a bare period (zh '。' carries full-width punctuation)
     'pat.fa3b',
+    // shared nickname placeholder — the sample itself is the brand voice
+    'col.p.nickPh',
   ]);
 
   it('zh values carry Han characters (no English leaks)', () => {

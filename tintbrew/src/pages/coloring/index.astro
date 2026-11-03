@@ -1,0 +1,305 @@
+---
+/**
+ * /coloring/ — the coloring-pages hub. All 210 pieces render server-side
+ * (thumbs + names + region counts = crawlable image content); the island
+ * only overlays per-device state: done badges, the daily unlock button,
+ * and locks on not-yet-reached pages. Locked pieces keep their thumb (it's
+ * the watermarked public image) but lose their link — the vector payload
+ * behind the real page is served only after the server-side unlock check.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+import { COLORING_PIECES } from '../../data/coloring';
+
+const title = 'Free Online Coloring Pages — 210 Pictures, a New Page Every Day | TintBrew';
+const description =
+  '210 hand-drawn coloring pages sorted easy to expert. Unlock a new page daily, tap to fill each region, and publish finished art to the community gallery. No account needed.';
+
+const faqs = [
+  {
+    q: 'How many coloring pages are there?',
+    a: 'Two hundred ten, sorted from simplest to most detailed. Page one has around a dozen regions; the toughest pages have well over a thousand tiny areas, so there is a page for every mood — a five-minute wind-down or a full evening project.',
+  },
+  {
+    q: 'How does the daily unlock work?',
+    a: 'You always have a set of unlocked pages in order. Finishing your current page unlocks the next one immediately; otherwise a fresh page unlocks automatically once per day. One unlock per day keeps the collection feeling like a daily ritual — the calendar resets at midnight UTC.',
+  },
+  {
+    q: 'Do I need an account?',
+    a: 'No. Your progress, your saved colors and your gallery identity all live in your own browser under a random ID. The server only ever stores a scrambled hash of that ID — never your email or any login.',
+  },
+  {
+    q: 'How do I publish my finished page?',
+    a: 'Fill every region, then hit Publish on the page. Give your artwork a name, pick a nickname, confirm — it appears in the coloring gallery immediately with the date you published it. Publishing is free and needs no account.',
+  },
+  {
+    q: 'Can I download or print the pages?',
+    a: 'The line art on each page is a real image you can save and print right now — that part is free for everyone. The tap-to-fill canvas works on screen; for a paper version, print the line art and color it with pencils.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TintBrew Coloring Pages',
+    url: `${SITE.url}/coloring/`,
+    applicationCategory: 'GameApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript for the coloring canvas',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Coloring Pages', item: `${SITE.url}/coloring/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Coloring pages',
+    numberOfItems: COLORING_PIECES.length,
+    itemListElement: COLORING_PIECES.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.title,
+      url: `${SITE.url}/coloring/${p.slug}/`,
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/coloring" jsonLd={jsonLd}>
+  <section class="hero">
+    <h1 data-i18n="col.h1">Free online coloring pages</h1>
+    <p class="lead" data-i18n="col.lead">
+      Two hundred ten hand-drawn coloring pages, sorted from easiest to most detailed. You start on
+      page one and unlock a fresh page every day — finish one to earn the next. Pick colors, tap to
+      fill, and publish your finished art to the community gallery.
+    </p>
+    <p class="note" data-i18n="col.note">
+      A new page every day · finish one to unlock the next · tap to fill · no account, no cost.
+    </p>
+  </section>
+
+  <div class="col-hub" data-coloring-hub data-total={COLORING_PIECES.length}>
+    <p class="col-status" data-col-status aria-live="polite" hidden></p>
+
+    <section class="col-progress prose" data-col-progress hidden>
+      <h2 data-i18n="col.progressH">Your progress</h2>
+      <p class="col-progress-line">
+        <span class="col-progress-text" data-col-progress-text></span>
+        <span class="col-progress-bar" aria-hidden="true"><span data-col-progress-fill></span></span>
+      </p>
+    </section>
+
+    <ol class="col-grid" data-col-grid>
+      {
+        COLORING_PIECES.map((p, i) => (
+          <li class="col-card" data-col-card data-slug={p.slug} data-ord={i}>
+            <a class="col-link" href={`/coloring/${p.slug}/`}>
+              <span class="col-badge" data-col-badge hidden aria-live="polite"></span>
+              <img
+                class="col-thumb"
+                src={`/coloring/thumb/${p.slug}.webp`}
+                alt={`${p.title} — free coloring page, ${p.regions} regions`}
+                width="768"
+                height={Math.round((768 * 3) / 4)}
+                loading={i < 6 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+              <span class="col-meta">
+                <strong class="col-name">{p.title}</strong>
+                <span class="col-sub">{p.regions} regions</span>
+              </span>
+            </a>
+            <button
+              type="button"
+              class="btn btn-sm col-unlock"
+              data-col-unlock
+              hidden
+            ></button>
+          </li>
+        ))
+      }
+    </ol>
+    <noscript>
+      <p class="note">
+        Your unlock progress and the daily unlock button need JavaScript — but every page above is
+        browsable, and each page’s line art can be saved and printed without it.
+      </p>
+    </noscript>
+  </div>
+
+  <section class="prose band" style="margin-top: var(--sp-8);">
+    <h2 data-i18n="col.howH">How daily coloring works</h2>
+    <p><strong data-i18n="col.how1H">Start simple.</strong><span data-i18n="col.how1B">
+      The pages are sorted by detail level, so page one is a warm-up with barely a dozen regions and
+      the last pages pack well over a thousand. The curve is the same one the original
+      paint-by-number books used: small wins first, marathon pages later.</span></p>
+    <p><strong data-i18n="col.how2H">One page a day.</strong><span data-i18n="col.how2B">
+      Finish your current page and the next unlocks instantly — or wait for tomorrow’s free unlock,
+      your choice. No account needed: your progress lives quietly in your own browser, and the
+      server only ever stores a scrambled hash of that ID.</span></p>
+    <p><strong data-i18n="col.how3H">Fill and publish.</strong><span data-i18n="col.how3B">
+      Pick a color, tap a region, done. Every fill saves automatically. When the last region is
+      colored, hit Publish and your page enters the community gallery with your name on it — likes
+      from other visitors earn credits that unlock more gallery slots.</span></p>
+  </section>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
+    <div class="faq">
+      {
+        faqs.map((f, i) => (
+          <details>
+            <summary data-i18n={`col.fq${i + 1}`}>{f.q}</summary>
+            <p data-i18n={`col.fa${i + 1}`}>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+    <p style="margin-top: var(--sp-4);">
+      <a href="/coloring/gallery/" data-i18n="col.g.lPages">Browse the coloring pages</a
+      ><span data-i18n="col.gal.readyB"> — or the </span><a href="/gallery/" data-i18n="gal.h1"
+        >Bead gallery</a
+      ><span data-i18n="col.gal.readyC"> for pegboard art.</span>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .col-hub {
+    margin-top: var(--sp-6);
+    display: grid;
+    gap: var(--sp-6);
+  }
+  .col-status {
+    margin: 0;
+    padding: var(--sp-2) var(--sp-3);
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+  }
+  .col-progress-line {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin: 0;
+  }
+  .col-progress-bar {
+    flex: 1 1 12rem;
+    height: 0.6rem;
+    border-radius: 999px;
+    background: var(--panel-2, var(--accent-soft));
+    overflow: hidden;
+  }
+  .col-progress-bar > span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+  .col-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
+    gap: var(--sp-3);
+  }
+  @media (max-width: 40rem) {
+    .col-grid {
+      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    }
+  }
+  .col-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--panel, #fff);
+    overflow: hidden;
+  }
+  .col-link {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+  }
+  .col-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+  .col-meta {
+    display: grid;
+    gap: 0.15rem;
+    padding: var(--sp-2) var(--sp-3) var(--sp-3);
+  }
+  .col-name {
+    font-size: 0.95rem;
+  }
+  .col-sub {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  /* island-set states */
+  .col-card.is-done .col-thumb {
+    outline: 3px solid var(--accent);
+    outline-offset: -3px;
+  }
+  .col-card.is-locked .col-link {
+    cursor: default;
+  }
+  .col-card.is-locked .col-thumb {
+    filter: grayscale(0.7) opacity(0.6);
+  }
+  .col-card.is-locked .col-name {
+    color: var(--muted);
+  }
+  .col-badge {
+    position: absolute;
+    top: var(--sp-2);
+    left: var(--sp-2);
+    z-index: 1;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--accent);
+    color: #fff;
+  }
+  .col-badge.is-done {
+    background: #178a50;
+  }
+  .col-badge.is-locked {
+    background: #666;
+  }
+  .col-unlock {
+    margin: 0 var(--sp-3) var(--sp-3);
+  }
+</style>
+
+<script>
+  import '../../scripts/coloringHub';
+</script>

@@ -1,0 +1,319 @@
+---
+/**
+ * /coloring/[slug]/ — one coloring page. The SSR shell carries the crawlable
+ * copy (title, meta, how-to, FAQ) plus the public line art inside the canvas
+ * frame; the paint island fetches the region payload from the unlock-gated
+ * API and takes over the canvas. No-JS visitors still see the line art and
+ * can save/print it.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+import { COLORING_PIECES, getPiece } from '../../data/coloring';
+
+export function getStaticPaths() {
+  return COLORING_PIECES.map((p) => ({ params: { slug: p.slug }, props: { piece: p } }));
+}
+
+const { piece } = Astro.props;
+const ord = COLORING_PIECES.indexOf(piece);
+const total = COLORING_PIECES.length;
+
+// difficulty tier copy — varied per position so 210 pages don't read as clones
+function tierCopy(n: number): { h: string; p: string } {
+  if (n < 12)
+    return {
+      h: 'A gentle warm-up',
+      p: `With just ${piece.regions} regions, “${piece.title}” is a short, satisfying session — most people finish it in a few minutes. Perfect first page, or a calm wind-down between the bigger pictures.`,
+    };
+  if (n < 60)
+    return {
+      h: 'An easy, relaxing page',
+      p: `“${piece.title}” has ${piece.regions} regions to fill — enough variety to stay interesting, small enough to finish in one sitting. A good everyday coloring page.`,
+    };
+  if (n < 150)
+    return {
+      h: 'A step up in detail',
+      p: `${piece.regions} regions make “${piece.title}” a proper project: half an hour or more of steady tapping, with plenty of small areas that reward a careful color choice.`,
+    };
+  if (n < 400)
+    return {
+      h: 'A detailed picture',
+      p: `With ${piece.regions} separate regions, “${piece.title}” is for the dedicated colorist. Take it a section at a time — every fill saves automatically, so you can leave and come back.`,
+    };
+  return {
+    h: 'A marathon page',
+    p: `“${piece.title}” packs ${piece.regions} regions into one picture — one of the most detailed pages in the collection. Spread it over a few sittings; your progress is saved in your browser after every tap.`,
+  };
+}
+const tier = tierCopy(ord);
+
+const prev = ord > 0 ? COLORING_PIECES[ord - 1] : null;
+const next = ord < total - 1 ? COLORING_PIECES[ord + 1] : null;
+
+const title = `${piece.title} Coloring Page — Free Online, ${piece.regions} Regions | TintBrew`;
+const description = `Color “${piece.title}” online for free. ${piece.regions} tap-to-fill regions, automatic saving, and a new coloring page unlocked every day. Publish your finished art to the community gallery.`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: `${piece.title} — TintBrew Coloring Page`,
+    url: `${SITE.url}/coloring/${piece.slug}/`,
+    applicationCategory: 'GameApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript for the coloring canvas',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Coloring Pages', item: `${SITE.url}/coloring/` },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: piece.title,
+        item: `${SITE.url}/coloring/${piece.slug}/`,
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={`/coloring/${piece.slug}`} jsonLd={jsonLd}>
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="/coloring/" data-i18n="col.p.crumb">Coloring pages</a>
+    <span aria-hidden="true"> / </span>
+    <strong>{piece.title}</strong>
+  </nav>
+
+  <section class="hero">
+    <h1>{piece.title} <span class="col-h1-note" data-i18n="col.h1n">Coloring Page</span></h1>
+    <p class="lead">
+      <span data-i18n="col.p.metaA">Page</span> {ord + 1}<span data-i18n="col.p.metaB">
+        of {total} ·</span
+      >
+      <span
+        data-i18n="col.p.metaB"
+        data-i18n-args={JSON.stringify({ total: String(total) })}>
+        of {total} ·</span
+      >
+      <span class="col-regions" data-col-regions>{piece.regions} regions</span>
+      <span class="col-done-pill" data-col-donepill data-i18n="col.done" hidden>Completed</span>
+    </p>
+  </section>
+
+  <div class="col-app" data-coloring-paint data-slug={piece.slug} data-regions={piece.regions}>
+    <p class="col-status" data-col-status aria-live="polite" hidden></p>
+
+    <div class="col-frame">
+      <!-- the public line art: visible before the payload loads, printable no-JS -->
+      <img
+        class="col-lineart"
+        src={`/coloring/line/${piece.slug}.webp`}
+        alt={`${piece.title} coloring page line art`}
+        width={piece.w}
+        height={piece.h}
+        fetchpriority="high"
+      />
+      <canvas class="col-canvas" data-col-canvas hidden
+        aria-label="Coloring canvas — tap a region to fill it with the selected color"></canvas>
+    </div>
+
+    <div class="col-toolbar" data-col-toolbar hidden>
+      <p class="col-hint" data-i18n="col.p.hint">Pick a color, then tap a region to fill it.</p>
+      <div class="col-palette" data-col-palette role="listbox" aria-label="Colors"></div>
+      <div class="col-actions">
+        <span class="col-filled" data-col-filled></span>
+        <button type="button" class="btn btn-sm" data-col-undo data-i18n="col.p.undo">Undo</button>
+        <button type="button" class="btn btn-sm" data-col-reset data-i18n="col.p.reset">
+          Start over
+        </button>
+        <button type="button" class="btn btn-primary" data-col-publish data-i18n="col.p.pub" disabled>
+          Publish
+        </button>
+      </div>
+      <p class="col-autonote" data-i18n="col.p.autoNote">
+        Your fills save automatically in this browser.
+      </p>
+    </div>
+
+    <p class="col-loadnote" data-col-loadnote data-i18n="col.p.loading">
+      Loading the coloring canvas…
+    </p>
+  </div>
+
+  <section class="prose band" style="margin-top: var(--sp-8);">
+    <h2>{tier.h}</h2>
+    <p>{tier.p}</p>
+    <p data-i18n="col.p.printB">
+      Want it on paper? The line art above is a real image — right-click or long-press to save it,
+      print it, and color it with pencils.
+    </p>
+  </section>
+
+  <nav class="col-neighbors" aria-label="More coloring pages">
+    {
+      prev && (
+        <a href={`/coloring/${prev.slug}/`} class="btn btn-sm">
+          ← {prev.title}
+        </a>
+      )
+    }
+    <a href="/coloring/" class="btn btn-sm" data-i18n="col.gal.backPages">← All coloring pages</a>
+    {
+      next && (
+        <a href={`/coloring/${next.slug}/`} class="btn btn-sm">{next.title} →</a>
+      )
+    }
+  </nav>
+
+  <section class="prose" style="margin-top: var(--sp-6);">
+    <p>
+      <a href="/coloring/gallery/" data-i18n="col.p.viewGal">View the coloring gallery</a>
+      <span data-i18n="col.p.viewGalB"> — finished versions of these pages, ranked by likes.</span>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .crumb {
+    margin-top: var(--sp-4);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .col-h1-note {
+    font-size: 0.5em;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .col-done-pill {
+    display: inline-block;
+    margin-left: var(--sp-2);
+    padding: 0.1rem 0.6rem;
+    border-radius: 999px;
+    background: #178a50;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .col-app {
+    margin-top: var(--sp-5);
+    display: grid;
+    gap: var(--sp-4);
+  }
+  .col-status {
+    margin: 0;
+    padding: var(--sp-2) var(--sp-3);
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+  }
+  .col-frame {
+    position: relative;
+    max-width: 46rem;
+    line-height: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+  }
+  .col-lineart,
+  .col-canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .col-canvas {
+    position: absolute;
+    inset: 0;
+    cursor: crosshair;
+    touch-action: manipulation;
+  }
+  .col-frame.is-live .col-lineart {
+    visibility: hidden;
+  }
+  .col-frame.is-live .col-canvas {
+    position: static;
+  }
+  .col-toolbar {
+    display: grid;
+    gap: var(--sp-3);
+    max-width: 46rem;
+  }
+  .col-hint,
+  .col-autonote,
+  .col-loadnote {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  .col-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .col-swatch {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    cursor: pointer;
+    padding: 0;
+  }
+  .col-swatch[aria-checked='true'] {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .col-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+  }
+  .col-filled {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-right: auto;
+  }
+  /* publish dialog — same form the bead editor uses */
+  .col-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    background: rgba(20, 16, 30, 0.55);
+    padding: var(--sp-4);
+  }
+  .col-dialog[hidden] {
+    display: none;
+  }
+  .col-dialog-box {
+    background: var(--panel, #fff);
+    border-radius: var(--radius);
+    padding: var(--sp-5);
+    max-width: 22rem;
+    width: 100%;
+    display: grid;
+    gap: var(--sp-3);
+  }
+  .col-dialog-box label {
+    display: grid;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+  }
+  .col-neighbors {
+    margin-top: var(--sp-5);
+    display: flex;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+  }
+</style>
+
+<script>
+  import '../../scripts/coloringPaint';
+</script>
