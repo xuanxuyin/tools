@@ -260,3 +260,5 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 - **F 组升主通道**：它唯一的真链接来自 printable 博客 roundup 形态 → 证明有效且无人抢。20 目标清单 + 每周 5 封 = 最高优先执行。
 - **E 组扩名单**：startupfa.st、firstsited.com 照做（免费提交，photo 工具吃 startup/productivity 目录形态）。
 - **A/B/C 不变；不复制 PBN 黑链（红线在案）**。
+
+> **附注（11/03）：tintbrew 自身也被垃圾链群发命中** —— bl.rankvance.com / now.rankvance.com 两条中介广告页链（2000 外链/页模板群发，锚 `tintbrew.com`，11/02 SEMrush 发现）。判定：**链群轰炸/删链勒索漏斗，非我方产出**。处置：忽略不 disavow（Google 自动打折）、收到"付钱删毒链"邮件一律不回、11/17 对账时这两条不计入通道产出。
