@@ -270,3 +270,5 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 > **附注三（11/03 晚）：Referring Domains 全量分拣（👤 导出，38 域全在案）**
 > 分拣：**明确垃圾网络 28**（rankvance.com 独占 165 条链接=全站 3/4；*.xyz 假证言 ×12；fiverr-seo-*.site ×5；*.shop 广告站 ×6；WHOIS 爬虫 ×3）+ **可疑杂域 9**（nairmobilya/假 pandora/假 nike 等，9/9~9/12 同批喷入）+ **质量域名仅 1** = **launchindex.net**（AS7/nofollow/10/14，startup launch 目录，**非我方提交**——自动收录新工具站的生态存在，E 组可行性反向验证）。
 > **终版基线：质量引荐域名 = 1（launchindex.net）**。11/17 对账线终定：**1 → ≥15**（拆解：B组 GitHub 4 + A组 Reddit 1~2 + C组 Quora 1 + E组目录 3~4 + 自然 2~4 ≈ 11~15，全通道执行才够得着，不到=复盘执行率）。
+
+> **附注四（11/03）：F 组首发已发** —— 目标 #1 itsalwaysautumn.com（GIANT list of Perler Bead Patterns，autumn@itsalwaysautumn.com，👤 邮箱直发）。钩子：117 张 1:1 打印图纸 + 在线换色编辑器 + photo 转换器。**Follow-up 时点 11/13**（7~10 天无回 → 发一封 follow-up，再无回 → 弃站换下一目标，不缠）。余 4 目标（kidsactivitiesblog / rockyourhomeschool / teacherscoutmom / montessorilessons）👤 找邮箱 → 🤖 逐站定制文案（钩子各不同，禁一稿群发）。
