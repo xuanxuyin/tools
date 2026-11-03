@@ -75,7 +75,7 @@ if (def.howTo) {
 }
 ---
 
-<BaseLayout title={def.metaTitle} description={def.metaDescription} path={pagePath} jsonLd={jsonLd}>
+<BaseLayout title={def.metaTitle} description={def.metaDescription} path={pagePath} jsonLd={jsonLd} ogImage={def.sheetImage?.src}>
   <nav class="breadcrumb no-print" aria-label="Breadcrumb">
     <a href="/">Home</a> <span aria-hidden="true">›</span>
     <a href={hub.href}>{hub.label}</a> <span aria-hidden="true">›</span>
