@@ -122,6 +122,28 @@ const jsonLd = {
       </div>
       <span class="card-cta" data-i18n="home.photoCta">Convert a photo</span>
     </a>
+    <a class="tool-card" href="/coloring/">
+      <span class="tool-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.coloring} /></svg>
+      </span>
+      <h2 data-i18n="home.cardColoring">Coloring Pages</h2>
+      <p data-i18n="home.coloringDesc">
+        210 hand-drawn coloring pages, easy to expert. Unlock a new page every day, tap to fill
+        each region, and publish your finished art to the community gallery.
+      </p>
+      <div class="card-demo" aria-hidden="true">
+        <img
+          class="coloring-demo"
+          src="/coloring/thumb/ag015-palette.webp"
+          alt=""
+          width="256"
+          height="192"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <span class="card-cta" data-i18n="home.coloringCta">Start coloring</span>
+    </a>
   </section>
 
   <section class="home-gallery" data-home-gallery hidden>
@@ -442,6 +464,12 @@ const jsonLd = {
     align-items: center;
     justify-content: center;
     padding: 0.3rem;
+  }
+  .coloring-demo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
   }
 </style>
 

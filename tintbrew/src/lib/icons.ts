@@ -46,6 +46,11 @@ export const ICONS = {
     '<rect x="3" y="3" width="18" height="18" rx="2"/>' +
     '<circle cx="9" cy="9" r="2"/>' +
     '<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
+  /** Coloring — paint brush on a frame */
+  coloring:
+    '<rect x="3" y="3" width="18" height="14" rx="2"/>' +
+    '<path d="M7 17v4"/><path d="M17 17v4"/><path d="M7 21h10"/>' +
+    '<path d="M12 6l3.5 5.5a2 2 0 1 1-3.4 1.4L12 6z"/>',
 } as const;
 
 export type IconName = keyof typeof ICONS;

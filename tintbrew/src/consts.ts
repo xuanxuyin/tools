@@ -20,4 +20,4 @@ export const SITE = {
  * Bump ONLY on content batches — never on code-only deploys. Mirrored as a
  * string in astro.config.mjs sitemap serialize (mjs can't import this TS file).
  */
-export const CONTENT_UPDATED = '2026-10-15';
+export const CONTENT_UPDATED = '2026-11-03';

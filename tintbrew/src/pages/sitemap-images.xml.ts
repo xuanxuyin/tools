@@ -17,6 +17,7 @@ import {
   smallPatterns,
   CATEGORY_BASE,
 } from '../lib/beadContent';
+import { COLORING_PIECES } from '../data/coloring';
 
 export const GET: APIRoute = async () => {
   const img = (loc: string, title?: string) =>
@@ -68,6 +69,23 @@ export const GET: APIRoute = async () => {
         .join('')}</url>`,
     );
   }
+  // coloring channel (2026-11-03): each detail page declares its own line-art
+  // thumb, and the hub declares the whole watermarked set — same per-page +
+  // per-hub split the bead patterns use
+  for (const p of COLORING_PIECES) {
+    urls.push(
+      `<url><loc>${SITE.url}/coloring/${p.slug}/</loc>${img(
+        `${SITE.url}/coloring/line/${p.slug}.webp`,
+        p.title,
+      )}</url>`,
+    );
+  }
+  urls.push(
+    `<url><loc>${SITE.url}/coloring/</loc>${COLORING_PIECES.map((p) =>
+      img(`${SITE.url}/coloring/thumb/${p.slug}.webp`, p.title),
+    ).join('')}</url>`,
+  );
+
   // the fuse synonym landing renders the full catalog — every thumb under it
   urls.push(
     `<url><loc>${SITE.url}/fuse-bead-patterns/</loc>${patternContents
