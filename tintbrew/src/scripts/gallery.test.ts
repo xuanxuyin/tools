@@ -376,6 +376,29 @@ describe('my piece (mine zone)', () => {
     expect(JSON.parse((call![1] as RequestInit).body as string).pieceId).toBe('m1');
     expect(doc.querySelector('[data-gallery-status]')?.textContent).toContain('deleted');
   });
+
+  it('a failed load shows an in-place retry button that reloads the list', async () => {
+    let fail = true;
+    fetchMock.mockImplementation(() => {
+      if (fail) return Promise.reject(new Error('offline'));
+      return Promise.resolve(
+        jsonResponse({ pieces: [piece('p1', 'Fox', 'nick', 3)], mine: [], wallet: null }),
+      );
+    });
+    const { document: doc } = await loadPage('gallery/index.html', fetchMock);
+    await import('./gallery');
+    await flush();
+    // the error state carries the message and a real retry button
+    const retry = doc.querySelector('[data-gal-retry]') as HTMLButtonElement | null;
+    expect(retry).toBeTruthy();
+    expect(doc.querySelector('[data-gallery-list]')?.textContent).toContain('reach the gallery');
+    // clicking it re-runs the load against a now-working API
+    fail = false;
+    retry!.click();
+    await flush();
+    expect(doc.querySelector('[data-gallery-list]')?.textContent).toContain('Fox');
+    expect(doc.querySelector('[data-gal-retry]')).toBeNull();
+  });
 });
 
 describe('home-page gallery block (dist/index.html)', () => {

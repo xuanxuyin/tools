@@ -58,7 +58,13 @@ class GalleryIsland {
       this.renderMine();
       this.renderList();
     } catch {
-      if (this.listEl) this.listEl.innerHTML = `<li class="gal-empty">${t('gal.errNetwork')}</li>`;
+      // Failed load: keep the SSR message and add an in-place retry button —
+      // a bare "try again later" forced a full page reload (user hit this
+      // during a deploy window, 2026-11-03).
+      if (this.listEl)
+        this.listEl.innerHTML =
+          `<li class="gal-empty">${t('gal.errNetwork')} ` +
+          `<button type="button" class="btn btn-sm gal-retry" data-gal-retry data-i18n="gal.retry">${t('gal.retry')}</button></li>`;
     }
   }
 
@@ -117,6 +123,13 @@ class GalleryIsland {
 
   private async onClick(e: MouseEvent): Promise<void> {
     const target = e.target as HTMLElement;
+
+    const retryBtn = target.closest<HTMLButtonElement>('[data-gal-retry]');
+    if (retryBtn) {
+      retryBtn.disabled = true;
+      await this.load();
+      return;
+    }
 
     const likeBtn = target.closest<HTMLButtonElement>('[data-gal-like]');
     if (likeBtn && likeBtn.getAttribute('aria-disabled') !== 'true') {
