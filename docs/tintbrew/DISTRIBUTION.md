@@ -218,6 +218,32 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 - 动作：搜 `site:quora.com "what colors make brown"`（及 purple/green/orange/blue）→ 找近 2 年内有问题 → 先实答（Oklab 混色结论 + 实操比例）→ 自然附 /mix/ 或头词页链接
 - 红线：同 §6 判定口令——问题对口才答；单号日 1~2 带链答上限
 
+**答帖文案包（11/03 🤖 备齐，Quora 问题 URL 均实搜现存）**
+
+主答对象（各 1 条，48h 无删再复投备选）：
+- Brown → [What two colors do you mix to make brown?](https://www.quora.com/What-two-colors-do-you-mix-to-make-brown)（备选 B2: ...primary-colors-needed-to-make-brown-without-using-black / B3: ...what-crayon-colors-make-brown）
+- Purple → [What colours mix to make purple?](https://www.quora.com/What-colours-mix-to-make-purple)（备选 P2: ...what-primary-colors-make-purple-when-combined / P3: ...ways-to-mix-paint-colors-to-create-different-shades-of-purple）
+
+**Brown 版（~165 词，主体知识>80%，链接只出现在末句延伸位）**：
+
+> Brown isn't a single recipe — it's what you get whenever the three primaries end up in the same mix. The three easiest ways:
+>
+> 1. **Red + yellow + blue.** Equal-ish parts give a middle brown; more yellow pushes it toward tan, more red toward rust, more blue toward a cooler chocolate.
+> 2. **Complementary pairs.** Orange + blue, red + green, or yellow + purple — complements neutralize each other into brown. Orange + blue is my favorite because a little extra orange keeps it warm and sandy.
+> 3. **Orange + black**, if you don't mind a flatter, duller brown. It's fast but less lively than a complementary mix.
+>
+> The tricky part is that ratios matter more than the colors themselves, and tube paints vary a lot by brand. When I'm testing a mix for a project I use a free color mixer like [tintbrew.com/color-guides/what-colors-make-brown/](https://tintbrew.com/color-guides/what-colors-make-brown/) — it shows the actual blended result with hex values so I can preview the shade before committing real paint.
+
+**Purple 版（~155 词）**：
+
+> Purple is simply **red + blue** — but which red and which blue decides everything.
+>
+> A cool blue (ultramarine, cobalt) with a warm red gives a rich, true purple. If you use a red that leans orange (like cadmium red), the orange fights the blue and you get a muddy, brownish plum instead. Same with green-leaning blues. So the classic beginner frustration "my purple turns gray" is almost always the paint choice, not the mixing.
+>
+> Quick adjustments from the base mix: more blue for a cooler violet, more red for magenta-leaning purple, a touch of white for lavender tints, a tiny bit of black (or the complement, yellow) for deep eggplant.
+>
+> I got tired of wasting paint testing ratios, so I use a free color mixer — [tintbrew.com/color-guides/what-colors-make-purple/](https://tintbrew.com/color-guides/what-colors-make-purple/) has the full breakdown, and you can see any red-blue blend rendered live before touching a brush.
+
 ### D. Product Hunt 正式排期（§四预备清单激活）
 
 - 9 月立预备未发，**现在时机更好**：gallery UGC + 117 张图纸 + photo 工具三件套齐了，launch 故事完整
@@ -233,6 +259,36 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 - **Craft 博客 roundup**：搜 `"best perler bead patterns" blog -reddit -pinterest` → 博客 listicle → 定制邮件求收录（hook = 117 张免费图纸 + 在线编辑器，都是别人没有的差异点）
 - **教育/homeschool 资源页**：搜 `"color mixing chart" printable resources page` → 教师资源清单页 → 求 /color-mixing-chart/ 入列
 - 节奏：👤 每周 5 封定制邮件；🤖 每轮拉 20 个目标 + 每站一句定制切入点
+
+**扩容名单（11/03 🤖 全量调研 23 目标，全部实抓 200 或实搜确认；hook 逐站定制禁群发；除 CraftGossip 外均无投稿入口 = 邮件外联）**
+
+| # | 站点 | roundup 文章 | 推资产 | hook 一句 | 验证 |
+|---|------|------|------|------|------|
+| 1 | itsalwaysautumn.com | The GIANT list of Perler Bead Patterns | photo 转换器 | ✅ 已发（附注四） | ✅ |
+| 2 | redtedart.com | Melty Bead Crafts (Hama) | photo 转换器 | hama 项目多是平面图形——转换器让孩子把自画/全家福变成可拼图纸 | ✅ |
+| 3 | frugalfun4boys.com | Printable Christmas Perler Bead Patterns | photo+editor | 四娃妈省钱手工——免费照片转图纸省下图纸书钱，带自动珠数购物清单 | ✅ |
+| 4 | onelittleproject.com | FREE Christmas Perler Bead Patterns | photo 转换器 | 你出季节免费图纸——读者还能免费从自己照片生成 | 🛡 |
+| 5 | picklebums.com | 40 Best Perler Bead Ideas | photo+editor | 混龄娃家长——291 色编辑器让大孩子自己设计而非抄现成 | ✅ |
+| 6 | thatkidscraftsite.com | Back to School Perler Bead Patterns | photo 转换器 | 季节图纸之间给读者一个自制名字/照片图纸的生成器 | ✅ |
+| 7 | fusebeadpatterns.com | Free Patterns: Go-To Resource Guide | photo+editor+gallery | 你的资源指南缺"自己造图纸"入口——免费转换器+291 色编辑器补位 | ✅ |
+| 8 | doodlecraftblog.com | Minecraft Perler Beads + 100 Crafting Ideas | photo 转换器 | 像素画×拼豆交叉读者——精灵图/照片一键转图纸 | ✅ |
+| 9 | **craftgossip.com** | Things To Do With Perler Beads | photo 转换器 | **唯一有官方投稿入口**（/suggest-a-link/ 抓到 200）→ 投 jewelry/crafts 子站编辑 | ✅ |
+| 10 | 3dinosaurs.com | Fine Motor Perler Bead Planets | photo 转换器 | 精细动作活动用简单网格——孩子自画变可拼图纸是自然下一步 | 🛡 |
+| 11 | weareteachers.com | Best Websites for Teaching Drawing | mixer+brown 指南 | Chromebook 可用配色混合器，art-on-a-cart 老师零备课 | ✅ |
+| 12 | theartofeducation.edu | 12 Ways to Teach the Color Wheel | mixer+指南 | 数字站点：学生先预测混色再用感知混合器验证（真名+hex） | ✅ |
+| 13 | myartlesson.com | Resources for Playing and Learning About Color | mixer | 你的色彩资源合集收免费 mixer——感知混色+命名结果适合 mixing station | 🛡 |
+| 14 | ideasforlearners.com | Perler Beads in the Library | photo+gallery | 图书馆拼豆项目靠打印图纸——孩子照片变图纸+画廊展示可能性 | ✅ |
+| 15 | arttecheducation.com | 10 Art Teacher Tech Tool Must-Haves | mixer+editor | 科技清单补免费浏览器混色器+像素编辑器，学生 Chromebook 免账号 | ✅ |
+| 16 | cursorup.com | 9 Color Palette Generators | mixer | 别人选色——我们混色：Oklab 感知混合是清单缺的"这两色出什么"工具 | ✅ |
+| 17 | fueler.io | Top Color Palette Generators for US Brands | mixer | 品牌团队吵中间色——免费混合器当场定案并命名结果 | ✅ |
+| 18 | logodesign.net | Best Color Tools You Need to Try | mixer | 清单有取色器无"两色混什么"——正好是它缺的 | ✅ |
+| 19 | designmantic.com | 100+ Color Tools | mixer | 100+ 工具里仍无感知混色器——Oklab+hex+人话色名 | ✅ |
+| 20 | recsitedesign.com | 30 Color Tools to Spice Up Web Design | mixer | 有 Khroma/ColorZilla——补一个可分享的真中间点混色器（非 RGB 平均） | ✅ |
+| 21 | schoolofmotion.com | 10 Tools to Design a Color Palette | mixer | 动态设计师做渐变要感知中点——任意两色真中点+hex 输出 | ✅ |
+| 22 | tckpublishing.com | 14 Color Palette Generators for Brand | mixer | 作者建品牌色板要知道两色合出什么——即时混合+命名 | ✅ |
+| 23 | weseegiants.com | Color Generators 资源页 | mixer | 生成器页缺 blending 用例（都只 pick 不 mix） | ✅ |
+
+执行序：CraftGossip（唯一有入口）→ 手作 2~8/10（推 photo 工具）→ 设计类 16~23（推 mixer，同质化低）。🛡 = 反爬 403/429 但 URL 来自该站真实搜索结果页（页面存在），外联时先核邮箱。
 
 ### 生效判定
 
