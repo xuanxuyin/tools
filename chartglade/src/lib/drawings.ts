@@ -1,14 +1,19 @@
 /**
- * Coloring drawing library — hand-coded SVG line art for the letter
- * coloring pages (coloring product line rework, PLAN timeline 2026-11-03).
+ * Coloring art library for the letter coloring pages (coloring product
+ * line rework, PLAN timeline 2026-11-03).
  *
- * Why: the incumbent form (mondaymandala letter pages, KAB sets) is a
- * gallery of many captioned DRAWINGS per page — the pictures are the
- * product, the text is packaging. Phase A shipped a worksheet instead;
- * this library turns each letter page into a 6-drawing gallery:
- * three beginning-sound objects + three letter designs.
+ * Object art comes from OpenMoji's black line-art set (openmoji.org,
+ * CC BY-SA 4.0) — professional hand-drawn outlines, vendored into
+ * public/images/emoji/ by scripts/fetch-emoji-art.mjs (the EMOJI_WORDS
+ * set below lists what's vendored). Words without an OpenMoji
+ * equivalent fall back to the hand-coded OBJECTS drawings at the
+ * bottom of this file (kept for those gaps only).
  *
- * Conventions (same as StockingColoringSheet):
+ * The gallery renders three beginning-sound objects + three letter
+ * designs per page: the pictures are the product, the text is
+ * packaging.
+ *
+ * Hand-drawn conventions (same as StockingColoringSheet):
  *  - every fillable region is a CLOSED path, fill #fff, stroke #1c1c1c
  *  - open lines (whiskers, antennae, waves) are detail strokes only
  *  - objects draw inside a local 0..200 x 0..200 box, placed via
@@ -19,10 +24,21 @@
 
 const STROKE = '#1c1c1c';
 
+export type ArtEl =
+  | { kind: 'img'; src: string; alt: string }
+  | { kind: 'svg'; svg: string };
+
 export interface ColoringDrawing {
   id: string;
   caption: string;
-  svg: string;
+  /** How the card composes its art (see LetterColoringGallery.astro). */
+  layout: 'object' | 'combo' | 'ring' | 'poster';
+  /** Bubble letter for the combo/ring/poster layouts. */
+  letter?: string;
+  /** Object elements: object=1, combo=1, ring=3, poster=none. */
+  els: ArtEl[];
+  /** Poster layout only: full standalone SVG. */
+  svg?: string;
 }
 
 type ObjFn = () => string;
@@ -134,12 +150,14 @@ const OBJECTS: Record<string, ObjFn> = {
     <path d="M88,130 C94,136 106,136 112,130" fill="none"/>
     <path d="M94,134 C94,146 106,146 106,134 Z"/>`,
   duck: () => `
-    <ellipse cx="110" cy="128" rx="56" ry="36"/>
-    <path d="M85,115 C105,105 130,110 146,126 C130,136 104,136 85,120 Z"/>
-    <circle cx="80" cy="72" r="24"/>
-    <path d="M56,64 L28,72 L56,80 Z"/>
-    <circle cx="86" cy="66" r="4"/>
-    <path d="M30,172 C50,165 70,179 90,172 C110,165 130,179 150,172" fill="none"/>`,
+    <path d="M58,86 C46,104 46,126 60,140 C74,156 102,162 124,156 C136,152 143,146 147,138 C154,127 160,117 172,111 L188,105 C178,124 165,135 150,137 C153,121 150,105 141,94 C130,84 114,82 100,85 Z"/>
+    <path d="M40,66 Q20,64 16,76 Q14,86 28,90 Q40,92 48,84 Z"/>
+    <path d="M48,84 L30,88" fill="none"/>
+    <ellipse cx="74" cy="64" rx="23" ry="21"/>
+    <circle cx="68" cy="58" r="4.5"/>
+    <path d="M92,104 C112,98 134,105 142,120 C130,132 106,132 95,119 C90,113 89,108 92,104 Z"/>
+    <path d="M104,110 L128,118 M100,116 L118,124" fill="none"/>
+    <path d="M28,168 C48,161 68,175 88,168 C108,161 128,175 148,168" fill="none"/>`,
   door: () => `
     <rect x="55" y="30" width="90" height="140" rx="4"/>
     <rect x="68" y="48" width="64" height="36"/>
@@ -701,29 +719,29 @@ const LETTER_ART: Record<string, WordArt[]> = {
     { obj: 'acorn', caption: 'A is for acorn — color the bumpy cap a different shade than the nut.' },
   ],
   b: [
-    { obj: 'ball', caption: 'B is for ball — make every panel of this beach ball its own color.' },
+    { obj: 'ball', caption: 'B is for ball — make every panel of the ball its own color.' },
     { obj: 'bear', caption: 'B is for bear — brown fur, or a teddy bear in any color you like.' },
-    { obj: 'boat', caption: 'B is for boat — two sails, one hull, and waves to fill in.' },
+    { obj: 'boat', caption: 'B is for boat — a sail full of wind and waves below to fill in.' },
   ],
   c: [
     { obj: 'cat', caption: 'C is for cat — whiskers, ears, and a fur coat in any color.' },
     { obj: 'car', caption: 'C is for car — pick a paint color for the body and the two windows.' },
-    { obj: 'cake', caption: 'C is for cake — three candles, two layers, and frosting scallops.' },
+    { obj: 'cake', caption: 'C is for cake — candles on top, frosting and decorations everywhere.' },
   ],
   d: [
-    { obj: 'dog', caption: 'D is for dog — floppy ears, a wagging tongue, and fur to color.' },
+    { obj: 'dog', caption: 'D is for dog — four paws, a happy tail, and fur to color.' },
     { obj: 'duck', caption: 'D is for duck — yellow works, but any color duck can swim.' },
     { obj: 'door', caption: 'D is for door — what color is the door where you live?' },
   ],
   e: [
-    { obj: 'egg', caption: 'E is for egg — white, brown, or Easter colors all work.' },
+    { obj: 'egg', caption: 'E is for egg — sunny-side up: color the white and the yolk.' },
     { obj: 'elf', caption: 'E is for elf — a pointy hat with a pom-pom on top.' },
     { obj: 'envelope', caption: 'E is for envelope — color the flap, then draw your own stamp.' },
   ],
   f: [
     { obj: 'fish', caption: 'F is for fish — scales can be one color or a rainbow pattern.' },
     { obj: 'frog', caption: 'F is for frog — big eyes sit right on top of its head.' },
-    { obj: 'fan', caption: 'F is for fan — three blades behind a round safety guard.' },
+    { obj: 'feather', caption: 'F is for feather — a soft feather; color each strand.' },
   ],
   g: [
     { obj: 'goat', caption: 'G is for goat — horns, a beard, and a very serious face.' },
@@ -741,8 +759,8 @@ const LETTER_ART: Record<string, WordArt[]> = {
     { obj: 'insect', caption: 'I is for insect — spots on the wings and six legs.' },
   ],
   j: [
-    { obj: 'jam', caption: 'J is for jam — strawberry red or grape purple, you choose.' },
-    { obj: 'jet', caption: 'J is for jet — swept wings and a trail of speed lines.' },
+    { obj: 'juice', caption: 'J is for juice — a juice box with a straw to color.' },
+    { obj: 'jet', caption: 'J is for jet — draw your own speed lines behind the wings.' },
     { obj: 'jelly', caption: 'J is for jelly — a wobbly dome on a plate.' },
   ],
   k: [
@@ -757,18 +775,18 @@ const LETTER_ART: Record<string, WordArt[]> = {
   ],
   m: [
     { obj: 'moon', caption: 'M is for moon — gray craters on a yellow moon, or any colors.' },
-    { obj: 'milk', caption: 'M is for milk — a carton from the school cafeteria.' },
+    { obj: 'milk', caption: 'M is for milk — an ice-cold glass of milk, straw optional.' },
     { obj: 'mouse', caption: 'M is for mouse — big round ears and long whiskers.' },
   ],
   n: [
     { obj: 'nest', caption: 'N is for nest — two eggs sitting in a woven bowl.' },
     { obj: 'nut', caption: 'N is for nut — a peanut in its shell, bumps and all.' },
-    { obj: 'net', caption: 'N is for net — ropes crossed to catch a butterfly.' },
+    { obj: 'nose', caption: 'N is for nose — breathe in, breathe out, color it in.' },
   ],
   o: [
     { obj: 'owl', caption: 'O is for owl — huge eyes that stay open at night.' },
     { obj: 'octopus', caption: 'O is for octopus — eight curly arms to color.' },
-    { obj: 'ox', caption: 'O is for ox — strong horns and a ring through its nose.' },
+    { obj: 'ox', caption: 'O is for ox — strong horns and shoulders built for pulling.' },
   ],
   p: [
     { obj: 'pig', caption: 'P is for pig — a curly snout and a happy face.' },
@@ -776,7 +794,7 @@ const LETTER_ART: Record<string, WordArt[]> = {
     { obj: 'pizza', caption: 'P is for pizza — a slice with pepperoni rounds.' },
   ],
   q: [
-    { obj: 'queen', caption: 'Q is for queen — a tall crown with six sparkling jewels.' },
+    { obj: 'queen', caption: 'Q is for queen — a princess queen in her crown and gown.' },
     { obj: 'quilt', caption: 'Q is for quilt — color each patch of the blanket.' },
     { obj: 'quiz', caption: 'Q is for quiz — a question card with a big question mark.' },
   ],
@@ -792,7 +810,7 @@ const LETTER_ART: Record<string, WordArt[]> = {
   ],
   t: [
     { obj: 'tree', caption: 'T is for tree — a leafy crown on a sturdy trunk.' },
-    { obj: 'train', caption: 'T is for train — an engine with smoke puffs and three wheels.' },
+    { obj: 'train', caption: 'T is for train — an engine with smoke puffs and wheels to count.' },
     { obj: 'tiger', caption: 'T is for tiger — color the stripes black and the fur orange.' },
   ],
   u: [
@@ -807,18 +825,18 @@ const LETTER_ART: Record<string, WordArt[]> = {
   ],
   w: [
     { obj: 'whale', caption: 'W is for whale — a spout of water and a big tail.' },
-    { obj: 'web', caption: 'W is for web — a spider waits in its round web.' },
+    { obj: 'web', caption: 'W is for web — a round spider web; draw the spider yourself.' },
     { obj: 'watermelon', caption: 'W is for watermelon — a slice with seeds to dot in.' },
   ],
   x: [
-    { obj: 'xray', caption: 'X is for x-ray — the film shows one big bone, knobs and all.' },
+    { obj: 'xray', caption: 'X is for x-ray — the machine that photographs bones.' },
     { obj: 'fox', caption: 'X is for fox — fox ends in x, with pointy ears and a bushy tail.' },
     { obj: 'box', caption: 'X is for box — box ends in x too; four panels and a tape stripe.' },
   ],
   y: [
     { obj: 'yoyo', caption: 'Y is for yo-yo — a string, a spool, and tricks to master.' },
     { obj: 'yarn', caption: 'Y is for yarn — a ball of string with a loose end.' },
-    { obj: 'yak', caption: 'Y is for yak — shaggy fur and curved horns.' },
+    { obj: 'yak', caption: 'Y is for yak — long horns and a strong, sturdy body.' },
   ],
   z: [
     { obj: 'zebra', caption: 'Z is for zebra — black stripes on white, or white on black.' },
@@ -833,23 +851,47 @@ const LETTER_ART: Record<string, WordArt[]> = {
 
 const VIEW = 400;
 
-/** Card 1–3: the object, big, centered, with a frame. */
-function objectCard(art: WordArt): string {
-  return `<svg viewBox="0 0 ${VIEW} ${VIEW}" role="img" xmlns="http://www.w3.org/2000/svg">${frame()}${place(art.obj, 68, 68, 1.32)}</svg>`;
+/**
+ * Words served by a vendored OpenMoji black line-art SVG in
+ * public/images/emoji/ (codepoints + fetch pipeline in
+ * scripts/fetch-emoji-art.mjs — keep the two lists in sync; a test
+ * checks every referenced file exists). Everything else falls back to
+ * the hand-drawn OBJECTS library below. License: CC BY-SA 4.0,
+ * credited in public/images/emoji/CREDITS.md.
+ */
+const EMOJI_WORDS = new Set([
+  'apple', 'ant', 'ball', 'bear', 'boat', 'cat', 'car', 'cake', 'dog', 'duck',
+  'door', 'egg', 'elf', 'envelope', 'fish', 'frog', 'feather', 'goat', 'gift',
+  'grapes', 'hat', 'hen', 'house', 'insect', 'jet', 'jelly', 'juice', 'kite',
+  'king', 'queen', 'key', 'lion', 'leaf', 'moon', 'milk', 'mouse', 'nose',
+  'nut', 'owl', 'octopus', 'ox', 'yak', 'pig', 'pen', 'pizza', 'rain', 'robot',
+  'rocket', 'sun', 'sock', 'star', 'tree', 'train', 'tiger', 'umbrella',
+  'unicorn', 'van', 'violin', 'volcano', 'whale', 'web', 'watermelon',
+  'xray', 'fox', 'box', 'yarn', 'zebra',
+]);
+
+const altWord = (obj: string): string =>
+  obj === 'xray' ? 'x-ray' : obj.charAt(0).toUpperCase() + obj.slice(1);
+
+/** One coloring element: a real OpenMoji outline, or a hand-drawn fallback. */
+function artEl(objName: string): ArtEl {
+  if (EMOJI_WORDS.has(objName)) {
+    return {
+      kind: 'img',
+      src: `/images/emoji/${objName}.svg`,
+      alt: `${altWord(objName)} coloring picture`,
+    };
+  }
+  const fn = OBJECTS[objName];
+  if (!fn) throw new Error(`drawings: unknown object "${objName}"`);
+  return {
+    kind: 'svg',
+    svg: `<svg viewBox="0 0 ${VIEW} ${VIEW}" role="img" xmlns="http://www.w3.org/2000/svg">${place(objName, 68, 68, 1.32)}</svg>`,
+  };
 }
 
-/** Card 4: the letter beside its favorite object. */
-function letterPlusObject(cap: string, lower: string, art: WordArt): string {
-  return `<svg viewBox="0 0 ${VIEW} ${VIEW}" role="img" xmlns="http://www.w3.org/2000/svg">${frame()}${letter(cap, 100, 300, 210)}${place(art.obj, 190, 90, 1.05)}</svg>`;
-}
-
-/** Card 5: the letter with all three objects gathered around it. */
-function letterRing(cap: string, arts: WordArt[]): string {
-  return `<svg viewBox="0 0 ${VIEW} ${VIEW}" role="img" xmlns="http://www.w3.org/2000/svg">${frame()}${letter(cap, 200, 262, 170)}${place(arts[0].obj, 22, 20, 0.6)}${place(arts[1].obj, 278, 20, 0.6)}${place(arts[2].obj, 148, 272, 0.6)}</svg>`;
-}
-
-/** Card 6: poster letter with a star border to color. */
-function letterPoster(cap: string, lower: string): string {
+/** Poster letter with a star border to color. */
+function letterPoster(cap: string): string {
   const stars = [
     [60, 60, 26], [200, 40, 20], [340, 60, 26],
     [40, 200, 20], [360, 200, 20],
@@ -878,14 +920,9 @@ export interface LetterDrawingInput {
 
 /**
  * Six drawings for a letter page: three beginning-sound objects,
- * letter-with-object, letter-ring, and a star-border poster letter.
- * Every letter a–z carries its own hand-written captions (X uses
- * ending-sound words: x-ray/fox/box).
- */
-/**
- * Whether a letter has gallery drawings. Now true for all of a–z,
- * but kept as the gate so [letter].astro stays correct if a letter
- * is ever pulled back to worksheet-only.
+ * letter-with-object (HTML combo), letter-ring (HTML), and a
+ * star-border poster letter (SVG). Every letter a–z carries its own
+ * hand-written captions (X uses ending-sound words: x-ray/fox/box).
  */
 export function hasLetterArt(lower: string): boolean {
   return lower in LETTER_ART;
@@ -897,16 +934,37 @@ export function letterDrawings(input: LetterDrawingInput): ColoringDrawing[] {
     throw new Error(`drawings: no art for letter "${key}" — gate with hasLetterArt()`);
   }
   const arts = LETTER_ART[key];
-  const draw = (id: string, caption: string, svg: string): ColoringDrawing => ({ id, caption, svg });
 
-  const cards: ColoringDrawing[] = arts.slice(0, 3).map((art, i) =>
-    draw(`word-${i}`, art.caption, objectCard(art)),
-  );
+  const cards: ColoringDrawing[] = arts.slice(0, 3).map((art, i) => ({
+    id: `word-${i}`,
+    caption: art.caption,
+    layout: 'object' as const,
+    els: [artEl(art.obj)],
+  }));
 
   cards.push(
-    draw('letter-object', `Letter ${input.capital} and its picture side by side.`, letterPlusObject(input.capital, input.lower, arts[0])),
-    draw('letter-ring', `Big letter ${input.capital} with all three ${key}-words around it.`, letterRing(input.capital, arts)),
-    draw('letter-poster', `A giant letter ${input.capital} with stars and dots to color around it.`, letterPoster(input.capital, input.lower)),
+    {
+      id: 'letter-object',
+      caption: `Letter ${input.capital} and its picture side by side.`,
+      layout: 'combo',
+      letter: input.capital,
+      els: [artEl(arts[0].obj)],
+    },
+    {
+      id: 'letter-ring',
+      caption: `Big letter ${input.capital} with all three ${key}-words around it.`,
+      layout: 'ring',
+      letter: input.capital,
+      els: arts.map((a) => artEl(a.obj)),
+    },
+    {
+      id: 'letter-poster',
+      caption: `A giant letter ${input.capital} with stars and dots to color around it.`,
+      layout: 'poster',
+      letter: input.capital,
+      els: [],
+      svg: letterPoster(input.capital),
+    },
   );
 
   return cards;

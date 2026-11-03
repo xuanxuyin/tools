@@ -1,5 +1,6 @@
 ---
 import { letterDrawings } from '../../lib/drawings';
+import type { ArtEl, ColoringDrawing } from '../../lib/drawings';
 import type { ColoringLetterSheet } from '../../data/coloringLetters';
 
 interface Props {
@@ -8,6 +9,32 @@ interface Props {
 
 const { sheet } = Astro.props;
 const drawings = letterDrawings(sheet);
+
+/**
+ * Object art is either a vendored OpenMoji outline (img) or a hand-drawn
+ * SVG fallback; composed here as HTML strings (Astro frontmatter can't
+ * return JSX).
+ */
+const artHtml = (el: ArtEl, cls: string): string =>
+  el.kind === 'img'
+    ? `<img class="${cls}" src="${el.src}" alt="${el.alt}" loading="lazy" width="72" height="72" />`
+    : `<span class="lc-draw ${cls}">${el.svg}</span>`;
+
+const artBodyHtml = (d: ColoringDrawing): string => {
+  switch (d.layout) {
+    case 'object':
+      return artHtml(d.els[0], 'lc-main');
+    case 'combo':
+      return `<span class="lc-bubble" aria-hidden="true">${d.letter}</span>${artHtml(d.els[0], 'lc-side')}`;
+    case 'ring':
+      return (
+        `<span class="lc-bubble lc-ring-letter" aria-hidden="true">${d.letter}</span>` +
+        d.els.map((el, i) => artHtml(el, `lc-mini lc-m${i + 1}`)).join('')
+      );
+    case 'poster':
+      return `<span class="lc-poster">${d.svg ?? ''}</span>`;
+  }
+};
 ---
 
 <div class="lc-gallery">
@@ -17,7 +44,7 @@ const drawings = letterDrawings(sheet);
   <div class="lc-cards">
     {drawings.map((d) => (
       <figure class="lc-card">
-        <div class="lc-art" set:html={d.svg} />
+        <div class:list={['lc-art', `lc-${d.layout}`]} set:html={artBodyHtml(d)} />
         <figcaption class="lc-caption">{d.caption}</figcaption>
       </figure>
     ))}
@@ -52,17 +79,59 @@ const drawings = letterDrawings(sheet);
     align-items: center;
   }
   .lc-art {
+    position: relative;
     width: 100%;
+    aspect-ratio: 1 / 1;
     border: 1.5pt solid var(--green);
     border-radius: 8px;
     overflow: hidden;
     background: var(--green-tint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lc-art :global(img) {
+    height: auto;
   }
   .lc-art :global(svg) {
     display: block;
     width: 100%;
     height: auto;
   }
+  .lc-art :global(.lc-draw) {
+    display: block;
+  }
+  /* object card: the picture, big */
+  .lc-art :global(.lc-main) {
+    width: 74%;
+  }
+  /* combo card: bubble letter beside its picture */
+  .lc-combo {
+    gap: 6%;
+    padding: 4%;
+  }
+  .lc-art :global(.lc-side) {
+    width: 52%;
+  }
+  .lc-bubble {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3.4rem;
+    line-height: 1;
+    color: #fff;
+    -webkit-text-stroke: 2.2pt #1c1c1c;
+  }
+  /* ring card: big letter centered, three small pictures around it */
+  .lc-ring-letter {
+    font-size: 3.2rem;
+  }
+  .lc-art :global(.lc-mini) {
+    position: absolute;
+    width: 30%;
+  }
+  .lc-art :global(.lc-m1) { top: 3%; left: 4%; }
+  .lc-art :global(.lc-m2) { top: 3%; right: 4%; }
+  .lc-art :global(.lc-m3) { bottom: 3%; left: 35%; }
   .lc-caption {
     font-size: 8.5pt;
     line-height: 1.3;
@@ -78,6 +147,10 @@ const drawings = letterDrawings(sheet);
     text-align: center;
     font-size: 9pt;
     color: var(--ink-soft);
+  }
+  @media (max-width: 560px) {
+    .lc-bubble { font-size: 1.7rem; }
+    .lc-ring-letter { font-size: 1.5rem; }
   }
   @media print {
     .lc-cards { gap: 0.3rem; }

@@ -326,13 +326,13 @@ const RAW: RawLetterDef[] = [
     h1: 'Letter F Coloring Pages',
     metaTitle: 'Letter F Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter F coloring page: bubble F and f, fish-frog-fan, a trace row, and a draw-your-own box. Two pages, prints clean, no sign-up.',
+      'Free letter F coloring page: bubble F and f, fish-frog-feather, a trace row, and a draw-your-own box. Two pages, prints clean, no sign-up.',
     lead:
-      'Bubble F and f, fish, frog and fan to color, a trace row, and a draw box — two pages of quiet, screen-free f-sound practice.',
+      'Bubble F and f, fish, frog and feather to color, a trace row, and a draw box — two pages of quiet, screen-free f-sound practice.',
     introHeading: 'The windy letter',
     intro: [
       'F is the only letter on this page whose sound is pure breath: top teeth on bottom lip, push air out, ffffff. No voice box at all. That makes it fun to teach while coloring — hold the f sound through one whole crayon stroke and see how long it lasts. The shape is a spine with two arms, the capital on a taller spine than the lowercase, and coloring the arms in different colors makes the two-arm anatomy impossible to miss.',
-      'Fish, frog and fan all slam the f right at the front of the word, which is where young ears need it. F is a common first sound in children\'s names and family words — Dad, four, friend — so the letter tends to have personal attachments already. The draw box usually fills with fish; frogs are the second-place favorite and occasionally a family portrait appears, justified by someone\'s name.',
+      'Fish, frog and feather all slam the f right at the front of the word, which is where young ears need it. F is a common first sound in children\'s names and family words — Dad, four, friend — so the letter tends to have personal attachments already. The draw box usually fills with fish; frogs are the second-place favorite and occasionally a family portrait appears, justified by someone\'s name.',
     ],
     printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
@@ -352,7 +352,7 @@ const RAW: RawLetterDef[] = [
     faqs: [
       {
         q: 'What F words are on this coloring page?',
-        a: 'Fish, frog and fan in the bubble word row. The draw box takes the overflow: fox, flower and fire truck are the regulars, and fire truck season (any season, really) fills the box fastest.',
+        a: 'Fish, frog and feather in the bubble word row. The draw box takes the overflow: fox, flower and fire truck are the regulars, and fire truck season (any season, really) fills the box fastest.',
       },
       {
         q: 'How do you explain the f sound to a preschooler?',
@@ -370,9 +370,9 @@ const RAW: RawLetterDef[] = [
     sheet: {
       capital: 'F',
       lower: 'f',
-      words: ['Fish', 'Frog', 'Fan'],
+      words: ['Fish', 'Frog', 'Feather'],
       wordNote: 'Teeth on lip, push the air: fffff. No voice — just wind.',
-      drawPrompt: 'a fish with fancy fins, or a frog on a fan',
+      drawPrompt: 'a fish with fancy fins, or a frog on a log',
     },
   },
 
@@ -550,19 +550,19 @@ const RAW: RawLetterDef[] = [
     h1: 'Letter J Coloring Pages',
     metaTitle: 'Letter J Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter J coloring page: bubble J and j, jam-jet-jelly, a trace row, and a draw-your-own box. Two pages, prints clean, free.',
+      'Free letter J coloring page: bubble J and j, juice-jet-jelly, a trace row, and a draw-your-own box. Two pages, prints clean, free.',
     lead:
-      'Bubble J and j, jam, jet and jelly to color, a trace row, and a draw box. Two pages, ready for the jar of crayons.',
+      'Bubble J and j, juice, jet and jelly to color, a trace row, and a draw box. Two pages, ready for the jar of crayons.',
     introHeading: 'The letter with the hook',
     intro: [
       'J is i grown up and gone somewhere: same stem, same dot on the lowercase, but the stem ends in a hook that dives below the line. That hook is the only structural difference between i and j on the lowercase side, and coloring the two pages in the same week — i\'s short stem, then j\'s diving stem — teaches the contrast better than any side-by-side worksheet. The capital J has the hook too, sweeping under itself with more room than any other capital gets.',
-      'The sound is a quick voiced tap — jaw, jaw, jaw. Jam, jet and jelly front-load it, and jam is the word children say with the most enthusiasm, which is a real factor: enthusiasm gets a letter remembered. Jelly and jam together also set up the longest-running kindergarten joke, that jelly and jam are different foods, which your child will be delighted to explain to anyone who stands still.',
+      'The sound is a quick voiced tap — jaw, jaw, jaw. Juice, jet and jelly front-load it, and juice is the word children ask for by name, which is a real factor: enthusiasm gets a letter remembered. Juice and jelly together also set up the longest-running kindergarten debate, whether jelly and jam are different foods, which your child will be delighted to explain to anyone who stands still.',
     ],
     printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Jump the j',
-        body: 'J is for jump: color the letter, then jump while saying j-words — jump, jam, jelly. The j sound and the jumping motion both start with that same quick release, and gross-motor pairing is how active learners keep letters.',
+        body: 'J is for jump: color the letter, then jump while saying j-words — jump, juice, jelly. The j sound and the jumping motion both start with that same quick release, and gross-motor pairing is how active learners keep letters.',
       },
       {
         title: 'Color the hook last',
@@ -576,7 +576,7 @@ const RAW: RawLetterDef[] = [
     faqs: [
       {
         q: 'What J words can my child color?',
-        a: 'Jam, jet and jelly in the bubble row. Juice, jacket and jaguar are the favorite box-drawing extensions — and jellyfish, which is technically two j-words in one animal and highly popular for that reason.',
+        a: 'Juice, jet and jelly in the bubble row. Jacket, jaguar and jam are the favorite box-drawing extensions — and jellyfish, which is technically two j-words in one animal and highly popular for that reason.',
       },
       {
         q: 'How is j different from i?',
@@ -594,8 +594,8 @@ const RAW: RawLetterDef[] = [
     sheet: {
       capital: 'J',
       lower: 'j',
-      words: ['Jam', 'Jet', 'Jelly'],
-      wordNote: 'A quick tap of the tongue behind the teeth: jaw, jam, jelly. Say it while you shade.',
+      words: ['Juice', 'Jet', 'Jelly'],
+      wordNote: 'A quick tap of the tongue behind the teeth: jaw, juice, jelly. Say it while you shade.',
       drawPrompt: 'a jar of jelly with a spoon, or a jet leaving a sky-writing j',
     },
   },
@@ -774,12 +774,12 @@ const RAW: RawLetterDef[] = [
     h1: 'Letter N Coloring Pages',
     metaTitle: 'Letter N Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter N coloring page: bubble N and n, nest-net-nine... nest, nut and net to color, a trace row, and a draw box. Two pages, free.',
+      'Free letter N coloring page: bubble N and n, nest-nose-nut... nest, nut and nose to color, a trace row, and a draw box. Two pages, free.',
     lead:
-      'Bubble N and n, nest, nut and net to color, a trace row, and a draw box. Two pages for the letter that says no — and night, and nose.',
+      'Bubble N and n, nest, nut and nose to color, a trace row, and a draw box. Two pages for the letter that says no — and night, and nose.',
     introHeading: 'The nose letter',
     intro: [
-      'N is a hum through the nose: tongue up behind the teeth like d, but the air routes out the nostrils instead of the mouth. Pinch your nose shut mid-nnnooo and the sound stops completely — that demonstration is the whole phonics lesson for this page, and children find it hilarious, which means they repeat it, which means they learn it. Nest, nut and net keep the n at the front of every word.',
+      'N is a hum through the nose: tongue up behind the teeth like d, but the air routes out the nostrils instead of the mouth. Pinch your nose shut mid-nnnooo and the sound stops completely — that demonstration is the whole phonics lesson for this page, and children find it hilarious, which means they repeat it, which means they learn it. Nest, nut and nose keep the n at the front of every word.',
       'The shape is half an M: two towers, one valley. Coloring the M page and this one in sequence shows the subtraction visually — same construction, one fewer valley. The lowercase n is among the most frequent letters in early reading (in, on, no, and), so recognition here pays out quickly in real sentences, sooner than with rarer letters like q or z.',
     ],
     printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
@@ -800,11 +800,11 @@ const RAW: RawLetterDef[] = [
     faqs: [
       {
         q: 'What N words are on this coloring page?',
-        a: 'Nest, nut and net. Night, nose and nine are the common extensions, and ninja appears with surprising frequency in the draw box — usually airborne, always colored black.',
+        a: 'Nest, nut and nose. Night, nine and nickel are the common extensions, and ninja appears with surprising frequency in the draw box — usually airborne, always colored black.',
       },
       {
         q: 'What sound does N make?',
-        a: 'A nasal hum — tongue up like d, air out the nose: nnn. The pinch-your-nose test proves the air route instantly. It pairs the same way at the front of nest, nut and net, all three of which are on the sheet.',
+        a: 'A nasal hum — tongue up like d, air out the nose: nnn. The pinch-your-nose test proves the air route instantly. It pairs the same way at the front of nest, nut and nose, all three of which are on the sheet.',
       },
       {
         q: 'Is N the same shape as M?',
@@ -818,7 +818,7 @@ const RAW: RawLetterDef[] = [
     sheet: {
       capital: 'N',
       lower: 'n',
-      words: ['Nest', 'Nut', 'Net'],
+      words: ['Nest', 'Nut', 'Nose'],
       wordNote: 'A hum out the nose: nnnn. Pinch your nose mid-sound and feel it stop.',
       drawPrompt: 'a nest with eggs, or a nut with a door and windows',
     },

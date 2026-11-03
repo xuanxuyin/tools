@@ -3,7 +3,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { coloringLetters } from './coloringLetters';
-import { hasLetterArt } from '../lib/drawings';
+import { hasLetterArt, letterDrawings } from '../lib/drawings';
 
 const LOWERCASE = [...'abcdefghijklmnopqrstuvwxyz'];
 /** Letters carrying the six-drawing gallery (PLAN 2026-11-03 rework: all 26). */
@@ -104,6 +104,27 @@ describe('coloring letter matrix', () => {
         expect(def.sheetImage?.alt).toContain(`letter ${def.sheet.capital} coloring page`);
       }
       expect(existsSync(resolve(ROOT, 'public', `images/letter-${def.slug}-coloring-page.png`))).toBe(true);
+    }
+  });
+
+  it('ships a vendored OpenMoji SVG for every emoji-served gallery element', () => {
+    for (const def of coloringLetters) {
+      if (!hasLetterArt(def.slug)) continue;
+      const drawings = letterDrawings({
+        capital: def.sheet.capital,
+        lower: def.slug,
+        words: def.sheet.words,
+      });
+      for (const d of drawings) {
+        for (const el of d.els) {
+          if (el.kind === 'img') {
+            expect(
+              existsSync(resolve(ROOT, 'public', el.src.replace(/^\//, ''))),
+              `missing vendored art: ${el.src} (letter ${def.slug})`,
+            ).toBe(true);
+          }
+        }
+      }
     }
   });
 });

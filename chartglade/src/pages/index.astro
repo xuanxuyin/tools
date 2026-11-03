@@ -7,21 +7,33 @@ const hubs = [
     href: '/charts/',
     title: 'Math Charts',
     body: 'Place value, multiplication, fractions, hundred chart, number lines, addition — every K-8 wall and desk chart, printable on letter paper.',
+    img: '/images/hundred-chart-printable.png',
+    imgAlt: 'A printable hundred chart with numbers 1 to 100 in a ten-by-ten grid.',
+    chip: '10+ charts',
   },
   {
     href: '/sight-words/',
     title: 'Sight Words',
     body: 'All 220 Dolch words by grade, preschool through third, as printable word cards with teaching notes for each level.',
+    img: '/images/kindergarten-sight-words-printable.png',
+    imgAlt: 'A printable kindergarten sight word list with 52 Dolch words in a grid.',
+    chip: '220 Dolch words',
   },
   {
     href: '/cursive/',
     title: 'Cursive',
     body: 'The full cursive alphabet chart with a tracing strip, and how the letters are actually taught — stroke families, not A-to-Z.',
+    img: '/images/cursive-alphabet-chart-printable.png',
+    imgAlt: 'A printable cursive alphabet chart showing all 26 letters with a tracing strip.',
+    chip: '26 letter pages',
   },
   {
     href: '/coloring/',
     title: 'Coloring Pages',
     body: 'Letter coloring pages for every letter A-Z — six pictures to color plus a bubble-letter practice sheet with a trace row and a draw-your-own box.',
+    img: '/images/letter-b-coloring-page.png',
+    imgAlt: 'A printable letter B coloring page with six pictures to color, including a ball, bear and boat.',
+    chip: 'A through Z',
   },
 ];
 
@@ -79,7 +91,11 @@ const jsonLd = [
   <section class="section">
     <div class="card-grid">
       {hubs.map((h) => (
-        <a class="card" href={h.href}>
+        <a class="card hub-card" href={h.href}>
+          <span class="hub-thumb">
+            <img src={h.img} alt={h.imgAlt} width="400" height="300" loading="eager" />
+          </span>
+          <span class="hub-chip">{h.chip}</span>
           <h2>{h.title}</h2>
           <p>{h.body}</p>
         </a>
@@ -87,17 +103,30 @@ const jsonLd = [
     </div>
   </section>
 
-  <section class="section">
-    <h2>{seasonal.heading}</h2>
-    <p class="lead">{seasonal.body}</p>
-    <ul class="related-list">
-      {seasonal.links.map((l) => (
-        <li><a href={l.href}>{l.label}</a></li>
-      ))}
-    </ul>
-    <p class="related-list">
-      <a href={seasonal.hub.href}>{seasonal.hub.label}</a>
-    </p>
+  <section class="section seasonal-band">
+    <div class="seasonal-split">
+      <div>
+        <h2>{seasonal.heading}</h2>
+        <p class="lead">{seasonal.body}</p>
+        <ul class="related-list">
+          {seasonal.links.map((l) => (
+            <li><a href={l.href}>{l.label}</a></li>
+          ))}
+        </ul>
+        <p class="related-list">
+          <a href={seasonal.hub.href}>{seasonal.hub.label}</a>
+        </p>
+      </div>
+      <a class="seasonal-thumb" href="/christmas-stocking-coloring-page/">
+        <img
+          src="/images/christmas-stocking-coloring-page.png"
+          alt="A printable Christmas stocking coloring page with a large stocking and two small patchwork stockings."
+          width="400"
+          height="504"
+          loading="lazy"
+        />
+      </a>
+    </div>
   </section>
 
   <section class="section">
