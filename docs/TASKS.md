@@ -13,6 +13,7 @@
 - [ ] 👤 **外链扩容 A 组启动：手作 Reddit 三版养号**：[r/PerlerBeads](https://www.reddit.com/r/PerlerBeads/) + [r/beadsprites](https://www.reddit.com/r/beadsprites/) + r/PerlerBeadArt——每天浏览 + 1~2 条无链真人评论（晒图/答新手，零链接），攒到满足门槛后发 photo 工具发布帖（**r/beadsprites 有 "I made a free tool that turns pictures into bead patterns" 被接受先例**，11/03 实勘）。规则红线见 [tintbrew DISTRIBUTION §7A](./tintbrew/DISTRIBUTION.md)：原创/注明出处、90/10 自推比、单帖单链
 - [ ] 👤 **外链扩容 B 组：GitHub awesome-list PR ×4 提交（文案已齐）**：repo 候选 = `bradtraversy/design-resources` / `MohamedYoussouf/Design-Resources` / `F4dhil9ant3ng/awesome-design` / `GracieCreates/Design-Resources-for-Developers`——完整执行包（条目行/标题/描述/插入点/五步流程）在 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)，每 repo 约 2 分钟网页版操作；提交前浏览器核一眼该 repo Color 区现有条目格式即可。每提一个回 TASKS 勾掉并记 PR 链接
 - [ ] 👤 **外链生效对账（挂 11/17）**：SEMrush 引荐域名 38 → **45+** = 通道生效；不到 → 复盘执行率而不是换通道。本周内先报 GitHub/Quora 账号是否就位
+- [ ] 👤 **拆竞品外链来源（SEMrush，校准 §7 六通道火力分配）**：SEMrush → Backlink Analytics → 输入 `perlerbeadpatterns.org`（6 月新站排 #2 的对位竞品）→ 看 **Referring Domains** 列表（按 Authority Score 排）→ 记两件事：① 它的外链集中在什么渠道（craft 博客 roundup？Reddit？目录站？）② 有没有我们 §7 清单之外的渠道形态 → 数字/域名清单贴回给 🤖 判读。**判读用途**：它一半外链来自 roundup → F 组升主通道；靠 Reddit → A 组升主通道；发现新形态 → 补进 §7
 - [x] 👤 **tintbrew D1 迁移 SQL ✅ 已跑完（11/3 用户控制台执行，钱包面板出现即 authors 表生效——积分/扩位/多作品全解锁）**：Cloudflare 控制台 → Storage & Databases → D1 → tintbrew 库 → Console，把 `tintbrew/functions/schema.sql` **底部注释里的 6 条迁移 SQL 按序逐条执行**（creations 重建支持多作品 + 建 authors 钱包表）。**不跑的后果（实测）**：/gallery/ 曾因钱包查询炸掉整页不显示热门作品（11/3 已加容错兜底，列表恢复但钱包面板隐藏）；点赞积分、100 积分扩画廊位、发布第二件作品**全部静默不生效**。跑完即全部解锁。
 
 ---
