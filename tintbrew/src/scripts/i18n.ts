@@ -17,6 +17,7 @@ import { UI_STRINGS, MIX_RESULTS, LANGS, type Lang, type UiKey } from '../data/u
 import { BEAD_NAMES, BEAD_COLORS } from '../data/beadI18n';
 import { COLOR_NAMES } from '../data/colorNamesI18n';
 import { GUIDE_TEXTS } from '../data/guideTexts';
+import { COLORING_TITLES, COLORING_TITLES_BY_EN } from '../data/coloringTitles';
 const STORE_KEY = 'tb-lang';
 const HTML_LANG: Record<Lang, string> = { en: 'en', zh: 'zh-CN', ko: 'ko' };
 
@@ -52,6 +53,7 @@ function fillArgs(s: string, args: Record<string, string>): string {
       (lang === 'en' ? undefined : MIX_RESULTS[lang][v]) ??
       (lang === 'en' ? undefined : BEAD_NAMES[lang][v] ?? BEAD_COLORS[lang][lower]) ??
       (lang === 'en' ? undefined : COLOR_NAMES[lang][lower]) ??
+      (lang === 'en' ? undefined : COLORING_TITLES_BY_EN[v]?.[lang]) ??
       v;
     return v[0] === v[0]!.toUpperCase() && resolved[0] !== resolved[0]!.toUpperCase()
       ? resolved[0]!.toUpperCase() + resolved.slice(1)
@@ -124,6 +126,19 @@ function apply(root: ParentNode = document) {
     const s = UI_STRINGS[lang][key as UiKey];
     if (!s) continue;
     el.textContent = fill(el, s);
+  }
+  // artwork titles (coloring pieces): data-i18n-piece="<slug>" — localized
+  // names live in coloringTitles.ts, keyed by slug; en restores the SSR text
+  for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-piece]')) {
+    const slug = el.dataset.i18nPiece as string;
+    if (lang === 'en') {
+      if (el.dataset.i18nPieceEn !== undefined) el.textContent = el.dataset.i18nPieceEn;
+      continue;
+    }
+    const tl = COLORING_TITLES[slug];
+    if (!tl) continue;
+    if (el.dataset.i18nPieceEn === undefined) el.dataset.i18nPieceEn = el.textContent ?? '';
+    el.textContent = tl[lang];
   }
   for (const el of root.querySelectorAll<HTMLElement>('[data-i18n-aria]')) {
     const s = attrString(el, 'aria-label', el.dataset.i18nAria as string);

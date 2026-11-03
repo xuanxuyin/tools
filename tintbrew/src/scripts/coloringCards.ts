@@ -8,6 +8,13 @@
 import { escapeHtml } from '../lib/boardSvg';
 import { t, tArgs, currentLang } from './i18n';
 import type { UiKey } from '../data/uiStrings';
+import { colTitle } from '../data/coloringTitles';
+import { COLORING_PIECES } from '../data/coloring';
+
+/** English display title for a piece slug (cards only carry the slug). */
+function enTitle(slug: string): string {
+  return COLORING_PIECES.find((p) => p.slug === slug)?.title ?? slug;
+}
 
 const DATE_LOCALE: Record<string, string> = { en: 'en-US', zh: 'zh-CN', ko: 'ko-KR' };
 
@@ -93,7 +100,7 @@ function metaHtml(p: ColPiece, nameClass: string): string {
     `<span class="gal-label" data-i18n="gal.artistL">${escapeHtml(t('gal.artistL'))}</span>` +
     `<span class="gal-nick">${escapeHtml(p.nick)}</span>` +
     `<span class="gal-label" data-i18n="col.g.baseL">${escapeHtml(t('col.g.baseL'))}</span>` +
-    `<span class="gal-nick col-basename">${escapeHtml(p.slug)}</span>` +
+    `<span class="gal-nick col-basename">${escapeHtml(colTitle(currentLang(), p.slug, enTitle(p.slug)))}</span>` +
     `</div>`
   );
 }
