@@ -9,7 +9,8 @@
 ## 今天 · 2026-11-03（周一）
 
 - [x] 🤖 **chartglade Cootie Catcher 首批上线 ✅（11/03 当日，死线 11/15 提前 12 天）**：/cootie-catcher/ + /christmas-cootie-catcher/ + /cootie-catcher-fortunes/ 三页合并 main `22d0905` 已 push；~~余二批+how-to~~ 11/03 晚实测判定批二/how-to 取消（见 PLAN 同日判定行），余情人节 12 月中。明细 [chartglade PLAN 11/03 上线行](./chartglade/PLAN.md) + §3 #34
-- [ ] 🤖 **tintbrew 外链文案包（本周）**：① B 组 4 个 GitHub awesome-list PR 正文定稿 ✅ **已完成**（执行包落 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)：通用条目行+PR标题+描述+逐 repo 插入点+网页版提 PR 五步，👤 提交前只需浏览器里核一眼各 repo Color 区格式）② F 组 Roundup 目标 20 个清单（craft 博客 listicle + 教师资源页，每站一句定制 hook）③ C 组 Quora 答帖模板 2 版（brown/purple 两问法）。②③ 逐项转 👤
+- [x] 🤖 **chartglade 11 月批提前上线 + 图片 wave 4 + og:image 收口 ✅（11/03，原排 11/12 窗）**：① 主车厢 7 URL 合并 main `e1da996`→`e695e91`（/place-value-chart-with-periods/ + /multiplication-chart-printable/ + /times-table-chart/ + cursive 深化 2 页 + /teaching-calendar/ + decimal island/变体段；首页季节槽感恩节→圣诞，胶囊方角 bug 同批修）② 图片 wave 4：20 页接产品 PNG（25 新图，全站 sheet-preview 31→51）+ og:image 页级接线（31 图进社交元数据）`caadeaa`→`50fe193`；467/467 绿 + 105 页 build；IndexNow 24 URL 200。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md)
+- [x] 🤖 **tintbrew 外链文案包 ✅ 三件全交付（11/03）**：① B 组 4 个 GitHub awesome-list PR 正文定稿（执行包落 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)）②③ Quora 答帖 2 版（brown/purple 实问 URL）+ F 组 23 目标核实表，全落 [tintbrew/DISTRIBUTION.md §C/§F](./tintbrew/DISTRIBUTION.md)（`26008cd`）——**转 👤**：Quora 2 帖照 §C 模板发（链接只进末句）、23 目标逐站照 §F hook 提交
 - [ ] 👤 **外链扩容 A 组启动：手作 Reddit 三版养号**：[r/PerlerBeads](https://www.reddit.com/r/PerlerBeads/) + [r/beadsprites](https://www.reddit.com/r/beadsprites/) + r/PerlerBeadArt——每天浏览 + 1~2 条无链真人评论（晒图/答新手，零链接），攒到满足门槛后发 photo 工具发布帖（**r/beadsprites 有 "I made a free tool that turns pictures into bead patterns" 被接受先例**，11/03 实勘）。规则红线见 [tintbrew DISTRIBUTION §7A](./tintbrew/DISTRIBUTION.md)：原创/注明出处、90/10 自推比、单帖单链
 - [ ] 👤 **外链扩容 B 组：GitHub awesome-list PR ×4 提交（文案已齐）**：repo 候选 = `bradtraversy/design-resources` / `MohamedYoussouf/Design-Resources` / `F4dhil9ant3ng/awesome-design` / `GracieCreates/Design-Resources-for-Developers`——完整执行包（条目行/标题/描述/插入点/五步流程）在 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)，每 repo 约 2 分钟网页版操作；提交前浏览器核一眼该 repo Color 区现有条目格式即可。每提一个回 TASKS 勾掉并记 PR 链接
 - [ ] 👤 **外链生效对账（挂 11/17）**：**改数质量引荐域名**（Backlink Analytics → Referring Domains，排除 rankvance/*.xyz 站群/fiverr-*.site/*.shop SEO 广告站/WHOIS 爬虫域）——11/03 全量分拣：38 域 = 垃圾 28 + 可疑 9 + **质量仅 1**（launchindex.net）。**终版线：1 → ≥15**；不到 → 复盘执行率而不是换通道。口径依据 [tintbrew DISTRIBUTION §7.1 附注三](./tintbrew/DISTRIBUTION.md)。本周内先报 GitHub/Quora 账号是否就位
@@ -153,7 +154,7 @@
 |---|---|
 | 10/30（周五） | ⭐ **B 计划讨论门 ✅ 已闭环（10/30 拍板）**：外线不加火力——C 组 4 封撤销（"前面 18 封零回复，发了没意义"）、11/2 follow-up 同砍、已发 18 封听其自然；止损线 2027-01-31 不动；主线转 11 月批 |
 | 11/02（周一） | **tintbrew 11 月轻批开工日 ✅ 五连批当日上线**：P1 分板打印 + P2 裁剪（11 月批执行序①②）→ 全站视觉两轮（胶囊暖白风，对标 perlerbeadpatterns.org）→ UGC 发布闭环（官方模板选择器 + photo/模式页 Publish + 画廊 Open in editor remix）→ /gallery/ 三连 bug 修复（卡片两段式布局 + 点赞双实例同步 + 昵称记忆）。明细 PLAN 11/02 五行；👤 待验收：发布/点赞/视觉三类 |
-| 11 月 | chartglade 11 月批（11/12 上线窗，`nov-predev` 弹药 85 页已备）：#24 place value 深化 + #25 mult 2 页 + #26 Teaching Calendar hub + #20 cursive 深化 2 页 + **#28 Christmas 簇加车（死线 11/15）** + #32 图片扩容第二波搭车 ｜ tintbrew：~~拼豆 P1+P2~~ **✅ 11/2 已上线** ｜ V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
+| 11 月 | chartglade 11 月批 **✅ 主车厢 11/03 提前上线**（#24/#25/#26/#20 + 圣诞季节槽 + 图片 wave4/og:image；余：CBN 涂色扩展 roman numerals 后续 + #31 variants[] 12 月批 + 情人节 cootie 12 月中）｜ tintbrew：~~拼豆 P1+P2~~ **✅ 11/2 已上线** ｜ V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
 | 2027-01-31 | **双站止损线复盘**（chartglade <3K 且零词 top 30；tintbrew <5K 且零词 top 30 → 停投） |
 
 ---
