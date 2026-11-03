@@ -266,3 +266,7 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 > **附注二（11/03 晚）：tintbrew 自身 profile 深查 —— 垃圾链轰炸从 9/8 起持续，38 基线是脏的**
 > ① 全貌：rankvance.com 子域 ×50+ / fiverr-seo-*.site 站群 / linkly.agency *.xyz 假证言站群 / keywordrocket.shop / seoimprovementtool.shop / kaila.biz 类 WHOIS 爬虫站，9/8~9/10 起持续至今，全 nofollow/AS 0~41 模板页。**铁证无差别扫描**：kaila.biz 列表页标题即 "New & Old Domains (2026/09/07/140)" —— 专爬新注册域名批量喷链，tintbrew 9/4 上线 9/7 入快照。**判定：被动中招的炮灰，非我方产出，与竞品主动买链性质不同**。处置不变：忽略不 disavow、不回删链邮件；GSC 曝光曲线持续涨 = 实证未伤。
 > ② **⚠️ 对账口径修正**：原 11/17 线 "SEMrush 引荐域名 38 → 45+" 里 38 含大量上述垃圾域 → 照原口径垃圾链一涨就"达标"。**改数质量引荐域名**：排除 rankvance.com / *.xyz 站群 / fiverr-seo-*.site / *.shop SEO 广告站 / WHOIS 爬虫站后的人工编辑域。**新线：11/17 质量域名 ≥15 即胜**（B 组 4 + A 组 Reddit 1~2 + E 组目录 2~3 + 自然增长）。
+
+> **附注三（11/03 晚）：Referring Domains 全量分拣（👤 导出，38 域全在案）**
+> 分拣：**明确垃圾网络 28**（rankvance.com 独占 165 条链接=全站 3/4；*.xyz 假证言 ×12；fiverr-seo-*.site ×5；*.shop 广告站 ×6；WHOIS 爬虫 ×3）+ **可疑杂域 9**（nairmobilya/假 pandora/假 nike 等，9/9~9/12 同批喷入）+ **质量域名仅 1** = **launchindex.net**（AS7/nofollow/10/14，startup launch 目录，**非我方提交**——自动收录新工具站的生态存在，E 组可行性反向验证）。
+> **终版基线：质量引荐域名 = 1（launchindex.net）**。11/17 对账线终定：**1 → ≥15**（拆解：B组 GitHub 4 + A组 Reddit 1~2 + C组 Quora 1 + E组目录 3~4 + 自然 2~4 ≈ 11~15，全通道执行才够得着，不到=复盘执行率）。
