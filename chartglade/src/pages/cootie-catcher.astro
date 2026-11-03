@@ -1,0 +1,13 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import CootieCatcherSheet from '../components/printables/CootieCatcherSheet.astro';
+import { cootieCatcherPage, CLASSIC_CORNER_LABELS, pickSheetFortunes, GENERAL_FORTUNES } from '../data/cootie';
+
+const def = cootieCatcherPage;
+// Deterministic sheet: four blessings, fixed seed — same sheet every build (SSR-stable).
+const sheetFortunes = pickSheetFortunes(GENERAL_FORTUNES, 'blessing', 4, 0);
+---
+
+<ChartPage def={def}>
+  <CootieCatcherSheet labels={CLASSIC_CORNER_LABELS} fortunes={sheetFortunes} title="classic fortune teller with four fortunes" />
+</ChartPage>

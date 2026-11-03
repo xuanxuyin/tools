@@ -2404,3 +2404,183 @@ svg {
   }
 }
 
+
+/* ===================================================================== */
+/* Screen visual refresh — 2026-11-03 pass (cootie batch).               */
+/* Everything below is @media screen only: the print system above is     */
+/* validated and must not move.                                          */
+/* ===================================================================== */
+@media screen {
+  /* --- typographic hierarchy: bigger display, marked h2 --- */
+  .hero h1 {
+    font-size: clamp(1.9rem, 4.2vw, 2.7rem);
+    letter-spacing: -0.01em;
+  }
+  .prose h2,
+  .section h2 {
+    position: relative;
+    padding-left: 0.85rem;
+    font-size: 1.45rem;
+  }
+  .prose h2::before,
+  .section h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.28em;
+    width: 0.32rem;
+    height: 0.85em;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--green), var(--green-deep));
+  }
+
+  /* --- buttons: gradient primary, soft shadow, hover lift --- */
+  .btn {
+    box-shadow: 0 1px 2px rgb(33 43 38 / 0.06);
+    transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+  }
+  .btn:hover {
+    box-shadow: 0 2px 6px rgb(33 43 38 / 0.1);
+    transform: translateY(-1px);
+  }
+  .btn-primary {
+    background: linear-gradient(180deg, #37905c, var(--green-deep));
+    border-color: var(--green-deep);
+    box-shadow: 0 2px 6px rgb(31 92 57 / 0.28);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(180deg, var(--green-deep), #173f28);
+    box-shadow: 0 3px 9px rgb(31 92 57 / 0.34);
+  }
+
+  /* --- hero: calmer rhythm --- */
+  .hero {
+    padding: var(--sp-3) 0 var(--sp-2);
+  }
+  .hero .lead {
+    font-size: 1.12rem;
+    line-height: 1.6;
+  }
+
+  /* --- cards: depth + hover --- */
+  .card {
+    box-shadow: 0 1px 3px rgb(33 43 38 / 0.07);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover {
+    box-shadow: 0 4px 12px rgb(33 43 38 / 0.12);
+    transform: translateY(-2px);
+  }
+
+  /* --- teaching tips: tinted panel --- */
+  .tips {
+    background: var(--green-tint);
+    border-radius: var(--radius);
+    padding: var(--sp-5);
+  }
+  .tips h2 {
+    padding-left: 0.85rem;
+  }
+  .tip {
+    background: var(--card);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-4);
+    box-shadow: 0 1px 3px rgb(33 43 38 / 0.06);
+  }
+
+  /* --- FAQ details: carded --- */
+  .faq details {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-3) var(--sp-4);
+    margin-bottom: var(--sp-2);
+  }
+  .faq summary {
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* --- related links: pill chips --- */
+  .related-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    list-style: none;
+    padding: 0;
+  }
+  .related-list a {
+    display: inline-block;
+    padding: 0.32rem 0.85rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--card);
+    text-decoration: none;
+    font-size: 0.92rem;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .related-list a:hover {
+    border-color: var(--green);
+    background: var(--green-tint);
+  }
+
+  /* --- sheet preview: framed, shadowed --- */
+  .sheet-preview img {
+    box-shadow: 0 3px 14px rgb(33 43 38 / 0.12);
+  }
+
+  /* --- printable toolbar: quiet pill --- */
+  .printable-toolbar {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  /* --- data tables: intentionally NO screen restyle ---
+     Teardown 2026-11-03 (dadsworksheets, raw HTML + local pixel analysis of
+     three chart JPGs): the incumbent's chart product ships as the print sheet
+     itself — the B&W default has NO header fill, NO banding, uniform thin
+     gridlines on white; color lives in separate product variants (red/green/
+     blue/rainbow, value-shaded, diagonal-equal), never as screen chrome.
+     Our .chart-table IS the print product (SSR HTML), and the sheet-images
+     pipeline screenshots the screen render for Google Images — any screen-
+     only colorization would diverge the PNG from the printed paper and read
+     as dashboard style no education incumbent uses. Base styles (light
+     green-tint header, uniform 1px --line-strong grid) already sit inside the
+     incumbent convention and print fine on B&W printers. What-you-see-is-
+     what-you-print wins; the prettiness lever is chart color VARIANTS, not
+     screen chrome (follow-up idea, needs its own spec). */
+
+  /* --- prose content: readable measure and rhythm ---
+     Incumbent pages are long-form (h2 sections, lists, FAQs — dadsworksheets
+     carries ~1,800 words around the chart wall); the readability pass serves
+     that structure. The strong highlight continues the repo-wide typographic
+     language already shipped on tintbrew. */
+  .prose p {
+    line-height: 1.68;
+    margin: 0 0 var(--sp-4);
+  }
+  .prose ul,
+  .prose ol {
+    line-height: 1.62;
+    margin: 0 0 var(--sp-4);
+  }
+  .prose li {
+    margin-bottom: var(--sp-1);
+  }
+  .prose li::marker {
+    color: var(--green);
+  }
+  .prose strong {
+    background: linear-gradient(180deg, transparent 64%, rgb(47 125 79 / 0.16) 0);
+    padding: 0 0.08em;
+  }
+  .prose a {
+    text-decoration-color: rgb(47 125 79 / 0.4);
+    text-underline-offset: 2px;
+  }
+  .prose a:hover {
+    text-decoration-color: var(--green);
+  }
+}
