@@ -31,17 +31,17 @@ const popular = [
   { href: '/number-line-printable/', label: 'Number line 0-20' },
 ];
 
-// Seasonal slot — swap this block per season (next: winter holidays, late Nov).
+// Seasonal slot — swap this block per season (current: winter holidays; next: 100th Day, late Jan).
 const seasonal = {
-  heading: 'Getting ready for Thanksgiving',
-  body: 'Word searches, color by number, a thankful worksheet, and a dinner-table placemat — print-and-go, free, no sign-up.',
+  heading: 'Christmas printables for December',
+  body: 'Word searches, color-by-number math facts, a letter-to-Santa writing page, and a foldable Christmas cootie catcher — print-and-go, free, no sign-up.',
   links: [
-    { href: '/thanksgiving-word-search/', label: 'Thanksgiving word search (2 levels)' },
-    { href: '/thanksgiving-color-by-number/', label: 'Color by number math facts' },
-    { href: '/i-am-thankful-for-worksheet/', label: 'I am thankful for worksheet' },
-    { href: '/thanksgiving-placemat-printable/', label: 'Thanksgiving placemat' },
+    { href: '/christmas-word-search/', label: 'Christmas word search (2 levels)' },
+    { href: '/christmas-color-by-number/', label: 'Color by number math facts' },
+    { href: '/letter-to-santa/', label: 'Letter to Santa writing paper' },
+    { href: '/christmas-cootie-catcher/', label: 'Christmas cootie catcher' },
   ],
-  hub: { href: '/thanksgiving-printables/', label: 'See all Thanksgiving sheets' },
+  hub: { href: '/christmas-printables/', label: 'See all Christmas printables' },
 };
 
 const jsonLd = [
@@ -89,7 +89,9 @@ const jsonLd = [
         <li><a href={l.href}>{l.label}</a></li>
       ))}
     </ul>
-    <p><a class="btn" href={seasonal.hub.href}>{seasonal.hub.label}</a></p>
+    <p class="related-list">
+      <a href={seasonal.hub.href}>{seasonal.hub.label}</a>
+    </p>
   </section>
 
   <section class="section">
