@@ -2536,4 +2536,51 @@ svg {
     border-radius: var(--radius);
     padding: var(--sp-2) var(--sp-3);
   }
+
+  /* --- data tables: intentionally NO screen restyle ---
+     Teardown 2026-11-03 (dadsworksheets, raw HTML + local pixel analysis of
+     three chart JPGs): the incumbent's chart product ships as the print sheet
+     itself — the B&W default has NO header fill, NO banding, uniform thin
+     gridlines on white; color lives in separate product variants (red/green/
+     blue/rainbow, value-shaded, diagonal-equal), never as screen chrome.
+     Our .chart-table IS the print product (SSR HTML), and the sheet-images
+     pipeline screenshots the screen render for Google Images — any screen-
+     only colorization would diverge the PNG from the printed paper and read
+     as dashboard style no education incumbent uses. Base styles (light
+     green-tint header, uniform 1px --line-strong grid) already sit inside the
+     incumbent convention and print fine on B&W printers. What-you-see-is-
+     what-you-print wins; the prettiness lever is chart color VARIANTS, not
+     screen chrome (follow-up idea, needs its own spec). */
+
+  /* --- prose content: readable measure and rhythm ---
+     Incumbent pages are long-form (h2 sections, lists, FAQs — dadsworksheets
+     carries ~1,800 words around the chart wall); the readability pass serves
+     that structure. The strong highlight continues the repo-wide typographic
+     language already shipped on tintbrew. */
+  .prose p {
+    line-height: 1.68;
+    margin: 0 0 var(--sp-4);
+  }
+  .prose ul,
+  .prose ol {
+    line-height: 1.62;
+    margin: 0 0 var(--sp-4);
+  }
+  .prose li {
+    margin-bottom: var(--sp-1);
+  }
+  .prose li::marker {
+    color: var(--green);
+  }
+  .prose strong {
+    background: linear-gradient(180deg, transparent 64%, rgb(47 125 79 / 0.16) 0);
+    padding: 0 0.08em;
+  }
+  .prose a {
+    text-decoration-color: rgb(47 125 79 / 0.4);
+    text-underline-offset: 2px;
+  }
+  .prose a:hover {
+    text-decoration-color: var(--green);
+  }
 }
