@@ -39,10 +39,12 @@ No account required, no ads interstitials, works in the browser.
 
 | # | Repo | 插入位置 | 备注 |
 |---|---|---|---|
-| 1 | [bradtraversy/design-resources](https://github.com/bradtraversy/design-resources) | README 的 **Color** 区（表内有此区，位于 Fonts 前后） | 老牌 repo，star 多，合并慢，最值得等 |
+| 1 | [bradtraversy/design-resources-for-developers](https://github.com/bradtraversy/design-resources-for-developers) | README 的 **Color** 区 | 10 万+ star 名 repo（Traversy Media），合并慢，最值得等。11/03 勘误：此前误记为 `design-resources` |
 | 2 | [MohamedYoussouf/Design-Resources](https://github.com/MohamedYoussouf/Design-Resources) | README **Color Tools** 或同级区 | 活跃维护，合并快 |
-| 3 | [F4dhil9ant3ng/awesome-design](https://github.com/F4dhil9ant3ng/awesome-design) | **Color Tools** 类目 | — |
+| 3 | [gztchan/awesome-design](https://github.com/gztchan/awesome-design) | **Color Tools** 类目 | 11/03 勘误：原候选 F4dhil9ant3ng 是 fork 副本，PR 必须提给原版。README 较长，搜 "Color" 定位 |
 | 4 | [GracieCreates/Design-Resources-for-Developers](https://github.com/GracieCreates/Design-Resources-for-Developers) | Color/Design tools 区 | — |
+
+> 纪律补充（11/03 勘误教训）：提 PR 前确认 repo 不是 fork——fork 页顶部会标 "forked from xxx"，fork 上的 PR 不进主仓库白提。
 
 ## 提 PR 步骤（GitHub 网页版，每 repo 约 2 分钟）
 
