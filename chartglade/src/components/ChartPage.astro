@@ -24,6 +24,7 @@ const HUBS: Record<PageDef['hub'], { href: string; label: string }> = {
   thanksgiving: { href: '/thanksgiving-printables/', label: 'Thanksgiving' },
   christmas: { href: '/christmas-printables/', label: 'Christmas' },
   'sign-in-sheets': { href: '/sign-in-sheets/', label: 'Sign-In Sheets' },
+  cootie: { href: '/cootie-catcher/', label: 'Cootie Catchers' },
 };
 const hub = HUBS[def.hub];
 
@@ -57,6 +58,19 @@ if (def.interactive) {
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  });
+}
+
+if (def.howTo) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: def.howTo.name,
+    step: def.howTo.steps.map((s) => ({
+      '@type': 'HowToStep',
+      name: s.name,
+      text: s.text,
+    })),
   });
 }
 ---

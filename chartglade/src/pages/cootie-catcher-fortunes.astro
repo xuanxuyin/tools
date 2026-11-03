@@ -1,0 +1,112 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import { cootieCatcherFortunesPage, FORTUNE_LIBRARY, type FortuneTier } from '../data/cootie';
+
+
+const def = cootieCatcherFortunesPage;
+
+const TIERS: { tier: FortuneTier; blurb: string }[] = [
+  { tier: 'blessing', blurb: 'Small believable good news — the lucky-draw favorites.' },
+  { tier: 'nudge', blurb: 'A tiny push the player can actually do today.' },
+  { tier: 'gentle warning', blurb: 'Care-first reminders — never spooky, never doom.' },
+];
+---
+
+<ChartPage def={def}>
+  <div class="cc-ref-card">
+    <p class="cc-ref-title">Screen reference — nothing to print here</p>
+    <p>
+      Fold a catcher from the <a href="/cootie-catcher/">template page</a>, lift each flap, and copy a fortune
+      inside with a fine marker. The line goes on the flap; the meaning is your read-aloud bonus.
+    </p>
+  </div>
+
+  <Fragment slot="after">
+    {TIERS.map(({ tier, blurb }) => {
+      const pool = [...FORTUNE_LIBRARY.general, ...FORTUNE_LIBRARY.christmas].filter((f) => f.tier === tier);
+      return (
+        <section class="cc-tier">
+          <h2>
+            <span class={`cc-pill cc-pill--${tier.replace(' ', '-')}`}>{tier}</span>
+            {blurb}
+          </h2>
+          <ul class="cc-fortune-list">
+            {pool.map((f) => (
+              <li>
+                <p class="cc-line">“{f.line}”</p>
+                <p class="cc-meaning">{f.meaning}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })}
+  </Fragment>
+</ChartPage>
+
+<style>
+  .cc-ref-card {
+    border: 1.5px dashed #c9c5b8;
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    background: #faf9f5;
+    font-size: 0.95rem;
+  }
+  .cc-ref-title {
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+  .cc-tier {
+    margin-top: 1.6rem;
+  }
+  .cc-tier h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.15rem;
+  }
+  .cc-pill {
+    font-family: system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.18rem 0.6rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .cc-pill--blessing {
+    background: #e9f3ec;
+    color: #1f5c39;
+  }
+  .cc-pill--nudge {
+    background: #faf2e2;
+    color: #a86a14;
+  }
+  .cc-pill--gentle-warning {
+    background: #eef2f7;
+    color: #3d5a80;
+  }
+  .cc-fortune-list {
+    list-style: none;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .cc-fortune-list li {
+    background: #ffffff;
+    border: 1px solid #e4e1d7;
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+  }
+  .cc-line {
+    margin: 0 0 0.2rem;
+    font-weight: 700;
+  }
+  .cc-meaning {
+    margin: 0;
+    color: #55645b;
+    font-size: 0.95rem;
+  }
+</style>

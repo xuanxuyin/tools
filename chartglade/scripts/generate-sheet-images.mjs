@@ -45,6 +45,9 @@ const SHOTS = [
     page: `cursive/${l}`,
     file: `cursive-letter-${l}-worksheet`,
   })),
+  // Wave 3 (2026-11-03, cootie catcher batch)
+  { page: 'cootie-catcher', file: 'cootie-catcher-template-printable' },
+  { page: 'christmas-cootie-catcher', file: 'christmas-cootie-catcher-printable' },
 ];
 
 const MIME = {
@@ -81,7 +84,7 @@ const server = createServer((req, res) => {
 await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const base = `http://127.0.0.1:${server.address().port}`;
 
-const browser = await chromium.launch({ channel: 'msedge', headless: true });
+const browser = await chromium.launch({ channel: 'msedge', headless: true, args: ['--no-proxy-server'] });
 mkdirSync(OUT, { recursive: true });
 
 try {

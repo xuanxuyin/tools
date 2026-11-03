@@ -13,7 +13,8 @@ export interface PageDef {
     | 'halloween'
     | 'thanksgiving'
     | 'christmas'
-    | 'sign-in-sheets';
+    | 'sign-in-sheets'
+    | 'cootie';
   h1: string;
   metaTitle: string;
   metaDescription: string;
@@ -30,6 +31,8 @@ export interface PageDef {
   related: { href: string; label: string }[];
   /** Interactive printable -> also gets WebApplication JSON-LD. */
   interactive?: boolean;
+  /** Fold/make steps -> HowTo JSON-LD (4/5 incumbent cootie pages lack it). */
+  howTo?: { name: string; steps: { name: string; text: string }[] };
   /**
    * In-content preview image of the printable itself — the Google Images
    * channel (page HTML is a table/SVG otherwise, which image search can't

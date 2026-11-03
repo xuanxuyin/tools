@@ -1,0 +1,247 @@
+---
+/**
+ * Printable cootie catcher sheet (paper fortune teller) — one square,
+ * cut-and-fold, fold lines printed on the sheet (skip-to-my-lou convention:
+ * instructions on the paper, no download step).
+ *
+ * Print conventions matched to pre-filled incumbents (cassiesmallwood et al):
+ * corner color/word labels on the four corners, numbers 1-8 on the eight
+ * diamond sectors (clear of every crease), fortunes in the four center
+ * quadrants (the faces the player lifts). Labels are text tokens, so the
+ * sheet plays identically in grayscale. No IP art — icons are generic
+ * primitives drawn here.
+ */
+import { wrapFortuneLine, CLASSIC_CORNER_LABELS, type CootieFortune } from '../../data/cootie';
+
+interface Props {
+  labels: readonly string[];
+  fortunes: CootieFortune[];
+  title: string;
+  variant?: 'classic' | 'christmas';
+}
+
+const { labels, fortunes, title, variant = 'classic' } = Astro.props;
+
+// Sheet geometry: 600x600 play square inside a 700x700 viewBox.
+const O = 350; // center
+const M = [
+  [350, 50],
+  [650, 350],
+  [350, 650],
+  [50, 350],
+] as const; // edge midpoints (top, right, bottom, left)
+
+// Numbers 1-8 sit on the eight sectors of the center diamond — the face
+// revealed when the four corner flaps open. The corner-fold creases ARE the
+// diamond edges, so a number placed on an outer triangle centroid lands
+// exactly on a fold line and gets folded through; sector centroids sit ~70px
+// clear of every crease. Ring order clockwise from top-left.
+const D = [
+  [200, 200],
+  [500, 200],
+  [500, 500],
+  [200, 500],
+] as const; // where the diagonals cross the diamond edges
+const sectorPairs = [
+  [M[0], D[0]],
+  [D[1], M[0]],
+  [M[1], D[1]],
+  [D[2], M[1]],
+  [M[2], D[2]],
+  [D[3], M[2]],
+  [M[3], D[3]],
+  [D[0], M[3]],
+] as const;
+const numberSpots = sectorPairs.map(([a, b], i) => ({
+  cx: (O + a[0] + b[0]) / 3,
+  cy: (O + a[1] + b[1]) / 3,
+  n: i + 1,
+}));
+
+// Four center quadrants (the flap faces the reader lifts), clockwise from top-right.
+const quadrantCenters = [
+  [450, 250],
+  [450, 450],
+  [250, 450],
+  [250, 250],
+] as const;
+
+// Corner label anchors (near each square corner, upright).
+const labelAnchors = [
+  [150, 105],
+  [560, 105],
+  [560, 608],
+  [150, 608],
+] as const;
+
+const tints = ['#e9f3ec', '#faf2e2', '#eef2f7', '#f7eef2'];
+const wraps = fortunes.map((f) => wrapFortuneLine(f.line, 22));
+---
+
+<svg
+  viewBox="0 0 700 700"
+  role="img"
+  aria-label={`Printable cootie catcher template: ${title}`}
+  style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
+>
+  <!-- cut line -->
+  <rect x="50" y="50" width="600" height="600" fill="#ffffff" stroke="#212b26" stroke-width="2.5"></rect>
+
+  <!-- corner tint fills (light enough to print grayscale-friendly) -->
+  <polygon points={`50,50 350,50 350,350 50,350`} fill={tints[0]} opacity="0.55"></polygon>
+  <polygon points={`650,50 650,350 350,350 350,50`} fill={tints[1]} opacity="0.55"></polygon>
+  <polygon points={`650,650 350,650 350,350 650,350`} fill={tints[2]} opacity="0.55"></polygon>
+  <polygon points={`50,650 50,350 350,350 350,650`} fill={tints[3]} opacity="0.55"></polygon>
+
+  <!-- fold lines: midlines + diagonals + the four corner-fold creases (dashed) -->
+  <g stroke="#8a9a8f" stroke-width="1.6" stroke-dasharray="7 6" fill="none">
+    <line x1="350" y1="50" x2="350" y2="650"></line>
+    <line x1="50" y1="350" x2="650" y2="350"></line>
+    <line x1="50" y1="50" x2="650" y2="650"></line>
+    <line x1="650" y1="50" x2="50" y2="650"></line>
+    <line x1="350" y1="50" x2="650" y2="350"></line>
+    <line x1="650" y1="350" x2="350" y2="650"></line>
+    <line x1="350" y1="650" x2="50" y2="350"></line>
+    <line x1="50" y1="350" x2="350" y2="50"></line>
+  </g>
+
+  <!-- corner labels + tiny icon -->
+  {labels.map((label, i) => {
+    const [x, y] = labelAnchors[i];
+    return (
+      <g>
+        {variant === 'christmas' ? (
+          <g transform={`translate(${x - 34}, ${y - 8})`} stroke="#1f5c39" stroke-width="2" fill="none" stroke-linecap="round">
+            {i % 4 === 0 && (
+              <g>
+                <line x1="8" y1="0" x2="8" y2="16"></line>
+                <line x1="1" y1="4" x2="15" y2="4"></line>
+                <line x1="3" y1="9" x2="13" y2="9"></line>
+              </g>
+            )}
+            {i % 4 === 1 && <path d="M8 0 L10.4 5.6 L16 6 L11.8 9.8 L13 15.4 L8 12.4 L3 15.4 L4.2 9.8 L0 6 L5.6 5.6 Z"></path>}
+            {i % 4 === 2 && (
+              <g>
+                <rect x="1" y="6" width="14" height="10" rx="1"></rect>
+                <line x1="8" y1="6" x2="8" y2="16"></line>
+                <line x1="1" y1="10.5" x2="15" y2="10.5"></line>
+              </g>
+            )}
+            {i % 4 === 3 && (
+              <g>
+                <path d="M8 2 C4 2 3 6 3 9 L1 13 L15 13 L13 9 C13 6 12 2 8 2 Z"></path>
+                <line x1="6" y1="15" x2="10" y2="15"></line>
+              </g>
+            )}
+          </g>
+        ) : (
+          <circle cx={x - 26} cy={y - 5} r="8" fill={tints[i]} stroke="#55645b" stroke-width="1.5"></circle>
+        )}
+        <text
+          x={x}
+          y={y}
+          font-size="21"
+          font-weight="700"
+          letter-spacing="1"
+          text-anchor={i < 2 ? 'start' : 'end'}
+          dominant-baseline="middle"
+          fill="#212b26"
+        >
+          {label}
+        </text>
+      </g>
+    );
+  })}
+
+  <!-- numbers 1-8 on the inner diamond sectors -->
+  {numberSpots.map((t) => (
+    <g>
+      <circle cx={t.cx} cy={t.cy} r="17" fill="#ffffff" stroke="#55645b" stroke-width="1.4"></circle>
+      <text
+        x={t.cx}
+        y={t.cy}
+        font-size="19"
+        font-weight="700"
+        text-anchor="middle"
+        dominant-baseline="central"
+        fill="#212b26"
+      >
+        {t.n}
+      </text>
+    </g>
+  ))}
+
+  <!-- fortunes in the four center quadrants -->
+  {fortunes.map((f, i) => {
+    const [x, y] = quadrantCenters[i];
+    const rows = wraps[i] ?? [];
+    const lineHeight = 15;
+    const startY = y - ((rows.length - 1) * lineHeight) / 2;
+    return (
+      <g>
+        {rows.map((row, r) => (
+          <text
+            x={x}
+            y={startY + r * lineHeight}
+            font-size="12.5"
+            font-style="italic"
+            text-anchor="middle"
+            fill="#212b26"
+          >
+            {row}
+          </text>
+        ))}
+      </g>
+    );
+  })}
+
+  <!-- center tuck dot (where fingertips hold) -->
+  <circle cx="350" cy="350" r="5" fill="#55645b"></circle>
+
+  <!-- cut hint -->
+  <g transform="translate(58, 668)" fill="#55645b" stroke="#55645b">
+    <circle cx="6" cy="4" r="2.4" fill="none" stroke-width="1.6"></circle>
+    <circle cx="6" cy="12" r="2.4" fill="none" stroke-width="1.6"></circle>
+    <path d="M8 5 L26 12 M8 11 L26 12" stroke-width="1.6" fill="none" stroke-linecap="round"></path>
+  </g>
+  <text x="88" y="672" font-size="12.5" fill="#55645b">Cut along the solid border · Fold on the dashed lines</text>
+</svg>
+
+<div class="cc-steps">
+  <ol>
+    <li><strong>Cut</strong> out the square.</li>
+    <li><strong>Fold</strong> corner to corner both ways; unfold (crease guides).</li>
+    <li><strong>Fold</strong> all four corners into the middle. Flip, repeat.</li>
+    <li><strong>Open</strong> the four pockets, pick a{' '}{variant === 'christmas' ? 'word' : 'color'}, spell it out, pick a number, lift a flap!</li>
+  </ol>
+  <span class="cc-note">Fine marker works best for writing your own fortunes on the blank side.</span>
+</div>
+
+<style>
+  .cc-steps {
+    margin: 0.65rem auto 0;
+    max-width: 100%;
+    border-top: 1.5px dashed #c9c5b8;
+    padding-top: 0.55rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.4rem;
+    align-items: baseline;
+    justify-content: center;
+    font-size: 0.82rem;
+    color: #55645b;
+  }
+  .cc-steps ol {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.4rem;
+  }
+  .cc-steps li {
+    margin: 0;
+  }
+  .cc-steps .cc-note {
+    font-style: italic;
+  }
+</style>

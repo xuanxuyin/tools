@@ -1,0 +1,17 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import CootieCatcherSheet from '../components/printables/CootieCatcherSheet.astro';
+import { christmasCootieCatcherPage, CHRISTMAS_CORNER_LABELS, pickSheetFortunes, CHRISTMAS_FORTUNES } from '../data/cootie';
+
+const def = christmasCootieCatcherPage;
+const sheetFortunes = pickSheetFortunes(CHRISTMAS_FORTUNES, 'blessing', 4, 0);
+---
+
+<ChartPage def={def}>
+  <CootieCatcherSheet
+    labels={CHRISTMAS_CORNER_LABELS}
+    fortunes={sheetFortunes}
+    title="Christmas fortune teller with four holiday fortunes"
+    variant="christmas"
+  />
+</ChartPage>
