@@ -233,9 +233,9 @@ const jsonLd = [
     position: relative;
     max-width: 46rem;
     line-height: 0;
-    /* same gilded frame as the gallery cards (shared 9-slice SVG) */
-    border: 12px solid transparent;
-    border-image: url('/coloring/frame.svg') 25% stretch;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
     background: #fff;
   }
   .col-lineart,
@@ -268,14 +268,16 @@ const jsonLd = [
     font-size: 0.9rem;
     margin: 0;
   }
-  /* palette — same look as the bead editor's swatch grid */
-  .col-palette {
+  /* palette — same round swatches as the bead editor. These buttons are
+     created at RUNTIME by coloringPaint.ts, so scoped selectors never match:
+     must stay :global (runtime DOM carries no Astro scope id). */
+  :global(.col-palette) {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     gap: 6px;
     max-width: 22rem;
   }
-  .col-swatch {
+  :global(.col-swatch) {
     width: 100%;
     aspect-ratio: 1;
     border-radius: 50%;
@@ -283,7 +285,7 @@ const jsonLd = [
     cursor: pointer;
     padding: 0;
   }
-  .col-swatch[aria-checked='true'] {
+  :global(.col-swatch[aria-checked='true']) {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
   }

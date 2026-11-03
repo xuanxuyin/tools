@@ -112,17 +112,15 @@ const jsonLd = [
           <li class="col-card" data-col-card data-slug={p.slug} data-ord={i}>
             <a class="col-link" href={`/coloring/${p.slug}/`}>
               <span class="col-badge" data-col-badge hidden aria-live="polite"></span>
-              <span class="col-art">
-                <img
-                  class="col-thumb"
-                  src={`/coloring/thumb/${p.slug}.webp`}
-                  alt={`${p.title} — free coloring page, ${p.regions} areas to color`}
-                  width="768"
-                  height={Math.round((768 * 3) / 4)}
-                  loading={i < 6 ? 'eager' : 'lazy'}
-                  decoding="async"
-                />
-              </span>
+              <img
+                class="col-thumb"
+                src={`/coloring/thumb/${p.slug}.webp`}
+                alt={`${p.title} — free coloring page, ${p.regions} areas to color`}
+                width="768"
+                height={Math.round((768 * 3) / 4)}
+                loading={i < 6 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
               <span class="col-meta">
                 <strong class="col-name" data-i18n-piece={p.slug}>{p.title}</strong>
                 <span class="col-sub">{p.regions} areas to color</span>
@@ -254,20 +252,13 @@ const jsonLd = [
     color: inherit;
     text-decoration: none;
   }
-  /* gilded frame around the artwork (shared 9-slice SVG, one request) */
-  .col-art {
-    display: block;
-    border: 12px solid transparent;
-    border-image: url('/coloring/frame.svg') 25% stretch;
-    background: #fff;
-  }
   .col-thumb {
     width: 100%;
     aspect-ratio: 4 / 3;
-    /* contain, not cover: the line art IS the product — cropping it on the
-       card hides what the page looks like; white keeps line art legible */
+    /* thumbs are pre-cropped to exactly 4:3 in the pipeline, so contain
+       fills the box with no white bands; the line art IS the product */
     object-fit: contain;
-    padding: 6px;
+    background: #fff;
     display: block;
   }
   .col-meta {
