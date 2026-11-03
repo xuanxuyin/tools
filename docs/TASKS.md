@@ -7,6 +7,7 @@
 ---
 
 ## 今天 · 2026-11-03（周一）
+- [x] 🤖 **chartglade 字母涂色画稿换装 OpenMoji 上线 ✅（429df7c 已部署）+ 挑战图批取消**：26 字母页六卡画廊全换 OpenMoji 真线稿（67 SVG 自托管+CC BY-SA 4.0 署名）+ 首页 5 图去文字化，IndexNow 28 URL 200；color_story 挑战大图批（JSON 重建被驳→原图放大管线就绪）👤 拍板"没必要搞复杂用上一批"→ 全量回退零再部署。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md)
 
 - [x] 🤖 **coloring 画稿换装 OpenMoji 真图 + 首页配图 ✅（11/03 当日，👤 拍板"那你放上去试试吧"）**：手编 SVG 被判丑全线撤下 → OpenMoji black 线稿 67 张 vendored（CC BY-SA 4.0，CREDITS.md + hub 署名）→ 26 字母页双轨渲染（真图 `<img>` + 11 个无 emoji 词手绘兜底）+ 词换 fan→feather/jam→juice/net→nose + 16 处 caption 对齐实图 + 26 PNG 重拍尺寸不变；**首页同车**：4 hub 卡缩略图 + 圣诞袜季节图 + 按钮间隙修复。480/480 绿 + 133 页。**下一批候选（等 👤 确认）**：color_story 素描图库 192 张已扫描，22 字母有强匹配（I/X/Z 缺），意向是放进每页第 6 卡（poster 位）做"高难版"；明细 [PLAN 11/03 换装行](./chartglade/PLAN.md)
 - [x] 🤖→👤 **coloring 形态返工：A/B/C 试点 + d~z 全线铺开 ✅（11/03 当日，👤"那你继续剩下的字母吧"批准铺开）**：👤 指出形态错配（在位者是"图纸图片画廊"不是字母练习纸）→ 当日拆解 mondaymandala/KAB 页面解剖（[拆解笔记](./chartglade/research/coloring-teardown.md)）→ A/B/C 三页改六卡画稿画廊 → 👤 间接放行 → **d~z 61 实物画稿补齐，26 字母全部六卡画廊 + 26 张纯黑白 PNG 重截**（实物库 70 个，`src/lib/drawings.ts`），练习纸退居第二打印页。同批：Print/Download 按钮配色（绿/琥珀双色）+ 画廊屏幕态绿底（打印/PNG 剥离）+ SEO 批（h1/metaTitle 转 "Letter X Coloring Pages" 复数主词 + 42 处两页口径纠偏 + 每页 GEO 内容清单）。479/479 绿 + 133 页已 push。**👤 顺手翻几页 /coloring/letters/ 看画稿质量——哪张卡不行直接说，单卡返工便宜**；stocking 补 5 设计挂下一艺术批
