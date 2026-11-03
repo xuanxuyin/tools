@@ -245,10 +245,11 @@ export function getPiece(slug: string): (ColoringPieceDef & { order: number }) |
   return bySlug.get(slug);
 }
 
-/** Public asset paths (convention-based). */
+/** Public asset paths (convention-based). ?v= busts browser caches when a
+ *  pipeline rerun replaces images in place (same URLs, new pixels). */
 export function linePath(slug: string): string {
-  return `/coloring/line/${slug}.webp`;
+  return `/coloring/line/${slug}.webp?v=3`;
 }
 export function thumbPath(slug: string): string {
-  return `/coloring/thumb/${slug}.webp`;
+  return `/coloring/thumb/${slug}.webp?v=3`;
 }

@@ -53,6 +53,8 @@ class PaintIsland {
   private payload: Payload | null = null;
   private ringPaths: Path2D[] = [];
   private idData: Uint32Array | null = null;
+  /** ring indices in biggest-first paint order (parents before children) */
+  private ringOrder: number[] = [];
   private idW = 0;
   private colors: (number | null)[] = [];
   private undoStack: string[] = [];
@@ -145,16 +147,33 @@ class PaintIsland {
 
   /** Rasterize each ring with an exact scanline fill (pixel-center sampling,
    *  no canvas antialiasing to blend neighbours into wrong ids) into one
-   *  Uint32Array lookup table; build Path2Ds for draws. */
+   *  Uint32Array lookup table; build Path2Ds for draws. Rings are painted
+   *  BIGGEST FIRST: payload order sometimes lists a parent sector after the
+   *  child wells inside it, and in payload order the parent overwrites the
+   *  children — tapping a paint well then fills the whole sector. */
   private prepare(): void {
     const p = this.payload as Payload;
     this.canvas.width = p.w;
     this.canvas.height = p.h;
     this.canvas.hidden = false;
 
+    // shoelace area for paint ordering
+    const ringArea = (spec: string): number => {
+      const pts = spec.split(' ').map((t) => t.split(',').map(Number));
+      let s = 0;
+      for (let k = 0; k < pts.length; k++) {
+        const [x1, y1] = pts[k];
+        const [x2, y2] = pts[(k + 1) % pts.length];
+        s += x1 * y2 - x2 * y1;
+      }
+      return Math.abs(s) / 2;
+    };
+    const order = p.r.map((_, i) => i).sort((a, b) => ringArea(p.r[b]) - ringArea(p.r[a]));
+    this.ringOrder = order;
+
     const ids = new Uint32Array(p.w * p.h); // 0 = "no ring"
-    for (let i = 0; i < p.r.length; i++) {
-      this.ringPaths.push(new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i])));
+    for (const i of order) {
+      this.ringPaths[i] = new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i]));
       const id = i + 1;
       const pts = p.r[i].split(' ').map((s) => s.split(',').map(Number));
       // crossings per scanline at pixel centers (y + 0.5)
@@ -259,7 +278,8 @@ class PaintIsland {
     const ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     ctx.fillStyle = p.bg;
     ctx.fillRect(0, 0, p.w, p.h);
-    for (let i = 0; i < this.ringPaths.length; i++) {
+    // paint big rings first so child wells stay visible inside their sector
+    for (const i of this.ringOrder) {
       const c = this.colors[i];
       if (c === null) continue;
       ctx.fillStyle = p.pal[c] ?? '#cccccc';
