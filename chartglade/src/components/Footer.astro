@@ -27,7 +27,9 @@ const columns = [
     heading: 'Reading & Letters',
     links: [
       ...sightWordPages.map((p) => link(p.slug, p.h1)),
+      link('how-to-write-in-cursive', 'How to Write in Cursive'),
       ...cursivePages.map((p) => link(p.slug, p.h1)),
+      link('cursive-sentences', 'Cursive Sentences'),
       link('alphabet-chart', 'Alphabet Chart'),
       link('name-tracing', 'Name Tracing Generator'),
       link('states-that-require-cursive', 'States That Require Cursive'),
@@ -46,6 +48,7 @@ const columns = [
       { href: '/christmas-printables/', label: 'Christmas printables' },
       { href: '/cootie-catcher/', label: 'Cootie catcher' },
       { href: '/sign-in-sheets/', label: 'Sign-in sheets' },
+      { href: '/teaching-calendar/', label: 'Teaching calendar' },
       { href: '/about/', label: 'About' },
       { href: '/contact/', label: 'Contact' },
       { href: '/privacy/', label: 'Privacy' },

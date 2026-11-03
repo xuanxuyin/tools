@@ -1,9 +1,13 @@
 import type { PageDef } from './pageTypes';
 
 /**
- * Multiplication cluster (4 pages). Audited as "medium risk": printables
+ * Multiplication cluster (6 pages). Audited as "medium risk": printables
  * specialists hold this SERP, entry expected at positions 4-10. Variants
  * (blank, 1-15, 1-20) are the freshness wedge — most incumbents stop at 1-12.
+ * November pre-dev wave 2 (2026-10-27): the printable pack (Q4 window word —
+ * SERP audit 2026-10-04 found 4 of the top 5 are non-content sites plus a
+ * dead link at #3) and the times-table-chart terminology page (audit
+ * 2026-10-27: EMD mini-site at #1, blogs behind it — beatable on page quality).
  */
 
 export const multiplicationPages: PageDef[] = [
@@ -75,11 +79,84 @@ export const multiplicationPages: PageDef[] = [
       },
     ],
     related: [
+      { href: '/multiplication-chart-printable/', label: 'Multiplication chart printable — 3 formats' },
       { href: '/multiplication-chart-blank/', label: 'Blank multiplication chart for practice' },
       { href: '/times-table/', label: 'Times tables 1-12 (one page per table)' },
+      { href: '/times-table-chart/', label: 'Times table chart (grid + list layouts)' },
+      { href: '/multiplication-chart-1-15/', label: 'Multiplication chart 1-15' },
       { href: '/multiplication-chart-1-20/', label: 'Multiplication chart 1-20 (challenge grid)' },
       { href: '/algebra-formula-sheet/', label: 'Algebra formula sheet (where the facts lead)' },
-      { href: '/geometry-formula-sheet/', label: 'Geometry formula sheet' },
+      { href: '/charts/', label: 'All math charts' },
+    ],
+  },
+
+  {
+    slug: 'multiplication-chart-printable',
+    hub: 'charts',
+    h1: 'Multiplication Chart Printable',
+    metaTitle: 'Multiplication Chart Printable: 3 Free Formats | ChartGlade',
+    metaDescription:
+      'Free printable multiplication chart in three formats — the filled 1-12 grid, a blank practice chart, and every times table written out as a list. Black and white, no sign-up.',
+    lead:
+      'One print job, three multiplication charts: the classic filled 1-12 grid, a blank copy for practice, and every times table written out line by line. It all prints as black lines on white letter paper — pick the pages you want in the print dialog and skip the rest.',
+    introHeading: 'Three formats, one print job',
+    intro: [
+      'The print button above sends three letter pages to your printer, portrait. Page one is the filled 1-12 chart with all 144 products, page two is the same grid with the answers removed, and page three lists each times table on its own line — the 4s run 4 × 1 = 4 straight through 4 × 12 = 48, then the 5s, all the way to the 12s. Everything prints as black lines on white: the green headers and shaded squares you see on screen are stripped at print time, so one black cartridge is all you need and draft mode is fine — these sheets are line work, not photos.',
+      'The 1-12 chart is the format to print because it is the format schools actually use. The Common Core fluency standard (3.OA.C.7) asks third graders to know every product of two one-digit numbers from memory — that is the 1-through-9 heart of the grid. Charts traditionally run through 12 because dozens still count: 12 hours on a clock, 12 inches in a foot, eggs by the dozen. A chart that stops at 10 leaves off facts kids meet outside worksheets; a chart that runs to 20 is a reference for older students, not a memorization map (the site has both — 1-15 and 1-20, linked below).',
+      'Each format does a different job. The filled chart is a reference: it hangs on the wall or lives in a binder while memory catches up. The blank chart is a workout — filling it in forces recall, and recall is what installs the facts; recognizing an answer is not the same as producing it. The list page is the bridge for kids who find grids busy: one table at a time, read down the line like a chant. Print the filled chart for the wall and a stack of blanks for practice — that pair covers a school year of fact work.',
+    ],
+    printNote:
+      'Prints as three letter pages, portrait: filled chart, blank chart, times-table lists. Need just one? Print that page only in the print dialog.',
+    tips: [
+      {
+        title: 'Print page two by the handful',
+        body: 'The blank chart is the consumable — print five now. A filled chart for reference plus a weekly blank to fill in is a complete fact program that fits in a folder.',
+      },
+      {
+        title: 'Draft mode is fine here',
+        body: 'These sheets are line work with no solid fills, so your printer’s draft or grayscale setting prints them cleanly and stretches the cartridge for months. Save the high-quality setting for the wall copy.',
+      },
+      {
+        title: 'Chant down the list page',
+        body: 'Cover the answers on a line with a sticky note and call it out — 4, 8, 12, 16 — then uncover to check. That is skip counting, and it is exactly how the 2s, 5s and 10s get learned first.',
+      },
+      {
+        title: 'A4 paper works too',
+        body: 'The sheets are sized for US letter, but nothing clips on A4 — the tables shrink slightly and stay readable. Same three pages, no printer settings to fight.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Is this multiplication chart printable free?',
+        a: 'Yes — free, no sign-up, no email, no watermark. The charts print straight from your browser; there is nothing to download first.',
+      },
+      {
+        q: 'Can I get the multiplication chart as a PDF?',
+        a: 'No download needed: in the print dialog, choose “Save as PDF” as the printer and you get a clean three-page PDF of exactly these sheets — one page per format, black lines on white. Works the same on Windows, Mac, Chrome and Safari.',
+      },
+      {
+        q: 'What do the three printed pages include?',
+        a: 'Page one is the filled 1-12 chart, page two is the blank 1-12 chart, and page three lists each times table as its own line of equations, 1s through 12s. Every page is portrait letter and stands alone — print any one of them.',
+      },
+      {
+        q: 'Does the chart print in color or black and white?',
+        a: 'Black and white only. The color you see on screen — green headers, shaded perfect squares — is dropped at print time, so the sheets use about as little ink as a page can. Photocopies come out clean too.',
+      },
+      {
+        q: 'Should I print the filled chart or the blank one?',
+        a: 'Both, for different jobs. The filled chart is for looking facts up — wall or binder. The blank chart is for practice, because producing an answer from memory strengthens it far more than reading it does. One filled on the wall, blanks by the dozen.',
+      },
+      {
+        q: 'Why does the chart go to 12 instead of 10?',
+        a: 'Third-grade fluency standards cover products of one-digit numbers — through 9 × 9. Charts run to 12 × 12 because 12s are everywhere outside the classroom: hours on a clock, inches in a foot, eggs in a carton. The 10s column ends the easy patterns; 11s and 12s close out the facts that workbooks still drill.',
+      },
+    ],
+    related: [
+      { href: '/multiplication-chart/', label: 'Interactive multiplication chart 1-12' },
+      { href: '/multiplication-chart-blank/', label: 'Blank multiplication chart (full page)' },
+      { href: '/times-table-chart/', label: 'Times table chart (grid + list layouts)' },
+      { href: '/multiplication-chart-1-15/', label: 'Multiplication chart 1-15' },
+      { href: '/multiplication-chart-1-20/', label: 'Multiplication chart 1-20' },
       { href: '/charts/', label: 'All math charts' },
     ],
   },
@@ -144,7 +221,10 @@ export const multiplicationPages: PageDef[] = [
     related: [
       { href: '/multiplication-chart/', label: 'Filled multiplication chart 1-12' },
       { href: '/times-table/', label: 'Times tables 1-12 (one page per table)' },
+      { href: '/multiplication-chart-printable/', label: 'Printable pack — filled, blank and lists' },
+      { href: '/times-table-chart/', label: 'Times table chart (grid + list)' },
       { href: '/multiplication-chart-1-15/', label: '1-15 chart (next step up)' },
+      { href: '/multiplication-chart-1-20/', label: 'Multiplication chart 1-20' },
       { href: '/addition-chart/', label: 'Addition chart for grade 1-2' },
       { href: '/charts/', label: 'All math charts' },
     ],
@@ -211,8 +291,10 @@ export const multiplicationPages: PageDef[] = [
     ],
     related: [
       { href: '/multiplication-chart/', label: 'Multiplication chart 1-12' },
-      { href: '/multiplication-chart-1-20/', label: 'Multiplication chart 1-20' },
+      { href: '/multiplication-chart-printable/', label: 'Multiplication chart printable — 3 formats' },
       { href: '/multiplication-chart-blank/', label: 'Blank chart for practice' },
+      { href: '/times-table-chart/', label: 'Times table chart' },
+      { href: '/multiplication-chart-1-20/', label: 'Multiplication chart 1-20' },
       { href: '/charts/', label: 'All math charts' },
     ],
   },
@@ -278,8 +360,89 @@ export const multiplicationPages: PageDef[] = [
     ],
     related: [
       { href: '/multiplication-chart/', label: 'Multiplication chart 1-12' },
+      { href: '/multiplication-chart-printable/', label: 'Multiplication chart printable — 3 formats' },
       { href: '/multiplication-chart-1-15/', label: 'Multiplication chart 1-15' },
+      { href: '/multiplication-chart-blank/', label: 'Blank chart for practice' },
+      { href: '/times-table-chart/', label: 'Times table chart' },
       { href: '/hundred-chart/', label: 'Hundred chart for younger grades' },
+      { href: '/charts/', label: 'All math charts' },
+    ],
+  },
+
+  {
+    slug: 'times-table-chart',
+    hub: 'charts',
+    h1: 'Times Table Chart',
+    metaTitle: 'Times Table Chart — Free Printable 1-12 | ChartGlade',
+    metaDescription:
+      'Free printable times table chart 1-12 in two layouts — the classic grid and each times table as its own list — plus the order kids actually learn the tables in.',
+    lead:
+      'The full 1-12 times table chart, free to print, in two layouts: the grid everyone knows, and each times table written out as its own list of facts. Same 144 answers, two ways to read them — plus the order teachers actually introduce the tables in, and how skip counting does the early work.',
+    introHeading: 'The order kids actually learn the times tables',
+    intro: [
+      'Times tables are not learned counting up from 1 to 12. Nearly every curriculum starts with the 2s, 5s and 10s, because those rows show patterns you can see: doubles, endings that flip between 5 and 0, a zero bolted onto the other factor. Next come the 3s and 4s, usually through skip-counting songs and short daily chants. The 6s, 7s and 8s are the hard middle — most kids build them from facts they already know, so 6 × 8 becomes 5 × 8 plus one more 8. The 9s, 11s and 12s land last and easiest: the 9s carry the finger trick and the digits-add-to-9 pattern, the 11s read themselves almost to 9 × 11, and the 12s are just a 10 and a 2 stuck together.',
+      'Skip counting is the engine underneath all of it. A times table is skip counting written down — the 4s row is exactly what you hear chanting 4, 8, 12, 16, 20. That is why the second sheet on this page lists each table as its own line: read down it as a chant, cover the answers, chant again. Coloring skip counts on a hundred chart is the same lesson a year earlier, and by third grade the standard asks for these products from memory — the chart is the map, the chants put on the miles.',
+    ],
+    extraSection: {
+      heading: 'Times table or multiplication chart — what is the difference?',
+      paras: [
+        'Nothing, in the numbers. A times table chart and a multiplication chart show the same 1-12 grid with the same 144 products. “Times table” is the everyday phrase — what parents and kids say (“do you know your 7 times table?”) — while multiplication chart or multiplication table is the textbook term. British schools lean hard on times tables; England even runs a national on-screen times tables check at the end of Year 4. American teachers more often say multiplication facts or fact fluency, but US families search “times table chart” just as much — same tool, different dialect.',
+        'Use whichever word your kid uses; the job is identical: facts recalled without counting, well enough to free up attention for bigger problems. If your child reads a grid as a wall of numbers, hand them the list sheet first — one table at a time, in learning order, is a smaller door into the same room. When the lists feel easy, the grid becomes what it is meant to be: a place to look up the two or three facts that still slip.',
+      ],
+    },
+    printNote:
+      'Prints as two letter pages, portrait: the 1-12 grid, then each times table as its own list. Print either page alone from the print dialog.',
+    tips: [
+      {
+        title: 'Start with the 2s, 5s and 10s',
+        body: 'These three tables carry the clearest patterns, and finishing them early gives kids three known rows to lean on. The 10s also set up place value, money math and the 9s trick later.',
+      },
+      {
+        title: 'Chant, cover, chant again',
+        body: 'Read one table down the list sheet aloud twice, cover the answers with a sticky note, and chant it from memory. Uncover to check. Two minutes per table per day beats a half-hour worksheet on Saturday.',
+      },
+      {
+        title: 'Build the hard ones from easy ones',
+        body: 'Is 6 × 8 slippery? It is 5 × 8 (40) plus one more 8. Kids who learn to lean on facts they know stop guessing — and the 6s, 7s and 8s shrink from three scary rows to a handful of genuinely new facts.',
+      },
+      {
+        title: 'Color the skip counts first',
+        body: 'Before any drills, color the 2s, 5s and 10s on a hundred chart. Watching the columns light up makes skip counting visible — and it is the same skill that will carry the 3s and 4s.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'What is a times table chart?',
+        a: 'A chart that shows all the times tables from 1 to 12 in one grid: row 7 meets column 8 at 7 × 8 = 56. Each row is one full table — the 7s row runs 7, 14, 21 on up to 84. It is the same thing as a multiplication chart.',
+      },
+      {
+        q: 'Which times table should kids learn first?',
+        a: 'The 2s, 5s and 10s — the friendliest patterns. Then the 3s and 4s through skip counting, then the 6s, 7s and 8s built from known facts, with the 9s, 11s and 12s last. Schools vary a little — some pull the 9s earlier because the patterns are so satisfying — but 2s, 5s and 10s first is close to universal.',
+      },
+      {
+        q: 'How can my child memorize the times tables?',
+        a: 'Short daily practice beats long sessions: chant one table down the list sheet, cover the answers, chant again, check. Follow with a blank chart to fill in, and move to the timed mad-minute drills on the multiplication chart page once recall is reliable. Most kids need a few weeks per table — that is normal, not a problem.',
+      },
+      {
+        q: 'Is a times table chart the same as a multiplication chart?',
+        a: 'Yes — same grid, same products. “Times table” is the spoken, everyday term; “multiplication chart” is the textbook term. British usage favors times tables (England tests them nationally in Year 4); American classrooms say both.',
+      },
+      {
+        q: 'Why does this page have two layouts?',
+        a: 'The grid is for looking facts up and spotting patterns — the symmetry, the perfect squares down the diagonal. The list sheet shows one table at a time, which chants well and suits kids who find grids busy. Same 144 facts either way; print the one that fits the kid, or both.',
+      },
+      {
+        q: 'Is the times table chart free to print?',
+        a: 'Free, no sign-up. Both sheets print on letter paper in black and white — the grid on page one, the table-by-table list on page two. Pick a single page in the print dialog if that is all you need.',
+      },
+    ],
+    related: [
+      { href: '/multiplication-chart/', label: 'Multiplication chart 1-12 (interactive, with drills)' },
+      { href: '/multiplication-chart-printable/', label: 'Multiplication chart printable — 3 formats' },
+      { href: '/multiplication-chart-blank/', label: 'Blank multiplication chart' },
+      { href: '/multiplication-chart-1-15/', label: 'Multiplication chart 1-15' },
+      { href: '/multiplication-chart-1-20/', label: 'Multiplication chart 1-20' },
+      { href: '/hundred-chart/', label: 'Hundred chart for skip counting' },
       { href: '/charts/', label: 'All math charts' },
     ],
   },

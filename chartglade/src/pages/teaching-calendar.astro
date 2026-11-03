@@ -1,0 +1,126 @@
+---
+/**
+ * Teaching Calendar hub (November pre-dev wave 1) — the year in printables,
+ * pinned to the US school calendar. Screen shows twelve hand-written month
+ * sections; the printable block above them condenses the same data into a
+ * one-page year index for the front of a plan book. Data lives in
+ * src/data/teachingCalendar.ts; guards in teachingCalendar.test.ts pin that
+ * every month link resolves to a built page.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+import { teachingCalendarFaqs, teachingCalendarMonths } from '../data/teachingCalendar';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Teaching Calendar', item: `${SITE.url}/teaching-calendar/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: teachingCalendarFaqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Teaching Calendar — Free Printables by Month (K-5) | ChartGlade"
+  description="A K-5 teaching calendar: what to print each month — back to school in August, Halloween in October, Thanksgiving in November, 100th Day in January. Free, no sign-up."
+  path="/teaching-calendar"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Teaching Calendar</span>
+  </nav>
+
+  <section class="hero">
+    <h1>Teaching Calendar</h1>
+    <p class="lead">
+      The school year in printables, month by month: what a K-5 classroom actually prints and when —
+      back to school in August, Halloween and Fire Prevention Week in October, Thanksgiving in
+      November, the 100th Day of School in January and February, field trips in May. Every link goes
+      to a free page that prints on letter paper. Print this page itself and it collapses into a
+      one-page year index for your plan book.
+    </p>
+  </section>
+
+  <section class="printable-wrap">
+    <div class="printable-toolbar">
+      <span class="print-note">One letter page, portrait — the whole year at a glance.</span>
+      <button type="button" class="btn" data-print>Print the year index</button>
+    </div>
+    <div class="printable">
+      <h2 class="sheet-title">Teaching Calendar — Printables by Month</h2>
+      <div class="cal-grid">
+        {teachingCalendarMonths.map((m) => (
+          <div class="cal-month">
+            <h3>{m.month}</h3>
+            <p class="cal-dates">{m.dates}</p>
+            <p class="cal-print-list">
+              {m.links.map((l) => (
+                <a href={l.href}>{l.label}</a>
+              ))}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {teachingCalendarMonths.map((m) => (
+    <section class="section cal-block">
+      <h2>{m.month}</h2>
+      <p class="cal-dates">{m.dates}</p>
+      {m.scene.map((p) => (
+        <p>{p}</p>
+      ))}
+      <ul class="cal-links">
+        {m.links.map((l) => (
+          <li>
+            <a href={l.href}>{l.label}</a>
+            <span class="cal-note">{l.note}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <section class="section faq">
+    <h2>Frequently asked questions</h2>
+    {teachingCalendarFaqs.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </section>
+
+  <section class="prose section">
+    <h2>August is the January of teaching</h2>
+    <p>
+      Calendar-year order is how a teaching calendar is filed, but the school year starts in
+      August — most US districts open mid-to-late August, which is why the back-to-school pages
+      sit there instead of September, and why the hundredth day of school lands in January for
+      August-start districts and February for the rest. Everything else counts back from those
+      two anchors: conferences before Thanksgiving, state testing after spring break, field trips
+      in May while the weather holds.
+    </p>
+    <p>
+      Use the index the way it was built: one printing pass at the end of each month for the month
+      ahead, seasonal pages two to three weeks early while the copier is still free. The rest of
+      the library — <a href="/charts/">math charts</a>, <a href="/sight-words/">sight words</a>,
+      <a href="/cursive/">cursive</a> and <a href="/graph-paper/">graph paper</a> — runs all year;
+      the calendar tells you when each page earns its copies.
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import HowToCursiveSheet from '../components/printables/HowToCursiveSheet.astro';
+import CursiveAZ from '../components/CursiveAZ.astro';
+import { howToCursivePage } from '../data/howToCursive';
+---
+
+<ChartPage def={howToCursivePage}>
+  <HowToCursiveSheet />
+  <CursiveAZ slot="after" />
+</ChartPage>

@@ -1,0 +1,57 @@
+---
+/**
+ * Interactive decimal breakdown island (GSC 10/26: "place value chart with
+ * decimals interactive"). SSR renders the full default breakdown (3.156,
+ * every digit, place, worth, expanded form and spoken reading) so the page
+ * is complete — and prints — with JavaScript off. The island re-renders the
+ * same markup from the shared pure functions as the user types; text
+ * replacement only, no framework.
+ */
+import { DEFAULT_DECIMAL, DECIMAL_PRESETS, DECIMAL_INPUT_MAX_LEN, renderDecimalBreakdownHtml } from '../../lib/decimalBreakdown';
+---
+
+<div class="decimal-controls no-print">
+  <label>
+    Decimal number
+    <input
+      id="decimal-input"
+      type="text"
+      inputmode="decimal"
+      maxlength={DECIMAL_INPUT_MAX_LEN}
+      value={DEFAULT_DECIMAL}
+      autocomplete="off"
+      spellcheck="false"
+      placeholder="Type a decimal…"
+    />
+  </label>
+  <button type="button" class="btn btn-primary" id="decimal-go">Break it down</button>
+  <span class="presets">
+    Try:
+    {DECIMAL_PRESETS.map((p) => (
+      <button type="button" class="btn" data-decimal-preset={p}>{p}</button>
+    ))}
+  </span>
+</div>
+<div id="decimal-breakdown" aria-label="Decimal breakdown" set:html={renderDecimalBreakdownHtml(DEFAULT_DECIMAL)} />
+
+<script>
+  import { renderDecimalBreakdownHtml } from '../../lib/decimalBreakdown';
+
+  const input = document.getElementById('decimal-input') as HTMLInputElement;
+  const go = document.getElementById('decimal-go') as HTMLButtonElement;
+  const out = document.getElementById('decimal-breakdown') as HTMLElement;
+
+  function update(): void {
+    out.innerHTML = renderDecimalBreakdownHtml(input.value);
+  }
+
+  input.addEventListener('input', update);
+  input.addEventListener('change', update);
+  go.addEventListener('click', update);
+  document.querySelectorAll<HTMLButtonElement>('[data-decimal-preset]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.decimalPreset ?? '';
+      update();
+    });
+  });
+</script>
