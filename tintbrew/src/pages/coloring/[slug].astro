@@ -105,7 +105,7 @@ const jsonLd = [
       <span data-i18n="col.p.metaB" data-i18n-args={JSON.stringify({ total: String(total) })}>
         of {total} ·</span
       >
-      <span class="col-regions" data-col-regions>{piece.regions} regions</span>
+      <span class="col-regions" data-col-regions>{piece.regions} areas to color</span>
       <span class="col-done-pill" data-col-donepill data-i18n="col.done" hidden>Completed</span>
     </p>
   </section>
@@ -233,9 +233,9 @@ const jsonLd = [
     position: relative;
     max-width: 46rem;
     line-height: 0;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    overflow: hidden;
+    /* same gilded frame as the gallery cards (shared 9-slice SVG) */
+    border: 12px solid transparent;
+    border-image: url('/coloring/frame.svg') 25% stretch;
     background: #fff;
   }
   .col-lineart,
@@ -251,7 +251,7 @@ const jsonLd = [
     touch-action: manipulation;
   }
   .col-frame.is-live .col-lineart {
-    visibility: hidden;
+    display: none; /* visibility:hidden keeps layout space → blank gap above canvas */
   }
   .col-frame.is-live .col-canvas {
     position: static;
@@ -268,22 +268,24 @@ const jsonLd = [
     font-size: 0.9rem;
     margin: 0;
   }
+  /* palette — same look as the bead editor's swatch grid */
   .col-palette {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    max-width: 22rem;
   }
   .col-swatch {
-    width: 2rem;
-    height: 2rem;
+    width: 100%;
+    aspect-ratio: 1;
     border-radius: 50%;
-    border: 2px solid var(--line);
+    border: 1px solid rgba(0, 0, 0, 0.18);
     cursor: pointer;
     padding: 0;
   }
   .col-swatch[aria-checked='true'] {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
   }
   .col-actions {
     display: flex;

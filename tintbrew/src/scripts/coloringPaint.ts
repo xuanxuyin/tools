@@ -143,29 +143,46 @@ class PaintIsland {
     this.refreshMeta();
   }
 
-  /** Rasterize each ring as a unique 24-bit color on an offscreen canvas →
-   *  one Uint32Array lookup table for hit-testing; build Path2Ds for draws. */
+  /** Rasterize each ring with an exact scanline fill (pixel-center sampling,
+   *  no canvas antialiasing to blend neighbours into wrong ids) into one
+   *  Uint32Array lookup table; build Path2Ds for draws. */
   private prepare(): void {
     const p = this.payload as Payload;
     this.canvas.width = p.w;
     this.canvas.height = p.h;
     this.canvas.hidden = false;
 
-    const off = document.createElement('canvas');
-    off.width = p.w;
-    off.height = p.h;
-    const octx = off.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D;
-    octx.fillStyle = '#000'; // id 0 = "no ring"
-    octx.fillRect(0, 0, p.w, p.h);
+    const ids = new Uint32Array(p.w * p.h); // 0 = "no ring"
     for (let i = 0; i < p.r.length; i++) {
-      const path = new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i]));
-      this.ringPaths.push(path);
+      this.ringPaths.push(new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i])));
       const id = i + 1;
-      octx.fillStyle = `rgb(${id & 255},${(id >> 8) & 255},${(id >> 16) & 255})`;
-      octx.fill(path);
+      const pts = p.r[i].split(' ').map((s) => s.split(',').map(Number));
+      // crossings per scanline at pixel centers (y + 0.5)
+      const xs: number[] = [];
+      for (let y = 0; y < p.h; y++) {
+        const yc = y + 0.5;
+        xs.length = 0;
+        let prev = pts[pts.length - 1];
+        for (let k = 0; k < pts.length; k++) {
+          const cur = pts[k];
+          const y1 = prev[1];
+          const y2 = cur[1];
+          if ((y1 <= yc && y2 > yc) || (y2 <= yc && y1 > yc)) {
+            xs.push(prev[0] + ((yc - y1) / (y2 - y1)) * (cur[0] - prev[0]));
+          }
+          prev = cur;
+        }
+        if (xs.length < 2) continue;
+        xs.sort((a, b) => a - b);
+        for (let k = 0; k + 1 < xs.length; k += 2) {
+          const x0 = Math.max(0, Math.ceil(xs[k] - 0.5));
+          const x1 = Math.min(p.w - 1, Math.floor(xs[k + 1] - 0.5));
+          const row = y * p.w;
+          for (let x = x0; x <= x1; x++) ids[row + x] = id;
+        }
+      }
     }
-    const img = octx.getImageData(0, 0, p.w, p.h);
-    this.idData = new Uint32Array(img.data.buffer);
+    this.idData = ids;
     this.idW = p.w;
   }
 
@@ -223,9 +240,7 @@ class PaintIsland {
     const x = Math.floor(((e.clientX - rect.left) / rect.width) * this.canvas.width);
     const y = Math.floor(((e.clientY - rect.top) / rect.height) * this.canvas.height);
     if (x < 0 || y < 0 || x >= this.canvas.width || y >= this.canvas.height) return;
-    const word = this.idData[y * this.idW + x];
-    // ImageData bytes are RGBA little-endian → R | G<<8 | B<<16
-    const id = (word & 0xff) | ((word >> 8) & 0xff) | ((word >> 16) & 0xff);
+    const id = this.idData[y * this.idW + x];
     if (id === 0) return;
     const ring = id - 1;
     if (this.colors[ring] === this.selected) return;

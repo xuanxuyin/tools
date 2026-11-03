@@ -112,18 +112,20 @@ const jsonLd = [
           <li class="col-card" data-col-card data-slug={p.slug} data-ord={i}>
             <a class="col-link" href={`/coloring/${p.slug}/`}>
               <span class="col-badge" data-col-badge hidden aria-live="polite"></span>
-              <img
-                class="col-thumb"
-                src={`/coloring/thumb/${p.slug}.webp`}
-                alt={`${p.title} — free coloring page, ${p.regions} regions`}
-                width="768"
-                height={Math.round((768 * 3) / 4)}
-                loading={i < 6 ? 'eager' : 'lazy'}
-                decoding="async"
-              />
+              <span class="col-art">
+                <img
+                  class="col-thumb"
+                  src={`/coloring/thumb/${p.slug}.webp`}
+                  alt={`${p.title} — free coloring page, ${p.regions} areas to color`}
+                  width="768"
+                  height={Math.round((768 * 3) / 4)}
+                  loading={i < 6 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </span>
               <span class="col-meta">
                 <strong class="col-name" data-i18n-piece={p.slug}>{p.title}</strong>
-                <span class="col-sub">{p.regions} regions</span>
+                <span class="col-sub">{p.regions} areas to color</span>
               </span>
             </a>
             <button
@@ -234,10 +236,17 @@ const jsonLd = [
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--panel, #fff);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    box-shadow: var(--shadow-xs);
     overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .col-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: rgb(124 58 237 / 0.45);
   }
   .col-link {
     display: flex;
@@ -245,26 +254,34 @@ const jsonLd = [
     color: inherit;
     text-decoration: none;
   }
+  /* gilded frame around the artwork (shared 9-slice SVG, one request) */
+  .col-art {
+    display: block;
+    border: 12px solid transparent;
+    border-image: url('/coloring/frame.svg') 25% stretch;
+    background: #fff;
+  }
   .col-thumb {
     width: 100%;
     aspect-ratio: 4 / 3;
     /* contain, not cover: the line art IS the product — cropping it on the
        card hides what the page looks like; white keeps line art legible */
     object-fit: contain;
-    background: #fff;
+    padding: 6px;
     display: block;
   }
   .col-meta {
     display: grid;
     gap: 0.15rem;
-    padding: var(--sp-2) var(--sp-3) var(--sp-3);
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--panel);
   }
   .col-name {
     font-size: 0.95rem;
   }
   .col-sub {
     color: var(--muted);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
   /* island-set states */
   .col-card.is-done .col-thumb {

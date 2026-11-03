@@ -71,6 +71,8 @@ grid.forEach((row, y) => {
         style={`max-width:${Math.round((w + G) * MAX_SCALE)}px`}
         role="img"
         aria-label={`${def.name} blank bead canvas — paint it in your own colors`}
+        data-i18n-aria="bc.canvasAria"
+        data-i18n-args={JSON.stringify({ name: def.name })}
       >
         <g class="cv-coords" aria-hidden="true">
           {colTicks.map((c) => (
@@ -104,8 +106,8 @@ grid.forEach((row, y) => {
     </figure>
 
     <div class="paint-tools no-print">
-      <h3>Make it yours, bead by bead</h3>
-      <p class="side-note">
+      <h3 data-i18n="bc.makeH">Make it yours, bead by bead</h3>
+      <p class="side-note" data-i18n="bc.note" data-i18n-args={JSON.stringify({ name: def.name })}>
         The board opens as the {def.name.toLowerCase()} itself, every color area where it
         belongs. Pick a color, then click — or drag in any of the eight directions — and
         the brush carries it along your stroke. Turn on <strong>Mirror</strong> and every
