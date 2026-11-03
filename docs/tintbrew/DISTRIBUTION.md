@@ -262,3 +262,7 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 - **A/B/C 不变；不复制 PBN 黑链（红线在案）**。
 
 > **附注（11/03）：tintbrew 自身也被垃圾链群发命中** —— bl.rankvance.com / now.rankvance.com 两条中介广告页链（2000 外链/页模板群发，锚 `tintbrew.com`，11/02 SEMrush 发现）。判定：**链群轰炸/删链勒索漏斗，非我方产出**。处置：忽略不 disavow（Google 自动打折）、收到"付钱删毒链"邮件一律不回、11/17 对账时这两条不计入通道产出。
+
+> **附注二（11/03 晚）：tintbrew 自身 profile 深查 —— 垃圾链轰炸从 9/8 起持续，38 基线是脏的**
+> ① 全貌：rankvance.com 子域 ×50+ / fiverr-seo-*.site 站群 / linkly.agency *.xyz 假证言站群 / keywordrocket.shop / seoimprovementtool.shop / kaila.biz 类 WHOIS 爬虫站，9/8~9/10 起持续至今，全 nofollow/AS 0~41 模板页。**铁证无差别扫描**：kaila.biz 列表页标题即 "New & Old Domains (2026/09/07/140)" —— 专爬新注册域名批量喷链，tintbrew 9/4 上线 9/7 入快照。**判定：被动中招的炮灰，非我方产出，与竞品主动买链性质不同**。处置不变：忽略不 disavow、不回删链邮件；GSC 曝光曲线持续涨 = 实证未伤。
+> ② **⚠️ 对账口径修正**：原 11/17 线 "SEMrush 引荐域名 38 → 45+" 里 38 含大量上述垃圾域 → 照原口径垃圾链一涨就"达标"。**改数质量引荐域名**：排除 rankvance.com / *.xyz 站群 / fiverr-seo-*.site / *.shop SEO 广告站 / WHOIS 爬虫站后的人工编辑域。**新线：11/17 质量域名 ≥15 即胜**（B 组 4 + A 组 Reddit 1~2 + E 组目录 2~3 + 自然增长）。
