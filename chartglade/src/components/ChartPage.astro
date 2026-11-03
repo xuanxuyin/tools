@@ -5,6 +5,7 @@
  * arrives as the default slot from the thin page wrapper.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from './Icon.astro';
 import { SITE } from '../consts';
 import type { PageDef } from '../data/pageTypes';
 
@@ -86,11 +87,7 @@ if (def.howTo) {
     <h1>{def.h1}</h1>
     <p class="lead">{def.lead}</p>
     <button type="button" class="btn btn-primary" data-print>
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M6 9V3h12v6"></path>
-        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-        <rect x="6" y="14" width="12" height="7"></rect>
-      </svg>
+      <Icon name="print" />
       Print this chart
     </button>
   </section>
@@ -98,9 +95,9 @@ if (def.howTo) {
   <section class="printable-wrap" data-fact-scope>
     <div class="printable-toolbar">
       <span class="print-note">{def.printNote}</span>
-      <button type="button" class="btn" data-print>Print</button>
+      <button type="button" class="btn" data-print><Icon name="print" />Print</button>
       {def.sheetImage && (
-        <a class="btn" href={def.sheetImage.src} download>Download PNG</a>
+        <a class="btn" href={def.sheetImage.src} download><Icon name="download" />Download PNG</a>
       )}
     </div>
     <div class:list={['printable', { landscape: def.landscape }]}>
@@ -109,16 +106,22 @@ if (def.howTo) {
   </section>
 
   {def.sheetImage && (
-    <figure class="sheet-preview no-print">
-      <img
-        src={def.sheetImage.src}
-        alt={def.sheetImage.alt}
-        width={def.sheetImage.width}
-        height={def.sheetImage.height}
-        loading="lazy"
-      />
-      {def.sheetImage.caption && <figcaption>{def.sheetImage.caption}</figcaption>}
-    </figure>
+    <details class="sheet-preview no-print">
+      <summary>
+        <Icon name="download" size={14} />
+        PNG version — the exact file Download PNG saves
+      </summary>
+      <figure>
+        <img
+          src={def.sheetImage.src}
+          alt={def.sheetImage.alt}
+          width={def.sheetImage.width}
+          height={def.sheetImage.height}
+          loading="lazy"
+        />
+        {def.sheetImage.caption && <figcaption>{def.sheetImage.caption}</figcaption>}
+      </figure>
+    </details>
   )}
 
   <section class="prose">

@@ -10,6 +10,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../consts';
 import { graphPaperPages } from '../../data/graphPaper';
 import { GRAPH_PAPER_VARIANTS, GRID_COLORS, renderGraphSvg } from '../../lib/graphPaper';
+import Icon from '../../components/Icon.astro';
 
 const jsonLd = [
   {
@@ -68,7 +69,7 @@ const defaultSvg = renderGraphSvg('quarter-inch', 'blue');
   <section class="printable-wrap" id="maker">
     <div class="printable-toolbar">
       <span class="print-note">Custom sheet prints on one letter page at true size — pick grid, spacing and color.</span>
-      <button type="button" class="btn" data-print>Print</button>
+      <button type="button" class="btn" data-print><Icon name="print" />Print</button>
     </div>
     <div class="printable">
       <div class="gp-controls no-print">

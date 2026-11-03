@@ -288,6 +288,38 @@ svg {
   max-width: 26rem;
 }
 
+/* Collapsed by default: the page shows one product (the printable above);
+   the PNG is the download asset + Google Images bait, one click away. */
+.sheet-preview summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+}
+
+.sheet-preview summary:hover {
+  border-color: var(--green);
+  color: var(--green-deep);
+}
+
+.sheet-preview[open] summary {
+  margin-bottom: var(--sp-3);
+  border-style: solid;
+}
+
+.sheet-preview summary::marker,
+.sheet-preview summary::-webkit-details-marker {
+  display: none;
+}
+
 .sheet-preview img {
   display: block;
   width: 100%;
@@ -320,6 +352,10 @@ svg {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
+}
+
+.btn svg {
+  flex: none;
 }
 
 .btn:hover {

@@ -4,6 +4,7 @@ import PlaceValueChart from '../components/printables/PlaceValueChart.astro';
 import DecimalPlacesSheet from '../components/printables/DecimalPlacesSheet.astro';
 import DecimalBreakdownIsland from '../components/printables/DecimalBreakdownIsland.astro';
 import { placeValuePages } from '../data/placeValue';
+import Icon from '../components/Icon.astro';
 
 const def = placeValuePages.find((p) => p.slug === 'decimal-place-value-chart')!;
 ---
@@ -29,7 +30,7 @@ const def = placeValuePages.find((p) => p.slug === 'decimal-place-value-chart')!
     <section class="printable-wrap decimal-places-wrap" aria-label="Tenths, hundredths and thousandths reference sheet">
       <div class="printable-toolbar">
         <span class="print-note">Prints on one letter page, right after the chart.</span>
-        <button type="button" class="btn" data-print>Print</button>
+        <button type="button" class="btn" data-print><Icon name="print" />Print</button>
       </div>
       <div class="printable">
         <DecimalPlacesSheet />
@@ -48,7 +49,7 @@ const def = placeValuePages.find((p) => p.slug === 'decimal-place-value-chart')!
     <section class="printable-wrap decimal-explore-wrap" aria-label="Interactive decimal breakdown">
       <div class="printable-toolbar">
         <span class="print-note">The breakdown prints as shown — type your number first if you want a different one on paper.</span>
-        <button type="button" class="btn" data-print>Print</button>
+        <button type="button" class="btn" data-print><Icon name="print" />Print</button>
       </div>
       <div class="printable">
         <DecimalBreakdownIsland />

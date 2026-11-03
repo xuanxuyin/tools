@@ -10,6 +10,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../consts';
 import { teachingCalendarFaqs, teachingCalendarMonths } from '../data/teachingCalendar';
+import Icon from '../components/Icon.astro';
 
 const jsonLd = [
   {
@@ -58,8 +59,8 @@ const jsonLd = [
   <section class="printable-wrap">
     <div class="printable-toolbar">
       <span class="print-note">One letter page, portrait — the whole year at a glance.</span>
-      <button type="button" class="btn" data-print>Print the year index</button>
-      <a class="btn" href="/images/teaching-calendar-year-index.png" download>Download PNG</a>
+      <button type="button" class="btn" data-print><Icon name="print" />Print the year index</button>
+      <a class="btn" href="/images/teaching-calendar-year-index.png" download><Icon name="download" />Download PNG</a>
     </div>
     <div class="printable">
       <h2 class="sheet-title">Teaching Calendar — Printables by Month</h2>
@@ -79,7 +80,9 @@ const jsonLd = [
     </div>
   </section>
 
-  <figure class="sheet-preview no-print">
+  <details class="sheet-preview no-print">
+    <summary><Icon name="download" size={14} />PNG version — the exact file Download PNG saves</summary>
+    <figure>
     <img
       src="/images/teaching-calendar-year-index.png"
       alt="Free printable teaching calendar for K-5 — the school year on one page, each month listing what to print: back-to-school in August, Halloween in October, Thanksgiving in November, the 100th Day in winter."
@@ -88,7 +91,8 @@ const jsonLd = [
       loading="lazy"
     />
     <figcaption>The year of printables on one letter page — drop it in the front of your plan book.</figcaption>
-  </figure>
+    </figure>
+  </details>
 
   {teachingCalendarMonths.map((m) => (
     <section class="section cal-block">

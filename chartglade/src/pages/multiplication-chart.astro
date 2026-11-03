@@ -3,6 +3,7 @@ import ChartPage from '../components/ChartPage.astro';
 import MultTable from '../components/printables/MultTable.astro';
 import MadMinuteSheet from '../components/printables/MadMinuteSheet.astro';
 import { multiplicationPages } from '../data/multiplication';
+import Icon from '../components/Icon.astro';
 
 const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart')!;
 ---
@@ -23,7 +24,7 @@ const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart')!;
         <span class="print-note">
           The drill prints on one letter page, portrait; the answer key follows on a second page.
         </span>
-        <button type="button" class="btn" data-print>Print</button>
+        <button type="button" class="btn" data-print><Icon name="print" />Print</button>
       </div>
       <div class="printable">
         <MadMinuteSheet />
