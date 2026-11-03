@@ -192,3 +192,49 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 **纪律：单帖单链；一条账号一天最多 1~2 带链答（养号在先）；无对口新帖 = 零动作收班，不硬答。**
 
 **判定口令（10/26 实战补）：标题对口 ≠ 正文对口 —— 必须点开读原帖正文，确认问的是"颜色怎么调"才出手。** 实例：r/Baking "Black buttercream frosting help"（48 票/31 评）标题完美对口，正文实为油水分离质地救援帖（热评全在讲 rewhip/喷枪），调黑答案在那里 = 答非所问+热帖当众 spam。撤答零损失，窗口到 10/31 每天侦查成本 2 分钟。
+
+## §7 外链扩容清单（2026-11-03 立）
+
+> 背景：SEMrush 引荐域名 38 / 曝光走低（11/03 GSC 判读在案）——DR0 期**权威与收录是第一瓶颈**，本节是外链通道的扩容清单。红线照旧：不买链、不碰链农场、不在无关内容里塞链。
+
+### A. 手作 Reddit 三版（最高优先 —— 正中拼豆主战场）
+
+- **版块**：[r/PerlerBeads](https://www.reddit.com/r/PerlerBeads/) · [r/beadsprites](https://www.reddit.com/r/beadsprites/) · [r/PerlerBeadArt](https://www.reddit.com/r/PerlerBeadArt/)
+- **先例实勘（11/03）**：r/beadsprites 有 **"I made a free tool that turns pictures into bead patterns" 发布帖被社区接受** —— photo 工具发布帖姿势成立，照抄
+- **规则红线（实勘）**：作品帖必须原创或注明出处；Reddit 站内 90/10 自推比；单帖单链；养号纪律与 §2 一致
+- **三张牌**：① 晒成品帖（gallery 出图 + "pattern here" 评论带链，最自然的姿势）② 图纸资源帖（117 张免费图纸，按题材分发）③ photo 工具发布帖（养号满后，对标先例帖写法）
+- **蹲守入口**（答帖用，模式同 §6）：`r/PerlerBeads/search/?q=pattern+help&restrict_sr=1&sort=new&t=week`、`q=how+to+make`、`q=color`
+
+### B. GitHub awesome-list PR（dofollow，DR90+，单条质量最高）
+
+- **候选 repo（11/03 实勘）**：`bradtraversy/design-resources`（老牌，有 Color 区）/ `MohamedYoussouf/Design-Resources` / `F4dhil9ant3ng/awesome-design`（有 Color Tools 类）/ `GracieCreates/Design-Resources-for-Developers`
+- **动作**：各 repo 提 1 个 PR，在 Color Tools 区加一行：`TintBrew — free color mixer (Oklab perceptual blending), HEX/RGB/HSL converter & printable color mixing charts`
+- **纪律**：先读各 repo CONTRIBUTING（多数要求按字母序/格式）；一 repo 一 PR 不催不@；被拒不缠
+- **门槛**：👤 需 GitHub 账号；PR 文案 🤖 已备（上句直接抄）
+
+### C. Quora 答帖（AI 截流对冲的第二战场）
+
+- 逻辑：what colors make X 族在 Quora 有存量问题帖且 Quora 自己对这类词有排名——答帖骑 Quora 的排名吃长尾点击
+- 动作：搜 `site:quora.com "what colors make brown"`（及 purple/green/orange/blue）→ 找近 2 年内有问题 → 先实答（Oklab 混色结论 + 实操比例）→ 自然附 /mix/ 或头词页链接
+- 红线：同 §6 判定口令——问题对口才答；单号日 1~2 带链答上限
+
+### D. Product Hunt 正式排期（§四预备清单激活）
+
+- 9 月立预备未发，**现在时机更好**：gallery UGC + 117 张图纸 + photo 工具三件套齐了，launch 故事完整
+- PH 本体链接 nofollow，但真实价值在**二次聚合**（launch roundup 博客/目录抓取站）——这才是引荐域名增量
+- 时机：与 §3 每周节奏错开，选周二~周四美东 0:01 PT 标准打法；物料照 §四清单准备
+
+### E. 目录站补一轮（nofollow 为主，价值 = 加速发现与收录，低优先有空再投）
+
+- [SaaSHub](https://www.saashub.com/add-service)（color tool 类目，较正规）→ 备选：Launching Next / Startup Stash / StartupBase（长尾目录，质量一般，不排队）
+
+### F. Roundup / 资源页外联（最慢，但引荐域名质量最高）
+
+- **Craft 博客 roundup**：搜 `"best perler bead patterns" blog -reddit -pinterest` → 博客 listicle → 定制邮件求收录（hook = 117 张免费图纸 + 在线编辑器，都是别人没有的差异点）
+- **教育/homeschool 资源页**：搜 `"color mixing chart" printable resources page` → 教师资源清单页 → 求 /color-mixing-chart/ 入列
+- 节奏：👤 每周 5 封定制邮件；🤖 每轮拉 20 个目标 + 每站一句定制切入点
+
+### 生效判定
+
+- **两周后（11/17）SEMrush 引荐域名 38 → 45+** = 本清单通道生效；不到 → 复盘哪组没执行而不是换通道
+- 分工：🤖 备全部文案/目标清单；👤 执行提交（账号在手：Reddit 号已养、GitHub/Quora 需注册）
