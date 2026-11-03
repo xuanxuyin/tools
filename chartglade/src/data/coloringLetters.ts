@@ -1,4 +1,5 @@
 import type { PageDef } from './pageTypes';
+import { hasLetterArt } from '../lib/drawings';
 
 /**
  * Letter coloring pages — one page per letter at /coloring/letters/<letter>/.
@@ -12,11 +13,11 @@ import type { PageDef } from './pageTypes';
  * matrix rode in on. Incumbent page anatomy (kidsactivitiesblog, crayola,
  * mondaymandala — torn down 2026-11-03): image-led pages where the printable
  * itself is the content; mondaymandala gives every single drawing its own
- * URL. Our angle is the same as the cursive matrix: the page IS the sheet —
- * a bubble-letter coloring page that renders in HTML, prints clean, and
- * screenshots to its own PNG for the Google Images channel. No hand-drawn
- * art dependency; the letters, words, trace row and draw box are all
- * generated, so the matrix scales to 26 pages without an art backlog.
+ * URL. Rework same day (user caught the form mismatch — incumbents sell
+ * galleries of many PICTURES per page, not worksheets): pilot letters
+ * a/b/c now render a six-drawing gallery above the practice sheet, with
+ * hand-coded SVG line art in src/lib/drawings.ts. The gallery rolls out
+ * to the rest of the matrix once the user signs off on the pilot art.
  */
 
 /** Printable sheet data beyond the shared PageDef SEO fields. */
@@ -1517,10 +1518,22 @@ export const coloringLetters: ColoringLetterDef[] = RAW.map((def, i) => {
     // matrix (sheetImages.test.ts guards declared dims against the files).
     sheetImage: {
       src: `/images/letter-${def.slug}-coloring-page.png`,
-      alt: `Free printable letter ${def.sheet.capital} coloring page — big bubble ${def.sheet.capital} and ${def.sheet.lower} to color, the words ${def.sheet.words.join(', ')}, a trace row, and a draw-your-own box.`,
-      width: 2016,
-      height: 1334,
-      caption: `Letter ${def.sheet.capital}: color the bubbles, color the words, trace, then draw ${def.sheet.drawPrompt}.`,
+      // Pilot letters (a/b/c) shoot the drawing gallery — the incumbent
+      // form, where the pictures are the product (PLAN timeline 2026-11-03).
+      // The rest still shoot the worksheet until their art batch lands.
+      ...(hasLetterArt(def.slug)
+        ? {
+            alt: `Free printable letter ${def.sheet.capital} coloring pages — six designs to color: ${def.sheet.words.join(', ').toLowerCase()} pictures plus three big letter ${def.sheet.capital} designs.`,
+            width: 1916,
+            height: 1480,
+            caption: `Letter ${def.sheet.capital}: six pictures to color — ${def.sheet.words.join(', ').toLowerCase()} and three big-letter designs.`,
+          }
+        : {
+            alt: `Free printable letter ${def.sheet.capital} coloring page — big bubble ${def.sheet.capital} and ${def.sheet.lower} to color, the words ${def.sheet.words.join(', ')}, a trace row, and a draw-your-own box.`,
+            width: 2016,
+            height: 1334,
+            caption: `Letter ${def.sheet.capital}: color the bubbles, color the words, trace, then draw ${def.sheet.drawPrompt}.`,
+          }),
     },
   };
 });

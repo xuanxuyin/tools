@@ -3,8 +3,12 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { coloringLetters } from './coloringLetters';
+import { hasLetterArt } from '../lib/drawings';
 
 const LOWERCASE = [...'abcdefghijklmnopqrstuvwxyz'];
+/** Pilot letters carrying the six-drawing gallery (PLAN 2026-11-03 rework). */
+const GALLERY_PILOT = LOWERCASE.filter(hasLetterArt);
+if (GALLERY_PILOT.length === 0) throw new Error('gallery pilot letters missing — drawings.ts has no art');
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIST = resolve(ROOT, 'dist');
 
@@ -84,12 +88,19 @@ describe('coloring letter matrix', () => {
     }
   });
 
-  it('declares a uniform sheet image for every letter', () => {
+  it('declares a sheet image for every letter (gallery dims for the art pilot)', () => {
     for (const def of coloringLetters) {
       expect(def.sheetImage?.src).toBe(`/images/letter-${def.slug}-coloring-page.png`);
-      expect(def.sheetImage?.width).toBe(2016);
-      expect(def.sheetImage?.height).toBe(1334);
-      expect(def.sheetImage?.alt).toContain(`letter ${def.sheet.capital} coloring page`);
+      if (GALLERY_PILOT.includes(def.slug)) {
+        // pilot letters shoot the six-drawing gallery (.lc-gallery)
+        expect(def.sheetImage?.width).toBe(1916);
+        expect(def.sheetImage?.height).toBe(1480);
+        expect(def.sheetImage?.alt).toContain('six designs');
+      } else {
+        expect(def.sheetImage?.width).toBe(2016);
+        expect(def.sheetImage?.height).toBe(1334);
+        expect(def.sheetImage?.alt).toContain(`letter ${def.sheet.capital} coloring page`);
+      }
       expect(existsSync(resolve(ROOT, 'public', `images/letter-${def.slug}-coloring-page.png`))).toBe(true);
     }
   });
@@ -110,6 +121,19 @@ describe.skipIf(!distReady)('coloring letters dist guards (real dist)', () => {
       // the A-Z strip links all 26 siblings
       expect(html).toContain('/coloring/letters/z/');
       expect(html).toContain('href="/coloring/"');
+      // gallery only on pilot letters, six cards each, on the correct letters
+      if (GALLERY_PILOT.includes(def.slug)) {
+        expect(html).toContain('lc-gallery');
+        expect((html.match(/<figure class="lc-card/g) ?? []).length).toBe(6);
+        // each caption names its word
+        for (const w of def.sheet.words) {
+          expect(html.toLowerCase()).toContain(`is for ${w.toLowerCase()}`);
+        }
+      } else {
+        // CSS for the gallery ships in the shared route chunk, so anchor
+        // the negative guard on markup, not the class name.
+        expect(html).not.toContain('<figure class="lc-card');
+      }
     }
   });
 

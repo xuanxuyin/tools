@@ -1,8 +1,10 @@
 ---
 import ChartPage from '../../../components/ChartPage.astro';
+import LetterColoringGallery from '../../../components/printables/LetterColoringGallery.astro';
 import LetterColoringSheet from '../../../components/printables/LetterColoringSheet.astro';
 import ColoringAZ from '../../../components/ColoringAZ.astro';
 import { coloringLetters } from '../../../data/coloringLetters';
+import { hasLetterArt } from '../../../lib/drawings';
 
 export function getStaticPaths() {
   return coloringLetters.map((def) => ({
@@ -14,9 +16,15 @@ export function getStaticPaths() {
 const { def } = Astro.props;
 // slug stays flat ('a') for find-by-slug lookups; the route nests under /coloring/letters/
 const pageDef = { ...def, path: `/coloring/letters/${def.slug}` };
+// Pilot letters (a/b/c) carry a drawing gallery above the practice sheet;
+// the rest of the matrix keeps the worksheet-only layout until their
+// batches are drawn (PLAN timeline 2026-11-03, coloring rework).
+const withGallery = hasLetterArt(def.slug);
 ---
 
 <ChartPage def={pageDef}>
+  {withGallery && <LetterColoringGallery sheet={def.sheet} />}
+  {withGallery && <div class="sheet-break" />}
   <LetterColoringSheet sheet={def.sheet} />
   <ColoringAZ slot="after" current={def.slug} />
 </ChartPage>

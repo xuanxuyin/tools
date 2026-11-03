@@ -1,0 +1,83 @@
+---
+import { letterDrawings } from '../../lib/drawings';
+import type { ColoringLetterSheet } from '../../data/coloringLetters';
+
+interface Props {
+  sheet: ColoringLetterSheet;
+}
+
+const { sheet } = Astro.props;
+const drawings = letterDrawings(sheet);
+---
+
+<div class="lc-gallery">
+  <h3 class="lc-gallery-heading">
+    Six things to color for letter {sheet.capital} — color the picture, then color the big letter.
+  </h3>
+  <div class="lc-cards">
+    {drawings.map((d) => (
+      <figure class="lc-card">
+        <div class="lc-art" set:html={d.svg} />
+        <figcaption class="lc-caption">{d.caption}</figcaption>
+      </figure>
+    ))}
+  </div>
+  <p class="lc-gallery-footer">
+    Print one page or the whole set — the pictures print on this page, the letter practice sheet prints on the next.
+  </p>
+</div>
+
+<style>
+  .lc-gallery {
+    padding: 0.2rem 0.3rem;
+    font-family: var(--font-sans);
+  }
+  .lc-gallery-heading {
+    margin: 0 0 0.4rem;
+    font-size: 13pt;
+    font-weight: 700;
+    color: #1c1c1c;
+    text-align: center;
+  }
+  .lc-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+  }
+  .lc-card {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    align-items: center;
+  }
+  .lc-art {
+    width: 100%;
+    border: 1pt solid #b8b2a4;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .lc-art :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .lc-caption {
+    font-size: 8.5pt;
+    line-height: 1.3;
+    text-align: center;
+    color: #444;
+    margin: 0;
+  }
+  .lc-gallery-footer {
+    margin: 0.4rem 0 0;
+    text-align: center;
+    font-size: 9pt;
+    color: #777;
+  }
+  @media print {
+    .lc-cards { gap: 0.3rem; }
+    .lc-art { border-color: #999; }
+    .lc-caption, .lc-gallery-footer { color: #555; }
+  }
+</style>

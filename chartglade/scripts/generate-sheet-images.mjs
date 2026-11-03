@@ -67,10 +67,13 @@ const SHOTS = [
   { page: 'thanksgiving-color-by-number', file: 'thanksgiving-color-by-number-printable' },
   { page: 'thanksgiving-placemat-printable', file: 'thanksgiving-placemat-printable' },
   { page: 'i-am-thankful-for-worksheet', file: 'i-am-thankful-for-worksheet' },
-  // Wave 5 (2026-11-03, coloring product line: the 26-letter bubble matrix)
+  // Wave 5 (2026-11-03, coloring product line: the 26-letter bubble matrix).
+  // Pilot letters a/b/c shoot the drawing gallery (.lc-gallery, incumbent
+  // form: the pictures are the product); the rest shoot the worksheet.
   ...'abcdefghijklmnopqrstuvwxyz'.split('').map((l) => ({
     page: `coloring/letters/${l}`,
     file: `letter-${l}-coloring-page`,
+    ...(['a', 'b', 'c'].includes(l) ? { selector: '.lc-gallery' } : {}),
   })),
   // Wave 5b (2026-11-03, coloring Phase B: christmas stocking singles)
   { page: 'christmas-stocking-coloring-page', file: 'christmas-stocking-coloring-page' },
@@ -117,16 +120,17 @@ mkdirSync(OUT, { recursive: true });
 
 try {
   const dims = {};
-  for (const { page, file } of shots) {
+  for (const { page, file, selector } of shots) {
+    const sel = selector ?? '.printable';
     const ctx = await browser.newContext({
       viewport: { width: 1280, height: 1000 },
       deviceScaleFactor: 2,
     });
     const p = await ctx.newPage();
     await p.goto(`${base}/${page}/`);
-    await p.waitForSelector('.printable');
+    await p.waitForSelector(sel);
     await p.waitForTimeout(500); // let fonts/interact settle
-    const el = await p.$('.printable');
+    const el = await p.$(sel);
     const shot = await el.screenshot();
     await ctx.close();
 
