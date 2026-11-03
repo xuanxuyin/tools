@@ -157,10 +157,10 @@ TintBrew
 | # | 站 | 发送日 | Follow-up 日 | 状态 | 备注 |
 |---|---|---|---|---|---|
 | 1 | itsalwaysautumn.com | 2026-11-03 | 2026-11-13 | ✉️ 已发 | GIANT list；首发 |
-| 2 | kidsactivitiesblog.com | | | ⬜ | |
-| 3 | rockyourhomeschool.net | | | ⬜ | |
-| 4 | teacherscoutmom.com | | | ⬜ | |
-| 5 | montessorilessons.com | | | ⬜ | |
+| 2 | kidsactivitiesblog.com | — | — | ❌ 弃 | 无联系入口（首页无 Contact，Work-with-Holly 页也无邮箱；超 5 分钟规矩） |
+| 3 | rockyourhomeschool.net | | | ⬜ 待勘邮箱 | 站长署名可作邮件抬头 |
+| 4 | teacherscoutmom.com | | | ⬜ 待勘邮箱 | |
+| 5 | montessorilessons.com | | | ⬜ 待勘邮箱 | |
 | 6~20 | | | | ⬜ | |
 
 ---
