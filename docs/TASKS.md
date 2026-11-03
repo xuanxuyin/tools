@@ -8,6 +8,7 @@
 
 ## 今天 · 2026-11-03（周一）
 
+- [ ] 🤖 **chartglade Cootie Catcher 簇开工（11/03 立项）**：/cootie-catcher/ 模板主页 + 已填 fortunes printable 页 + **圣诞主题模板（死线 11/15，圣诞提前窗现在正卡）**；填充内容用签文库改编英文吉语库（300 签原料在 `docs/fortune-draw/`）；情人节模板 12 月中上跟进。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md) + §3 #34
 - [x] 👤 **tintbrew D1 迁移 SQL ✅ 已跑完（11/3 用户控制台执行，钱包面板出现即 authors 表生效——积分/扩位/多作品全解锁）**：Cloudflare 控制台 → Storage & Databases → D1 → tintbrew 库 → Console，把 `tintbrew/functions/schema.sql` **底部注释里的 6 条迁移 SQL 按序逐条执行**（creations 重建支持多作品 + 建 authors 钱包表）。**不跑的后果（实测）**：/gallery/ 曾因钱包查询炸掉整页不显示热门作品（11/3 已加容错兜底，列表恢复但钱包面板隐藏）；点赞积分、100 积分扩画廊位、发布第二件作品**全部静默不生效**。跑完即全部解锁。
 
 ---
