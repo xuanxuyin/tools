@@ -18,34 +18,43 @@ const { piece } = Astro.props;
 const ord = COLORING_PIECES.indexOf(piece);
 const total = COLORING_PIECES.length;
 
-// difficulty tier copy — varied per position so 210 pages don't read as clones
-function tierCopy(n: number): { h: string; p: string } {
+// difficulty tier copy — varied per position so 210 pages don't read as
+// clones. SSR renders the English copy (crawlable, no-JS safe); the island
+// swap replaces it via the col.tier* keys ({n} regions, {t} title) so zh/ko
+// readers get the same text in their language.
+function tierCopy(n: number): { h: string; p: string; tier: number } {
   if (n < 12)
     return {
+      tier: 1,
       h: 'A gentle warm-up',
       p: `With just ${piece.regions} regions, “${piece.title}” is a short, satisfying session — most people finish it in a few minutes. Perfect first page, or a calm wind-down between the bigger pictures.`,
     };
   if (n < 60)
     return {
+      tier: 2,
       h: 'An easy, relaxing page',
       p: `“${piece.title}” has ${piece.regions} regions to fill — enough variety to stay interesting, small enough to finish in one sitting. A good everyday coloring page.`,
     };
   if (n < 150)
     return {
+      tier: 3,
       h: 'A step up in detail',
       p: `${piece.regions} regions make “${piece.title}” a proper project: half an hour or more of steady tapping, with plenty of small areas that reward a careful color choice.`,
     };
   if (n < 400)
     return {
+      tier: 4,
       h: 'A detailed picture',
       p: `With ${piece.regions} separate regions, “${piece.title}” is for the dedicated colorist. Take it a section at a time — every fill saves automatically, so you can leave and come back.`,
     };
   return {
+    tier: 5,
     h: 'A marathon page',
     p: `“${piece.title}” packs ${piece.regions} regions into one picture — one of the most detailed pages in the collection. Spread it over a few sittings; your progress is saved in your browser after every tap.`,
   };
 }
 const tier = tierCopy(ord);
+const tierArgs = JSON.stringify({ n: String(piece.regions), t: piece.title });
 
 const prev = ord > 0 ? COLORING_PIECES[ord - 1] : null;
 const next = ord < total - 1 ? COLORING_PIECES[ord + 1] : null;
@@ -86,18 +95,14 @@ const jsonLd = [
   <nav class="crumb" aria-label="Breadcrumb">
     <a href="/coloring/" data-i18n="col.p.crumb">Coloring pages</a>
     <span aria-hidden="true"> / </span>
-    <strong>{piece.title}</strong>
+    <strong data-i18n-piece={piece.slug}>{piece.title}</strong>
   </nav>
 
   <section class="hero">
-    <h1>{piece.title} <span class="col-h1-note" data-i18n="col.h1n">Coloring Page</span></h1>
+    <h1><span data-i18n-piece={piece.slug}>{piece.title}</span> <span class="col-h1-note" data-i18n="col.h1n">Coloring Page</span></h1>
     <p class="lead">
-      <span data-i18n="col.p.metaA">Page</span> {ord + 1}<span data-i18n="col.p.metaB">
-        of {total} ·</span
-      >
-      <span
-        data-i18n="col.p.metaB"
-        data-i18n-args={JSON.stringify({ total: String(total) })}>
+      <span data-i18n="col.p.metaA">Page</span> {ord + 1}
+      <span data-i18n="col.p.metaB" data-i18n-args={JSON.stringify({ total: String(total) })}>
         of {total} ·</span
       >
       <span class="col-regions" data-col-regions>{piece.regions} regions</span>
@@ -146,8 +151,14 @@ const jsonLd = [
   </div>
 
   <section class="prose band" style="margin-top: var(--sp-8);">
-    <h2>{tier.h}</h2>
-    <p>{tier.p}</p>
+    <h2
+      data-i18n={`col.tier${tier.tier}h`}
+      data-i18n-args={tierArgs}
+    >{tier.h}</h2>
+    <p
+      data-i18n={`col.tier${tier.tier}p`}
+      data-i18n-args={tierArgs}
+    >{tier.p}</p>
     <p data-i18n="col.p.printB">
       Want it on paper? The line art above is a real image — right-click or long-press to save it,
       print it, and color it with pencils.
@@ -158,14 +169,14 @@ const jsonLd = [
     {
       prev && (
         <a href={`/coloring/${prev.slug}/`} class="btn btn-sm">
-          ← {prev.title}
+          ← <span data-i18n-piece={prev.slug}>{prev.title}</span>
         </a>
       )
     }
     <a href="/coloring/" class="btn btn-sm" data-i18n="col.gal.backPages">← All coloring pages</a>
     {
       next && (
-        <a href={`/coloring/${next.slug}/`} class="btn btn-sm">{next.title} →</a>
+        <a href={`/coloring/${next.slug}/`} class="btn btn-sm"><span data-i18n-piece={next.slug}>{next.title}</span> →</a>
       )
     }
   </nav>
@@ -191,6 +202,12 @@ const jsonLd = [
   }
   .col-done-pill {
     display: inline-block;
+    /* the island toggles the `hidden` attribute — author display would
+       otherwise defeat the UA's [hidden] { display: none } and the pill
+       would sit visible on every page from load */
+  }
+  .col-done-pill[hidden] {
+    display: none;
     margin-left: var(--sp-2);
     padding: 0.1rem 0.6rem;
     border-radius: 999px;

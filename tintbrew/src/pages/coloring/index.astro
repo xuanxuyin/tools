@@ -122,7 +122,7 @@ const jsonLd = [
                 decoding="async"
               />
               <span class="col-meta">
-                <strong class="col-name">{p.title}</strong>
+                <strong class="col-name" data-i18n-piece={p.slug}>{p.title}</strong>
                 <span class="col-sub">{p.regions} regions</span>
               </span>
             </a>
@@ -248,7 +248,10 @@ const jsonLd = [
   .col-thumb {
     width: 100%;
     aspect-ratio: 4 / 3;
-    object-fit: cover;
+    /* contain, not cover: the line art IS the product — cropping it on the
+       card hides what the page looks like; white keeps line art legible */
+    object-fit: contain;
+    background: #fff;
     display: block;
   }
   .col-meta {
