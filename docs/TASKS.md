@@ -8,7 +8,7 @@
 
 ## 今天 · 2026-11-03（周一）
 
-- [ ] 🤖 **chartglade Cootie Catcher 簇开工（11/03 立项）**：/cootie-catcher/ 模板主页 + 已填 fortunes printable 页 + **圣诞主题模板（死线 11/15，圣诞提前窗现在正卡）**；填充内容用签文库改编英文吉语库（300 签原料在 `docs/fortune-draw/`）；情人节模板 12 月中上跟进。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md) + §3 #34
+- [x] 🤖 **chartglade Cootie Catcher 首批上线 ✅（11/03 当日，死线 11/15 提前 12 天）**：/cootie-catcher/ + /christmas-cootie-catcher/ + /cootie-catcher-fortunes/ 三页合并 main `22d0905` 已 push；余二批（math/sight-words 变体）+ how-to 长文 + 情人节 12 月中。明细 [chartglade PLAN 11/03 上线行](./chartglade/PLAN.md) + §3 #34
 - [ ] 🤖 **tintbrew 外链文案包（本周）**：① B 组 4 个 GitHub awesome-list PR 正文定稿 ✅ **已完成**（执行包落 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)：通用条目行+PR标题+描述+逐 repo 插入点+网页版提 PR 五步，👤 提交前只需浏览器里核一眼各 repo Color 区格式）② F 组 Roundup 目标 20 个清单（craft 博客 listicle + 教师资源页，每站一句定制 hook）③ C 组 Quora 答帖模板 2 版（brown/purple 两问法）。②③ 逐项转 👤
 - [ ] 👤 **外链扩容 A 组启动：手作 Reddit 三版养号**：[r/PerlerBeads](https://www.reddit.com/r/PerlerBeads/) + [r/beadsprites](https://www.reddit.com/r/beadsprites/) + r/PerlerBeadArt——每天浏览 + 1~2 条无链真人评论（晒图/答新手，零链接），攒到满足门槛后发 photo 工具发布帖（**r/beadsprites 有 "I made a free tool that turns pictures into bead patterns" 被接受先例**，11/03 实勘）。规则红线见 [tintbrew DISTRIBUTION §7A](./tintbrew/DISTRIBUTION.md)：原创/注明出处、90/10 自推比、单帖单链
 - [ ] 👤 **外链扩容 B 组：GitHub awesome-list PR ×4 提交（文案已齐）**：repo 候选 = `bradtraversy/design-resources` / `MohamedYoussouf/Design-Resources` / `F4dhil9ant3ng/awesome-design` / `GracieCreates/Design-Resources-for-Developers`——完整执行包（条目行/标题/描述/插入点/五步流程）在 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)，每 repo 约 2 分钟网页版操作；提交前浏览器核一眼该 repo Color 区现有条目格式即可。每提一个回 TASKS 勾掉并记 PR 链接
