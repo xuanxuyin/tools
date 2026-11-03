@@ -14,10 +14,11 @@ import { hasLetterArt } from '../lib/drawings';
  * mondaymandala — torn down 2026-11-03): image-led pages where the printable
  * itself is the content; mondaymandala gives every single drawing its own
  * URL. Rework same day (user caught the form mismatch — incumbents sell
- * galleries of many PICTURES per page, not worksheets): pilot letters
- * a/b/c now render a six-drawing gallery above the practice sheet, with
- * hand-coded SVG line art in src/lib/drawings.ts. The gallery rolls out
- * to the rest of the matrix once the user signs off on the pilot art.
+ * galleries of many PICTURES per page, not worksheets): every letter now
+ * renders a six-drawing gallery above the practice sheet, with hand-coded
+ * SVG line art in src/lib/drawings.ts (70 objects, 26 hand-written
+ * caption sets). Primary keyword targeted per page: "letter X coloring
+ * pages" (plural — h1/metaTitle), 2.4K US/mo at KD 24 for letter a.
  */
 
 /** Printable sheet data beyond the shared PageDef SEO fields. */
@@ -42,18 +43,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'a',
     hub: 'coloring',
-    h1: 'Letter A Coloring Page',
-    metaTitle: 'Letter A Coloring Page — Bubble Letters & A Words | ChartGlade',
+    h1: 'Letter A Coloring Pages',
+    metaTitle: 'Letter A Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
       'A free printable letter A coloring page: big bubble A and a, three A words to color, a trace row, and a draw-your-own box. No sign-up — print and color.',
     lead:
-      'One giant bubble A and a, three A words to color, a trace row, and an empty box daring your child to draw their own apple. It prints on one letter page and needs nothing but crayons.',
+      'One giant bubble A and a, three A words to color, a trace row, and an empty box daring your child to draw their own apple. It prints on two letter pages and needs nothing but crayons.',
     introHeading: 'The letter that starts everything',
     intro: [
       'A is where the alphabet starts, and it is also where the two trickiest sounds live: the short a of apple and the long a of acorn both open this page. The capital A is two slanted legs and a crossbar — three straight strokes a young child can outline in three different colors. The lowercase a is a circle with a wall on the right, which makes it a perfect first shape to color: round things are forgiving, and a wobbly circle still reads as an a.',
       'Coloring a letter before writing it is quietly good pedagogy. The crayon traces the same path a pencil will later, at whatever speed the hand can manage, and the child owns the shape before anyone asks them to reproduce it at small size. The word row gives the sound a job — apple, ant, acorn are all things a child can picture, which is what turns a shape into a letter.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three A words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Two colors, two sounds',
@@ -83,7 +84,7 @@ const RAW: RawLetterDef[] = [
       },
       {
         q: 'How do I print the letter A coloring page?',
-        a: 'Hit the print button — the page strips itself down to just the sheet, one letter page, portrait, black outlines on white. The Download PNG button saves the same sheet as an image if you would rather print from a photo app or load it onto a tablet for a drawing app.',
+        a: 'Hit the print button — the page strips itself down to its two print pages: the picture gallery first, the bubble-letter practice sheet second, portrait, black outlines on white. The Download PNG button saves the picture page as an image if you would rather print from a photo app or load it onto a tablet for a drawing app.',
       },
     ],
     sheet: {
@@ -98,18 +99,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'b',
     hub: 'coloring',
-    h1: 'Letter B Coloring Page',
-    metaTitle: 'Letter B Coloring Page — Bubble Letters & B Words | ChartGlade',
+    h1: 'Letter B Coloring Pages',
+    metaTitle: 'Letter B Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free printable letter B coloring page with big bubble B and b, ball-bear-boat to color, a trace row, and a draw box. One letter page, no sign-up.',
+      'Free printable letter B coloring page with big bubble B and b, ball-bear-boat to color, a trace row, and a draw box. Two pages, no sign-up.',
     lead:
-      'A chunky bubble B and b, ball, bear and boat to color, plus a trace row and a draw-your-own box. One letter page, ready before the crayon box is even open.',
+      'A chunky bubble B and b, ball, bear and boat to color, plus a trace row and a draw-your-own box. Two pages, ready before the crayon box is even open.',
     introHeading: 'The letter with two bellies',
     intro: [
       'B is two bellies stacked on a stick — the capital carries a smaller hump on top and a rounder one below, and the lowercase b is a tall stick with a single belly at the bottom. That anatomy is exactly what makes b the letter children most often mirror into a d, and coloring it is a sneaky fix: while the crayon travels the outside of the shape, the hand learns that the bump belongs on the right side of the stick. Say "stick first, then belly" as they color the lowercase and the reversal habit loosens.',
       'The b sound is a quick pop — lips together, then release. It is one of the earliest sounds children say (babbling is literally b practice), so most kids arrive at this page already owning the sound; the page gives it a written body. Ball, bear and boat keep the pop at the front of every word, right where the ear catches it.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three B words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Belly check against d',
@@ -139,7 +140,7 @@ const RAW: RawLetterDef[] = [
       },
       {
         q: 'Can I use this page in a classroom?',
-        a: 'Yes — it prints clean on one letter page with no watermark and no sign-up, so it copies well. Letter-of-the-week teachers usually run it as the Tuesday activity: color the letter, then the words, then the box becomes a drawing-and-labeling exercise.',
+        a: 'Yes — it prints clean on two letter pages with no watermark and no sign-up, so it copies well. Letter-of-the-week teachers usually run it as the Tuesday activity: color the six pictures, then the letter, then the words, and the draw box becomes a drawing-and-labeling exercise.',
       },
     ],
     sheet: {
@@ -154,10 +155,10 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'c',
     hub: 'coloring',
-    h1: 'Letter C Coloring Page',
-    metaTitle: 'Letter C Coloring Page — Bubble Letters & C Words | ChartGlade',
+    h1: 'Letter C Coloring Pages',
+    metaTitle: 'Letter C Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter C coloring page: bubble C and c, cat-car-cake to color, a trace row, and a draw box. Free, one letter page, no sign-up.',
+      'Printable letter C coloring page: bubble C and c, cat-car-cake to color, a trace row, and a draw box. Free, two pages, no sign-up.',
     lead:
       'Bubble C and c wide enough for the chunkiest crayons, cat, car and cake to color, a trace row, and a draw box for whatever c thing your child invents.',
     introHeading: 'The letter that never closes',
@@ -165,7 +166,7 @@ const RAW: RawLetterDef[] = [
       'C is a circle that stopped halfway — an open mouth, a crescent, a cookie with a bite out of it. That openness is the whole shape: color the capital in one long sweep around the curve and the hand has practiced the same rotation that will later draw o, g, and q. The lowercase c is the same arc at smaller size, which makes C-to-c one of the cleanest capital-lowercase pairs in the alphabet: same shape, different height.',
       'The sound is where c gets complicated. Cat, car and cake all run the hard c — a k sound — and those are the words on this page on purpose. Soft c (city, circus) arrives in first grade and confuses children far less when hard c is already automatic. Coloring three hard-c words plants the default before the exception shows up.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three C words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'One continuous sweep',
@@ -210,18 +211,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'd',
     hub: 'coloring',
-    h1: 'Letter D Coloring Page',
-    metaTitle: 'Letter D Coloring Page — Bubble Letters & D Words | ChartGlade',
+    h1: 'Letter D Coloring Pages',
+    metaTitle: 'Letter D Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter D coloring page to print: bubble D and d, dog-duck-door, a trace row, and a draw-your-own box. One letter page, no watermark.',
+      'Free letter D coloring page to print: bubble D and d, dog-duck-door, a trace row, and a draw-your-own box. Two pages, no watermark.',
     lead:
-      'A big bubble D and d, dog, duck and door to color, plus a trace row and an empty draw box. One letter page, prints clean, no sign-up.',
+      'A big bubble D and d, dog, duck and door to color, plus a trace row and an empty draw box. Two pages, prints clean, no sign-up.',
     introHeading: 'The drum of the alphabet',
     intro: [
       'Say d and you are beating a drum: tongue taps the ridge behind the teeth and releases in one dry pop. The capital D is a straight spine with one big round belly, and the lowercase is the same belly on a taller spine — color both and the family resemblance does the teaching. Belly on the left is what makes a d a d; that is the side the crayon should travel most carefully.',
       'D is the mirror twin of b, and this page is built to be printed alongside the letter B page. Same bellies, opposite sides. Children who color the pair in one sitting — b page, then d page, out loud, "b has its belly on the right, d on the left" — collect the reversal fix weeks earlier than children who meet the letters separately in workbooks.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three D words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Drum while you color',
@@ -266,18 +267,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'e',
     hub: 'coloring',
-    h1: 'Letter E Coloring Page',
-    metaTitle: 'Letter E Coloring Page — Bubble Letters & E Words | ChartGlade',
+    h1: 'Letter E Coloring Pages',
+    metaTitle: 'Letter E Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter E coloring page with bubble E and e, egg-elf-envelope, a trace row, and a draw box. Free, one letter page, no sign-up.',
+      'Printable letter E coloring page with bubble E and e, egg-elf-envelope, a trace row, and a draw box. Free, two pages, no sign-up.',
     lead:
-      'Bubble E and e, egg, elf and envelope to color, a trace row for pencil warm-ups, and a draw box waiting for an elephant. One letter page, free.',
+      'Bubble E and e, egg, elf and envelope to color, a trace row for pencil warm-ups, and a draw box waiting for an elephant. Two pages, free.',
     introHeading: 'The letter you are using most',
     intro: [
       'E is the most common letter in English — it is in roughly one of every eight letters on any page, including this one. That frequency makes it a high-value coloring session: the capital E is four straight strokes (spine plus three arms), which is the simplest possible geometry, and the lowercase e is one small curve with a shelf across the middle. Children who struggle to "see" the lowercase e benefit from coloring it fat first — the shelf line hiding inside the outline becomes obvious at crayon scale.',
       'Egg, elf and envelope are all short-e words — the eh sound at the front of the mouth. Short e is famously the last vowel sound children master because it sits acoustically close to short i; saying "egg" slowly while coloring gives the sound a concrete anchor, and the elephant in the draw box is the classic extension.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three E words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Count the arms',
@@ -322,18 +323,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'f',
     hub: 'coloring',
-    h1: 'Letter F Coloring Page',
-    metaTitle: 'Letter F Coloring Page — Bubble Letters & F Words | ChartGlade',
+    h1: 'Letter F Coloring Pages',
+    metaTitle: 'Letter F Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter F coloring page: bubble F and f, fish-frog-fan, a trace row, and a draw-your-own box. One letter page, prints clean, no sign-up.',
+      'Free letter F coloring page: bubble F and f, fish-frog-fan, a trace row, and a draw-your-own box. Two pages, prints clean, no sign-up.',
     lead:
-      'Bubble F and f, fish, frog and fan to color, a trace row, and a draw box — one letter page of quiet, screen-free f-sound practice.',
+      'Bubble F and f, fish, frog and fan to color, a trace row, and a draw box — two pages of quiet, screen-free f-sound practice.',
     introHeading: 'The windy letter',
     intro: [
       'F is the only letter on this page whose sound is pure breath: top teeth on bottom lip, push air out, ffffff. No voice box at all. That makes it fun to teach while coloring — hold the f sound through one whole crayon stroke and see how long it lasts. The shape is a spine with two arms, the capital on a taller spine than the lowercase, and coloring the arms in different colors makes the two-arm anatomy impossible to miss.',
       'Fish, frog and fan all slam the f right at the front of the word, which is where young ears need it. F is a common first sound in children\'s names and family words — Dad, four, friend — so the letter tends to have personal attachments already. The draw box usually fills with fish; frogs are the second-place favorite and occasionally a family portrait appears, justified by someone\'s name.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three F words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'How long can you ffffff?',
@@ -378,18 +379,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'g',
     hub: 'coloring',
-    h1: 'Letter G Coloring Page',
-    metaTitle: 'Letter G Coloring Page — Bubble Letters & G Words | ChartGlade',
+    h1: 'Letter G Coloring Pages',
+    metaTitle: 'Letter G Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter G coloring page: bubble G and g, goat-gift-grapes, a trace row, and a draw-your-own box. Free, one letter page, no sign-up.',
+      'Printable letter G coloring page: bubble G and g, goat-gift-grapes, a trace row, and a draw-your-own box. Free, two pages, no sign-up.',
     lead:
-      'Bubble G and g, goat, gift and grapes to color, a trace row, and a draw box for the giraffe your child will insist on. One letter page.',
+      'Bubble G and g, goat, gift and grapes to color, a trace row, and a draw box for the giraffe your child will insist on. Two pages.',
     introHeading: 'Two letters wearing one shape',
     intro: [
       'G has the alphabet\'s most useful split personality: the hard g of goat and gift (a throaty pop like a gulping sound) and the soft g of giraffe (a j sound). This page teaches the hard g — goat, gift, grapes all front-load it — because that is the sound preschoolers meet first and the one reading programs expect them to know cold. The giraffe conversation will happen anyway; it goes better once hard g is already automatic.',
       'The shape is c with a collar: capital G is the open curve of C plus a small inward bar at the bottom, lowercase g is a circle with a tail that hangs below the line. That descender tail is new for children — most letters they have colored so far sit between the lines. Coloring the tail in a different color than the circle quietly teaches the two-part anatomy before any writing lesson names it.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three G words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Gulp the g',
@@ -434,18 +435,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'h',
     hub: 'coloring',
-    h1: 'Letter H Coloring Page',
-    metaTitle: 'Letter H Coloring Page — Bubble Letters & H Words | ChartGlade',
+    h1: 'Letter H Coloring Pages',
+    metaTitle: 'Letter H Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter H coloring page to print: bubble H and h, hat-hen-house, a trace row, and a draw-your-own box. One letter page, no watermark.',
+      'Free letter H coloring page to print: bubble H and h, hat-hen-house, a trace row, and a draw-your-own box. Two pages, no watermark.',
     lead:
-      'Bubble H and h, hat, hen and house to color, a trace row, and a draw box. One letter page of h-sound practice with crayons.',
+      'Bubble H and h, hat, hen and house to color, a trace row, and a draw box. Two pages of h-sound practice with crayons.',
     introHeading: 'The letter that is only breath',
     intro: [
       'H is the quietest letter in the alphabet — a soft puff of air with nothing else attached, ha. Children who say "hat" as "at" are not being careless; they are skipping a sound that produces almost no sensation in the mouth. The fix is the hand-check: hold a palm in front of the mouth while saying hat and feel the puff. Then color the page. The puff, the shape, and the words all land in one sitting.',
       'The shape is architectural: the capital is two towers with a bridge, the lowercase a tower with a hump. Both are among the simplest outlines to color — long straight walls, which is why h pages tend to come home the most thoroughly filled-in of any letter. Hat, hen and house keep the puff at the front of each word, and house conveniently matches the shape of the capital: two towers and a bridge across.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three H words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'The palm test',
@@ -490,10 +491,10 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'i',
     hub: 'coloring',
-    h1: 'Letter I Coloring Page',
-    metaTitle: 'Letter I Coloring Page — Bubble Letters & I Words | ChartGlade',
+    h1: 'Letter I Coloring Pages',
+    metaTitle: 'Letter I Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter I coloring page with bubble I and i, igloo-ink-insect, a trace row, and a draw box. Free, one letter page, no sign-up.',
+      'Printable letter I coloring page with bubble I and i, igloo-ink-insect, a trace row, and a draw box. Free, two pages, no sign-up.',
     lead:
       'Bubble I and i, igloo, ink and insect to color, a trace row, and a draw box. The shortest letter on the alphabet gets a full page anyway.',
     introHeading: 'The smallest letter, the biggest vowel',
@@ -501,7 +502,7 @@ const RAW: RawLetterDef[] = [
       'Lowercase i is the smallest letter your child will color — one short stroke and a floating dot — and it is secretly one of the most important. I is a vowel, the "in-between" sound: ih, as in igloo, ink and insect, the three words on this page. Short i is acoustically tangled with short e (children mix pen and pin for years), so every extra colorful pass over the ih sound helps untangle it early.',
       'The dot deserves its own attention. Children love the dot because it is the one piece of the alphabet that is purely decorative-looking — a period floating above a line. Explain it as the letter\'s hat: i wears it, and later j will too. The capital I, meanwhile, is three straight strokes, the same rectangle-build as the number one with a cap and base, and colors fast even for two-year-olds.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three I words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Dot gets a special color',
@@ -546,18 +547,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'j',
     hub: 'coloring',
-    h1: 'Letter J Coloring Page',
-    metaTitle: 'Letter J Coloring Page — Bubble Letters & J Words | ChartGlade',
+    h1: 'Letter J Coloring Pages',
+    metaTitle: 'Letter J Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter J coloring page: bubble J and j, jam-jet-jelly, a trace row, and a draw-your-own box. One letter page, prints clean, free.',
+      'Free letter J coloring page: bubble J and j, jam-jet-jelly, a trace row, and a draw-your-own box. Two pages, prints clean, free.',
     lead:
-      'Bubble J and j, jam, jet and jelly to color, a trace row, and a draw box. One letter page, ready for the jar of crayons.',
+      'Bubble J and j, jam, jet and jelly to color, a trace row, and a draw box. Two pages, ready for the jar of crayons.',
     introHeading: 'The letter with the hook',
     intro: [
       'J is i grown up and gone somewhere: same stem, same dot on the lowercase, but the stem ends in a hook that dives below the line. That hook is the only structural difference between i and j on the lowercase side, and coloring the two pages in the same week — i\'s short stem, then j\'s diving stem — teaches the contrast better than any side-by-side worksheet. The capital J has the hook too, sweeping under itself with more room than any other capital gets.',
       'The sound is a quick voiced tap — jaw, jaw, jaw. Jam, jet and jelly front-load it, and jam is the word children say with the most enthusiasm, which is a real factor: enthusiasm gets a letter remembered. Jelly and jam together also set up the longest-running kindergarten joke, that jelly and jam are different foods, which your child will be delighted to explain to anyone who stands still.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three J words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Jump the j',
@@ -602,18 +603,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'k',
     hub: 'coloring',
-    h1: 'Letter K Coloring Page',
-    metaTitle: 'Letter K Coloring Page — Bubble Letters & K Words | ChartGlade',
+    h1: 'Letter K Coloring Pages',
+    metaTitle: 'Letter K Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter K coloring page: bubble K and k, kite-king-key, a trace row, and a draw-your-own box. Free, one letter page, no sign-up.',
+      'Printable letter K coloring page: bubble K and k, kite-king-key, a trace row, and a draw-your-own box. Free, two pages, no sign-up.',
     lead:
-      'Bubble K and k, kite, king and key to color, a trace row, and a draw box. One letter page of k-sound practice, free to print.',
+      'Bubble K and k, kite, king and key to color, a trace row, and a draw box. Two pages of k-sound practice, free to print.',
     introHeading: 'The kicking letter',
     intro: [
       'K makes the same sound as hard c — a clean back-of-the-mouth click — which makes this page the perfect follow-up to the letter C page. Tell a child that k and c are twins who look nothing alike; then color both. Kite, king and key all front-load the click, and kite earns the featured spot because it literally starts with a kick of wind.',
       'The shape is a spine with two diagonal kicks: the capital a tall spine with an arm and a leg, the lowercase the same at half height. Diagonals are harder for young hands to color inside than verticals and circles — the corners pinch the crayon — so expect this page to take a little longer and look a little more abstract. That difficulty is the point: diagonals need practice, and few letters offer two of them this prominently.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three K words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Kick while you color',
@@ -658,18 +659,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'l',
     hub: 'coloring',
-    h1: 'Letter L Coloring Page',
-    metaTitle: 'Letter L Coloring Page — Bubble Letters & L Words | ChartGlade',
+    h1: 'Letter L Coloring Pages',
+    metaTitle: 'Letter L Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter L coloring page to print: bubble L and l, lion-leaf-lamp, a trace row, and a draw-your-own box. One letter page, no watermark.',
+      'Free letter L coloring page to print: bubble L and l, lion-leaf-lamp, a trace row, and a draw-your-own box. Two pages, no watermark.',
     lead:
-      'Bubble L and l, lion, leaf and lamp to color, a trace row, and a draw box. One letter page — the easiest shape in the alphabet to color well.',
+      'Bubble L and l, lion, leaf and lamp to color, a trace row, and a draw box. Two pages — the easiest shape in the alphabet to color well.',
     introHeading: 'The corner letter',
     intro: [
       'L is one straight line with one foot — the simplest possible letter construction after I. That makes this the highest-success page for youngest colorers: even a two-year-old can stay roughly inside a capital L, and the success matters, because coloring pages are as much about wanting to come back tomorrow as they are about letters. The lowercase l is just the taller stick — no foot — which makes l one of the easiest lowercase letters to recognize at a glance.',
       'The sound is the lightest liquid in the mouth: tongue tip up behind the teeth, voice on, la. Lion, leaf and lamp carry it, and lion is the strongest draw on the page — everything with a mane gets colored twice. L also happens to open love and like, which gives parents an unusual amount of personal use out of this particular letter.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three L words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Lick the lollipop',
@@ -714,18 +715,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'm',
     hub: 'coloring',
-    h1: 'Letter M Coloring Page',
-    metaTitle: 'Letter M Coloring Page — Bubble Letters & M Words | ChartGlade',
+    h1: 'Letter M Coloring Pages',
+    metaTitle: 'Letter M Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter M coloring page with bubble M and m, moon-milk-mouse, a trace row, and a draw box. Free, one letter page, no sign-up.',
+      'Printable letter M coloring page with bubble M and m, moon-milk-mouse, a trace row, and a draw box. Free, two pages, no sign-up.',
     lead:
-      'Bubble M and m, moon, milk and mouse to color, a trace row, and a draw box. One letter page for the letter kids say first — mama.',
+      'Bubble M and m, moon, milk and mouse to color, a trace row, and a draw box. Two pages for the letter kids say first — mama.',
     introHeading: 'The hum with four legs',
     intro: [
       'M is the first letter most children ever say — mama predates the alphabet by a year or two — so this page usually arrives pre-loaded with affection. The sound is a closed-mouth hum: lips together, voice on, mmmm. Hold it while coloring and the letter literally hums. Moon, milk and mouse all start with it, and moon is the draw that makes this page special: a colored moon with a face is a keepsake project in any preschool.',
       'The shape is mountains: the capital is four vertical strokes with two valleys, the lowercase the same range at smaller scale. Coloring each leg a different color turns the page into a color-matching exercise — four legs, four crayons — and the counting is free numeracy smuggled into literacy. M pages tend to be among the most thoroughly completed in the whole matrix, mostly because of the moon.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three M words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Hum through the whole page',
@@ -770,18 +771,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'n',
     hub: 'coloring',
-    h1: 'Letter N Coloring Page',
-    metaTitle: 'Letter N Coloring Page — Bubble Letters & N Words | ChartGlade',
+    h1: 'Letter N Coloring Pages',
+    metaTitle: 'Letter N Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter N coloring page: bubble N and n, nest-net-nine... nest, nut and net to color, a trace row, and a draw box. One letter page, free.',
+      'Free letter N coloring page: bubble N and n, nest-net-nine... nest, nut and net to color, a trace row, and a draw box. Two pages, free.',
     lead:
-      'Bubble N and n, nest, nut and net to color, a trace row, and a draw box. One letter page for the letter that says no — and night, and nose.',
+      'Bubble N and n, nest, nut and net to color, a trace row, and a draw box. Two pages for the letter that says no — and night, and nose.',
     introHeading: 'The nose letter',
     intro: [
       'N is a hum through the nose: tongue up behind the teeth like d, but the air routes out the nostrils instead of the mouth. Pinch your nose shut mid-nnnooo and the sound stops completely — that demonstration is the whole phonics lesson for this page, and children find it hilarious, which means they repeat it, which means they learn it. Nest, nut and net keep the n at the front of every word.',
       'The shape is half an M: two towers, one valley. Coloring the M page and this one in sequence shows the subtraction visually — same construction, one fewer valley. The lowercase n is among the most frequent letters in early reading (in, on, no, and), so recognition here pays out quickly in real sentences, sooner than with rarer letters like q or z.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three N words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Pinch the nose',
@@ -826,18 +827,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'o',
     hub: 'coloring',
-    h1: 'Letter O Coloring Page',
-    metaTitle: 'Letter O Coloring Page — Bubble Letters & O Words | ChartGlade',
+    h1: 'Letter O Coloring Pages',
+    metaTitle: 'Letter O Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter O coloring page: bubble O and o, owl-octopus-ox, a trace row, and a draw-your-own box. Free, one letter page, no sign-up.',
+      'Printable letter O coloring page: bubble O and o, owl-octopus-ox, a trace row, and a draw-your-own box. Free, two pages, no sign-up.',
     lead:
-      'Bubble O and o — the two easiest shapes in the alphabet — owl, octopus and ox to color, a trace row, and a draw box. One letter page.',
+      'Bubble O and o — the two easiest shapes in the alphabet — owl, octopus and ox to color, a trace row, and a draw box. Two pages.',
     introHeading: 'The circle that talks',
     intro: [
       'O is the shape children draw before they know any letters at all — circles come first in every child\'s drawing development, which makes this page the most accessible in the matrix. The letter form and the mouth form match: say ooo and the lips make a small circle. Owl, octopus and ox carry the short o — ah, the doctor\'s-say-ah sound — and owl is the reliable favorite, because owl eyes are two more circles to color.',
       'O also runs the long sound — its own name, as in open and over — but this page deliberately teaches only the short o. The two-sound conversation (pot vs open) belongs to reading instruction a year or two out; for now, ah is the sound, and the three words on the sheet all run it. The draw box will fill with octopuses, every one of them with eight deliberately counted arms, which is numeracy smuggled into the letter lesson yet again.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three O words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Say ah like the doctor',
@@ -882,18 +883,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'p',
     hub: 'coloring',
-    h1: 'Letter P Coloring Page',
-    metaTitle: 'Letter P Coloring Page — Bubble Letters & P Words | ChartGlade',
+    h1: 'Letter P Coloring Pages',
+    metaTitle: 'Letter P Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter P coloring page to print: bubble P and p, pig-pen-pizza, a trace row, and a draw-your-own box. One letter page, no watermark.',
+      'Free letter P coloring page to print: bubble P and p, pig-pen-pizza, a trace row, and a draw-your-own box. Two pages, no watermark.',
     lead:
-      'Bubble P and p, pig, pen and pizza to color, a trace row, and a draw box. One letter page — and yes, the pizza wins.',
+      'Bubble P and p, pig, pen and pizza to color, a trace row, and a draw box. Two pages — and yes, the pizza wins.',
     introHeading: 'The pop of pursed lips',
     intro: [
       'P is a tiny explosion: lips pressed together, air built up, then released — puh. Hold a tissue in front of the mouth and say puh; the tissue jumps. That demonstration is the phonics lesson for this page, and it is a reliable laugh, which is the currency preschool teaching runs on. Pig, pen and pizza all pop at the front, and pizza generates more coloring enthusiasm per square inch than any other word on any page in this matrix.',
       'The shape: capital P is a spine with one loop at the top; lowercase p sends its spine diving below the line with the loop hanging in the basement alongside g and j. That descender makes p part of the below-the-line club children notice on their own — color the g page and this one in the same week and someone will point out that both tails go down. Let them; noticing is the lesson.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three P words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'The jumping tissue',
@@ -938,18 +939,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'q',
     hub: 'coloring',
-    h1: 'Letter Q Coloring Page',
-    metaTitle: 'Letter Q Coloring Page — Bubble Letters & Q Words | ChartGlade',
+    h1: 'Letter Q Coloring Pages',
+    metaTitle: 'Letter Q Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter Q coloring page: bubble Q and q, queen-quilt-quiz, a trace row, and a draw-your-own box. Free, one letter page, no sign-up.',
+      'Printable letter Q coloring page: bubble Q and q, queen-quilt-quiz, a trace row, and a draw-your-own box. Free, two pages, no sign-up.',
     lead:
-      'Bubble Q and q, queen, quilt and quiz to color, a trace row, and a draw box. One letter page for the rarest letter kids meet.',
+      'Bubble Q and q, queen, quilt and quiz to color, a trace row, and a draw box. Two pages for the rarest letter kids meet.',
     introHeading: 'The letter that brings a friend',
     intro: [
       'Q almost never travels alone — in every word a child will read this year, q is holding u\'s hand: qu, qu, qu. That pairing is the real lesson of this page. Queen, quilt and quiz all open with the kw sound, and explaining that q and u are a packaged deal ("q is shy, it brings u everywhere") gives the letter a story, and stories are what rare letters need. Q appears in maybe one word per hundred; the story is why a child bothers to remember it.',
       'The shape is O with a tail — capital Q is a circle with a flick at the bottom right, lowercase q a circle with a descending tail. Set this page next to the letter O page and the family resemblance does half the work. The tail below the line also enrolls q in the descender club with g, j, p and y; children who have colored those pages will spot the pattern before you mention it.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three Q words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Q brings U everywhere',
@@ -994,18 +995,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'r',
     hub: 'coloring',
-    h1: 'Letter R Coloring Page',
-    metaTitle: 'Letter R Coloring Page — Bubble Letters & R Words | ChartGlade',
+    h1: 'Letter R Coloring Pages',
+    metaTitle: 'Letter R Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter R coloring page: bubble R and r, rain-robot-rocket, a trace row, and a draw-your-own box. One letter page, prints clean, free.',
+      'Free letter R coloring page: bubble R and r, rain-robot-rocket, a trace row, and a draw-your-own box. Two pages, prints clean, free.',
     lead:
-      'Bubble R and r, rain, robot and rocket to color, a trace row, and a draw box. One letter page — and the rocket usually wins the box.',
+      'Bubble R and r, rain, robot and rocket to color, a trace row, and a draw box. Two pages — and the rocket usually wins the box.',
     introHeading: 'The growling letter',
     intro: [
       'R is a growl with the tongue hovering — rr, never quite touching. English speakers barely roll it, but children can feel it: hold the r sound at the front of rain and it runs like a small motor. Rain, robot and rocket all fire it forward, and rocket is the word that turns this page into an event — a colored rocket in the draw box, complete with flame tiers, is one of the most ambitious drawings the whole matrix receives.',
       'The shape: capital R is a spine, a loop on top, and a kicking leg; the lowercase keeps the spine and loop and swaps the kick for a small arm. That leg-vs-arm difference is the whole R-to-r lesson and a good color-splitting opportunity — loop one color, leg or arm another. R also starts roughly a thousand words a kindergartner actually wants to say, which keeps demand for this page steady all year.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three R words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Motorboat the r',
@@ -1050,10 +1051,10 @@ const RAW: RawLetterDef[] = [
   {
     slug: 's',
     hub: 'coloring',
-    h1: 'Letter S Coloring Page',
-    metaTitle: 'Letter S Coloring Page — Bubble Letters & S Words | ChartGlade',
+    h1: 'Letter S Coloring Pages',
+    metaTitle: 'Letter S Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter S coloring page with bubble S and s, sun-sock-star, a trace row, and a draw box. Free, one letter page, no sign-up.',
+      'Printable letter S coloring page with bubble S and s, sun-sock-star, a trace row, and a draw box. Free, two pages, no sign-up.',
     lead:
       'Bubble S and s, sun, sock and star to color, a trace row, and a draw box. The snake letter gets its page — hiss while you color.',
     introHeading: 'The letter that hisses',
@@ -1061,7 +1062,7 @@ const RAW: RawLetterDef[] = [
       'S is the snake: a continuous hiss with no stops — sssss, sustainable for as long as a breath, which makes it the best sound on the whole alphabet for the hold-the-sound-while-you-color game. Sun, sock and star all start with it, and sun is the most colored single word on this page — yellow crayons come out first, universally. Star takes silver or gold and anchors the draw box, where stars reproduce at a rate no other letter approaches.',
       'The shape is the hardest curve in the uppercase set: two opposing bends, a spine that switches direction twice. Expect the capital S to challenge a toddler\'s crayon — and expect the lowercase s, which is a smaller version of the same switchback, to get colored more neatly, because small shapes are easier than big ones for the same reason. The snake association is the memory hook: color the S green, add a tongue, and the letter becomes a craft.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three S words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Hiss through one stroke',
@@ -1106,18 +1107,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 't',
     hub: 'coloring',
-    h1: 'Letter T Coloring Page',
-    metaTitle: 'Letter T Coloring Page — Bubble Letters & T Words | ChartGlade',
+    h1: 'Letter T Coloring Pages',
+    metaTitle: 'Letter T Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter T coloring page to print: bubble T and t, tree-train-tiger, a trace row, and a draw-your-own box. One letter page, no watermark.',
+      'Free letter T coloring page to print: bubble T and t, tree-train-tiger, a trace row, and a draw-your-own box. Two pages, no watermark.',
     lead:
-      'Bubble T and t, tree, train and tiger to color, a trace row, and a draw box. One letter page — the tick-tock letter, printed free.',
+      'Bubble T and t, tree, train and tiger to color, a trace row, and a draw box. Two pages — the tick-tock letter, printed free.',
     introHeading: 'The tick-tock letter',
     intro: [
       'T is a clock tick: tongue taps the ridge behind the top teeth and releases — tuh, one clean strike, over before it starts. Tree, train and tiger all open with the tap, and train is the favorite word among vehicle-obsessed households, which is a large demographic. Tiger is the favorite animal among the same households, so this page carries two strong draws plus the tree, which is the easiest big drawing in the alphabet and fills draw boxes on the days ambition runs low.',
       'The shape is the simplest cross in the alphabet: one vertical, one horizontal, capital on a taller spine than lowercase. T and I are the two easiest uppercase letters to color, which makes this a good early page in any letter-of-the-week sequence. The t sound pairs with d — same tap, d voiced and t just air — and holding fingers on the throat to feel the difference is the quick science demo for this page.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three T words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Tick-tock tapping',
@@ -1162,18 +1163,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'u',
     hub: 'coloring',
-    h1: 'Letter U Coloring Page',
-    metaTitle: 'Letter U Coloring Page — Bubble Letters & U Words | ChartGlade',
+    h1: 'Letter U Coloring Pages',
+    metaTitle: 'Letter U Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter U coloring page: bubble U and u, umbrella-unicorn-under, a trace row, and a draw-your-own box. Free, one letter page.',
+      'Printable letter U coloring page: bubble U and u, umbrella-unicorn-under, a trace row, and a draw-your-own box. Free, two pages.',
     lead:
-      'Bubble U and u, umbrella, unicorn and under to color, a trace row, and a draw box. One letter page for the upside-down cup of the alphabet.',
+      'Bubble U and u, umbrella, unicorn and under to color, a trace row, and a draw box. Two pages for the upside-down cup of the alphabet.',
     introHeading: 'The cup that catches rain',
     intro: [
       'U is a cup — the only letter whose shape is also a usable object. Turn it upside down and it holds nothing; right side up, children immediately see an umbrella, which is conveniently the first word on the sheet. The sound is uh, the short u of umbrella and under, and short u is famously the hardest vowel for children to hear cleanly because it sits in the middle of the mouth with almost no distinguishing feature. Coloring it gives the vague sound one more concrete anchor.',
       'Unicorn is the real engine of this page. Unicorns dominate early-childhood culture to a degree no other u-word approaches, and the draw box on this page fills with unicorns at a rate second only to rockets and stars. The long-u conversation (unicorn says yoo, umbrella says uh) is worth having out loud while coloring — the two words on the same row deliberately disagree, and children who notice are doing exactly the phonics work reading programs will ask for later.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three U words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Cup the letter',
@@ -1218,18 +1219,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'v',
     hub: 'coloring',
-    h1: 'Letter V Coloring Page',
-    metaTitle: 'Letter V Coloring Page — Bubble Letters & V Words | ChartGlade',
+    h1: 'Letter V Coloring Pages',
+    metaTitle: 'Letter V Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter V coloring page: bubble V and v, van-violin-volcano, a trace row, and a draw-your-own box. One letter page, prints clean, free.',
+      'Free letter V coloring page: bubble V and v, van-violin-volcano, a trace row, and a draw-your-own box. Two pages, prints clean, free.',
     lead:
-      'Bubble V and v, van, violin and volcano to color, a trace row, and a draw box. One letter page — the valley letter, vibrating for free.',
+      'Bubble V and v, van, violin and volcano to color, a trace row, and a draw box. Two pages — the valley letter, vibrating for free.',
     introHeading: 'The valley letter',
     intro: [
       'V is a valley — two slopes meeting in one sharp point, the letter version of the letter U with its curve sharpened to an edge. The sound is vvv: top teeth on bottom lip, voice buzzing behind it. That buzz is the entire lesson: v is f\'s loud twin, exactly the pairing p and b have one row up the alphabet. Hold fingers on the throat, say fff (silent), then vvv (buzz), and the letter explains itself in ten seconds.',
       'Van, violin and volcano front-load the buzz, and volcano is the heavyweight draw of the page — an erupting volcano in the draw box, red at the top and brown below, is one of the most dramatic regulars in the whole matrix. V itself is a rarer starting letter (the vocabulary picks thin out fast after violin), which makes the draw box carry more of this page than usual. Let it; a volcano is doing more teaching per square inch than any second word row would.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three V words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'F and F\'s loud twin',
@@ -1274,18 +1275,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'w',
     hub: 'coloring',
-    h1: 'Letter W Coloring Page',
-    metaTitle: 'Letter W Coloring Page — Bubble Letters & W Words | ChartGlade',
+    h1: 'Letter W Coloring Pages',
+    metaTitle: 'Letter W Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter W coloring page with bubble W and w, whale-web-watermelon, a trace row, and a draw box. Free, one letter page, no sign-up.',
+      'Printable letter W coloring page with bubble W and w, whale-web-watermelon, a trace row, and a draw box. Free, two pages, no sign-up.',
     lead:
-      'Bubble W and w, whale, web and watermelon to color, a trace row, and a draw box. One letter page for the only letter with three-letter name.',
+      'Bubble W and w, whale, web and watermelon to color, a trace row, and a draw box. Two pages for the only letter with three-letter name.',
     introHeading: 'Two valleys in one letter',
     intro: [
       'W is V done twice — two valleys, four slopes, the longest letter to write and the only one whose name takes three syllables to say (double-u, which is also the only letter named for another letter). The sound is a rounded puff: wuh, lips pushed forward like the start of oo. Whale, web and watermelon all front-load it, and watermelon is the seasonal heavyweight — this page spikes every summer without anyone planning it.',
       'Whale is the animal that makes the page. A colored whale with a fountain on top is a preschool keepsake, and whales are forgiving to draw — one big curve, a tail, a spout. The w sound is also the first sound of wonder and wow, which are conveniently the two reactions this page gets; narrate them ("wow, what a whale") and the letter gets two more reps disguised as praise.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three W words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Fish-kiss lips',
@@ -1330,8 +1331,8 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'x',
     hub: 'coloring',
-    h1: 'Letter X Coloring Page',
-    metaTitle: 'Letter X Coloring Page — Bubble Letters, X-ray, Fox & Box | ChartGlade',
+    h1: 'Letter X Coloring Pages',
+    metaTitle: 'Letter X Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
       'Printable letter X coloring page: bubble X and x, X-ray, fox and box to color (x at the end!), a trace row, and a draw box. Free, no sign-up.',
     lead:
@@ -1341,7 +1342,7 @@ const RAW: RawLetterDef[] = [
       'X is the alphabet\'s shape celebrity and its sound introvert. The shape — two crossing lines — is the easiest uppercase construction to color and the first letter children recognize in the wild (no-parking signs, treasure maps, parenthesis-free hugs and kisses at the bottom of Grandma\'s letters). The sound, meanwhile, almost never starts an English word: x works for its living at the end — fox, box, six — where it delivers a crisp ks.',
       'This page teaches that reality honestly. The word row carries X-ray (the famous exception), then fox and box, and the word note on the sheet says plainly that x rides at the end. Children who learn x this way — one X-ray up front, two ending-sounds beside it — are structurally prepared for the reading of six, mix and box, which every kindergarten reader hits within months. Treasure maps in the draw box are practically mandatory.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three X words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Treasure map mandatory',
@@ -1386,18 +1387,18 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'y',
     hub: 'coloring',
-    h1: 'Letter Y Coloring Page',
-    metaTitle: 'Letter Y Coloring Page — Bubble Letters & Y Words | ChartGlade',
+    h1: 'Letter Y Coloring Pages',
+    metaTitle: 'Letter Y Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Free letter Y coloring page: bubble Y and y, yo-yo, yarn and yak to color, a trace row, and a draw-your-own box. One letter page, free.',
+      'Free letter Y coloring page: bubble Y and y, yo-yo, yarn and yak to color, a trace row, and a draw-your-own box. Two pages, free.',
     lead:
-      'Bubble Y and y, yo-yo, yarn and yak to color, a trace row, and a draw box. One letter page for the alphabet\'s part-time vowel.',
+      'Bubble Y and y, yo-yo, yarn and yak to color, a trace row, and a draw box. Two pages for the alphabet\'s part-time vowel.',
     introHeading: 'The letter with two jobs',
     intro: [
       'Y works two jobs. At the front of a word it is a consonant — yuh, as in yo-yo, yarn and yak, the three words on this page. At the end of a word it moonlights as a vowel: happy, my, funny, where it says ee or eye. This page teaches the front-of-the-word job, but the two-jobs story is worth telling out loud while coloring, because children meet y-at-the-end in nearly every early reader (my, by, happy, very) and knowing the letter moonlights makes the meeting less confusing.',
       'The shape is v on a stalk: the capital pairs one diagonal going down with one going up, then drops a stem to the baseline; the lowercase keeps the small v-cup atop a longer stem that dives below the line — y is a descender, in the g-j-p-q club, and children who have colored those pages will spot the basement tail immediately. Yo-yo is the star word: it is a palindrome, it is a toy, and it is the only word on the sheet children can act out mid-coloring.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three Y words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Yo-yo while you color',
@@ -1442,10 +1443,10 @@ const RAW: RawLetterDef[] = [
   {
     slug: 'z',
     hub: 'coloring',
-    h1: 'Letter Z Coloring Page',
-    metaTitle: 'Letter Z Coloring Page — Bubble Letters & Z Words | ChartGlade',
+    h1: 'Letter Z Coloring Pages',
+    metaTitle: 'Letter Z Coloring Pages — 6 Designs to Color | ChartGlade',
     metaDescription:
-      'Printable letter Z coloring page: bubble Z and z, zebra-zipper-zoo, a trace row, and a draw-your-own box. Free, one letter page, no sign-up.',
+      'Printable letter Z coloring page: bubble Z and z, zebra-zipper-zoo, a trace row, and a draw-your-own box. Free, two pages, no sign-up.',
     lead:
       'Bubble Z and z, zebra, zipper and zoo to color, a trace row, and a draw box. The alphabet\'s finale gets its own page — end with a buzz.',
     introHeading: 'The last letter, a fast buzz',
@@ -1453,7 +1454,7 @@ const RAW: RawLetterDef[] = [
       'Z finishes the alphabet and buzzes while it does it: zzz, the voiced twin of s, teeth nearly closed with the throat humming. Hold a finger to your throat and alternate sss (silent) with zzz (buzz) — the same demo the s page ran, now on the loud side. Zebra, zipper and zoo carry the buzz, and zoo is the heavyweight: every zoo animal in existence is eligible for the draw box, which makes z\'s finale the highest-ceiling drawing page in the matrix.',
       'The shape is lightning: three zigzag strokes, two sharp corners, no curves anywhere. That geometry makes z the fastest capital to color for children who like strong angles and the most confusing for children still mastering direction switches — same challenge the s page posed, in a harder rhythm. The lowercase z is the same zigzag compressed, and tracing it after coloring is a genuine pre-handwriting workout: three direction changes in one small letter.',
     ],
-    printNote: 'Fits one letter page, portrait: bubble letters, three Z words, a trace row, and a draw-your-own box.',
+    printNote: 'Prints on two letter pages: six pictures to color, then the practice sheet.',
     tips: [
       {
         title: 'Buzz versus hiss',
@@ -1518,14 +1519,15 @@ export const coloringLetters: ColoringLetterDef[] = RAW.map((def, i) => {
     // matrix (sheetImages.test.ts guards declared dims against the files).
     sheetImage: {
       src: `/images/letter-${def.slug}-coloring-page.png`,
-      // Pilot letters (a/b/c) shoot the drawing gallery — the incumbent
-      // form, where the pictures are the product (PLAN timeline 2026-11-03).
-      // The rest still shoot the worksheet until their art batch lands.
+      // Every letter shoots the six-drawing gallery (.lc-gallery) — the
+      // incumbent form, where the pictures are the product (PLAN timeline
+      // 2026-11-03). Heights are the pipeline's logged values: letter-a
+      // snaps one device pixel taller than the rest at 2x.
       ...(hasLetterArt(def.slug)
         ? {
             alt: `Free printable letter ${def.sheet.capital} coloring pages — six designs to color: ${def.sheet.words.join(', ').toLowerCase()} pictures plus three big letter ${def.sheet.capital} designs.`,
             width: 1916,
-            height: 1480,
+            height: def.slug === 'a' ? 1510 : 1508,
             caption: `Letter ${def.sheet.capital}: six pictures to color — ${def.sheet.words.join(', ').toLowerCase()} and three big-letter designs.`,
           }
         : {

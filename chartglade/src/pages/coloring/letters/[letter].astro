@@ -16,9 +16,9 @@ export function getStaticPaths() {
 const { def } = Astro.props;
 // slug stays flat ('a') for find-by-slug lookups; the route nests under /coloring/letters/
 const pageDef = { ...def, path: `/coloring/letters/${def.slug}` };
-// Pilot letters (a/b/c) carry a drawing gallery above the practice sheet;
-// the rest of the matrix keeps the worksheet-only layout until their
-// batches are drawn (PLAN timeline 2026-11-03, coloring rework).
+// Every letter carries the six-drawing gallery above the practice sheet
+// (PLAN timeline 2026-11-03, coloring rework). hasLetterArt() stays as the
+// gate so a letter can drop back to worksheet-only if its art is pulled.
 const withGallery = hasLetterArt(def.slug);
 ---
 
@@ -26,5 +26,23 @@ const withGallery = hasLetterArt(def.slug);
   {withGallery && <LetterColoringGallery sheet={def.sheet} />}
   {withGallery && <div class="sheet-break" />}
   <LetterColoringSheet sheet={def.sheet} />
+  {/* Generative-engine/SEO summary: a computed inventory of exactly what
+      prints, so AI answers and snippets can quote the page contents. */}
+  <section class="prose" slot="after">
+    <h2>What's on the letter {def.sheet.capital} pages</h2>
+    <ul>
+      <li>
+        <strong>{def.sheet.words[0]}, {def.sheet.words[1]}, and {def.sheet.words[2]}</strong> — a
+        full-size picture of each word to color, each with its own caption.
+      </li>
+      <li>Letter {def.sheet.capital} drawn right beside a {def.sheet.words[0].toLowerCase()}, shape and sound on the same page.</li>
+      <li>All three {def.sheet.capital}-words gathered around one big letter {def.sheet.capital}.</li>
+      <li>A poster-size letter {def.sheet.capital} with stars and dots to color around it.</li>
+      <li>
+        A practice sheet: bubble {def.sheet.capital} and {def.sheet.lower}, the three-word row, a
+        light-stroke trace row, and a draw-your-own box.
+      </li>
+    </ul>
+  </section>
   <ColoringAZ slot="after" current={def.slug} />
 </ChartPage>

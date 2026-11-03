@@ -67,13 +67,13 @@ const SHOTS = [
   { page: 'thanksgiving-color-by-number', file: 'thanksgiving-color-by-number-printable' },
   { page: 'thanksgiving-placemat-printable', file: 'thanksgiving-placemat-printable' },
   { page: 'i-am-thankful-for-worksheet', file: 'i-am-thankful-for-worksheet' },
-  // Wave 5 (2026-11-03, coloring product line: the 26-letter bubble matrix).
-  // Pilot letters a/b/c shoot the drawing gallery (.lc-gallery, incumbent
-  // form: the pictures are the product); the rest shoot the worksheet.
+  // Wave 5 (2026-11-03, coloring product line: the 26-letter matrix). Every
+  // letter now shoots the six-drawing gallery (.lc-gallery — incumbent form,
+  // the pictures are the product), stripped back to pure B&W for printing.
   ...'abcdefghijklmnopqrstuvwxyz'.split('').map((l) => ({
     page: `coloring/letters/${l}`,
     file: `letter-${l}-coloring-page`,
-    ...(['a', 'b', 'c'].includes(l) ? { selector: '.lc-gallery' } : {}),
+    selector: '.lc-gallery',
   })),
   // Wave 5b (2026-11-03, coloring Phase B: christmas stocking singles)
   { page: 'christmas-stocking-coloring-page', file: 'christmas-stocking-coloring-page' },
@@ -129,6 +129,13 @@ try {
     const p = await ctx.newPage();
     await p.goto(`${base}/${page}/`);
     await p.waitForSelector(sel);
+    // The gallery carries screen-only tints (green card fills/borders).
+    // The PNG is the printable — strip the chrome back to pure B&W.
+    if (sel === '.lc-gallery') {
+      await p.addStyleTag({
+        content: '.lc-art{background:#fff!important;border-color:#999!important;border-width:1pt!important}.lc-gallery-heading{color:#1c1c1c!important}',
+      });
+    }
     await p.waitForTimeout(500); // let fonts/interact settle
     const el = await p.$(sel);
     const shot = await el.screenshot();

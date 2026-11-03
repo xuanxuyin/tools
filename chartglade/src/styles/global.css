@@ -375,6 +375,21 @@ svg {
   color: #fff;
 }
 
+/* Amber companion to .btn-primary — the second action in a toolbar
+   (e.g. Download PNG beside Print) so toolbars never read as two
+   identical white chips. */
+.btn-amber {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #fff;
+}
+
+.btn-amber:hover {
+  background: #8a5711;
+  border-color: #8a5711;
+  color: #fff;
+}
+
 /* ============================================================
    Printable area — the product. Everything inside prints clean.
    ============================================================ */

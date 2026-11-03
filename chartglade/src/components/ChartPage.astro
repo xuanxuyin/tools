@@ -96,9 +96,9 @@ if (def.howTo) {
   <section class="printable-wrap" data-fact-scope>
     <div class="printable-toolbar">
       <span class="print-note">{def.printNote}</span>
-      <button type="button" class="btn" data-print><Icon name="print" />Print</button>
+      <button type="button" class="btn btn-primary" data-print><Icon name="print" />Print</button>
       {def.sheetImage && (
-        <a class="btn" href={def.sheetImage.src} download><Icon name="download" />Download PNG</a>
+        <a class="btn btn-amber" href={def.sheetImage.src} download><Icon name="download" />Download PNG</a>
       )}
     </div>
     <div class:list={['printable', { landscape: def.landscape }]}>
