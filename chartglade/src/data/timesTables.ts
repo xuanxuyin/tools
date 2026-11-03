@@ -608,6 +608,13 @@ export const timesTablePages: TimesTableDef[] = SEEDS.map((s) => {
       ],
     },
     printNote: 'One letter page, portrait: the filled facts on top, the same facts blank for practice below.',
+    sheetImage: {
+      src: `/images/times-table-${s.n}-chart.png`,
+      alt: `Free printable ${s.n} times table worksheet — the twelve facts from ${s.n} × 1 to ${s.n} × 12 filled in for reference, then the same facts with the answers blanked out for self-check practice.`,
+      width: 2016,
+      height: 1176,
+      caption: `The ${s.n} times table filled in, then blanked for practice — one letter page.`,
+    },
     tips: s.tips,
     faqs: [
       {

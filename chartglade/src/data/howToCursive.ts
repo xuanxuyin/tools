@@ -151,6 +151,13 @@ export const howToCursivePage: PageDef = {
     ],
   },
   printNote: 'Two letter pages, portrait: steps 1-3 (posture, strokes, lowercase families), then steps 4-6 (joins, words, sentences).',
+  sheetImage: {
+    src: '/images/how-to-write-in-cursive-practice-sheet.png',
+    alt: 'Free printable how-to-write-in-cursive practice sheet — the six steps from posture and pencil grip through the four basic strokes and lowercase families to joins, words and a first full sentence.',
+    width: 2016,
+    height: 5828,
+    caption: 'The whole six-step lesson — strokes, letter families, joins, words, sentences — on two pages.',
+  },
   tips: [
     {
       title: 'Ten slow minutes, then stop',

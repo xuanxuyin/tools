@@ -58,6 +58,7 @@ const jsonLd = [
     <div class="printable-toolbar">
       <span class="print-note">One letter page, portrait — the whole year at a glance.</span>
       <button type="button" class="btn" data-print>Print the year index</button>
+      <a class="btn" href="/images/teaching-calendar-year-index.png" download>Download PNG</a>
     </div>
     <div class="printable">
       <h2 class="sheet-title">Teaching Calendar — Printables by Month</h2>
@@ -76,6 +77,17 @@ const jsonLd = [
       </div>
     </div>
   </section>
+
+  <figure class="sheet-preview no-print">
+    <img
+      src="/images/teaching-calendar-year-index.png"
+      alt="Free printable teaching calendar for K-5 — the school year on one page, each month listing what to print: back-to-school in August, Halloween in October, Thanksgiving in November, the 100th Day in winter."
+      width="2016"
+      height="1568"
+      loading="lazy"
+    />
+    <figcaption>The year of printables on one letter page — drop it in the front of your plan book.</figcaption>
+  </figure>
 
   {teachingCalendarMonths.map((m) => (
     <section class="section cal-block">

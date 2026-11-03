@@ -48,6 +48,25 @@ const SHOTS = [
   // Wave 3 (2026-11-03, cootie catcher batch)
   { page: 'cootie-catcher', file: 'cootie-catcher-template-printable' },
   { page: 'christmas-cootie-catcher', file: 'christmas-cootie-catcher-printable' },
+  // Wave 4 (2026-11-03, holiday + how-to + times-table matrix batch). The
+  // /times-table/ hub itself is NOT shot — it is a nav page with no .printable.
+  { page: 'place-value-chart-with-periods', file: 'place-value-chart-with-periods-printable' },
+  { page: 'cursive-sentences', file: 'cursive-sentences-practice-sheet' },
+  { page: 'how-to-write-in-cursive', file: 'how-to-write-in-cursive-practice-sheet' },
+  { page: 'teaching-calendar', file: 'teaching-calendar-year-index' },
+  { page: 'multiplication-chart-printable', file: 'multiplication-charts-printable-set' },
+  { page: 'times-table-chart', file: 'times-table-chart-printable' },
+  ...Array.from({ length: 12 }, (_, i) => ({
+    page: `times-table/${i + 1}`,
+    file: `times-table-${i + 1}-chart`,
+  })),
+  { page: 'christmas-word-search', file: 'christmas-word-search-printable' },
+  { page: 'christmas-color-by-number', file: 'christmas-color-by-number-printable' },
+  { page: 'letter-to-santa', file: 'letter-to-santa-template' },
+  { page: 'thanksgiving-word-search', file: 'thanksgiving-word-search-printable' },
+  { page: 'thanksgiving-color-by-number', file: 'thanksgiving-color-by-number-printable' },
+  { page: 'thanksgiving-placemat-printable', file: 'thanksgiving-placemat-printable' },
+  { page: 'i-am-thankful-for-worksheet', file: 'i-am-thankful-for-worksheet' },
 ];
 
 const MIME = {
@@ -61,12 +80,14 @@ const MIME = {
   '.txt': 'text/plain',
 };
 
-// Optional substring filter: `npm run sheet-images -- halloween-color`
+// Optional substring filter(s): `npm run sheet-images -- halloween-color`
 // re-shoots just the pages whose slug matches (used when one sheet's
-// rendering changed and a full 39-shot pass is waste).
+// rendering changed and a full pass is waste). Comma-separate to shoot
+// several groups in one launch: `-- times-table/,letter-to-santa`.
 const only = process.argv[2];
-const shots = only ? SHOTS.filter((s) => s.page.includes(only)) : SHOTS;
-if (only) console.log(`filtered to ${shots.length} shot(s) matching "${only}"`);
+const filters = only ? only.split(',').filter(Boolean) : [];
+const shots = filters.length ? SHOTS.filter((s) => filters.some((f) => s.page.includes(f))) : SHOTS;
+if (filters.length) console.log(`filtered to ${shots.length} shot(s) matching "${only}"`);
 
 const server = createServer((req, res) => {
   let pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);

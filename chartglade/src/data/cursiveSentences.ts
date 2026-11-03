@@ -93,6 +93,13 @@ export const cursiveSentencesPage: PageDef = {
     ],
   },
   printNote: 'Two letter pages, portrait: sentences 1-4, then 5-8 — each with a trace row, a hollow row and a blank write-on row.',
+  sheetImage: {
+    src: '/images/cursive-sentences-practice-sheet.png',
+    alt: 'Free printable cursive sentences worksheet — eight public-domain American quotes, each with a gray trace row, a hollow outline row to fill in, and a blank guide line for writing the sentence solo.',
+    width: 2016,
+    height: 4672,
+    caption: 'Eight copywork quotes, each with a trace row, a hollow-outline row and a write-it-yourself row.',
+  },
   tips: [
     {
       title: 'One sentence per sitting',

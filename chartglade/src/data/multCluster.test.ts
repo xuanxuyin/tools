@@ -42,9 +42,8 @@ describe('multiplication cluster — data level', () => {
       expect(def.tips.length).toBe(4);
       expect(def.faqs.length).toBeGreaterThanOrEqual(5);
       expect(def.printNote.length).toBeGreaterThan(20);
-      // pillar pages only (sheetImages.test.ts pins the five) — and these are
-      // print/content pages, not tools: no WebApplication claim
-      expect(def.sheetImage).toBeUndefined();
+      // these are print/content pages, not tools: no WebApplication claim
+      // (wave 4 gave both pages a sheetImage PNG — guarded in sheetImages.test.ts)
       expect(def.interactive).toBeUndefined();
     }
   });

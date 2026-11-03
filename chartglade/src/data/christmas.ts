@@ -123,6 +123,13 @@ export const christmasPages: PageDef[] = [
       'The harder puzzle unlocks all eight directions, the standard upper-elementary format, and the Christmas list runs long: GINGERBREAD is eleven letters, MISTLETOE and SNOWFLAKE nine. Finding them takes a system — down each column, across each row, then both diagonals — which is exactly the systematic scanning teachers want from morning work in the final days of December. The vocabulary stays secular and school-safe (ornament, carol, tinsel, chimney), so the puzzle flies in public-school classrooms without a second thought.',
     ],
     printNote: 'Two puzzles, one letter page each (portrait). Word lists print under each grid.',
+    sheetImage: {
+      src: '/images/christmas-word-search-printable.png',
+      alt: 'Free printable Christmas word search — two puzzles on two letter pages: an easy grid of December words for K-2 and a harder puzzle with the words hidden backwards and diagonally for grades 3-5.',
+      width: 2016,
+      height: 2064,
+      caption: 'Two levels: easy forwards-only for K-2, all eight directions for grades 3-5.',
+    },
     tips: [
       {
         title: 'Front-load the vocabulary',
@@ -185,6 +192,13 @@ export const christmasPages: PageDef[] = [
       'The tree sheet uses addition facts with sums to 12, the grade 1-2 sweet spot, with wide bands of green so the picture reads early and momentum holds. The snowman sheet uses multiplication facts with products to 12 for grades 3-4 — the white body regions are the forgiving cells, while the hat, scarf, buttons and carrot nose split the remaining facts into small patches that demand care.',
     ],
     printNote: 'Two sheets, one letter page each (portrait). Crayon-friendly; legend names its colors.',
+    sheetImage: {
+      src: '/images/christmas-color-by-number-printable.png',
+      alt: 'Free printable Christmas color by number — a Christmas tree built from addition facts with sums to 12 and a snowman built from multiplication facts with products to 12, each answer keyed to a legend color.',
+      width: 2016,
+      height: 5178,
+      caption: 'Solve the fact, match the legend, color the picture — math hiding inside December coloring.',
+    },
     tips: [
       {
         title: 'Color the legend first',
@@ -248,6 +262,13 @@ export const christmasPages: PageDef[] = [
       'The sheet flexes across the whole elementary range. Kindergartners dictate or inventive-spell the first frame, then spend their energy in the drawing box. Grades 1-3 work all three frames with the printed models as training wheels. Grades 4-5 treat the page as a draft and copy a polished letter onto nice paper for the mailbox — the frames keep even strong writers specific instead of "I want a lot of toys."',
     ],
     printNote: 'One letter page, portrait. Three frames, a signature line and a drawing box.',
+    sheetImage: {
+      src: '/images/letter-to-santa-template.png',
+      alt: 'Free printable letter to Santa template — a Dear Santa heading, three sentence frames including "For Christmas, I would like ___ because ___", a Love signature line, and a drawing box for pre-writers.',
+      width: 2016,
+      height: 1688,
+      caption: 'Sentence frames carry hesitant writers; the drawing box gives pre-writers their part.',
+    },
     tips: [
       {
         title: 'Ask for one big thing',

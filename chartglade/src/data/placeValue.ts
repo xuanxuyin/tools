@@ -102,6 +102,13 @@ export const placeValuePages: PageDef[] = [
       ],
     },
     printNote: 'Prints as two letter pages: the filled chart with its reading table, then the blank write-in version.',
+    sheetImage: {
+      src: '/images/place-value-chart-with-periods-printable.png',
+      alt: 'Free printable place value chart with periods — twelve columns grouped into ones, thousands, millions and billions periods, a worked 471,930,862,505 reading example, and a blank write-in chart.',
+      width: 2016,
+      height: 1456,
+      caption: 'The periods chart with its worked twelve-digit example, plus the blank practice copy.',
+    },
     interactive: true,
     tips: [
       {

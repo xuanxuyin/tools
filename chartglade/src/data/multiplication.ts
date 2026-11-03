@@ -107,6 +107,13 @@ export const multiplicationPages: PageDef[] = [
     ],
     printNote:
       'Prints as three letter pages, portrait: filled chart, blank chart, times-table lists. Need just one? Print that page only in the print dialog.',
+    sheetImage: {
+      src: '/images/multiplication-charts-printable-set.png',
+      alt: 'Free printable multiplication chart set — a filled 1-12 grid with all 144 products, the same grid blank for practice, and every times table from the 1s through the 12s written out line by line.',
+      width: 2016,
+      height: 4742,
+      caption: 'Three formats in one print job — filled chart, blank chart, and times-table lists.',
+    },
     tips: [
       {
         title: 'Print page two by the handful',
@@ -392,6 +399,13 @@ export const multiplicationPages: PageDef[] = [
     },
     printNote:
       'Prints as two letter pages, portrait: the 1-12 grid, then each times table as its own list. Print either page alone from the print dialog.',
+    sheetImage: {
+      src: '/images/times-table-chart-printable.png',
+      alt: 'Free printable times table chart — the classic 1-12 multiplication grid with all 144 products, followed by each table from the 1s through the 12s listed as its own row of facts.',
+      width: 2016,
+      height: 3738,
+      caption: 'The 1-12 grid plus every table listed out — same facts, two formats.',
+    },
     tips: [
       {
         title: 'Start with the 2s, 5s and 10s',
