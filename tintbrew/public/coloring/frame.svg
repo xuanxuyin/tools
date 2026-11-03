@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- gilded picture frame, drawn for CSS border-image 9-slice (slice = 60 = 25%).
+       Designed to display at a ~12px border: bold bevels only, no fine detail
+       (anything finer turns to mush at that scale). -->
+  <defs>
+    <radialGradient id="sheen" cx="0.5" cy="0.5" r="0.75">
+      <stop offset="0" stop-color="#f3dd8d"/>
+      <stop offset="0.55" stop-color="#d9b545"/>
+      <stop offset="1" stop-color="#b08c22"/>
+    </radialGradient>
+  </defs>
+  <rect width="240" height="240" fill="url(#sheen)"/>
+  <!-- outer dark edge -->
+  <rect x="2" y="2" width="236" height="236" fill="none" stroke="#6b5312" stroke-width="4"/>
+  <!-- highlight / shadow bevel pair -->
+  <rect x="10" y="10" width="220" height="220" fill="none" stroke="#f6e7ae" stroke-width="5"/>
+  <rect x="22" y="22" width="196" height="196" fill="none" stroke="#9a7a1e" stroke-width="5"/>
+  <!-- mat edge around the artwork -->
+  <rect x="40" y="40" width="160" height="160" fill="none" stroke="#f6e7ae" stroke-width="5"/>
+  <rect x="52" y="52" width="136" height="136" fill="none" stroke="#8a6d1c" stroke-width="6"/>
+</svg>
