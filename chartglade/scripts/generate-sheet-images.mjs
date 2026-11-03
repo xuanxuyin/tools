@@ -67,6 +67,11 @@ const SHOTS = [
   { page: 'thanksgiving-color-by-number', file: 'thanksgiving-color-by-number-printable' },
   { page: 'thanksgiving-placemat-printable', file: 'thanksgiving-placemat-printable' },
   { page: 'i-am-thankful-for-worksheet', file: 'i-am-thankful-for-worksheet' },
+  // Wave 5 (2026-11-03, coloring product line: the 26-letter bubble matrix)
+  ...'abcdefghijklmnopqrstuvwxyz'.split('').map((l) => ({
+    page: `coloring/letters/${l}`,
+    file: `letter-${l}-coloring-page`,
+  })),
 ];
 
 const MIME = {

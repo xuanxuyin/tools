@@ -8,6 +8,7 @@
 
 ## 今天 · 2026-11-03（周一）
 
+- [x] 🤖 **chartglade coloring 产品线立项 + Phase A 上线 ✅（11/03 当日）**：👤 提案 kab 式涂色栏目 → 8 栏目拆解 + SERP 实勘 5 词 + mondaymandala sitemap 逆向 → 👤 AITDK 拉量 ≈197K/月过线 20 倍 → 转正产品线；**Phase A 当日上线**：/coloring/ hub + /coloring/letters/a/~/z/ 26 页 bubble 字母涂色矩阵（程序生成零手绘，每页 2016×1334 PNG + 26 守卫测试），476/476 绿 + 132 页 build 已 push。**Phase B 本周**：christmas singles（stocking/tree/snowman）+ CBN 矩阵扩展。明细 [chartglade PLAN 11/03 coloring 三行](./chartglade/PLAN.md) + §2 coloring 行 + §3 #35
 - [x] 🤖 **chartglade Cootie Catcher 首批上线 ✅（11/03 当日，死线 11/15 提前 12 天）**：/cootie-catcher/ + /christmas-cootie-catcher/ + /cootie-catcher-fortunes/ 三页合并 main `22d0905` 已 push；~~余二批+how-to~~ 11/03 晚实测判定批二/how-to 取消（见 PLAN 同日判定行），余情人节 12 月中。明细 [chartglade PLAN 11/03 上线行](./chartglade/PLAN.md) + §3 #34
 - [x] 🤖 **chartglade 11 月批提前上线 + 图片 wave 4 + og:image 收口 ✅（11/03，原排 11/12 窗）**：① 主车厢 7 URL 合并 main `e1da996`→`e695e91`（/place-value-chart-with-periods/ + /multiplication-chart-printable/ + /times-table-chart/ + cursive 深化 2 页 + /teaching-calendar/ + decimal island/变体段；首页季节槽感恩节→圣诞，胶囊方角 bug 同批修）② 图片 wave 4：20 页接产品 PNG（25 新图，全站 sheet-preview 31→51）+ og:image 页级接线（31 图进社交元数据）`caadeaa`→`50fe193`；467/467 绿 + 105 页 build；IndexNow 24 URL 200。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md)
 - [x] 🤖 **tintbrew 外链文案包 ✅ 三件全交付（11/03）**：① B 组 4 个 GitHub awesome-list PR 正文定稿（执行包落 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)）②③ Quora 答帖 2 版（brown/purple 实问 URL）+ F 组 23 目标核实表，全落 [tintbrew/DISTRIBUTION.md §C/§F](./tintbrew/DISTRIBUTION.md)（`26008cd`）——**转 👤**：Quora 2 帖照 §C 模板发（链接只进末句）、23 目标逐站照 §F hook 提交
@@ -145,6 +146,7 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
+| 本周（11/03~11/07） | **chartglade coloring Phase B**：christmas coloring singles（stocking 320/KD8 先行 + tree/snowman，paintArt 画稿管线）+ CBN 矩阵扩展（位图→PaintArt 导入器 + 节日×运算矩阵）——Phase A 26+1 页已 11/03 上线 | chartglade PLAN §3 #35 |
 | 本周（10/27~11/02） | ~~10/30（周五）B 计划讨论门~~ ✅ 已拍板（外线不加火力收口、C 组撤销、转 11 月批；明细 chartglade PLAN 10/30 B 门行）｜ Reddit 蹲守常态（万圣霜饰窗口收尾到 10/31）｜ 11 月批排序 10/27 出结论 | chartglade PLAN §6 ｜ tintbrew PLAN 止损线节 |
 
 ---

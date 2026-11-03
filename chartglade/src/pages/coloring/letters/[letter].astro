@@ -1,0 +1,22 @@
+---
+import ChartPage from '../../../components/ChartPage.astro';
+import LetterColoringSheet from '../../../components/printables/LetterColoringSheet.astro';
+import ColoringAZ from '../../../components/ColoringAZ.astro';
+import { coloringLetters } from '../../../data/coloringLetters';
+
+export function getStaticPaths() {
+  return coloringLetters.map((def) => ({
+    params: { letter: def.slug },
+    props: { def },
+  }));
+}
+
+const { def } = Astro.props;
+// slug stays flat ('a') for find-by-slug lookups; the route nests under /coloring/letters/
+const pageDef = { ...def, path: `/coloring/letters/${def.slug}` };
+---
+
+<ChartPage def={pageDef}>
+  <LetterColoringSheet sheet={def.sheet} />
+  <ColoringAZ slot="after" current={def.slug} />
+</ChartPage>

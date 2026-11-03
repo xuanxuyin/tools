@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+import { coloringLetters } from '../../data/coloringLetters';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Coloring Pages', item: `${SITE.url}/coloring/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Coloring Pages for Kids — Letter A-Z Printables | ChartGlade"
+  description="Free printable coloring pages for kids: a bubble-letter coloring page for every letter A-Z, each with three beginning-sound words to color, a trace row, and a draw-your-own box. No sign-up — print and color."
+  path="/coloring"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Coloring Pages</span>
+  </nav>
+
+  <section class="hero">
+    <h1>Coloring pages</h1>
+    <p class="lead">
+      Letter coloring pages that do double duty: the crayon practices the shape while the mouth practices the
+      sound. Every page is one letter — big bubble capitals and lowercase to color, three beginning-sound words,
+      a trace row, and a draw-your-own box. Free, no sign-up, prints on one letter page.
+    </p>
+    <a class="btn btn-primary" href="/coloring/letters/a/">Start with letter A</a>
+  </section>
+
+  <section class="section">
+    <h2>Every letter, its own coloring page</h2>
+    <p>
+      One page per letter — bubble capitals and lowercase, three words that start with the letter's sound, a
+      light-stroke trace row, and an empty box that dares your child to draw the letter's best thing:
+    </p>
+    <div class="letter-grid letter-grid-plain">
+      {coloringLetters.map((l) => (
+        <a class="letter-link" href={`/coloring/letters/${l.slug}/`}>
+          <span class="letter-link-glyph">{l.sheet.capital}{l.sheet.lower}</span>
+          <span class="letter-link-name">Letter {l.sheet.capital}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Coloring that counts</h2>
+    <div class="card-grid">
+      <a class="card" href="/christmas-color-by-number/">
+        <h2>Christmas color-by-number</h2>
+        <p>Color a tree out of addition facts and a snowman out of multiplication — December coloring with math hiding inside every region.</p>
+      </a>
+      <a class="card" href="/thanksgiving-color-by-number/">
+        <h2>Thanksgiving color-by-number</h2>
+        <p>A turkey built from sums and a cornucopia built from products — the November answer to "can we just color today?"</p>
+      </a>
+      <a class="card" href="/halloween-color-by-number/">
+        <h2>Halloween color-by-number</h2>
+        <p>Pumpkins and ghosts assembled from math facts — the October coloring page that is secretly a worksheet.</p>
+      </a>
+      <a class="card" href="/cursive-alphabet/">
+        <h2>Cursive alphabet chart</h2>
+        <p>When the crayon years end, the full cursive alphabet with a tracing strip is one page over.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="prose section">
+    <h2>How to use these coloring pages</h2>
+    <p>
+      Coloring a letter is pre-writing practice in disguise: the crayon travels the same path a pencil will
+      later, at whatever speed the hand can manage, and the child owns the shape before anyone asks them to
+      reproduce it small. Say the sound out loud every time the crayon starts a new region — the pairing of
+      shape and sound is the whole lesson, and it happens naturally while coloring.
+    </p>
+    <p>
+      Every sheet prints on one letter page in portrait, black outlines on white, with no watermark and no
+      sign-up. The Download PNG button on each page saves the identical sheet as an image — handy for tablets,
+      drawing apps, or printing a fresh copy after the first one comes home thoroughly colored.
+    </p>
+  </section>
+</BaseLayout>

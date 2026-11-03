@@ -14,7 +14,8 @@ export interface PageDef {
     | 'thanksgiving'
     | 'christmas'
     | 'sign-in-sheets'
-    | 'cootie';
+    | 'cootie'
+    | 'coloring';
   h1: string;
   metaTitle: string;
   metaDescription: string;
