@@ -9,6 +9,10 @@
 ## 今天 · 2026-11-03（周一）
 
 - [ ] 🤖 **chartglade Cootie Catcher 簇开工（11/03 立项）**：/cootie-catcher/ 模板主页 + 已填 fortunes printable 页 + **圣诞主题模板（死线 11/15，圣诞提前窗现在正卡）**；填充内容用签文库改编英文吉语库（300 签原料在 `docs/fortune-draw/`）；情人节模板 12 月中上跟进。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md) + §3 #34
+- [ ] 🤖 **tintbrew 外链文案包（本周）**：① B 组 4 个 GitHub awesome-list PR 正文定稿（句式在 [DISTRIBUTION §7B](./tintbrew/DISTRIBUTION.md)）② F 组 Roundup 目标 20 个清单（craft 博客 listicle + 教师资源页，每站一句定制 hook）③ C 组 Quora 答帖模板 2 版（brown/purple 两问法）。文案齐了逐项转 👤
+- [ ] 👤 **外链扩容 A 组启动：手作 Reddit 三版养号**：[r/PerlerBeads](https://www.reddit.com/r/PerlerBeads/) + [r/beadsprites](https://www.reddit.com/r/beadsprites/) + r/PerlerBeadArt——每天浏览 + 1~2 条无链真人评论（晒图/答新手，零链接），攒到满足门槛后发 photo 工具发布帖（**r/beadsprites 有 "I made a free tool that turns pictures into bead patterns" 被接受先例**，11/03 实勘）。规则红线见 [tintbrew DISTRIBUTION §7A](./tintbrew/DISTRIBUTION.md)：原创/注明出处、90/10 自推比、单帖单链
+- [ ] 👤 **外链扩容 B 组：GitHub awesome-list PR ×4 提交**：repo 候选 = `bradtraversy/design-resources` / `MohamedYoussouf/Design-Resources` / `F4dhil9ant3ng/awesome-design` / `GracieCreates/Design-Resources-for-Developers`——各提 1 PR 在 Color Tools 区加 TintBrew 一行（文案抄 §7B，先读各 repo CONTRIBUTING）。需 GitHub 账号（如无，注册 5 分钟）
+- [ ] 👤 **外链生效对账（挂 11/17）**：SEMrush 引荐域名 38 → **45+** = 通道生效；不到 → 复盘执行率而不是换通道。本周内先报 GitHub/Quora 账号是否就位
 - [x] 👤 **tintbrew D1 迁移 SQL ✅ 已跑完（11/3 用户控制台执行，钱包面板出现即 authors 表生效——积分/扩位/多作品全解锁）**：Cloudflare 控制台 → Storage & Databases → D1 → tintbrew 库 → Console，把 `tintbrew/functions/schema.sql` **底部注释里的 6 条迁移 SQL 按序逐条执行**（creations 重建支持多作品 + 建 authors 钱包表）。**不跑的后果（实测）**：/gallery/ 曾因钱包查询炸掉整页不显示热门作品（11/3 已加容错兜底，列表恢复但钱包面板隐藏）；点赞积分、100 积分扩画廊位、发布第二件作品**全部静默不生效**。跑完即全部解锁。
 
 ---
