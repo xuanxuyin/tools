@@ -7,8 +7,9 @@
 ## 一次性上传（👤 侧，wrangler 可用环境）
 
 ```bash
-# 0. 先建表（若无）：CF 控制台整段执行 functions/schema.sql
-#    （含 ALTER TABLE authors ADD COLUMN coloring_slots，见 schema 尾部注释）
+# 0. 建表（2026-11-03 版，清空旧画廊数据重建，含 coloring 四表）：
+#    CF 控制台整段执行 scripts/coloring-d1/000-setup.sql
+#    或 npx wrangler d1 execute tintbrew-gallery --remote --file scripts/coloring-d1/000-setup.sql
 
 # 1. 上传 payload
 for f in scripts/coloring-d1/0*.sql; do
