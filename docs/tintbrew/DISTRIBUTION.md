@@ -238,3 +238,25 @@ Canva 1000×1500 竖版 → 上 2/3 放两个大色块（原料色）+ 中间加
 
 - **两周后（11/17）SEMrush 引荐域名 38 → 45+** = 本清单通道生效；不到 → 复盘哪组没执行而不是换通道
 - 分工：🤖 备全部文案/目标清单；👤 执行提交（账号在手：Reddit 号已养、GitHub/Quora 需注册）
+
+### §7.1 竞品外链拆解实勘（2026-11-03，👤 SEMrush 拉数）
+
+> 对象：`perlerbeadpatterns.org`（2026-06 上线、排 #2 的对位竞品）Backlink Analytics · Referring Domains。数据部分在案（👤 后续滚动补样，重点是找真编辑链接）。
+
+| 链型 | 代表 | 定性 |
+|---|---|---|
+| 垃圾目录群发 | alive-directory.com ×30+（同站几十个分类页挂同一锚文本 "Perler Bead Patterns"） | 自动提交机器人，凑数 |
+| **付费 PBN/链农场（买链实锤）** | offpagebuilders.xyz / *.xyz 站群（"Thanks to... paid blog posts 🎯" 假证言互抄）、"Buy Backlinks Online Cheap"/"Professional Tiered Link Building" 锚文本页 ×10+ | **它雇了便宜 SEO 黑手**；锚文本裸奔，Google spam update 清理高危 |
+| 正路免费目录 | startupfa.st / firstsited.com（launch 页）/ trustprofile.com（会员页 nofollow） | 唯一像样的动作，都是免费提交 |
+| **真实编辑链接** | fannyprintable.com（printable 博客，锚 "Free Perler Bead Patterns PDF" → /free-patterns） | **全 profile 仅 1 条** |
+| 杂项 | LeakIX 扫描页 / skywalkerband.com 盗图热链 / Yahoo 快照 | 无价值 |
+
+**三条定论**：
+1. **外链不是它的护城河，内容才是**——5 个月冲 #2，白帽编辑链接仅 1 条。本细分排名门槛 = 内容+收录，外链是加速器不是门票。我方"外链太少"焦虑再降一档。
+2. **垃圾链大概率没帮它，但也确实没被罚**（诚实存疑：无法证伪 PBN 对当前排名的贡献）。**我方不跟**：红线"不买链不碰链农场"不变——它 "Buy Backlinks Online Cheap" 锚文本是裸奔状态，spam update 一到整批清理有先例；且我方双站矩阵连坐赌不起。
+3. **§7 执行到位，两周内外链质量全面反超**：4 条 dofollow DR90 GitHub PR > 它全部外链之和。
+
+**火力分配定稿（勘定 11/03）**：
+- **F 组升主通道**：它唯一的真链接来自 printable 博客 roundup 形态 → 证明有效且无人抢。20 目标清单 + 每周 5 封 = 最高优先执行。
+- **E 组扩名单**：startupfa.st、firstsited.com 照做（免费提交，photo 工具吃 startup/productivity 目录形态）。
+- **A/B/C 不变；不复制 PBN 黑链（红线在案）**。
