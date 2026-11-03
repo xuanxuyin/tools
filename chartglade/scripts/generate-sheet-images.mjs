@@ -72,6 +72,8 @@ const SHOTS = [
     page: `coloring/letters/${l}`,
     file: `letter-${l}-coloring-page`,
   })),
+  // Wave 5b (2026-11-03, coloring Phase B: christmas stocking singles)
+  { page: 'christmas-stocking-coloring-page', file: 'christmas-stocking-coloring-page' },
 ];
 
 const MIME = {
