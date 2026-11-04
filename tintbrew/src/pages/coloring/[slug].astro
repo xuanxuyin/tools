@@ -137,7 +137,7 @@ const jsonLd = [
             data-col-tool="brush"
             aria-pressed="true"
           >
-            <img src="/coloring/icons/brush.png" alt="" width="22" height="22" />
+            <img src="/coloring/icons/brush.png" alt="" width="26" height="26" />
             <span data-i18n="col.p.brush">Brush</span>
           </button>
           <button
@@ -146,7 +146,7 @@ const jsonLd = [
             data-col-tool="erase"
             aria-pressed="false"
           >
-            <img src="/coloring/icons/eraser.png" alt="" width="22" height="22" />
+            <img src="/coloring/icons/eraser.png" alt="" width="26" height="26" />
             <span data-i18n="col.p.eraser">Eraser</span>
           </button>
         </div>
@@ -312,9 +312,9 @@ const jsonLd = [
      must stay :global (runtime DOM carries no Astro scope id). */
   :global(.col-palette) {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 6px;
-    max-width: 22rem;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    max-width: 26rem;
   }
   :global(.col-swatch) {
     width: 100%;
@@ -323,6 +323,7 @@ const jsonLd = [
     border: 1px solid rgba(0, 0, 0, 0.18);
     cursor: pointer;
     padding: 0;
+    box-shadow: inset 0 -2px 4px rgb(0 0 0 / 0.18);
   }
   :global(.col-swatch[aria-checked='true']) {
     outline: 2px solid var(--accent);
