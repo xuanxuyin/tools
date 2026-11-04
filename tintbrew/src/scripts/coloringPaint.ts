@@ -187,21 +187,39 @@ class PaintIsland {
     for (let i = 0; i < p.r.length; i++) {
       this.ringPaths.push(new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i])));
       const id = i + 1;
-      const pts = p.r[i].split(' ').map((s) => s.split(',').map(Number));
-      // crossings per scanline at pixel centers (y + 0.5)
+      // current payloads are SVG paths ("M x,y L... Z" per subpath: outer
+      // contour then holes); legacy payloads are a bare "x,y x,y ..." loop
+      const subpaths: [number, number][][] = p.r[i].startsWith('M')
+        ? p.r[i]
+            .split('M')
+            .filter((s) => s.trim())
+            .map((s) =>
+              s
+                .trim()
+                .split(/\s+/)
+                .map((tok) => {
+                  const c = tok.replace(/^L/, '').replace(/Z$/, '').split(',');
+                  return [Number(c[0]), Number(c[1])] as [number, number];
+                }),
+            )
+        : [p.r[i].split(' ').map((s) => s.split(',').map(Number)) as [number, number][]];
+      // crossings per scanline at pixel centers (y + 0.5); even-odd pairs
+      // across ALL subpaths, so a hole flips the span off again
       const xs: number[] = [];
       for (let y = 0; y < p.h; y++) {
         const yc = y + 0.5;
         xs.length = 0;
-        let prev = pts[pts.length - 1];
-        for (let k = 0; k < pts.length; k++) {
-          const cur = pts[k];
-          const y1 = prev[1];
-          const y2 = cur[1];
-          if ((y1 <= yc && y2 > yc) || (y2 <= yc && y1 > yc)) {
-            xs.push(prev[0] + ((yc - y1) / (y2 - y1)) * (cur[0] - prev[0]));
+        for (const pts of subpaths) {
+          let prev = pts[pts.length - 1];
+          for (let k = 0; k < pts.length; k++) {
+            const cur = pts[k];
+            const y1 = prev[1];
+            const y2 = cur[1];
+            if ((y1 <= yc && y2 > yc) || (y2 <= yc && y1 > yc)) {
+              xs.push(prev[0] + ((yc - y1) / (y2 - y1)) * (cur[0] - prev[0]));
+            }
+            prev = cur;
           }
-          prev = cur;
         }
         if (xs.length < 2) continue;
         xs.sort((a, b) => a - b);
