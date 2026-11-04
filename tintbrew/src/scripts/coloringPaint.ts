@@ -26,11 +26,27 @@ interface Payload {
   rc: number[];
 }
 
+// v2 (2026-11-04): payloads were fully re-segmented, so every pre-v2 save is
+// stale even when its ring count happens to match — new prefix + a one-time
+// sweep of unversioned keys gives returning visitors a clean slate.
+const STORE_V = 'v2';
 function saveKey(slug: string): string {
-  return `tb-coloring:save:${slug}`;
+  return `tb-coloring:${STORE_V}:save:${slug}`;
 }
 function pubKey(slug: string): string {
-  return `tb-coloring:published:${slug}`;
+  return `tb-coloring:${STORE_V}:published:${slug}`;
+}
+function sweepLegacyKeys(): void {
+  try {
+    const legacy: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('tb-coloring:') && !k.includes(`:${STORE_V}:`)) legacy.push(k);
+    }
+    legacy.forEach((k) => localStorage.removeItem(k));
+  } catch {
+    /* storage unavailable — nothing to sweep */
+  }
 }
 
 class PaintIsland {
@@ -178,6 +194,7 @@ class PaintIsland {
    *  no canvas antialiasing to blend neighbours into wrong ids) into one
    *  Uint32Array lookup table; build Path2Ds for draws. */
   private prepare(): void {
+    sweepLegacyKeys();
     const p = this.payload as Payload;
     this.canvas.width = p.w;
     this.canvas.height = p.h;

@@ -4,11 +4,17 @@
 -- Run in the CF dashboard D1 console, or:
 --   npx wrangler d1 execute tintbrew-gallery --remote --file scripts/coloring-d1/000-setup.sql
 
--- ---- drop old-shape tables (publish/vote logs too — fresh start)
+-- ---- drop everything (publish/vote logs + old coloring payloads too —
+-- user-approved fresh start; makes this script safe to re-run on a live DB)
 DROP TABLE IF EXISTS creations;
 DROP TABLE IF EXISTS authors;
 DROP TABLE IF EXISTS vote_log;
 DROP TABLE IF EXISTS publish_log;
+DROP TABLE IF EXISTS coloring_assets;
+DROP TABLE IF EXISTS coloring_progress;
+DROP TABLE IF EXISTS coloring_done;
+DROP TABLE IF EXISTS coloring_creations;
+DROP TABLE IF EXISTS coloring_vote_log;
 
 -- ---- perler gallery
 CREATE TABLE creations (
