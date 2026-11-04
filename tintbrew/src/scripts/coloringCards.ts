@@ -120,7 +120,7 @@ export function cardHtml(p: ColPiece, rank: number | null, opts?: { mine?: boole
     `<img src="/api/coloring/preview?piece=${encodeURIComponent(p.id)}&v=${p.updatedAt}"` +
     ` alt="${escapeHtml(p.name)} — colored ${escapeHtml(p.slug)} page"` +
     ` loading="lazy" decoding="async" data-col-preview` +
-    ` onerror="this.onerror=null;this.src='/coloring/thumb/${encodeURIComponent(p.slug)}.webp?v=3'" />` +
+    ` onerror="this.onerror=null;this.src='/coloring/thumb/${encodeURIComponent(p.slug)}.webp?v=6'" />` +
     `</div>` +
     `<div class="gal-cardbar">` +
     metaHtml(p, 'gal-name') +

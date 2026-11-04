@@ -45,6 +45,7 @@ class PaintIsland {
   private statusEl: HTMLElement;
   private loadNote: HTMLElement | null;
   private undoBtn: HTMLButtonElement;
+  private redoBtn: HTMLButtonElement;
   private resetBtn: HTMLButtonElement;
   private pubBtn: HTMLButtonElement;
   private donePill: HTMLElement | null;
@@ -58,6 +59,8 @@ class PaintIsland {
   private idW = 0;
   private colors: (number | null)[] = [];
   private undoStack: string[] = [];
+  private redoStack: string[] = [];
+  private tool: 'brush' | 'erase' = 'brush';
   private selected = 1;
   private completeSent = false;
   private publishedId: string | null = null;
@@ -76,6 +79,7 @@ class PaintIsland {
     this.statusEl = root.querySelector('[data-col-status]') as HTMLElement;
     this.loadNote = root.querySelector('[data-col-loadnote]');
     this.undoBtn = root.querySelector('[data-col-undo]') as HTMLButtonElement;
+    this.redoBtn = root.querySelector('[data-col-redo]') as HTMLButtonElement;
     this.resetBtn = root.querySelector('[data-col-reset]') as HTMLButtonElement;
     this.pubBtn = root.querySelector('[data-col-publish]') as HTMLButtonElement;
     this.donePill = document.querySelector('[data-col-donepill]');
@@ -91,8 +95,20 @@ class PaintIsland {
     this.frame.addEventListener('click', (e) => this.onTap(e as MouseEvent));
     this.paletteEl.addEventListener('click', (e) => this.onPick(e));
     this.undoBtn.addEventListener('click', () => this.undo());
+    this.redoBtn.addEventListener('click', () => this.redo());
     this.resetBtn.addEventListener('click', () => this.reset());
     this.pubBtn.addEventListener('click', () => this.openPublish());
+    // brush / eraser tool toggle
+    root.querySelectorAll<HTMLButtonElement>('[data-col-tool]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        this.tool = btn.dataset.tool === 'erase' ? 'erase' : 'brush';
+        root.querySelectorAll('[data-col-tool]').forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-pressed', String(active));
+        });
+      });
+    });
 
     void this.boot();
   }
@@ -116,9 +132,24 @@ class PaintIsland {
       if (!res.ok) throw new Error(String(res.status));
       this.payload = (await res.json()) as Payload;
     } catch {
-      if (this.loadNote) this.loadNote.textContent = t('col.p.loadFail');
-      else this.status(t('col.p.loadFail'));
-      return;
+      // DEV ONLY: localhost testing opens every page by fetching the payload
+      // from the gitignored static folder (public/coloring/payload/). Never
+      // shipped — production keeps the unlock gate.
+      if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        try {
+          const dev = await fetch(`/coloring/payload/${this.slug}.json`);
+          if (dev.ok) {
+            this.payload = (await dev.json()) as Payload;
+          }
+        } catch {
+          /* fall through to the locked message below */
+        }
+      }
+      if (!this.payload) {
+        if (this.loadNote) this.loadNote.textContent = t('col.p.loadFail');
+        else this.status(t('col.p.loadFail'));
+        return;
+      }
     }
 
     // saved fills — but never trust a stale save with a different ring count
@@ -247,6 +278,15 @@ class PaintIsland {
     const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.col-swatch');
     if (!btn) return;
     this.selected = Number(btn.dataset.pal ?? '1');
+    // picking a color implies the brush (the eraser toggle stays put otherwise)
+    if (this.tool === 'erase') {
+      this.tool = 'brush';
+      this.root.querySelectorAll('[data-col-tool]').forEach((b) => {
+        const active = (b as HTMLElement).dataset.tool !== 'erase';
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+    }
     this.paletteEl.querySelectorAll('.col-swatch').forEach((el) => {
       el.setAttribute('aria-checked', String(el === btn));
     });
@@ -262,11 +302,11 @@ class PaintIsland {
     const id = this.idData[y * this.idW + x];
     if (id === 0) return;
     const ring = id - 1;
-    if (this.colors[ring] === this.selected) return;
+    const next = this.tool === 'erase' ? null : this.selected; // eraser clears
+    if (this.colors[ring] === next) return;
 
-    this.undoStack.push(encodeColors(this.colors));
-    if (this.undoStack.length > 50) this.undoStack.shift();
-    this.colors[ring] = this.selected;
+    this.pushUndo();
+    this.colors[ring] = next;
     this.render();
     this.persist();
     this.refreshMeta();
@@ -307,6 +347,7 @@ class PaintIsland {
       total: String(this.total),
     });
     this.undoBtn.disabled = this.undoStack.length === 0;
+    this.redoBtn.disabled = this.redoStack.length === 0;
     const done = filled === this.total;
     this.pubBtn.disabled = !done;
     if (this.regions && filled !== this.regions) {
@@ -333,10 +374,27 @@ class PaintIsland {
     if (this.donePill) this.donePill.hidden = false;
   }
 
+  private pushUndo(): void {
+    this.undoStack.push(encodeColors(this.colors));
+    if (this.undoStack.length > 50) this.undoStack.shift();
+    this.redoStack.length = 0; // a new edit kills the redo branch
+  }
+
   private undo(): void {
     const prev = this.undoStack.pop();
     if (!prev) return;
+    this.redoStack.push(encodeColors(this.colors));
     this.colors = decodeColors(prev);
+    this.render();
+    this.persist();
+    this.refreshMeta();
+  }
+
+  private redo(): void {
+    const nxt = this.redoStack.pop();
+    if (!nxt) return;
+    this.undoStack.push(encodeColors(this.colors));
+    this.colors = decodeColors(nxt);
     this.render();
     this.persist();
     this.refreshMeta();
@@ -344,7 +402,7 @@ class PaintIsland {
 
   private reset(): void {
     if (!window.confirm(t('col.p.resetConfirm'))) return;
-    this.undoStack.push(encodeColors(this.colors));
+    this.pushUndo();
     this.colors = this.colors.map(() => null);
     this.completeSent = false;
     this.render();
