@@ -96,7 +96,7 @@ describe('coloring dist (shipped surface)', () => {
     expect(html).toContain('"BreadcrumbList"');
     expect(html).toContain('Paint Palette');
     // neighbors nav links both directions from the first page
-    expect(html).toContain('href="/coloring/dk019-bee/"');
+    expect(html).toContain('href="/coloring/mandala-01/"');
     expect(html).toContain('href="/coloring/"');
   });
 

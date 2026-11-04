@@ -117,7 +117,7 @@ const jsonLd = [
       <!-- the public line art: visible before the payload loads, printable no-JS -->
       <img
         class="col-lineart"
-        src={`/coloring/line/${piece.slug}.webp`}
+        src={`/coloring/line/${piece.slug}.webp?v=4`}
         alt={`${piece.title} coloring page line art`}
         width={piece.w}
         height={piece.h}
@@ -129,10 +129,49 @@ const jsonLd = [
 
     <div class="col-toolbar" data-col-toolbar hidden>
       <p class="col-hint" data-i18n="col.p.hint">Pick a color, then tap a region to fill it.</p>
-      <div class="col-palette" data-col-palette role="listbox" aria-label="Colors"></div>
+      <div class="col-tools">
+        <div class="col-toolgroup" role="group" aria-label="Tool">
+          <button
+            type="button"
+            class="col-tool is-active"
+            data-col-tool="brush"
+            aria-pressed="true"
+          >
+            <img src="/coloring/icons/brush.png" alt="" width="22" height="22" />
+            <span data-i18n="col.p.brush">Brush</span>
+          </button>
+          <button
+            type="button"
+            class="col-tool"
+            data-col-tool="erase"
+            aria-pressed="false"
+          >
+            <img src="/coloring/icons/eraser.png" alt="" width="22" height="22" />
+            <span data-i18n="col.p.eraser">Eraser</span>
+          </button>
+        </div>
+        <div class="col-palette" data-col-palette role="listbox" aria-label="Colors"></div>
+      </div>
       <div class="col-actions">
         <span class="col-filled" data-col-filled></span>
-        <button type="button" class="btn btn-sm" data-col-undo data-i18n="col.p.undo">Undo</button>
+        <button
+          type="button"
+          class="btn btn-sm col-iconbtn"
+          data-col-undo
+          data-i18n="col.p.undo"
+          disabled
+        >
+          <img src="/coloring/icons/undo.png" alt="" width="18" height="18" /><span>Undo</span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm col-iconbtn"
+          data-col-redo
+          data-i18n="col.p.redo"
+          disabled
+        >
+          <img src="/coloring/icons/redo.png" alt="" width="18" height="18" /><span>Redo</span>
+        </button>
         <button type="button" class="btn btn-sm" data-col-reset data-i18n="col.p.reset">
           Start over
         </button>
@@ -288,6 +327,45 @@ const jsonLd = [
   :global(.col-swatch[aria-checked='true']) {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
+  }
+  /* brush / eraser tool toggle — game icon assets, island flips is-active */
+  .col-tools {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
+  }
+  .col-toolgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  /* runtime-toggled class → scoped selectors never match, must stay :global */
+  :global(.col-tool) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--ink, inherit);
+  }
+  :global(.col-tool img) {
+    display: block;
+  }
+  :global(.col-tool.is-active) {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 600;
+  }
+  /* undo / redo: text button with the game icon in front */
+  :global(.col-iconbtn img) {
+    display: inline-block;
+    vertical-align: -0.18rem;
+    margin-right: 0.3rem;
   }
   .col-actions {
     display: flex;

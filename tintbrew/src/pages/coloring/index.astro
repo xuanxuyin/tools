@@ -114,10 +114,10 @@ const jsonLd = [
               <span class="col-badge" data-col-badge hidden aria-live="polite"></span>
               <img
                 class="col-thumb"
-                src={`/coloring/thumb/${p.slug}.webp`}
+                src={`/coloring/thumb/${p.slug}.webp?v=6`}
                 alt={`${p.title} — free coloring page, ${p.regions} areas to color`}
                 width="768"
-                height={Math.round((768 * 3) / 4)}
+                height={Math.round((768 * p.h) / p.w)}
                 loading={i < 6 ? 'eager' : 'lazy'}
                 decoding="async"
               />
@@ -255,8 +255,9 @@ const jsonLd = [
   .col-thumb {
     width: 100%;
     aspect-ratio: 4 / 3;
-    /* thumbs are pre-cropped to exactly 4:3 in the pipeline, so contain
-       fills the box with no white bands; the line art IS the product */
+    /* uniform card box; contain shows the WHOLE art (never crops): story
+       pages are 4:3 and fill it edge to edge, the taller mandalas letterbox
+       invisibly on the white card */
     object-fit: contain;
     background: #fff;
     display: block;
