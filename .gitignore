@@ -34,3 +34,4 @@ push.bat
 
 # one-off diagnostic scripts (repo rule: never commit)
 *.temp.mjs
+payload
