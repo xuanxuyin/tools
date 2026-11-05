@@ -150,8 +150,8 @@ const jsonLd = [
             <span data-i18n="col.p.eraser">Eraser</span>
           </button>
         </div>
-        <div class="col-palette" data-col-palette role="listbox" aria-label="Colors"></div>
       </div>
+      <div class="col-palette" data-col-palette role="listbox" aria-label="Colors"></div>
       <div class="col-actions">
         <span class="col-filled" data-col-filled></span>
         <button
@@ -307,23 +307,24 @@ const jsonLd = [
     font-size: 0.9rem;
     margin: 0;
   }
-  /* palette — same round swatches as the bead editor. These buttons are
+  /* palette — full toolbar row of its own (was squeezed next to brush/eraser),
+     auto-fill so dots stay ≥3.5rem even on narrow screens. Buttons are
      created at RUNTIME by coloringPaint.ts, so scoped selectors never match:
      must stay :global (runtime DOM carries no Astro scope id). */
   :global(.col-palette) {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 8px;
-    max-width: 26rem;
+    grid-template-columns: repeat(auto-fill, minmax(3.5rem, 1fr));
+    gap: 10px;
+    max-width: 46rem;
   }
   :global(.col-swatch) {
     width: 100%;
     aspect-ratio: 1;
     border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.18);
+    border: 2px solid rgb(0 0 0 / 0.25);
     cursor: pointer;
     padding: 0;
-    box-shadow: inset 0 -2px 4px rgb(0 0 0 / 0.18);
+    box-shadow: inset 0 -3px 5px rgb(0 0 0 / 0.18);
   }
   :global(.col-swatch[aria-checked='true']) {
     outline: 2px solid var(--accent);

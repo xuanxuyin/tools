@@ -68,6 +68,7 @@ class PaintIsland {
   private lineArt: HTMLImageElement;
 
   private payload: Payload | null = null;
+  private bgRing = -1; // payload ring spanning the whole canvas — untappable paper white
   private ringPaths: Path2D[] = [];
   private idData: Uint32Array | null = null;
   private idW = 0;
@@ -205,21 +206,51 @@ class PaintIsland {
       this.ringPaths.push(new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i])));
       const id = i + 1;
       // current payloads are SVG paths ("M x,y L... Z" per subpath: outer
-      // contour then holes); legacy payloads are a bare "x,y x,y ..." loop
+      // contour then holes); legacy payloads are a bare "x,y x,y ..." loop.
+      // Guards mirror seg.mjs parseSpec: a bare trailing "Z" token must be
+      // skipped (it would parse as [0,0] and drag every scanline crossing
+      // to the canvas corner → garbage hit-testing), and junk coords dropped.
+      const toPts = (s: string): [number, number][] => {
+        const pts: [number, number][] = [];
+        for (const tok of s.trim().split(/\s+/)) {
+          const t = tok.replace(/^L/, '').replace(/Z$/, '');
+          if (!t) continue;
+          const c = t.split(',');
+          const x = Number(c[0]);
+          const y = Number(c[1]);
+          if (Number.isFinite(x) && Number.isFinite(y)) pts.push([x, y]);
+        }
+        return pts;
+      };
       const subpaths: [number, number][][] = p.r[i].startsWith('M')
         ? p.r[i]
             .split('M')
             .filter((s) => s.trim())
-            .map((s) =>
-              s
-                .trim()
-                .split(/\s+/)
-                .map((tok) => {
-                  const c = tok.replace(/^L/, '').replace(/Z$/, '').split(',');
-                  return [Number(c[0]), Number(c[1])] as [number, number];
-                }),
-            )
+            .map(toPts)
+            .filter((pts) => pts.length >= 3)
         : [p.r[i].split(' ').map((s) => s.split(',').map(Number)) as [number, number][]];
+      // The page-background ring (outer contour = the whole canvas) spans most
+      // of the page, so one stray tap on any open-curve pocket connected to it
+      // would recolor ~everything at once. It stays pure paper white instead:
+      // not rasterized into the id map (untappable), never filled, and not
+      // counted toward completion below.
+      if (subpaths.length >= 1) {
+        const outer = subpaths[0];
+        let minX = Infinity;
+        let minY = Infinity;
+        let maxX = -Infinity;
+        let maxY = -Infinity;
+        for (const [px, py] of outer) {
+          if (px < minX) minX = px;
+          if (py < minY) minY = py;
+          if (px > maxX) maxX = px;
+          if (py > maxY) maxY = py;
+        }
+        if (minX <= 1 && minY <= 1 && maxX >= p.w - 1 && maxY >= p.h - 1) {
+          this.bgRing = i;
+          continue; // keep ringPaths[i] aligned; just no id pixels
+        }
+      }
       // crossings per scanline at pixel centers (y + 0.5); even-odd pairs
       // across ALL subpaths, so a hole flips the span off again
       const xs: number[] = [];
@@ -354,9 +385,12 @@ class PaintIsland {
   }
 
   private refreshMeta(): void {
-    const filled = this.colors.reduce((n, c) => (c !== null ? n + 1 : n), 0);
+    // bgRing stays permanently null (paper white, untappable) — exclude it
+    // from both the filled count and the total so completion is reachable
+    const countable = this.bgRing >= 0 ? this.colors.filter((_, i) => i !== this.bgRing) : this.colors;
+    const filled = countable.reduce((n, c) => (c !== null ? n + 1 : n), 0);
     this.line = filled;
-    this.total = this.colors.length;
+    this.total = countable.length;
     this.filledEl.textContent = tArgs('col.p.filled' as UiKey, {
       n: String(filled),
       total: String(this.total),
@@ -376,7 +410,7 @@ class PaintIsland {
   }
 
   private maybeComplete(): void {
-    if (this.completeSent || this.colors.some((c) => c === null)) return;
+    if (this.completeSent || this.colors.some((c, i) => i !== this.bgRing && c === null)) return;
     this.completeSent = true;
     this.status(t('col.p.complete'));
     void fetch('/api/coloring/complete', {
