@@ -116,7 +116,7 @@ class PaintIsland {
     // brush / eraser tool toggle
     root.querySelectorAll<HTMLButtonElement>('[data-col-tool]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        this.tool = btn.dataset.tool === 'erase' ? 'erase' : 'brush';
+        this.tool = btn.dataset.colTool === 'erase' ? 'erase' : 'brush';
         root.querySelectorAll('[data-col-tool]').forEach((b) => {
           const active = b === btn;
           b.classList.toggle('is-active', active);
@@ -329,7 +329,7 @@ class PaintIsland {
     if (this.tool === 'erase') {
       this.tool = 'brush';
       this.root.querySelectorAll('[data-col-tool]').forEach((b) => {
-        const active = (b as HTMLElement).dataset.tool !== 'erase';
+        const active = (b as HTMLElement).dataset.colTool !== 'erase';
         b.classList.toggle('is-active', active);
         b.setAttribute('aria-pressed', String(active));
       });
