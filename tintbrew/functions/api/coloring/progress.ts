@@ -19,7 +19,9 @@ export async function onRequestGet(ctx: Ctx): Promise<Response> {
     .bind(hash)
     .all<{ slug: string }>();
   return json({
-    unlocked: prog.unlocked,
+    unlocked: (ctx.env as { DEV_UNLOCK_ALL?: string }).DEV_UNLOCK_ALL
+      ? 9999
+      : prog.unlocked,
     lastUnlockDate: prog.last_unlock_date,
     done: (done.results ?? []).map((r) => r.slug),
   });

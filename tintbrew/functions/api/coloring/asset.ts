@@ -23,7 +23,11 @@ export async function onRequestGet(ctx: Ctx): Promise<Response> {
   )
     .bind(hash)
     .first<{ unlocked: number }>();
-  const unlocked = prog?.unlocked ?? 1;
+  // DEV_UNLOCK_ALL is only ever bound by local `wrangler pages dev` — the
+  // production Pages project never sets it, so the unlock gate stays intact.
+  const unlocked = (ctx.env as { DEV_UNLOCK_ALL?: string }).DEV_UNLOCK_ALL
+    ? 9999
+    : (prog?.unlocked ?? 1);
 
   const row = await ctx.env.GALLERY_DB.prepare(
     'SELECT ord, data FROM coloring_assets WHERE slug = ?',
