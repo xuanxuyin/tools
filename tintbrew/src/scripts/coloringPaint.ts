@@ -490,7 +490,16 @@ class PaintIsland {
       if (!dlg.isConnected) document.removeEventListener('keydown', onKey);
     };
     document.addEventListener('keydown', onKey);
-    dlg.querySelector('input')?.focus();
+    // remembered nickname — same key the bead gallery uses, typed once
+    let saved = '';
+    try {
+      saved = localStorage.getItem('tb-gallery:nick') ?? '';
+    } catch {
+      /* private mode — ask every time */
+    }
+    const nickInput = dlg.querySelector<HTMLInputElement>('[data-col-pubnick]');
+    if (nickInput && saved) nickInput.value = saved;
+    (saved ? dlg.querySelector<HTMLInputElement>('[data-col-pubname]') : nickInput)?.focus();
   }
 
   private async previewDataUrl(): Promise<string | null> {
@@ -544,6 +553,7 @@ class PaintIsland {
         this.publishedId = data.id;
         try {
           localStorage.setItem(pubKey(this.slug), data.id);
+          localStorage.setItem('tb-gallery:nick', nick);
         } catch {
           /* private mode */
         }
