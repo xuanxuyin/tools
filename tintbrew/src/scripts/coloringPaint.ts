@@ -29,7 +29,7 @@ interface Payload {
 // v2 (2026-11-04): payloads were fully re-segmented, so every pre-v2 save is
 // stale even when its ring count happens to match — new prefix + a one-time
 // sweep of unversioned keys gives returning visitors a clean slate.
-const STORE_V = 'v3'; // v3: choke-sealed ring sets (2026-11-06) — indices shifted, old saves misalign
+const STORE_V = 'v4'; // v4: speck/crack merges (2026-11-06 二轮) — ring indices shifted again, old saves misalign
 function saveKey(slug: string): string {
   return `tb-coloring:${STORE_V}:save:${slug}`;
 }

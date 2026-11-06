@@ -34,6 +34,7 @@ const INK_T = 185; // luma below = boundary ink (AA-thin lines included); above 
 const MIN_AREA = +(process.env.SEG_MIN_AREA ?? 14); // speck cutoff, px
 const DP_EPS = +(process.env.SEG_EPS ?? 1.1); // contour simplification tolerance, px
 const SEAL_T = +(process.env.SEG_SEAL_T ?? 3); // choke-sealing radius, px (0 = off; 3 seals gaps ≤~4px — calibrated on dk019/ag015, larger eats thin pockets whole)
+const CRACK_T = +(process.env.SEG_CRACK_T ?? 2.5); // sliver-merge width, px (0 = off): a sealed pocket NOWHERE wider than ~2×this is a crack between strokes, not a region
 const VERIFY_MIN = 0.985; // required rasterizer-vs-labelmap agreement
 // Standard 24-color palette shipped with EVERY piece. The original launch
 // payloads carried per-piece palettes sampled from the colored source art and
@@ -88,9 +89,20 @@ function labelComponents(lab0, w, h, sameKind) {
 
 /** Merge speck labels (< MIN_AREA, excluding background) into the neighbouring
  *  non-speck label with the longest shared border. Larger specks resolve first
- *  so chains funnel into a real region. Single label-map rewrite afterwards. */
-function absorbSpecks(lab, area, w, h) {
-  const specks = [...area.keys()].filter((id) => id > 0 && area.get(id) < MIN_AREA).sort((a, b) => area.get(b) - area.get(a));
+ *  so chains funnel into a real region. Single label-map rewrite afterwards.
+ *
+ *  MUST run AFTER claimInk: before it, labels only live on white pixels and two
+ *  different components can never be 4-adjacent (they would be one component),
+ *  so no speck ever finds a neighbour — this pass was silently a no-op for the
+ *  whole pre-claim era. claimInk writes labels onto the ink/wall pixels, labels
+ *  meet at former-ink boundaries, and "longest shared border" becomes
+ *  measurable. `extraSpeck` optionally flags more labels as specks (crack
+ *  slivers); those may also merge INTO the background (-1) — a sliver in the
+ *  margin is not a region — while plain small specks keep a real region
+ *  target (an enclosed dot must stay tappable). */
+function absorbSpecks(lab, area, w, h, extraSpeck) {
+  const isSpeck = (id) => (id > 0 && area.get(id) < MIN_AREA) || (id > 0 && extraSpeck?.(id));
+  const specks = [...area.keys()].filter(isSpeck).sort((a, b) => area.get(b) - area.get(a));
   const speckSet = new Set(specks);
   // adjacency: speck -> Map(neighbour -> shared edge count), one full scan
   const adj = new Map();
@@ -109,12 +121,13 @@ function absorbSpecks(lab, area, w, h) {
     let bestLen = 0;
     for (const [n, len] of adj.get(s) ?? []) {
       const live = speckSet.has(n) ? (target.get(n) ?? 0) : n;
-      if (live > 0 && live !== s && len > bestLen) {
+      const allowed = live > 0 || (live === -1 && extraSpeck?.(s) === true); // cracks may join the bg
+      if (allowed && live !== s && live !== 0 && len > bestLen) {
         best = live;
         bestLen = len;
       }
     }
-    if (best > 0) target.set(s, best);
+    if (best !== 0) target.set(s, best);
   }
   for (let i = 0; i < lab.length; i++) {
     let t = target.get(lab[i]);
@@ -285,7 +298,7 @@ function sealChokes(ink, w, h, t) {
       sealed++;
     }
   }
-  return { ink: out, sealed };
+  return { ink: out, sealed, dist: d };
 }
 
 // ------------------------------------------------------------------ contour
@@ -528,9 +541,11 @@ async function segment(slug, oldPal, eps, sealT) {
   tick('decode');
 
   // 0. choke sealing (see sealChokes) — sealT 0 = legacy behaviour
-  let ink = lineMask(data, w, h);
+  const rawInk = lineMask(data, w, h);
+  let ink = rawInk;
   let sealed = 0;
-  if (sealT > 0) ({ ink, sealed } = sealChokes(ink, w, h, sealT));
+  let dist = null; // dist-to-RAW-ink chamfer map (×3 units), from sealChokes
+  if (sealT > 0) ({ ink, sealed, dist } = sealChokes(rawInk, w, h, sealT));
   tick(`seal t=${sealT} (+${sealed}px walls)`);
   const mask = new Int32Array(w * h);
   for (let i = 0; i < w * h; i++) mask[i] = ink[i] ? 0 : -9;
@@ -546,13 +561,51 @@ async function segment(slug, oldPal, eps, sealT) {
     const l = c1.lab[i];
     lab[i] = l === 0 ? 0 : bg.has(l) ? -1 : l;
   }
-  // 2. speck absorb, 3. ink claim
-  absorbSpecks(lab, c1.area, w, h);
-  tick('absorb');
+  // 1b. crack slivers. Sealing carves pockets out of the background; some are
+  // not regions at all — a 1-2px crack wedged where two strokes converge
+  // (brush-tip crossings). Such a sliver survives MIN_AREA by being long, then
+  // claimInk grows it by the walls around it and it shows up as a speck of a
+  // region needing its own tap. Rule: pocket is a crack iff (a) it came out of
+  // the pre-seal background (closed-stroke art's thin bands did not — they are
+  // real drawn detail, left alone) and (b) it is NOWHERE wider than ~2*CRACK_T
+  // px of open white (shape test, not size: small round cells keep their tap).
+  // Cracks merge into their longest-border neighbour via absorbSpecks.
+  let extraSpeck = null;
+  if (dist && CRACK_T > 0) {
+    const rawMask = new Int32Array(w * h);
+    for (let i = 0; i < w * h; i++) rawMask[i] = rawInk[i] ? 0 : -9;
+    const pre = labelComponents(rawMask, w, h, (v) => (v === -9 ? 1 : 0));
+    const preBgIds = new Set();
+    for (let y = 0; y < h; y++)
+      for (let x = 0; x < w; x++)
+        if ((x === 0 || y === 0 || x === w - 1 || y === h - 1) && pre.lab[y * w + x] > 0) preBgIds.add(pre.lab[y * w + x]);
+    const stats = [];
+    for (let i = 0; i < w * h; i++) {
+      const id = c1.lab[i];
+      if (id <= 0 || bg.has(id)) continue;
+      let s = stats[id];
+      if (!s) s = stats[id] = { n: 0, hits: 0, maxd: 0 };
+      s.n++;
+      if (preBgIds.has(pre.lab[i])) s.hits++;
+      if (dist[i] > s.maxd) s.maxd = dist[i];
+    }
+    const crack = new Set();
+    for (let id = 1; id < stats.length; id++) {
+      const s = stats[id];
+      if (s && s.hits * 2 > s.n && s.maxd < CRACK_T * 3) crack.add(id);
+    }
+    extraSpeck = (id) => crack.has(id);
+    tick(`crack scan (${crack.size} slivers)`);
+  }
+  // 2. ink claim, 3. speck absorb — in THIS order: labels only meet at
+  //    former-ink pixels once ink is claimed, so absorbSpecks can only see
+  //    neighbours after claimInk (it was a no-op before — see its doc note).
   const area2 = new Map([[-1, 0]]);
   for (let i = 0; i < lab.length; i++) if (lab[i] !== 0) area2.set(lab[i], (area2.get(lab[i]) ?? 0) + 1);
   claimInk(lab, area2, w, h);
   tick('claimInk');
+  absorbSpecks(lab, area2, w, h, extraSpeck);
+  tick('absorb');
   // 4. split into connected components again (absorbs may disconnect)
   const c2 = labelComponents(lab, w, h, (v) => v);
   const bgComps = new Set(); // new ids of components whose source label was bg
@@ -642,7 +695,7 @@ async function extractSlug(slug, oldPal) {
 }
 
 // ------------------------------------------------------------------ cli
-export { extractSlug, labelComponents, absorbSpecks, claimInk, traceContour, crackLoops, simplify, rasterize, parseSpec, loadOldPayloads };
+export { extractSlug, labelComponents, absorbSpecks, claimInk, lineMask, sealChokes, traceContour, crackLoops, simplify, rasterize, parseSpec, loadOldPayloads };
 
 const oldRingsOf = (old) => old.r.length;
 
