@@ -12,8 +12,9 @@ ord = rings 升序 + slug 升序 = 难度递增的每日解锁顺序，与
 # 0. 清库重建（DROP 全部画廊/涂色表后 CREATE，可在已有数据的库上重复执行）：
 npx wrangler d1 execute tintbrew-gallery --remote --file scripts/coloring-d1/000-setup.sql
 
-# 1. 上传 payload（000-setup 之外共 27 片，每片 <900KB，合计约 22MB，约 10s/片）：
-for n in $(seq -w 1 27); do
+# 1. 上传 payload（000-setup 之外的分片数以目录为准——2026-11-06 封口重分割后为 34 片，
+#    每片 <900KB，合计约 29MB，约 10s/片）：
+for n in $(seq -w 1 34); do
   npx wrangler d1 execute tintbrew-gallery --remote --file "scripts/coloring-d1/0$n.sql"
 done
 
@@ -30,6 +31,7 @@ HTTP+SOCKS 混合端口；10809 常不在监听，undici 也不认 socks5h://）
 
 ```bash
 node scripts/coloring-seg/seg.mjs D:/tmp/coloring_out          # 重新分割全部 210 张
+node scripts/coloring-seg/gencat.mjs D:/tmp/coloring_out       # 重写 src/data/coloring.ts（顺序=难度）
 node scripts/coloring-d1/generate.mjs D:/tmp/coloring_out      # 重写本目录的 0xx.sql 分片
 ```
 

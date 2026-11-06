@@ -3,6 +3,10 @@
  * launch pipeline never had. The line art IS the ground truth (it is what the
  * player sees composited with 'multiply'), so regions are cut from its pixels:
  *
+ *   0. seal       open-stroke art has gaps in its outlines; white pixels
+ *                 closer than SEG_SEAL_T px to ink become walls so pockets
+ *                 behind a narrow choke label as their OWN components instead
+ *                 of leaking into the border-touching background blob
  *   1. label      4-connected white components (luma >= INK_T is fillable);
  *                 border-touching components merge into one background ring
  *   2. absorb     white specks under MIN_AREA merge into their longest-border
@@ -29,7 +33,22 @@ const sharp = require(require.resolve('sharp', { paths: [fileURLToPath(new URL('
 const INK_T = 185; // luma below = boundary ink (AA-thin lines included); above = fillable
 const MIN_AREA = +(process.env.SEG_MIN_AREA ?? 14); // speck cutoff, px
 const DP_EPS = +(process.env.SEG_EPS ?? 1.1); // contour simplification tolerance, px
+const SEAL_T = +(process.env.SEG_SEAL_T ?? 3); // choke-sealing radius, px (0 = off; 3 seals gaps ≤~4px — calibrated on dk019/ag015, larger eats thin pockets whole)
 const VERIFY_MIN = 0.985; // required rasterizer-vs-labelmap agreement
+// Standard 24-color palette shipped with EVERY piece. The original launch
+// payloads carried per-piece palettes sampled from the colored source art and
+// 45 of them degenerated to a single swatch (all-gray or all-one-color) — a
+// coloring app must always offer a real choice. Includes 3 skin tones: much
+// of the catalogue is people. Order = grays, warm, greens/blues, violets,
+// pinks, browns/skins.
+const PAL_STD = [
+  '#232323', '#7d7d7d', '#bfbfbf', '#ffffff',
+  '#b91c1c', '#ea580c', '#f59e0b', '#facc15',
+  '#84cc16', '#2f9e44', '#0c8599', '#1098ad',
+  '#1971c2', '#3b5bdb', '#6741d9', '#9c36b5',
+  '#e64980', '#f783ac', '#a61e4d', '#8d5524',
+  '#c68642', '#e8b98f', '#ffd9b3', '#fdf0d5',
+];
 const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 
 // ------------------------------------------------------------------ labeling
@@ -207,6 +226,66 @@ function lineMask(data, w, h) {
   const ink = new Uint8Array(w * h);
   for (let i = 0; i < w * h; i++) ink[i] = gray[i] && !blobs[i] ? 1 : 0;
   return ink;
+}
+
+/** Chamfer(3,4) distance transform of white → nearest ink; units of 3 = 1px
+ *  (orthogonal step 3, diagonal 4 ≈ 3·√2). Two raster passes, ink pixels 0. */
+function distToInk(ink, w, h) {
+  const INF = 1e9;
+  const d = new Float32Array(w * h).fill(INF);
+  for (let i = 0; i < w * h; i++) if (ink[i]) d[i] = 0;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = y * w + x;
+      if (d[i] === 0) continue;
+      let v = d[i];
+      if (x > 0 && d[i - 1] + 3 < v) v = d[i - 1] + 3;
+      if (y > 0) {
+        if (d[i - w] + 3 < v) v = d[i - w] + 3;
+        if (x > 0 && d[i - w - 1] + 4 < v) v = d[i - w - 1] + 4;
+        if (x < w - 1 && d[i - w + 1] + 4 < v) v = d[i - w + 1] + 4;
+      }
+      d[i] = v;
+    }
+  }
+  for (let y = h - 1; y >= 0; y--) {
+    for (let x = w - 1; x >= 0; x--) {
+      const i = y * w + x;
+      if (d[i] === 0) continue;
+      let v = d[i];
+      if (x < w - 1 && d[i + 1] + 3 < v) v = d[i + 1] + 3;
+      if (y < h - 1) {
+        if (d[i + w] + 3 < v) v = d[i + w] + 3;
+        if (x < w - 1 && d[i + w + 1] + 4 < v) v = d[i + w + 1] + 4;
+        if (x > 0 && d[i + w - 1] + 4 < v) v = d[i + w - 1] + 4;
+      }
+      d[i] = v;
+    }
+  }
+  return d;
+}
+
+/** Bottleneck sealing for open-stroke art. The line art often has sketchy gaps
+ *  in its outlines; through such a choke a white pocket stays 4-connected to
+ *  the canvas-border background, gets labelled background, and becomes
+ *  untappable (the paint island excludes the background ring). Fix: white
+ *  pixels whose distance to ink is < `t` px (i.e. inside a gap narrower than
+ *  ~2t) become walls. Sealed pockets then label as their own components →
+ *  their own rings. Walls later go through claimInk exactly like ink, so
+ *  fills run up to the drawn line and no tap lands dead. */
+function sealChokes(ink, w, h, t) {
+  const wall = t * 3;
+  const d = distToInk(ink, w, h);
+  const out = new Uint8Array(w * h);
+  let sealed = 0;
+  for (let i = 0; i < w * h; i++) {
+    if (ink[i]) out[i] = 1;
+    else if (d[i] < wall) {
+      out[i] = 1;
+      sealed++;
+    }
+  }
+  return { ink: out, sealed };
 }
 
 // ------------------------------------------------------------------ contour
@@ -441,15 +520,18 @@ const DBG = process.env.SEG_DEBUG;
 const tick = (msg) => { if (DBG) console.error(`  [${Date.now() - DBG_T0}ms] ${msg}`); };
 let DBG_T0 = 0;
 
-async function segment(slug, oldPal, eps) {
+async function segment(slug, oldPal, eps, sealT) {
   DBG_T0 = Date.now();
   const { data, info } = await sharp(`${ROOT}/public/coloring/line/${slug}.webp`).greyscale().raw().toBuffer({ resolveWithObject: true });
   const w = info.width;
   const h = info.height;
   tick('decode');
 
-  // 1. white components over the line mask (shading blobs are fillable)
-  const ink = lineMask(data, w, h);
+  // 0. choke sealing (see sealChokes) — sealT 0 = legacy behaviour
+  let ink = lineMask(data, w, h);
+  let sealed = 0;
+  if (sealT > 0) ({ ink, sealed } = sealChokes(ink, w, h, sealT));
+  tick(`seal t=${sealT} (+${sealed}px walls)`);
   const mask = new Int32Array(w * h);
   for (let i = 0; i < w * h; i++) mask[i] = ink[i] ? 0 : -9;
   const c1 = labelComponents(mask, w, h, (v) => (v === -9 ? 1 : 0));
@@ -502,7 +584,7 @@ async function segment(slug, oldPal, eps) {
     rc.push(bgComps.has(id) ? 0 : 1);
   }
   tick(`trace+simplify (${r.length} rings)`);
-  const payload = { w, h, bg: '#FFFFFF', pal: oldPal, r, rc };
+  const payload = { w, h, bg: '#FFFFFF', pal: PAL_STD, r, rc };
   // 6. verify with the island's own rasterizer. Pixel-exact equality is
   //    impossible by design: the scanline fills half-open spans, so every
   //    ring's top/right edge loses the boundary pixel — invisible under the
@@ -537,14 +619,24 @@ async function segment(slug, oldPal, eps) {
 /** Segment at progressively tighter simplification until verify passes.
  *  Corner-tiling makes 100% tap accuracy structural; coverage is what a too-
  *  loose Douglas-Peucker chips away at (chamfered corners on dense lattices),
- *  so only the pieces that need it pay for the extra vertices. */
+ *  so only the pieces that need it pay for the extra vertices. Sealing runs
+ *  first; only if a sealed piece CANNOT pass verify does it fall back to the
+ *  legacy unsealed pass (leaky pockets beat no payload). */
 async function extractSlug(slug, oldPal) {
   let best = null;
-  for (const eps of [DP_EPS, 0.8, 0.5]) {
-    const res = await segment(slug, oldPal, eps);
-    res.eps = eps;
-    if (!best || res.coverage > best.coverage || (res.coverage === best.coverage && res.agreement > best.agreement)) best = res;
-    if (res.passed) break;
+  // env read at CALL time (module const would freeze on import — A/B scripts
+  // flip SEG_SEAL_T between extractSlug() calls)
+  const seal0 = +(process.env.SEG_SEAL_T ?? SEAL_T);
+  const sealTs = seal0 > 0 ? [seal0, 0] : [0];
+  for (const sealT of sealTs) {
+    for (const eps of [DP_EPS, 0.8, 0.5]) {
+      const res = await segment(slug, oldPal, eps, sealT);
+      res.eps = eps;
+      res.sealT = sealT;
+      if (!best || res.coverage > best.coverage || (res.coverage === best.coverage && res.agreement > best.agreement)) best = res;
+      if (res.passed) break;
+    }
+    if (best.passed) break;
   }
   return best;
 }
@@ -576,13 +668,13 @@ if (isMain) {
       failed++;
       continue;
     }
-    const { payload, agreement, coverage, passed } = await extractSlug(slug, old.pal);
+    const { payload, agreement, coverage, passed, sealT } = await extractSlug(slug, old.pal);
     const json = JSON.stringify(payload);
     writeFileSync(`${outDir}/data/${slug}.json`, json);
-    index.push({ slug, rings: payload.r.length, bytes: json.length, agree: +agreement.toFixed(4), cov: +coverage.toFixed(4), oldRings: old.r.length });
+    index.push({ slug, rings: payload.r.length, bytes: json.length, agree: +agreement.toFixed(4), cov: +coverage.toFixed(4), oldRings: old.r.length, sealT });
     if (!passed) failed++;
     console.log(
-      `${slug.padEnd(18)} rings ${String(payload.r.length).padStart(4)} (was ${String(oldRingsOf(old)).padStart(4)})  ${(json.length / 1024).toFixed(0)}KB  tap ${(agreement * 100).toFixed(2)}%  cov ${(coverage * 100).toFixed(2)}%${passed ? '' : '  FAIL'}  ${((Date.now() - t0) / 1000).toFixed(1)}s`,
+      `${slug.padEnd(18)} rings ${String(payload.r.length).padStart(4)} (was ${String(oldRingsOf(old)).padStart(4)})  ${(json.length / 1024).toFixed(0)}KB  tap ${(agreement * 100).toFixed(2)}%  cov ${(coverage * 100).toFixed(2)}%${passed ? '' : '  FAIL'}${sealT ? '' : '  unsealed'}  ${((Date.now() - t0) / 1000).toFixed(1)}s`,
     );
   }
   index.sort((a, b) => a.rings - b.rings || (a.slug < b.slug ? -1 : 1));
