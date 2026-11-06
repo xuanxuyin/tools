@@ -67,6 +67,8 @@ const WAVE_FOUR = [
   'thanksgiving-placemat-printable',
   'i-am-thankful-for-worksheet',
 ];
+// Wave 6 (2026-11-06, image-forward batch): the color product page.
+const WAVE_SIX = ['multiplication-chart-color'];
 
 const all: PageDef[] = [
   ...multiplicationPages,
@@ -84,8 +86,10 @@ const all: PageDef[] = [
 const withImages = all.filter((d) => d.sheetImage);
 
 describe('sheetImage (Google Images channel)', () => {
-  it('exactly the pillar + wave-2 + wave-4 pages carry a sheet image', () => {
-    expect(withImages.map((d) => d.slug).sort()).toEqual([...PILLARS, ...WAVE_TWO, ...WAVE_FOUR].sort());
+  it('exactly the pillar + wave-2 + wave-4 + wave-6 pages carry a sheet image', () => {
+    expect(withImages.map((d) => d.slug).sort()).toEqual(
+      [...PILLARS, ...WAVE_TWO, ...WAVE_FOUR, ...WAVE_SIX].sort(),
+    );
   });
 
   for (const def of withImages) {
@@ -99,6 +103,62 @@ describe('sheetImage (Google Images channel)', () => {
       const png = PNG.sync.read(readFileSync(file));
       expect(png.width, 'width must match the generated PNG (rerun npm run sheet-images)').toBe(img.width);
       expect(png.height, 'height must match the generated PNG (rerun npm run sheet-images)').toBe(img.height);
+    });
+  }
+});
+
+describe('variant gallery cards (image-forward batch, 2026-11-06)', () => {
+  const withVariants = all.filter((d) => d.variants && d.variants.length > 0);
+
+  it('exactly the multiplication + place-value families carry galleries', () => {
+    expect(withVariants.map((d) => d.slug).sort()).toEqual(
+      [
+        'multiplication-chart',
+        'multiplication-chart-color',
+        'multiplication-chart-printable',
+        'multiplication-chart-blank',
+        'multiplication-chart-1-15',
+        'multiplication-chart-1-20',
+        'times-table-chart',
+        'place-value-chart',
+        'place-value-chart-with-periods',
+        'decimal-place-value-chart',
+        'place-value-anchor-chart',
+        'place-value-chart-printable',
+      ].sort(),
+    );
+  });
+
+  it('tall multi-sheet packs preview as cover, landscape sheets as contain', () => {
+    // in a 4:3 contain box a height/width ≥ 1.6 PNG shrinks to a near-blank
+    // sliver — exactly the two pack cards; every other card stays contain
+    for (const def of withVariants) {
+      for (const v of def.variants!) {
+        const tall = v.img.height / v.img.width >= 1.6;
+        expect(v.fit ?? 'contain', `${def.slug} → ${v.href} (h/w ${(v.img.height / v.img.width).toFixed(2)})`).toBe(
+          tall ? 'cover' : 'contain',
+        );
+      }
+    }
+  });
+
+  for (const def of withVariants) {
+    it(`${def.slug}: every card links a real PNG, never the page itself`, () => {
+      const ownPath = `${def.path ?? `/${def.slug}`}/`;
+      for (const v of def.variants!) {
+        expect(v.href.startsWith('/')).toBe(true);
+        expect(v.href.endsWith('/')).toBe(true);
+        expect(v.href, 'a gallery card must not link its own page').not.toBe(ownPath);
+        expect(v.blurb.length).toBeGreaterThan(30);
+        expect(v.img.alt.endsWith('.')).toBe(true);
+        expect(v.img.alt.length).toBeGreaterThan(50);
+        expect(v.img.src.startsWith('/images/')).toBe(true);
+        const file = resolve(ROOT, 'public', v.img.src.slice(1));
+        expect(existsSync(file), `${v.img.src} missing — run npm run sheet-images`).toBe(true);
+        const png = PNG.sync.read(readFileSync(file));
+        expect(png.width, `${v.img.src} declared width must match disk`).toBe(v.img.width);
+        expect(png.height, `${v.img.src} declared height must match disk`).toBe(v.img.height);
+      }
     });
   }
 });

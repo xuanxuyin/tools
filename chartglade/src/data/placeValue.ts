@@ -1,4 +1,4 @@
-import type { PageDef } from './pageTypes';
+import type { PageDef, VariantCard } from './pageTypes';
 
 /**
  * Place value cluster (4 pages). Head pillar of the site: the softest 10K+
@@ -6,9 +6,75 @@ import type { PageDef } from './pageTypes';
  * Example number used across the cluster: 4,302,175.
  */
 
+/**
+ * Family card pool for the variant gallery (2026-11-06 image-forward pass).
+ * Reuses PNGs from npm run sheet-images; each page shows the pool minus
+ * itself. Dimensions mirror the files on disk (guarded by sheetImages.test.ts).
+ */
+const PV_CARDS: VariantCard[] = [
+  {
+    href: '/place-value-chart/',
+    title: 'Place value chart to millions',
+    blurb: 'The classic labeled chart — ones through millions, grouped into comma periods on one page.',
+    img: {
+      src: '/images/place-value-chart-to-millions-printable.png',
+      alt: 'Printable place value chart from ones to millions with labeled columns grouped into comma periods.',
+      width: 2016,
+      height: 434,
+    },
+  },
+  {
+    href: '/place-value-chart-with-periods/',
+    title: 'Chart with periods',
+    blurb: 'Twelve columns in ones/thousands/millions/billions periods, a worked 12-digit example, plus a blank copy.',
+    img: {
+      src: '/images/place-value-chart-with-periods-printable.png',
+      alt: 'Place value chart with periods, worked twelve-digit reading example and a blank write-in practice chart.',
+      width: 2016,
+      height: 1456,
+    },
+  },
+  {
+    href: '/decimal-place-value-chart/',
+    title: 'Decimal place value chart',
+    blurb: 'Ones, tenths, hundredths, thousandths — the chart that makes decimals click after whole numbers.',
+    img: {
+      src: '/images/decimal-place-value-chart-printable.png',
+      alt: 'Decimal place value chart with labeled columns for ones, tenths, hundredths and thousandths.',
+      width: 2016,
+      height: 434,
+    },
+  },
+  {
+    href: '/place-value-anchor-chart/',
+    title: 'Place value anchor chart',
+    blurb: 'A bold wall-sized version of the ones-to-millions chart for the classroom wall.',
+    img: {
+      src: '/images/place-value-anchor-chart-printable.png',
+      alt: 'Place value anchor chart, a bold classroom wall version of the ones to millions chart.',
+      width: 2016,
+      height: 454,
+    },
+  },
+  {
+    href: '/place-value-chart-printable/',
+    title: 'Place value chart pack',
+    blurb: 'Three formats in one set: labeled, blank for practice, and compact desk copies.',
+    img: {
+      src: '/images/place-value-chart-printable.png',
+      alt: 'Place value chart printable pack with a labeled chart, a blank practice chart and compact desk copies.',
+      width: 2016,
+      height: 600,
+    },
+  },
+];
+
+const familyGallery = (own) => PV_CARDS.filter((c) => c.href !== own);
+
 export const placeValuePages: PageDef[] = [
   {
     slug: 'place-value-chart',
+    variants: familyGallery('/place-value-chart/'),
     hub: 'charts',
     h1: 'Place Value Chart',
     metaTitle: 'Place Value Chart (Free Printable, Ones to Millions) | ChartGlade',
@@ -82,6 +148,7 @@ export const placeValuePages: PageDef[] = [
 
   {
     slug: 'place-value-chart-with-periods',
+    variants: familyGallery('/place-value-chart-with-periods/'),
     hub: 'charts',
     h1: 'Place Value Chart With Periods',
     metaTitle: 'Place Value Chart With Periods (Free Printable) | ChartGlade',
@@ -165,6 +232,7 @@ export const placeValuePages: PageDef[] = [
 
   {
     slug: 'decimal-place-value-chart',
+    variants: familyGallery('/decimal-place-value-chart/'),
     hub: 'charts',
     h1: 'Decimal Place Value Chart',
     metaTitle: 'Decimal Place Value Chart (Interactive + Printable, Tenths to Millionths) | ChartGlade',
@@ -240,6 +308,7 @@ export const placeValuePages: PageDef[] = [
 
   {
     slug: 'place-value-anchor-chart',
+    variants: familyGallery('/place-value-anchor-chart/'),
     hub: 'charts',
     h1: 'Place Value Anchor Chart',
     metaTitle: 'Place Value Anchor Chart (Printable Classroom Poster) | ChartGlade',
@@ -305,6 +374,7 @@ export const placeValuePages: PageDef[] = [
 
   {
     slug: 'place-value-chart-printable',
+    variants: familyGallery('/place-value-chart-printable/'),
     hub: 'charts',
     h1: 'Place Value Chart Printable',
     metaTitle: 'Place Value Chart Printable (Blank + Filled, Free) | ChartGlade',

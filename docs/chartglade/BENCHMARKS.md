@@ -295,3 +295,38 @@ post 522 / page 41 / category 9。分类法：**calendars 154**（月历回溯�
 4. **prose 排版批保留**：在位者页面 = 长文结构（h2 问答/列表/FAQ），line-height/列表节奏/链接下划线服务该结构；strong 荧光笔高亮沿用 tintbrew 已验收的仓库排版语言（非新造）。
 
 **一句话**：屏显样式批的结论 = 表格保持打印件原样（撤回换肤），prose 可读性保留；"美"的下一步在产品变体层（彩色版图表），立项时走正常选品流程。
+
+---
+
+## 9. 设计/内容层五家拆解（第二轮）— 2026-11-06（👤 "调研大站怎么做的，我们样式和内容差距都很大"）
+
+**触发**：§7/§8 拆的是"页数/图片数/形态"，本轮专拆**视觉/UX 层**——页面上东西怎么摆、颜色放哪、一页装多少产品。方法：webReader 全文 + curl 原始 HTML/CSS（socks5 10808）+ 像素法，全部实抓【实勘 2026-11-06】。
+
+### 9.1 逐家发现
+
+| 站 | 视觉/UX 机制【实勘】 |
+|---|---|
+| **Superstar Worksheets**（乘法页） | 单页 **~26 张图**；**一节 = 一个变体**（每节自有产品图 + 短文案，滚动即变体货架）；产品本身彩色（color-coded 工作纸）；长文 = 教学法（先学哪表：10/5/2/3/9/4/6/7/8 顺序论证）+ 页面带 freshness 日期 |
+| **DadsWorksheets**（hub + 乘法页） | hub = **25 卡图片墙**（宝可梦卡式 3D hover）；卡片图 **srcset 128/256/512w** + 图下 caption 模式；原始 CSS tokens：`--dw:#2745c1`/`--dwink:#444466`，白卡 `#dfe2f5` 边、hover `#eef1fd` —— **chrome 全中性，颜色全部来自工作纸图片本身**；mega-menu 248 链接 |
+| **Math-Salamanders**（times-table-chart.html） | 每表 **变体 × 交付矩阵**：per-table ×（color/B&W）×（to-10/to-12）= 每表 4 个 PDF 直链；树状 mega-nav（By Age/Generated/Calculators/Quizzes/Fun Math/Seasonal/UK/AU） |
+| **mondaymandala**（/coloring-pages/） | 单 hub **236 张彩色封面卡**；每卡 = 分类 + 页数标签（"20+ pages"）；页内 "20 craft ideas" 内容深度；WordPress + Mediavine 变现 |
+| **K5**（10/29 档延续） | 数百内链/页的导航墙；工作纸 = 图片产品 |
+
+### 9.2 通用页面公式（五家公约数）
+
+**图片就是页面**（image IS the page）：① 每页多张真实产品预览图（Superstar ~26 / hub 25 卡 / hub 236 卡）② 变体 × 交付是产品目录不是文案段落 ③ **产品彩色、chrome 中性**（DW 蓝只做链接/边饰，颜色留给工作纸）④ hub = 图片墙不是文字列表。
+
+**我方差距**（拆解前）：每页 1 个 printable + 产品 PNG 藏在折叠 details 里 + related 纯文字 = 差的不是 CSS 功底，是**没把产品图当货架摆**。→ 唯一杠杆 = 变体图库引擎（variants[]，§7.7 B 表首项）。
+
+### 9.3 当日落地（拆解 → 实现同日闭环）
+
+| 在位者机制 | 落地 |
+|---|---|
+| DW 25 卡图片墙 / Superstar 变体节 | **VariantGallery 引擎**：`PageDef.variants[]` + `VariantGallery.astro`（4:3 缩略图卡：图 + 标题 + 一句话理由 + CTA），乘法 7 页 + 位值 5 页共 12 页全挂族图库（复用已有 PNG 零新资产），置于 related 文字链之前 |
+| Superstar/MC 彩色产品 | **/multiplication-chart-color/** 新产品页（§8 判定"颜色变体即产品"落地）：12 行淡彩条带（rainbow bands）+ `print-color-adjust: exact` **故意突破 WYSIWYP**（颜色即产品，打印必须保留）；交互 + 6 FAQ + PNG 2016×1136 |
+| Superstar 教学顺序长文 | 支柱页加 **fact-order 条**：11 步编号链（2s 双倍→5s 钟表→10s 位移→3s→9s 手指→4s→6s→7s→8s→11s→12s）逐格链到 /times-table/N/ 现有 12 页 |
+| DW srcset/caption 精细化 | 未做（缩略图均为 2016 宽源图降采样，量级暂不需要 srcset 档）—— 挂后续优化池 |
+
+**视觉验证三关**（本批新流程）：几何实测（headless Edge 量 DOM：12 页缩略盒全 181px 等高——抓出并修复 flex `min-height:auto` 撑破 4:3 盒的真 bug，改绝对定位 img）+ 超长打包图（h/w≥1.6）缩略改 `object-fit:cover` 顶部切片（contain 下 4742px 高图缩成幽灵条）+ 隔离裁切目检（标题+完整网格+高亮平方数可识别）。守卫测试固化（fit 矩阵防未来幽灵缩略图）。
+
+**一句话**：五家的"样式差距"实为**图片货架差距**——本批把每个多变种族变成图片墙（12 页）+ 第一张彩色产品页 + 教学顺序内链条，133→134 页、480→496 测试全绿。

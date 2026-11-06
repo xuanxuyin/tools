@@ -77,6 +77,8 @@ const SHOTS = [
   })),
   // Wave 5b (2026-11-03, coloring Phase B: christmas stocking singles)
   { page: 'christmas-stocking-coloring-page', file: 'christmas-stocking-coloring-page' },
+  // Wave 6 (2026-11-06, image-forward batch): the color product page.
+  { page: 'multiplication-chart-color', file: 'color-multiplication-chart-printable' },
 ];
 
 const MIME = {

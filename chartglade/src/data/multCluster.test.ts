@@ -17,6 +17,7 @@ const DIST = resolve(ROOT, 'dist');
 
 const CLUSTER = [
   'multiplication-chart',
+  'multiplication-chart-color',
   'multiplication-chart-printable',
   'multiplication-chart-blank',
   'multiplication-chart-1-15',
@@ -27,7 +28,7 @@ const CLUSTER = [
 const byslug = (slug: string) => multiplicationPages.find((p) => p.slug === slug)!;
 
 describe('multiplication cluster — data level', () => {
-  it('is exactly the six expected pages, slugs unique, all on the charts hub', () => {
+  it('is exactly the seven expected pages, slugs unique, all on the charts hub', () => {
     expect(multiplicationPages.map((p) => p.slug)).toEqual([...CLUSTER]);
     for (const p of multiplicationPages) {
       expect(p.hub).toBe('charts');
@@ -90,7 +91,7 @@ describe('multiplication cluster — data level', () => {
     expect(intro).toContain('9s, 11s and 12s');
   });
 
-  it('every cluster page related-links all five siblings (data-level mesh)', () => {
+  it('every cluster page related-links all six siblings (data-level mesh)', () => {
     for (const slug of CLUSTER) {
       const hrefs = byslug(slug).related.map((r) => r.href);
       for (const other of CLUSTER) {
