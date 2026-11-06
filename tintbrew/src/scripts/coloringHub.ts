@@ -142,16 +142,20 @@ class ColoringHub {
       }
     }
 
-    // progress header
+    // progress header — the pct label lives in the TEXT line: the bar itself
+    // is a 0.6rem tube and any text inside it is clipped to mush
     const unlockedCount = Math.min(this.progress.unlocked, this.total);
     if (this.progressEl && this.progressText && this.progressFill) {
       this.progressEl.hidden = false;
-      this.progressText.textContent = tArgs('col.progress' as UiKey, {
-        done: String(doneCount),
-        unlocked: String(unlockedCount),
-      });
       const pct = unlockedCount ? Math.round((doneCount / unlockedCount) * 100) : 0;
-      this.progressFill.textContent = tArgs('col.pct' as UiKey, { pct: String(pct) });
+      const pctText = tArgs('col.pct' as UiKey, { pct: String(pct) });
+      this.progressText.textContent =
+        tArgs('col.progress' as UiKey, {
+          done: String(doneCount),
+          unlocked: String(unlockedCount),
+        }) + ` · ${pctText}`;
+      this.progressFill.textContent = '';
+      this.progressFill.setAttribute('aria-label', pctText);
       (this.progressFill as HTMLElement).style.width = `${pct}%`;
     }
   }

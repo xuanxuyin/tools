@@ -380,32 +380,64 @@ const jsonLd = [
     font-size: 0.9rem;
     margin-right: auto;
   }
-  /* publish dialog — same form the bead editor uses */
-  .col-dialog {
+  /* publish dialog — same form the bead editor uses. Built at RUNTIME by
+     coloringPaint.ts (no Astro scope id): every selector must stay :global,
+     otherwise the dialog renders as a raw form dumped at the body end. */
+  :global(.col-dialog) {
     position: fixed;
     inset: 0;
     z-index: 50;
     display: grid;
     place-items: center;
-    background: rgba(20, 16, 30, 0.55);
+    background: rgb(20 16 30 / 0.55);
     padding: var(--sp-4);
   }
-  .col-dialog[hidden] {
+  :global(.col-dialog[hidden]) {
     display: none;
   }
-  .col-dialog-box {
+  :global(.col-dialog-box) {
     background: var(--panel, #fff);
     border-radius: var(--radius);
+    box-shadow: var(--shadow-lg, 0 18px 40px rgb(0 0 0 / 0.25));
     padding: var(--sp-5);
-    max-width: 22rem;
+    max-width: 24rem;
     width: 100%;
     display: grid;
     gap: var(--sp-3);
   }
-  .col-dialog-box label {
+  :global(.col-dialog-box h2) {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+  :global(.col-dialog-box .col-autonote) {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+  :global(.col-dialog-box label) {
     display: grid;
-    gap: 0.25rem;
+    gap: 0.3rem;
     font-size: 0.9rem;
+  }
+  :global(.col-dialog-box input[type='text']) {
+    width: 100%;
+    font: inherit;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--border, #ccc);
+    border-radius: var(--radius-sm, 6px);
+    background: var(--surface, #fff);
+  }
+  :global(.col-dialog-box input[type='text']:focus) {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    border-color: transparent;
+  }
+  :global(.col-dialog-box .col-actions) {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
   }
   .col-neighbors {
     margin-top: var(--sp-5);

@@ -485,6 +485,11 @@ class PaintIsland {
       const submit = target.closest<HTMLButtonElement>('[data-col-pubsubmit]');
       if (submit) void this.submitPublish(dlg, submit);
     });
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') dlg.remove();
+      if (!dlg.isConnected) document.removeEventListener('keydown', onKey);
+    };
+    document.addEventListener('keydown', onKey);
     dlg.querySelector('input')?.focus();
   }
 
