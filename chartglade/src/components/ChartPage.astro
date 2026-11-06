@@ -6,7 +6,6 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from './Icon.astro';
-import VariantGallery from './VariantGallery.astro';
 import { SITE } from '../consts';
 import type { PageDef } from '../data/pageTypes';
 
@@ -161,7 +160,6 @@ if (def.howTo) {
   </section>
 
   <slot name="after" />
-  {def.variants && def.variants.length > 0 && <VariantGallery items={def.variants} />}
   <section class="section related no-print">
     <h2>Related printables</h2>
     <ul class="related-list">
