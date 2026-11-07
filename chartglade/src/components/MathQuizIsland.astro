@@ -61,10 +61,13 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
 
   const app = document.querySelector<HTMLElement>('[data-mq-app]');
   const bootNote = document.querySelector<HTMLElement>('.mq-boot-note');
-  /** #unlock — browsing aid: opens every level for this visit only. It
-   *  never touches stored progress (stars/certs stay honest); drop the
-   *  hash and real progress is back. */
-  const devUnlock = /#unlock/i.test(location.hash);
+  /** #unlock (or ?unlock=1) — browsing aid: opens every level for this
+   *  visit only. It never touches stored progress (stars/certs stay
+   *  honest); drop the hash and real progress is back. The query form
+   *  forces a full reload — for tabs that already have the page open. */
+  const unlockWanted = (): boolean =>
+    /#unlock/i.test(location.hash) || new URLSearchParams(location.search).has('unlock');
+  let devUnlock = unlockWanted();
 
   type View =
     | { v: 'levels'; track: string }
@@ -372,4 +375,13 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
 
   render();
   if (devUnlock) document.getElementById('math-quiz')?.scrollIntoView();
+
+  // hash added after load (page already open in a tab) still unlocks live
+  window.addEventListener('hashchange', () => {
+    const now = unlockWanted();
+    if (now === devUnlock) return;
+    devUnlock = now;
+    render();
+    if (devUnlock) document.getElementById('math-quiz')?.scrollIntoView();
+  });
 </script>
