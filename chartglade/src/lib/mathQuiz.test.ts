@@ -6,6 +6,12 @@ import {
   QUIZ_TRACKS,
   QUESTIONS_PER_LEVEL,
   generateLevelQuestions,
+  generateLevelPool,
+  generateDailySet,
+  pullTierQuestion,
+  startTier,
+  tierAfter,
+  hashStr,
   isCorrect,
   starsFor,
   levelUnlocked,
@@ -16,6 +22,7 @@ import {
   QUIZ_STORAGE_KEY,
   typesetRadicals,
   type QuizQuestion,
+  type TierState,
 } from './mathQuiz';
 
 /**
@@ -447,6 +454,102 @@ describe('radical typesetting (the √ vinculum)', () => {
   });
 });
 
+describe('adaptive tiers, class sets, daily challenge, CCSS (2026-11-07 batch)', () => {
+  it('tierAfter: two in a row steps the tier, capped at 1..3', () => {
+    let s = startTier();
+    expect(s.tier).toBe(1);
+    s = tierAfter(s, true);
+    expect(s.tier).toBe(1); // one right is not enough
+    s = tierAfter(s, true);
+    expect(s.tier).toBe(2);
+    s = tierAfter(s, true);
+    s = tierAfter(s, true);
+    expect(s.tier).toBe(3);
+    s = tierAfter(s, true);
+    s = tierAfter(s, true);
+    expect(s.tier).toBe(3); // capped at the ceiling
+    s = tierAfter(s, false);
+    expect(s.tier).toBe(3); // one wrong is not enough
+    s = tierAfter(s, false);
+    expect(s.tier).toBe(2);
+    // alternating answers never move the tier
+    let a = startTier();
+    for (let i = 0; i < 12; i++) a = tierAfter(a, i % 2 === 0);
+    expect(a.tier).toBe(1);
+    // from tier 2, two wrongs floor at 1
+    let f: TierState = { tier: 2, streak: 0 };
+    f = tierAfter(f, false);
+    f = tierAfter(f, false);
+    expect(f.tier).toBe(1);
+  });
+
+  it('generateLevelPool: 4 per tier; the adaptive run never starves', () => {
+    // big-domain levels dedupe cleanly across all three pools
+    for (const [track, level] of [
+      ['g7', 4],
+      ['g6', 0],
+      ['g3', 6],
+    ] as const) {
+      const pools = generateLevelPool(track, level, 20261107);
+      expect(pools.t1.length, `${track} L${level}`).toBe(4);
+      expect(pools.t2.length, `${track} L${level}`).toBe(4);
+      expect(pools.t3.length, `${track} L${level}`).toBe(4);
+      const keys = [...pools.t1, ...pools.t2, ...pools.t3].map((q) => `${q.display}|${q.answer}`);
+      expect(new Set(keys).size, `${track} L${level}`).toBe(keys.length);
+    }
+    // tiny kindergarten domains still fill all pools (dupes tolerated there)
+    const k = generateLevelPool('k', 0, 5);
+    expect(k.t1.length + k.t2.length + k.t3.length).toBe(12);
+    // 12 pooled questions ≥ 10 asked, whatever the tier wander — then dry
+    const pools = generateLevelPool('g6', 2, 42);
+    for (let i = 0; i < 12; i++) {
+      expect(pullTierQuestion(pools, ((i % 3) + 1) as 1 | 2 | 3)).not.toBeNull();
+    }
+    for (const t of [1, 2, 3] as const) expect(pullTierQuestion(pools, t)).toBeNull();
+  });
+
+  it('pullTierQuestion serves the wanted tier, borrows from a neighbor when empty', () => {
+    const pools = generateLevelPool('g3', 6, 7);
+    pools.t2 = [];
+    const got = pullTierQuestion(pools, 2)!;
+    expect(got.from).not.toBe(2);
+    expect(got.q).toBeTruthy();
+  });
+
+  it('generateDailySet: date-keyed — same date, same set for everyone', () => {
+    const a = generateDailySet('2026-11-07');
+    const b = generateDailySet('2026-11-07');
+    expect(a.length).toBe(10);
+    expect(a.map((q) => q.display)).toEqual(b.map((q) => q.display));
+    const c = generateDailySet('2026-11-08');
+    expect(a.some((q, i) => q.display !== c[i]!.display)).toBe(true);
+  });
+
+  it('hashStr is stable and separates inputs', () => {
+    expect(hashStr('set:abc:g3:0')).toBe(hashStr('set:abc:g3:0'));
+    expect(hashStr('set:abc:g3:0')).not.toBe(hashStr('set:abc:g3:1'));
+  });
+
+  it('every one of the 100 levels carries a well-formed CCSS code', () => {
+    // cluster (and standard number) may be omitted for whole-domain review levels (e.g. '8.EE')
+    const re = /^(K|[1-8])\.[A-Z]{1,3}(\.[A-Z](\.\d+)?)?$|^[A-Z]-[A-Z]{2,3}\.[A-Z](\.\d+)?$/;
+    let count = 0;
+    for (const t of QUIZ_TRACKS) {
+      expect(t.levels.length, t.id).toBe(10);
+      for (const l of t.levels) {
+        expect(l.ccss, `${t.id} — ${l.title}`).toMatch(re);
+        count++;
+      }
+    }
+    expect(count).toBe(100);
+    // spot anchors — the marquee levels teachers search by
+    expect(QUIZ_TRACKS.find((t) => t.id === 'g7')!.levels[6]!.ccss).toBe('7.G.B.4');
+    expect(QUIZ_TRACKS.find((t) => t.id === 'g8')!.levels[7]!.ccss).toBe('8.G.B.7');
+    expect(QUIZ_TRACKS.find((t) => t.id === 'g6')!.levels[7]!.ccss).toBe('6.G.A.1');
+    expect(QUIZ_TRACKS.find((t) => t.id === 'alg1')!.levels[7]!.ccss).toBe('F-IF.A.2');
+  });
+});
+
 describe('progress (localStorage, device-local)', () => {
   it('round-trips through JSON and rejects garbage', () => {
     const p = emptyProgress();
@@ -510,6 +613,10 @@ describe.skipIf(!existsSync(resolve(DIST, 'multiplication-chart', 'index.html'))
       expect(html).toContain('nothing leaves the browser');
       // SSR catalog focus entries ship the radical vinculum markup
       expect(html).toContain('mq-radicand');
+      // the 2026-11-07 batch: CCSS anchors on every catalog entry
+      expect(html).toContain('CCSS ');
+      expect(html).toContain('CCSS 7.G.B.4');
+      expect(html).toContain('CCSS F-IF.A.2');
     });
 
     it('the mad-minute island is untouched', () => {

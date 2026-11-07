@@ -2883,6 +2883,41 @@ svg {
   color: #fff;
 }
 
+/* daily-challenge banner + class-set chip (2026-11-07 batch) */
+.mq-daily {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #fff8e6;
+  border: 1px solid #e6c96a;
+  border-radius: var(--radius, 8px);
+  padding: 0.6rem 0.9rem;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-bottom: var(--sp-3);
+}
+.mq-daily:hover {
+  background: #fdf2cd;
+}
+.mq-set-chip {
+  font-size: 0.9rem;
+  background: #eaf3ec;
+  border: 1px solid var(--green, #2f7d4f);
+  border-radius: var(--radius, 8px);
+  padding: 0.5rem 0.8rem;
+  margin-bottom: var(--sp-2);
+}
+.mq-set-chip a {
+  color: var(--green-deep);
+}
+.mq-ccss {
+  font-family: ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
 .mq-track-meta {
   font-size: 0.9rem;
   color: var(--ink-soft);

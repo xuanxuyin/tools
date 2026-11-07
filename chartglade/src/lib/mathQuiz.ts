@@ -110,6 +110,8 @@ export interface LevelSpec {
   title: string;
   focus: string;
   kinds: LevelKind[];
+  /** CCSS anchor (e.g. '7.G.B.4') — injected from CCSS_CODES at module init */
+  ccss?: string;
 }
 
 export interface TrackSpec {
@@ -1706,6 +1708,110 @@ export function generateLevelQuestions(
 }
 
 /* ------------------------------------------------------------------ */
+/* Adaptive difficulty, class sets, daily challenge (2026-11-07 batch) */
+/* ------------------------------------------------------------------ */
+
+/** FNV-1a — stable seed from a string (class-set codes, daily dates). */
+export function hashStr(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  return h >>> 0;
+}
+
+/** Adaptive tier: two right in a row steps up, two wrong in a row steps
+ *  down. A softer cousin of IXL's SmartScore — pressure without the
+ *  late-score penalty that frustrates kids. */
+export interface TierState {
+  tier: 1 | 2 | 3;
+  streak: number;
+}
+export function startTier(): TierState {
+  return { tier: 1, streak: 0 };
+}
+export function tierAfter(s: TierState, correct: boolean): TierState {
+  const streak = correct ? s.streak + 1 : s.streak - 1;
+  if (streak >= 2 && s.tier < 3) return { tier: (s.tier + 1) as 2 | 3, streak: 0 };
+  if (streak <= -2 && s.tier > 1) return { tier: (s.tier - 1) as 1 | 2, streak: 0 };
+  // pinned at the ceiling (or floor) the streak means nothing — drop it,
+  // or two wrongs after a hot streak would take four answers to bite
+  if (s.tier === 3 && streak > 0) return { tier: s.tier, streak: 0 };
+  if (s.tier === 1 && streak < 0) return { tier: s.tier, streak: 0 };
+  return { tier: s.tier, streak };
+}
+
+export interface TierPools {
+  t1: QuizQuestion[];
+  t2: QuizQuestion[];
+  t3: QuizQuestion[];
+}
+
+/** The adaptive run draws questions live, so a level is prepared as three
+ *  tier pools (deduped across pools). Facts levels ignore the tier
+ *  argument — their pools come out same-difficulty, which is fine. */
+export function generateLevelPool(
+  trackId: string,
+  levelIndex: number,
+  seed: number,
+  perTier = 4,
+): TierPools {
+  const track = QUIZ_TRACKS.find((t) => t.id === trackId);
+  if (!track) throw new Error(`unknown quiz track: ${trackId}`);
+  const level = track.levels[levelIndex];
+  if (!level) throw new Error(`unknown level ${levelIndex} in track ${trackId}`);
+
+  const r = rng(seed);
+  const gens = level.kinds.map(generatorFor);
+  const seen: QuizQuestion[] = [];
+  const pools: TierPools = { t1: [], t2: [], t3: [] };
+  for (const tier of [1, 2, 3] as const) {
+    for (let i = 0; i < perTier; i++) {
+      const idx = Math.floor(r() * gens.length);
+      let next = gens[idx]!(r, tier);
+      let tries = 0;
+      while (tries < 6 && seen.some((o) => o.display === next.display && o.answer === next.answer)) {
+        next = gens[idx]!(r, tier);
+        tries++;
+      }
+      seen.push(next);
+      pools[`t${tier}` as 't1' | 't2' | 't3'].push({ kind: level.kinds[idx]!.t, ...next });
+    }
+  }
+  return pools;
+}
+
+/** Take the next question at the wanted tier; when that pool runs dry,
+ *  borrow from the nearest tier that still has one. Mutates the pools. */
+export function pullTierQuestion(
+  pools: TierPools,
+  tier: 1 | 2 | 3,
+): { q: QuizQuestion; from: 1 | 2 | 3 } | null {
+  const order: (1 | 2 | 3)[] = [tier, ...([1, 2, 3].filter((t) => t !== tier) as (1 | 2 | 3)[])];
+  for (const t of order) {
+    const pool = pools[`t${t}` as 't1' | 't2' | 't3'];
+    if (pool.length > 0) return { q: pool.shift()!, from: t };
+  }
+  return null;
+}
+
+/** The daily challenge: one question from each of the 10 tracks (easy →
+ *  Algebra 1 by track order). Same date string, same set, for everyone. */
+export function generateDailySet(dateStr: string): QuizQuestion[] {
+  const h = hashStr(`daily:${dateStr}`);
+  const out: QuizQuestion[] = [];
+  QUIZ_TRACKS.forEach((t, i) => {
+    const r = rng((h + i * 0x9e3779b9) >>> 0);
+    const level = int(r, 0, t.levels.length - 1);
+    const qs = generateLevelQuestions(t.id, level, (h + i * 7919) >>> 0);
+    out.push(qs[int(r, 0, qs.length - 1)]);
+  });
+  return out;
+}
+
+
+/* ------------------------------------------------------------------ */
 /* The 10 tracks × 10 levels                                           */
 /* ------------------------------------------------------------------ */
 
@@ -2000,6 +2106,32 @@ export const QUIZ_TRACKS: TrackSpec[] = [
 ];
 
 export const QUIZ_LEVEL_COUNT = QUIZ_TRACKS.reduce((acc, t) => acc + t.levels.length, 0);
+
+/** CCSS anchor per level, in track order (index-aligned to levels[]).
+ *  Reviews span several standards, so they carry the strand (e.g. '6.RP.A').
+ *  Integer operations are formally 7th-grade standards; the 6th-grade
+ *  track teaches them as acceleration and keeps the honest code. */
+const CCSS_CODES: Record<string, string[]> = {
+  k: ['K.CC.B.4', 'K.OA.A.5', 'K.OA.A.1', 'K.OA.A.1', 'K.OA.A.2', 'K.OA.A.3', 'K.OA.A.4', 'K.NBT.A.1', 'K.G.B.4', 'K.OA.A'],
+  g1: ['1.OA.C.6', '1.OA.C.6', '1.OA.D.8', '1.OA.C.6', '1.OA.B.2', '1.OA.C.6', '1.OA.C.6', '1.NBT.C.5', '1.MD.B.3', '1.OA.C'],
+  g2: ['2.NBT.B.5', '2.NBT.B.5', '2.NBT.B.5', '2.NBT.B.5', '2.NBT.B.5', '2.NBT.A.2', '2.NBT.B.5', '2.MD.B.6', '2.MD.D.10', '2.NBT.B'],
+  g3: ['3.OA.C.7', '3.OA.C.7', '3.OA.C.7', '3.OA.C.7', '3.OA.C.7', '3.OA.C.7', '3.OA.C.7', '3.OA.C.7', '3.NF.A.1', '3.OA.C'],
+  g4: ['3.OA.C.7', '4.NBT.B.5', '4.NBT.B.5', '4.NBT.B.5', '4.NBT.B.6', '4.MD.A.3', '4.MD.A.3', '4.NBT.B.6', '4.NBT.B.4', '4.NBT.B'],
+  g5: ['5.NBT.B.7', '5.NBT.B.7', '5.NBT.B.7', '5.NBT.B.7', '5.NF.B.7', '5.NF.B.4', '5.OA.A.1', '5.G.A.2', '5.NBT.B.5', '5.NBT.B'],
+  g6: ['6.RP.A.3', '6.RP.A.3', '7.RP.A.3', '7.NS.A.1', '7.NS.A.2', '6.EE.A.1', '6.NS.B.3', '6.G.A.1', '6.NS.B.4', '6.RP.A'],
+  g7: ['7.NS.A', '7.EE.B.4', '7.EE.B.4', '7.RP.A.2', '7.RP.A.3', '7.RP.A.3', '7.G.B.4', '6.EE.A.2', '7.RP.A.1', '7.RP.A'],
+  g8: ['8.EE.A.2', '8.EE.A.2', '8.EE.A.1', '8.EE.A.3', '8.EE.B.6', '8.G.A.5', '8.EE.C.7', '8.G.B.7', '8.EE.C.8', '8.EE'],
+  alg1: ['A-REI.B.3', 'A-REI.B.3', 'A-REI.B.3', 'A-REI.B.4', 'A-SSE.B.3', 'A-REI.B.4', 'A-CED.A.1', 'F-IF.A.2', 'F-IF.B.6', 'A-REI.B'],
+};
+for (const t of QUIZ_TRACKS) {
+  const codes = CCSS_CODES[t.id];
+  if (!codes || codes.length !== t.levels.length) {
+    throw new Error(`CCSS_CODES out of sync with track ${t.id}`);
+  }
+  t.levels.forEach((l, i) => {
+    l.ccss = codes[i];
+  });
+}
 
 /* ------------------------------------------------------------------ */
 /* Progress (device-local by design: localStorage, no accounts —       */

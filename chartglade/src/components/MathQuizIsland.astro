@@ -28,7 +28,8 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
                 <ol>
                   {t.levels.map((l) => (
                     <li>
-                      <em>{l.title}</em> — <span set:html={typesetRadicals(l.focus)} />
+                      <em>{l.title}</em> — <span set:html={typesetRadicals(l.focus)} />{' '}
+                      <span class="mq-ccss">CCSS {l.ccss}</span>
                     </li>
                   ))}
                 </ol>
@@ -53,10 +54,18 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
     trackPassed,
     trackStars,
     generateLevelQuestions,
+    generateLevelPool,
+    generateDailySet,
+    pullTierQuestion,
+    startTier,
+    tierAfter,
+    hashStr,
     isCorrect,
     typesetRadicals,
     type QuizProgress,
     type QuizQuestion,
+    type TierPools,
+    type TierState,
   } from '../lib/mathQuiz';
 
   const app = document.querySelector<HTMLElement>('[data-mq-app]');
@@ -68,11 +77,42 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
   const unlockWanted = (): boolean =>
     /#unlock/i.test(location.hash) || new URLSearchParams(location.search).has('unlock');
   let devUnlock = unlockWanted();
+  /** ?set=CODE — class set: the code fixes the seed, so every student
+   *  opening the same link gets the SAME ten questions (and the printed
+   *  sheet matches). Adaptive difficulty is off in this mode, or the
+   *  sets would drift apart mid-run. */
+  const setCode = new URLSearchParams(location.search).get('set')?.slice(0, 24) || '';
 
+  type QuizMode = 'level' | 'set' | 'daily' | 'retry';
   type View =
     | { v: 'levels'; track: string }
-    | { v: 'quiz'; track: string; level: number; qs: QuizQuestion[]; qi: number; score: number; wrong: boolean; shown: boolean }
-    | { v: 'result'; track: string; level: number; score: number; stars: number; best: number };
+    | {
+        v: 'quiz';
+        track: string;
+        level: number;
+        mode: QuizMode;
+        pools: TierPools | null; // null = fixed set (daily / class set), asked is pre-filled
+        asked: QuizQuestion[];
+        qi: number;
+        score: number;
+        wrong: boolean;
+        shown: boolean;
+        tier: TierState;
+        missed: QuizQuestion[];
+        total: number;
+      }
+    | {
+        v: 'result';
+        track: string;
+        level: number;
+        mode: QuizMode;
+        score: number;
+        stars: number;
+        best: number;
+        total: number;
+        missed: QuizQuestion[];
+        asked: QuizQuestion[];
+      };
 
   const first = loadProgress();
   const firstTrack =
@@ -131,13 +171,19 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
         const unlocked = devUnlock || levelUnlocked(state.p, track.id, i);
         const cls = !unlocked ? 'is-locked' : res ? 'is-done' : 'is-open';
         const label = !unlocked ? '🔒' : res ? stars(res.stars) : String(i + 1);
-        return `<button type="button" class="mq-cell ${cls}" data-level="${i}" ${unlocked ? '' : 'disabled'} title="${esc(l.title)}">
+        return `<button type="button" class="mq-cell ${cls}" data-level="${i}" ${unlocked ? '' : 'disabled'} title="${esc(l.title)}${l.ccss ? ` · CCSS ${l.ccss}` : ''}">
           <span class="mq-cell-num">${label}</span>
           <span class="mq-cell-title">${esc(l.title)}</span>
         </button>`;
       })
       .join('');
     app.innerHTML = `
+      ${
+        setCode
+          ? `<p class="mq-set-chip">Class set <strong>${esc(setCode)}</strong> is on — everyone opening this link gets the same questions, and “Print this set” matches. <a href="${location.pathname}">Turn off</a></p>`
+          : ''
+      }
+      <button type="button" class="mq-daily" data-mq-daily>Daily challenge · ${todayLabel()} — one question from every track</button>
       <div class="mq-trackbar">
         <div class="mq-groups">
           ${(['Elementary', 'Middle school', 'Algebra 1'] as const)
@@ -163,12 +209,19 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
   function renderQuiz(): void {
     const v = state.view;
     if (v.v !== 'quiz') return;
-    const q = v.qs[v.qi]!;
-    const track = QUIZ_TRACKS.find((t) => t.id === v.track)!;
-    const level = track.levels[v.level]!;
+    const q = v.asked[v.qi]!;
+    const track = QUIZ_TRACKS.find((t) => t.id === v.track);
+    const level = track?.levels[v.level];
     const ph = q.mode === 'frac' ? 'e.g. 3/4' : q.mode === 'time' ? 'e.g. 3:30' : 'Your answer';
     const im = q.mode === 'frac' || q.mode === 'time' ? 'text' : 'numeric';
-    const dots = v.qs.map((_, i) => `<span class="mq-dot${i < v.qi ? ' is-ok' : i === v.qi ? ' is-now' : ''}"></span>`).join('');
+    const dots = Array.from({ length: v.total }, (_, i) => `<span class="mq-dot${i < v.qi ? ' is-ok' : i === v.qi ? ' is-now' : ''}"></span>`).join('');
+    const where =
+      v.mode === 'daily'
+        ? `Daily challenge · ${todayLabel()}`
+        : v.mode === 'retry'
+          ? 'Missed questions'
+          : `${track?.label ?? ''} · Level ${v.level + 1}: ${esc(level?.title ?? '')}${level?.ccss ? ` · CCSS ${level.ccss}` : ''}${v.mode === 'set' ? ` · class set ${esc(setCode)}` : ''}`;
+    const tierNote = v.pools ? ` · tier ${v.tier.tier}/3` : '';
     const feedback = v.shown
       ? v.wrong
         ? `<div class="mq-feedback is-wrong"><strong>Not yet.</strong> The answer is ${esc(q.answerLabel ?? String(q.answer))}.</div>`
@@ -178,7 +231,7 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
     app.innerHTML = `
       <div class="mq-quizhead">
         <button type="button" class="mq-back" data-mq-back>← Levels</button>
-        <span class="mq-where">${esc(track.label)} · Level ${v.level + 1}: ${esc(level.title)} · ${v.qi + 1}/${QUESTIONS_PER_LEVEL} · score ${v.score}</span>
+        <span class="mq-where">${where} · ${v.qi + 1}/${v.total} · score ${v.score}${tierNote}</span>
       </div>
       <div class="mq-dots">${dots}</div>
       <div class="mq-card">
@@ -188,7 +241,7 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
         <div class="mq-answer">
           <input type="text" data-mq-input inputmode="${im}" placeholder="${ph}" autocomplete="off" ${v.shown ? 'disabled' : ''} aria-label="Your answer">
           ${v.shown
-            ? `<button type="button" class="btn btn-primary" data-mq-next>${v.qi + 1 === QUESTIONS_PER_LEVEL ? 'See score' : 'Next'}</button>`
+            ? `<button type="button" class="btn btn-primary" data-mq-next>${v.qi + 1 === v.total ? 'See score' : 'Next'}</button>`
             : `<button type="button" class="btn btn-primary" data-mq-check>Check</button>`}
         </div>
         ${v.shown ? '' : `<button type="button" class="mq-showme" data-mq-show>Show me how</button>`}
@@ -210,35 +263,100 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
   function renderResult(): void {
     const v = state.view;
     if (v.v !== 'result') return;
-    const track = QUIZ_TRACKS.find((t) => t.id === v.track)!;
+    const track = QUIZ_TRACKS.find((t) => t.id === v.track);
+    const level = track?.levels[v.level];
     const passed = v.stars > 0;
-    const nextOk = passed && v.level + 1 < track.levels.length;
-    const trackDone = trackPassed(state.p, v.track);
-    const headline = v.score === QUESTIONS_PER_LEVEL ? 'Perfect run!' : passed ? 'Level passed!' : 'Not quite — 8 of 10 unlocks the next level';
+    const graded = v.mode === 'level' || v.mode === 'set';
+    const nextOk = graded && passed && track && v.level + 1 < track.levels.length;
+    const trackDone = track ? trackPassed(state.p, v.track) : false;
+    const title =
+      v.mode === 'daily'
+        ? `Daily challenge · ${todayLabel()} — ${v.score}/${v.total}`
+        : v.mode === 'retry'
+          ? `Missed questions — ${v.score}/${v.total}`
+          : `${esc(level?.title ?? '')} — ${v.score}/${v.total}`;
+    const headline =
+      v.mode === 'retry'
+        ? v.score === v.total
+          ? 'All of them this time!'
+          : v.score > 0
+            ? 'Getting there — the steps are below each run'
+            : 'Read the worked steps, then try once more'
+        : v.score === v.total
+          ? 'Perfect run!'
+          : passed
+            ? 'Level passed!'
+            : v.mode === 'daily'
+              ? 'Done for today — a new set lands tomorrow'
+              : 'Not quite — 8 of 10 unlocks the next level';
     app.innerHTML = `
       <div class="mq-card mq-result">
-        <h4>${esc(track.levels[v.level]!.title)} — ${v.score}/${QUESTIONS_PER_LEVEL}</h4>
+        <h4>${title}</h4>
         <p class="mq-bigstars">${stars(v.stars)}</p>
         <p class="mq-headline ${passed ? 'is-ok' : ''}">${headline}</p>
-        <p class="mq-best">Best on this level: ${v.best}/${QUESTIONS_PER_LEVEL}</p>
+        ${graded ? `<p class="mq-best">Best on this level: ${v.best}/${v.total}</p>` : ''}
         <div class="mq-actions">
-          <button type="button" class="btn" data-mq-retry>Try again</button>
-          ${nextOk ? `<button type="button" class="btn btn-primary" data-mq-nextlevel>Level ${v.level + 2}: ${esc(track.levels[v.level + 1]!.title)}</button>` : ''}
+          ${graded ? `<button type="button" class="btn" data-mq-retry>Try again</button>` : ''}
+          ${graded && v.missed.length > 0 ? `<button type="button" class="btn" data-mq-redo>Redo the ${v.missed.length} you missed</button>` : ''}
+          ${v.mode === 'daily' ? `<button type="button" class="btn" data-mq-daily>Do today's set again</button>` : ''}
+          ${nextOk && track ? `<button type="button" class="btn btn-primary" data-mq-nextlevel>Level ${v.level + 2}: ${esc(track.levels[v.level + 1]!.title)}</button>` : ''}
+          <button type="button" class="btn" data-mq-print>Print this set</button>
           <button type="button" class="btn" data-mq-back>Back to levels</button>
         </div>
-        ${trackDone ? certButton(track.label) : ''}
+        ${trackDone && graded && track ? certButton(track.label) : ''}
       </div>`;
   }
 
   /* ---------------------------------------------------------------- */
 
+  const todayLabel = (): string => new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const localDateStr = (): string => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
+
+  function seedFor(trackId: string, level: number): number {
+    // class set: the code (with track + level) fixes the questions; personal
+    // practice draws a fresh set every attempt
+    return setCode
+      ? hashStr(`set:${setCode}:${trackId}:${level}`)
+      : (Date.now() ^ (level * 2654435761)) >>> 0;
+  }
+
+  function baseQuiz(track: string, level: number, mode: QuizMode, total: number): Extract<View, { v: 'quiz' }> {
+    return { v: 'quiz', track, level, mode, pools: null, asked: [], qi: 0, score: 0, wrong: false, shown: false, tier: startTier(), missed: [], total };
+  }
+
   function start(trackId: string, level: number): void {
-    const seed = (Date.now() ^ (level * 2654435761)) >>> 0;
-    const qs = generateLevelQuestions(trackId, level, seed);
-    state.view = { v: 'quiz', track: trackId, level, qs, qi: 0, score: 0, wrong: false, shown: false };
+    let view: Extract<View, { v: 'quiz' }>;
+    if (setCode) {
+      view = { ...baseQuiz(trackId, level, 'set', QUESTIONS_PER_LEVEL), asked: generateLevelQuestions(trackId, level, seedFor(trackId, level)) };
+    } else {
+      // adaptive: three tier pools, two right in a row steps up the difficulty
+      const pools = generateLevelPool(trackId, level, seedFor(trackId, level));
+      const first = pullTierQuestion(pools, 1)!;
+      view = { ...baseQuiz(trackId, level, 'level', QUESTIONS_PER_LEVEL), pools, asked: [first.q] };
+    }
+    state.view = view;
     state.p.lastTrack = trackId;
     saveProgress();
-    ev('quiz_start', { track: trackId, level: level + 1 });
+    ev('quiz_start', { track: trackId, level: level + 1, mode: view.mode, ...(setCode ? { set: setCode } : {}) });
+    render();
+  }
+
+  function startDaily(): void {
+    // date-keyed: everyone gets the same ten on the same day
+    const asked = generateDailySet(localDateStr());
+    state.view = { ...baseQuiz('', -1, 'daily', asked.length), asked };
+    ev('quiz_start', { track: 'daily' });
+    render();
+  }
+
+  function startRetry(missed: QuizQuestion[], from: Extract<View, { v: 'result' }>): void {
+    const pools: TierPools = { t1: [...missed], t2: [], t3: [] };
+    const first = pullTierQuestion(pools, 1)!;
+    state.view = { ...baseQuiz(from.track, from.level, 'retry', missed.length), pools, asked: [first.q] };
+    ev('quiz_start', { track: from.track, mode: 'retry' });
     render();
   }
 
@@ -247,9 +365,11 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
     if (v.v !== 'quiz' || v.shown) return;
     const input = app?.querySelector<HTMLInputElement>('[data-mq-input]');
     if (!input) return;
-    const q = v.qs[v.qi]!;
+    const q = v.asked[v.qi]!;
     const ok = isCorrect(q, input.value);
     if (ok) v.score += 1;
+    else v.missed.push(q);
+    if (v.pools) v.tier = tierAfter(v.tier, ok); // adaptive only in personal mode
     v.wrong = !ok;
     v.shown = true;
     render();
@@ -261,7 +381,15 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
     v.qi += 1;
     v.shown = false;
     v.wrong = false;
-    if (v.qi < QUESTIONS_PER_LEVEL) {
+    if (v.qi < v.total) {
+      if (v.pools) {
+        const next = pullTierQuestion(v.pools, v.tier.tier);
+        if (!next) {
+          v.total = v.qi;
+          return finishAttempt();
+        }
+        v.asked.push(next.q);
+      }
       render();
       return;
     }
@@ -272,18 +400,83 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
     const v = state.view;
     if (v.v !== 'quiz') return;
     const starsEarned = starsFor(v.score);
-    const prev = state.p.tracks[v.track]?.[String(v.level)];
-    const best = Math.max(prev?.best ?? 0, v.score);
-    if (starsEarned > 0) {
-      state.p.tracks[v.track] = state.p.tracks[v.track] ?? {};
-      state.p.tracks[v.track]![String(v.level)] = { stars: Math.max(starsEarned, prev?.stars ?? 0), best };
-    } else if (prev) {
-      state.p.tracks[v.track]![String(v.level)] = { ...prev, best };
+    let best = v.score;
+    if (v.mode === 'level' || v.mode === 'set') {
+      const prev = state.p.tracks[v.track]?.[String(v.level)];
+      best = Math.max(prev?.best ?? 0, v.score);
+      if (starsEarned > 0) {
+        state.p.tracks[v.track] = state.p.tracks[v.track] ?? {};
+        state.p.tracks[v.track]![String(v.level)] = { stars: Math.max(starsEarned, prev?.stars ?? 0), best };
+      } else if (prev) {
+        state.p.tracks[v.track]![String(v.level)] = { ...prev, best };
+      }
+      saveProgress();
+      if (starsEarned > 0) ev('quiz_pass', { track: v.track, level: v.level + 1, stars: starsEarned });
+    } else if (v.mode === 'daily') {
+      ev('daily_done', { score: v.score });
     }
-    saveProgress();
-    if (starsEarned > 0) ev('quiz_pass', { track: v.track, level: v.level + 1, stars: starsEarned });
-    state.view = { v: 'result', track: v.track, level: v.level, score: v.score, stars: starsEarned, best };
+    state.view = { v: 'result', track: v.track, level: v.level, mode: v.mode, score: v.score, stars: starsEarned, best, total: v.total, missed: v.missed, asked: v.asked };
     render();
+  }
+
+  /** Print this set — the printable-site move: no big-site quiz can come
+   *  out of the screen onto paper. Second page is the worked answer key. */
+  function printCurrent(): void {
+    const v = state.view;
+    if (v.v !== 'result') return;
+    const track = QUIZ_TRACKS.find((t) => t.id === v.track);
+    const level = track?.levels[v.level];
+    const head =
+      v.mode === 'daily'
+        ? `Daily challenge · ${todayLabel()}`
+        : v.mode === 'retry'
+          ? 'Missed questions — practice sheet'
+          : `${track?.label ?? ''} · Level ${v.level + 1}: ${level?.title ?? ''}${level?.ccss ? ` · CCSS ${level.ccss}` : ''}`;
+    const w = window.open('', '_blank', 'width=900,height=700');
+    if (!w) return;
+    const body = v.asked
+      .map(
+        (q, i) =>
+          `<div class="q">${q.figure ? `<div class="fig">${q.figure}</div>` : ''}<p><span class="n">${i + 1}.</span> ${typesetRadicals(esc(q.display))}</p><div class="ans"></div></div>`,
+      )
+      .join('');
+    const key = v.asked
+      .map(
+        (q, i) =>
+          `<li><strong>${i + 1}. ${esc(q.answerLabel ?? String(q.answer))}</strong><span class="st">${q.steps.map((s) => typesetRadicals(esc(s))).join(' · ')}</span></li>`,
+      )
+      .join('');
+    w.document.write(`<!doctype html><html><head><title>${esc(head)} — ChartGlade</title>
+      <style>
+        :root{--green:#2f7d4f}
+        body{font-family:Georgia,'Times New Roman',serif;color:#1a1a1a;margin:0;padding:0.6in 0.7in;max-width:8.5in}
+        .hd{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #2f7d4f;padding-bottom:6px}
+        .hd h1{font-size:16px;margin:0}
+        .hd .set{font-size:12px;color:#555}
+        .name{font-size:13px;margin:10px 0 4px;color:#333}
+        .name span{display:inline-block;border-bottom:1px solid #999;min-width:2.4in;margin-right:24px;padding:0 8px}
+        .q{page-break-inside:avoid;margin:14px 0}
+        .q p{font-size:15px;margin:0}
+        .n{font-weight:700}
+        .fig svg{max-width:2.2in;height:auto}
+        .ans{border-bottom:1px solid #999;height:22px;width:2.6in;margin-top:6px}
+        .mq-radicand{border-top:0.075em solid currentColor;padding-left:0.1em}
+        .key{page-break-before:always}
+        .key h2{font-size:14px;border-bottom:1px solid #999;padding-bottom:4px}
+        .key ol{list-style:none;padding:0;margin:0}
+        .key li{font-size:13px;margin:10px 0;page-break-inside:avoid}
+        .key .st{display:block;color:#444;font-size:12px;margin-top:2px}
+        @media print{body{padding:0.5in 0.6in}}
+      </style></head><body>
+      <div class="hd"><h1>${esc(head)}</h1><span class="set">ChartGlade${setCode && v.mode !== 'daily' && v.mode !== 'retry' ? ` · class set ${esc(setCode)}` : ''}</span></div>
+      <p class="name">Name <span>&nbsp;</span> Date <span>&nbsp;</span></p>
+      ${body}
+      <div class="key"><h2>Answer key — worked solutions</h2><ol>${key}</ol></div>
+      </body></html>`);
+    w.document.close();
+    w.focus();
+    w.print();
+    ev('quiz_print', { mode: v.mode, track: v.track });
   }
 
   function printCertificate(): void {
@@ -360,6 +553,13 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
       state.view = { v: 'levels', track: state.p.lastTrack ?? 'g3' };
       return render();
     }
+    if (t.closest('[data-mq-daily]')) return startDaily();
+    if (t.closest('[data-mq-redo]')) {
+      const v = state.view;
+      if (v.v === 'result') return startRetry(v.missed, v);
+      return;
+    }
+    if (t.closest('[data-mq-print]')) return printCurrent();
     if (t.closest('[data-mq-retry]')) {
       const v = state.view;
       if (v.v === 'result') return start(v.track, v.level);
