@@ -479,14 +479,33 @@ describe('radical typesetting (the √ vinculum)', () => {
 });
 
 describe('adaptive tiers, class sets, daily challenge, CCSS (2026-11-07 batch)', () => {
-  it('tierAfter: two in a row steps the tier, capped at 1..3', () => {
+  // 👤 2026-11-07: "grade7 怎么还有 22 ÷ 2" — the negatives levels drew both
+  // operands positive 25% of the time, degenerating into grade-3 arithmetic.
+  // The sign rules ARE the skill: every question must carry a negative.
+  it('negatives levels always include a negative operand', () => {
+    const checked: string[] = [];
+    for (const track of QUIZ_TRACKS) {
+      track.levels.forEach((level, li) => {
+        if (!level.kinds.some((k) => k.t === 'intAS' || k.t === 'intMD')) return;
+        for (const seed of [3, 42, 991]) {
+          for (const q of generateLevelQuestions(track.id, li, seed)) {
+            // review levels mix kinds — only the integer-ops questions must carry a negative
+            if (q.kind === 'intAS' || q.kind === 'intMD') {
+              expect(q.display, `${track.id} L${li + 1} seed ${seed}`).toContain('−');
+            }
+          }
+        }
+        checked.push(`${track.id} L${li + 1}`);
+      });
+    }
+    expect(checked.length).toBeGreaterThanOrEqual(4); // g6 ×2+review, g7, g8 review
+  });
+
+  it('tierAfter: two in a row steps the tier, capped at 1..3; starts at the standard tier', () => {
     let s = startTier();
-    expect(s.tier).toBe(1);
+    expect(s.tier).toBe(2); // advancement positioning — standard difficulty from Q1
     s = tierAfter(s, true);
-    expect(s.tier).toBe(1); // one right is not enough
-    s = tierAfter(s, true);
-    expect(s.tier).toBe(2);
-    s = tierAfter(s, true);
+    expect(s.tier).toBe(2); // one right is not enough
     s = tierAfter(s, true);
     expect(s.tier).toBe(3);
     s = tierAfter(s, true);
@@ -499,12 +518,15 @@ describe('adaptive tiers, class sets, daily challenge, CCSS (2026-11-07 batch)',
     // alternating answers never move the tier
     let a = startTier();
     for (let i = 0; i < 12; i++) a = tierAfter(a, i % 2 === 0);
-    expect(a.tier).toBe(1);
-    // from tier 2, two wrongs floor at 1
+    expect(a.tier).toBe(2);
+    // from tier 2, two wrongs floor at 1 and stay there
     let f: TierState = { tier: 2, streak: 0 };
     f = tierAfter(f, false);
     f = tierAfter(f, false);
     expect(f.tier).toBe(1);
+    f = tierAfter(f, false);
+    f = tierAfter(f, false);
+    expect(f.tier).toBe(1); // floored — tier 1 is the ease-back, not the start
   });
 
   it('generateLevelPool: 4 per tier; the adaptive run never starves', () => {

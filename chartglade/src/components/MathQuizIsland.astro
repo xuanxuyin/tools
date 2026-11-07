@@ -217,7 +217,7 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
     const dots = Array.from({ length: v.total }, (_, i) => `<span class="mq-dot${i < v.qi ? ' is-ok' : i === v.qi ? ' is-now' : ''}"></span>`).join('');
     const where =
       v.mode === 'daily'
-        ? `Daily challenge · ${todayLabel()}`
+        ? `Daily challenge · ${todayLabel()} · from the ${QUIZ_TRACKS[Math.min(v.qi, QUIZ_TRACKS.length - 1)]?.label ?? ''} track`
         : v.mode === 'retry'
           ? 'Missed questions'
           : `${track?.label ?? ''} · Level ${v.level + 1}: ${esc(level?.title ?? '')}${level?.ccss ? ` · CCSS ${level.ccss}` : ''}${v.mode === 'set' ? ` · class set ${esc(setCode)}` : ''}`;

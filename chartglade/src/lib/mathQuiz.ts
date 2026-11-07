@@ -1157,8 +1157,16 @@ function intASSteps(a: number, b: number, minus: boolean): string[] {
 function genIntAS(range: number): Gen {
   return (r, tier) => {
     const rr = Math.max(6, Math.round(range * (tier === 1 ? 0.5 : tier === 2 ? 1 : 1.5)));
-    const a = int(r, -rr, rr);
-    const b = int(r, -rr, rr);
+    // these levels' skill IS the negatives — an all-positive draw ("22 ÷ 2",
+    // "13 + 5") is third-grade arithmetic wearing a 7th-grade badge. Force at
+    // least one negative and no zero addends, redraw-style
+    let a = int(r, -rr, rr);
+    let b = int(r, -rr, rr);
+    for (let i = 0; i < 20 && (a === 0 || b === 0 || (a > 0 && b > 0)); i++) {
+      a = int(r, -rr, rr);
+      b = int(r, -rr, rr);
+    }
+    if (a > 0 && b > 0) b = -b; // redraw couldn't land (paranoia) — patch it
     const minus = coin(r);
     return minus
       ? { display: `${n(a)} − ${p(b)} = ___`, answer: a - b, mode: 'int', ops: [a, b], steps: intASSteps(a, b, true) }
@@ -1166,11 +1174,13 @@ function genIntAS(range: number): Gen {
   };
 }
 const genIntMD: Gen = (r, tier) => {
-  const hi = tier === 1 ? 9 : tier === 2 ? 12 : 16;
+  const hi = tier === 1 ? 12 : tier === 2 ? 16 : 20;
   const a = int(r, 2, hi);
   const b = int(r, 2, hi);
   const sa = coin(r) ? 1 : -1;
-  const sb = coin(r) ? 1 : -1;
+  // same rule: at least one negative factor, or the question isn't testing
+  // the sign rules this level exists for
+  const sb = sa > 0 ? -1 : (coin(r) ? 1 : -1);
   const negatives = (sa < 0 ? 1 : 0) + (sb < 0 ? 1 : 0);
   const sign = negatives % 2 === 0 ? '' : '−';
   if (coin(r)) {
@@ -1185,7 +1195,7 @@ const genIntMD: Gen = (r, tier) => {
       ],
     };
   }
-  const q = sa * int(r, 2, 12);
+  const q = sa * int(r, 2, 14);
   const div = sb * b;
   return {
     display: `${n(q * div)} ÷ ${p(div)} = ___`,
@@ -1753,7 +1763,10 @@ export interface TierState {
   streak: number;
 }
 export function startTier(): TierState {
-  return { tier: 1, streak: 0 };
+  // this bank is for ADVANCING students (👤 2026-11-07: "用来进阶的，不是
+  // 训练基础的") — start at the standard tier; tier 1 stays available as the
+  // auto-ease floor after two misses
+  return { tier: 2, streak: 0 };
 }
 export function tierAfter(s: TierState, correct: boolean): TierState {
   const streak = correct ? s.streak + 1 : s.streak - 1;
