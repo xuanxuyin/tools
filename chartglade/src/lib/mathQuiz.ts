@@ -1907,3 +1907,25 @@ export function isCorrect(q: QuizQuestion, input: string): boolean {
   const v = Number(t);
   return Number.isFinite(v) && Math.abs(v - q.answer) < 1e-6;
 }
+
+/* ------------------------------------------------------------------ */
+/* Radical typesetting (display layer)                                 */
+/* ------------------------------------------------------------------ */
+
+/**
+ * √ (U+221A) and ∛ (U+221B) are the radical sign only — the horizontal
+ * bar over the radicand (the vinculum) is not part of the character and
+ * has to be drawn. This wraps a radical plus its numeric radicand in
+ * spans so CSS can render that bar:
+ *   √144 → <span class="mq-rad">√<span class="mq-radicand">144</span></span>
+ * The input MUST already be HTML-escaped; the radicand pattern accepts
+ * digits (with an optional decimal part) only, so the wrapped content
+ * can never be injected markup.
+ */
+export function typesetRadicals(escaped: string): string {
+  return escaped.replace(
+    /([√∛])(\d+(?:\.\d+)?)/g,
+    (_m, sign: string, digits: string) =>
+      `<span class="mq-rad">${sign}<span class="mq-radicand">${digits}</span></span>`,
+  );
+}

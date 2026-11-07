@@ -1,5 +1,5 @@
 ---
-import { QUIZ_TRACKS } from '../lib/mathQuiz';
+import { QUIZ_TRACKS, typesetRadicals } from '../lib/mathQuiz';
 
 /**
  * #36 — leveled math practice island on /multiplication-chart/.
@@ -28,7 +28,7 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
                 <ol>
                   {t.levels.map((l) => (
                     <li>
-                      <em>{l.title}</em> — {l.focus}
+                      <em>{l.title}</em> — <span set:html={typesetRadicals(l.focus)} />
                     </li>
                   ))}
                 </ol>
@@ -54,6 +54,7 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
     trackStars,
     generateLevelQuestions,
     isCorrect,
+    typesetRadicals,
     type QuizProgress,
     type QuizQuestion,
   } from '../lib/mathQuiz';
@@ -166,7 +167,7 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
         ? `<div class="mq-feedback is-wrong"><strong>Not yet.</strong> The answer is ${esc(q.answerLabel ?? String(q.answer))}.</div>`
         : `<div class="mq-feedback is-ok"><strong>Correct!</strong></div>`
       : '';
-    const steps = v.shown ? `<div class="mq-steps"><h4>How to do it</h4><ol>${q.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol></div>` : '';
+    const steps = v.shown ? `<div class="mq-steps"><h4>How to do it</h4><ol>${q.steps.map((s) => `<li>${typesetRadicals(esc(s))}</li>`).join('')}</ol></div>` : '';
     app.innerHTML = `
       <div class="mq-quizhead">
         <button type="button" class="mq-back" data-mq-back>← Levels</button>
@@ -175,7 +176,7 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
       <div class="mq-dots">${dots}</div>
       <div class="mq-card">
         ${q.figure ? `<div class="mq-fig">${q.figure}</div>` : ''}
-        <p class="mq-q">${esc(q.display)}</p>
+        <p class="mq-q">${typesetRadicals(esc(q.display))}</p>
         ${feedback}
         <div class="mq-answer">
           <input type="text" data-mq-input inputmode="${im}" placeholder="${ph}" autocomplete="off" ${v.shown ? 'disabled' : ''} aria-label="Your answer">

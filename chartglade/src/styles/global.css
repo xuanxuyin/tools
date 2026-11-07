@@ -3020,6 +3020,18 @@ svg {
   font-variant-numeric: tabular-nums;
 }
 
+/* √/∛ (U+221A/U+221B) ship without the vinculum — the bar over the
+   radicand is drawn as this border, meeting the radical's top arm. */
+.mq-rad {
+  white-space: nowrap;
+}
+
+.mq-radicand {
+  border-top: 0.075em solid currentColor;
+  padding-left: 0.1em;
+  margin-left: -0.04em;
+}
+
 .mq-feedback {
   text-align: center;
   border-radius: 8px;

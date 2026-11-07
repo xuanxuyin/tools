@@ -14,6 +14,7 @@ import {
   parseProgress,
   emptyProgress,
   QUIZ_STORAGE_KEY,
+  typesetRadicals,
   type QuizQuestion,
 } from './mathQuiz';
 
@@ -222,6 +223,35 @@ describe('answer parsing by mode', () => {
   });
 });
 
+describe('radical typesetting (the √ vinculum)', () => {
+  it('wraps √/∛ radicands in bar spans, leaves other text untouched', () => {
+    expect(typesetRadicals('√144 = ___')).toBe(
+      '<span class="mq-rad">√<span class="mq-radicand">144</span></span> = ___',
+    );
+    expect(typesetRadicals('∛125 = ___')).toContain('<span class="mq-radicand">125</span>');
+    expect(typesetRadicals('7 × 8 = ___')).toBe('7 × 8 = ___');
+    // prose punctuation after the radicand stays outside the bar
+    expect(typesetRadicals('and √625 = 25.')).toContain('mq-radicand">625</span></span> = 25.');
+  });
+
+  it('every radical in displays, steps and level focuses is followed by digits', () => {
+    // any √/∛ not followed by a number would silently lose its bar
+    for (const track of QUIZ_TRACKS) {
+      const texts = [...track.levels.map((l) => l.focus)];
+      for (let level = 0; level < track.levels.length; level++) {
+        for (const q of generateLevelQuestions(track.id, level, 11)) {
+          texts.push(q.display, ...q.steps);
+        }
+      }
+      for (const s of texts) {
+        for (const seg of s.split(/[√∛]/).slice(1)) {
+          expect(seg[0], `${track.id}: …${s}`).toMatch(/^\d/);
+        }
+      }
+    }
+  });
+});
+
 describe('progress (localStorage, device-local)', () => {
   it('round-trips through JSON and rejects garbage', () => {
     const p = emptyProgress();
@@ -279,6 +309,8 @@ describe.skipIf(!existsSync(resolve(DIST, 'multiplication-chart', 'index.html'))
       expect(html).toContain('Pythagorean theorem');
       // progress stays local — the promise is on the page
       expect(html).toContain('nothing leaves the browser');
+      // SSR catalog focus entries ship the radical vinculum markup
+      expect(html).toContain('mq-radicand');
     });
 
     it('the mad-minute island is untouched', () => {
