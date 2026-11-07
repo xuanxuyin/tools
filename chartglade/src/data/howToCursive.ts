@@ -1,4 +1,5 @@
 import type { PageDef } from './pageTypes';
+import { CURSIVE_CARDS } from './cursive';
 
 /**
  * How to write in cursive — the learning-intent front door to the cursive
@@ -218,3 +219,5 @@ export const howToCursivePage: PageDef = {
     { href: '/states-that-require-cursive/', label: 'States that require cursive in school' },
   ],
 };
+
+howToCursivePage.variants = CURSIVE_CARDS.filter((c) => c.href !== '/how-to-write-in-cursive/');

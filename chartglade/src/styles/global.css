@@ -1061,6 +1061,51 @@ svg {
   border-color: var(--green);
 }
 
+/* Hub card thumbnails (image-density batch, 2026-11-07): the charts and
+   graph-paper hub walls go visual — same 4:3 letterbox discipline as the
+   variant gallery (absolutely-positioned img so a tall source PNG can never
+   stretch the box; cover for the multi-sheet packs). */
+.card.card-with-thumb {
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-with-thumb h2,
+.card-with-thumb p {
+  padding-left: var(--sp-4);
+  padding-right: var(--sp-4);
+}
+
+.card-with-thumb h2 {
+  padding-top: var(--sp-3);
+}
+
+.card-with-thumb p {
+  padding-bottom: var(--sp-4);
+}
+
+.card-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+.card-thumb img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card-thumb img.cover {
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
 .card h2,
 .card h3 {
   margin-bottom: var(--sp-1);

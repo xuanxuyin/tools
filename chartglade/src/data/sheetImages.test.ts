@@ -12,9 +12,13 @@ import { halloweenPages } from './halloween';
 import { christmasPages } from './christmas';
 import { thanksgivingPages } from './thanksgiving';
 import { timesTablePages } from './timesTables';
+import { graphPaperPages } from './graphPaper';
+import { formulaSheetPages } from './formulaSheets';
 import { cursiveSentencesPage } from './cursiveSentences';
 import { howToCursivePage } from './howToCursive';
 import { cursiveLetters } from './cursiveLetters';
+import { christmasStockingPage } from './christmasColoring';
+import { cootieCatcherPage, christmasCootieCatcherPage } from './cootie';
 import type { PageDef } from './pageTypes';
 
 /**
@@ -69,6 +73,26 @@ const WAVE_FOUR = [
 ];
 // Wave 6 (2026-11-06, image-forward batch): the color product page.
 const WAVE_SIX = ['multiplication-chart-color'];
+// Wave 7 (2026-11-07, image-density batch): graph paper, the sight-word
+// ladder and the formula sheets get their first PNGs — every charts-hub card
+// goes visual and those families join the variant-gallery program.
+const WAVE_SEVEN = [
+  'printable-graph-paper',
+  'half-inch-graph-paper',
+  '1-cm-graph-paper',
+  '5mm-graph-paper',
+  'dot-grid-paper',
+  'isometric-graph-paper',
+  'preschool-sight-words',
+  'first-grade-sight-words',
+  'second-grade-sight-words',
+  'third-grade-sight-words',
+  'geometry-formula-sheet',
+  'algebra-formula-sheet',
+];
+// Pre-existing PNGs outside the wave lists (their own batches predate this
+// file's exact-list guard): the cootie cluster and the stocking single.
+const PNG_PREEXISTING = ['christmas-stocking-coloring-page', 'cootie-catcher', 'christmas-cootie-catcher'];
 
 const all: PageDef[] = [
   ...multiplicationPages,
@@ -80,15 +104,20 @@ const all: PageDef[] = [
   ...christmasPages,
   ...thanksgivingPages,
   ...timesTablePages,
+  ...graphPaperPages,
+  ...formulaSheetPages,
   cursiveSentencesPage,
   howToCursivePage,
+  christmasStockingPage,
+  cootieCatcherPage,
+  christmasCootieCatcherPage,
 ];
 const withImages = all.filter((d) => d.sheetImage);
 
 describe('sheetImage (Google Images channel)', () => {
-  it('exactly the pillar + wave-2 + wave-4 + wave-6 pages carry a sheet image', () => {
+  it('exactly the pillar + wave-2 + wave-4 + wave-6 + wave-7 pages carry a sheet image', () => {
     expect(withImages.map((d) => d.slug).sort()).toEqual(
-      [...PILLARS, ...WAVE_TWO, ...WAVE_FOUR, ...WAVE_SIX].sort(),
+      [...PILLARS, ...WAVE_TWO, ...WAVE_FOUR, ...WAVE_SIX, ...WAVE_SEVEN, ...PNG_PREEXISTING].sort(),
     );
   });
 
@@ -110,9 +139,10 @@ describe('sheetImage (Google Images channel)', () => {
 describe('variant gallery cards (image-forward batch, 2026-11-06)', () => {
   const withVariants = all.filter((d) => d.variants && d.variants.length > 0);
 
-  it('exactly the multiplication + place-value families carry galleries', () => {
+  it('exactly the image-forward + image-density families carry galleries', () => {
     expect(withVariants.map((d) => d.slug).sort()).toEqual(
       [
+        // image-forward batch (2026-11-06)
         'multiplication-chart',
         'multiplication-chart-color',
         'multiplication-chart-printable',
@@ -125,6 +155,35 @@ describe('variant gallery cards (image-forward batch, 2026-11-06)', () => {
         'decimal-place-value-chart',
         'place-value-anchor-chart',
         'place-value-chart-printable',
+        // image-density batch (2026-11-07): times tables ×12, graph paper ×6,
+        // the sight-word ladder ×5, holiday clusters, cursive trio
+        ...Array.from({ length: 12 }, (_, i) => `times-table-${i + 1}`),
+        'printable-graph-paper',
+        'half-inch-graph-paper',
+        '1-cm-graph-paper',
+        '5mm-graph-paper',
+        'dot-grid-paper',
+        'isometric-graph-paper',
+        'preschool-sight-words',
+        'kindergarten-sight-words',
+        'first-grade-sight-words',
+        'second-grade-sight-words',
+        'third-grade-sight-words',
+        'halloween-word-search',
+        'halloween-color-by-number',
+        'halloween-cursive-practice',
+        'thanksgiving-word-search',
+        'thanksgiving-color-by-number',
+        'thanksgiving-placemat-printable',
+        'i-am-thankful-for-worksheet',
+        'christmas-word-search',
+        'christmas-color-by-number',
+        'letter-to-santa',
+        'christmas-stocking-coloring-page',
+        'christmas-cootie-catcher',
+        'cursive-alphabet',
+        'cursive-sentences',
+        'how-to-write-in-cursive',
       ].sort(),
     );
   });
@@ -223,6 +282,42 @@ describe.skipIf(!pillarDistReady)('Download PNG button (PLAN #18)', () => {
   it('a page without a sheet image carries no download anchor', () => {
     const html = readFileSync(resolve(DIST, 'sign-in-sheet', 'index.html'), 'utf8');
     expect(html).not.toContain('<a class="btn" href="/images/');
+  });
+});
+
+/**
+ * Hub image walls (image-density batch, 2026-11-07): the incumbent pattern —
+ * a hub shows the actual sheet for every card instead of text-only links.
+ * Dist guards like the download guards above (build → vitest order).
+ */
+describe.skipIf(!pillarDistReady)('hub image walls (image-density batch)', () => {
+  it('the charts hub renders a thumb for every sheet-carrying chart def', () => {
+    const charts = [...placeValuePages, ...multiplicationPages, ...formulaSheetPages, ...loosePages];
+    const html = readFileSync(resolve(DIST, 'charts', 'index.html'), 'utf8');
+    for (const p of charts) {
+      if (!p.sheetImage) continue;
+      expect(html, `${p.slug} thumb missing from /charts/`).toContain(`src="${p.sheetImage.src}"`);
+    }
+    expect((html.match(/class="card-thumb"/g) ?? []).length).toBe(charts.filter((p) => p.sheetImage).length);
+    // a def without a hub blurb renders <p>{undefined}</p> — the empty-blurb
+    // bug that hit multiplication-chart-color on 2026-11-06 must not return
+    expect(html).not.toContain('<p></p>');
+  });
+
+  it('the times-table hub shows all twelve table PNGs as a variant wall', () => {
+    const html = readFileSync(resolve(DIST, 'times-table', 'index.html'), 'utf8');
+    for (const p of timesTablePages) {
+      expect(html, `times-table-${p.n} thumb missing from /times-table/`).toContain(`src="${p.sheetImage!.src}"`);
+    }
+    expect((html.match(/class="variant-thumb"/g) ?? []).length).toBe(timesTablePages.length);
+  });
+
+  it('the graph-paper hub shows all six grid PNGs as card thumbs', () => {
+    const html = readFileSync(resolve(DIST, 'graph-paper', 'index.html'), 'utf8');
+    for (const p of graphPaperPages) {
+      expect(html, `${p.slug} thumb missing from /graph-paper/`).toContain(`src="${p.sheetImage!.src}"`);
+    }
+    expect((html.match(/class="card-thumb"/g) ?? []).length).toBe(graphPaperPages.length);
   });
 });
 

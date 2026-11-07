@@ -12,6 +12,13 @@ import type { PageDef } from './pageTypes';
 export const formulaSheetPages: PageDef[] = [
   {
     slug: 'geometry-formula-sheet',
+    sheetImage: {
+      src: '/images/geometry-formula-sheet-printable.png',
+      alt: 'Free printable geometry formula sheet — perimeter, area, volume and surface area formulas, each with a worked example, on one landscape letter page.',
+      width: 2016,
+      height: 1592,
+    },
+
     hub: 'charts',
     h1: 'Geometry Formula Sheet',
     metaTitle: 'Geometry Formula Sheet (Free Printable) | ChartGlade',
@@ -76,6 +83,13 @@ export const formulaSheetPages: PageDef[] = [
 
   {
     slug: 'algebra-formula-sheet',
+    sheetImage: {
+      src: '/images/algebra-formula-sheet-printable.png',
+      alt: 'Free printable algebra formula sheet — slope, the quadratic formula, exponent laws and factoring patterns with self-check examples on one landscape page.',
+      width: 2016,
+      height: 1784,
+    },
+
     hub: 'charts',
     h1: 'Algebra Formula Sheet',
     metaTitle: 'Algebra Formula Sheet & Cheat Sheet (Free Printable) | ChartGlade',

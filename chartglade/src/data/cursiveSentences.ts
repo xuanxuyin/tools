@@ -1,4 +1,5 @@
 import type { PageDef } from './pageTypes';
+import { CURSIVE_CARDS } from './cursive';
 
 /**
  * Cursive sentence practice — 8 public-domain American quotes, each with a
@@ -152,3 +153,5 @@ export const cursiveSentencesPage: PageDef = {
     { href: '/states-that-require-cursive/', label: 'States that require cursive in school' },
   ],
 };
+
+cursiveSentencesPage.variants = CURSIVE_CARDS.filter((c) => c.href !== '/cursive-sentences/');

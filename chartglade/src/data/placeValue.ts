@@ -69,7 +69,7 @@ const PV_CARDS: VariantCard[] = [
   },
 ];
 
-const familyGallery = (own) => PV_CARDS.filter((c) => c.href !== own);
+const familyGallery = (own: string) => PV_CARDS.filter((c) => c.href !== own);
 
 export const placeValuePages: PageDef[] = [
   {

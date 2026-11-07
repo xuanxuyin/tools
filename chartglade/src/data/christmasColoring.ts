@@ -1,4 +1,5 @@
 import type { PageDef } from './pageTypes';
+import { XMAS_CARDS } from './christmas';
 
 /**
  * Christmas coloring singles — the coloring product line's holiday branch
@@ -74,3 +75,7 @@ export const christmasStockingPage: PageDef = {
     caption: 'Color the big stocking, then give each mini quilt its own pattern.',
   },
 };
+
+christmasStockingPage.variants = XMAS_CARDS.filter(
+  (c) => c.href !== '/christmas-stocking-coloring-page/',
+);

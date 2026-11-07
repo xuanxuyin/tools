@@ -43,11 +43,22 @@ const jsonLd = [
 
   <section class="section">
     <h2>Every table, its own page</h2>
-    <div class="letter-grid letter-grid-plain">
+    <div class="variant-grid">
       {timesTablePages.map((p) => (
-        <a class="letter-link" href={`/times-table/${p.n}/`}>
-          <span class="letter-link-glyph">{p.n}</span>
-          <span class="letter-link-name">{p.n} Times Table</span>
+        <a class="variant-card" href={`/times-table/${p.n}/`}>
+          <span class="variant-thumb">
+            <img
+              src={p.sheetImage!.src}
+              alt={p.sheetImage!.alt}
+              width={p.sheetImage!.width}
+              height={p.sheetImage!.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </span>
+          <span class="variant-body">
+            <span class="variant-title">{p.n} Times Table</span>
+          </span>
         </a>
       ))}
     </div>

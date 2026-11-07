@@ -1,4 +1,5 @@
 import type { PageDef } from './pageTypes';
+import { XMAS_CARDS } from './christmas';
 
 /**
  * Cootie catcher cluster (11/03 batch, PLAN §3 #34, spec in
@@ -271,3 +272,7 @@ export const christmasCootieCatcherPage: PageDef = {
     caption: 'The Christmas catcher sheet exactly as it prints — party-ready in five minutes.',
   },
 };
+
+christmasCootieCatcherPage.variants = XMAS_CARDS.filter(
+  (c) => c.href !== '/christmas-cootie-catcher/',
+);

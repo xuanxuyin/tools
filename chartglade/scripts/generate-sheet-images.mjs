@@ -79,6 +79,21 @@ const SHOTS = [
   { page: 'christmas-stocking-coloring-page', file: 'christmas-stocking-coloring-page' },
   // Wave 6 (2026-11-06, image-forward batch): the color product page.
   { page: 'multiplication-chart-color', file: 'color-multiplication-chart-printable' },
+  // Wave 7 (2026-11-06, image-density batch): graph paper + sight words +
+  // formula sheets get first PNGs — every charts-hub card goes visual, and
+  // those three families join the variant-gallery program.
+  { page: 'printable-graph-paper', file: 'graph-paper-quarter-inch' },
+  { page: 'half-inch-graph-paper', file: 'graph-paper-half-inch' },
+  { page: '1-cm-graph-paper', file: 'graph-paper-1cm' },
+  { page: '5mm-graph-paper', file: 'graph-paper-5mm' },
+  { page: 'dot-grid-paper', file: 'graph-paper-dot-grid' },
+  { page: 'isometric-graph-paper', file: 'graph-paper-isometric' },
+  { page: 'preschool-sight-words', file: 'preschool-sight-words-printable' },
+  { page: 'first-grade-sight-words', file: 'first-grade-sight-words-printable' },
+  { page: 'second-grade-sight-words', file: 'second-grade-sight-words-printable' },
+  { page: 'third-grade-sight-words', file: 'third-grade-sight-words-printable' },
+  { page: 'geometry-formula-sheet', file: 'geometry-formula-sheet-printable' },
+  { page: 'algebra-formula-sheet', file: 'algebra-formula-sheet-printable' },
 ];
 
 const MIME = {

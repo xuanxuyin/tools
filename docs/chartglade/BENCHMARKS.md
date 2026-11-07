@@ -330,3 +330,15 @@ post 522 / page 41 / category 9。分类法：**calendars 154**（月历回溯�
 **视觉验证三关**（本批新流程）：几何实测（headless Edge 量 DOM：12 页缩略盒全 181px 等高——抓出并修复 flex `min-height:auto` 撑破 4:3 盒的真 bug，改绝对定位 img）+ 超长打包图（h/w≥1.6）缩略改 `object-fit:cover` 顶部切片（contain 下 4742px 高图缩成幽灵条）+ 隔离裁切目检（标题+完整网格+高亮平方数可识别）。守卫测试固化（fit 矩阵防未来幽灵缩略图）。
 
 **一句话**：五家的"样式差距"实为**图片货架差距**——本批把每个多变种族变成图片墙（12 页）+ 第一张彩色产品页 + 教学顺序内链条，133→134 页、480→496 测试全绿。
+
+### 9.4 图片密度批第二波（2026-11-07，§7「每页图数」差距的纯工程收口）
+
+| 在位者机制 | 落地 |
+|---|---|
+| DW/mondaymandala hub 图片墙 | **三个 hub 变图片墙**：/charts/ 19 张缩略卡（card-with-thumb：4:3 图 + 标题 + blurb）、/times-table/ 12 表卡墙（DadsWorksheets 打法页级化）、/graph-paper/ 6 卡 |
+| Superstar 一族一节一变体 | **族图库铺满 38 页**（带图库页 12→50）：times-table 12 + graph-paper 6 + sight-words 学级梯 5 + 万圣 3 + 感恩 4 + 圣诞 3 + stocking/cootie 2 + cursive 三页；`variantGallery.ts` 共享构造器（defHref/familyGallery + h/w≥1.6 自动 cover），blurb 每族每页手写 |
+| Math-Salamanders 每表一图 | **12 张新 PNG**（wave 7：6 种网格纸 + sight-words 学级梯 preschool/1st/2nd/3rd + 几何/代数公式表）——11/03 遗留「老页无图」清单砍掉 12 页（余 sign-in 族） |
+
+**验证**：134 页 build、567/567 绿（精确清单 50 slug + hub 墙 dist 守卫 + 空 blurb 防回归 `<p></p>`）、link-check 0 问题、抽样 7 页几何实测缩略盒全等高（181px 图库 / 179px hub 卡）、懒加载滚动后 100% 加载。
+
+**一句话**：零新 URL，把「图藏在页底」翻成「图就是导航」——hub 卡、族图库、单页产品图三层全部图片化。

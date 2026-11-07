@@ -1,4 +1,6 @@
 import type { PageDef } from './pageTypes';
+import { defHref, familyGallery } from './variantGallery';
+
 
 /**
  * Halloween seasonal cluster (10/05 batch, judged against the US school
@@ -24,7 +26,9 @@ export const HALLOWEEN_WORDS_HARD: string[] = [
 
 // PaintArt + factsFor now live in lib/paintArt.ts (the SVG rendering
 // pipeline); re-exported here so every existing import keeps working.
-export type { PaintArt } from '../lib/paintArt';
+import type { PaintArt } from '../lib/paintArt';
+
+export type { PaintArt };
 export { factsFor } from '../lib/paintArt';
 
 /** Jack-o'-lantern, 13x13. Addition edition: every key is a sum. */
@@ -268,3 +272,13 @@ export const halloweenPages: PageDef[] = [
     ],
   },
 ];
+
+/** Family gallery (image-density batch, 2026-11-07). */
+const HAL_BLURBS: Record<string, string> = {
+  'halloween-word-search': 'Two difficulty levels in one print — forward words for K-2, all eight directions for grades 3-5.',
+  'halloween-color-by-number': 'Math facts hidden in a Halloween picture — addition for the little ones, multiplication for grades 3-4.',
+  'halloween-cursive-practice': 'Halloween words to trace and copy in cursive — seasonal practice that does not feel like work.',
+};
+for (const p of halloweenPages) {
+  p.variants = familyGallery(halloweenPages, defHref(p), HAL_BLURBS);
+}

@@ -1,4 +1,6 @@
-import type { PageDef } from './pageTypes';
+import type { PageDef, VariantCard } from './pageTypes';
+import { defHref, familyGallery } from './variantGallery';
+
 import type { PaintArt } from './halloween';
 
 /**
@@ -317,3 +319,42 @@ export const christmasPages: PageDef[] = [
     ],
   },
 ];
+
+/**
+ * Christmas family gallery (image-density batch, 2026-11-07). Cards for the
+ * stocking and cootie pages live here too (their defs sit in other modules —
+ * they import this list, one direction, no cycles).
+ */
+const XMAS_BLURBS: Record<string, string> = {
+  'christmas-word-search': 'The classic puzzle twice — a forward-only grid for K-2, an all-directions grid for grades 3-5.',
+  'christmas-color-by-number': 'Christmas tree addition and snowman multiplication — facts to color by number.',
+  'letter-to-santa': 'The classic letter frame with sentence starters — write, color and mail after one print.',
+};
+export const XMAS_CARDS: VariantCard[] = [
+  ...familyGallery(christmasPages, '', XMAS_BLURBS),
+  {
+    href: '/christmas-stocking-coloring-page/',
+    title: 'Christmas stocking coloring page',
+    blurb: 'A big stocking outline with quilting sections to color — the quiet-time Christmas page.',
+    img: {
+      src: '/images/christmas-stocking-coloring-page.png',
+      alt: 'Free printable Christmas stocking coloring page — a large stocking outline with quilting sections, stars and a pom to color on one letter sheet.',
+      width: 2016,
+      height: 2540,
+    },
+  },
+  {
+    href: '/christmas-cootie-catcher/',
+    title: 'Christmas cootie catcher',
+    blurb: 'The paper fortune teller folded from one sheet — snow, star, gift and bell corners with real fortunes inside.',
+    img: {
+      src: '/images/christmas-cootie-catcher-printable.png',
+      alt: 'Free printable Christmas cootie catcher template — a foldable paper fortune teller with snow, star, gift and bell corner labels and fortunes already filled in.',
+      width: 2016,
+      height: 2212,
+    },
+  },
+];
+for (const p of christmasPages) {
+  p.variants = XMAS_CARDS.filter((c) => c.href !== defHref(p));
+}

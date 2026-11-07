@@ -1,4 +1,6 @@
 import type { PageDef } from './pageTypes';
+import { defHref, familyGallery } from './variantGallery';
+
 import type { PaintArt } from './halloween';
 import { asciiToPaintArt } from '../lib/paintArt';
 
@@ -459,3 +461,14 @@ export const thanksgivingPages: PageDef[] = [
     ],
   },
 ];
+
+/** Family gallery (image-density batch, 2026-11-07). */
+const TG_BLURBS: Record<string, string> = {
+  'thanksgiving-word-search': 'Two puzzles on one theme — a forward-only grid for K-2, an all-directions grid for grades 3-5.',
+  'thanksgiving-color-by-number': 'Five pictures to color by math fact — turkey addition and pumpkin-pie multiplication.',
+  'i-am-thankful-for-worksheet': 'The gratitude writing worksheet — trace the starter, finish the sentence, draw the picture.',
+  'thanksgiving-placemat-printable': 'One-sheet activity placemat: word scramble, double tic-tac-toe and a draw-your-feast space.',
+};
+for (const p of thanksgivingPages) {
+  p.variants = familyGallery(thanksgivingPages, defHref(p), TG_BLURBS);
+}

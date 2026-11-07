@@ -1,4 +1,6 @@
 import type { PageDef } from './pageTypes';
+import { defHref, familyGallery } from './variantGallery';
+
 
 /**
  * The single times-table matrix (PLAN #29, the A2 competitor-teardown batch:
@@ -632,3 +634,27 @@ export const timesTablePages: TimesTableDef[] = SEEDS.map((s) => {
     ],
   };
 });
+
+/**
+ * Sibling gallery (image-density batch, 2026-11-07): the other eleven tables
+ * preview as cards — the DadsWorksheets times-table wall, page-level. The
+ * blurbs name the strategy each table hangs on (same hooks as the SEEDS,
+ * phrased as card copy rather than meta strings).
+ */
+const TT_BLURBS: Record<string, string> = {
+  'times-table-1': 'The freebie table — every answer is the number you started with.',
+  'times-table-2': 'Doubles kids already know from addition, so the 2s come fast.',
+  'times-table-3': 'Double it, then add one more set — the build that makes 3s stick.',
+  'times-table-4': 'Double the doubles — the 2s facts hand you every 4s answer.',
+  'times-table-5': 'The clock-and-nickels table: every answer ends in 0 or 5.',
+  'times-table-6': 'Five and one more set — the 5s facts plus one jump each.',
+  'times-table-7': 'The one with no pattern — saved by the 7×8=56 anchor.',
+  'times-table-8': 'Double the 4s and the 8s collapse to half as many new facts.',
+  'times-table-9': 'The finger trick and the digits-sum-to-9 rule, one page.',
+  'times-table-10': 'The place-value shift — write the digit, add a zero, done.',
+  'times-table-11': 'Repeat the digit up to 9, then the teen pattern takes over.',
+  'times-table-12': 'Dozens, 10-plus-2 splits, and the 144 finish line.',
+};
+for (const p of timesTablePages) {
+  p.variants = familyGallery(timesTablePages, defHref(p), TT_BLURBS);
+}

@@ -15,6 +15,7 @@ const blurbs: Record<string, string> = {
   'place-value-anchor-chart': 'The classroom-wall version: place names, periods, and one worked example with value callouts.',
   'place-value-chart-printable': 'A filled reference plus a blank write-in chart — prints as two clean letter pages.',
   'multiplication-chart': 'The classic 1-12 grid with the perfect-square diagonal shaded and click-to-check facts.',
+  'multiplication-chart-color': 'Every times table in its own soft color band — the chart kids can navigate at a glance.',
   'multiplication-chart-printable': 'Three formats in one print job — filled 1-12 chart, blank practice chart, and every times table as a list. Black and white.',
   'multiplication-chart-blank': 'The same 1-12 grid with the products removed — retrieval practice and self-grading quizzes.',
   'multiplication-chart-1-15': 'The extended grid with the 13s-15s columns real problems actually use. Prints landscape.',
@@ -63,7 +64,20 @@ const jsonLd = [
   <section class="section">
     <div class="card-grid">
       {charts.map((p) => (
-        <a class="card" href={`/${p.slug}/`}>
+        <a class:list={['card', { 'card-with-thumb': !!p.sheetImage }]} href={`/${p.slug}/`}>
+          {p.sheetImage && (
+            <span class="card-thumb">
+              <img
+                src={p.sheetImage.src}
+                alt={p.sheetImage.alt}
+                width={p.sheetImage.width}
+                height={p.sheetImage.height}
+                loading="lazy"
+                decoding="async"
+                class:list={[{ cover: p.sheetImage.height / p.sheetImage.width >= 1.6 }]}
+              />
+            </span>
+          )}
           <h2>{p.h1}</h2>
           <p>{blurbs[p.slug]}</p>
         </a>
