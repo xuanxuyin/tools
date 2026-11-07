@@ -188,6 +188,34 @@ describe('visual generators (figures + non-numeric answers)', () => {
       }
     }
   });
+
+  it('circle and triangle geometry re-derives from the figure labels', () => {
+    for (const q of collect('circleCirc', 'g7')) {
+      expect(q.figure).toBeTruthy();
+      expect(q.display).toContain('3.14'); // the π convention is stated in the prompt
+      const [v] = q.ops as [number];
+      const fromD = q.figure!.includes('d = ');
+      expect(q.mode).toBe('dec');
+      expect(q.answer).toBe(Math.round((fromD ? 3.14 * v : 2 * 3.14 * v) * 100) / 100);
+    }
+    for (const q of collect('circleArea', 'g7')) {
+      const [v] = q.ops as [number];
+      const rad = q.figure!.includes('d = ') ? v / 2 : v;
+      expect(q.answer).toBe(Math.round(3.14 * rad * rad * 100) / 100);
+    }
+    for (const q of collect('triangleArea', 'g6')) {
+      const [b, h] = q.ops as [number, number];
+      expect(b % 2).toBe(0); // even base → whole-number areas for the int mode
+      expect(q.answer).toBe((b * h) / 2);
+      expect(Number.isInteger(q.answer)).toBe(true);
+    }
+    for (const q of collect('triAngles', 'g8')) {
+      const [a, b] = q.ops as [number, number];
+      expect(a + b + q.answer).toBe(180);
+      expect(q.answer).toBeGreaterThanOrEqual(20);
+      expect(q.answer).toBeLessThanOrEqual(130);
+    }
+  });
 });
 
 describe('answer parsing by mode', () => {
@@ -307,6 +335,10 @@ describe.skipIf(!existsSync(resolve(DIST, 'multiplication-chart', 'index.html'))
       expect(html).toContain('Shaded fractions');
       expect(html).toContain('Coordinate plane');
       expect(html).toContain('Pythagorean theorem');
+      // the geometry batch (2026-11-07): circles and triangles as the subject
+      expect(html).toContain('Area of triangles');
+      expect(html).toContain('Circles: circumference &amp; area');
+      expect(html).toContain('Triangle angle sum');
       // progress stays local — the promise is on the page
       expect(html).toContain('nothing leaves the browser');
       // SSR catalog focus entries ship the radical vinculum markup

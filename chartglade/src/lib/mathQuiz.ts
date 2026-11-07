@@ -93,6 +93,10 @@ export type LevelKind =
   | { t: 'slope' }
   | { t: 'linEval' }
   | { t: 'pythag' }
+  | { t: 'circleCirc' }
+  | { t: 'circleArea' }
+  | { t: 'triangleArea' }
+  | { t: 'triAngles' }
   | { t: 'systems' }
   | { t: 'distSolve' }
   | { t: 'bothSides' }
@@ -367,6 +371,70 @@ function triangleFigure(a: number, b: number, c: number, hypMode: boolean): stri
       `<text x="${x0 + aw / 2}" y="${y0 + 18}" text-anchor="middle" font-size="13" fill="currentColor">${a}</text>` +
       `<text x="${x0 - 12}" y="${y0 - bh / 2}" text-anchor="middle" font-size="13" fill="currentColor">${hypMode ? b : '?'}</text>` +
       `<text x="${x0 + aw / 2 + 16}" y="${y0 - bh / 2 - 4}" font-size="13" fill="currentColor">${hypMode ? '?' : c}</text>`,
+  );
+}
+
+function circleFigure(rad: number, labelD: boolean): string {
+  const cx = 120;
+  const cy = 78;
+  const R = 56;
+  const seg = labelD
+    ? `<line x1="${cx - R}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="currentColor" stroke-width="1.5"/>`
+    : `<line x1="${cx}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="currentColor" stroke-width="1.5"/>`;
+  const label = labelD ? `d = ${rad * 2}` : `r = ${rad}`;
+  return S(
+    240,
+    150,
+    `<circle cx="${cx}" cy="${cy}" r="${R}" ${LN}/>` +
+      `<circle cx="${cx}" cy="${cy}" r="2.5" fill="currentColor"/>` +
+      seg +
+      `<text x="${cx}" y="${cy - 10}" text-anchor="middle" font-size="13" fill="currentColor">${label}</text>`,
+  );
+}
+
+function triangleAreaFigure(b: number, h: number): string {
+  const x0 = 25;
+  const y0 = 120;
+  const scale = Math.min(190 / b, 85 / h);
+  const bw = b * scale;
+  const hh = h * scale;
+  const ax = x0 + bw * 0.62;
+  return S(
+    240,
+    150,
+    `<polygon points="${x0},${y0} ${x0 + bw},${y0} ${ax},${y0 - hh}" ${LN}/>` +
+      `<line x1="${ax}" y1="${y0}" x2="${ax}" y2="${y0 - hh}" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/>` +
+      `<polyline points="${ax},${y0 - 8} ${ax + 8},${y0 - 8} ${ax + 8},${y0}" stroke="currentColor" stroke-width="1.5" fill="none"/>` +
+      `<text x="${x0 + bw / 2}" y="${y0 + 18}" text-anchor="middle" font-size="13" fill="currentColor">${b}</text>` +
+      `<text x="${ax + 7}" y="${(2 * y0 - hh) / 2 + 4}" font-size="13" fill="currentColor">${h}</text>`,
+  );
+}
+
+function triAnglesFigure(a: number, b: number): string {
+  const x0 = 25;
+  const bw = 190;
+  const y0 = 122;
+  const hh = 88;
+  const ax = x0 + bw * (b / (a + b));
+  const ay = y0 - hh;
+  const arc = (vx: number, vy: number, towardX: number, towardY: number, sweep: number): string => {
+    const L = Math.hypot(towardX - vx, towardY - vy) || 1;
+    const ux = (towardX - vx) / L;
+    const uy = (towardY - vy) / L;
+    const R = 15;
+    const endX = (vx + R * ux).toFixed(1);
+    const endY = (vy + R * uy).toFixed(1);
+    return `<path d="M ${(vx + R * (towardX === vx ? 0 : Math.sign(towardX - vx))).toFixed(1)} ${vy} A ${R} ${R} 0 0 ${sweep} ${endX} ${endY}" stroke="currentColor" stroke-width="1.5" fill="none"/>`;
+  };
+  return S(
+    240,
+    150,
+    `<polygon points="${x0},${y0} ${x0 + bw},${y0} ${ax},${ay}" ${LN}/>` +
+      arc(x0, y0, ax, ay, 0) +
+      arc(x0 + bw, y0, ax, ay, 1) +
+      `<text x="${x0 + 32}" y="${y0 - 10}" font-size="13" fill="currentColor">${a}°</text>` +
+      `<text x="${x0 + bw - 32}" y="${y0 - 10}" text-anchor="end" font-size="13" fill="currentColor">${b}°</text>` +
+      `<text x="${ax}" y="${ay - 12}" text-anchor="middle" font-size="15" fill="currentColor">?</text>`,
   );
 }
 
@@ -1307,6 +1375,74 @@ const genPythag: Gen = (r) => {
         steps: [`a² + b² = c² → b² = c² − a².`, `${c * c} − ${a * a} = ${b * b}, and √${b * b} = ${b}.`],
       };
 };
+/** π is exactly 3.14 in every circle prompt ("Use 3.14 for π"),
+ *  answers rounded to 2 decimals so feedback never shows float noise. */
+const PI = 3.14;
+const r2 = (x: number): number => Math.round(x * 100) / 100;
+const genCircleCirc: Gen = (r) => {
+  if (coin(r)) {
+    const d = int(r, 4, 12);
+    const c = r2(PI * d);
+    return {
+      display: `Find the circumference of this circle. Use 3.14 for π.`,
+      answer: c,
+      mode: 'dec',
+      ops: [d],
+      figure: circleFigure(d / 2, true),
+      steps: [`Circumference of a circle: C = π × d.`, `C = 3.14 × ${d} = ${c}.`],
+    };
+  }
+  const rad = int(r, 2, 9);
+  const c = r2(2 * PI * rad);
+  return {
+    display: `Find the circumference of this circle. Use 3.14 for π.`,
+    answer: c,
+    mode: 'dec',
+    ops: [rad],
+    figure: circleFigure(rad, false),
+    steps: [`Circumference of a circle: C = 2 × π × r.`, `C = 2 × 3.14 × ${rad} = ${c}.`],
+  };
+};
+const genCircleArea: Gen = (r) => {
+  const withD = coin(r);
+  const rad = int(r, 2, 9);
+  const area = r2(PI * rad * rad);
+  return {
+    display: `Find the area of this circle. Use 3.14 for π.`,
+    answer: area,
+    mode: 'dec',
+    ops: withD ? [rad * 2] : [rad],
+    figure: circleFigure(rad, withD),
+    steps: withD
+      ? [`Area of a circle: A = π × r², and r is half of d: ${rad * 2} ÷ 2 = ${rad}.`, `A = 3.14 × ${rad}² = 3.14 × ${rad * rad} = ${area}.`]
+      : [`Area of a circle: A = π × r².`, `A = 3.14 × ${rad}² = 3.14 × ${rad * rad} = ${area}.`],
+  };
+};
+const genTriangleArea: Gen = (r) => {
+  const b = int(r, 3, 7) * 2; // even base → whole-number areas
+  const h = int(r, 3, 10);
+  return {
+    display: `What is the area of this triangle?`,
+    answer: (b * h) / 2,
+    mode: 'int',
+    ops: [b, h],
+    figure: triangleAreaFigure(b, h),
+    steps: [`Area of a triangle = (base × height) ÷ 2.`, `A = (${b} × ${h}) ÷ 2 = ${b * h} ÷ 2 = ${(b * h) / 2}.`],
+  };
+};
+const genTriAngles: Gen = (r) => {
+  const a = int(r, 25, 80);
+  const b = int(r, 25, 80);
+  const third = 180 - a - b;
+  return {
+    display: `Two angles of this triangle are marked. Find the missing angle.`,
+    answer: third,
+    mode: 'int',
+    ops: [a, b],
+    figure: triAnglesFigure(a, b),
+    steps: [`The three angles inside any triangle add up to 180°.`, `180 − ${a} − ${b} = ${third}, so the missing angle is ${third}°.`],
+  };
+};
 const genSystems: Gen = (r) => {
   const x = int(r, 2, 12);
   const y = int(r, 2, 12);
@@ -1487,6 +1623,10 @@ function generatorFor(kind: LevelKind): Gen {
     case 'slope': return genSlope;
     case 'linEval': return genLinEval;
     case 'pythag': return genPythag;
+    case 'circleCirc': return genCircleCirc;
+    case 'circleArea': return genCircleArea;
+    case 'triangleArea': return genTriangleArea;
+    case 'triAngles': return genTriAngles;
     case 'systems': return genSystems;
     case 'distSolve': return genDistSolve;
     case 'bothSides': return genBothSides;
@@ -1707,14 +1847,14 @@ export const QUIZ_TRACKS: TrackSpec[] = [
     group: 'Middle school',
     blurb: 'Percents, negative numbers, exponents',
     levels: [
-      { title: 'Percent of a number', focus: '50%, 10%, 25%', kinds: [{ t: 'percentOf', pcts: [50, 10, 25] }] },
-      { title: 'More percents', focus: '20%, 75%, 5%, 40%', kinds: [{ t: 'percentOf', pcts: [20, 75, 5, 40] }] },
+      { title: 'Percents of numbers', focus: '5% to 75%', kinds: [{ t: 'percentOf', pcts: [50, 10, 25, 20, 75, 5, 40] }] },
       { title: 'Sale prices', focus: '25% off $60', kinds: [{ t: 'discount' }] },
       { title: 'Percent change', focus: 'up and down', kinds: [{ t: 'percentChange' }] },
       { title: 'Add & subtract negatives', focus: '−6 + 11', kinds: [{ t: 'intAS', range: 12 }] },
       { title: 'Multiply & divide negatives', focus: 'sign rules', kinds: [{ t: 'intMD' }] },
       { title: 'Exponents', focus: 'squares, cubes, 10ⁿ', kinds: [{ t: 'exp' }] },
       { title: 'Multiply decimals', focus: '0.7 × 0.4', kinds: [{ t: 'decMul2' }] },
+      { title: 'Area of triangles', focus: 'base × height ÷ 2', kinds: [{ t: 'triangleArea' }] },
       { title: 'GCF & LCM', focus: 'common factors and multiples', kinds: [{ t: 'gcflcm' }] },
       {
         title: '6th grade review',
@@ -1735,13 +1875,13 @@ export const QUIZ_TRACKS: TrackSpec[] = [
     group: 'Middle school',
     blurb: 'Integers, proportions, first equations',
     levels: [
-      { title: 'Integer add & subtract', focus: 'bigger ranges', kinds: [{ t: 'intAS', range: 25 }] },
-      { title: 'Integer multiply & divide', focus: 'sign rules, deeper', kinds: [{ t: 'intMD' }] },
+      { title: 'All operations with negatives', focus: 'add, subtract, multiply, divide', kinds: [{ t: 'intAS', range: 25 }, { t: 'intMD' }] },
       { title: 'Two-step equations', focus: '2x + 5 = 19', kinds: [{ t: 'solveTwoStep' }] },
       { title: 'Equations with negatives', focus: 'solutions below zero', kinds: [{ t: 'solveTwoStep', negatives: true }] },
       { title: 'Proportions', focus: '12/4 = ___/10', kinds: [{ t: 'proportion' }] },
       { title: 'Percent off', focus: 'harder discounts', kinds: [{ t: 'discount', pcts: [15, 30, 60] }] },
       { title: 'Percent up & down', focus: 'markups and markdowns', kinds: [{ t: 'percentChange' }] },
+      { title: 'Circles: circumference & area', focus: 'π ≈ 3.14', kinds: [{ t: 'circleCirc' }, { t: 'circleArea' }] },
       { title: 'Evaluate expressions', focus: 'x = −3: 5x − 2', kinds: [{ t: 'evalExpr' }] },
       { title: 'Unit rates', focus: 'miles per hour', kinds: [{ t: 'unitRate' }] },
       {
@@ -1768,7 +1908,7 @@ export const QUIZ_TRACKS: TrackSpec[] = [
       { title: 'Exponent laws', focus: '2³ × 2² = 2⁵', kinds: [{ t: 'expLaw' }] },
       { title: 'Scientific notation', focus: 'products of powers of ten', kinds: [{ t: 'sciNot' }] },
       { title: 'Slope from two points', focus: 'rise over run (plotted)', kinds: [{ t: 'slope' }] },
-      { title: 'Lines y = mx + b', focus: 'evaluate a line', kinds: [{ t: 'linEval' }] },
+      { title: 'Triangle angle sum', focus: 'angles add to 180°', kinds: [{ t: 'triAngles' }] },
       { title: 'Multi-step equations', focus: '3(x + 2) − 4 = 17', kinds: [{ t: 'distSolve' }] },
       { title: 'Pythagorean theorem', focus: 'find the missing side', kinds: [{ t: 'pythag' }] },
       { title: 'Systems of equations', focus: 'x + y, x − y', kinds: [{ t: 'systems' }] },
