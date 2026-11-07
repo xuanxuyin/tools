@@ -2829,6 +2829,359 @@ svg {
   }
 }
 
+/* ===== Leveled practice arena (#36) — quiz island on the mult chart page ===== */
+
+.mq-root {
+  margin-top: var(--sp-4);
+}
+
+.mq-boot-note {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--sp-3);
+}
+
+.mq-app {
+  background: var(--green-tint);
+  border: 1px solid rgba(47, 125, 79, 0.25);
+  border-radius: 12px;
+  padding: var(--sp-4);
+}
+
+.mq-group {
+  margin-bottom: var(--sp-2);
+}
+
+.mq-group-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin-bottom: 0.25rem;
+}
+
+.mq-group-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.mq-tab {
+  border: 1px solid rgba(47, 125, 79, 0.35);
+  background: var(--card);
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.mq-tab.is-active {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: #fff;
+}
+
+.mq-track-meta {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin: var(--sp-2) 0 var(--sp-3);
+}
+
+.mq-levels {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--sp-2);
+}
+
+.mq-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+  padding: 0.55rem 0.4rem 0.5rem;
+  border: 1px solid rgba(47, 125, 79, 0.35);
+  background: var(--card);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.mq-cell-num {
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--green-deep);
+  letter-spacing: 0.08em;
+}
+
+.mq-cell-title {
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+  line-height: 1.25;
+}
+
+.mq-cell.is-done {
+  border-color: var(--green);
+  background: #fff;
+}
+
+.mq-cell.is-locked {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.mq-cert {
+  margin-top: var(--sp-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.mq-name {
+  font-size: 0.9rem;
+}
+
+.mq-name input {
+  margin-left: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgba(47, 125, 79, 0.4);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.mq-quizhead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+
+.mq-back {
+  border: none;
+  background: none;
+  color: var(--green-deep);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+.mq-where {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.mq-dots {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: var(--sp-3);
+}
+
+.mq-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(47, 125, 79, 0.2);
+}
+
+.mq-dot.is-now {
+  background: var(--green);
+}
+
+.mq-dot.is-ok {
+  background: var(--green-deep);
+}
+
+.mq-card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: var(--sp-4);
+}
+
+.mq-fig {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--sp-3);
+  color: var(--green-deep);
+}
+
+.mq-fig svg {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+}
+
+.mq-q {
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 var(--sp-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.mq-feedback {
+  text-align: center;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin: 0 auto var(--sp-3);
+  max-width: 34rem;
+  font-size: 0.95rem;
+}
+
+.mq-feedback.is-ok {
+  background: var(--green-tint);
+  color: var(--green-deep);
+}
+
+.mq-feedback.is-wrong {
+  background: var(--amber-tint);
+  color: var(--amber);
+}
+
+.mq-answer {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.mq-answer input {
+  width: 11rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.15rem;
+  text-align: center;
+  border: 2px solid rgba(47, 125, 79, 0.4);
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.mq-answer input:focus {
+  outline: none;
+  border-color: var(--green-deep);
+}
+
+.mq-showme {
+  display: block;
+  margin: var(--sp-3) auto 0;
+  border: none;
+  background: none;
+  color: var(--amber);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mq-steps {
+  max-width: 34rem;
+  margin: var(--sp-3) auto 0;
+  background: var(--amber-tint);
+  border-radius: 8px;
+  padding: var(--sp-3);
+}
+
+.mq-steps h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  color: var(--amber);
+}
+
+.mq-steps ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.mq-result {
+  text-align: center;
+}
+
+.mq-bigstars {
+  font-size: 2.2rem;
+  color: var(--amber);
+  letter-spacing: 0.35em;
+  margin: var(--sp-2) 0;
+}
+
+.mq-headline {
+  font-size: 1.05rem;
+  margin: 0 0 0.2rem;
+}
+
+.mq-best {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  margin: 0 0 var(--sp-3);
+}
+
+.mq-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.mq-catalog {
+  margin-top: var(--sp-4);
+}
+
+.mq-catalog summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.mq-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+  margin-top: var(--sp-3);
+}
+
+.mq-catalog-col h4 {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+.mq-catalog-track {
+  margin-bottom: var(--sp-3);
+  font-size: 0.82rem;
+}
+
+.mq-catalog-track strong {
+  font-size: 0.85rem;
+}
+
+.mq-catalog-track ol {
+  margin: 0.3rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+@media (max-width: 40rem) {
+  .mq-levels {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mq-catalog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mq-app {
+    padding: var(--sp-3);
+  }
+
+  .mq-q {
+    font-size: 1.15rem;
+  }
+}
+
 /* ===== Christmas cluster (letter to Santa writing paper) ===== */
 
 .santa-sheet {

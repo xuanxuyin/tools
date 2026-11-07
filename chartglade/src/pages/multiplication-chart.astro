@@ -2,6 +2,7 @@
 import ChartPage from '../components/ChartPage.astro';
 import MultTable from '../components/printables/MultTable.astro';
 import MadMinuteSheet from '../components/printables/MadMinuteSheet.astro';
+import MathQuizIsland from '../components/MathQuizIsland.astro';
 import { multiplicationPages } from '../data/multiplication';
 import Icon from '../components/Icon.astro';
 
@@ -52,6 +53,16 @@ const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart')!;
           <a href="/times-table/12/"><strong>12s</strong><span>telling time and dozens, the finish line</span></a>
         </li>
       </ol>
+    </section>
+    <section class="section no-print" aria-labelledby="practice-h">
+      <h2 id="practice-h">Level Up: math practice from kindergarten to Algebra 1</h2>
+      <p>
+        Looking facts up is step one — producing them one at a time, level by level, is step two. Pick a grade
+        track and work through 10 levels: get 8 of 10 right to unlock the next one. Every problem carries its
+        own worked solution, and the early tracks answer with pictures — clock faces, number lines, shaded
+        fractions — not just numbers. Progress saves on this device; no account, nothing leaves the browser.
+      </p>
+      <MathQuizIsland />
     </section>
     <section class="section no-print" aria-labelledby="mad-minute-h">
       <h2 id="mad-minute-h">Mad minute: make your own timed drill</h2>

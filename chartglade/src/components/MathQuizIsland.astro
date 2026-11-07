@@ -1,0 +1,369 @@
+---
+import { QUIZ_TRACKS } from '../lib/mathQuiz';
+
+/**
+ * #36 — leveled math practice island on /multiplication-chart/.
+ * SSR shells the section intro plus the full 100-level catalog (real
+ * content with JS off); the interactive arena boots into [data-mq-root].
+ * Progress is device-local (localStorage), solutions ship with every
+ * question, and answers include fractions and clock times.
+ */
+const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
+---
+
+<div class="mq-root" id="math-quiz" data-mq-root>
+  <p class="mq-boot-note">The practice arena needs JavaScript — the complete level catalog is below it.</p>
+  <div class="mq-app" data-mq-app hidden></div>
+
+  <details class="mq-catalog">
+    <summary>All 10 tracks and 100 levels</summary>
+    <div class="mq-catalog-grid">
+      {
+        groups.map((g) => (
+          <div class="mq-catalog-col">
+            <h4>{g}</h4>
+            {QUIZ_TRACKS.filter((t) => t.group === g).map((t) => (
+              <div class="mq-catalog-track">
+                <strong>{t.label}</strong> <span>({t.ages})</span>
+                <ol>
+                  {t.levels.map((l) => (
+                    <li>
+                      <em>{l.title}</em> — {l.focus}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </details>
+</div>
+
+<script>
+  import {
+    QUIZ_TRACKS,
+    QUESTIONS_PER_LEVEL,
+    QUIZ_STORAGE_KEY,
+    emptyProgress,
+    parseProgress,
+    starsFor,
+    levelUnlocked,
+    trackPassed,
+    trackStars,
+    generateLevelQuestions,
+    isCorrect,
+    type QuizProgress,
+    type QuizQuestion,
+  } from '../lib/mathQuiz';
+
+  const app = document.querySelector<HTMLElement>('[data-mq-app]');
+  const bootNote = document.querySelector<HTMLElement>('.mq-boot-note');
+
+  type View =
+    | { v: 'levels'; track: string }
+    | { v: 'quiz'; track: string; level: number; qs: QuizQuestion[]; qi: number; score: number; wrong: boolean; shown: boolean }
+    | { v: 'result'; track: string; level: number; score: number; stars: number; best: number };
+
+  const first = loadProgress();
+  const firstTrack =
+    first.lastTrack && QUIZ_TRACKS.some((t) => t.id === first.lastTrack) ? first.lastTrack : 'g3';
+  const state: { p: QuizProgress; view: View } = {
+    p: first,
+    view: { v: 'levels', track: firstTrack },
+  };
+
+  function loadProgress(): QuizProgress {
+    try {
+      return parseProgress(localStorage.getItem(QUIZ_STORAGE_KEY)) ?? emptyProgress();
+    } catch {
+      return emptyProgress();
+    }
+  }
+
+  function saveProgress(): void {
+    try {
+      localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(state.p));
+    } catch {
+      /* private mode: progress just won't persist */
+    }
+  }
+
+  const ev = (name: string, params: Record<string, unknown>): void => {
+    const g = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    if (typeof g === 'function') g('event', name, params);
+  };
+
+  const esc = (s: string): string =>
+    s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] ?? c);
+
+  const stars = (k: number): string => '★★★'.slice(0, k) + '☆☆☆'.slice(0, 3 - k);
+
+  /* ---------------------------------------------------------------- */
+
+  function render(): void {
+    if (!app) return;
+    app.hidden = false;
+    if (bootNote) bootNote.hidden = true;
+    if (state.view.v === 'levels') renderLevels();
+    else if (state.view.v === 'quiz') renderQuiz();
+    else renderResult();
+  }
+
+  function renderLevels(): void {
+    const v = state.view;
+    if (v.v !== 'levels') return;
+    const track = QUIZ_TRACKS.find((t) => t.id === v.track) ?? QUIZ_TRACKS[0]!;
+    const earned = trackStars(state.p, track.id);
+    const done = trackPassed(state.p, track.id);
+    const cells = track.levels
+      .map((l, i) => {
+        const res = state.p.tracks[track.id]?.[String(i)];
+        const unlocked = levelUnlocked(state.p, track.id, i);
+        const cls = !unlocked ? 'is-locked' : res ? 'is-done' : 'is-open';
+        const label = !unlocked ? '🔒' : res ? stars(res.stars) : String(i + 1);
+        return `<button type="button" class="mq-cell ${cls}" data-level="${i}" ${unlocked ? '' : 'disabled'} title="${esc(l.title)}">
+          <span class="mq-cell-num">${label}</span>
+          <span class="mq-cell-title">${esc(l.title)}</span>
+        </button>`;
+      })
+      .join('');
+    app.innerHTML = `
+      <div class="mq-trackbar">
+        <div class="mq-groups">
+          ${(['Elementary', 'Middle school', 'Algebra 1'] as const)
+            .map(
+              (g) =>
+                `<div class="mq-group"><span class="mq-group-label">${g}</span><div class="mq-group-tabs">${QUIZ_TRACKS.filter((t) => t.group === g).map((t) => `<button type="button" class="mq-tab${t.id === track.id ? ' is-active' : ''}" data-track="${t.id}">${t.label}</button>`).join('')}</div></div>`,
+            )
+            .join('')}
+        </div>
+        <p class="mq-track-meta">${esc(track.label)} · ${esc(track.ages)} · ${esc(track.blurb)} — stars earned: ${earned}/30${done ? ' · track complete!' : ''}</p>
+      </div>
+      <div class="mq-levels" role="listbox" aria-label="Levels">${cells}</div>
+      ${done ? certButton(track.label) : ''}`;
+  }
+
+  function certButton(label: string): string {
+    const nameField = state.p.name
+      ? ''
+      : `<label class="mq-name">Name on the certificate: <input type="text" data-mq-name maxlength="40" placeholder="e.g. Ava"></label>`;
+    return `<div class="mq-cert">${nameField}<button type="button" class="btn btn-primary" data-mq-cert>Print certificate — ${esc(label)}</button></div>`;
+  }
+
+  function renderQuiz(): void {
+    const v = state.view;
+    if (v.v !== 'quiz') return;
+    const q = v.qs[v.qi]!;
+    const track = QUIZ_TRACKS.find((t) => t.id === v.track)!;
+    const level = track.levels[v.level]!;
+    const ph = q.mode === 'frac' ? 'e.g. 3/4' : q.mode === 'time' ? 'e.g. 3:30' : 'Your answer';
+    const im = q.mode === 'frac' || q.mode === 'time' ? 'text' : 'numeric';
+    const dots = v.qs.map((_, i) => `<span class="mq-dot${i < v.qi ? ' is-ok' : i === v.qi ? ' is-now' : ''}"></span>`).join('');
+    const feedback = v.shown
+      ? v.wrong
+        ? `<div class="mq-feedback is-wrong"><strong>Not yet.</strong> The answer is ${esc(q.answerLabel ?? String(q.answer))}.</div>`
+        : `<div class="mq-feedback is-ok"><strong>Correct!</strong></div>`
+      : '';
+    const steps = v.shown ? `<div class="mq-steps"><h4>How to do it</h4><ol>${q.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol></div>` : '';
+    app.innerHTML = `
+      <div class="mq-quizhead">
+        <button type="button" class="mq-back" data-mq-back>← Levels</button>
+        <span class="mq-where">${esc(track.label)} · Level ${v.level + 1}: ${esc(level.title)} · ${v.qi + 1}/${QUESTIONS_PER_LEVEL} · score ${v.score}</span>
+      </div>
+      <div class="mq-dots">${dots}</div>
+      <div class="mq-card">
+        ${q.figure ? `<div class="mq-fig">${q.figure}</div>` : ''}
+        <p class="mq-q">${esc(q.display)}</p>
+        ${feedback}
+        <div class="mq-answer">
+          <input type="text" data-mq-input inputmode="${im}" placeholder="${ph}" autocomplete="off" ${v.shown ? 'disabled' : ''} aria-label="Your answer">
+          ${v.shown
+            ? `<button type="button" class="btn btn-primary" data-mq-next>${v.qi + 1 === QUESTIONS_PER_LEVEL ? 'See score' : 'Next'}</button>`
+            : `<button type="button" class="btn btn-primary" data-mq-check>Check</button>`}
+        </div>
+        ${v.shown ? '' : `<button type="button" class="mq-showme" data-mq-show>Show me how</button>`}
+        ${steps}
+      </div>`;
+    const input = app.querySelector<HTMLInputElement>('[data-mq-input]');
+    if (input) {
+      input.focus();
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (v.shown) advance();
+          else check();
+        }
+      });
+    }
+  }
+
+  function renderResult(): void {
+    const v = state.view;
+    if (v.v !== 'result') return;
+    const track = QUIZ_TRACKS.find((t) => t.id === v.track)!;
+    const passed = v.stars > 0;
+    const nextOk = passed && v.level + 1 < track.levels.length;
+    const trackDone = trackPassed(state.p, v.track);
+    const headline = v.score === QUESTIONS_PER_LEVEL ? 'Perfect run!' : passed ? 'Level passed!' : 'Not quite — 8 of 10 unlocks the next level';
+    app.innerHTML = `
+      <div class="mq-card mq-result">
+        <h4>${esc(track.levels[v.level]!.title)} — ${v.score}/${QUESTIONS_PER_LEVEL}</h4>
+        <p class="mq-bigstars">${stars(v.stars)}</p>
+        <p class="mq-headline ${passed ? 'is-ok' : ''}">${headline}</p>
+        <p class="mq-best">Best on this level: ${v.best}/${QUESTIONS_PER_LEVEL}</p>
+        <div class="mq-actions">
+          <button type="button" class="btn" data-mq-retry>Try again</button>
+          ${nextOk ? `<button type="button" class="btn btn-primary" data-mq-nextlevel>Level ${v.level + 2}: ${esc(track.levels[v.level + 1]!.title)}</button>` : ''}
+          <button type="button" class="btn" data-mq-back>Back to levels</button>
+        </div>
+        ${trackDone ? certButton(track.label) : ''}
+      </div>`;
+  }
+
+  /* ---------------------------------------------------------------- */
+
+  function start(trackId: string, level: number): void {
+    const seed = (Date.now() ^ (level * 2654435761)) >>> 0;
+    const qs = generateLevelQuestions(trackId, level, seed);
+    state.view = { v: 'quiz', track: trackId, level, qs, qi: 0, score: 0, wrong: false, shown: false };
+    state.p.lastTrack = trackId;
+    saveProgress();
+    ev('quiz_start', { track: trackId, level: level + 1 });
+    render();
+  }
+
+  function check(): void {
+    const v = state.view;
+    if (v.v !== 'quiz' || v.shown) return;
+    const input = app?.querySelector<HTMLInputElement>('[data-mq-input]');
+    if (!input) return;
+    const q = v.qs[v.qi]!;
+    const ok = isCorrect(q, input.value);
+    if (ok) v.score += 1;
+    v.wrong = !ok;
+    v.shown = true;
+    render();
+  }
+
+  function advance(): void {
+    const v = state.view;
+    if (v.v !== 'quiz' || !v.shown) return;
+    v.qi += 1;
+    v.shown = false;
+    v.wrong = false;
+    if (v.qi < QUESTIONS_PER_LEVEL) {
+      render();
+      return;
+    }
+    finishAttempt();
+  }
+
+  function finishAttempt(): void {
+    const v = state.view;
+    if (v.v !== 'quiz') return;
+    const starsEarned = starsFor(v.score);
+    const prev = state.p.tracks[v.track]?.[String(v.level)];
+    const best = Math.max(prev?.best ?? 0, v.score);
+    if (starsEarned > 0) {
+      state.p.tracks[v.track] = state.p.tracks[v.track] ?? {};
+      state.p.tracks[v.track]![String(v.level)] = { stars: Math.max(starsEarned, prev?.stars ?? 0), best };
+    } else if (prev) {
+      state.p.tracks[v.track]![String(v.level)] = { ...prev, best };
+    }
+    saveProgress();
+    if (starsEarned > 0) ev('quiz_pass', { track: v.track, level: v.level + 1, stars: starsEarned });
+    state.view = { v: 'result', track: v.track, level: v.level, score: v.score, stars: starsEarned, best };
+    render();
+  }
+
+  function printCertificate(): void {
+    const v = state.view;
+    const trackId = v.v === 'levels' || v.v === 'result' ? v.track : '';
+    const track = QUIZ_TRACKS.find((t) => t.id === trackId) ?? QUIZ_TRACKS.find((t) => t.id === state.p.lastTrack);
+    if (!track || !trackPassed(state.p, track.id)) return;
+    const nameInput = app?.querySelector<HTMLInputElement>('[data-mq-name]');
+    if (nameInput && nameInput.value.trim()) {
+      state.p.name = nameInput.value.trim().slice(0, 40);
+      saveProgress();
+    }
+    const who = state.p.name ? esc(state.p.name) : '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+    const d = new Date();
+    const date = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const w = window.open('', '_blank', 'width=900,height=700');
+    if (!w) return;
+    w.document.write(`<!doctype html><html><head><title>Math Practice Certificate</title>
+      <style>
+        body{font-family:Georgia,'Times New Roman',serif;display:flex;min-height:100vh;margin:0;align-items:center;justify-content:center;background:#fff}
+        .cert{border:6px double #2f7d4f;padding:48px 56px;text-align:center;max-width:640px}
+        h1{font-size:30px;margin:0 0 4px;color:#1f5c39} .sub{font-size:15px;color:#555;margin:0 0 24px}
+        .name{font-size:34px;border-bottom:2px solid #999;display:inline-block;padding:0 24px 6px;margin:0 0 20px;min-width:280px}
+        p{font-size:16px;margin:6px 0} .stars{font-size:26px;color:#a86a14;letter-spacing:6px;margin:14px 0}
+        .date{margin-top:26px;font-size:14px;color:#555}
+        @media print{body{background:none}}
+      </style></head><body>
+      <div class="cert">
+        <h1>Certificate of Achievement</h1>
+        <p class="sub">Leveled Math Practice · ChartGlade</p>
+        <p>This certifies that</p>
+        <p class="name">${who}</p>
+        <p>completed all 10 levels of</p>
+        <p><strong>${esc(track.label)} (${esc(track.ages)})</strong></p>
+        <p class="stars">${'★'.repeat(trackStars(state.p, track.id))}${'☆'.repeat(30 - trackStars(state.p, track.id))}</p>
+        <p>${trackStars(state.p, track.id)} of 30 stars earned</p>
+        <p class="date">${date}</p>
+      </div></body></html>`);
+    w.document.close();
+    w.focus();
+    w.print();
+    ev('quiz_certificate', { track: track.id });
+  }
+
+  /* ---------------------------------------------------------------- */
+
+  app?.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const trackBtn = t.closest<HTMLElement>('[data-track]');
+    if (trackBtn) {
+      state.view = { v: 'levels', track: trackBtn.dataset.track! };
+      state.p.lastTrack = trackBtn.dataset.track;
+      saveProgress();
+      render();
+      return;
+    }
+    const levelBtn = t.closest<HTMLElement>('[data-level]');
+    if (levelBtn && !levelBtn.disabled) {
+      start((state.view as { track: string }).track ?? 'g3', Number(levelBtn.dataset.level));
+      return;
+    }
+    if (t.closest('[data-mq-check]')) return check();
+    if (t.closest('[data-mq-show]')) {
+      const v = state.view;
+      if (v.v === 'quiz') {
+        v.shown = true;
+        v.wrong = true; // "show me how" before answering counts as a miss for scoring honesty
+        render();
+      }
+      return;
+    }
+    if (t.closest('[data-mq-next]')) return advance();
+    if (t.closest('[data-mq-back]')) {
+      state.view = { v: 'levels', track: state.p.lastTrack ?? 'g3' };
+      return render();
+    }
+    if (t.closest('[data-mq-retry]')) {
+      const v = state.view;
+      if (v.v === 'result') return start(v.track, v.level);
+      return;
+    }
+    if (t.closest('[data-mq-nextlevel]')) {
+      const v = state.view;
+      if (v.v === 'result') return start(v.track, v.level + 1);
+      return;
+    }
+    if (t.closest('[data-mq-cert]')) return printCertificate();
+  });
+
+  render();
+</script>
