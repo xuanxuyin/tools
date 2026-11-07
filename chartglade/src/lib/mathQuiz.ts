@@ -1108,7 +1108,9 @@ const genPercentChange: Gen = (r, tier) => {
     ops: [old, nw],
     steps: [
       `Change = ${diff} (${up ? 'up' : 'down'}).`,
-      `Percent = change ÷ original: ${diff} ÷ ${old} = ${p}%.`,
+      // the division itself yields the decimal (78 ÷ 390 = 0.2, not "20") —
+      // show both hops so a calculator check matches the text
+      `Percent = change ÷ original: ${diff} ÷ ${old} = ${Math.round((diff / old) * 100) / 100} → ${Math.round((diff / old) * 100) / 100} × 100 = ${p}%.`,
     ],
   };
 };
@@ -1243,12 +1245,15 @@ const genProportion: Gen = (r) => {
   const x = int(r, 2, 12);
   const d = b * k;
   const a = x * k;
+  // a/d and x/b are the SAME ratio (a = x·k, d = b·k), so the missing
+  // numerator solves cleanly: blank = a × b ÷ d = x. Pairing a/b with
+  // x/d instead would make the printed proportion false (a/b = xk/b ≠ x/d).
   return {
-    display: `${a}/${b} = ___/${d}`,
+    display: `${a}/${d} = ___/${b}`,
     answer: x,
     mode: 'int',
-    ops: [a, b, d],
-    steps: [`Cross-multiply: ${a} × ${d} = ${b} × blank.`, `${a * d} = ${b} × blank → blank = ${a * d} ÷ ${b} = ${x}.`],
+    ops: [a, d, b],
+    steps: [`Cross-multiply: ${a} × ${b} = ${d} × blank.`, `${a * b} = ${d} × blank → blank = ${a * b} ÷ ${d} = ${x}.`],
   };
 };
 const genEvalExpr: Gen = (r, tier) => {
@@ -1577,7 +1582,9 @@ const genFuncEval: Gen = (r) => {
   const lin = b * x;
   const bTerm = b === 0 ? '' : ` ${b > 0 ? '+' : '−'} ${Math.abs(b)}x`;
   const cTerm = c === 0 ? '' : ` ${c > 0 ? '+' : '−'} ${Math.abs(c)}`;
-  const linStr = lin === 0 && b !== 0 ? '' : `Then ${n(sq)} ${b < 0 ? '−' : '+'} ${Math.abs(lin)} = ${n(sq + lin)}.`;
+  // the step's sign must follow the PRODUCT b×x, not the coefficient b:
+  // with b < 0 and x < 0 the product is positive ("16 + 16", not "16 − 16")
+  const linStr = lin === 0 ? '' : `Then ${n(sq)} ${lin < 0 ? '−' : '+'} ${Math.abs(lin)} = ${n(sq + lin)}.`;
   return {
     display: `f(x) = ${a === 1 ? '' : a}x²${bTerm}${cTerm}, f(${n(x)}) = ___`,
     answer: a * x * x + b * x + c,

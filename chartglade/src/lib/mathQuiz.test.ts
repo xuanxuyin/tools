@@ -189,6 +189,131 @@ describe('visual generators (figures + non-numeric answers)', () => {
     }
   });
 
+  it('function-eval solution steps re-derive arithmetically (sign audit)', () => {
+    // regression for "16 − 16 = 32": the step's operator must follow the
+    // product b×x, not the coefficient b
+    const re = /^Then (−?\d+) ([+−]) (\d+) = (−?\d+)\.$/;
+    let audited = 0;
+    for (const seed of [7, 42, 991, 20261107, 5, 12345, 777, 31337]) {
+      for (const q of generateLevelQuestions('alg1', 7, seed)) {
+        if (q.kind !== 'funcEval') continue;
+        for (const s of q.steps) {
+          const m = s.match(re);
+          if (!m) continue;
+          const a = Number(m[1]!.replace('−', '-'));
+          const c = Number(m[4]!.replace('−', '-'));
+          const want = m[2] === '+' ? a + Number(m[3]) : a - Number(m[3]);
+          expect(want, `${q.display} — "${s}"`).toBe(c);
+          audited++;
+        }
+      }
+    }
+    expect(audited).toBeGreaterThan(40);
+  });
+
+  it('every arithmetic chain in solution text re-derives (bank-wide audit)', () => {
+    // second layer of the sign audit: sweep all 100 levels, pull EVERY
+    // arithmetic chain out of steps (and any display with no blank to
+    // fill) and evaluate it. Chains are multi-equality ("A op B = C op D
+    // = E" — the distributive steps write them that way), so each
+    // '='-separated segment is evaluated on its own and all segments
+    // must agree. A chain only fails if BOTH left-to-right (the steps'
+    // convention) and standard precedence disagree.
+    const SUPMAP: Record<string, string> = { '²': '^2', '³': '^3', '⁴': '^4', '⁵': '^5' };
+    const clean = (s: string): string =>
+      s
+        .replace(/[$%,°]/g, '')
+        .replace(/(\d),(\d{3})(?!\d)/g, '$1$2')
+        .replace(/blank = /g, '') // narrative lead-in, not arithmetic ("→ blank = 140 ÷ 28 = 5")
+        .replace(/[²³⁴⁵]/g, (c) => SUPMAP[c] ?? '');
+    const OP = String.raw`[+−×÷]`;
+    const BASE = String.raw`(?:\(−?\d+(?:\.\d+)?\)|−?\d+(?:\.\d+)?)`; // plain number, maybe signed or wrapped
+    // operand: a number, a one-level parenthesized group like "(12 × 7)" or
+    // "(−4)", the "blank" placeholder, or an exponent from ²/³ conversion
+    const NUM = `(?:\\(${BASE}(?:\\s*${OP}\\s*${BASE})*\\)|${BASE}|blank)(?:\\^\\d)?`;
+    const SEG = `${NUM}(?:\\s*${OP}\\s*${NUM})*`;
+    const CHAIN = new RegExp(`${SEG}(?:\\s*=\\s*${SEG})+`, 'g');
+    const val = (tok: string): number => {
+      const em = tok.match(/\^(\d)$/);
+      const body = em ? tok.slice(0, tok.length - em[0].length) : tok;
+      // walk BASE|OP tokens in order — a bare op-scan would count the minus
+      // sign OF "−9" as an operator and misalign numbers with ops
+      const bare = body.replace(/^\(/, '').replace(/\)$/, '');
+      const toks = [...bare.matchAll(new RegExp(`${BASE}|${OP}`, 'g'))].map((x) => x[0]);
+      const inner: number[] = [];
+      const innerOps: string[] = [];
+      toks.forEach((t, i) =>
+        i % 2 === 0 ? inner.push(Number(t.replace(/[()]/g, '').replace(/−/g, '-'))) : innerOps.push(t),
+      );
+      const x = innerOps.length > 0 ? innerOps.reduce((acc, op, i) => (op === '+' ? acc + inner[i + 1]! : op === '−' ? acc - inner[i + 1]! : op === '×' ? acc * inner[i + 1]! : acc / inner[i + 1]!), inner[0]!) : (inner[0] ?? NaN);
+      return em ? x ** Number(em[1]) : x;
+    };
+    const apply = (a: number, op: string, b: number): number =>
+      op === '+' ? a + b : op === '−' ? a - b : op === '×' ? a * b : a / b;
+    const l2r = (nums: number[], ops: string[]): number => ops.reduce((acc, op, i) => apply(acc, op, nums[i + 1]!), nums[0]!);
+    const prec = (nums: number[], ops: string[]): number => {
+      const ns = [...nums];
+      const os = [...ops];
+      for (let i = 0; i < os.length; ) {
+        if (os[i] === '×' || os[i] === '÷') {
+          ns[i] = apply(ns[i]!, os[i]!, ns[i + 1]!);
+          ns.splice(i + 1, 1);
+          os.splice(i, 1);
+        } else i++;
+      }
+      return l2r(ns, os);
+    };
+    const failures: string[] = [];
+    let audited = 0;
+    for (const track of QUIZ_TRACKS) {
+      for (let level = 0; level < track.levels.length; level++) {
+        for (const seed of [3, 42, 991, 20261107, 777]) {
+          for (const q of generateLevelQuestions(track.id, level, seed)) {
+            const texts = [...q.steps];
+            if (!q.display.includes('___')) texts.push(q.display);
+            for (const raw of texts) {
+              for (const m of clean(raw).matchAll(CHAIN)) {
+                const chain = m[0];
+                const segs = chain.split('=').map((sg) => sg.trim());
+                // walk NUM|OP tokens in order — a bare op-scan would count
+                // the minus sign OF "−9" as an operator and misalign
+                const numsArr: number[][] = [];
+                const opsArr: string[][] = [];
+                for (const sg of segs) {
+                  const toks = [...sg.matchAll(new RegExp(`${NUM}|${OP}`, 'g'))].map((x) => x[0]);
+                  const nums: number[] = [];
+                  const ops: string[] = [];
+                  toks.forEach((t, i) => (i % 2 === 0 ? nums.push(val(t)) : ops.push(t)));
+                  numsArr.push(nums);
+                  opsArr.push(ops);
+                }
+                // unit words ("8 tens × 2") and percent shorthand ("50% = 88")
+                // leave bare "A = B" matches with no arithmetic to check —
+                // skip those; a real worked step always carries an operator
+                if (!opsArr.some((o) => o.length > 0)) continue;
+                // chains still holding a "blank" placeholder state no values
+                if (numsArr.some((ns) => ns.some((v) => Number.isNaN(v)))) continue;
+                const agree = (f: (i: number) => number): boolean => {
+                  const first = f(0);
+                  return segs.every((_, i) => Math.abs(f(i) - first) < 1e-6 * Math.max(1, Math.abs(first)));
+                };
+                const l2rOk = agree((i) => l2r(numsArr[i]!, opsArr[i]!));
+                const precOk = agree((i) => prec(numsArr[i]!, opsArr[i]!));
+                if (!(l2rOk || precOk)) {
+                  failures.push(`${track.id} L${level + 1} "${raw}" → "${chain}"`);
+                }
+                audited++;
+              }
+            }
+          }
+        }
+      }
+    }
+    console.log(`[audit] ${audited} arithmetic chains checked`);
+    expect(failures.slice(0, 20), `${failures.length} broken chains (of ${audited})`).toEqual([]);
+    expect(audited).toBeGreaterThan(1000);
+  });
+
   it('no duplicate questions inside a level (tiny kindergarten pools excepted)', () => {
     for (const track of QUIZ_TRACKS) {
       for (let level = 0; level < track.levels.length; level++) {
