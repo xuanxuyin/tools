@@ -186,6 +186,15 @@ type Rand = () => number;
 const int = (r: Rand, lo: number, hi: number): number => lo + Math.floor(r() * (hi - lo + 1));
 const pick = <T,>(r: Rand, arr: readonly T[]): T => arr[Math.floor(r() * arr.length)]!;
 const coin = (r: Rand): boolean => r() < 0.5;
+/** tier-biased draw for OPERANDS (👤 2026-11-07: "每个 level 都没有难度" —
+ *  uniform draws put half the questions in the easy band). t1 = lower half
+ *  (ease-back floor), t2 = upper 3/4 (the standard start), t3 = top half
+ *  (challenge). Respects the level's ceiling: never exceeds hi. */
+const tInt = (r: Rand, tier: 1 | 2 | 3, lo: number, hi: number): number => {
+  const span = Math.max(0, hi - lo);
+  const lift = tier === 1 ? 0 : tier === 2 ? Math.floor(span * 0.25) : Math.floor(span * 0.5);
+  return int(r, Math.min(lo + lift, hi), hi);
+};
 
 /* ------------------------------------------------------------------ */
 /* SVG figure builders (line art, currentColor + site green tokens)    */
@@ -515,20 +524,20 @@ function subSteps(a: number, b: number, ans: number): string[] {
 }
 
 function genAdd(min: number, max: number, sumMax?: number): Gen {
-  return (r) => {
-    let a = int(r, min, max);
-    let b = int(r, min, max);
+  return (r, tier) => {
+    let a = tInt(r, tier, min, max);
+    let b = tInt(r, tier, min, max);
     if (sumMax !== undefined) {
-      for (let i = 0; i < 60 && a + b > sumMax; i++) b = int(r, min, Math.min(max, sumMax - a));
+      for (let i = 0; i < 60 && a + b > sumMax; i++) b = tInt(r, tier, min, Math.min(max, sumMax - a));
       b = Math.max(min, Math.min(b, sumMax - a));
     }
     return { display: `${a} + ${b} = ___`, answer: a + b, mode: 'int', ops: [a, b], steps: addSteps(a, b, a + b) };
   };
 }
 function genSub(min: number, max: number): Gen {
-  return (r) => {
-    let a = int(r, min, max);
-    let b = int(r, min, max);
+  return (r, tier) => {
+    let a = tInt(r, tier, min, max);
+    let b = tInt(r, tier, min, max);
     if (b > a) [a, b] = [b, a];
     return { display: `${a} − ${b} = ___`, answer: a - b, mode: 'int', ops: [a, b], steps: subSteps(a, b, a - b) };
   };
@@ -536,11 +545,11 @@ function genSub(min: number, max: number): Gen {
 function genMixedAS(min: number, max: number, sumMax?: number): Gen {
   const add = genAdd(min, max, sumMax);
   const sub = genSub(min, max);
-  return (r) => (coin(r) ? add(r) : sub(r));
+  return (r, tier) => (coin(r) ? add(r, tier) : sub(r, tier));
 }
 function genDoubles(min: number, max: number): Gen {
-  return (r) => {
-    const a = int(r, min, max);
+  return (r, tier) => {
+    const a = tInt(r, tier, min, max);
     return {
       display: `${a} + ${a} = ___`,
       answer: a + a,
@@ -551,8 +560,8 @@ function genDoubles(min: number, max: number): Gen {
   };
 }
 function genNearDoubles(min: number, max: number): Gen {
-  return (r) => {
-    const a = int(r, min, max);
+  return (r, tier) => {
+    const a = tInt(r, tier, min, max);
     return {
       display: `${a} + ${a + 1} = ___`,
       answer: a + a + 1,
@@ -563,9 +572,12 @@ function genNearDoubles(min: number, max: number): Gen {
   };
 }
 function genMissingAddend(sumMin: number, sumMax: number, total?: number): Gen {
-  return (r) => {
-    const c = total ?? int(r, sumMin, sumMax);
-    const a = int(r, 0, c - 1);
+  return (r, tier) => {
+    const c = total ?? tInt(r, tier, sumMin, sumMax);
+    // harder = the blank is FAR from the known addend, so bias a DOWN
+    const lift = tier === 1 ? 0 : tier === 2 ? 0.25 : 0.5;
+    const aCeil = Math.max(1, c - 1 - Math.floor((c - 1) * lift));
+    const a = int(r, 0, aCeil);
     return {
       display: `${a} + ___ = ${c}`,
       answer: c - a,
@@ -575,8 +587,8 @@ function genMissingAddend(sumMin: number, sumMax: number, total?: number): Gen {
     };
   };
 }
-const genTenPlus: Gen = (r) => {
-  const b = int(r, 1, 9);
+const genTenPlus: Gen = (r, tier) => {
+  const b = tInt(r, tier, 1, 9);
   return {
     display: `10 + ${b} = ___`,
     answer: 10 + b,
@@ -586,12 +598,12 @@ const genTenPlus: Gen = (r) => {
   };
 };
 function genThreeAdd(min: number, max: number, sumMax?: number): Gen {
-  return (r) => {
-    let a = int(r, min, max);
-    let b = int(r, min, max);
-    let c = int(r, min, max);
+  return (r, tier) => {
+    let a = tInt(r, tier, min, max);
+    let b = tInt(r, tier, min, max);
+    let c = tInt(r, tier, min, max);
     if (sumMax !== undefined) {
-      for (let i = 0; i < 60 && a + b + c > sumMax; i++) c = int(r, min, Math.min(max, sumMax - a - b));
+      for (let i = 0; i < 60 && a + b + c > sumMax; i++) c = tInt(r, tier, min, Math.min(max, sumMax - a - b));
       c = Math.max(min, Math.min(c, sumMax - a - b));
     }
     const ab = a + b;
@@ -605,9 +617,9 @@ function genThreeAdd(min: number, max: number, sumMax?: number): Gen {
   };
 }
 function genTenMoreLess(min: number, max: number): Gen {
-  return (r) => {
+  return (r, tier) => {
     const plus = coin(r);
-    const a = int(r, plus ? min : min + 10, max);
+    const a = tInt(r, tier, plus ? min : min + 10, max);
     return {
       display: `${a} ${plus ? '+' : '−'} 10 = ___`,
       answer: plus ? a + 10 : a - 10,
@@ -620,24 +632,24 @@ function genTenMoreLess(min: number, max: number): Gen {
     };
   };
 }
-const genAddAcross10: Gen = (r) => {
-  let a = int(r, 2, 9);
-  let b = int(r, 2, 9);
+const genAddAcross10: Gen = (r, tier) => {
+  let a = tInt(r, tier, 2, 9);
+  let b = tInt(r, tier, 2, 9);
   for (let i = 0; i < 60 && a + b <= 10; i++) {
-    a = int(r, 2, 9);
-    b = int(r, 2, 9);
+    a = tInt(r, tier, 2, 9);
+    b = tInt(r, tier, 2, 9);
   }
   return { display: `${a} + ${b} = ___`, answer: a + b, mode: 'int', ops: [a, b], steps: addSteps(a, b, a + b) };
 };
-const genSubAcross10: Gen = (r) => {
-  const a = int(r, 11, 18);
+const genSubAcross10: Gen = (r, tier) => {
+  const a = tInt(r, tier, 11, 18);
   const b = int(r, a - 9, 9);
   return { display: `${a} − ${b} = ___`, answer: a - b, mode: 'int', ops: [a, b], steps: subSteps(a, b, a - b) };
 };
-const genSubAcrossTen: Gen = (r) => {
-  const b = int(r, 2, 9);
-  let a = int(r, 21, 99);
-  for (let i = 0; i < 60 && a % 10 >= b; i++) a = int(r, 21, 99);
+const genSubAcrossTen: Gen = (r, tier) => {
+  const b = tInt(r, tier, 2, 9);
+  let a = tInt(r, tier, 21, 99);
+  for (let i = 0; i < 60 && a % 10 >= b; i++) a = tInt(r, tier, 21, 99);
   const ones = a % 10;
   return {
     display: `${a} − ${b} = ___`,
@@ -647,8 +659,8 @@ const genSubAcrossTen: Gen = (r) => {
     steps: [`Split the ${b}: take ${ones} first — ${a} − ${ones} = ${a - ones}.`, `Then ${a - ones} − ${b - ones} = ${a - b}.`],
   };
 };
-const genAddTens: Gen = (r) => {
-  const t1 = int(r, 1, 9);
+const genAddTens: Gen = (r, tier) => {
+  const t1 = tInt(r, tier, 1, 9);
   const t2 = int(r, 1, Math.min(9, 10 - t1));
   return {
     display: `${t1 * 10} + ${t2 * 10} = ___`,
@@ -658,9 +670,9 @@ const genAddTens: Gen = (r) => {
     steps: [`Tens add just like ones: ${t1} tens + ${t2} tens = ${t1 + t2} tens.`, `${t1 + t2} tens = ${(t1 + t2) * 10}.`],
   };
 };
-const genSkipCount: Gen = (r) => {
-  const step = pick(r, [2, 5, 10]);
-  const start = step * int(r, 1, Math.max(1, Math.floor((100 - 4 * step) / step)));
+const genSkipCount: Gen = (r, tier) => {
+  const step = tier === 1 ? pick(r, [2, 5, 10]) : tier === 2 ? pick(r, [2, 3, 4, 5, 10]) : pick(r, [3, 4, 6, 7, 8, 9]);
+  const start = step * tInt(r, tier, 1, Math.max(1, Math.floor((100 - 4 * step) / step)));
   const terms = [0, 1, 2, 3].map((i) => start + i * step);
   return {
     display: `${terms.join(', ')}, ___`,
@@ -674,8 +686,8 @@ const genSkipCount: Gen = (r) => {
 /* --- visual generators (figures) ----------------------------------- */
 
 function genCountDots(min: number, max: number): Gen {
-  return (r) => {
-    const count = int(r, min, max);
+  return (r, tier) => {
+    const count = tInt(r, tier, min, max);
     return {
       display: `How many dots?`,
       answer: count,
@@ -724,9 +736,9 @@ const genClock: Gen = (r) => {
   };
 };
 
-const genNumberLine: Gen = (r) => {
-  const step = pick(r, [1, 2, 5, 10]);
-  const jumps = int(r, 4, 8);
+const genNumberLine: Gen = (r, tier) => {
+  const step = tier === 1 ? pick(r, [1, 2, 5, 10]) : tier === 2 ? pick(r, [2, 3, 5, 10]) : pick(r, [3, 4, 6, 7, 8]);
+  const jumps = tInt(r, tier, 4, 8);
   const target = jumps * step;
   return {
     display: `What number is the dot on?`,
@@ -739,11 +751,11 @@ const genNumberLine: Gen = (r) => {
 };
 
 const BAR_CATS = ['cats', 'dogs', 'birds'];
-const genBarGraph: Gen = (r) => {
+const genBarGraph: Gen = (r, tier) => {
   const diff = coin(r);
-  const cats = diff ? int(r, 2, 7) : int(r, 2, 9);
-  const dogs = diff ? int(r, cats + 1, 9) : int(r, 2, 9);
-  let birds = int(r, 2, 9);
+  const cats = tInt(r, tier, 2, diff ? 7 : 9);
+  const dogs = diff ? int(r, cats + 1, 9) : tInt(r, tier, 2, 9);
+  let birds = tInt(r, tier, 2, 9);
   for (let i = 0; i < 60 && (birds === cats || birds === dogs); i++) birds = int(r, 2, 9);
   const vals = [cats, dogs, birds];
   return {
@@ -760,9 +772,9 @@ const genBarGraph: Gen = (r) => {
 };
 
 function genTimesTable(tables: number[]): Gen {
-  return (r) => {
+  return (r, tier) => {
     const t = pick(r, tables);
-    const b = int(r, 1, 12);
+    const b = tInt(r, tier, 1, 12);
     const ans = t * b;
     return coin(r)
       ? { display: `${t} × ${b} = ___`, answer: ans, mode: 'int', ops: [t, b], steps: tableSteps(t, b, ans) }
@@ -791,9 +803,9 @@ function tableSteps(t: number, b: number, ans: number): string[] {
 }
 
 function genDivFacts(divisors: number[], qMin = 2, qMax = 12): Gen {
-  return (r) => {
+  return (r, tier) => {
     const b = pick(r, divisors);
-    const q = int(r, qMin, qMax);
+    const q = tInt(r, tier, qMin, qMax);
     return {
       display: `${b * q} ÷ ${b} = ___`,
       answer: q,
@@ -803,14 +815,14 @@ function genDivFacts(divisors: number[], qMin = 2, qMax = 12): Gen {
     };
   };
 }
-const genMixedMD: Gen = (r) => {
+const genMixedMD: Gen = (r, tier) => {
   if (coin(r)) {
-    const t = int(r, 2, 12);
-    const b = int(r, 2, 12);
+    const t = tInt(r, tier, 2, 12);
+    const b = tInt(r, tier, 2, 12);
     return { display: `${t} × ${b} = ___`, answer: t * b, mode: 'int', ops: [t, b], steps: tableSteps(t, b, t * b) };
   }
-  const b = int(r, 2, 12);
-  const q = int(r, 2, 12);
+  const b = tInt(r, tier, 2, 12);
+  const q = tInt(r, tier, 2, 12);
   return {
     display: `${b * q} ÷ ${b} = ___`,
     answer: q,
@@ -820,9 +832,9 @@ const genMixedMD: Gen = (r) => {
   };
 };
 function genTwoByOne(aMin: number, aMax: number, bMin: number, bMax: number): Gen {
-  return (r) => {
-    const a = int(r, aMin, aMax);
-    const b = int(r, bMin, bMax);
+  return (r, tier) => {
+    const a = tInt(r, tier, aMin, aMax);
+    const b = tInt(r, tier, bMin, bMax);
     const tens = Math.floor(a / 10) * 10;
     const ones = a - tens;
     const steps =
@@ -836,9 +848,9 @@ function genTwoByOne(aMin: number, aMax: number, bMin: number, bMax: number): Ge
     return { display: `${a} × ${b} = ___`, answer: a * b, mode: 'int', ops: [a, b], steps };
   };
 }
-const genMultTens: Gen = (r) => {
-  const b = int(r, 2, 9);
-  const t = int(r, 2, 9) * 10;
+const genMultTens: Gen = (r, tier) => {
+  const b = tInt(r, tier, 2, 9);
+  const t = tInt(r, tier, 2, 9) * 10;
   return coin(r)
     ? { display: `${b} × ${t} = ___`, answer: b * t, mode: 'int', ops: [b, t], steps: multTensSteps(b, t, b * t) }
     : { display: `${t} × ${b} = ___`, answer: b * t, mode: 'int', ops: [t, b], steps: multTensSteps(b, t, b * t) };
@@ -846,9 +858,9 @@ const genMultTens: Gen = (r) => {
 function multTensSteps(b: number, t: number, ans: number): string[] {
   return [`${t} is ${t / 10} tens, so this is ${b} × ${t / 10} tens.`, `${b} × ${t / 10} = ${ans / 10}, and that many tens is ${ans}.`];
 }
-const genDivTens: Gen = (r) => {
-  const b = int(r, 2, 9);
-  const t = int(r, 2, 9) * 10;
+const genDivTens: Gen = (r, tier) => {
+  const b = tInt(r, tier, 2, 9);
+  const t = tInt(r, tier, 2, 9) * 10;
   return coin(r)
     ? {
         display: `${b * t} ÷ ${b} = ___`,
@@ -866,9 +878,9 @@ const genDivTens: Gen = (r) => {
       };
 };
 function genMissingFactor(min: number, max: number): Gen {
-  return (r) => {
-    const b = int(r, min, max);
-    const q = int(r, min, max);
+  return (r, tier) => {
+    const b = tInt(r, tier, min, max);
+    const q = tInt(r, tier, min, max);
     return {
       display: `___ × ${b} = ${b * q}`,
       answer: q,
@@ -897,9 +909,9 @@ const genShadedFraction: Gen = (r) => {
   };
 };
 
-const genAreaRect: Gen = (r) => {
-  const l = int(r, 3, 12);
-  const w = int(r, 2, 9);
+const genAreaRect: Gen = (r, tier) => {
+  const l = tInt(r, tier, 3, 12);
+  const w = tInt(r, tier, 2, 9);
   return {
     display: `What is the area of this rectangle?`,
     answer: l * w,
@@ -909,9 +921,9 @@ const genAreaRect: Gen = (r) => {
     steps: [`Area of a rectangle = length × width.`, `${l} × ${w} = ${l * w} square units.`],
   };
 };
-const genPerimRect: Gen = (r) => {
-  const l = int(r, 3, 12);
-  const w = int(r, 2, 9);
+const genPerimRect: Gen = (r, tier) => {
+  const l = tInt(r, tier, 3, 12);
+  const w = tInt(r, tier, 2, 9);
   return {
     display: `What is the perimeter of this rectangle?`,
     answer: 2 * (l + w),
@@ -922,12 +934,12 @@ const genPerimRect: Gen = (r) => {
   };
 };
 
-const genCoordPoint: Gen = (r) => {
+const genCoordPoint: Gen = (r, tier) => {
   let x = 0;
   let y = 0;
   while (x === 0 && y === 0) {
-    x = int(r, -4, 4);
-    y = int(r, -4, 4);
+    x = (coin(r) ? 1 : -1) * tInt(r, tier, 1, 4);
+    y = (coin(r) ? 1 : -1) * tInt(r, tier, 1, 4);
   }
   const askX = coin(r);
   const asked = askX ? x : y;
@@ -946,9 +958,9 @@ const genCoordPoint: Gen = (r) => {
   };
 };
 
-const genDecAdd: Gen = (r) => {
-  const k = int(r, 1, 49);
-  const m = int(r, 1, Math.min(49, 99 - k));
+const genDecAdd: Gen = (r, tier) => {
+  const k = tInt(r, tier, 1, 49);
+  const m = tInt(r, tier, 1, Math.min(49, 99 - k));
   return {
     display: `${fmt1(k / 10)} + ${fmt1(m / 10)} = ___`,
     answer: (k + m) / 10,
@@ -957,9 +969,9 @@ const genDecAdd: Gen = (r) => {
     steps: [`Think in tenths: ${k} tenths + ${m} tenths = ${k + m} tenths.`, `${k + m} tenths = ${fmt1((k + m) / 10)}.`],
   };
 };
-const genDecSub: Gen = (r) => {
-  let k = int(r, 1, 99);
-  let m = int(r, 1, 99);
+const genDecSub: Gen = (r, tier) => {
+  let k = tInt(r, tier, 1, 99);
+  let m = tInt(r, tier, 1, 99);
   if (m > k) [k, m] = [m, k];
   if (m === k) m = k - 1;
   return {
@@ -970,17 +982,17 @@ const genDecSub: Gen = (r) => {
     steps: [`Think in tenths: ${k} tenths − ${m} tenths = ${k - m} tenths.`, `${k - m} tenths = ${fmt1((k - m) / 10)}.`],
   };
 };
-const genDecMul: Gen = (r) => {
-  const a = int(r, 1, 9);
-  const b = int(r, 2, 9);
+const genDecMul: Gen = (r, tier) => {
+  const a = tInt(r, tier, 1, 9);
+  const b = tInt(r, tier, 2, 9);
   const steps = [`Multiply the whole numbers: ${a} × ${b} = ${a * b}.`, `One factor was tenths, so the product is tenths: ${fmt1((a * b) / 10)}.`];
   return coin(r)
     ? { display: `${fmt1(a / 10)} × ${b} = ___`, answer: (a * b) / 10, mode: 'dec', ops: [a, b], steps }
     : { display: `${b} × ${fmt1(a / 10)} = ___`, answer: (a * b) / 10, mode: 'dec', ops: [b, a], steps };
 };
-const genDecMul2: Gen = (r) => {
-  const a = int(r, 2, 9);
-  const b = int(r, 2, 9);
+const genDecMul2: Gen = (r, tier) => {
+  const a = tInt(r, tier, 2, 9);
+  const b = tInt(r, tier, 2, 9);
   return {
     display: `${fmt1(a / 10)} × ${fmt1(b / 10)} = ___`,
     answer: (a * b) / 100,
@@ -989,9 +1001,9 @@ const genDecMul2: Gen = (r) => {
     steps: [`Tenths × tenths gives hundredths: ${a} × ${b} = ${a * b}.`, `${a * b} hundredths = ${fmt2((a * b) / 100)}.`],
   };
 };
-const genDecDiv: Gen = (r) => {
-  const b = int(r, 2, 9);
-  const m = int(r, 1, Math.floor(99 / b));
+const genDecDiv: Gen = (r, tier) => {
+  const b = tInt(r, tier, 2, 9);
+  const m = tInt(r, tier, 1, Math.floor(99 / b));
   return {
     display: `${fmt1((b * m) / 10)} ÷ ${b} = ___`,
     answer: m / 10,
@@ -1001,9 +1013,9 @@ const genDecDiv: Gen = (r) => {
   };
 };
 function genFracOf(fracs: [number, number][]): Gen {
-  return (r) => {
+  return (r, tier) => {
     const f = pick(r, fracs);
-    const t = f[1] * int(r, 2, 12);
+    const t = f[1] * tInt(r, tier, 2, 12);
     return {
       display: `${fracGlyph(f)} of ${t} = ___`,
       answer: (f[0] * t) / f[1],
@@ -1014,11 +1026,13 @@ function genFracOf(fracs: [number, number][]): Gen {
   };
 }
 function genOrderOps(terms: 3 | 4 = 3): Gen {
-  return (r) => {
-    const a = int(r, 1, 20);
-    const b = int(r, 2, 9);
-    const c = int(r, 2, 9);
-    if (terms === 3) {
+  return (r, tier) => {
+    // tier 3 earns the fourth term — longer chains, more bookkeeping
+    const cnt: 3 | 4 = tier === 3 ? 4 : terms;
+    const a = tInt(r, tier, 1, 20);
+    const b = tInt(r, tier, 2, 9);
+    const c = tInt(r, tier, 2, 9);
+    if (cnt === 3) {
       return {
         display: `${a} + ${b} × ${c} = ___`,
         answer: a + b * c,
@@ -1027,7 +1041,7 @@ function genOrderOps(terms: 3 | 4 = 3): Gen {
         steps: [`Multiply first: ${b} × ${c} = ${b * c}.`, `Then add: ${a} + ${b * c} = ${a + b * c}.`],
       };
     }
-    const d = int(r, 1, 20);
+    const d = tInt(r, tier, 1, 20);
     return {
       display: `${a} + ${b} × ${c} − ${d} = ___`,
       answer: a + b * c - d,
@@ -1038,8 +1052,8 @@ function genOrderOps(terms: 3 | 4 = 3): Gen {
   };
 }
 function genSquare(max: number): Gen {
-  return (r) => {
-    const k = int(r, 2, max);
+  return (r, tier) => {
+    const k = tInt(r, tier, 2, max);
     return {
       display: `${k}² = ___`,
       answer: k * k,
@@ -1050,9 +1064,9 @@ function genSquare(max: number): Gen {
   };
 }
 function genTwoByTwo(min: number, max: number): Gen {
-  return (r) => {
-    const a = int(r, min, max);
-    const b = int(r, min, max);
+  return (r, tier) => {
+    const a = tInt(r, tier, min, max);
+    const b = tInt(r, tier, min, max);
     const tb = Math.floor(b / 10) * 10;
     const ob = b - tb;
     return {
@@ -1208,14 +1222,14 @@ const genIntMD: Gen = (r, tier) => {
     ],
   };
 };
-const genExp: Gen = (r) => {
+const genExp: Gen = (r, tier) => {
   const which = int(r, 0, 2);
   if (which === 0) {
-    const k = int(r, 4, 15);
+    const k = tInt(r, tier, 4, 15);
     return { display: `${k}² = ___`, answer: k * k, mode: 'int', ops: [k, 2], steps: [`${k}² = ${k} × ${k}.`, `${k} × ${k} = ${k * k}.`] };
   }
   if (which === 1) {
-    const k = int(r, 2, 6);
+    const k = tInt(r, tier, 2, 6);
     return { display: `${k}³ = ___`, answer: k ** 3, mode: 'int', ops: [k, 3], steps: [`${k}³ = ${k} × ${k} × ${k}.`, `= ${k * k} × ${k} = ${k ** 3}.`] };
   }
   const k = int(r, 2, 6);
@@ -1227,9 +1241,9 @@ const genExp: Gen = (r) => {
     steps: [`A power of ten is a 1 followed by zeros — one zero per exponent.`, `10${sup(k)} = 1 followed by ${k} zeros = ${10 ** k}.`],
   };
 };
-const genGcfLcm: Gen = (r) => {
+const genGcfLcm: Gen = (r, tier) => {
   if (coin(r)) {
-    const g = int(r, 2, 9);
+    const g = tInt(r, tier, 2, 9);
     let m = int(r, 2, 9);
     let nn = int(r, 2, 9);
     for (let i = 0; i < 60 && (m === nn || gcd(m, nn) !== 1); i++) {
@@ -1244,8 +1258,8 @@ const genGcfLcm: Gen = (r) => {
       steps: [`GCF = the biggest number dividing both.`, `Both are ${g} × something, and the somethings (${m}, ${nn}) share nothing, so the GCF is ${g}.`],
     };
   }
-  const a = int(r, 3, 12);
-  let b = int(r, 3, 12);
+  const a = tInt(r, tier, 3, 12);
+  let b = tInt(r, tier, 3, 12);
   for (let i = 0; i < 60 && b === a; i++) b = int(r, 3, 12);
   return {
     display: `LCM(${a}, ${b}) = ___`,
@@ -1275,10 +1289,10 @@ function genSolveTwoStep(negatives = false): Gen {
     };
   };
 }
-const genProportion: Gen = (r) => {
-  const k = int(r, 2, 9);
-  const b = int(r, 2, 9);
-  const x = int(r, 2, 12);
+const genProportion: Gen = (r, tier) => {
+  const k = tInt(r, tier, 2, 9);
+  const b = tInt(r, tier, 2, 9);
+  const x = tInt(r, tier, 2, 12);
   const d = b * k;
   const a = x * k;
   // a/d and x/b are the SAME ratio (a = x·k, d = b·k), so the missing
@@ -1306,9 +1320,9 @@ const genEvalExpr: Gen = (r, tier) => {
     steps: [`Substitute: ${a} × (${n(x)}) = ${n(prod)}.`, `${n(prod)} ${minus ? '−' : '+'} ${b} = ${n(minus ? prod - b : prod + b)}.`],
   };
 };
-const genUnitRate: Gen = (r) => {
-  const rate = int(r, 3, 15);
-  const cnt = int(r, 3, 9);
+const genUnitRate: Gen = (r, tier) => {
+  const rate = tInt(r, tier, 3, 15);
+  const cnt = tInt(r, tier, 3, 9);
   const total = rate * cnt;
   const tmpl = pick(r, [
     [`${total} miles in ${cnt} hours = ___ miles per hour`, 'mph'],
@@ -1400,10 +1414,10 @@ const genSlope: Gen = (r) => {
     ],
   };
 };
-const genLinEval: Gen = (r) => {
-  const m = (coin(r) ? -1 : 1) * int(r, 2, 9);
-  const b = int(r, -15, 15);
-  const x = int(r, -6, 6);
+const genLinEval: Gen = (r, tier) => {
+  const m = (coin(r) ? -1 : 1) * tInt(r, tier, 2, 9);
+  const b = (coin(r) ? -1 : 1) * tInt(r, tier, 1, 15);
+  const x = (coin(r) ? -1 : 1) * tInt(r, tier, 1, 6);
   const prod = m * x;
   return {
     display: `y = ${m === 1 ? '' : m === -1 ? '−' : n(m)}x${signedTerm(b, '')}, x = ${n(x)}: y = ___`,
@@ -1446,7 +1460,7 @@ const genPythag: Gen = (r, tier) => {
  *  answers rounded to 2 decimals so feedback never shows float noise. */
 const PI = 3.14;
 const r2 = (x: number): number => Math.round(x * 100) / 100;
-const genCircleCirc: Gen = (r) => {
+const genCircleCirc: Gen = (r, tier) => {
   if (coin(r)) {
     const d = int(r, 4, 12);
     const c = r2(PI * d);
@@ -1459,7 +1473,7 @@ const genCircleCirc: Gen = (r) => {
       steps: [`Circumference of a circle: C = π × d.`, `C = 3.14 × ${d} = ${c}.`],
     };
   }
-  const rad = int(r, 2, 9);
+  const rad = tInt(r, tier, 2, 9);
   const c = r2(2 * PI * rad);
   return {
     display: `Find the circumference of this circle. Use 3.14 for π.`,
@@ -1470,9 +1484,9 @@ const genCircleCirc: Gen = (r) => {
     steps: [`Circumference of a circle: C = 2 × π × r.`, `C = 2 × 3.14 × ${rad} = ${c}.`],
   };
 };
-const genCircleArea: Gen = (r) => {
+const genCircleArea: Gen = (r, tier) => {
   const withD = coin(r);
-  const rad = int(r, 2, 9);
+  const rad = tInt(r, tier, 2, 9);
   const area = r2(PI * rad * rad);
   return {
     display: `Find the area of this circle. Use 3.14 for π.`,
@@ -1485,9 +1499,9 @@ const genCircleArea: Gen = (r) => {
       : [`Area of a circle: A = π × r².`, `A = 3.14 × ${rad}² = 3.14 × ${rad * rad} = ${area}.`],
   };
 };
-const genTriangleArea: Gen = (r) => {
-  const b = int(r, 3, 7) * 2; // even base → whole-number areas
-  const h = int(r, 3, 10);
+const genTriangleArea: Gen = (r, tier) => {
+  const b = tInt(r, tier, 3, 7) * 2; // even base → whole-number areas
+  const h = tInt(r, tier, 3, 10);
   return {
     display: `What is the area of this triangle?`,
     answer: (b * h) / 2,
@@ -1497,9 +1511,9 @@ const genTriangleArea: Gen = (r) => {
     steps: [`Area of a triangle = (base × height) ÷ 2.`, `A = (${b} × ${h}) ÷ 2 = ${b * h} ÷ 2 = ${(b * h) / 2}.`],
   };
 };
-const genTriAngles: Gen = (r) => {
-  const a = int(r, 25, 80);
-  const b = int(r, 25, 80);
+const genTriAngles: Gen = (r, tier) => {
+  const a = tInt(r, tier, 25, 80);
+  const b = tInt(r, tier, 25, 80);
   const third = 180 - a - b;
   return {
     display: `Two angles of this triangle are marked. Find the missing angle.`,
@@ -1512,8 +1526,8 @@ const genTriAngles: Gen = (r) => {
 };
 const genSystems: Gen = (r, tier) => {
   const hi = tier === 1 ? 8 : tier === 2 ? 12 : 20;
-  const x = int(r, 2, hi);
-  const y = int(r, 2, hi);
+  const x = tInt(r, tier, 2, hi);
+  const y = tInt(r, tier, 2, hi);
   const askX = coin(r);
   return {
     display: `x + y = ${x + y} and x − y = ${n(x - y)}: ${askX ? 'x' : 'y'} = ___`,
@@ -1546,12 +1560,12 @@ const genDistSolve: Gen = (r, tier) => {
     ],
   };
 };
-const genBothSides: Gen = (r) => {
-  let a = int(r, 2, 9);
-  let c = int(r, 2, 9);
+const genBothSides: Gen = (r, tier) => {
+  let a = tInt(r, tier, 2, 9);
+  let c = tInt(r, tier, 2, 9);
   for (let i = 0; i < 60 && a === c; i++) c = int(r, 2, 9);
-  const x = int(r, 2, 9);
-  const b = int(r, 1, 12);
+  const x = tInt(r, tier, 2, 9);
+  const b = tInt(r, tier, 1, 12);
   const d = (a - c) * x + b;
   const moved = d - b;
   return {
@@ -1567,10 +1581,10 @@ const genBothSides: Gen = (r) => {
   };
 };
 function genQuadRoots(): Gen {
-  return (r) => {
+  return (r, tier) => {
     const bothPos = coin(r);
-    const r1 = bothPos ? int(r, 1, 7) : int(r, -9, -1);
-    const r2 = bothPos ? int(r, r1 + 1, 9) : int(r, 1, 9);
+    const r1 = bothPos ? tInt(r, tier, 1, 7) : -tInt(r, tier, 1, 9);
+    const r2 = bothPos ? int(r, r1 + 1, 9) : tInt(r, tier, 1, 9);
     const b = -(r1 + r2);
     const c = r1 * r2;
     const bTerm = b === 0 ? '' : ` ${b > 0 ? '+' : '−'} ${Math.abs(b)}x`;
@@ -1588,8 +1602,8 @@ function genQuadRoots(): Gen {
     };
   };
 }
-const genXsq: Gen = (r) => {
-  const k = int(r, 2, 15);
+const genXsq: Gen = (r, tier) => {
+  const k = tInt(r, tier, 2, 15);
   return {
     display: `x² = ${k * k}: positive solution = ___`,
     answer: k,
@@ -1598,9 +1612,9 @@ const genXsq: Gen = (r) => {
     steps: [`Undo the square with a square root.`, `√${k * k} = ${k}.`],
   };
 };
-const genAbsVal: Gen = (r) => {
-  const a = int(r, 0, 12);
-  const b = int(r, 1, 12);
+const genAbsVal: Gen = (r, tier) => {
+  const a = tInt(r, tier, 0, 12);
+  const b = tInt(r, tier, 1, 12);
   return {
     display: `|x − ${a}| = ${b}: larger solution = ___`,
     answer: a + b,
@@ -1609,11 +1623,11 @@ const genAbsVal: Gen = (r) => {
     steps: [`Absolute value splits into two cases: x − ${a} = ${b} or x − ${a} = −${b}.`, `x = ${a + b} or x = ${n(a - b)}.`, `The larger one is ${a + b}.`],
   };
 };
-const genFuncEval: Gen = (r) => {
-  const a = int(r, 1, 3);
-  const b = int(r, -9, 9);
-  const c = int(r, -15, 15);
-  const x = int(r, -5, 5);
+const genFuncEval: Gen = (r, tier) => {
+  const a = tInt(r, tier, 1, 3);
+  const b = (coin(r) ? 1 : -1) * tInt(r, tier, 1, 9);
+  const c = (coin(r) ? 1 : -1) * tInt(r, tier, 1, 15);
+  const x = (coin(r) ? 1 : -1) * tInt(r, tier, 1, 5);
   const sq = a * x * x;
   const lin = b * x;
   const bTerm = b === 0 ? '' : ` ${b > 0 ? '+' : '−'} ${Math.abs(b)}x`;
@@ -1866,7 +1880,7 @@ export const QUIZ_TRACKS: TrackSpec[] = [
     group: 'Elementary',
     blurb: 'Counting, shapes and facts inside 10',
     levels: [
-      { title: 'Count the dots', focus: 'how many?', kinds: [{ t: 'countDots', min: 2, max: 10 }] },
+      { title: 'Count the dots', focus: 'how many?', kinds: [{ t: 'countDots', min: 2, max: 12 }] },
       { title: 'Adding to 5', focus: 'a + b up to 5', kinds: [{ t: 'add', min: 0, max: 5, sumMax: 5 }] },
       { title: 'Adding to 10', focus: 'a + b up to 10', kinds: [{ t: 'add', min: 0, max: 10, sumMax: 10 }] },
       { title: 'Taking away within 10', focus: 'subtraction to 10', kinds: [{ t: 'sub', min: 0, max: 10 }] },
@@ -2014,7 +2028,7 @@ export const QUIZ_TRACKS: TrackSpec[] = [
       { title: 'Other fractions of numbers', focus: '⅔ of 18', kinds: [{ t: 'fracOf', fracs: OTHER_FRACS }] },
       { title: 'Order of operations', focus: '7 + 8 × 6', kinds: [{ t: 'orderOps', terms: 3 }] },
       { title: 'Coordinate plane', focus: 'read the point', kinds: [{ t: 'coordPoint' }] },
-      { title: '2-digit × 2-digit', focus: '23 × 14', kinds: [{ t: 'twoByTwo', min: 11, max: 29 }] },
+      { title: '2-digit × 2-digit', focus: '23 × 14', kinds: [{ t: 'twoByTwo', min: 15, max: 39 }] },
       {
         title: '5th grade review',
         focus: 'everything above',
