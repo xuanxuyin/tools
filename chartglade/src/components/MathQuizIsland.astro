@@ -61,6 +61,10 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
 
   const app = document.querySelector<HTMLElement>('[data-mq-app]');
   const bootNote = document.querySelector<HTMLElement>('.mq-boot-note');
+  /** #unlock — browsing aid: opens every level for this visit only. It
+   *  never touches stored progress (stars/certs stay honest); drop the
+   *  hash and real progress is back. */
+  const devUnlock = /#unlock/i.test(location.hash);
 
   type View =
     | { v: 'levels'; track: string }
@@ -121,7 +125,7 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
     const cells = track.levels
       .map((l, i) => {
         const res = state.p.tracks[track.id]?.[String(i)];
-        const unlocked = levelUnlocked(state.p, track.id, i);
+        const unlocked = devUnlock || levelUnlocked(state.p, track.id, i);
         const cls = !unlocked ? 'is-locked' : res ? 'is-done' : 'is-open';
         const label = !unlocked ? '🔒' : res ? stars(res.stars) : String(i + 1);
         return `<button type="button" class="mq-cell ${cls}" data-level="${i}" ${unlocked ? '' : 'disabled'} title="${esc(l.title)}">
@@ -367,4 +371,5 @@ const groups = ['Elementary', 'Middle school', 'Algebra 1'] as const;
   });
 
   render();
+  if (devUnlock) document.getElementById('math-quiz')?.scrollIntoView();
 </script>
