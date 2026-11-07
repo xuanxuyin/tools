@@ -136,6 +136,11 @@ const sup = (n: number): string => SUP[n] ?? `^${n}`;
 function n(x: number): string {
   return x < 0 ? `−${Math.abs(x)}` : String(x);
 }
+// right-hand operand: US textbooks parenthesize a negative after an operator
+// ("−12 − (−10)", "3 × (−4)") — a bare "− −10" is unreadable
+function p(x: number): string {
+  return x < 0 ? `(−${Math.abs(x)})` : String(x);
+}
 function signedTerm(x: number, unit: string): string {
   return x < 0 ? ` − ${Math.abs(x)}${unit}` : ` + ${x}${unit}`;
 }
@@ -483,11 +488,30 @@ function subSteps(a: number, b: number, ans: number): string[] {
       `So ${a} − ${b} = ${ans}.`,
     ];
   }
-  if (a > 20 && b < 10) {
-    const ones = a % 10;
+  // drop-to-the-ten only makes sense when the ones are more than you owe
+  // (b > ones); otherwise b − ones goes negative ("70 − −1") and the count-up
+  // branch below handles it by hopping through the ten instead
+  const ones = a % 10;
+  if (a > 20 && b < 10 && ones > 0 && b > ones) {
     return [`${a} − ${ones} = ${a - ones} (drop to the ten first).`, `Then ${a - ones} − ${b - ones} = ${ans}.`];
   }
-  return [`Count up from ${b} to ${a} — that distance is the answer.`, `${b} → ${ans} → ${a}: the gap is ${ans - b} and then ${a - ans}.`, `Total gap: ${(ans - b) + (a - ans)} = ${a - b}.`];
+  // count-up subtraction: hop through the next ten when it sits between,
+  // otherwise plain counting — the answer itself is never the waypoint
+  // (with a < 2·b it can sit BELOW the start and produce a negative hop)
+  const up = (10 - (b % 10)) % 10;
+  if (up > 0 && b + up < a) {
+    const t = b + up;
+    return [
+      `Count up from ${b} to ${a} — that distance is the answer.`,
+      `${b} → ${t} → ${a}: the gap is ${up} and then ${a - t}.`,
+      `Total gap: ${up} + ${a - t} = ${a - b}.`,
+    ];
+  }
+  return [
+    `Count up from ${b} to ${a} — that distance is the answer.`,
+    `${b + 1}, ${b + 2} … up to ${a}: that's ${ans} hops.`,
+    `So ${a} − ${b} = ${ans}.`,
+  ];
 }
 
 function genAdd(min: number, max: number, sumMax?: number): Gen {
@@ -916,8 +940,8 @@ const genCoordPoint: Gen = (r) => {
     steps: [
       `Start at the origin, (0, 0).`,
       askX
-        ? `x comes first: move ${Math.abs(x)} ${x >= 0 ? 'right' : 'left'} — the x-coordinate is ${x}.`
-        : `Then y: move ${Math.abs(y)} ${y >= 0 ? 'up' : 'down'} — the y-coordinate is ${y}.`,
+        ? `x comes first: move ${Math.abs(x)} ${x >= 0 ? 'right' : 'left'} — the x-coordinate is ${n(x)}.`
+        : `Then y: move ${Math.abs(y)} ${y >= 0 ? 'up' : 'down'} — the y-coordinate is ${n(y)}.`,
     ],
   };
 };
@@ -1119,7 +1143,7 @@ const genPercentChange: Gen = (r, tier) => {
 function intASSteps(a: number, b: number, minus: boolean): string[] {
   const bb = minus ? -b : b;
   const lines: string[] = [];
-  if (minus) lines.push(`Subtracting is adding the opposite: ${n(a)} ${minus ? '−' : '+'} ${n(b)} = ${n(a)} + ${n(bb)}.`);
+  if (minus) lines.push(`Subtracting is adding the opposite: ${n(a)} − ${p(b)} = ${n(a)} + ${p(bb)}.`);
   if (a >= 0 && bb >= 0) lines.push(`Both positive: just add, ${a} + ${bb} = ${a + bb}.`);
   else if (a < 0 && bb < 0) lines.push(`Both negative: add the distances and keep the minus: ${Math.abs(a)} + ${Math.abs(bb)} = ${Math.abs(a + bb)}, so ${n(a + bb)}.`);
   else {
@@ -1137,8 +1161,8 @@ function genIntAS(range: number): Gen {
     const b = int(r, -rr, rr);
     const minus = coin(r);
     return minus
-      ? { display: `${n(a)} − ${n(b)} = ___`, answer: a - b, mode: 'int', ops: [a, b], steps: intASSteps(a, b, true) }
-      : { display: `${n(a)} + ${n(b)} = ___`, answer: a + b, mode: 'int', ops: [a, b], steps: intASSteps(a, b, false) };
+      ? { display: `${n(a)} − ${p(b)} = ___`, answer: a - b, mode: 'int', ops: [a, b], steps: intASSteps(a, b, true) }
+      : { display: `${n(a)} + ${p(b)} = ___`, answer: a + b, mode: 'int', ops: [a, b], steps: intASSteps(a, b, false) };
   };
 }
 const genIntMD: Gen = (r, tier) => {
@@ -1151,7 +1175,7 @@ const genIntMD: Gen = (r, tier) => {
   const sign = negatives % 2 === 0 ? '' : '−';
   if (coin(r)) {
     return {
-      display: `${n(sa * a)} × ${n(sb * b)} = ___`,
+      display: `${n(sa * a)} × ${p(sb * b)} = ___`,
       answer: sa * a * sb * b,
       mode: 'int',
       ops: [sa * a, sb * b],
@@ -1164,13 +1188,13 @@ const genIntMD: Gen = (r, tier) => {
   const q = sa * int(r, 2, 12);
   const div = sb * b;
   return {
-    display: `${n(q * div)} ÷ ${n(div)} = ___`,
+    display: `${n(q * div)} ÷ ${p(div)} = ___`,
     answer: q,
     mode: 'int',
     ops: [q * div, div],
     steps: [
-      `Related fact: ${n(div)} × ${n(q)} = ${n(q * div)}.`,
-      `Same sign rule as multiplication, so ${n(q * div)} ÷ ${n(div)} = ${n(q)}.`,
+      `Related fact: ${n(div)} × ${p(q)} = ${n(q * div)}.`,
+      `Same sign rule as multiplication, so ${n(q * div)} ÷ ${p(div)} = ${n(q)}.`,
     ],
   };
 };
@@ -1361,8 +1385,8 @@ const genSlope: Gen = (r) => {
     figure: slopeFigure(x1, y1, x2, y2),
     steps: [
       `Slope = rise ÷ run = (y₂ − y₁) ÷ (x₂ − x₁).`,
-      `Rise: ${y2} − ${y1} = ${y2 - y1}. Run: ${x2} − ${x1} = ${dx}.`,
-      `${y2 - y1} ÷ ${dx} = ${m}.`,
+      `Rise: ${n(y2)} − ${p(y1)} = ${n(y2 - y1)}. Run: ${n(x2)} − ${p(x1)} = ${n(dx)}.`,
+      `${n(y2 - y1)} ÷ ${n(dx)} = ${n(m)}.`,
     ],
   };
 };
@@ -1376,7 +1400,7 @@ const genLinEval: Gen = (r) => {
     answer: m * x + b,
     mode: 'int',
     ops: [m, b, x],
-    steps: [`Substitute: ${m === 1 ? '' : m === -1 ? '−' : n(m)} × ${n(x)} = ${n(prod)}.`, `Then ${n(prod)} ${b < 0 ? '−' : '+'} ${Math.abs(b)} = ${n(prod + b)}.`],
+    steps: [`Substitute: ${m === -1 ? '−1' : n(m)} × ${p(x)} = ${n(prod)}.`, `Then ${n(prod)} ${b < 0 ? '−' : '+'} ${Math.abs(b)} = ${n(prod + b)}.`],
   };
 };
 const TRIPLES: [number, number, number][] = [
@@ -1482,7 +1506,7 @@ const genSystems: Gen = (r, tier) => {
   const y = int(r, 2, hi);
   const askX = coin(r);
   return {
-    display: `x + y = ${x + y} and x − y = ${x - y}: ${askX ? 'x' : 'y'} = ___`,
+    display: `x + y = ${x + y} and x − y = ${n(x - y)}: ${askX ? 'x' : 'y'} = ___`,
     answer: askX ? x : y,
     mode: 'int',
     ops: [x, y],
@@ -1521,14 +1545,14 @@ const genBothSides: Gen = (r) => {
   const d = (a - c) * x + b;
   const moved = d - b;
   return {
-    display: `${a}x + ${b} = ${c}x + ${n(d)}: x = ___`,
+    display: `${a}x + ${b} = ${c}x ${d < 0 ? '−' : '+'} ${Math.abs(d)}: x = ___`,
     answer: x,
     mode: 'int',
     ops: [a, b, c, d],
     steps: [
       `Move the x's to one side: ${a}x − ${c}x = ${n(d)} − ${b}.`,
-      `${a - c}x = ${n(moved)}.`,
-      `x = ${n(moved)} ÷ ${a - c} = ${x}.`,
+      `${n(a - c)}x = ${n(moved)}.`,
+      `x = ${n(moved)} ÷ ${p(a - c)} = ${x}.`,
     ],
   };
 };
@@ -1547,7 +1571,7 @@ function genQuadRoots(): Gen {
       mode: 'int',
       ops: [r1, r2],
       steps: [
-        `Find two numbers that multiply to ${c} and add to ${n(b)}.`,
+        `Find two numbers that multiply to ${n(c)} and add to ${n(b)}.`,
         `They are ${n(r1)} and ${n(r2)} — those are the roots.`,
         `The larger one is ${r2}.`,
       ],
@@ -1572,7 +1596,7 @@ const genAbsVal: Gen = (r) => {
     answer: a + b,
     mode: 'int',
     ops: [a, b],
-    steps: [`Absolute value splits into two cases: x − ${a} = ${b} or x − ${a} = −${b}.`, `x = ${a + b} or x = ${a - b}.`, `The larger one is ${a + b}.`],
+    steps: [`Absolute value splits into two cases: x − ${a} = ${b} or x − ${a} = −${b}.`, `x = ${a + b} or x = ${n(a - b)}.`, `The larger one is ${a + b}.`],
   };
 };
 const genFuncEval: Gen = (r) => {

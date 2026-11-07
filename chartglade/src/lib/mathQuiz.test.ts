@@ -321,6 +321,30 @@ describe('visual generators (figures + non-numeric answers)', () => {
     expect(audited).toBeGreaterThan(1000);
   });
 
+  // US textbook convention (👤 2026-11-07: "−12 − −10 该加括号"): a negative
+  // right-hand operand is parenthesized — "−12 − (−10)", "3 × (−4)" — never a
+  // bare op-then-minus run. Also bans ASCII "-5" (JS default interpolation):
+  // the site's minus sign is U+2212 everywhere, and mixed signs made the
+  // chain audit skip those steps silently. Guards displays AND worked steps.
+  it('never prints a bare negative after an operator, nor an ASCII-hyphen number', () => {
+    const bare = /[+−×÷] −\d/;
+    const ascii = /-\d/;
+    const hits: string[] = [];
+    for (const track of QUIZ_TRACKS) {
+      for (let level = 0; level < track.levels.length; level++) {
+        for (const seed of [3, 42, 991, 20261107, 777]) {
+          for (const q of generateLevelQuestions(track.id, level, seed)) {
+            for (const t of [q.display, ...q.steps]) {
+              if (bare.test(t)) hits.push(`bare-neg ${track.id} L${level + 1} seed ${seed}: ${t}`);
+              else if (ascii.test(t)) hits.push(`ascii-neg ${track.id} L${level + 1} seed ${seed}: ${t}`);
+            }
+          }
+        }
+      }
+    }
+    expect(hits.slice(0, 8), `${hits.length} badly formatted negatives`).toEqual([]);
+  });
+
   it('no duplicate questions inside a level (tiny kindergarten pools excepted)', () => {
     for (const track of QUIZ_TRACKS) {
       for (let level = 0; level < track.levels.length; level++) {
