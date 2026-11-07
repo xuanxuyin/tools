@@ -6,6 +6,15 @@
 
 ---
 
+## 今天 · 2026-11-07（周六）
+
+- [x] 🤖 **chartglade #36 leveled math practice island 上线 ✅（main `8371040`）**：/multiplication-chart/ 第三段交互岛——10 轨 ×10 关（K~Algebra 1）打怪升级；👤 两条追加需求全落：**每题 worked solution**（"Show me how" / 答错自动展开）+ **图形题 9 类 SVG & frac/time 答案**（钟表/数轴/柱状图/阴影分数/面积周长/坐标/斜率/勾股）；进度 localStorage，全通关打印证书；585/585 绿 + 134 页。**👤 顺手过一遍手感**（尤其 1st 钟表题、3rd 阴影分数、8th 勾股图）。明细 [chartglade PLAN 11/07 行](./chartglade/PLAN.md) + §3 #36
+- [x] 🤖 **"页面太零散"产品方向定案 → #37 reference pack 层排下一批**：👤 批评 decimal place value 等参考图没人单打 → 定案三层结构（关键词页=入口 / 单图打印=即搜即打 / **pack=成套打印**），URL 不合并；P1 = place-value-chart-printable 升级完整套装（6~7 页一钮打印），P2 = charts hub 收 4 散页合集。quiz island 之后做（👤 拍板顺序）。明细 [chartglade PLAN §3 #37](./chartglade/PLAN.md)
+- [x] 🤖 **fortune-draw 立项评审数据齐三样**：11/06 用户发现 yesnopicker.com（单页 56K/月）→ 当日拆解（单 URL/3.7K 词/双工具/WebApplication+FAQ schema，[teardown-yesnopicker.md](./fortune-draw/teardown-yesnopicker.md)）→ 11/07 用户 AITDK 拉 picker/wheel/generator 词臂 **13 词合计 204,230 US/月，10K 线过 20 倍** + Claude SERP 实勘 5 词（A 级 coin flip KD11 / button KD38 均软）。明细 [fortune-draw PLAYBOOK](./fortune-draw/PLAYBOOK.md) + teardown §6
+- [ ] 👤 **fortune-draw 立项拍板（数据已三样齐全，就差你点头）**：三臂合并 ~976K/月【实测】，可打区间 ≈50K 起步；预定条件已触发 → 定位 = **"美国问事玩具工具站"（8-ball/picker/coin flip/button/oracle/fortune cookie 道具家族）**，攻击序与商标护栏见 [fortune-draw PLAYBOOK](./fortune-draw/PLAYBOOK.md)。**拍板后 Claude 当日出 PLAN + 域名候选（不含 magic-8-ball 字样，Mattel 商标）**
+
+---
+
 ## 今天 · 2026-11-03（周一）
 - [x] 🤖 **chartglade 字母涂色画稿换装 OpenMoji 上线 ✅（429df7c 已部署）+ 挑战图批取消**：26 字母页六卡画廊全换 OpenMoji 真线稿（67 SVG 自托管+CC BY-SA 4.0 署名）+ 首页 5 图去文字化，IndexNow 28 URL 200；color_story 挑战大图批（JSON 重建被驳→原图放大管线就绪）👤 拍板"没必要搞复杂用上一批"→ 全量回退零再部署。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md)
 
