@@ -936,12 +936,16 @@ export const scenarios: ScenarioDef[] = [
         q: 'How do I mix custom shades like sage or dusty blue?',
         a: 'Start from the closest chart color and walk it over with a whisper of its neighbor or its complement: sage is green plus a touch of yellow and black, dusty blue is blue plus a pinch of orange. The color mixer does the same arithmetic live.',
       },
+      {
+        q: 'How do I make peach buttercream?',
+        a: 'Two drops of orange gel plus one drop of pink per cup of white buttercream — peach is a tint of orange, so you are walking the base down the peach route rather than mixing a new color. The what colors make peach guide breaks down all three computed routes.',
+      },
     ],
     mixerColors: ['#fff2d8', '#1554c0'],
     related: [
       { href: '/icing-color-chart/', label: 'Icing color chart (the whiter-base version)' },
       { href: '/how-to-make-black-frosting/', label: 'How to make black frosting' },
-      { href: '/color-mixer/', label: 'Mix custom shades in the color mixer' },
+      { href: '/what-colors-make-peach/', label: 'What colors make peach (three computed routes)' },
       { href: '/color-converter/', label: 'Convert any HEX to RGB or HSL' },
     ],
   },
@@ -1380,11 +1384,19 @@ export const scenarios: ScenarioDef[] = [
         q: 'What colors make pink?',
         a: 'Red and white — pink is a tint of red. Peach then follows with a little orange or yellow added to that pink, which is why pink plus yellow lands on peach above.',
       },
+      {
+        q: 'Is peach orange or pink?',
+        a: 'Both, in a specific ratio: peach is orange first — a light tint of orange — with a small pink bias on top. If you must pick one parent, pick orange; the pink is what separates peach from plain pastel orange. The swatches above show the dial turning between the two.',
+      },
+      {
+        q: 'How do you make peach frosting or icing?',
+        a: 'Start from white buttercream and dose orange: two drops of orange gel with one drop of pink per cup is the working recipe. The frosting base is already white, so you are tinting straight down the peach route rather than mixing a new color. The buttercream color chart carries the full drop table, and the dosing tip above has the starting ratios.',
+      },
     ],
     mixerColors: ['#ffa500', '#ffffff'],
     related: [
       { href: '/mix/orange-white/', label: 'Orange and white: the base blend' },
-      { href: '/mix/orange-yellow/', label: 'Orange and yellow: the sunny side of peach' },
+      { href: '/buttercream-color-chart/', label: 'Buttercream color chart (peach frosting drop table)' },
       { href: '/mix/red-white/', label: 'Red and white make pink' },
       { href: '/color-guides/', label: 'All color guides' },
     ],

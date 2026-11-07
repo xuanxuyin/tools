@@ -142,6 +142,10 @@ export function buildMixContent(def: MixDef): MixContent {
       q: `How do I make the ${shortResult} mix lighter or darker?`,
       a: `Mix the result with white to tint it — 50% white gives about ${tint50} — or with black to shade it, where 50% black gives about ${shade50}. The strip above shows the full run from lighter to darker.`,
     },
+    {
+      q: `What does ${a.name.toLowerCase()} plus ${b.name.toLowerCase()} equal?`,
+      a: `Worded as an equation: ${a.name.toLowerCase()} plus ${b.name.toLowerCase()} equals ${def.resultName}, around ${resultHex} (${nearestName}). Order never changes a blend — ${b.name.toLowerCase()} plus ${a.name.toLowerCase()} lands on the identical color, and heavier ratios lean toward ${ratioRows[0]!.hex} (${ratioRows[0]!.name}) or ${ratioRows[2]!.hex} (${ratioRows[2]!.name}) depending on which side dominates.`,
+    },
   ];
 
   const metaTitle = `${question[0]!.toUpperCase()}${question.slice(1, -1)} | TintBrew`;

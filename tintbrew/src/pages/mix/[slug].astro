@@ -113,6 +113,9 @@ const jsonLd = [
       <strong style="text-transform: capitalize" data-i18n={`color.${c.b.id}`}>{c.b.name}</strong>
       <span class="mono-chip">{c.b.hex}</span><span data-i18n={`cblurb.${c.b.id}`}> — {c.b.blurb}</span>
     </p>
+    {def.synonymNote && (
+      <p data-i18n={`syn.${def.a}-${def.b}`}>{def.synonymNote}</p>
+    )}
     <p>
       <span data-i18n="mix.mixerA">Want to blend these with different colors entirely? Open the</span><a
         href="/color-mixer"
@@ -139,7 +142,7 @@ const jsonLd = [
       {c.faqs.map((f, i) => (
         <details>
           <summary
-            data-i18n={i === 0 ? 'mix.fq1' : i === 1 ? 'mix.fq2' : i === 2 ? 'mix.fq3' : 'mix.fq4'}
+            data-i18n={i === 0 ? 'mix.fq1' : i === 1 ? 'mix.fq2' : i === 2 ? 'mix.fq3' : i === 4 ? 'mix.fq5' : 'mix.fq4'}
             data-i18n-args={JSON.stringify({ a: c.a.id, b: c.b.id, short: c.shortResult })}
           >{f.q}</summary>
           <p
@@ -153,8 +156,10 @@ const jsonLd = [
                     : 'mix.mediumP'
                   : i === 3
                     ? 'mix.fa4'
-                    : undefined}
-            data-i18n-args={i === 0
+                    : i === 4
+                      ? 'mix.fa5'
+                      : undefined}
+            data-i18n-args={i === 0 || i === 4
               ? JSON.stringify({
                   a: c.a.id,
                   b: c.b.id,

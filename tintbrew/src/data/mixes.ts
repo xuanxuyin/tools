@@ -12,6 +12,10 @@ export interface MixDef {
   resultName: string;
   /** Hand-written light-vs-paint fact for top pairs (additive vs subtractive) */
   additiveNote?: string;
+  /** Hand-written synonym bridge (violet-vs-purple wording etc.) for pairs
+   *  whose queries arrive under a different color name; rendered under
+   *  "About these two colors". Keyed syn.<a>-<b> in mixNotesI18n. */
+  synonymNote?: string;
   /** Shown in footer + home popular lists */
   popular?: boolean;
 }
@@ -71,6 +75,8 @@ export const mixes: MixDef[] = [
     resultName: 'magenta pink',
     additiveNote:
       'Pink is already a tinted red, so purple plus pink stays inside the red–violet family: the blend is a saturated magenta pink in paint, and a brighter fuchsia where light is added.',
+    synonymNote:
+      '"Violet plus pink", "purple plus pink", "pink and purple" — all three wordings land on this page. Violet is the bluer synonym of purple, so a violet-and-pink blend reads one step bluer: orchid and lilac rather than warm magenta pink. The 50/50 swatch above is the center of that whole neighborhood.',
   },
   {
     a: 'red',
@@ -83,6 +89,8 @@ export const mixes: MixDef[] = [
     resultName: 'violet (a blue-purple)',
     additiveNote:
       'Blue plus purple moves toward blue-violet — closer to indigo than to royal purple. In light the blend stays luminous; in paint it deepens quickly because purple paint already contains red.',
+    synonymNote:
+      'Asking about "blue and violet" or "violet and blue"? Violet is the bluer name for purple — those searches point at the same blend. Blue plus violet lands a half-step bluer than blue plus royal purple, still inside the indigo neighborhood, and the ratio table above is the map for either wording.',
   },
   {
     a: 'black',
@@ -108,6 +116,8 @@ export const mixes: MixDef[] = [
     a: 'yellow',
     b: 'white',
     resultName: 'cream',
+    additiveNote:
+      'Yellow plus white is the definition of cream. In paint, white does not dilute yellow the way it does other hues — yellow stays stubbornly warm, so even a small share of yellow holds the blend in butter-and-cream territory. On a screen, white adds every channel at once and the result reads as an ivory pastel rather than true dairy cream.',
   },
   {
     a: 'orange',
@@ -123,6 +133,8 @@ export const mixes: MixDef[] = [
     a: 'pink',
     b: 'white',
     resultName: 'pastel pink',
+    additiveNote:
+      'Pink is already red plus white, so adding more white walks the same tint path further: blush, pastel rose, and at the far end a near-white rose. In paint this is the easiest blend to keep clean — there is nothing to cancel; on a screen the mix stays luminous and slightly cooler than the paint equivalent.',
   },
   {
     a: 'brown',
@@ -147,16 +159,22 @@ export const mixes: MixDef[] = [
     a: 'blue',
     b: 'black',
     resultName: 'navy blue',
+    additiveNote:
+      'This is the navy route: black shades blue without shifting its hue the way orange, its complement, would. In paint, start from a single drop of black — pigments darken fast and blue pigment is already dark, so the leap from navy to midnight is two extra drops at most. On a screen the blend dims toward navy but never quite reaches the depth of mixed paint.',
   },
   {
     a: 'orange',
     b: 'white',
     resultName: 'peach',
+    additiveNote:
+      'White tints orange exactly the way it tints red: equal parts land in the peach lane, and more white walks toward apricot and cream. This page is the computed version of the recipe the peach guide opens with — and in frosting, the white butter base means you start from this end of the ramp by default.',
   },
   {
     a: 'purple',
     b: 'red',
     resultName: 'magenta (a red-violet)',
+    additiveNote:
+      'Red plus purple deepens into magenta and burgundy territory — the wine-dark end of red. Search with "violet" instead of "purple" and the answer barely moves: violet is simply the bluer name for the same family, so red plus violet lands a half-step bluer than red plus purple, still inside magenta. In paint, purple pigment already carries red; in light, the blend stays bright.',
   },
   {
     a: 'yellow',

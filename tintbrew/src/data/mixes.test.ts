@@ -80,11 +80,17 @@ describe('buildMixContent', () => {
     }
   });
 
-  it('provides 4 FAQs and the answer names the computed hex', () => {
+  it('provides 5 FAQs and the answer names the computed hex', () => {
     for (const c of contents) {
-      expect(c.faqs).toHaveLength(4);
+      expect(c.faqs).toHaveLength(5);
       expect(c.answer).toContain(c.resultHex);
       expect(c.faqs[0]!.q).toContain(c.shortResult);
+      // FAQ5 is the "plus/equals" phrasing capture (keyword batch 2026-11-07):
+      // question carries "plus", answer carries the equation verbatim
+      expect(c.faqs[4]!.q).toContain('plus');
+      expect(c.faqs[4]!.a).toContain(' plus ');
+      expect(c.faqs[4]!.a).toContain(' equals ');
+      expect(c.faqs[4]!.a).toContain(c.resultHex);
     }
   });
 

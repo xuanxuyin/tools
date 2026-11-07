@@ -264,7 +264,10 @@ describe('bead pages in real dist markup', () => {
     expect(existsSync(resolve(distRoot, 'pattern-thumbs/shiba.webp'))).toBe(true);
   });
 
-  it('every pattern detail page carries the studio, chips, list and print path', () => {
+  // reads every pattern HTML off disk with per-cell regex counts — under a
+  // full-suite run (parallel workers hammering the same disk) 5s is not
+  // enough, hence the explicit 30s budget (standalone it finishes in ~1.4s)
+  it('every pattern detail page carries the studio, chips, list and print path', { timeout: 30_000 }, () => {
     for (const p of patternContents) {
       const file = resolve(distRoot, `${p.url.slice(1)}index.html`);
       expect(existsSync(file), `${p.url} built`).toBe(true);
