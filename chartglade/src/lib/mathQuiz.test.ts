@@ -189,6 +189,48 @@ describe('visual generators (figures + non-numeric answers)', () => {
     }
   });
 
+  it('no duplicate questions inside a level (tiny kindergarten pools excepted)', () => {
+    for (const track of QUIZ_TRACKS) {
+      for (let level = 0; level < track.levels.length; level++) {
+        for (const seed of [3, 20261107, 987]) {
+          const qs = generateLevelQuestions(track.id, level, seed);
+          const keys = qs.map((q) => `${q.display}|${q.answer}`);
+          const dupes = keys.length - new Set(keys).size;
+          // K pools are genuinely tiny (4 shapes, 5 doubles) — repetition
+          // is fine there; everywhere else a dupe is a generation bug
+          expect(dupes, `${track.id} L${level} seed ${seed}`).toBeLessThanOrEqual(track.id === 'k' ? 6 : 2);
+        }
+      }
+    }
+  });
+
+  it('difficulty ramps inside a level; percent-inverse re-derives', () => {
+    const qs = generateLevelQuestions('g6', 0, 20261107);
+    expect(qs.length).toBe(10);
+    qs.forEach((q, i) => {
+      const m = q.display.match(/^(\d+)% of (\d+) = ___$/);
+      if (!m) return;
+      const base = Number(m[2]);
+      if (i < 3) expect(base, `slot ${i}: ${q.display}`).toBeLessThanOrEqual(80); // tier 1
+      if (i >= 7) expect(base, `slot ${i}: ${q.display}`).toBeLessThanOrEqual(600); // tier 3 ceiling
+    });
+    const inv = qs.filter((q) => q.kind === 'percentInverse');
+    expect(inv.length).toBeGreaterThan(0);
+    for (const q of inv) {
+      const [part, base] = q.ops as [number, number];
+      expect([10, 20, 25, 50, 75]).toContain(q.answer);
+      expect(part / base).toBeCloseTo(q.answer / 100, 9);
+    }
+    // pythag opens on the classic triples, closes on the big ones
+    const py = generateLevelQuestions('g8', 7, 20261107);
+    expect(py.every((q) => q.kind === 'pythag')).toBe(true);
+    py.forEach((q, i) => {
+      const maxSide = Math.max(...(q.ops as number[]), q.answer);
+      if (i < 3) expect(maxSide).toBeLessThanOrEqual(13); // tier 1: 3-4-5 family
+      else expect(maxSide).toBeLessThanOrEqual(29);
+    });
+  });
+
   it('circle and triangle geometry re-derives from the figure labels', () => {
     for (const q of collect('circleCirc', 'g7')) {
       expect(q.figure).toBeTruthy();

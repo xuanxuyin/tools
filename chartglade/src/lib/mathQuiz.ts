@@ -76,6 +76,7 @@ export type LevelKind =
   | { t: 'square'; max: number }
   | { t: 'twoByTwo'; min: number; max: number }
   | { t: 'percentOf'; pcts?: number[] }
+  | { t: 'percentInverse' }
   | { t: 'discount'; pcts?: number[] }
   | { t: 'percentChange' }
   | { t: 'intAS'; range: number }
@@ -442,7 +443,10 @@ function triAnglesFigure(a: number, b: number): string {
 /* Generators                                                          */
 /* ------------------------------------------------------------------ */
 
-type Gen = (r: Rand) => Omit<QuizQuestion, 'kind'>;
+/** tier = difficulty dial inside a level: 1 gentle, 2 the level's core
+ *  workload, 3 the level's ceiling. Generators that ignore it keep their
+ *  fixed ranges (facts are facts); arithmetic scales its operands. */
+type Gen = (r: Rand, tier: 1 | 2 | 3) => Omit<QuizQuestion, 'kind'>;
 
 function addSteps(a: number, b: number, ans: number): string[] {
   if (a <= 9 && b <= 9 && a + b > 10) {
@@ -1051,19 +1055,35 @@ function percentSteps(p: number, base: number, ans: number): string[] {
   }
 }
 function genPercentOf(pcts: number[]): Gen {
-  return (r) => {
+  return (r, tier) => {
     const p = pick(r, pcts);
     const step = 100 / gcd(p, 100);
-    const base = step * int(r, 1, Math.floor(200 / step));
+    const cap = tier === 1 ? 80 : tier === 2 ? 200 : 600;
+    const base = step * int(r, 1, Math.floor(cap / step));
     return { display: `${p}% of ${base} = ___`, answer: (p * base) / 100, mode: 'int', ops: [p, base], steps: percentSteps(p, base, (p * base) / 100) };
   };
 }
+const genPercentInverse: Gen = (r, tier) => {
+  const p = pick(r, [10, 20, 25, 50, 75]);
+  const step = 100 / gcd(p, 100);
+  const base = step * int(r, 2, Math.floor((tier === 1 ? 40 : tier === 2 ? 100 : 200) / step));
+  const part = (p * base) / 100;
+  const frac = p / 100; // 0.1, 0.2, 0.25, 0.5, 0.75 — all clean decimals
+  return {
+    display: `${part} is ___% of ${base}`,
+    answer: p,
+    mode: 'int',
+    ops: [part, base],
+    steps: [`Turn it into a division: ${part} ÷ ${base}.`, `${part} ÷ ${base} = ${frac} → ${frac} × 100 = ${p}%.`],
+  };
+};
 function genDiscount(pcts: number[]): Gen {
-  return (r) => {
+  return (r, tier) => {
     const p = pick(r, pcts);
     const keep = 100 - p;
     const step = 100 / gcd(keep, 100);
-    const price = step * int(r, 2, Math.floor(400 / step));
+    const cap = tier === 1 ? 120 : tier === 2 ? 300 : 600;
+    const price = step * int(r, 2, Math.floor(cap / step));
     const off = (price * p) / 100;
     return {
       display: `${p}% off $${price} — you pay $___`,
@@ -1074,11 +1094,11 @@ function genDiscount(pcts: number[]): Gen {
     };
   };
 }
-const genPercentChange: Gen = (r) => {
+const genPercentChange: Gen = (r, tier) => {
   const p = pick(r, [10, 20, 25, 50]);
   const up = coin(r);
   const step = 100 / gcd(up ? p : 100, up ? 100 : p);
-  const old = step * int(r, 2, Math.floor(200 / step));
+  const old = step * int(r, 2, Math.floor((tier === 1 ? 100 : tier === 2 ? 200 : 500) / step));
   const nw = up ? old + (old * p) / 100 : old - (old * p) / 100;
   const diff = Math.abs(nw - old);
   return {
@@ -1107,18 +1127,20 @@ function intASSteps(a: number, b: number, minus: boolean): string[] {
   return lines;
 }
 function genIntAS(range: number): Gen {
-  return (r) => {
-    const a = int(r, -range, range);
-    const b = int(r, -range, range);
+  return (r, tier) => {
+    const rr = Math.max(6, Math.round(range * (tier === 1 ? 0.5 : tier === 2 ? 1 : 1.5)));
+    const a = int(r, -rr, rr);
+    const b = int(r, -rr, rr);
     const minus = coin(r);
     return minus
       ? { display: `${n(a)} − ${n(b)} = ___`, answer: a - b, mode: 'int', ops: [a, b], steps: intASSteps(a, b, true) }
       : { display: `${n(a)} + ${n(b)} = ___`, answer: a + b, mode: 'int', ops: [a, b], steps: intASSteps(a, b, false) };
   };
 }
-const genIntMD: Gen = (r) => {
-  const a = int(r, 2, 12);
-  const b = int(r, 2, 12);
+const genIntMD: Gen = (r, tier) => {
+  const hi = tier === 1 ? 9 : tier === 2 ? 12 : 16;
+  const a = int(r, 2, hi);
+  const b = int(r, 2, hi);
   const sa = coin(r) ? 1 : -1;
   const sb = coin(r) ? 1 : -1;
   const negatives = (sa < 0 ? 1 : 0) + (sb < 0 ? 1 : 0);
@@ -1196,10 +1218,10 @@ const genGcfLcm: Gen = (r) => {
   };
 };
 function genSolveTwoStep(negatives = false): Gen {
-  return (r) => {
-    const a = int(r, 2, 9);
-    const x = negatives ? (coin(r) ? -1 : 1) * int(r, 2, 12) : int(r, 2, 12);
-    const b = int(r, 1, 15);
+  return (r, tier) => {
+    const a = int(r, 2, tier === 1 ? 5 : tier === 2 ? 9 : 12);
+    const x = negatives ? (coin(r) ? -1 : 1) * int(r, 2, tier === 3 ? 20 : 12) : int(r, 2, tier === 3 ? 20 : 12);
+    const b = int(r, 1, tier === 3 ? 30 : 15);
     const minus = coin(r);
     const c = minus ? a * x - b : a * x + b;
     const after = minus ? c + b : c - b;
@@ -1229,10 +1251,10 @@ const genProportion: Gen = (r) => {
     steps: [`Cross-multiply: ${a} × ${d} = ${b} × blank.`, `${a * d} = ${b} × blank → blank = ${a * d} ÷ ${b} = ${x}.`],
   };
 };
-const genEvalExpr: Gen = (r) => {
-  const a = int(r, 2, 9);
-  const x = (coin(r) ? -1 : 1) * int(r, 1, 9);
-  const b = int(r, 1, 15);
+const genEvalExpr: Gen = (r, tier) => {
+  const a = int(r, 2, tier === 1 ? 6 : tier === 2 ? 9 : 12);
+  const x = (coin(r) ? -1 : 1) * int(r, 1, tier === 3 ? 12 : 9);
+  const b = int(r, 1, tier === 3 ? 30 : 15);
   const minus = coin(r);
   const prod = a * x;
   return {
@@ -1261,8 +1283,8 @@ const genUnitRate: Gen = (r) => {
   };
 };
 function genSqrt(max: number): Gen {
-  return (r) => {
-    const k = int(r, 2, max);
+  return (r, tier) => {
+    const k = int(r, 2, Math.max(4, Math.round(max * (tier === 1 ? 0.6 : tier === 2 ? 0.85 : 1))));
     return {
       display: `√${k * k} = ___`,
       answer: k,
@@ -1272,8 +1294,10 @@ function genSqrt(max: number): Gen {
     };
   };
 }
-const genCbrt: Gen = (r) => {
-  const k = int(r, 2, 5);
+const genCbrt: Gen = (r, tier) => {
+  // tiers ladder upward (not nest) so the 10 questions can all differ:
+  // tier1 {2..4}, tier2 {2..8}, tier3 {2..11} — 10 distinct cubes total
+  const k = int(r, 2, tier === 1 ? 4 : tier === 2 ? 8 : 11);
   return {
     display: `∛${k ** 3} = ___`,
     answer: k,
@@ -1354,9 +1378,11 @@ const TRIPLES: [number, number, number][] = [
   [5, 12, 13],
   [8, 15, 17],
   [9, 12, 15],
+  [7, 24, 25],
+  [20, 21, 29],
 ];
-const genPythag: Gen = (r) => {
-  const [a, b, c] = pick(r, TRIPLES);
+const genPythag: Gen = (r, tier) => {
+  const [a, b, c] = pick(r, tier === 1 ? TRIPLES.slice(0, 3) : TRIPLES);
   return coin(r)
     ? {
         display: `Right triangle, legs ${a} and ${b}: hypotenuse = ___`,
@@ -1443,9 +1469,10 @@ const genTriAngles: Gen = (r) => {
     steps: [`The three angles inside any triangle add up to 180°.`, `180 − ${a} − ${b} = ${third}, so the missing angle is ${third}°.`],
   };
 };
-const genSystems: Gen = (r) => {
-  const x = int(r, 2, 12);
-  const y = int(r, 2, 12);
+const genSystems: Gen = (r, tier) => {
+  const hi = tier === 1 ? 8 : tier === 2 ? 12 : 20;
+  const x = int(r, 2, hi);
+  const y = int(r, 2, hi);
   const askX = coin(r);
   return {
     display: `x + y = ${x + y} and x − y = ${x - y}: ${askX ? 'x' : 'y'} = ___`,
@@ -1458,11 +1485,11 @@ const genSystems: Gen = (r) => {
     ],
   };
 };
-const genDistSolve: Gen = (r) => {
-  const a = int(r, 2, 5);
-  const b = int(r, 2, 6);
-  const x = int(r, 2, 9);
-  const c = int(r, 1, 9);
+const genDistSolve: Gen = (r, tier) => {
+  const a = int(r, 2, tier === 1 ? 3 : 5);
+  const b = int(r, 2, tier === 3 ? 9 : 6);
+  const x = int(r, 2, tier === 3 ? 14 : 9);
+  const c = int(r, 1, tier === 3 ? 15 : 9);
   const d = a * (b * x - c);
   const afterDist = b * x - c;
   const afterAdd = b * x;
@@ -1606,6 +1633,7 @@ function generatorFor(kind: LevelKind): Gen {
     case 'square': return genSquare(kind.max);
     case 'twoByTwo': return genTwoByTwo(kind.min, kind.max);
     case 'percentOf': return genPercentOf(kind.pcts ?? [50, 10, 25]);
+    case 'percentInverse': return genPercentInverse;
     case 'discount': return genDiscount(kind.pcts ?? [10, 20, 25, 50]);
     case 'percentChange': return genPercentChange;
     case 'intAS': return genIntAS(kind.range);
@@ -1654,9 +1682,18 @@ export function generateLevelQuestions(
   const gens = level.kinds.map(generatorFor);
   const start = Math.floor(r() * gens.length);
   const out: QuizQuestion[] = [];
+  // difficulty ramps inside every level: the opening questions are gentle
+  // (tier 1), the middle settles into the core workload (tier 2), and the
+  // closing stretch pushes the level's ceiling (tier 3)
   for (let i = 0; i < count; i++) {
-    const g = gens[(start + i) % gens.length]!;
-    out.push({ kind: level.kinds[(start + i) % gens.length]!.t, ...g(r) });
+    const tier = (i / count < 0.3 ? 1 : i / count < 0.7 ? 2 : 3) as 1 | 2 | 3;
+    const idx = (start + i) % gens.length;
+    // small domains (sqrt squares, pythag triples) would repeat the same
+    // question inside one level — redraw a few times on a duplicate
+    let next = gens[idx]!(r, tier);
+    let tries = 0;
+    while (tries < 6 && out.some((o) => o.display === next.display && o.answer === next.answer)) { next = gens[idx]!(r, tier); tries++; }
+    out.push({ kind: level.kinds[idx]!.t, ...next });
   }
   return out;
 }
@@ -1847,7 +1884,7 @@ export const QUIZ_TRACKS: TrackSpec[] = [
     group: 'Middle school',
     blurb: 'Percents, negative numbers, exponents',
     levels: [
-      { title: 'Percents of numbers', focus: '5% to 75%', kinds: [{ t: 'percentOf', pcts: [50, 10, 25, 20, 75, 5, 40] }] },
+      { title: 'Percents of numbers', focus: '5% to 75%, both directions', kinds: [{ t: 'percentOf', pcts: [50, 10, 25, 20, 75, 5, 40] }, { t: 'percentInverse' }] },
       { title: 'Sale prices', focus: '25% off $60', kinds: [{ t: 'discount' }] },
       { title: 'Percent change', focus: 'up and down', kinds: [{ t: 'percentChange' }] },
       { title: 'Add & subtract negatives', focus: '−6 + 11', kinds: [{ t: 'intAS', range: 12 }] },
@@ -1861,6 +1898,7 @@ export const QUIZ_TRACKS: TrackSpec[] = [
         focus: 'everything above',
         kinds: [
           { t: 'percentOf', pcts: [50, 25, 20, 10, 75, 5, 40] },
+          { t: 'percentInverse' },
           { t: 'intAS', range: 12 },
           { t: 'intMD' },
           { t: 'exp' },
