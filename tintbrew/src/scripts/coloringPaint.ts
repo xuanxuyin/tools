@@ -81,6 +81,7 @@ class PaintIsland {
   private publishedId: string | null = null;
   private line: number = 0;
   private total: number = 0;
+  private loadNoteKey: UiKey | null = null;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -140,7 +141,8 @@ class PaintIsland {
         `/api/coloring/asset?slug=${encodeURIComponent(this.slug)}&d=${encodeURIComponent(galleryUuid())}`,
       );
       if (res.status === 403) {
-        if (this.loadNote) this.loadNote.textContent = t('col.p.lockedMsg');
+        this.loadNoteKey = 'col.p.lockedMsg';
+        if (this.loadNote) this.loadNote.textContent = t(this.loadNoteKey);
         else this.status(t('col.p.lockedMsg'));
         return;
       }
@@ -161,7 +163,8 @@ class PaintIsland {
         }
       }
       if (!this.payload) {
-        if (this.loadNote) this.loadNote.textContent = t('col.p.loadFail');
+        this.loadNoteKey = 'col.p.loadFail';
+        if (this.loadNote) this.loadNote.textContent = t(this.loadNoteKey);
         else this.status(t('col.p.loadFail'));
         return;
       }
@@ -186,9 +189,17 @@ class PaintIsland {
     this.buildPalette();
     this.render();
     this.frame.classList.add('is-live');
+    this.loadNoteKey = null;
     if (this.loadNote) this.loadNote.hidden = true;
     this.toolbar.hidden = false;
     this.refreshMeta();
+    // filled counter / regions line are runtime t() text — repaint on switch
+    document.addEventListener('tb:langchange', () => {
+      if (this.payload) this.refreshMeta();
+      if (this.loadNoteKey && this.loadNote && !this.loadNote.hidden) {
+        this.loadNote.textContent = t(this.loadNoteKey);
+      }
+    });
   }
 
   /** Rasterize each ring with an exact scanline fill (pixel-center sampling,

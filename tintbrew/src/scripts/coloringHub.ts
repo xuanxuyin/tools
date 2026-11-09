@@ -24,6 +24,7 @@ class ColoringHub {
   private progressText: HTMLElement | null;
   private progressFill: HTMLElement | null;
   private progress: Progress = { unlocked: 1, lastUnlockDate: null, done: [] };
+  private loaded = false;
   private total: number;
 
   constructor(root: HTMLElement) {
@@ -35,6 +36,11 @@ class ColoringHub {
     this.progressText = root.querySelector('[data-col-progress-text]');
     this.progressFill = root.querySelector('[data-col-progress-fill]');
     root.addEventListener('click', (e) => this.onClick(e));
+    // badge/progress text is written with t() at load time — re-paint from
+    // state when the visitor switches language mid-session
+    document.addEventListener('tb:langchange', () => {
+      if (this.loaded) this.render();
+    });
     void this.load();
   }
 
@@ -56,6 +62,7 @@ class ColoringHub {
         lastUnlockDate: data.lastUnlockDate ?? null,
         done: Array.isArray(data.done) ? data.done : [],
       };
+      this.loaded = true;
       this.render();
     } catch {
       // failed load: offer an in-place retry, keep the plain SSR grid

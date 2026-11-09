@@ -169,3 +169,63 @@ describe('coloring gallery cards', () => {
     expect(html).toContain('updated'); // createdAt ≠ updatedAt → the date line notes it
   });
 });
+
+describe('coloring hub language switch', () => {
+  beforeEach(() => {
+    const win = new Window({ url: 'https://tintbrew.com/coloring/' });
+    (globalThis as Record<string, unknown>).document = win.document;
+    (globalThis as Record<string, unknown>).window = win;
+    vi.resetModules();
+  });
+
+  it('repaints badges and the progress line when the visitor switches language', async () => {
+    const win = (globalThis as { window: Window }).window;
+    const doc = win.document;
+    const root = doc.createElement('div');
+    root.setAttribute('data-coloring-hub', '');
+    root.setAttribute('data-total', '3');
+    for (const [ord, slug] of [['0', 's0'], ['1', 's1'], ['2', 's2']] as const) {
+      const card = doc.createElement('article');
+      card.setAttribute('data-col-card', '');
+      card.setAttribute('data-ord', ord);
+      card.setAttribute('data-slug', slug);
+      card.innerHTML =
+        `<a class="col-link" href="/coloring/${slug}/">t</a>` +
+        '<span data-col-badge hidden></span>' +
+        '<button data-col-unlock hidden></button>';
+      root.appendChild(card);
+    }
+    root.innerHTML +=
+      '<div data-col-status hidden></div>' +
+      '<section data-col-progress hidden><p class="col-progress-line">' +
+      '<span data-col-progress-text></span>' +
+      '<span class="col-progress-bar" aria-hidden="true"><span data-col-progress-fill></span></span>' +
+      '</p></section>';
+    doc.body.appendChild(root);
+
+    (globalThis as Record<string, unknown>).fetch = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({ unlocked: 1, lastUnlockDate: '2020-01-01', done: ['s0'] }),
+    }));
+
+    const { setLang } = await import('./i18n');
+    await import('./coloringHub');
+
+    const badges = doc.querySelectorAll<HTMLElement>('[data-col-badge]');
+    // locked badge (ord 2 > unlocked 1) renders in the SSR default language
+    await vi.waitFor(() => expect(badges[2].textContent).toBe('Locked'));
+    const progressText = doc.querySelector('[data-col-progress-text]') as HTMLElement;
+    expect(progressText.textContent).toContain('1 of 1');
+    expect(badges[2].title).toContain('finish the page before this one');
+
+    setLang('zh');
+    expect(badges[2].textContent).toBe('未解锁');
+    expect(badges[2].title).toContain('先完成前面一页');
+    expect(progressText.textContent).toContain('已解锁 1 页');
+
+    setLang('en');
+    expect(badges[2].textContent).toBe('Locked');
+    expect(progressText.textContent).toContain('1 of 1');
+  });
+});

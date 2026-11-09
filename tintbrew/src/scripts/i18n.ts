@@ -176,6 +176,11 @@ export function setLang(next: Lang) {
     /* private mode — language lasts for this page view only */
   }
   apply();
+  // runtime builders that wrote plain textContent from t() (coloring hub
+  // badges/progress, paint meta) don't carry data-i18n — they re-render
+  // themselves on this event; transient status messages stay as-is
+  const win = document.defaultView ?? window;
+  document.dispatchEvent(new win.CustomEvent('tb:langchange'));
 }
 
 function init() {
