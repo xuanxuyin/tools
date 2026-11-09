@@ -8,7 +8,7 @@
 
 ## 今天 · 2026-11-09（周日）
 
-- [ ] 👤 **GSC Request Indexing 批（10 条，Claude 11/09 实勘全部 200 后排好优先级）**——11/03 索引批只推了感恩节簇，**圣诞簇 6 页从未手动推过**，11 月正是圣诞词爬排名窗（美区峰值 12 月初，再不进爬就赶不上季）。GSC 顶栏 → 输入 URL → 请求编入索引，按序推（配额 ~10/日，报错重试一次即可，11/03 批 9/10 一次成功先例）：
+- [x] 🤖→👤 **GSC Request Indexing 批 ✅（11/09 👤 完成 10/10）**——11/03 索引批只推了感恩节簇，**圣诞簇 6 页从未手动推过**，11 月正是圣诞词爬排名窗（美区峰值 12 月初，再不进爬就赶不上季）。GSC 顶栏 → 输入 URL → 请求编入索引，按序推（配额 ~10/日，报错重试一次即可，11/03 批 9/10 一次成功先例）：
   1. `https://chartglade.com/christmas-printables/`（圣诞 hub，簇入口）
   2. `https://chartglade.com/christmas-word-search/`（词搜双难度）
   3. `https://chartglade.com/christmas-color-by-number/`
