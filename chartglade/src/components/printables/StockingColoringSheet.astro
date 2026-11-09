@@ -1,0 +1,74 @@
+---
+/**
+ * Christmas stocking coloring sheet (coloring product line Phase B,
+ * PLAN §3 #35). The art is hand-coded SVG with closed regions — cuff,
+ * body, three candy stripes, heart, stars — every one white-filled and
+ * stroked, so the page prints as a classic outline coloring page with
+ * zero hand-drawn-image dependency (same programmatic stance as the
+ * letter matrix). One big stocking plus two patchwork mini stockings;
+ * strokes use vector-effect:non-scaling-stroke so the minis keep
+ * crayon-weight outlines at 23% scale. Toe cap and heel read through
+ * seam curves inside the single body region — seams keep every fill
+ * area closed and unambiguous.
+ */
+
+function starPath(cx: number, cy: number, r: number): string {
+  const pts: string[] = [];
+  for (let i = 0; i < 10; i++) {
+    const rad = (Math.PI / 5) * i - Math.PI / 2;
+    const rr = i % 2 === 0 ? r : r * 0.45;
+    pts.push(`${(cx + rr * Math.cos(rad)).toFixed(1)},${(cy + rr * Math.sin(rad)).toFixed(1)}`);
+  }
+  return `M${pts.join('L')}Z`;
+}
+
+// One stocking in its own 480x640 coordinate box, then placed three times.
+const STOCKING = `
+  <ellipse cx="95" cy="42" rx="48" ry="30" fill="#ffffff" stroke="#1c1c1c" stroke-width="3" vector-effect="non-scaling-stroke"/>
+  <ellipse cx="95" cy="42" rx="26" ry="14" fill="#ffffff" stroke="#1c1c1c" stroke-width="3" vector-effect="non-scaling-stroke"/>
+  <circle cx="50" cy="100" r="24" fill="#ffffff" stroke="#1c1c1c" stroke-width="3" vector-effect="non-scaling-stroke"/>
+  <path d="M90,175 H270 V430 C270,455 285,470 315,485 C360,505 420,515 430,555 C436,585 405,605 360,600 C300,594 220,590 160,585 C120,582 92,560 90,520 Z" fill="#ffffff" stroke="#1c1c1c" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+  <path d="M340,492 C368,528 380,564 372,597" fill="none" stroke="#1c1c1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+  <path d="M90,478 C122,498 142,538 150,583" fill="none" stroke="#1c1c1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+  <rect x="68" y="80" width="224" height="95" rx="16" fill="#ffffff" stroke="#1c1c1c" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+  <rect x="104" y="197" width="152" height="44" rx="10" fill="#ffffff" stroke="#1c1c1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+  <rect x="104" y="256" width="152" height="44" rx="10" fill="#ffffff" stroke="#1c1c1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+  <rect x="104" y="315" width="152" height="44" rx="10" fill="#ffffff" stroke="#1c1c1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+  <path d="M330,505 c-7,-16 -30,-13 -30,3 c0,12 14,18 30,32 c16,-14 30,-20 30,-32 c0,-16 -23,-19 -30,-3 Z" fill="#ffffff" stroke="#1c1c1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+  <path d="${starPath(240, 555, 22)}" fill="#ffffff" stroke="#1c1c1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+  <path d="${starPath(185, 528, 14)}" fill="#ffffff" stroke="#1c1c1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+`;
+
+// Patchwork mini: same silhouette, quilted with a cross-seam grid.
+const MINI = `
+  <ellipse cx="95" cy="42" rx="48" ry="30" fill="#ffffff" stroke="#1c1c1c" stroke-width="3" vector-effect="non-scaling-stroke"/>
+  <ellipse cx="95" cy="42" rx="26" ry="14" fill="#ffffff" stroke="#1c1c1c" stroke-width="3" vector-effect="non-scaling-stroke"/>
+  <path d="M90,175 H270 V430 C270,455 285,470 315,485 C360,505 420,515 430,555 C436,585 405,605 360,600 C300,594 220,590 160,585 C120,582 92,560 90,520 Z" fill="#ffffff" stroke="#1c1c1c" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+  <path d="M340,492 C368,528 380,564 372,597 M90,478 C122,498 142,538 150,583" fill="none" stroke="#1c1c1c" stroke-width="2" vector-effect="non-scaling-stroke"/>
+  <rect x="68" y="80" width="224" height="95" rx="16" fill="#ffffff" stroke="#1c1c1c" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+  <path d="M90,290 H270 M180,175 V430" stroke="#1c1c1c" stroke-width="2" fill="none" vector-effect="non-scaling-stroke"/>
+`;
+---
+
+<div class="cs-sheet">
+  <svg viewBox="0 0 640 800" role="img" aria-label="Christmas stocking coloring page — one big stocking to color and two mini quilting stockings" style="width:100%;height:auto;display:block">
+    <g transform="translate(104,10) scale(0.9)"><Fragment set:html={STOCKING} /></g>
+    <g transform="translate(90,635) scale(0.23)"><Fragment set:html={MINI} /></g>
+    <g transform="translate(400,635) scale(0.23)"><Fragment set:html={MINI} /></g>
+  </svg>
+  <p class="cs-prompt">Color the big stocking — cuff, stripes, toe cap and all. Then quilt the two mini stockings with a different color in every patch.</p>
+</div>
+
+<style>
+  .cs-sheet { padding: 0.2rem 0.3rem; }
+  .cs-prompt {
+    margin: 0.35rem 0 0;
+    text-align: center;
+    font-size: 10pt;
+    color: #555;
+    font-style: italic;
+  }
+  @media print {
+    .cs-prompt { color: #444; }
+  }
+</style>

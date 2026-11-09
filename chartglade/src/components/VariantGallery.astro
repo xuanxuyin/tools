@@ -1,0 +1,46 @@
+---
+/**
+ * The incumbent image-wall pattern (2026-11-06 teardown round 2: Superstar
+ * serves ~20 product blocks per page, DadsWorksheets hubs are 25-card walls,
+ * mondaymandala's hub is 236 cards). Every sibling printable in a family is
+ * surfaced as a real preview image + one-line pitch — plain-text "related"
+ * links stay below for the broader cross-links. Renders nothing when the
+ * family has no cards (PageDef.variants is optional).
+ */
+import type { VariantCard } from '../data/pageTypes';
+
+interface Props {
+  heading?: string;
+  items: VariantCard[];
+}
+
+const { heading = 'More versions of this printable', items } = Astro.props;
+---
+
+<section class="section no-print variant-section" aria-labelledby="variant-h">
+  <h2 id="variant-h">{heading}</h2>
+  <ul class="variant-grid">
+    {items.map((v) => (
+      <li>
+        <a class="variant-card" href={v.href}>
+          <span class="variant-thumb">
+            <img
+              src={v.img.src}
+              alt={v.img.alt}
+              width={v.img.width}
+              height={v.img.height}
+              loading="lazy"
+              decoding="async"
+              class:list={[{ cover: v.fit === 'cover' }]}
+            />
+          </span>
+          <span class="variant-body">
+            <span class="variant-title">{v.title}</span>
+            <span class="variant-blurb">{v.blurb}</span>
+            <span class="variant-cta">Open printable →</span>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>

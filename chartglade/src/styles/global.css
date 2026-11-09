@@ -288,6 +288,38 @@ svg {
   max-width: 26rem;
 }
 
+/* Collapsed by default: the page shows one product (the printable above);
+   the PNG is the download asset + Google Images bait, one click away. */
+.sheet-preview summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+}
+
+.sheet-preview summary:hover {
+  border-color: var(--green);
+  color: var(--green-deep);
+}
+
+.sheet-preview[open] summary {
+  margin-bottom: var(--sp-3);
+  border-style: solid;
+}
+
+.sheet-preview summary::marker,
+.sheet-preview summary::-webkit-details-marker {
+  display: none;
+}
+
 .sheet-preview img {
   display: block;
   width: 100%;
@@ -322,6 +354,10 @@ svg {
   cursor: pointer;
 }
 
+.btn svg {
+  flex: none;
+}
+
 .btn:hover {
   border-color: var(--green);
   color: var(--green-deep);
@@ -336,6 +372,21 @@ svg {
 .btn-primary:hover {
   background: var(--green-deep);
   border-color: var(--green-deep);
+  color: #fff;
+}
+
+/* Amber companion to .btn-primary — the second action in a toolbar
+   (e.g. Download PNG beside Print) so toolbars never read as two
+   identical white chips. */
+.btn-amber {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #fff;
+}
+
+.btn-amber:hover {
+  background: #8a5711;
+  border-color: #8a5711;
   color: #fff;
 }
 
@@ -409,6 +460,60 @@ svg {
   font-weight: 700;
 }
 
+/*
+ * Color multiplication chart (2026-11-06): each times-table row keeps its
+ * own soft band across the grid so kids can track one table left to right —
+ * the color product form the incumbents lead with (Superstar's bestseller).
+ * Bands replace the diagonal shading here; black text stays readable. The
+ * color IS the product, so it must survive printing: print-color-adjust.
+ */
+.chart-table.rainbow td {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.chart-table.rainbow tbody tr:nth-child(1) td {
+  background: #e8f4fd;
+}
+.chart-table.rainbow tbody tr:nth-child(2) td {
+  background: #fdf3e3;
+}
+.chart-table.rainbow tbody tr:nth-child(3) td {
+  background: #e9f7ec;
+}
+.chart-table.rainbow tbody tr:nth-child(4) td {
+  background: #fdeaf2;
+}
+.chart-table.rainbow tbody tr:nth-child(5) td {
+  background: #fff7dd;
+}
+.chart-table.rainbow tbody tr:nth-child(6) td {
+  background: #ece6fb;
+}
+.chart-table.rainbow tbody tr:nth-child(7) td {
+  background: #e3f4f3;
+}
+.chart-table.rainbow tbody tr:nth-child(8) td {
+  background: #fdeceb;
+}
+.chart-table.rainbow tbody tr:nth-child(9) td {
+  background: #eef0f7;
+}
+.chart-table.rainbow tbody tr:nth-child(10) td {
+  background: #f0f7dd;
+}
+.chart-table.rainbow tbody tr:nth-child(11) td {
+  background: #f3ecfd;
+}
+.chart-table.rainbow tbody tr:nth-child(12) td {
+  background: #e7f6ef;
+}
+
+/* keep the click-to-check highlight visible over the bands */
+.chart-table.rainbow tbody td.is-active {
+  background: var(--amber-tint);
+}
+
 .chart-table.clickable th[role='button'],
 .chart-table.clickable td {
   cursor: pointer;
@@ -463,6 +568,63 @@ svg {
   padding: 0 0.05em;
   min-width: 0.6em;
   font-family: var(--font-serif);
+}
+
+/* Periods variant: super-header bands + heavier inter-period separators */
+
+.pv-table .period-head {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--amber-tint);
+}
+
+.pv-table th.period-head + th.period-head {
+  border-left: 3px double var(--line-strong);
+}
+
+.pv-table.pv-periods .period-sep {
+  border-left: 4px double var(--line-strong);
+}
+
+/* Read-each-period table under the filled periods chart */
+
+.period-reading {
+  margin-top: var(--sp-5);
+}
+
+.pr-sentence {
+  margin: var(--sp-3) auto 0;
+  max-width: 60ch;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+}
+
+/* Decimal breakdown island (decimal chart page) */
+
+.db-line {
+  margin: var(--sp-2) auto 0;
+  max-width: 60ch;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.db-line strong {
+  color: var(--green-deep);
+}
+
+/* title of the second table on a two-table sheet */
+.second-title {
+  margin-top: var(--sp-5);
+}
+
+.decimal-controls .presets {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
 }
 
 /* Sight word cards */
@@ -733,7 +895,8 @@ svg {
 /* Name tracing sheet */
 
 .name-controls,
-.mad-controls {
+.mad-controls,
+.decimal-controls {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-3);
@@ -741,7 +904,8 @@ svg {
 }
 
 .name-controls label,
-.mad-controls label {
+.mad-controls label,
+.decimal-controls label {
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
@@ -752,13 +916,15 @@ svg {
   color: var(--ink-soft);
 }
 
-.mad-controls {
+.mad-controls,
+.decimal-controls {
   align-items: end;
 }
 
 .name-controls input,
 .name-controls select,
-.mad-controls select {
+.mad-controls select,
+.decimal-controls input {
   font: inherit;
   font-size: 0.95rem;
   font-weight: 400;
@@ -895,6 +1061,51 @@ svg {
   border-color: var(--green);
 }
 
+/* Hub card thumbnails (image-density batch, 2026-11-07): the charts and
+   graph-paper hub walls go visual — same 4:3 letterbox discipline as the
+   variant gallery (absolutely-positioned img so a tall source PNG can never
+   stretch the box; cover for the multi-sheet packs). */
+.card.card-with-thumb {
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-with-thumb h2,
+.card-with-thumb p {
+  padding-left: var(--sp-4);
+  padding-right: var(--sp-4);
+}
+
+.card-with-thumb h2 {
+  padding-top: var(--sp-3);
+}
+
+.card-with-thumb p {
+  padding-bottom: var(--sp-4);
+}
+
+.card-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+.card-thumb img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card-thumb img.cover {
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
 .card h2,
 .card h3 {
   margin-bottom: var(--sp-1);
@@ -987,6 +1198,299 @@ svg {
   border-color: var(--green);
 }
 
+/* stacked related-list blocks (e.g. homepage seasonal links + hub link) */
+.related-list + .related-list {
+  margin-top: var(--sp-2);
+}
+
+/* ---------- variant gallery (incumbent image-wall pattern, 2026-11-06) ---------- */
+
+.variant-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-3);
+}
+
+.variant-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0;
+  overflow: hidden;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.variant-card:hover {
+  border-color: var(--green);
+  box-shadow: 0 4px 14px rgba(31, 92, 57, 0.12);
+  transform: translateY(-2px);
+}
+
+/* The img is absolutely positioned so a very tall source PNG (e.g. a
+   2016×4742 pack preview) can never stretch the box: flex items fall back
+   to min-height:auto = content height, which would override the ratio. */
+.variant-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+.variant-thumb img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Tall multi-sheet packs: show the first sheet's top at legible size
+   (contain would render a 3-page pack as a near-blank sliver). */
+.variant-thumb img.cover {
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.variant-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: var(--sp-3);
+  flex: 1;
+}
+
+.variant-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.variant-blurb {
+  font-size: 0.85rem;
+  color: #5b6a62;
+  line-height: 1.45;
+  flex: 1;
+}
+
+.variant-cta {
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--green-deep);
+}
+
+.variant-card:hover .variant-cta {
+  text-decoration: underline;
+}
+
+/* ---------- fact-order strip (pillar pages: links into the times-table matrix) ---------- */
+
+.order-steps {
+  list-style: none;
+  counter-reset: step;
+  padding: 0;
+  margin: var(--sp-3) 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-2);
+}
+
+.order-steps li {
+  counter-increment: step;
+}
+
+.order-steps a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  text-decoration: none;
+  height: 100%;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.order-steps a::before {
+  content: counter(step);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--green-deep);
+  background: var(--green-tint);
+  border-radius: 999px;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.2rem;
+}
+
+.order-steps a:hover {
+  border-color: var(--green);
+  box-shadow: 0 3px 10px rgba(31, 92, 57, 0.1);
+}
+
+.order-steps strong {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.order-steps span {
+  font-size: 0.8rem;
+  color: #5b6a62;
+  line-height: 1.35;
+}
+
+/* ---------- homepage hub cards + seasonal band ---------- */
+
+.hub-card {
+  padding: 0;
+  overflow: hidden;
+}
+.hub-thumb {
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+.hub-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.hub-card h2 {
+  margin: var(--sp-3) var(--sp-4) 0;
+}
+.hub-card p {
+  margin: var(--sp-2) var(--sp-4) var(--sp-4);
+}
+.hub-chip {
+  display: inline-block;
+  margin: var(--sp-3) var(--sp-4) 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  background: var(--green-tint);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+.hub-card:nth-child(even) .hub-chip {
+  color: #8a5711;
+  background: var(--amber-tint);
+}
+
+.seasonal-band {
+  background: var(--green-tint);
+  border-radius: var(--radius);
+  padding: var(--sp-5);
+}
+.seasonal-split {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--sp-5);
+  align-items: center;
+}
+.seasonal-thumb {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(31, 92, 57, 0.12);
+}
+.seasonal-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 760px) {
+  .seasonal-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- teaching calendar hub (year index + month blocks) ---------- */
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--sp-4) var(--sp-5);
+}
+
+.cal-month h3 {
+  margin: 0 0 var(--sp-1);
+  font-size: 0.98rem;
+  font-family: var(--font-serif);
+}
+
+.cal-dates {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.cal-print-list {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.cal-print-list a + a::before {
+  content: '· ';
+  color: var(--ink-soft);
+}
+
+.cal-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--sp-2);
+}
+
+.cal-links li {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  font-size: 0.92rem;
+}
+
+.cal-links a {
+  font-weight: 600;
+}
+
+.cal-links .cal-note {
+  display: block;
+  margin-top: 2px;
+  font-weight: 400;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+}
+
 /* ---------- per-sheet extras ---------- */
 
 .chart-table.dense th,
@@ -998,6 +1502,41 @@ svg {
 
 .chart-table td.fill-in {
   padding: 0.6em 0.3em;
+}
+
+/* ---------- times tables in list form (one strip per table) ---------- */
+
+.table-strips {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.table-strip {
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--line);
+  break-inside: avoid;
+}
+
+.table-strip:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.table-strip .strip-label {
+  margin: 0 0 0.3em;
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--green-deep);
+}
+
+.table-strip .strip-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15em 1.1em;
+  margin: 0;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---------- sign-in sheets (V1.8) ---------- */
@@ -1315,6 +1854,28 @@ svg {
 
   .sheet-break .sheet-title {
     margin-top: 0;
+  }
+
+  .table-strip {
+    padding-bottom: 3pt;
+    border-bottom: 0.5pt solid #999;
+  }
+
+  .table-strip:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .table-strip .strip-label {
+    font-size: 8.5pt;
+    margin: 0 0 1pt;
+    color: #000;
+  }
+
+  .table-strip .strip-facts {
+    font-size: 8pt;
+    gap: 0 0.75em;
+    line-height: 1.5;
   }
 
   .trace-heading {
@@ -2268,6 +2829,406 @@ svg {
   }
 }
 
+/* ===== Leveled practice arena (#36) — quiz island on the mult chart page ===== */
+
+.mq-root {
+  margin-top: var(--sp-4);
+}
+
+.mq-boot-note {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--sp-3);
+}
+
+.mq-app {
+  background: var(--green-tint);
+  border: 1px solid rgba(47, 125, 79, 0.25);
+  border-radius: 12px;
+  padding: var(--sp-4);
+}
+
+.mq-group {
+  margin-bottom: var(--sp-2);
+}
+
+.mq-group-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin-bottom: 0.25rem;
+}
+
+.mq-group-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.mq-tab {
+  border: 1px solid rgba(47, 125, 79, 0.35);
+  background: var(--card);
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.mq-tab.is-active {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: #fff;
+}
+
+/* daily-challenge banner + class-set chip (2026-11-07 batch) */
+.mq-daily {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #fff8e6;
+  border: 1px solid #e6c96a;
+  border-radius: var(--radius, 8px);
+  padding: 0.6rem 0.9rem;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-bottom: var(--sp-3);
+}
+.mq-daily:hover {
+  background: #fdf2cd;
+}
+.mq-set-chip {
+  font-size: 0.9rem;
+  background: #eaf3ec;
+  border: 1px solid var(--green, #2f7d4f);
+  border-radius: var(--radius, 8px);
+  padding: 0.5rem 0.8rem;
+  margin-bottom: var(--sp-2);
+}
+.mq-set-chip a {
+  color: var(--green-deep);
+}
+.mq-ccss {
+  font-family: ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.mq-track-meta {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin: var(--sp-2) 0 var(--sp-3);
+}
+
+.mq-levels {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--sp-2);
+}
+
+.mq-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+  padding: 0.55rem 0.4rem 0.5rem;
+  border: 1px solid rgba(47, 125, 79, 0.35);
+  background: var(--card);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.mq-cell-num {
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--green-deep);
+  letter-spacing: 0.08em;
+}
+
+.mq-cell-title {
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+  line-height: 1.25;
+}
+
+.mq-cell.is-done {
+  border-color: var(--green);
+  background: #fff;
+}
+
+.mq-cell.is-locked {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.mq-cert {
+  margin-top: var(--sp-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.mq-name {
+  font-size: 0.9rem;
+}
+
+.mq-name input {
+  margin-left: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgba(47, 125, 79, 0.4);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.mq-quizhead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+
+.mq-back {
+  border: none;
+  background: none;
+  color: var(--green-deep);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+.mq-where {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.mq-dots {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: var(--sp-3);
+}
+
+.mq-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(47, 125, 79, 0.2);
+}
+
+.mq-dot.is-now {
+  background: var(--green);
+}
+
+.mq-dot.is-ok {
+  background: var(--green-deep);
+}
+
+.mq-card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: var(--sp-4);
+}
+
+.mq-fig {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--sp-3);
+  color: var(--green-deep);
+}
+
+.mq-fig svg {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+}
+
+.mq-q {
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 var(--sp-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* √/∛ (U+221A/U+221B) ship without the vinculum — the bar over the
+   radicand is drawn as this border, meeting the radical's top arm. */
+.mq-rad {
+  white-space: nowrap;
+}
+
+.mq-radicand {
+  border-top: 0.075em solid currentColor;
+  padding-left: 0.1em;
+  margin-left: -0.04em;
+}
+
+.mq-feedback {
+  text-align: center;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin: 0 auto var(--sp-3);
+  max-width: 34rem;
+  font-size: 0.95rem;
+}
+
+.mq-feedback.is-ok {
+  background: var(--green-tint);
+  color: var(--green-deep);
+}
+
+.mq-feedback.is-wrong {
+  background: var(--amber-tint);
+  color: var(--amber);
+}
+
+.mq-answer {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.mq-answer input {
+  width: 11rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.15rem;
+  text-align: center;
+  border: 2px solid rgba(47, 125, 79, 0.4);
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.mq-answer input:focus {
+  outline: none;
+  border-color: var(--green-deep);
+}
+
+.mq-showme {
+  display: block;
+  margin: var(--sp-3) auto 0;
+  border: none;
+  background: none;
+  color: var(--amber);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mq-steps {
+  max-width: 34rem;
+  margin: var(--sp-3) auto 0;
+  background: var(--amber-tint);
+  border-radius: 8px;
+  padding: var(--sp-3);
+}
+
+.mq-steps h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  color: var(--amber);
+}
+
+.mq-steps ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.mq-result {
+  text-align: center;
+}
+
+.mq-bigstars {
+  font-size: 2.2rem;
+  color: var(--amber);
+  letter-spacing: 0.35em;
+  margin: var(--sp-2) 0;
+}
+
+.mq-headline {
+  font-size: 1.05rem;
+  margin: 0 0 0.2rem;
+}
+
+.mq-best {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  margin: 0 0 var(--sp-3);
+}
+
+.mq-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.mq-catalog {
+  margin-top: var(--sp-4);
+}
+
+.mq-catalog summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.mq-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+  margin-top: var(--sp-3);
+}
+
+.mq-catalog-col h4 {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+.mq-catalog-track {
+  margin-bottom: var(--sp-3);
+  font-size: 0.82rem;
+}
+
+.mq-catalog-track strong {
+  font-size: 0.85rem;
+}
+
+.mq-catalog-track ol {
+  margin: 0.3rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+@media (max-width: 40rem) {
+  .mq-levels {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mq-catalog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mq-app {
+    padding: var(--sp-3);
+  }
+
+  .mq-q {
+    font-size: 1.15rem;
+  }
+}
+
 /* ===== Christmas cluster (letter to Santa writing paper) ===== */
 
 .santa-sheet {
@@ -2584,3 +3545,443 @@ svg {
     text-decoration-color: var(--green);
   }
 }
+
+
+/* ===== Periods chart + decimal breakdown (Nov pre-dev batch) — print pass ===== */
+
+@media print {
+  /* Period band separators survive the black-and-white strip */
+  .pv-table .period-head {
+    border-left: 2px solid #000 !important;
+  }
+
+  .pv-table th.period-head:first-child {
+    border-left: 1px solid #000 !important;
+  }
+
+  .pv-table.pv-periods .period-sep {
+    border-left: 3px double #000 !important;
+  }
+
+  .period-reading {
+    margin-top: 10pt;
+  }
+
+  .second-title {
+    margin-top: 10pt;
+  }
+
+  .pr-sentence {
+    font-size: 11pt;
+    margin-top: 6pt;
+  }
+
+  /* The decimal reference sheet and the breakdown each get their own page */
+  .decimal-places-wrap,
+  .decimal-explore-wrap {
+    break-before: page;
+  }
+
+  .db-line {
+    font-size: 10pt;
+    margin-top: 4pt;
+  }
+}
+/* ===== How-to-write-in-cursive lesson sheet (Nov pre-dev wave 1) ===== */
+
+.ht-name {
+  margin: 0 0 var(--sp-3);
+  font-size: 0.95rem;
+}
+
+.ht-step {
+  margin-top: var(--sp-5);
+  break-inside: avoid;
+}
+
+.ht-step h3 {
+  font-size: 1.1rem;
+  margin-bottom: var(--sp-2);
+}
+
+.ht-points {
+  margin: 0 0 var(--sp-2);
+  padding-left: 1.15rem;
+}
+
+.ht-points li {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin-bottom: 0.3rem;
+}
+
+.ht-drill {
+  margin: var(--sp-3) 0 var(--sp-4);
+}
+
+.ht-drill-label {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.ht-drill-label .ht-hint {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink-soft);
+}
+
+.ht-stroke-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.ht-stroke-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 58px;
+  padding: 2px 5px 6px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+}
+
+.ht-stroke-cell svg {
+  display: block;
+  width: 100%;
+  height: 44px;
+}
+
+.ht-stroke-cell path {
+  fill: none;
+  stroke: #b9b5a8;
+  stroke-width: 3.4;
+  stroke-linecap: round;
+}
+
+.ht-stroke-cell .baseline {
+  border-bottom: 2px dotted var(--line-strong);
+}
+
+.ht-words {
+  display: grid;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.ht-words-row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: var(--sp-3);
+  align-items: center;
+}
+
+.ht-words-label {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.ht-words-cells {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.ht-word-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 46px;
+  overflow: hidden;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+}
+
+.ht-word-model {
+  margin-top: 2px;
+  font-family: var(--font-hand);
+  font-size: 1.55rem;
+  line-height: 1.1;
+  color: #b9b5a8;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ht-word-model-sm {
+  font-size: 1.2rem;
+}
+
+.ht-word-baseline {
+  flex: 1;
+  margin: 0 var(--sp-1);
+  border-bottom: 2px dotted var(--line-strong);
+}
+
+/* ===== Cursive sentences sheet — trace / hollow / write rows ===== */
+
+.sent-block {
+  margin-top: var(--sp-5);
+  break-inside: avoid;
+}
+
+.sent-label {
+  margin: 0 0 2px;
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+}
+
+.sent-fact {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.sent-row {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 58px;
+  margin-bottom: 10px;
+  padding: 0 6px 8px;
+  border-top: 1pt solid var(--line);
+  border-bottom: 1.5pt solid var(--line-strong);
+}
+
+.sent-row::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 58%;
+  left: 0;
+  border-top: 1pt dashed var(--line);
+}
+
+.sent-row .glyph {
+  font-family: var(--font-hand);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.sent-row.lg .glyph {
+  font-size: 34px;
+}
+
+.sent-row.md .glyph {
+  font-size: 30px;
+}
+
+.sent-row.sm .glyph {
+  font-size: 26px;
+}
+
+/* same fading-support colors as the name tracing rows */
+.sent-row.trace .glyph {
+  color: #b5b1a4;
+}
+
+.sent-row.hollow .glyph {
+  color: transparent;
+  -webkit-text-stroke: 1px #a39f92;
+}
+
+/* Print pass for both new sheets — two letter pages each */
+
+@media print {
+  .ht-step {
+    margin-top: 14pt;
+  }
+
+  .ht-step h3 {
+    font-size: 13pt;
+    margin-bottom: 5pt;
+  }
+
+  .ht-points {
+    margin-bottom: 6pt;
+    padding-left: 12pt;
+  }
+
+  .ht-points li {
+    font-size: 9.5pt;
+    line-height: 1.4;
+    margin-bottom: 2pt;
+  }
+
+  .ht-drill {
+    margin: 8pt 0 12pt;
+  }
+
+  .ht-drill-label {
+    margin-bottom: 4pt;
+    font-size: 9pt;
+  }
+
+  .ht-drill-label .ht-hint {
+    font-size: 8.5pt;
+  }
+
+  .ht-stroke-strip,
+  .ht-words,
+  .trace-strip {
+    gap: 5pt;
+  }
+
+  .ht-stroke-cell {
+    min-height: 40pt;
+    padding: 2pt 4pt 5pt;
+    border-color: #000 !important;
+  }
+
+  .ht-stroke-cell svg {
+    height: 30pt;
+  }
+
+  .ht-stroke-cell path {
+    stroke: #999 !important;
+  }
+
+  .ht-stroke-cell .baseline {
+    border-color: #999 !important;
+  }
+
+  .ht-words-row {
+    grid-template-columns: 70pt minmax(0, 1fr);
+    gap: 8pt;
+  }
+
+  .ht-words-label {
+    font-size: 10pt;
+  }
+
+  .ht-words-cells {
+    gap: 5pt;
+  }
+
+  .ht-word-cell {
+    min-height: 38pt;
+    border-color: #000 !important;
+  }
+
+  .ht-word-model {
+    font-size: 19pt;
+    color: #999 !important;
+  }
+
+  .ht-word-model-sm {
+    font-size: 15pt;
+  }
+
+  .ht-word-baseline {
+    border-color: #999 !important;
+  }
+
+  .sent-block {
+    margin-top: 16pt;
+  }
+
+  .sent-label {
+    font-size: 12pt;
+  }
+
+  .sent-fact {
+    font-size: 8.5pt;
+    color: #555 !important;
+    margin-bottom: 5pt;
+  }
+
+  .sent-row {
+    height: 46pt;
+    margin-bottom: 8pt;
+    padding: 0 4pt 6pt;
+    border-color: #000 !important;
+  }
+
+  .sent-row::before {
+    border-color: #999 !important;
+  }
+
+  .sent-row.lg .glyph {
+    font-size: 22pt;
+  }
+
+  .sent-row.md .glyph {
+    font-size: 19pt;
+  }
+
+  .sent-row.sm .glyph {
+    font-size: 16pt;
+  }
+
+  .sent-row.trace .glyph {
+    color: #999 !important;
+  }
+
+  .sent-row.hollow .glyph {
+    color: transparent !important;
+    -webkit-text-stroke: 0.8pt #999 !important;
+  }
+}
+
+@media (max-width: 40rem) {
+  .ht-stroke-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ht-words-row {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+
+  .ht-words-cells {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sent-row.lg .glyph {
+    font-size: 24px;
+  }
+
+  .sent-row.md .glyph {
+    font-size: 22px;
+  }
+
+  .sent-row.sm .glyph {
+    font-size: 19px;
+  }
+}
+
+@media print {
+  /* Teaching calendar year index: all 12 months on one letter page.
+     The screen month sections (.section) are stripped by the main print
+     pass — only this compact grid prints, as the plan-book insert. */
+  .printable .cal-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7pt 10pt;
+  }
+
+  .printable .cal-month {
+    break-inside: avoid;
+  }
+
+  .printable .cal-month h3 {
+    font-size: 9pt;
+    margin: 0 0 2pt;
+  }
+
+  .printable .cal-dates {
+    font-size: 6.5pt;
+    margin: 0 0 2pt;
+    color: #444;
+  }
+
+  .printable .cal-print-list {
+    font-size: 7pt;
+    line-height: 1.6;
+  }
+}
+

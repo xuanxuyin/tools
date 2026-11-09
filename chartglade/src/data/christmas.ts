@@ -1,4 +1,6 @@
-import type { PageDef } from './pageTypes';
+import type { PageDef, VariantCard } from './pageTypes';
+import { defHref, familyGallery } from './variantGallery';
+
 import type { PaintArt } from './halloween';
 
 /**
@@ -123,6 +125,13 @@ export const christmasPages: PageDef[] = [
       'The harder puzzle unlocks all eight directions, the standard upper-elementary format, and the Christmas list runs long: GINGERBREAD is eleven letters, MISTLETOE and SNOWFLAKE nine. Finding them takes a system — down each column, across each row, then both diagonals — which is exactly the systematic scanning teachers want from morning work in the final days of December. The vocabulary stays secular and school-safe (ornament, carol, tinsel, chimney), so the puzzle flies in public-school classrooms without a second thought.',
     ],
     printNote: 'Two puzzles, one letter page each (portrait). Word lists print under each grid.',
+    sheetImage: {
+      src: '/images/christmas-word-search-printable.png',
+      alt: 'Free printable Christmas word search — two puzzles on two letter pages: an easy grid of December words for K-2 and a harder puzzle with the words hidden backwards and diagonally for grades 3-5.',
+      width: 2016,
+      height: 2064,
+      caption: 'Two levels: easy forwards-only for K-2, all eight directions for grades 3-5.',
+    },
     tips: [
       {
         title: 'Front-load the vocabulary',
@@ -185,6 +194,13 @@ export const christmasPages: PageDef[] = [
       'The tree sheet uses addition facts with sums to 12, the grade 1-2 sweet spot, with wide bands of green so the picture reads early and momentum holds. The snowman sheet uses multiplication facts with products to 12 for grades 3-4 — the white body regions are the forgiving cells, while the hat, scarf, buttons and carrot nose split the remaining facts into small patches that demand care.',
     ],
     printNote: 'Two sheets, one letter page each (portrait). Crayon-friendly; legend names its colors.',
+    sheetImage: {
+      src: '/images/christmas-color-by-number-printable.png',
+      alt: 'Free printable Christmas color by number — a Christmas tree built from addition facts with sums to 12 and a snowman built from multiplication facts with products to 12, each answer keyed to a legend color.',
+      width: 2016,
+      height: 5178,
+      caption: 'Solve the fact, match the legend, color the picture — math hiding inside December coloring.',
+    },
     tips: [
       {
         title: 'Color the legend first',
@@ -248,6 +264,13 @@ export const christmasPages: PageDef[] = [
       'The sheet flexes across the whole elementary range. Kindergartners dictate or inventive-spell the first frame, then spend their energy in the drawing box. Grades 1-3 work all three frames with the printed models as training wheels. Grades 4-5 treat the page as a draft and copy a polished letter onto nice paper for the mailbox — the frames keep even strong writers specific instead of "I want a lot of toys."',
     ],
     printNote: 'One letter page, portrait. Three frames, a signature line and a drawing box.',
+    sheetImage: {
+      src: '/images/letter-to-santa-template.png',
+      alt: 'Free printable letter to Santa template — a Dear Santa heading, three sentence frames including "For Christmas, I would like ___ because ___", a Love signature line, and a drawing box for pre-writers.',
+      width: 2016,
+      height: 1688,
+      caption: 'Sentence frames carry hesitant writers; the drawing box gives pre-writers their part.',
+    },
     tips: [
       {
         title: 'Ask for one big thing',
@@ -296,3 +319,42 @@ export const christmasPages: PageDef[] = [
     ],
   },
 ];
+
+/**
+ * Christmas family gallery (image-density batch, 2026-11-07). Cards for the
+ * stocking and cootie pages live here too (their defs sit in other modules —
+ * they import this list, one direction, no cycles).
+ */
+const XMAS_BLURBS: Record<string, string> = {
+  'christmas-word-search': 'The classic puzzle twice — a forward-only grid for K-2, an all-directions grid for grades 3-5.',
+  'christmas-color-by-number': 'Christmas tree addition and snowman multiplication — facts to color by number.',
+  'letter-to-santa': 'The classic letter frame with sentence starters — write, color and mail after one print.',
+};
+export const XMAS_CARDS: VariantCard[] = [
+  ...familyGallery(christmasPages, '', XMAS_BLURBS),
+  {
+    href: '/christmas-stocking-coloring-page/',
+    title: 'Christmas stocking coloring page',
+    blurb: 'A big stocking outline with quilting sections to color — the quiet-time Christmas page.',
+    img: {
+      src: '/images/christmas-stocking-coloring-page.png',
+      alt: 'Free printable Christmas stocking coloring page — a large stocking outline with quilting sections, stars and a pom to color on one letter sheet.',
+      width: 2016,
+      height: 2540,
+    },
+  },
+  {
+    href: '/christmas-cootie-catcher/',
+    title: 'Christmas cootie catcher',
+    blurb: 'The paper fortune teller folded from one sheet — snow, star, gift and bell corners with real fortunes inside.',
+    img: {
+      src: '/images/christmas-cootie-catcher-printable.png',
+      alt: 'Free printable Christmas cootie catcher template — a foldable paper fortune teller with snow, star, gift and bell corner labels and fortunes already filled in.',
+      width: 2016,
+      height: 2212,
+    },
+  },
+];
+for (const p of christmasPages) {
+  p.variants = XMAS_CARDS.filter((c) => c.href !== defHref(p));
+}

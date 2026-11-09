@@ -1,3 +1,25 @@
+/**
+ * Image-forward variant card (the incumbent image-wall pattern: Superstar
+ * serves ~20 product blocks per page, DadsWorksheets' hubs are card walls —
+ * every sibling printable is surfaced as a real preview, never plain text).
+ * Reuses the PNGs `npm run sheet-images` already generates.
+ */
+export interface VariantCard {
+  /** Internal URL with trailing slash, e.g. '/multiplication-chart-blank/'. */
+  href: string;
+  title: string;
+  /** One-line reason a teacher picks this version. */
+  blurb: string;
+  img: { src: string; alt: string; width: number; height: number };
+  /**
+   * 'cover' for very tall multi-sheet pack PNGs (height/width ≳ 1.6): in a
+   * 4:3 contain box they shrink to a near-blank ghost, so the card shows the
+   * top of the first sheet at legible size instead (DadsWorksheets-style
+   * first-page preview). Undefined = contain.
+   */
+  fit?: 'cover';
+}
+
 /** Contract shared by every printable page (same role as tintbrew's ScenarioDef). */
 export interface PageDef {
   /** Flat URL slug, e.g. 'place-value-chart' -> /place-value-chart/ */
@@ -14,7 +36,8 @@ export interface PageDef {
     | 'thanksgiving'
     | 'christmas'
     | 'sign-in-sheets'
-    | 'cootie';
+    | 'cootie'
+    | 'coloring';
   h1: string;
   metaTitle: string;
   metaDescription: string;
@@ -48,4 +71,10 @@ export interface PageDef {
   };
   /** Wide sheets (1-20 grids, number lines) print landscape. */
   landscape?: boolean;
+  /**
+   * Image cards of sibling printables in the same family — rendered by
+   * ChartPage between the page body and the related-links section. Excludes
+   * the page's own URL (a card never links to itself).
+   */
+  variants?: VariantCard[];
 }

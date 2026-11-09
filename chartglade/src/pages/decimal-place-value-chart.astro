@@ -1,11 +1,59 @@
 ---
 import ChartPage from '../components/ChartPage.astro';
 import PlaceValueChart from '../components/printables/PlaceValueChart.astro';
+import DecimalPlacesSheet from '../components/printables/DecimalPlacesSheet.astro';
+import DecimalBreakdownIsland from '../components/printables/DecimalBreakdownIsland.astro';
 import { placeValuePages } from '../data/placeValue';
+import Icon from '../components/Icon.astro';
 
 const def = placeValuePages.find((p) => p.slug === 'decimal-place-value-chart')!;
 ---
 
 <ChartPage def={def}>
   <PlaceValueChart whole={6} dec={3} example="42.607" title="Decimal Place Value Chart — 42.607" interactive />
+  <Fragment slot="after">
+    <section class="section no-print" aria-labelledby="dp-places-h">
+      <h2 id="dp-places-h">One tenth, one hundredth, one thousandth</h2>
+      <p>
+        Those three names are the entire decimal side of the chart, and each one is a fraction in disguise: one tenth
+        is 1/10, one hundredth is 1/100, one thousandth is 1/1,000. Students already own two of them from money — a
+        dime is one tenth of a dollar, a penny is one hundredth. Thousandths show up on rulers: a millimeter is one
+        thousandth of a meter.
+      </p>
+      <p>
+        Size runs opposite the whole-number side, and that is the trap: the tenths column is the biggest of the
+        three, so 0.1 beats 0.09 even though 9 looks bigger than 1. The sheet below lays each column next to its
+        fraction, its decimal and its money anchor, then works three example numbers digit by digit — including
+        12.05, where the empty tenths column is doing real work as a placeholder.
+      </p>
+    </section>
+    <section class="printable-wrap decimal-places-wrap" aria-label="Tenths, hundredths and thousandths reference sheet">
+      <div class="printable-toolbar">
+        <span class="print-note">Prints on one letter page, right after the chart.</span>
+        <button type="button" class="btn" data-print><Icon name="print" />Print</button>
+      </div>
+      <div class="printable">
+        <DecimalPlacesSheet />
+      </div>
+    </section>
+
+    <section class="section no-print" aria-labelledby="dp-explore-h">
+      <h2 id="dp-explore-h">Break down any decimal, digit by digit</h2>
+      <p>
+        Type any decimal — whole part up to hundred thousands, up to three decimal places — and the breakdown names
+        every digit, its place and its worth, then writes the expanded form and the sentence you would say out loud.
+        It updates as you type. What you see below is the default example, already complete, so the page works (and
+        prints) exactly as shown with JavaScript off.
+      </p>
+    </section>
+    <section class="printable-wrap decimal-explore-wrap" aria-label="Interactive decimal breakdown">
+      <div class="printable-toolbar">
+        <span class="print-note">The breakdown prints as shown — type your number first if you want a different one on paper.</span>
+        <button type="button" class="btn" data-print><Icon name="print" />Print</button>
+      </div>
+      <div class="printable">
+        <DecimalBreakdownIsland />
+      </div>
+    </section>
+  </Fragment>
 </ChartPage>

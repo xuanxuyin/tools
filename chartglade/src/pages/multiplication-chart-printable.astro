@@ -1,0 +1,18 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import MultTable from '../components/printables/MultTable.astro';
+import TimesTablesList from '../components/printables/TimesTablesList.astro';
+import { multiplicationPages } from '../data/multiplication';
+
+const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart-printable')!;
+---
+
+<ChartPage def={def}>
+  <MultTable size={12} title="Multiplication Chart 1-12 (Filled)" />
+  <div class="sheet-break">
+    <MultTable size={12} blank title="Blank Multiplication Chart 1-12" />
+  </div>
+  <div class="sheet-break">
+    <TimesTablesList title="Every Times Table as a List" />
+  </div>
+</ChartPage>

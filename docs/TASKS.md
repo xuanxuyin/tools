@@ -6,13 +6,29 @@
 
 ---
 
-## 今天 · 2026-11-03（周一）
+## 今天 · 2026-11-07（周六）
 
-- [ ] 🤖 **chartglade Cootie Catcher 簇开工（11/03 立项）**：/cootie-catcher/ 模板主页 + 已填 fortunes printable 页 + **圣诞主题模板（死线 11/15，圣诞提前窗现在正卡）**；填充内容用签文库改编英文吉语库（300 签原料在 `docs/fortune-draw/`）；情人节模板 12 月中上跟进。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md) + §3 #34
-- [ ] 🤖 **tintbrew 外链文案包（本周）**：① B 组 4 个 GitHub awesome-list PR 正文定稿（句式在 [DISTRIBUTION §7B](./tintbrew/DISTRIBUTION.md)）② F 组 Roundup 目标 20 个清单（craft 博客 listicle + 教师资源页，每站一句定制 hook）③ C 组 Quora 答帖模板 2 版（brown/purple 两问法）。文案齐了逐项转 👤
+- [x] 🤖 **chartglade #36 leveled math practice island 上线 ✅（main `8371040`）**：/multiplication-chart/ 第三段交互岛——10 轨 ×10 关（K~Algebra 1）打怪升级；👤 两条追加需求全落：**每题 worked solution**（"Show me how" / 答错自动展开）+ **图形题 9 类 SVG & frac/time 答案**（钟表/数轴/柱状图/阴影分数/面积周长/坐标/斜率/勾股）；进度 localStorage，全通关打印证书；585/585 绿 + 134 页。**👤 顺手过一遍手感**（尤其 1st 钟表题、3rd 阴影分数、8th 勾股图）。明细 [chartglade PLAN 11/07 行](./chartglade/PLAN.md) + §3 #36
+- [x] 🤖 **"页面太零散"产品方向定案 → #37 reference pack 层排下一批**：👤 批评 decimal place value 等参考图没人单打 → 定案三层结构（关键词页=入口 / 单图打印=即搜即打 / **pack=成套打印**），URL 不合并；P1 = place-value-chart-printable 升级完整套装（6~7 页一钮打印），P2 = charts hub 收 4 散页合集。quiz island 之后做（👤 拍板顺序）。明细 [chartglade PLAN §3 #37](./chartglade/PLAN.md)
+- [x] 🤖 **fortune-draw 立项评审数据齐三样**：11/06 用户发现 yesnopicker.com（单页 56K/月）→ 当日拆解（单 URL/3.7K 词/双工具/WebApplication+FAQ schema，[teardown-yesnopicker.md](./fortune-draw/teardown-yesnopicker.md)）→ 11/07 用户 AITDK 拉 picker/wheel/generator 词臂 **13 词合计 204,230 US/月，10K 线过 20 倍** + Claude SERP 实勘 5 词（A 级 coin flip KD11 / button KD38 均软）。明细 [fortune-draw PLAYBOOK](./fortune-draw/PLAYBOOK.md) + teardown §6
+- [ ] 👤 **fortune-draw 立项拍板（数据已三样齐全，就差你点头）**：三臂合并 ~976K/月【实测】，可打区间 ≈50K 起步；预定条件已触发 → 定位 = **"美国问事玩具工具站"（8-ball/picker/coin flip/button/oracle/fortune cookie 道具家族）**，攻击序与商标护栏见 [fortune-draw PLAYBOOK](./fortune-draw/PLAYBOOK.md)。**拍板后 Claude 当日出 PLAN + 域名候选（不含 magic-8-ball 字样，Mattel 商标）**
+
+---
+
+## 今天 · 2026-11-03（周一）
+- [x] 🤖 **chartglade 字母涂色画稿换装 OpenMoji 上线 ✅（429df7c 已部署）+ 挑战图批取消**：26 字母页六卡画廊全换 OpenMoji 真线稿（67 SVG 自托管+CC BY-SA 4.0 署名）+ 首页 5 图去文字化，IndexNow 28 URL 200；color_story 挑战大图批（JSON 重建被驳→原图放大管线就绪）👤 拍板"没必要搞复杂用上一批"→ 全量回退零再部署。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md)
+
+- [x] 🤖 **coloring 画稿换装 OpenMoji 真图 + 首页配图 ✅（11/03 当日，👤 拍板"那你放上去试试吧"）**：手编 SVG 被判丑全线撤下 → OpenMoji black 线稿 67 张 vendored（CC BY-SA 4.0，CREDITS.md + hub 署名）→ 26 字母页双轨渲染（真图 `<img>` + 11 个无 emoji 词手绘兜底）+ 词换 fan→feather/jam→juice/net→nose + 16 处 caption 对齐实图 + 26 PNG 重拍尺寸不变；**首页同车**：4 hub 卡缩略图 + 圣诞袜季节图 + 按钮间隙修复。480/480 绿 + 133 页。**下一批候选（等 👤 确认）**：color_story 素描图库 192 张已扫描，22 字母有强匹配（I/X/Z 缺），意向是放进每页第 6 卡（poster 位）做"高难版"；明细 [PLAN 11/03 换装行](./chartglade/PLAN.md)
+- [x] 🤖→👤 **coloring 形态返工：A/B/C 试点 + d~z 全线铺开 ✅（11/03 当日，👤"那你继续剩下的字母吧"批准铺开）**：👤 指出形态错配（在位者是"图纸图片画廊"不是字母练习纸）→ 当日拆解 mondaymandala/KAB 页面解剖（[拆解笔记](./chartglade/research/coloring-teardown.md)）→ A/B/C 三页改六卡画稿画廊 → 👤 间接放行 → **d~z 61 实物画稿补齐，26 字母全部六卡画廊 + 26 张纯黑白 PNG 重截**（实物库 70 个，`src/lib/drawings.ts`），练习纸退居第二打印页。同批：Print/Download 按钮配色（绿/琥珀双色）+ 画廊屏幕态绿底（打印/PNG 剥离）+ SEO 批（h1/metaTitle 转 "Letter X Coloring Pages" 复数主词 + 42 处两页口径纠偏 + 每页 GEO 内容清单）。479/479 绿 + 133 页已 push。**👤 顺手翻几页 /coloring/letters/ 看画稿质量——哪张卡不行直接说，单卡返工便宜**；stocking 补 5 设计挂下一艺术批
+- [x] 🤖 **chartglade coloring 产品线立项 + Phase A/B-1 上线 ✅（11/03 当日）**：👤 提案 kab 式涂色栏目 → 8 栏目拆解 + SERP 实勘 5 词 + mondaymandala sitemap 逆向 → 👤 AITDK 拉量 ≈197K/月过线 20 倍 → 转正产品线；**Phase A 当日上线**：/coloring/ hub + /coloring/letters/a/~/z/ 26 页 bubble 字母涂色矩阵（程序生成零手绘，每页 2016×1334 PNG + 26 守卫测试）；**Phase B-1 同日上线**：/christmas-stocking-coloring-page/（手编 SVG 画稿，christmas/coloring 双 hub 卡 + 首页季节槽链）。479/479 绿 + 133 页已 push。**余：CBN 矩阵扩展挂 12 月批；tree/snowman singles 观察池**。明细 [chartglade PLAN 11/03 coloring 四行](./chartglade/PLAN.md) + §2 coloring 行 + §3 #35
+- [x] 🤖 **chartglade Cootie Catcher 首批上线 ✅（11/03 当日，死线 11/15 提前 12 天）**：/cootie-catcher/ + /christmas-cootie-catcher/ + /cootie-catcher-fortunes/ 三页合并 main `22d0905` 已 push；~~余二批+how-to~~ 11/03 晚实测判定批二/how-to 取消（见 PLAN 同日判定行），余情人节 12 月中。明细 [chartglade PLAN 11/03 上线行](./chartglade/PLAN.md) + §3 #34
+- [x] 🤖 **chartglade 11 月批提前上线 + 图片 wave 4 + og:image 收口 ✅（11/03，原排 11/12 窗）**：① 主车厢 7 URL 合并 main `e1da996`→`e695e91`（/place-value-chart-with-periods/ + /multiplication-chart-printable/ + /times-table-chart/ + cursive 深化 2 页 + /teaching-calendar/ + decimal island/变体段；首页季节槽感恩节→圣诞，胶囊方角 bug 同批修）② 图片 wave 4：20 页接产品 PNG（25 新图，全站 sheet-preview 31→51）+ og:image 页级接线（31 图进社交元数据）`caadeaa`→`50fe193`；467/467 绿 + 105 页 build；IndexNow 24 URL 200。明细 [chartglade PLAN 11/03 行](./chartglade/PLAN.md)
+- [x] 🤖 **tintbrew 外链文案包 ✅ 三件全交付（11/03）**：① B 组 4 个 GitHub awesome-list PR 正文定稿（执行包落 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)）②③ Quora 答帖 2 版（brown/purple 实问 URL）+ F 组 23 目标核实表，全落 [tintbrew/DISTRIBUTION.md §C/§F](./tintbrew/DISTRIBUTION.md)（`26008cd`）——**转 👤**：Quora 2 帖照 §C 模板发（链接只进末句）、23 目标逐站照 §F hook 提交
 - [ ] 👤 **外链扩容 A 组启动：手作 Reddit 三版养号**：[r/PerlerBeads](https://www.reddit.com/r/PerlerBeads/) + [r/beadsprites](https://www.reddit.com/r/beadsprites/) + r/PerlerBeadArt——每天浏览 + 1~2 条无链真人评论（晒图/答新手，零链接），攒到满足门槛后发 photo 工具发布帖（**r/beadsprites 有 "I made a free tool that turns pictures into bead patterns" 被接受先例**，11/03 实勘）。规则红线见 [tintbrew DISTRIBUTION §7A](./tintbrew/DISTRIBUTION.md)：原创/注明出处、90/10 自推比、单帖单链
-- [ ] 👤 **外链扩容 B 组：GitHub awesome-list PR ×4 提交**：repo 候选 = `bradtraversy/design-resources` / `MohamedYoussouf/Design-Resources` / `F4dhil9ant3ng/awesome-design` / `GracieCreates/Design-Resources-for-Developers`——各提 1 PR 在 Color Tools 区加 TintBrew 一行（文案抄 §7B，先读各 repo CONTRIBUTING）。需 GitHub 账号（如无，注册 5 分钟）
-- [ ] 👤 **外链生效对账（挂 11/17）**：SEMrush 引荐域名 38 → **45+** = 通道生效；不到 → 复盘执行率而不是换通道。本周内先报 GitHub/Quora 账号是否就位
+- [ ] 👤 **外链扩容 B 组：GitHub awesome-list PR ×4 提交（文案已齐）**：repo 候选 = `bradtraversy/design-resources` / `MohamedYoussouf/Design-Resources` / `F4dhil9ant3ng/awesome-design` / `GracieCreates/Design-Resources-for-Developers`——完整执行包（条目行/标题/描述/插入点/五步流程）在 [tintbrew/github-pr-pack.md](./tintbrew/github-pr-pack.md)，每 repo 约 2 分钟网页版操作；提交前浏览器核一眼该 repo Color 区现有条目格式即可。每提一个回 TASKS 勾掉并记 PR 链接
+- [ ] 👤 **外链 F 组首发批（手册 [f-outreach-playbook.md](./tintbrew/f-outreach-playbook.md) §二台账顺序）**：✅ #1 itsalwaysautumn 已发 11/03（**follow-up 挂 11/13**，无回找 Claude 要文案）；❌ #2 kidsactivitiesblog 弃（无联系入口）；⬜ #3 rockyourhomeschool / #4 teacherscoutmom / #5 montessorilessons 找邮箱（每站超 5 分钟无邮箱即弃跳下个）→ 一次把 2~3 个邮箱发 Claude → 收定制邮件 → 分 2~3 天发完。第二/三批目标见手册 §二
+- [ ] 👤 **外链生效对账（挂 11/17）**：**改数质量引荐域名**（Backlink Analytics → Referring Domains，排除 rankvance/*.xyz 站群/fiverr-*.site/*.shop SEO 广告站/WHOIS 爬虫域）——11/03 全量分拣：38 域 = 垃圾 28 + 可疑 9 + **质量仅 1**（launchindex.net）。**终版线：1 → ≥15**；不到 → 复盘执行率而不是换通道。口径依据 [tintbrew DISTRIBUTION §7.1 附注三](./tintbrew/DISTRIBUTION.md)。本周内先报 GitHub/Quora 账号是否就位
+- [ ] 👤 **拆竞品外链来源（SEMrush，校准 §7 六通道火力分配）**：SEMrush → Backlink Analytics → 输入 `perlerbeadpatterns.org`（6 月新站排 #2 的对位竞品）→ 看 **Referring Domains** 列表（按 Authority Score 排）→ 记两件事：① 它的外链集中在什么渠道（craft 博客 roundup？Reddit？目录站？）② 有没有我们 §7 清单之外的渠道形态 → 数字/域名清单贴回给 🤖 判读。**判读用途**：它一半外链来自 roundup → F 组升主通道；靠 Reddit → A 组升主通道；发现新形态 → 补进 §7
 - [x] 👤 **tintbrew D1 迁移 SQL ✅ 已跑完（11/3 用户控制台执行，钱包面板出现即 authors 表生效——积分/扩位/多作品全解锁）**：Cloudflare 控制台 → Storage & Databases → D1 → tintbrew 库 → Console，把 `tintbrew/functions/schema.sql` **底部注释里的 6 条迁移 SQL 按序逐条执行**（creations 重建支持多作品 + 建 authors 钱包表）。**不跑的后果（实测）**：/gallery/ 曾因钱包查询炸掉整页不显示热门作品（11/3 已加容错兜底，列表恢复但钱包面板隐藏）；点赞积分、100 积分扩画廊位、发布第二件作品**全部静默不生效**。跑完即全部解锁。
 
 ---
@@ -142,6 +158,7 @@
 
 | 日期 | 任务 | 去哪抄 |
 |---|---|---|
+| 本周（11/03~11/07） | **chartglade coloring Phase B**：christmas coloring singles（stocking 320/KD8 先行 + tree/snowman，paintArt 画稿管线）+ CBN 矩阵扩展（位图→PaintArt 导入器 + 节日×运算矩阵）——Phase A 26+1 页已 11/03 上线 | chartglade PLAN §3 #35 |
 | 本周（10/27~11/02） | ~~10/30（周五）B 计划讨论门~~ ✅ 已拍板（外线不加火力收口、C 组撤销、转 11 月批；明细 chartglade PLAN 10/30 B 门行）｜ Reddit 蹲守常态（万圣霜饰窗口收尾到 10/31）｜ 11 月批排序 10/27 出结论 | chartglade PLAN §6 ｜ tintbrew PLAN 止损线节 |
 
 ---
@@ -152,7 +169,7 @@
 |---|---|
 | 10/30（周五） | ⭐ **B 计划讨论门 ✅ 已闭环（10/30 拍板）**：外线不加火力——C 组 4 封撤销（"前面 18 封零回复，发了没意义"）、11/2 follow-up 同砍、已发 18 封听其自然；止损线 2027-01-31 不动；主线转 11 月批 |
 | 11/02（周一） | **tintbrew 11 月轻批开工日 ✅ 五连批当日上线**：P1 分板打印 + P2 裁剪（11 月批执行序①②）→ 全站视觉两轮（胶囊暖白风，对标 perlerbeadpatterns.org）→ UGC 发布闭环（官方模板选择器 + photo/模式页 Publish + 画廊 Open in editor remix）→ /gallery/ 三连 bug 修复（卡片两段式布局 + 点赞双实例同步 + 昵称记忆）。明细 PLAN 11/02 五行；👤 待验收：发布/点赞/视觉三类 |
-| 11 月 | chartglade 11 月批（11/12 上线窗，`nov-predev` 弹药 85 页已备）：#24 place value 深化 + #25 mult 2 页 + #26 Teaching Calendar hub + #20 cursive 深化 2 页 + **#28 Christmas 簇加车（死线 11/15）** + #32 图片扩容第二波搭车 ｜ tintbrew：~~拼豆 P1+P2~~ **✅ 11/2 已上线** ｜ V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
+| 11 月 | chartglade 11 月批 **✅ 主车厢 11/03 提前上线**（#24/#25/#26/#20 + 圣诞季节槽 + 图片 wave4/og:image；余：CBN 涂色扩展 roman numerals 后续 + #31 variants[] 12 月批 + 情人节 cootie 12 月中）｜ tintbrew：~~拼豆 P1+P2~~ **✅ 11/2 已上线** ｜ V2.3 反向配色计算器 + make-X white/gray 搭车；拼豆 P3 量级门后开工 ｜ 11/15 Pinterest 末次探针 |
 | 2027-01-31 | **双站止损线复盘**（chartglade <3K 且零词 top 30；tintbrew <5K 且零词 top 30 → 停投） |
 
 ---

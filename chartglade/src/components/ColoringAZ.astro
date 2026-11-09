@@ -1,0 +1,54 @@
+---
+/**
+ * A-Z strip shown under every letter coloring page (CursiveAZ equivalent) —
+ * 26 same-hub internal links, current letter highlighted.
+ */
+import { coloringLetters } from '../data/coloringLetters';
+
+interface Props {
+  current: string;
+}
+
+const { current } = Astro.props;
+---
+
+<nav class="az-strip no-print" aria-label="All letter coloring pages">
+  {coloringLetters.map((l) => (
+    <a
+      class:list={['az-link', { 'is-current': l.slug === current }]}
+      href={`/coloring/letters/${l.slug}/`}
+      aria-current={l.slug === current ? 'page' : undefined}
+    >
+      {l.sheet.capital}{l.sheet.lower}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .az-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+  .az-link {
+    display: grid;
+    place-items: center;
+    min-width: 2.4rem;
+    padding: 0.3rem 0.45rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+    text-decoration: none;
+    background: var(--card);
+  }
+  .az-link:hover { border-color: var(--green); }
+  .az-link.is-current {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+</style>

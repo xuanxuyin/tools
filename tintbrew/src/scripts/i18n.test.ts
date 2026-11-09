@@ -275,9 +275,11 @@ describe('guide long-copy dictionaries', () => {
       });
       d.related.forEach((r, i) => (en[`${p}r${i + 1}`] = r.label));
     }
-    // mix additiveNote prose — same key shape the [slug] template emits
+    // mix additiveNote/synonymNote prose — same key shape the [slug]
+    // template emits
     for (const def of mixes) {
       if (def.additiveNote) en[`mn.${def.a}-${def.b}`] = def.additiveNote;
+      if (def.synonymNote) en[`syn.${def.a}-${def.b}`] = def.synonymNote;
     }
     return en;
   }

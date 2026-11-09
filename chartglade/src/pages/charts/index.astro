@@ -10,10 +10,13 @@ const charts = [...placeValuePages, ...multiplicationPages, ...formulaSheetPages
 
 const blurbs: Record<string, string> = {
   'place-value-chart': 'Ones to millions with the comma periods marked — click any digit to see what it is worth.',
+  'place-value-chart-with-periods': 'Ones through billions grouped into period bands, with a read-each-period table and a blank version.',
   'decimal-place-value-chart': 'Hundred thousands down to thousandths, decimal point anchored, money examples included.',
   'place-value-anchor-chart': 'The classroom-wall version: place names, periods, and one worked example with value callouts.',
   'place-value-chart-printable': 'A filled reference plus a blank write-in chart — prints as two clean letter pages.',
   'multiplication-chart': 'The classic 1-12 grid with the perfect-square diagonal shaded and click-to-check facts.',
+  'multiplication-chart-color': 'Every times table in its own soft color band — the chart kids can navigate at a glance.',
+  'multiplication-chart-printable': 'Three formats in one print job — filled 1-12 chart, blank practice chart, and every times table as a list. Black and white.',
   'multiplication-chart-blank': 'The same 1-12 grid with the products removed — retrieval practice and self-grading quizzes.',
   'multiplication-chart-1-15': 'The extended grid with the 13s-15s columns real problems actually use. Prints landscape.',
   'multiplication-chart-1-20': 'All 400 facts on one landscape page — the middle-school reference chart.',
@@ -23,6 +26,7 @@ const blurbs: Record<string, string> = {
   'hundred-chart': 'The 1-100 grid that runs K-2: skip-count coloring, ten-more boxes, missing-number puzzles.',
   'number-line-printable': 'A big 0-20 line for the hop method, one per landscape page.',
   'addition-chart': 'Every fact from 0+0 to 12+12 with the doubles diagonal marked.',
+  'times-table-chart': 'The 1-12 times table chart in two layouts — the classic grid and one list per table — with the learning order and skip-counting routine.',
   'alphabet-chart': 'A-Z letter pairs with short-vowel-safe key words, built for the three-beat phonics chant.',
 };
 
@@ -60,7 +64,20 @@ const jsonLd = [
   <section class="section">
     <div class="card-grid">
       {charts.map((p) => (
-        <a class="card" href={`/${p.slug}/`}>
+        <a class:list={['card', { 'card-with-thumb': !!p.sheetImage }]} href={`/${p.slug}/`}>
+          {p.sheetImage && (
+            <span class="card-thumb">
+              <img
+                src={p.sheetImage.src}
+                alt={p.sheetImage.alt}
+                width={p.sheetImage.width}
+                height={p.sheetImage.height}
+                loading="lazy"
+                decoding="async"
+                class:list={[{ cover: p.sheetImage.height / p.sheetImage.width >= 1.6 }]}
+              />
+            </span>
+          )}
           <h2>{p.h1}</h2>
           <p>{blurbs[p.slug]}</p>
         </a>
@@ -73,10 +90,11 @@ const jsonLd = [
     <p>
       Place value charts come first because everything else in elementary math stands on them: reading big numbers,
       regrouping, decimals. The multiplication charts cover the fact fluency years (grade 3 through 5), from the
-      standard 1-12 grid (which now carries a mad-minute drill maker) to the 1-20 reference for middle school. The
-      formula sheets pick up where the facts end — geometry for grades 6-8, algebra for Algebra 1. The rest —
-      fractions, hundred chart, number line, addition, alphabet — are the single-sheet workhorses that each own one
-      job.
+      standard 1-12 grid (which now carries a mad-minute drill maker) to the 1-20 reference for middle school — plus
+      a three-format printable pack (filled, blank, and times-table lists in one print job) and a times table chart
+      in two layouts. The formula sheets pick up where the facts end — geometry for grades 6-8, algebra for Algebra
+      1. The rest — fractions, hundred chart, number line, addition, alphabet — are the single-sheet workhorses that
+      each own one job.
     </p>
     <p>
       Need blank paper with a grid instead? The <a href="/graph-paper/">graph paper section</a> prints true-size

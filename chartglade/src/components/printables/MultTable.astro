@@ -6,10 +6,12 @@ interface Props {
   size?: number;
   /** empty products — the practice version */
   blank?: boolean;
+  /** color product: each times-table row keeps its own soft band (screen + print) */
+  color?: boolean;
   title?: string;
 }
 
-const { size = 12, blank = false, title } = Astro.props;
+const { size = 12, blank = false, color = false, title } = Astro.props;
 const grid = multTable(size);
 const headers = Array.from({ length: size }, (_, i) => i + 1);
 const dense = size > 12;
@@ -18,7 +20,7 @@ const DEFAULT_FACT = 'Click any cell to hear the fact read back.';
 
 {title && <p class="sheet-title">{title}</p>}
 <table
-  class:list={['chart-table', { clickable: !blank, dense }]}
+  class:list={['chart-table', { clickable: !blank, dense, rainbow: color }]}
   data-fact-table={blank ? undefined : ''}
   data-fact-default={blank ? undefined : DEFAULT_FACT}
 >

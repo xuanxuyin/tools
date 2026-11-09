@@ -1,4 +1,6 @@
 import type { PageDef } from './pageTypes';
+import { defHref, familyGallery } from './variantGallery';
+
 import type { GraphPaperVariantId } from '../lib/graphPaper';
 
 /**
@@ -18,6 +20,14 @@ export interface GraphPaperDef extends PageDef {
 export const graphPaperPages: GraphPaperDef[] = [
   {
     slug: 'printable-graph-paper',
+    sheetImage: {
+      src: '/images/graph-paper-quarter-inch.png',
+      alt: 'Free printable quarter-inch graph paper — four squares per inch with a heavier line every inch, one full letter sheet that prints at true size.',
+      width: 2016,
+      height: 2042,
+      caption: 'The 1/4 inch grid exactly as it prints — true size on letter paper.',
+    },
+
     hub: 'graph-paper',
     variant: 'quarter-inch',
     h1: 'Printable Graph Paper',
@@ -74,6 +84,14 @@ export const graphPaperPages: GraphPaperDef[] = [
 
   {
     slug: 'half-inch-graph-paper',
+    sheetImage: {
+      src: '/images/graph-paper-half-inch.png',
+      alt: 'Free printable half-inch graph paper — big half-inch squares for block letters, counting boxes and first bar graphs on one letter sheet.',
+      width: 2016,
+      height: 2042,
+      caption: 'Big squares for small hands — one letter page.',
+    },
+
     hub: 'graph-paper',
     variant: 'half-inch',
     h1: 'Half-Inch Graph Paper',
@@ -126,6 +144,14 @@ export const graphPaperPages: GraphPaperDef[] = [
 
   {
     slug: '1-cm-graph-paper',
+    sheetImage: {
+      src: '/images/graph-paper-1cm.png',
+      alt: 'Free printable 1 cm graph paper — true centimeter squares for metric measurement and science work on one letter-size page.',
+      width: 2016,
+      height: 2042,
+      caption: 'Centimeter squares exactly as they print.',
+    },
+
     hub: 'graph-paper',
     variant: 'one-cm',
     h1: '1 cm Graph Paper',
@@ -178,6 +204,14 @@ export const graphPaperPages: GraphPaperDef[] = [
 
   {
     slug: '5mm-graph-paper',
+    sheetImage: {
+      src: '/images/graph-paper-5mm.png',
+      alt: 'Free printable 5mm graph paper — the dense metric grid for labs and technical work, printed at true size on one letter page.',
+      width: 2016,
+      height: 2040,
+      caption: 'The 5 mm metric grid on one letter page.',
+    },
+
     hub: 'graph-paper',
     variant: 'five-mm',
     h1: '5mm Graph Paper',
@@ -230,6 +264,14 @@ export const graphPaperPages: GraphPaperDef[] = [
 
   {
     slug: 'dot-grid-paper',
+    sheetImage: {
+      src: '/images/graph-paper-dot-grid.png',
+      alt: 'Free printable dot grid paper — a dot at every quarter-inch intersection for sketching, plotting and structured notes on one letter sheet.',
+      width: 2016,
+      height: 2042,
+      caption: 'Dots instead of lines — one letter page at true size.',
+    },
+
     hub: 'graph-paper',
     variant: 'dots',
     h1: 'Dot Grid Paper',
@@ -282,6 +324,14 @@ export const graphPaperPages: GraphPaperDef[] = [
 
   {
     slug: 'isometric-graph-paper',
+    sheetImage: {
+      src: '/images/graph-paper-isometric.png',
+      alt: 'Free printable isometric graph paper — three line families at exact 60 degrees so cubes and 3D structures draw along the printed lines.',
+      width: 2016,
+      height: 2040,
+      caption: 'The isometric grid — angles at a true 60 degrees.',
+    },
+
     hub: 'graph-paper',
     variant: 'iso',
     h1: 'Isometric Graph Paper',
@@ -332,3 +382,19 @@ export const graphPaperPages: GraphPaperDef[] = [
     ],
   },
 ];
+
+/**
+ * Family gallery (image-density batch, 2026-11-07): every grid size previews
+ * as a card on its siblings' pages — the DadsWorksheets hub-wall pattern.
+ */
+const GP_BLURBS: Record<string, string> = {
+  'printable-graph-paper': 'The standard four-squares-per-inch grid, with heavier inch lines that make counting easy.',
+  'half-inch-graph-paper': 'Big half-inch squares for K-3 — block letters, counting boxes and first bar graphs.',
+  '1-cm-graph-paper': 'Centimeter squares for metric measurement and science units — matches the unit cubes.',
+  '5mm-graph-paper': 'The dense metric grid for labs, older students and anything technical.',
+  'dot-grid-paper': 'Dots at every intersection — alignment without the cage, for sketching and notes.',
+  'isometric-graph-paper': 'Three line families at exact 60 degrees, so cubes and 3D drawings build themselves.',
+};
+for (const p of graphPaperPages) {
+  p.variants = familyGallery(graphPaperPages, defHref(p), GP_BLURBS);
+}

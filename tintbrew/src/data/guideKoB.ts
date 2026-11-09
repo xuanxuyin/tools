@@ -107,7 +107,10 @@ export const SCENARIO_KO_B: Record<string, string> = {
     '차트에서 가장 가까운 색에서 출발해 이웃 색이나 보색 한 꼬집으로 걸어가세요: 세이지는 초록+노랑 약간+검정, 뮤트 블루는 파랑+주황 한 자락. 믹서가 같은 산술을 실시간으로 합니다.',
   'gw.buttercream-color-chart.r1': '아이싱 컬러 차트 (더 하얀 바탕 버전)',
   'gw.buttercream-color-chart.r2': '검정 글레이즈 만들기',
-  'gw.buttercream-color-chart.r3': '믹서에서 커스텀 색 직접 섞기',
+  'gw.buttercream-color-chart.f6q': '피치 버터크림은 어떻게 만드나요?',
+  'gw.buttercream-color-chart.f6a':
+    '흰 버터크림 한 컵당 오렌지 젤 두 방울에 핑크 한 방울 — 피치는 주황의 틴트라서, 새 색을 섞는 게 아니라 베이스를 피치 경로로 걷는 것입니다. 피치 가이드에 계산된 세 경로가 모두 있습니다.',
+  'gw.buttercream-color-chart.r3': '무슨 색이 피치를 만드나요 (계산된 세 경로)',
   'gw.buttercream-color-chart.r4': '모든 HEX를 RGB나 HSL로',
 
   /* ---------- what-colors-make-blue ---------- */
@@ -380,7 +383,13 @@ export const SCENARIO_KO_B: Record<string, string> = {
   'gw.what-colors-make-peach.f4a':
     '빨강과 흰색 — 핑크는 빨강의 틴트입니다. 거기에 주황이나 노랑 약간을 더하면 피치인데, 위의 핑크+노랑이 피치에 떨어지는 이유입니다.',
   'gw.what-colors-make-peach.r1': '주황과 흰색: 베이스 혼합',
-  'gw.what-colors-make-peach.r2': '핑크와 노랑: 로즈 경로',
+  'gw.what-colors-make-peach.f5q': '피치는 주황인가요, 핑크인가요?',
+  'gw.what-colors-make-peach.f5a':
+    '둘 다, 단 비율이 정해져 있습니다: 피치는 먼저 주황입니다 — 주황을 밝게 한 틴트 — 그 위에 작은 핑크 편향이 얹힌 것이죠. 부모를 하나만 고르라면 주황을 고르세요; 그 핑크가 피치를 평범한 파스텔 주황과 갈라놓는 차이입니다. 위의 색견본이 두 극단 사이의 다이얼을 보여줍니다.',
+  'gw.what-colors-make-peach.f6q': '피치 프로스팅·아이싱은 어떻게 만드나요?',
+  'gw.what-colors-make-peach.f6a':
+    '흰 버터크림에서 시작해 주황을 저울질하세요: 한 컵당 오렌지 젤 두 방울에 핑크 한 방울이 실무 레시피입니다. 프로스팅 베이스는 이미 흰색이라 새 색을 섞는 게 아니라 피치 경로를 따라 바로 팬트하는 것입니다. 버터크림 컬러 차트에 전체 방울 표가 있고, 위의 용량 팁에 시작 비율이 있습니다.',
+  'gw.what-colors-make-peach.r2': '버터크림 컬러 차트 (피치 프로스팅 방울 표)',
   'gw.what-colors-make-peach.r3': '빨강과 흰색으로 핑크',
   'gw.what-colors-make-peach.r4': '모든 컬러 가이드',
 

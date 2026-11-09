@@ -2,7 +2,9 @@
 import ChartPage from '../components/ChartPage.astro';
 import MultTable from '../components/printables/MultTable.astro';
 import MadMinuteSheet from '../components/printables/MadMinuteSheet.astro';
+import MathQuizIsland from '../components/MathQuizIsland.astro';
 import { multiplicationPages } from '../data/multiplication';
+import Icon from '../components/Icon.astro';
 
 const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart')!;
 ---
@@ -10,6 +12,58 @@ const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart')!;
 <ChartPage def={def}>
   <MultTable size={12} title="Multiplication Table 1-12" />
   <Fragment slot="after">
+    <section class="section no-print fact-order" aria-labelledby="fact-order-h">
+      <h2 id="fact-order-h">The order kids actually memorize the tables</h2>
+      <p>
+        Not 1 through 12 — teachers start with the tables whose patterns are friendly, because early wins buy
+        patience for the hard ones. Each step below opens that table's own printable page:
+      </p>
+      <ol class="order-steps">
+        <li>
+          <a href="/times-table/2/"><strong>2s</strong><span>they're the doubles kids already know</span></a>
+        </li>
+        <li>
+          <a href="/times-table/5/"><strong>5s</strong><span>count by fives — clock practice for free</span></a>
+        </li>
+        <li>
+          <a href="/times-table/10/"><strong>10s</strong><span>the place-value shift, instant confidence</span></a>
+        </li>
+        <li>
+          <a href="/times-table/3/"><strong>3s</strong><span>skip-count threes to a rhythm</span></a>
+        </li>
+        <li>
+          <a href="/times-table/9/"><strong>9s</strong><span>the finger trick carries the whole row</span></a>
+        </li>
+        <li>
+          <a href="/times-table/4/"><strong>4s</strong><span>double the 2s</span></a>
+        </li>
+        <li>
+          <a href="/times-table/6/"><strong>6s</strong><span>the friendly rows are done by now</span></a>
+        </li>
+        <li>
+          <a href="/times-table/7/"><strong>7s</strong><span>the first truly stubborn row</span></a>
+        </li>
+        <li>
+          <a href="/times-table/8/"><strong>8s</strong><span>double the 4s</span></a>
+        </li>
+        <li>
+          <a href="/times-table/11/"><strong>11s</strong><span>the reward row — easy after 7s</span></a>
+        </li>
+        <li>
+          <a href="/times-table/12/"><strong>12s</strong><span>telling time and dozens, the finish line</span></a>
+        </li>
+      </ol>
+    </section>
+    <section class="section no-print" aria-labelledby="practice-h">
+      <h2 id="practice-h">Level Up: math practice from kindergarten to Algebra 1</h2>
+      <p>
+        Looking facts up is step one — producing them one at a time, level by level, is step two. Pick a grade
+        track and work through 10 levels: get 8 of 10 right to unlock the next one. Every problem carries its
+        own worked solution, and the early tracks answer with pictures — clock faces, number lines, shaded
+        fractions — not just numbers. Progress saves on this device; no account, nothing leaves the browser.
+      </p>
+      <MathQuizIsland />
+    </section>
     <section class="section no-print" aria-labelledby="mad-minute-h">
       <h2 id="mad-minute-h">Mad minute: make your own timed drill</h2>
       <p>
@@ -23,7 +77,7 @@ const def = multiplicationPages.find((p) => p.slug === 'multiplication-chart')!;
         <span class="print-note">
           The drill prints on one letter page, portrait; the answer key follows on a second page.
         </span>
-        <button type="button" class="btn" data-print>Print</button>
+        <button type="button" class="btn" data-print><Icon name="print" />Print</button>
       </div>
       <div class="printable">
         <MadMinuteSheet />

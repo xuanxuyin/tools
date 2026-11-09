@@ -10,6 +10,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../consts';
 import { graphPaperPages } from '../../data/graphPaper';
 import { GRAPH_PAPER_VARIANTS, GRID_COLORS, renderGraphSvg } from '../../lib/graphPaper';
+import Icon from '../../components/Icon.astro';
 
 const jsonLd = [
   {
@@ -57,7 +58,19 @@ const defaultSvg = renderGraphSvg('quarter-inch', 'blue');
   <section class="section">
     <div class="card-grid">
       {graphPaperPages.map((p) => (
-        <a class="card" href={`/${p.slug}/`}>
+        <a class:list={['card', { 'card-with-thumb': !!p.sheetImage }]} href={`/${p.slug}/`}>
+          {p.sheetImage && (
+            <span class="card-thumb">
+              <img
+                src={p.sheetImage.src}
+                alt={p.sheetImage.alt}
+                width={p.sheetImage.width}
+                height={p.sheetImage.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+          )}
           <h2>{p.h1}</h2>
           <p>{GRAPH_PAPER_VARIANTS[p.variant].blurb}</p>
         </a>
@@ -68,7 +81,7 @@ const defaultSvg = renderGraphSvg('quarter-inch', 'blue');
   <section class="printable-wrap" id="maker">
     <div class="printable-toolbar">
       <span class="print-note">Custom sheet prints on one letter page at true size — pick grid, spacing and color.</span>
-      <button type="button" class="btn" data-print>Print</button>
+      <button type="button" class="btn" data-print><Icon name="print" />Print</button>
     </div>
     <div class="printable">
       <div class="gp-controls no-print">

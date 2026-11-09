@@ -107,7 +107,10 @@ export const SCENARIO_ZH_B: Record<string, string> = {
     '从表里最接近的颜色出发，用一点邻居色或互补色走过去：鼠尾草绿是绿加一点黄和黑，雾霾蓝是蓝加一撮橙。调色器做的是同样的算术，实时算。',
   'gw.buttercream-color-chart.r1': '糖霜配色表（更白基底的版本）',
   'gw.buttercream-color-chart.r2': '怎么调黑糖霜',
-  'gw.buttercream-color-chart.r3': '在调色器里调自定义色',
+  'gw.buttercream-color-chart.f6q': '怎么调蜜桃色奶油霜？',
+  'gw.buttercream-color-chart.f6a':
+    '每杯白色奶油霜加两滴橙色凝胶加一滴粉色——蜜桃是橙的浅化，所以是把基底沿蜜桃路线走，而不是调一个新颜色。蜜桃配色指南里有全部三条计算路线。',
+  'gw.buttercream-color-chart.r3': '什么颜色调成蜜桃色（三条计算路线）',
   'gw.buttercream-color-chart.r4': '把任意 HEX 转成 RGB 或 HSL',
 
   /* ---------- what-colors-make-blue ---------- */
@@ -380,7 +383,13 @@ export const SCENARIO_ZH_B: Record<string, string> = {
   'gw.what-colors-make-peach.f4a':
     '红和白——粉是红的浅化。然后往粉里加一点橙或黄就到桃色，这就是上面粉加黄落在桃色的原因。',
   'gw.what-colors-make-peach.r1': '橙配白：基底混合',
-  'gw.what-colors-make-peach.r2': '粉配黄：玫瑰路线',
+  'gw.what-colors-make-peach.f5q': '蜜桃色是橙还是粉？',
+  'gw.what-colors-make-peach.f5a':
+    '都是，但比例固定：蜜桃首先是橙——一种浅化的橙——上面再压一小层粉。如果只能选一个母色，选橙；那一点粉是把蜜桃和普通浅橙区分开的东西。上面的色样就是这两个极点之间的转盘。',
+  'gw.what-colors-make-peach.f6q': '蜜桃色糖霜/奶油霜怎么调？',
+  'gw.what-colors-make-peach.f6a':
+    '从白色奶油霜起步加橙：每杯两滴橙凝胶加一滴粉是工作配方。糖霜基底本来就是白的，所以你是直接沿蜜桃路线浅化，而不是调一个新颜色。奶油霜配色表里有完整的滴数表，上面的用量提示有起步比例。',
+  'gw.what-colors-make-peach.r2': '奶油霜配色表（蜜桃糖霜滴数表）',
   'gw.what-colors-make-peach.r3': '红配白调出粉',
   'gw.what-colors-make-peach.r4': '全部配色指南',
 

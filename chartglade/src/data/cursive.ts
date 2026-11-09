@@ -1,4 +1,4 @@
-import type { PageDef } from './pageTypes';
+import type { PageDef, VariantCard } from './pageTypes';
 
 /**
  * Cursive cluster — the volume pillar (bare "cursive alphabet" is 201K US/mo;
@@ -108,3 +108,48 @@ export const cursivePages: PageDef[] = [
     ],
   },
 ];
+
+/**
+ * Cursive family gallery (image-density batch, 2026-11-07): the chart, the
+ * how-to lesson and the sentences page cross-promote as cards. The two tall
+ * multi-sheet packs preview as cover crops (fit guard: h/w ≥ 1.6).
+ */
+export const CURSIVE_CARDS: VariantCard[] = [
+  {
+    href: '/cursive-alphabet/',
+    title: 'Cursive alphabet chart',
+    blurb: 'Every capital and lowercase letter in cursive on one chart — the wall reference for all 26.',
+    img: {
+      src: '/images/cursive-alphabet-chart-printable.png',
+      alt: 'Free printable cursive alphabet chart — uppercase and lowercase A to Z in one continuous slant with a tracing strip, on one letter-size page.',
+      width: 2016,
+      height: 1088,
+    },
+  },
+  {
+    href: '/how-to-write-in-cursive/',
+    title: 'How to write in cursive',
+    blurb: 'The six-step path from posture and strokes to joined sentences, with its own practice sheet.',
+    img: {
+      src: '/images/how-to-write-in-cursive-practice-sheet.png',
+      alt: 'Free printable how-to-write-in-cursive practice sheet — the six steps from posture and pencil grip through the four basic strokes and lowercase families to joins, words and a first full sentence.',
+      width: 2016,
+      height: 5828,
+    },
+    fit: 'cover',
+  },
+  {
+    href: '/cursive-sentences/',
+    title: 'Cursive sentences',
+    blurb: 'Eight public-domain American quotes — trace the gray row, fill the hollow row, write solo.',
+    img: {
+      src: '/images/cursive-sentences-practice-sheet.png',
+      alt: 'Free printable cursive sentences worksheet — eight public-domain American quotes, each with a gray trace row, a hollow outline row to fill in, and a blank guide line for writing the sentence solo.',
+      width: 2016,
+      height: 4672,
+    },
+    fit: 'cover',
+  },
+];
+const cursiveAlphabetDef = cursivePages.find((p) => p.slug === 'cursive-alphabet')!;
+cursiveAlphabetDef.variants = CURSIVE_CARDS.filter((c) => c.href !== '/cursive-alphabet/');

@@ -93,3 +93,15 @@
 
 ## 失败与限制摘要
 WebFetch 双站调研全域失败（全走 webReader 补救）；Superstar/Math-Salamanders 原始 XML 不可达（三线交叉/部分数据）；artincontext sitemap 总数未取到；WebSearch 多次 429（DDG Lite 补全）；部分 SERP 深链未存档（域名+排名+标题为准，未伪造任何 URL）。数据可信度：K5 = 活体原始 XML 最高；Superstar = 三线交叉高；我方自身 = 代码 + dist 实测最高。
+
+---
+
+## 四、第二轮（2026-11-06）——设计/视觉层专项（chartglade）
+
+> 触发：👤 "调研一下大站是怎么做的，我们样式和内容差距都很大"。第一轮（上文）拆的是 sitemap/SERP/页数；本轮补**页面视觉/UX 解剖**（每月复查纪律的第 2 轮）。完整版 + 落地对照 = [docs/chartglade/BENCHMARKS.md](../docs/chartglade/BENCHMARKS.md) §9，本节留结论级要点。
+
+- 【实勘 11/06】**通用公式：图片就是页面**——Superstar 单页 ~26 图、一节一变体；DW hub 25 卡墙（3D hover + srcset 128/256/512 + caption）；mondaymandala hub 236 彩色封面卡；MC 每表 ×色/黑白 ×to-10/to-12 四 PDF。**产品彩色、chrome 中性**（DW 原始 CSS tokens：`--dw:#2745c1` 白卡 `#dfe2f5` 边 hover `#eef1fd`，颜色全部来自工作纸图片）。
+- 【实勘 11/06】Superstar 教学长文 = 记忆顺序论证（10/5/2/3/9/4/6/7/8 哪表先学）+ freshness 日期——内容差距不在词数在**结构化教学法**。
+- 【推断】我方差距诊断：1 printable + PNG 藏折叠 details + 纯文字 related = 没把产品图当货架；修复杠杆 = variants[] 引擎（不是重做 CSS）。
+- ✅ 当日落地：VariantGallery 12 页（乘法 7 + 位值 5）+ /multiplication-chart-color/ 彩色产品页（11/03 §8 判定落地）+ 支柱页 fact-order 11 步内链条；134 页 496 测试。详见 BENCHMARKS §9.3。
+- 教训（流程）：**视觉验收 = 几何实测优先**——headless 量 DOM 抓出 flex `min-height:auto` 撑破 4:3 缩略盒的真 bug（视觉模型整页截图读不出这类问题，还两次误报）；超长图（h/w≥1.6）缩略必须 cover 顶部切片。

@@ -26,11 +26,27 @@ interface Payload {
   rc: number[];
 }
 
+// v2 (2026-11-04): payloads were fully re-segmented, so every pre-v2 save is
+// stale even when its ring count happens to match — new prefix + a one-time
+// sweep of unversioned keys gives returning visitors a clean slate.
+const STORE_V = 'v4'; // v4: speck/crack merges (2026-11-06 二轮) — ring indices shifted again, old saves misalign
 function saveKey(slug: string): string {
-  return `tb-coloring:save:${slug}`;
+  return `tb-coloring:${STORE_V}:save:${slug}`;
 }
 function pubKey(slug: string): string {
-  return `tb-coloring:published:${slug}`;
+  return `tb-coloring:${STORE_V}:published:${slug}`;
+}
+function sweepLegacyKeys(): void {
+  try {
+    const legacy: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('tb-coloring:') && !k.includes(`:${STORE_V}:`)) legacy.push(k);
+    }
+    legacy.forEach((k) => localStorage.removeItem(k));
+  } catch {
+    /* storage unavailable — nothing to sweep */
+  }
 }
 
 class PaintIsland {
@@ -52,10 +68,9 @@ class PaintIsland {
   private lineArt: HTMLImageElement;
 
   private payload: Payload | null = null;
+  private bgRing = -1; // payload ring spanning the whole canvas — untappable paper white
   private ringPaths: Path2D[] = [];
   private idData: Uint32Array | null = null;
-  /** ring indices in biggest-first paint order (parents before children) */
-  private ringOrder: number[] = [];
   private idW = 0;
   private colors: (number | null)[] = [];
   private undoStack: string[] = [];
@@ -101,7 +116,7 @@ class PaintIsland {
     // brush / eraser tool toggle
     root.querySelectorAll<HTMLButtonElement>('[data-col-tool]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        this.tool = btn.dataset.tool === 'erase' ? 'erase' : 'brush';
+        this.tool = btn.dataset.colTool === 'erase' ? 'erase' : 'brush';
         root.querySelectorAll('[data-col-tool]').forEach((b) => {
           const active = b === btn;
           b.classList.toggle('is-active', active);
@@ -178,49 +193,81 @@ class PaintIsland {
 
   /** Rasterize each ring with an exact scanline fill (pixel-center sampling,
    *  no canvas antialiasing to blend neighbours into wrong ids) into one
-   *  Uint32Array lookup table; build Path2Ds for draws. Rings are painted
-   *  BIGGEST FIRST: payload order sometimes lists a parent sector after the
-   *  child wells inside it, and in payload order the parent overwrites the
-   *  children — tapping a paint well then fills the whole sector. */
+   *  Uint32Array lookup table; build Path2Ds for draws. */
   private prepare(): void {
+    sweepLegacyKeys();
     const p = this.payload as Payload;
     this.canvas.width = p.w;
     this.canvas.height = p.h;
     this.canvas.hidden = false;
 
-    // shoelace area for paint ordering
-    const ringArea = (spec: string): number => {
-      const pts = spec.split(' ').map((t) => t.split(',').map(Number));
-      let s = 0;
-      for (let k = 0; k < pts.length; k++) {
-        const [x1, y1] = pts[k];
-        const [x2, y2] = pts[(k + 1) % pts.length];
-        s += x1 * y2 - x2 * y1;
-      }
-      return Math.abs(s) / 2;
-    };
-    const order = p.r.map((_, i) => i).sort((a, b) => ringArea(p.r[b]) - ringArea(p.r[a]));
-    this.ringOrder = order;
-
     const ids = new Uint32Array(p.w * p.h); // 0 = "no ring"
-    for (const i of order) {
-      this.ringPaths[i] = new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i]));
+    for (let i = 0; i < p.r.length; i++) {
+      this.ringPaths.push(new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i])));
       const id = i + 1;
-      const pts = p.r[i].split(' ').map((s) => s.split(',').map(Number));
-      // crossings per scanline at pixel centers (y + 0.5)
+      // current payloads are SVG paths ("M x,y L... Z" per subpath: outer
+      // contour then holes); legacy payloads are a bare "x,y x,y ..." loop.
+      // Guards mirror seg.mjs parseSpec: a bare trailing "Z" token must be
+      // skipped (it would parse as [0,0] and drag every scanline crossing
+      // to the canvas corner → garbage hit-testing), and junk coords dropped.
+      const toPts = (s: string): [number, number][] => {
+        const pts: [number, number][] = [];
+        for (const tok of s.trim().split(/\s+/)) {
+          const t = tok.replace(/^L/, '').replace(/Z$/, '');
+          if (!t) continue;
+          const c = t.split(',');
+          const x = Number(c[0]);
+          const y = Number(c[1]);
+          if (Number.isFinite(x) && Number.isFinite(y)) pts.push([x, y]);
+        }
+        return pts;
+      };
+      const subpaths: [number, number][][] = p.r[i].startsWith('M')
+        ? p.r[i]
+            .split('M')
+            .filter((s) => s.trim())
+            .map(toPts)
+            .filter((pts) => pts.length >= 3)
+        : [p.r[i].split(' ').map((s) => s.split(',').map(Number)) as [number, number][]];
+      // The page-background ring (outer contour = the whole canvas) spans most
+      // of the page, so one stray tap on any open-curve pocket connected to it
+      // would recolor ~everything at once. It stays pure paper white instead:
+      // not rasterized into the id map (untappable), never filled, and not
+      // counted toward completion below.
+      if (subpaths.length >= 1) {
+        const outer = subpaths[0];
+        let minX = Infinity;
+        let minY = Infinity;
+        let maxX = -Infinity;
+        let maxY = -Infinity;
+        for (const [px, py] of outer) {
+          if (px < minX) minX = px;
+          if (py < minY) minY = py;
+          if (px > maxX) maxX = px;
+          if (py > maxY) maxY = py;
+        }
+        if (minX <= 1 && minY <= 1 && maxX >= p.w - 1 && maxY >= p.h - 1) {
+          this.bgRing = i;
+          continue; // keep ringPaths[i] aligned; just no id pixels
+        }
+      }
+      // crossings per scanline at pixel centers (y + 0.5); even-odd pairs
+      // across ALL subpaths, so a hole flips the span off again
       const xs: number[] = [];
       for (let y = 0; y < p.h; y++) {
         const yc = y + 0.5;
         xs.length = 0;
-        let prev = pts[pts.length - 1];
-        for (let k = 0; k < pts.length; k++) {
-          const cur = pts[k];
-          const y1 = prev[1];
-          const y2 = cur[1];
-          if ((y1 <= yc && y2 > yc) || (y2 <= yc && y1 > yc)) {
-            xs.push(prev[0] + ((yc - y1) / (y2 - y1)) * (cur[0] - prev[0]));
+        for (const pts of subpaths) {
+          let prev = pts[pts.length - 1];
+          for (let k = 0; k < pts.length; k++) {
+            const cur = pts[k];
+            const y1 = prev[1];
+            const y2 = cur[1];
+            if ((y1 <= yc && y2 > yc) || (y2 <= yc && y1 > yc)) {
+              xs.push(prev[0] + ((yc - y1) / (y2 - y1)) * (cur[0] - prev[0]));
+            }
+            prev = cur;
           }
-          prev = cur;
         }
         if (xs.length < 2) continue;
         xs.sort((a, b) => a - b);
@@ -282,7 +329,7 @@ class PaintIsland {
     if (this.tool === 'erase') {
       this.tool = 'brush';
       this.root.querySelectorAll('[data-col-tool]').forEach((b) => {
-        const active = (b as HTMLElement).dataset.tool !== 'erase';
+        const active = (b as HTMLElement).dataset.colTool !== 'erase';
         b.classList.toggle('is-active', active);
         b.setAttribute('aria-pressed', String(active));
       });
@@ -318,8 +365,7 @@ class PaintIsland {
     const ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     ctx.fillStyle = p.bg;
     ctx.fillRect(0, 0, p.w, p.h);
-    // paint big rings first so child wells stay visible inside their sector
-    for (const i of this.ringOrder) {
+    for (let i = 0; i < this.ringPaths.length; i++) {
       const c = this.colors[i];
       if (c === null) continue;
       ctx.fillStyle = p.pal[c] ?? '#cccccc';
@@ -339,9 +385,12 @@ class PaintIsland {
   }
 
   private refreshMeta(): void {
-    const filled = this.colors.reduce((n, c) => (c !== null ? n + 1 : n), 0);
+    // bgRing stays permanently null (paper white, untappable) — exclude it
+    // from both the filled count and the total so completion is reachable
+    const countable = this.bgRing >= 0 ? this.colors.filter((_, i) => i !== this.bgRing) : this.colors;
+    const filled = countable.reduce((n, c) => (c !== null ? n + 1 : n), 0);
     this.line = filled;
-    this.total = this.colors.length;
+    this.total = countable.length;
     this.filledEl.textContent = tArgs('col.p.filled' as UiKey, {
       n: String(filled),
       total: String(this.total),
@@ -361,7 +410,7 @@ class PaintIsland {
   }
 
   private maybeComplete(): void {
-    if (this.completeSent || this.colors.some((c) => c === null)) return;
+    if (this.completeSent || this.colors.some((c, i) => i !== this.bgRing && c === null)) return;
     this.completeSent = true;
     this.status(t('col.p.complete'));
     void fetch('/api/coloring/complete', {
@@ -436,7 +485,21 @@ class PaintIsland {
       const submit = target.closest<HTMLButtonElement>('[data-col-pubsubmit]');
       if (submit) void this.submitPublish(dlg, submit);
     });
-    dlg.querySelector('input')?.focus();
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') dlg.remove();
+      if (!dlg.isConnected) document.removeEventListener('keydown', onKey);
+    };
+    document.addEventListener('keydown', onKey);
+    // remembered nickname — same key the bead gallery uses, typed once
+    let saved = '';
+    try {
+      saved = localStorage.getItem('tb-gallery:nick') ?? '';
+    } catch {
+      /* private mode — ask every time */
+    }
+    const nickInput = dlg.querySelector<HTMLInputElement>('[data-col-pubnick]');
+    if (nickInput && saved) nickInput.value = saved;
+    (saved ? dlg.querySelector<HTMLInputElement>('[data-col-pubname]') : nickInput)?.focus();
   }
 
   private async previewDataUrl(): Promise<string | null> {
@@ -490,6 +553,7 @@ class PaintIsland {
         this.publishedId = data.id;
         try {
           localStorage.setItem(pubKey(this.slug), data.id);
+          localStorage.setItem('tb-gallery:nick', nick);
         } catch {
           /* private mode */
         }

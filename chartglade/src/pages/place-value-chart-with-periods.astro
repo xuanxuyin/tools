@@ -1,0 +1,50 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import PlaceValueChart from '../components/printables/PlaceValueChart.astro';
+import { placeValuePages } from '../data/placeValue';
+import { formatUs, numberPeriods, periodPhrase, readNumberWithPeriods } from '../lib/mathCharts';
+
+const def = placeValuePages.find((p) => p.slug === 'place-value-chart-with-periods')!;
+
+// One worked 12-digit number: every period full, zeros inside two of them.
+const EXAMPLE = 471_930_862_505;
+const groups = numberPeriods(EXAMPLE);
+const fullReading = readNumberWithPeriods(EXAMPLE);
+---
+
+<ChartPage def={def}>
+  <PlaceValueChart
+    whole={12}
+    periods
+    example="471930862505"
+    interactive
+    title={`Place Value Chart With Periods — ${formatUs(EXAMPLE)}`}
+  />
+
+  <div class="period-reading">
+    <p class="sheet-title">How you read it: one small number per period</p>
+    <table class="chart-table">
+      <thead>
+        <tr>
+          <th scope="col">Digits</th>
+          <th scope="col">Period</th>
+          <th scope="col">You say</th>
+        </tr>
+      </thead>
+      <tbody>
+        {groups.map((g) => (
+          <tr>
+            <td>{formatUs(g.value)}</td>
+            <td>{g.name} period</td>
+            <td>{periodPhrase(g.value, g.name)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="pr-sentence">"{fullReading}."</p>
+  </div>
+
+  <div class="sheet-break">
+    <PlaceValueChart whole={12} periods title="Blank Place Value Chart With Periods — write your number in" />
+  </div>
+</ChartPage>

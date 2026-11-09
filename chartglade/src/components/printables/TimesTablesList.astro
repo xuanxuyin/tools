@@ -1,0 +1,26 @@
+---
+import { multTable } from '../../lib/mathCharts';
+
+interface Props {
+  /** how many tables to list (grid size): 12 = the 1s through the 12s */
+  size?: number;
+  title?: string;
+}
+
+const { size = 12, title } = Astro.props;
+const grid = multTable(size);
+---
+
+{title && <p class="sheet-title">{title}</p>}
+<div class="table-strips">
+  {grid.map((row, r) => (
+    <section class="table-strip" aria-label={`The ${r + 1} times table`}>
+      <p class="strip-label">The {r + 1} times table</p>
+      <p class="strip-facts">
+        {row.map((v, c) => (
+          <span>{r + 1} × {c + 1} = {v}</span>
+        ))}
+      </p>
+    </section>
+  ))}
+</div>

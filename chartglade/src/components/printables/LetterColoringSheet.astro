@@ -1,0 +1,124 @@
+---
+import type { ColoringLetterSheet } from '../../data/coloringLetters';
+
+interface Props {
+  sheet: ColoringLetterSheet;
+}
+
+const { sheet } = Astro.props;
+---
+
+<div class="lc-sheet">
+  <div class="lc-bubbles" aria-hidden="true">
+    <span class="lc-cap">{sheet.capital}</span>
+    <span class="lc-low">{sheet.lower}</span>
+  </div>
+
+  <div class="lc-words">
+    {sheet.words.map((w) => <span class="lc-word">{w}</span>)}
+  </div>
+  <p class="lc-note">{sheet.wordNote}</p>
+
+  <h3 class="lc-heading">Trace the letter</h3>
+  <div class="lc-trace">
+    {[...Array(6)].map((_, i) => (
+      <div class:list={['lc-trace-cell', { 'lc-alt': i % 2 === 1 }]}>
+        <span class="lc-trace-glyph">{sheet.lower}</span>
+      </div>
+    ))}
+  </div>
+
+  <h3 class="lc-heading">Draw it yourself: <strong>{sheet.drawPrompt}</strong></h3>
+  <div class="lc-draw"></div>
+
+  <p class="lc-footer">Color the letters. Color the words. Then draw your own — and say the sound every time your crayon starts a new shape.</p>
+</div>
+
+<style>
+  .lc-sheet {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.2rem 0.3rem;
+    font-family: var(--font-sans);
+  }
+  .lc-bubbles {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 1.2rem;
+    line-height: 1;
+    font-weight: 900;
+    color: #fff;
+    -webkit-text-stroke: 2.5pt #1c1c1c;
+    paint-order: stroke fill;
+    user-select: none;
+  }
+  .lc-cap { font-size: 165pt; }
+  .lc-low { font-size: 140pt; }
+  .lc-words {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-weight: 900;
+    font-size: 30pt;
+    color: #fff;
+    -webkit-text-stroke: 1.4pt #1c1c1c;
+    paint-order: stroke fill;
+    user-select: none;
+    line-height: 1.3;
+  }
+  .lc-note {
+    margin: 0;
+    text-align: center;
+    font-size: 10.5pt;
+    color: #555;
+    font-style: italic;
+  }
+  .lc-heading {
+    margin: 0.35rem 0 0.15rem;
+    font-size: 12pt;
+    font-weight: 700;
+    color: #1c1c1c;
+  }
+  .lc-trace {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.25rem;
+  }
+  .lc-trace-cell {
+    border: 1pt solid #b8b2a4;
+    border-radius: 4px;
+    display: grid;
+    place-items: center;
+    padding: 0.15rem 0;
+  }
+  .lc-trace-glyph {
+    font-size: 34pt;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #fff;
+    -webkit-text-stroke: 1.1pt #b8b2a4;
+    paint-order: stroke fill;
+    user-select: none;
+  }
+  .lc-alt { background: #faf8f4; }
+  .lc-draw {
+    border: 1.6pt solid #1c1c1c;
+    border-radius: 8px;
+    height: 8rem;
+  }
+  .lc-footer {
+    margin: 0.2rem 0 0;
+    text-align: center;
+    font-size: 9pt;
+    color: #777;
+  }
+  @media print {
+    .lc-sheet { gap: 0.35rem; }
+    .lc-bubbles { -webkit-text-stroke: 2.2pt #000; }
+    .lc-words { -webkit-text-stroke: 1.2pt #000; }
+    .lc-trace-glyph { -webkit-text-stroke: 1pt #999; }
+  }
+</style>

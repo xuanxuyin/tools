@@ -1,4 +1,4 @@
-import type { PageDef } from './pageTypes';
+import type { PageDef, VariantCard } from './pageTypes';
 
 /**
  * Place value cluster (4 pages). Head pillar of the site: the softest 10K+
@@ -6,9 +6,75 @@ import type { PageDef } from './pageTypes';
  * Example number used across the cluster: 4,302,175.
  */
 
+/**
+ * Family card pool for the variant gallery (2026-11-06 image-forward pass).
+ * Reuses PNGs from npm run sheet-images; each page shows the pool minus
+ * itself. Dimensions mirror the files on disk (guarded by sheetImages.test.ts).
+ */
+const PV_CARDS: VariantCard[] = [
+  {
+    href: '/place-value-chart/',
+    title: 'Place value chart to millions',
+    blurb: 'The classic labeled chart — ones through millions, grouped into comma periods on one page.',
+    img: {
+      src: '/images/place-value-chart-to-millions-printable.png',
+      alt: 'Printable place value chart from ones to millions with labeled columns grouped into comma periods.',
+      width: 2016,
+      height: 434,
+    },
+  },
+  {
+    href: '/place-value-chart-with-periods/',
+    title: 'Chart with periods',
+    blurb: 'Twelve columns in ones/thousands/millions/billions periods, a worked 12-digit example, plus a blank copy.',
+    img: {
+      src: '/images/place-value-chart-with-periods-printable.png',
+      alt: 'Place value chart with periods, worked twelve-digit reading example and a blank write-in practice chart.',
+      width: 2016,
+      height: 1456,
+    },
+  },
+  {
+    href: '/decimal-place-value-chart/',
+    title: 'Decimal place value chart',
+    blurb: 'Ones, tenths, hundredths, thousandths — the chart that makes decimals click after whole numbers.',
+    img: {
+      src: '/images/decimal-place-value-chart-printable.png',
+      alt: 'Decimal place value chart with labeled columns for ones, tenths, hundredths and thousandths.',
+      width: 2016,
+      height: 434,
+    },
+  },
+  {
+    href: '/place-value-anchor-chart/',
+    title: 'Place value anchor chart',
+    blurb: 'A bold wall-sized version of the ones-to-millions chart for the classroom wall.',
+    img: {
+      src: '/images/place-value-anchor-chart-printable.png',
+      alt: 'Place value anchor chart, a bold classroom wall version of the ones to millions chart.',
+      width: 2016,
+      height: 454,
+    },
+  },
+  {
+    href: '/place-value-chart-printable/',
+    title: 'Place value chart pack',
+    blurb: 'Three formats in one set: labeled, blank for practice, and compact desk copies.',
+    img: {
+      src: '/images/place-value-chart-printable.png',
+      alt: 'Place value chart printable pack with a labeled chart, a blank practice chart and compact desk copies.',
+      width: 2016,
+      height: 600,
+    },
+  },
+];
+
+const familyGallery = (own: string) => PV_CARDS.filter((c) => c.href !== own);
+
 export const placeValuePages: PageDef[] = [
   {
     slug: 'place-value-chart',
+    variants: familyGallery('/place-value-chart/'),
     hub: 'charts',
     h1: 'Place Value Chart',
     metaTitle: 'Place Value Chart (Free Printable, Ones to Millions) | ChartGlade',
@@ -71,6 +137,7 @@ export const placeValuePages: PageDef[] = [
       },
     ],
     related: [
+      { href: '/place-value-chart-with-periods/', label: 'Place value chart with periods (read big numbers in chunks)' },
       { href: '/decimal-place-value-chart/', label: 'Decimal place value chart (tenths and beyond)' },
       { href: '/place-value-anchor-chart/', label: 'Place value anchor chart for the classroom wall' },
       { href: '/place-value-chart-printable/', label: 'Blank and filled printable versions' },
@@ -80,14 +147,99 @@ export const placeValuePages: PageDef[] = [
   },
 
   {
+    slug: 'place-value-chart-with-periods',
+    variants: familyGallery('/place-value-chart-with-periods/'),
+    hub: 'charts',
+    h1: 'Place Value Chart With Periods',
+    metaTitle: 'Place Value Chart With Periods (Free Printable) | ChartGlade',
+    metaDescription:
+      'A free printable place value chart with periods — ones, thousands, millions and billions grouped in three-digit bands, a worked 12-digit example, and a blank write-in version.',
+    lead:
+      'This is the place value chart built around periods: the three-digit groups the commas mark. Four bands — ones, thousands, millions, billions — each with its own ones, tens and hundreds column, separated by heavy lines. The worked example reads 471,930,862,505 one period at a time, and the second sheet is a blank version for writing numbers in.',
+    introHeading: 'What a period is, and why the chart groups in threes',
+    intro: [
+      'A period is a family of three place value columns: ones, tens, hundreds. The chart above stacks four of those families side by side — the ones period, the thousands period, the millions period, the billions period. Every period contains the same three seats, and that is the whole trick: a student who can read a three-digit number can read any number, because a twelve-digit number is just four three-digit numbers with names attached.',
+      'The commas are the period markers, and each one has a name. Count three columns from the right and the first comma appears — the thousands comma. Three more columns, the millions comma. Three more, the billions comma. In American notation the comma lands after every third digit counted from the right, every time, which is why kids should add commas last: write the digits first, then count in threes from the ones column and drop a comma at each group boundary.',
+    ],
+    extraSection: {
+      heading: 'Period vs. place: the mix-up that costs the most points',
+      paras: [
+        'A place is one column — the ten thousands place. A period is the three-column family that column belongs to — the thousands period. The 3 in 4,302,175 sits in the ten thousands place, inside the thousands period. Students who blur the two say "three million" for a digit worth 30,000: they grabbed the period but lost the seat. The fix is two questions, always in order: which period am I in, and which of its three seats does my digit hold?',
+        'The payoff is reading out loud. A twelve-digit number stops being intimidating the moment a hand covers all but the first band: read 471, say "billion," slide the hand one band right, read 930, say "million," slide again. Say the period name at every comma, and say nothing after the last group — the ones period never gets named. That hand-slide is a thirty-second routine and it works with this chart printed at any size.',
+      ],
+    },
+    printNote: 'Prints as two letter pages: the filled chart with its reading table, then the blank write-in version.',
+    sheetImage: {
+      src: '/images/place-value-chart-with-periods-printable.png',
+      alt: 'Free printable place value chart with periods — twelve columns grouped into ones, thousands, millions and billions periods, a worked 471,930,862,505 reading example, and a blank write-in chart.',
+      width: 2016,
+      height: 1456,
+      caption: 'The periods chart with its worked twelve-digit example, plus the blank practice copy.',
+    },
+    interactive: true,
+    tips: [
+      {
+        title: 'Read it wrong on purpose',
+        body: 'Say the example as a flat string of digits — "four, seven, one, nine, three, zero…" — and let the class shout stop. Then read it period by period. The contrast teaches the comma\'s job faster than explaining it: commas are where the number takes a breath and names its place.',
+      },
+      {
+        title: 'Commas go in after, never during',
+        body: 'When dictating, students write digits first and add commas at the end by counting in threes from the right. Writing commas mid-dictation is how 471,93,862,505 happens — a comma with the wrong number of digits in front of it.',
+      },
+      {
+        title: 'Zero holds a seat inside the period too',
+        body: 'In 471,930,862,505 the millions period is 930 — the 0 sits in the millions column itself. Cover it and the number collapses. Placeholder zeros work inside periods exactly the way they work inside plain three-digit numbers, which is precisely why kids who are solid on 305 are ready for 930 million.',
+      },
+      {
+        title: 'Dictate with period names',
+        body: 'Say "four hundred seventy-one billion" as one breath group, pause, "nine hundred thirty million," pause. Students write each group into its band and the commas come free, because the breath and the comma mark the same boundary.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'What is a period in place value?',
+        a: 'A group of three place value columns set off from the next group by a comma. The ones period holds ones, tens and hundreds; then come the thousands, millions and billions periods. Each period reuses the same three seats, so reading a big number means reading small numbers and saying the period name at each comma.',
+      },
+      {
+        q: 'What is a place value chart with periods?',
+        a: 'A place value chart whose columns are grouped into period bands — typically ones, thousands, millions and billions, each band holding its own ones, tens and hundreds column with a heavy separator between bands. The grouping turns twelve columns into four readable chunks that match the commas in the number.',
+      },
+      {
+        q: 'How do you read 471,930,862,505 period by period?',
+        a: '"Four hundred seventy-one billion, nine hundred thirty million, eight hundred sixty-two thousand, five hundred five." Read each three-digit group, say the period name under it, and stop naming at the final group — the ones period never gets said.',
+      },
+      {
+        q: 'Why do place value periods come in groups of three?',
+        a: 'Because English names a new unit every thousand: ten ones make ten, ten tens make a hundred, and ten hundreds make a thousand — at which point the pattern restarts with a new name. Three columns per name is all English needs; the commas just mark where each new name gets announced.',
+      },
+      {
+        q: 'What is the comma in a big number called?',
+        a: 'It takes the name of the period it closes. First comma from the right is the thousands comma, the next is the millions comma, the next is the billions comma. Saying the comma\'s name while reading is what keeps "nine hundred thirty million" from collapsing into a string of digits.',
+      },
+      {
+        q: 'Is the blank version free to print?',
+        a: 'Yes — the filled chart and the blank write-in version both print free, one per letter page, no sign-up. The blank chart keeps the period bands and the heavy separators, so any number written into it groups correctly from the start.',
+      },
+    ],
+    related: [
+      { href: '/place-value-chart/', label: 'Place value chart (ones to millions)' },
+      { href: '/decimal-place-value-chart/', label: 'Decimal place value chart (where periods continue past the point)' },
+      { href: '/place-value-chart-printable/', label: 'Blank and filled printable versions' },
+      { href: '/place-value-anchor-chart/', label: 'Anchor chart version for the wall' },
+      { href: '/charts/', label: 'All math charts' },
+    ],
+  },
+
+  {
     slug: 'decimal-place-value-chart',
+    variants: familyGallery('/decimal-place-value-chart/'),
     hub: 'charts',
     h1: 'Decimal Place Value Chart',
-    metaTitle: 'Decimal Place Value Chart (Printable, to Thousandths) | ChartGlade',
+    metaTitle: 'Decimal Place Value Chart (Interactive + Printable, Tenths to Millionths) | ChartGlade',
     metaDescription:
-      'Free printable decimal place value chart from hundred thousands to thousandths, with the decimal point, money examples, and how to read decimals out loud.',
+      'Free printable decimal place value chart from hundred thousands to thousandths, with tenths/hundredths/thousandths worked examples, money anchors, and an interactive digit-by-digit breakdown.',
     lead:
-      'Decimals are just place value continuing to the right, past a dot. This chart runs from hundred thousands down to thousandths in one strip, works through 42.607 as an example, and shows the sentence you say when you read a decimal out loud. Print it for grade 4 and 5.',
+      'Decimals are just place value continuing to the right, past a dot. This chart runs from hundred thousands down to thousandths in one strip and works through 42.607 as an example. Below it: a one-tenth/one-hundredth/one-thousandth reference table with worked numbers, and a breakdown box that names every digit of any decimal you type. Print it for grade 4 and 5.',
     introHeading: 'The decimal point does not end the pattern — it marks it',
     intro: [
       'Everything to the left of the decimal point follows the rule you already know: each place is ten times the place to its right. The decimal point simply announces that the rule keeps going in the other direction: each place to its right is one tenth of the place to its left. Tenths, hundredths, thousandths — the columns march on, just divided by ten each step instead of multiplied.',
@@ -136,9 +288,18 @@ export const placeValuePages: PageDef[] = [
         q: 'What grade uses decimal place value charts?',
         a: 'Grade 4 introduces tenths and hundredths; grade 5 extends to thousandths and comparing decimals. The chart above also shows the whole-number columns so younger siblings get use out of the same printout.',
       },
+      {
+        q: 'What is one tenth, one hundredth, and one thousandth?',
+        a: 'The first three places to the right of the decimal point. One tenth is 1/10, written 0.1 — a dime. One hundredth is 1/100, written 0.01 — a penny. One thousandth is 1/1,000, written 0.001 — a tenth of a penny, about the thickness of a thin sheet of paper. The reference table further down the page lays all three side by side.',
+      },
+      {
+        q: 'Which is bigger, tenths or hundredths?',
+        a: 'Tenths. The tenths column is one tenth of a whole, and the hundredths column is only one hundredth — so 0.1 beats 0.09 even though 9 looks bigger than 1. Size shrinks moving right of the decimal point, the mirror image of how whole numbers grow moving left.',
+      },
     ],
     related: [
       { href: '/place-value-chart/', label: 'Place value chart (ones to millions)' },
+      { href: '/place-value-chart-with-periods/', label: 'Place value chart with periods (comma groups)' },
       { href: '/place-value-chart-printable/', label: 'Blank and filled printable versions' },
       { href: '/fraction-chart/', label: 'Fraction chart (decimals\' other half)' },
       { href: '/charts/', label: 'All math charts' },
@@ -147,6 +308,7 @@ export const placeValuePages: PageDef[] = [
 
   {
     slug: 'place-value-anchor-chart',
+    variants: familyGallery('/place-value-anchor-chart/'),
     hub: 'charts',
     h1: 'Place Value Anchor Chart',
     metaTitle: 'Place Value Anchor Chart (Printable Classroom Poster) | ChartGlade',
@@ -212,6 +374,7 @@ export const placeValuePages: PageDef[] = [
 
   {
     slug: 'place-value-chart-printable',
+    variants: familyGallery('/place-value-chart-printable/'),
     hub: 'charts',
     h1: 'Place Value Chart Printable',
     metaTitle: 'Place Value Chart Printable (Blank + Filled, Free) | ChartGlade',

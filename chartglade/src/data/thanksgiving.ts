@@ -1,4 +1,6 @@
 import type { PageDef } from './pageTypes';
+import { defHref, familyGallery } from './variantGallery';
+
 import type { PaintArt } from './halloween';
 import { asciiToPaintArt } from '../lib/paintArt';
 
@@ -204,6 +206,13 @@ export const thanksgivingPages: PageDef[] = [
       'The harder puzzle turns on all eight directions, the standard upper-elementary format. The Thanksgiving list runs long — CORNUCOPIA is ten letters, TRADITION and CELEBRATE nine — so finding them takes systematic scanning: down each column, across each row, then both diagonals. Teachers use these the week before break, at the kids\' table on the day itself, and as early-finisher bins all November, and the gratitude vocabulary (grateful, blessing, gratitude) rides along with the scanning practice.',
     ],
     printNote: 'Two puzzles, one letter page each (portrait). Word lists print under each grid.',
+    sheetImage: {
+      src: '/images/thanksgiving-word-search-printable.png',
+      alt: 'Free printable Thanksgiving word search — two puzzles on two letter pages: an easy grid of November words for K-2 and a harder puzzle with the words hidden in all eight directions for grades 3-5.',
+      width: 2016,
+      height: 2062,
+      caption: 'Two levels: easy forwards-only for K-2, all eight directions for grades 3-5.',
+    },
     tips: [
       {
         title: 'Front-load the vocabulary',
@@ -266,6 +275,13 @@ export const thanksgivingPages: PageDef[] = [
       'The addition sheets — turkey, pumpkin, maple leaf — use sums to 12 (the grade 1-2 sweet spot), with big regions of brown, orange, and red so the picture reads early and keeps momentum. The multiplication sheets — pumpkin pie and acorn — use products to 12 for grades 3-4, splitting the facts into bands by region so the answer key does the checking.',
     ],
     printNote: 'Five sheets, one letter page each (portrait). Crayon-friendly; legend names its colors.',
+    sheetImage: {
+      src: '/images/thanksgiving-color-by-number-printable.png',
+      alt: 'Free printable Thanksgiving color by number — five math-fact coloring sheets: a turkey, a pumpkin and a maple leaf by addition for grades 1-3, plus pumpkin pie and an acorn by multiplication for grades 3-4.',
+      width: 2016,
+      height: 11788,
+      caption: 'Five fall pictures, every cell a math fact — addition for younger grades, multiplication for older.',
+    },
     tips: [
       {
         title: 'Color the legend first',
@@ -325,6 +341,13 @@ export const thanksgivingPages: PageDef[] = [
       'The sheet stays simple so it flexes across the whole elementary range. Kindergartners trace the starter, then draw their answer in the box and label it with one word. Second and third graders work through all four frames with the sentence as training wheels. Fourth and fifth graders treat it as a quick-write draft and take their best frame into a full paragraph. However it\'s used, one letter page holds the whole sheet with room to spare for kid-sized handwriting.',
     ],
     printNote: 'One letter page, portrait. Traced starter sentence, four tall sentence frames and a draw-it box.',
+    sheetImage: {
+      src: '/images/i-am-thankful-for-worksheet.png',
+      alt: 'Free printable I am thankful for worksheet — a script title with leaf trim, a traced starter sentence, four numbered thankful-because frames on tall dotted rules, and a draw-it box.',
+      width: 2016,
+      height: 1930,
+      caption: 'Gratitude writing paper: trace the starter, finish four frames, draw the best part.',
+    },
     tips: [
       {
         title: 'Model one row yourself',
@@ -383,6 +406,13 @@ export const thanksgivingPages: PageDef[] = [
       'It prints on plain letter paper in black and white, which matters at Thanksgiving scale — twenty cousins means twenty copies from the nearest copier. The answers print upside down along the bottom edge, the traditional placemat move, so a grown-up can glance without picking up the page. For a reusable version, slide a print inside a sheet protector and hand over dry-erase markers.',
     ],
     printNote: 'One letter page, portrait, black-and-white friendly. Answers print upside down at the bottom.',
+    sheetImage: {
+      src: '/images/thanksgiving-placemat-printable.png',
+      alt: 'Free printable Thanksgiving placemat for kids — a word scramble, two tic-tac-toe boards and a draw-your-feast box inside a turkey-corner border, with the answers printed upside down along the bottom.',
+      width: 2016,
+      height: 1972,
+      caption: 'The diner move — activities up top, answers upside down along the bottom.',
+    },
     tips: [
       {
         title: 'Plain paper is fine',
@@ -431,3 +461,14 @@ export const thanksgivingPages: PageDef[] = [
     ],
   },
 ];
+
+/** Family gallery (image-density batch, 2026-11-07). */
+const TG_BLURBS: Record<string, string> = {
+  'thanksgiving-word-search': 'Two puzzles on one theme — a forward-only grid for K-2, an all-directions grid for grades 3-5.',
+  'thanksgiving-color-by-number': 'Five pictures to color by math fact — turkey addition and pumpkin-pie multiplication.',
+  'i-am-thankful-for-worksheet': 'The gratitude writing worksheet — trace the starter, finish the sentence, draw the picture.',
+  'thanksgiving-placemat-printable': 'One-sheet activity placemat: word scramble, double tic-tac-toe and a draw-your-feast space.',
+};
+for (const p of thanksgivingPages) {
+  p.variants = familyGallery(thanksgivingPages, defHref(p), TG_BLURBS);
+}

@@ -1,4 +1,6 @@
 import type { PageDef } from './pageTypes';
+import { defHref, familyGallery } from './variantGallery';
+
 
 /**
  * Sight words ladder (5 pages). Kindergarten is the pillar (12.1K US, highest
@@ -9,6 +11,13 @@ import type { PageDef } from './pageTypes';
 export const sightWordPages: PageDef[] = [
   {
     slug: 'preschool-sight-words',
+    sheetImage: {
+      src: '/images/preschool-sight-words-printable.png',
+      alt: 'Free printable preschool sight words — all 40 Dolch preschool words as cut-out word cards on one letter-size page.',
+      width: 2016,
+      height: 814,
+    },
+
     hub: 'sight-words',
     h1: 'Preschool Sight Words',
     metaTitle: 'Preschool Sight Words (Pre-Primer List, Printable) | ChartGlade',
@@ -137,6 +146,13 @@ export const sightWordPages: PageDef[] = [
 
   {
     slug: 'first-grade-sight-words',
+    sheetImage: {
+      src: '/images/first-grade-sight-words-printable.png',
+      alt: 'Free printable first grade sight words — all 41 Dolch first grade words as cut-out word cards on one letter-size page.',
+      width: 2016,
+      height: 942,
+    },
+
     hub: 'sight-words',
     h1: 'First Grade Sight Words',
     metaTitle: 'First Grade Sight Words (Dolch 41 Words, Printable) | ChartGlade',
@@ -196,6 +212,13 @@ export const sightWordPages: PageDef[] = [
 
   {
     slug: 'second-grade-sight-words',
+    sheetImage: {
+      src: '/images/second-grade-sight-words-printable.png',
+      alt: 'Free printable second grade sight words — all 46 Dolch second grade words as cut-out word cards on one letter-size page.',
+      width: 2016,
+      height: 942,
+    },
+
     hub: 'sight-words',
     h1: 'Second Grade Sight Words',
     metaTitle: 'Second Grade Sight Words (Dolch 46 Words, Printable) | ChartGlade',
@@ -251,6 +274,13 @@ export const sightWordPages: PageDef[] = [
 
   {
     slug: 'third-grade-sight-words',
+    sheetImage: {
+      src: '/images/third-grade-sight-words-printable.png',
+      alt: 'Free printable third grade sight words — all 41 Dolch third grade words as cut-out word cards on one letter-size page.',
+      width: 2016,
+      height: 944,
+    },
+
     hub: 'sight-words',
     h1: 'Third Grade Sight Words',
     metaTitle: 'Third Grade Sight Words (Dolch 41 Words, Printable) | ChartGlade',
@@ -307,3 +337,18 @@ export const sightWordPages: PageDef[] = [
     ],
   },
 ];
+
+/**
+ * Ladder gallery (image-density batch, 2026-11-07; closes PLAN #31's
+ * sight-words pilot): each grade page previews the other four rungs.
+ */
+const SW_BLURBS: Record<string, string> = {
+  'preschool-sight-words': 'The 40 Dolch preschool words as print-and-cut cards — the very first sight words.',
+  'kindergarten-sight-words': 'All 52 Dolch primer words on one letter page — the kindergarten standby set.',
+  'first-grade-sight-words': 'The 41 Dolch first grade words, cut-out cards sized for small hands.',
+  'second-grade-sight-words': 'The 46 Dolch second grade words — the bridge from sounding out to fluent reading.',
+  'third-grade-sight-words': 'The 41 Dolch third grade words that carry chapter-book reading.',
+};
+for (const p of sightWordPages) {
+  p.variants = familyGallery(sightWordPages, defHref(p), SW_BLURBS);
+}

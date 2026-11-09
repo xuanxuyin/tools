@@ -114,7 +114,7 @@ const jsonLd = [
               <span class="col-badge" data-col-badge hidden aria-live="polite"></span>
               <img
                 class="col-thumb"
-                src={`/coloring/thumb/${p.slug}.webp?v=6`}
+                src={`/coloring/thumb/${p.slug}.webp?v=7`}
                 alt={`${p.title} — free coloring page, ${p.regions} areas to color`}
                 width="768"
                 height={Math.round((768 * p.h) / p.w)}
@@ -222,12 +222,12 @@ const jsonLd = [
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
     gap: var(--sp-3);
   }
   @media (max-width: 40rem) {
     .col-grid {
-      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
     }
   }
   .col-card {
@@ -254,11 +254,8 @@ const jsonLd = [
   }
   .col-thumb {
     width: 100%;
-    aspect-ratio: 4 / 3;
-    /* uniform card box; contain shows the WHOLE art (never crops): story
-       pages are 4:3 and fill it edge to edge, the taller mandalas letterbox
-       invisibly on the white card */
-    object-fit: contain;
+    height: auto; /* natural aspect (img ships width/height attrs) — no 4:3
+       letterbox bars above/below taller mandalas */
     background: #fff;
     display: block;
   }

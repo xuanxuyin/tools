@@ -48,6 +48,52 @@ const SHOTS = [
   // Wave 3 (2026-11-03, cootie catcher batch)
   { page: 'cootie-catcher', file: 'cootie-catcher-template-printable' },
   { page: 'christmas-cootie-catcher', file: 'christmas-cootie-catcher-printable' },
+  // Wave 4 (2026-11-03, holiday + how-to + times-table matrix batch). The
+  // /times-table/ hub itself is NOT shot — it is a nav page with no .printable.
+  { page: 'place-value-chart-with-periods', file: 'place-value-chart-with-periods-printable' },
+  { page: 'cursive-sentences', file: 'cursive-sentences-practice-sheet' },
+  { page: 'how-to-write-in-cursive', file: 'how-to-write-in-cursive-practice-sheet' },
+  { page: 'teaching-calendar', file: 'teaching-calendar-year-index' },
+  { page: 'multiplication-chart-printable', file: 'multiplication-charts-printable-set' },
+  { page: 'times-table-chart', file: 'times-table-chart-printable' },
+  ...Array.from({ length: 12 }, (_, i) => ({
+    page: `times-table/${i + 1}`,
+    file: `times-table-${i + 1}-chart`,
+  })),
+  { page: 'christmas-word-search', file: 'christmas-word-search-printable' },
+  { page: 'christmas-color-by-number', file: 'christmas-color-by-number-printable' },
+  { page: 'letter-to-santa', file: 'letter-to-santa-template' },
+  { page: 'thanksgiving-word-search', file: 'thanksgiving-word-search-printable' },
+  { page: 'thanksgiving-color-by-number', file: 'thanksgiving-color-by-number-printable' },
+  { page: 'thanksgiving-placemat-printable', file: 'thanksgiving-placemat-printable' },
+  { page: 'i-am-thankful-for-worksheet', file: 'i-am-thankful-for-worksheet' },
+  // Wave 5 (2026-11-03, coloring product line: the 26-letter matrix). Every
+  // letter now shoots the six-drawing gallery (.lc-gallery — incumbent form,
+  // the pictures are the product), stripped back to pure B&W for printing.
+  ...'abcdefghijklmnopqrstuvwxyz'.split('').map((l) => ({
+    page: `coloring/letters/${l}`,
+    file: `letter-${l}-coloring-page`,
+    selector: '.lc-gallery',
+  })),
+  // Wave 5b (2026-11-03, coloring Phase B: christmas stocking singles)
+  { page: 'christmas-stocking-coloring-page', file: 'christmas-stocking-coloring-page' },
+  // Wave 6 (2026-11-06, image-forward batch): the color product page.
+  { page: 'multiplication-chart-color', file: 'color-multiplication-chart-printable' },
+  // Wave 7 (2026-11-06, image-density batch): graph paper + sight words +
+  // formula sheets get first PNGs — every charts-hub card goes visual, and
+  // those three families join the variant-gallery program.
+  { page: 'printable-graph-paper', file: 'graph-paper-quarter-inch' },
+  { page: 'half-inch-graph-paper', file: 'graph-paper-half-inch' },
+  { page: '1-cm-graph-paper', file: 'graph-paper-1cm' },
+  { page: '5mm-graph-paper', file: 'graph-paper-5mm' },
+  { page: 'dot-grid-paper', file: 'graph-paper-dot-grid' },
+  { page: 'isometric-graph-paper', file: 'graph-paper-isometric' },
+  { page: 'preschool-sight-words', file: 'preschool-sight-words-printable' },
+  { page: 'first-grade-sight-words', file: 'first-grade-sight-words-printable' },
+  { page: 'second-grade-sight-words', file: 'second-grade-sight-words-printable' },
+  { page: 'third-grade-sight-words', file: 'third-grade-sight-words-printable' },
+  { page: 'geometry-formula-sheet', file: 'geometry-formula-sheet-printable' },
+  { page: 'algebra-formula-sheet', file: 'algebra-formula-sheet-printable' },
 ];
 
 const MIME = {
@@ -61,12 +107,14 @@ const MIME = {
   '.txt': 'text/plain',
 };
 
-// Optional substring filter: `npm run sheet-images -- halloween-color`
+// Optional substring filter(s): `npm run sheet-images -- halloween-color`
 // re-shoots just the pages whose slug matches (used when one sheet's
-// rendering changed and a full 39-shot pass is waste).
+// rendering changed and a full pass is waste). Comma-separate to shoot
+// several groups in one launch: `-- times-table/,letter-to-santa`.
 const only = process.argv[2];
-const shots = only ? SHOTS.filter((s) => s.page.includes(only)) : SHOTS;
-if (only) console.log(`filtered to ${shots.length} shot(s) matching "${only}"`);
+const filters = only ? only.split(',').filter(Boolean) : [];
+const shots = filters.length ? SHOTS.filter((s) => filters.some((f) => s.page.includes(f))) : SHOTS;
+if (filters.length) console.log(`filtered to ${shots.length} shot(s) matching "${only}"`);
 
 const server = createServer((req, res) => {
   let pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -89,16 +137,24 @@ mkdirSync(OUT, { recursive: true });
 
 try {
   const dims = {};
-  for (const { page, file } of shots) {
+  for (const { page, file, selector } of shots) {
+    const sel = selector ?? '.printable';
     const ctx = await browser.newContext({
       viewport: { width: 1280, height: 1000 },
       deviceScaleFactor: 2,
     });
     const p = await ctx.newPage();
     await p.goto(`${base}/${page}/`);
-    await p.waitForSelector('.printable');
+    await p.waitForSelector(sel);
+    // The gallery carries screen-only tints (green card fills/borders).
+    // The PNG is the printable — strip the chrome back to pure B&W.
+    if (sel === '.lc-gallery') {
+      await p.addStyleTag({
+        content: '.lc-art{background:#fff!important;border-color:#999!important;border-width:1pt!important}.lc-gallery-heading{color:#1c1c1c!important}',
+      });
+    }
     await p.waitForTimeout(500); // let fonts/interact settle
-    const el = await p.$('.printable');
+    const el = await p.$(sel);
     const shot = await el.screenshot();
     await ctx.close();
 

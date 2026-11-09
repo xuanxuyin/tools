@@ -1,0 +1,76 @@
+---
+/**
+ * Tenths/hundredths/thousandths reference sheet (GSC 10/26: "one tenth
+ * hundredth thousandth chart"). Two tables, both computed from the engines:
+ * what each decimal column is worth (fraction, decimal, spoken name, money
+ * anchor), then three worked example numbers decomposed digit by digit.
+ * Fully server-rendered — the sheet prints complete with JavaScript off.
+ */
+import { decimalPlaceColumns, formatUs } from '../../lib/mathCharts';
+import { breakdownDecimal, DECIMAL_EXAMPLES } from '../../lib/decimalBreakdown';
+
+const SAID = ['one tenth', 'one hundredth', 'one thousandth'];
+const MONEY = ['one dime', 'one penny', 'a tenth of a penny'];
+
+const places = decimalPlaceColumns(3).map((c, i) => ({
+  place: c.name,
+  fraction: `1/${formatUs(10 ** (i + 1))}`,
+  decimal: c.valueLabel,
+  said: SAID[i],
+  money: MONEY[i],
+}));
+
+const examples = DECIMAL_EXAMPLES.map((e) => breakdownDecimal(e));
+---
+
+<p class="sheet-title">One tenth, one hundredth, one thousandth — what each column is worth</p>
+<table class="chart-table">
+  <thead>
+    <tr>
+      <th scope="col">Place</th>
+      <th scope="col">As a fraction</th>
+      <th scope="col">As a decimal</th>
+      <th scope="col">Said out loud</th>
+      <th scope="col">You already know it from</th>
+    </tr>
+  </thead>
+  <tbody>
+    {places.map((p) => (
+      <tr>
+        <td>{p.place}</td>
+        <td>{p.fraction}</td>
+        <td>{p.decimal}</td>
+        <td>{p.said}</td>
+        <td>{p.money}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+<p class="sheet-title second-title">Worked examples — every digit named</p>
+<table class="chart-table">
+  <thead>
+    <tr>
+      <th scope="col">Number</th>
+      <th scope="col">Ones</th>
+      <th scope="col">Tenths</th>
+      <th scope="col">Hundredths</th>
+      <th scope="col">Thousandths</th>
+      <th scope="col">Expanded form</th>
+      <th scope="col">In words</th>
+    </tr>
+  </thead>
+  <tbody>
+    {examples.map((e) => (
+      <tr>
+        <td>{e.text}</td>
+        <td>{formatUs(e.whole)}</td>
+        <td>{e.frac[0] ?? ''}</td>
+        <td>{e.frac[1] ?? ''}</td>
+        <td>{e.frac[2] ?? ''}</td>
+        <td>{e.expanded}</td>
+        <td>{e.reading}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

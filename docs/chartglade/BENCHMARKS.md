@@ -269,3 +269,76 @@ post 522 / page 41 / category 9。分类法：**calendars 154**（月历回溯�
 **C. 明确不做**：Dolch 220 每词一页（两家头部都不做，薄内容风险最高）；cursive words 26 页矩阵（KD58 实测死）；cursive sentences 按年级拆页（两家都不拆）；数字草书（零在位者）；coloring 102/templates 100（漂出主题，§6.3 已裁）；年级×学科大网格（DR0 无底层支撑 = 空壳 hub）；UK/AU 镜像（只做美国）；MS calculators 交互工具族（非打印件场景）。
 
 **一句话**：两站把已立项的 #17/#18 从"单站参考"变"双实锤"（PDF 标配、图片密度上限 38.7/页），真增量集中在 10/25 批三项（PDF 下载、变体图 6~12 张、title 承诺）；词族胜负规律确认参考图表型是 chartglade 主场，cursive / sight words 两族两站均缺位 —— 既有 53 页矩阵路线不动。
+
+## 8. 屏显表格/内容样式实勘 — 2026-11-03（👤 "内容/表格都太丑" + "一切样式必须来自大站调研"）
+
+**触发**：用户要求美化表格/内容，且纠正：所有样式决策必须来自大站实勘，不许自创。首版"绿底白字表头+斑马纹"屏显批被本节实勘否决并撤回。
+
+**采样方法**：本地 socks5 代理（127.0.0.1:10808）curl 拉 dadsworksheets 乘法表页原始 HTML（280KB）+ 三张产品图（黑白/红/网格彩 1-9 medium.jpg）→ sharp 本地像素分析（行均值/条带振荡/palette/边框粗细），零云端上传。
+
+### 实勘发现【实勘 2026-11-03】
+
+| 维度 | dadsworksheets（乘法图表页） | 证据 |
+|---|---|---|
+| 表格产品形态 | **屏幕上零个 HTML `<table>`** —— 86 张图全部是 SVG 衍生 JPG 图片墙；产品本身 = 打印件 | 原始 HTML grep |
+| 黑白参考版设计 | **表头无填充、无斑马纹**：正文行均值 #f9f9f9 平稳（暗行 = 网格线非条带），palette 白+黑+灰三档 | 像素分析 dw_bw.jpg |
+| 颜色的位置 | **颜色是产品变体不是屏幕 chrome**：红版按乘积值深浅渐变（亮度 72→37 随行号降），网格彩版按对角线等值上色（绿→青） | 像素分析 dw_red/dw_grid.jpg |
+| 外边框 | 无加重外框（顶部中心 0px 深色 run），统一细网格 | 像素扫描 |
+| 页面内容结构 | 图片墙 + ~1800 词长文（h2 教学问答：Is It Important / What grade / How Do I Teach / How used），Astro v5 | web_reader 全文 |
+| 站点 chrome | k5learning 用 Bootstrap 3 惯例（工作纸也是图片产品） | curl 91KB |
+
+### 判定（支撑样式决策）
+
+1. **产品表格屏显 = 打印件原样**（所见即所印）——教育在位者没有"屏显换肤"。我们的 `.chart-table` 是 SSR HTML 产品 + sheet-images 管线**用屏幕渲染截 Google Images 的 PNG**，屏显改色会造成 PNG≠纸张两张皮。→ 撤回绿头白字/斑马纹/悬停改色/pv 表头填充。
+2. **基座 `.chart-table`（浅绿表头 tint + 统一 1px 细网格 + tabular-nums）已在在位者约定内**（浅表头横带在 Superstar/education.com 工作纸常见，黑白打印安全），不动。
+3. **"变丑→变美"的杠杆是图表颜色变体**（B&W 默认 + color 变体单独出图），不是屏幕换肤 —— 列为后续选题（变体页需单独 spec + 拉量）。
+4. **prose 排版批保留**：在位者页面 = 长文结构（h2 问答/列表/FAQ），line-height/列表节奏/链接下划线服务该结构；strong 荧光笔高亮沿用 tintbrew 已验收的仓库排版语言（非新造）。
+
+**一句话**：屏显样式批的结论 = 表格保持打印件原样（撤回换肤），prose 可读性保留；"美"的下一步在产品变体层（彩色版图表），立项时走正常选品流程。
+
+---
+
+## 9. 设计/内容层五家拆解（第二轮）— 2026-11-06（👤 "调研大站怎么做的，我们样式和内容差距都很大"）
+
+**触发**：§7/§8 拆的是"页数/图片数/形态"，本轮专拆**视觉/UX 层**——页面上东西怎么摆、颜色放哪、一页装多少产品。方法：webReader 全文 + curl 原始 HTML/CSS（socks5 10808）+ 像素法，全部实抓【实勘 2026-11-06】。
+
+### 9.1 逐家发现
+
+| 站 | 视觉/UX 机制【实勘】 |
+|---|---|
+| **Superstar Worksheets**（乘法页） | 单页 **~26 张图**；**一节 = 一个变体**（每节自有产品图 + 短文案，滚动即变体货架）；产品本身彩色（color-coded 工作纸）；长文 = 教学法（先学哪表：10/5/2/3/9/4/6/7/8 顺序论证）+ 页面带 freshness 日期 |
+| **DadsWorksheets**（hub + 乘法页） | hub = **25 卡图片墙**（宝可梦卡式 3D hover）；卡片图 **srcset 128/256/512w** + 图下 caption 模式；原始 CSS tokens：`--dw:#2745c1`/`--dwink:#444466`，白卡 `#dfe2f5` 边、hover `#eef1fd` —— **chrome 全中性，颜色全部来自工作纸图片本身**；mega-menu 248 链接 |
+| **Math-Salamanders**（times-table-chart.html） | 每表 **变体 × 交付矩阵**：per-table ×（color/B&W）×（to-10/to-12）= 每表 4 个 PDF 直链；树状 mega-nav（By Age/Generated/Calculators/Quizzes/Fun Math/Seasonal/UK/AU） |
+| **mondaymandala**（/coloring-pages/） | 单 hub **236 张彩色封面卡**；每卡 = 分类 + 页数标签（"20+ pages"）；页内 "20 craft ideas" 内容深度；WordPress + Mediavine 变现 |
+| **K5**（10/29 档延续） | 数百内链/页的导航墙；工作纸 = 图片产品 |
+
+### 9.2 通用页面公式（五家公约数）
+
+**图片就是页面**（image IS the page）：① 每页多张真实产品预览图（Superstar ~26 / hub 25 卡 / hub 236 卡）② 变体 × 交付是产品目录不是文案段落 ③ **产品彩色、chrome 中性**（DW 蓝只做链接/边饰，颜色留给工作纸）④ hub = 图片墙不是文字列表。
+
+**我方差距**（拆解前）：每页 1 个 printable + 产品 PNG 藏在折叠 details 里 + related 纯文字 = 差的不是 CSS 功底，是**没把产品图当货架摆**。→ 唯一杠杆 = 变体图库引擎（variants[]，§7.7 B 表首项）。
+
+### 9.3 当日落地（拆解 → 实现同日闭环）
+
+| 在位者机制 | 落地 |
+|---|---|
+| DW 25 卡图片墙 / Superstar 变体节 | **VariantGallery 引擎**：`PageDef.variants[]` + `VariantGallery.astro`（4:3 缩略图卡：图 + 标题 + 一句话理由 + CTA），乘法 7 页 + 位值 5 页共 12 页全挂族图库（复用已有 PNG 零新资产），置于 related 文字链之前 |
+| Superstar/MC 彩色产品 | **/multiplication-chart-color/** 新产品页（§8 判定"颜色变体即产品"落地）：12 行淡彩条带（rainbow bands）+ `print-color-adjust: exact` **故意突破 WYSIWYP**（颜色即产品，打印必须保留）；交互 + 6 FAQ + PNG 2016×1136 |
+| Superstar 教学顺序长文 | 支柱页加 **fact-order 条**：11 步编号链（2s 双倍→5s 钟表→10s 位移→3s→9s 手指→4s→6s→7s→8s→11s→12s）逐格链到 /times-table/N/ 现有 12 页 |
+| DW srcset/caption 精细化 | 未做（缩略图均为 2016 宽源图降采样，量级暂不需要 srcset 档）—— 挂后续优化池 |
+
+**视觉验证三关**（本批新流程）：几何实测（headless Edge 量 DOM：12 页缩略盒全 181px 等高——抓出并修复 flex `min-height:auto` 撑破 4:3 盒的真 bug，改绝对定位 img）+ 超长打包图（h/w≥1.6）缩略改 `object-fit:cover` 顶部切片（contain 下 4742px 高图缩成幽灵条）+ 隔离裁切目检（标题+完整网格+高亮平方数可识别）。守卫测试固化（fit 矩阵防未来幽灵缩略图）。
+
+**一句话**：五家的"样式差距"实为**图片货架差距**——本批把每个多变种族变成图片墙（12 页）+ 第一张彩色产品页 + 教学顺序内链条，133→134 页、480→496 测试全绿。
+
+### 9.4 图片密度批第二波（2026-11-07，§7「每页图数」差距的纯工程收口）
+
+| 在位者机制 | 落地 |
+|---|---|
+| DW/mondaymandala hub 图片墙 | **三个 hub 变图片墙**：/charts/ 19 张缩略卡（card-with-thumb：4:3 图 + 标题 + blurb）、/times-table/ 12 表卡墙（DadsWorksheets 打法页级化）、/graph-paper/ 6 卡 |
+| Superstar 一族一节一变体 | **族图库铺满 38 页**（带图库页 12→50）：times-table 12 + graph-paper 6 + sight-words 学级梯 5 + 万圣 3 + 感恩 4 + 圣诞 3 + stocking/cootie 2 + cursive 三页；`variantGallery.ts` 共享构造器（defHref/familyGallery + h/w≥1.6 自动 cover），blurb 每族每页手写 |
+| Math-Salamanders 每表一图 | **12 张新 PNG**（wave 7：6 种网格纸 + sight-words 学级梯 preschool/1st/2nd/3rd + 几何/代数公式表）——11/03 遗留「老页无图」清单砍掉 12 页（余 sign-in 族） |
+
+**验证**：134 页 build、567/567 绿（精确清单 50 slug + hub 墙 dist 守卫 + 空 blurb 防回归 `<p></p>`）、link-check 0 问题、抽样 7 页几何实测缩略盒全等高（181px 图库 / 179px hub 卡）、懒加载滚动后 100% 加载。
+
+**一句话**：零新 URL，把「图藏在页底」翻成「图就是导航」——hub 卡、族图库、单页产品图三层全部图片化。
