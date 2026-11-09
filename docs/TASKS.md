@@ -6,6 +6,22 @@
 
 ---
 
+## 今天 · 2026-11-09（周日）
+
+- [ ] 👤 **GSC Request Indexing 批（10 条，Claude 11/09 实勘全部 200 后排好优先级）**——11/03 索引批只推了感恩节簇，**圣诞簇 6 页从未手动推过**，11 月正是圣诞词爬排名窗（美区峰值 12 月初，再不进爬就赶不上季）。GSC 顶栏 → 输入 URL → 请求编入索引，按序推（配额 ~10/日，报错重试一次即可，11/03 批 9/10 一次成功先例）：
+  1. `https://chartglade.com/christmas-printables/`（圣诞 hub，簇入口）
+  2. `https://chartglade.com/christmas-word-search/`（词搜双难度）
+  3. `https://chartglade.com/christmas-color-by-number/`
+  4. `https://chartglade.com/letter-to-santa/`（写作纸）
+  5. `https://chartglade.com/christmas-cootie-catcher/`
+  6. `https://chartglade.com/christmas-stocking-coloring-page/`
+  7. `https://chartglade.com/multiplication-chart/`（11/07 quiz island 大功能上线，12.1K 词主战场页刷新）
+  8. `https://chartglade.com/coloring/`（涂色产品线 hub，26 字母页让发现队列自走）
+  9. `https://chartglade.com/cootie-catcher/`（11/03 上线三页主入口）
+  10. `https://tintbrew.com/coloring/`（210 张涂色 hub 入口，详情页让发现队列自走）
+
+---
+
 ## 今天 · 2026-11-07（周六）
 
 - [x] 🤖 **chartglade #36 leveled math practice island 上线 ✅（main `8371040`）**：/multiplication-chart/ 第三段交互岛——10 轨 ×10 关（K~Algebra 1）打怪升级；👤 两条追加需求全落：**每题 worked solution**（"Show me how" / 答错自动展开）+ **图形题 9 类 SVG & frac/time 答案**（钟表/数轴/柱状图/阴影分数/面积周长/坐标/斜率/勾股）；进度 localStorage，全通关打印证书；585/585 绿 + 134 页。**👤 顺手过一遍手感**（尤其 1st 钟表题、3rd 阴影分数、8th 勾股图）。明细 [chartglade PLAN 11/07 行](./chartglade/PLAN.md) + §3 #36
