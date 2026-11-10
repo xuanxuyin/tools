@@ -9,7 +9,9 @@
 ## 今天 · 2026-11-10（周一）
 
 - [x] 🤖 **tintbrew UI 模板对齐批 ✅（四件套一次上车）**：①对标 Coolors/perlerbeadpatterns.org 重排首页 hero（近黑 H1 + 双栏"产品即视觉"：真实混色条带 red→blue + 4 mix chip + HEX 标注）+ 工具卡 pastel 四色 + 串珠卡 1:1 统一框；②全站 Lucide 官方图标内联 vendored（ISC，28 枚，零字体请求）；③**顺手抓出两个真 bug**——mixer 条带 hydration 后塌缩（scoped CSS 对 runtime 注入 DOM 失效，`:global` 修复+回归测试）、涂色页点蜜蜂左眼整只上色（墨线归属修复：环边界像素归细节环 + evenodd 渲染，`lib/coloringIdMap.ts` 纯函数 + 真_payload 实勘回归）；④页脚两列精简（👤 两次点名：Color guides 10→3、Bead patterns 11→3，其余仍挂各自 hub）。**382/382 绿 + 392 页 build**。明细 [tintbrew PLAN 11/10 行](./tintbrew/PLAN.md)
-- [ ] 👤 **tintbrew 本地验收（Ctrl+F5 强刷，旧 CSS 有缓存）**：本地 http://localhost:4321/ 逐项看——①首页：深色大标题 + 右侧混色条带/色块 + 四张 pastel 工具卡 + 页脚 Tools 列图标头、Color guides 只剩 3 条、Bead patterns 只剩 3 条；② http://localhost:4321/coloring/dk019-bee/ 点两只眼睛（含轮廓）应只填眼白不再整蜂变色；③ /mix/black-red/ 顶部结果条带新样式顺手扫一眼。不对的报哪页哪处
+- [x] 🤖 **tintbrew 涂色二次修复批 ✅（👤 两条追报：①"还是没改"②"无效区域算进填色数"）**：①本地 payload 陈旧是放大器——`public/coloring/payload/` 停在 v4 前（bee 44 环 vs 生产 38），已从 D1 切片同步全部 210 个（含 >90K 大行 INSERT+UPDATE 续段拼接解析），本地=生产；②墨线归属升级第二层：inkMask（lineArt 亮度<140）+ 最大邻接 id 迭代至不动点——3-5px 粗墨线整条（含外缘）收敛到所绘细节环，漂浮装饰墨线保持不可点；眼环改纯几何发现（face zone bbox top2，弃硬编码环号）；③**无效区域真根因在生产**：SSR regions=r.length 含不可点纸面环（171/210），运行时排除 bgRing → 每页显示数比可填数大 1，`data/coloring.ts` 171 条重生成可填数（bee 37/37 全一致）；④真浏览器终验：双眼/眼周墨线/脸部/翅膀/花全命中各自环，零误选整蜂。**387/387 绿 + 392 页 build**。明细 [tintbrew PLAN 11/10 二批行](./tintbrew/PLAN.md)
+- [ ] 👤 **tintbrew 本地验收（Ctrl+F5 强刷，旧 CSS 有缓存）**：本地 http://localhost:4321/ 逐项看——①首页：深色大标题 + 右侧混色条带/色块 + 四张 pastel 工具卡 + 页脚 Tools 列图标头、Color guides 只剩 3 条、Bead patterns 只剩 3 条；② http://localhost:4321/coloring/dk019-bee/ 点两只眼睛（含轮廓和眼周黑线）应只填眼白不再整蜂变色，页头显示 "37 areas to color"（不是 38——纸面不再计入）；③ /mix/black-red/ 顶部结果条带新样式顺手扫一眼。不对的报哪页哪处
+- [ ] 👤 **tintbrew 生产部署拍板**：本地批（UI 对齐 + 涂色三修）都在 cootie-predev 未合 main——**生产还是旧代码，bee 眼睛 bug 线上仍在**。本地验收过 → 回复"部署"，Claude 合 main + push.bat + CF Pages 自动发布
 
 ---
 
