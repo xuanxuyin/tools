@@ -10,10 +10,16 @@
  * rings on top, and the scanline previously claimed only pixel CENTERS inside
  * each polygon — every pixel of the 2-3px ink line around a detail ring fell
  * to the base ring, so a tap that landed on the eye's own outline selected
- * the whole-bee ring. Now each ring also stamps its boundary pixels (+1px
- * reach) with its id as it is processed; later rings overwrite earlier ones,
- * so shared ink lines end up owned by the detail that encloses them — taps
- * on an outline select the shape the outline draws.
+ * the whole-bee ring. Two layers fix this:
+ *   1. each ring stamps its boundary pixels (+1px reach) with its id as it
+ *      is processed; later rings overwrite earlier ones;
+ *   2. with an ink mask (dark pixels of the line art, built by the caller
+ *      from the <img>), unclaimed ink pixels adopt the largest neighbouring
+ *      id and iterate to a fixpoint — a 2-5px sketch ink line converges onto
+ *      the detail ring it borders, because that ring's stamp seeds the whole
+ *      inner edge of the line and the largest id wins every contention.
+ *      Ink with no owned neighbour (floating decoration strokes on paper)
+ *      stays untappable instead of falling through to the base silhouette.
  */
 
 export interface IdMapResult {
@@ -51,7 +57,39 @@ export function subpathsOf(spec: string): [number, number][][] {
     : [spec.split(' ').map((s) => s.split(',').map(Number)) as [number, number][]];
 }
 
-export function buildColoringIdMap(specs: string[], w: number, h: number): IdMapResult {
+/** The page-background ring: its outer subpath spans the whole canvas
+ *  (paper white — untappable, excluded from completion counts). */
+export function isCanvasSpanning(spec: string, w: number, h: number): boolean {
+  const subpaths = subpathsOf(spec);
+  if (subpaths.length < 1) return false;
+  const outer = subpaths[0]!;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (const [px, py] of outer) {
+    if (px < minX) minX = px;
+    if (py < minY) minY = py;
+    if (px > maxX) maxX = px;
+    if (py > maxY) maxY = py;
+  }
+  return minX <= 1 && minY <= 1 && maxX >= w - 1 && maxY >= h - 1;
+}
+
+/** Fillable ring count: all rings minus the canvas-spanning paper ring when
+ *  one exists — the number the paint island shows and requires for done. */
+export function fillableCount(specs: string[], w: number, h: number): number {
+  let bg = 0;
+  for (const spec of specs) if (isCanvasSpanning(spec, w, h)) bg++;
+  return specs.length - bg;
+}
+
+export function buildColoringIdMap(
+  specs: string[],
+  w: number,
+  h: number,
+  inkMask?: Uint8Array | null,
+): IdMapResult {
   const ids = new Uint32Array(w * h); // 0 = "no ring"
   let bgRing = -1;
   for (let i = 0; i < specs.length; i++) {
@@ -62,22 +100,9 @@ export function buildColoringIdMap(specs: string[], w: number, h: number): IdMap
     // would recolor ~everything at once. It stays pure paper white instead:
     // not rasterized into the id map (untappable), never filled, and not
     // counted toward completion downstream.
-    if (subpaths.length >= 1) {
-      const outer = subpaths[0]!;
-      let minX = Infinity;
-      let minY = Infinity;
-      let maxX = -Infinity;
-      let maxY = -Infinity;
-      for (const [px, py] of outer) {
-        if (px < minX) minX = px;
-        if (py < minY) minY = py;
-        if (px > maxX) maxX = px;
-        if (py > maxY) maxY = py;
-      }
-      if (minX <= 1 && minY <= 1 && maxX >= w - 1 && maxY >= h - 1) {
-        bgRing = i;
-        continue; // keep ring order aligned; just no id pixels
-      }
+    if (isCanvasSpanning(specs[i]!, w, h)) {
+      bgRing = i;
+      continue; // keep ring order aligned; just no id pixels
     }
     // crossings per scanline at pixel centers (y + 0.5); even-odd pairs
     // across ALL subpaths, so a hole flips the span off again
@@ -129,6 +154,41 @@ export function buildColoringIdMap(specs: string[], w: number, h: number): IdMap
           }
         }
         prev = cur;
+      }
+    }
+  }
+  // ink-line ownership pass: unclaimed (or base-stamped) ink pixels upgrade
+  // to the largest neighbouring id until stable. The detail ring that a line
+  // draws seeds its inner edge via the stamp above, so the whole stroke —
+  // outer half included — converges onto that ring instead of the base
+  // silhouette beneath. Strictly increasing ids make the loop terminate.
+  if (inkMask) {
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (let y = 0; y < h; y++) {
+        const row = y * w;
+        for (let x = 0; x < w; x++) {
+          const i = row + x;
+          if (!inkMask[i]) continue;
+          let best = ids[i]!;
+          for (let dy = -1; dy <= 1; dy++) {
+            const ny = y + dy;
+            if (ny < 0 || ny >= h) continue;
+            const nrow = ny * w;
+            for (let dx = -1; dx <= 1; dx++) {
+              if (dx === 0 && dy === 0) continue;
+              const nx = x + dx;
+              if (nx < 0 || nx >= w) continue;
+              const v = ids[nrow + nx]!;
+              if (v > best) best = v;
+            }
+          }
+          if (best > ids[i]!) {
+            ids[i] = best;
+            changed = true;
+          }
+        }
       }
     }
   }

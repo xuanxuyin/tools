@@ -22,6 +22,7 @@ import {
   todayUtc,
 } from '../../functions/api/coloring/_kernel';
 import { COLORING_PIECES } from '../data/coloring';
+import { fillableCount } from '../lib/coloringIdMap';
 
 describe('coloring kernel', () => {
   it('encodeColors/decodeColors round-trips palette indices and holes', () => {
@@ -71,6 +72,37 @@ describe('coloring dist (shipped surface)', () => {
       expect(p.w).toBeGreaterThan(0);
       expect(p.h).toBeGreaterThan(0);
     }
+  });
+
+  it('local dev payloads (gitignored) match the catalog fillable counts when present', () => {
+    // public/coloring/payload/*.json is the localhost-only unlock bypass,
+    // synced from the authoritative D1 slices (scripts/coloring-d1/*.sql).
+    // A stale file poisons local QA twice: the paint island overwrites the
+    // SSR regions line with its own fillable total ("payload wins"), and the
+    // id map gets rings the catalog never counted — the bee showed 44 areas
+    // here while production showed 38 (user report 2026-11-10). Machines
+    // without the folder (CI, fresh clones) skip; machines WITH it must keep
+    // the full set fresh. regions = FILLABLE count (paper ring excluded) —
+    // the same number the island computes at runtime, so SSR never flashes a
+    // different figure before hydration.
+    const dir = resolve(fileURLToPath(import.meta.url), '../../../public/coloring/payload');
+    if (!existsSync(dir)) return;
+    let checked = 0;
+    for (const p of COLORING_PIECES) {
+      const f = resolve(dir, `${p.slug}.json`);
+      if (!existsSync(f)) continue;
+      const payload = JSON.parse(readFileSync(f, 'utf8')) as {
+        w: number;
+        h: number;
+        r: string[];
+      };
+      expect(
+        fillableCount(payload.r, payload.w, payload.h),
+        `${p.slug}: payload fillable count must equal piece.regions`,
+      ).toBe(p.regions);
+      checked++;
+    }
+    expect(checked).toBe(COLORING_PIECES.length);
   });
 
   it('hub ships all 210 cards with thumbs, links and region counts', () => {

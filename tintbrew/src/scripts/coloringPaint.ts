@@ -186,8 +186,8 @@ class PaintIsland {
     this.colors = saved ?? this.payload.r.map(() => null);
     this.completeSent = this.colors.every((c) => c !== null); // don't re-POST
 
+    await this.warmLineArt(); // ink mask below needs the decoded line art
     this.prepare();
-    await this.warmLineArt();
     this.buildPalette();
     this.render();
     this.frame.classList.add('is-live');
@@ -217,10 +217,36 @@ class PaintIsland {
     for (const spec of p.r) {
       this.ringPaths.push(new Path2D(spec.startsWith('M') ? spec : this.toPath(spec)));
     }
-    const { ids, bgRing } = buildColoringIdMap(p.r, p.w, p.h);
+    const { ids, bgRing } = buildColoringIdMap(p.r, p.w, p.h, this.buildInkMask(p.w, p.h));
     this.bgRing = bgRing;
     this.idData = ids;
     this.idW = p.w;
+  }
+
+  /** Dark pixels of the line art at payload resolution → 1 in the mask.
+   *  Feeds the ink-line ownership pass of the id map (taps on a drawn line
+   *  select the shape it belongs to). Null-safe: if the image or canvas
+   *  2D context is unavailable we degrade to boundary stamps only. */
+  private buildInkMask(w: number, h: number): Uint8Array | null {
+    const img = this.lineArt;
+    if (!img.complete || !img.naturalWidth) return null;
+    try {
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const ctx = c.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D | null;
+      if (!ctx) return null;
+      ctx.drawImage(img, 0, 0, w, h);
+      const d = ctx.getImageData(0, 0, w, h).data;
+      const mask = new Uint8Array(w * h);
+      for (let i = 0; i < w * h; i++) {
+        const lum = 0.299 * d[i * 4]! + 0.587 * d[i * 4 + 1]! + 0.114 * d[i * 4 + 2]!;
+        if (lum < 140) mask[i] = 1;
+      }
+      return mask;
+    } catch {
+      return null; // tainted canvas or stubbed DOM — stamps-only behavior
+    }
   }
 
   /** "x,y x,y ..." → SVG path data (payload coords are already canvas space). */

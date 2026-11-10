@@ -6,18 +6,22 @@
  * base silhouette + small detail rings; the old map claimed only pixel
  * CENTERS strictly inside each polygon, so the ink line around a detail ring
  * belonged to the base ring — a tap on the eye's outline selected the
- * whole-bee ring. The fix stamps each ring's boundary pixels (+1px) with its
- * id, later rings overwriting earlier ones.
+ * whole-bee ring. The fix has two layers: boundary stamps (+1px per ring,
+ * later rings overwrite) and — with an ink mask from the line art — a
+ * fixpoint pass that upgrades every masked ink pixel to the largest
+ * neighbouring id, so a 2-5px sketch stroke converges onto the detail ring
+ * it draws and floating decoration ink stays untappable.
  *
  * The real bee payload (public/coloring/payload/, gitignored) is probed too
- * when present on the machine that built the site — the exact coordinates
- * from the incident report.
+ * when present on the machine that built the site. Eye rings are found by
+ * GEOMETRY (bbox inside the face zone, two largest), not indices — the
+ * segmentation pipeline renumbers rings on every regen.
  */
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { buildColoringIdMap, subpathsOf } from './coloringIdMap';
+import { buildColoringIdMap, fillableCount, subpathsOf } from './coloringIdMap';
 
 const beePayloadPath = resolve(
   fileURLToPath(import.meta.url),
@@ -63,6 +67,10 @@ describe('buildColoringIdMap', () => {
     expect(bgRing).toBe(0);
     expect(ids[10 * 100 + 10]).toBe(0); // bg ring contributes no id pixels
     expect(ids[30 * 100 + 30]).toBe(2); // later ring unaffected
+    // the fillable count excludes the paper ring — the number both the
+    // catalog (SSR) and the island (completion) must agree on
+    expect(fillableCount([box(0, 0, 100, 100), box(20, 20, 40, 40)], 100, 100)).toBe(1);
+    expect(fillableCount([box(10, 10, 90, 90), box(40, 40, 60, 60)], 100, 100)).toBe(2);
   });
 
   it('even-odd semantics: a self-intersecting bowtie leaves the waist empty', () => {
@@ -87,9 +95,98 @@ describe('buildColoringIdMap', () => {
     const pts = subpathsOf(spec);
     expect(pts[0]).toHaveLength(4); // Z token dropped
   });
+
+  it('ink mask: a wide sketch stroke converges onto the detail ring it borders', () => {
+    // the real failure class: sketch ink is 2-5px thick, so outline taps can
+    // land 2-3px OUTSIDE the polygon — past the ±1px stamp, still on the
+    // base ring. The mask (dark line-art pixels) lets the whole stroke
+    // upgrade to the detail ring via the fixpoint pass.
+    const specs = [box(10, 10, 90, 90), box(40, 40, 60, 60)];
+    const mask = dilateOutline(specs[1]!, 3, 100, 100);
+    const { ids } = buildColoringIdMap(specs, 100, 100, mask);
+    expect(ids[50 * 100 + 37]).toBe(2); // 3px left of the detail edge
+    expect(ids[50 * 100 + 63]).toBe(2); // 3px right
+    expect(ids[37 * 100 + 50]).toBe(2); // 3px above
+    expect(ids[63 * 100 + 50]).toBe(2); // 3px below
+    expect(ids[25 * 100 + 25]).toBe(1); // unmasked base interior untouched
+    expect(ids[55 * 100 + 50]).toBe(2); // detail interior unchanged
+  });
+
+  it('ink mask: floating decoration ink with no owned neighbour stays untappable', () => {
+    const specs = [box(10, 10, 90, 90)];
+    const mask = new Uint8Array(100 * 100);
+    mask[5 * 100 + 5] = 1; // a stroke on open paper, far from any ring
+    const { ids } = buildColoringIdMap(specs, 100, 100, mask);
+    expect(ids[5 * 100 + 5]).toBe(0); // no fall-through to the base ring
+  });
+
+  it('ink mask: base-silhouette outline ink stays with the base ring', () => {
+    // the bee's outer black outline is genuinely part of the base — the fix
+    // must not leak detail ownership across it
+    const specs = [box(10, 10, 90, 90), box(40, 40, 60, 60)];
+    const mask = dilateOutline(specs[0]!, 3, 100, 100);
+    const { ids } = buildColoringIdMap(specs, 100, 100, mask);
+    expect(ids[10 * 100 + 50]).toBe(1); // base outline band → base ring
+    expect(ids[7 * 100 + 50]).toBe(1); // 3px outside the base edge: ink, owned by base
+    expect(ids[3 * 100 + 3]).toBe(0); // far paper outside the mask stays paper
+  });
 });
 
+/** mark every pixel within `r` of the spec's outline (test-only ink surrogate) */
+function dilateOutline(spec: string, r: number, w: number, h: number): Uint8Array {
+  const mask = new Uint8Array(w * h);
+  for (const pts of subpathsOf(spec)) {
+    let prev = pts[pts.length - 1]!;
+    for (let k = 0; k < pts.length; k++) {
+      const cur = pts[k]!;
+      const steps = Math.max(1, Math.ceil(Math.hypot(cur[0] - prev[0], cur[1] - prev[1])));
+      for (let s = 0; s <= steps; s++) {
+        const x = Math.round(prev[0] + ((cur[0] - prev[0]) * s) / steps);
+        const y = Math.round(prev[1] + ((cur[1] - prev[1]) * s) / steps);
+        for (let dy = -r; dy <= r; dy++) {
+          for (let dx = -r; dx <= r; dx++) {
+            const px = x + dx;
+            const py = y + dy;
+            if (px < 0 || py < 0 || px >= w || py >= h) continue;
+            mask[py * w + px] = 1;
+          }
+        }
+      }
+      prev = cur;
+    }
+  }
+  return mask;
+}
+
 describe('dk019-bee incident regression (real payload when present)', () => {
+  /** rings fully inside the bee's face zone, two biggest = the two eyes.
+   *  Geometry, not indices — the pipeline renumbers rings on every regen. */
+  const faceZone = { x0: 560, y0: 180, x1: 740, y1: 260 };
+  const eyeRings = (p: { r: string[] }): number[] => {
+    const found: { ring: number; area: number; x0: number }[] = [];
+    p.r.forEach((spec, ring) => {
+      const pts = subpathsOf(spec).flat();
+      let x0 = Infinity;
+      let y0 = Infinity;
+      let x1 = -Infinity;
+      let y1 = -Infinity;
+      for (const [x, y] of pts) {
+        if (x < x0) x0 = x;
+        if (y < y0) y0 = y;
+        if (x > x1) x1 = x;
+        if (y > y1) y1 = y;
+      }
+      if (x0 >= faceZone.x0 && y0 >= faceZone.y0 && x1 <= faceZone.x1 && y1 <= faceZone.y1) {
+        found.push({ ring, area: (x1 - x0) * (y1 - y0), x0 });
+      }
+    });
+    return found
+      .sort((a, b) => b.area - a.area)
+      .slice(0, 2)
+      .map((f) => f.ring)
+      .sort((a, b) => a - b);
+  };
+
   it('taps on either eye outline select the eye rings, never the whole-bee base', () => {
     if (!existsSync(beePayloadPath)) return; // payload is gitignored — CI skips
     const p = JSON.parse(readFileSync(beePayloadPath, 'utf8')) as {
@@ -97,16 +194,15 @@ describe('dk019-bee incident regression (real payload when present)', () => {
       h: number;
       r: string[];
     };
+    const eyes = eyeRings(p);
+    expect(eyes).toHaveLength(2); // left + right eye whites both in the zone
+    // without a mask: stamps alone must own each eye's outline (±1px)
     const { ids } = buildColoringIdMap(p.r, p.w, p.h);
-    // rings 14/15 are the eye whites, ring 0 the whole-bee silhouette
-    // (verified by outline overlay against the line art, 2026-11-10)
-    for (const eyeRing of [14, 15]) {
+    for (const eyeRing of eyes) {
       const pts = subpathsOf(p.r[eyeRing]!).flat();
       const cx = Math.round(pts.reduce((s, [x]) => s + x, 0) / pts.length);
       const cy = Math.round(pts.reduce((s, [, y]) => s + y, 0) / pts.length);
       expect(ids[cy * p.w + cx]).toBe(eyeRing + 1);
-      // every sampled point ON the eye outline must be the eye (±1px stamp
-      // reach), not ring 1 (the whole bee) — that was the reported failure
       for (let k = 0; k < pts.length; k += 2) {
         const [x, y] = pts[k]!;
         for (const [ox, oy] of [
@@ -118,8 +214,49 @@ describe('dk019-bee incident regression (real payload when present)', () => {
           const py = Math.round(y) + oy;
           if (px < 0 || py < 0 || px >= p.w || py >= p.h) continue;
           const id = ids[py * p.w + px];
-          expect(id).not.toBe(1);
-          expect(id).toBe(eyeRing + 1);
+          expect(id).not.toBe(1); // never the whole-bee ring — the incident
+          expect(id).not.toBe(0);
+          // eye id, or a LATER ring that legitimately overlaps this outline
+          // (the nose marking covers the right eye's top edge and is drawn
+          // after it — shared-edge ink belongs to the later shape)
+          expect(id).toBeGreaterThanOrEqual(eyeRing + 1);
+        }
+      }
+    }
+  });
+
+  it('with an ink mask, taps up to 3px outside an eye outline still select the eye', () => {
+    if (!existsSync(beePayloadPath)) return;
+    const p = JSON.parse(readFileSync(beePayloadPath, 'utf8')) as {
+      w: number;
+      h: number;
+      r: string[];
+    };
+    const eyes = eyeRings(p);
+    expect(eyes).toHaveLength(2);
+    // surrogate for the line-art ink: 3px dilation of each eye's outline
+    const mask = new Uint8Array(p.w * p.h);
+    for (const eyeRing of eyes) {
+      const band = dilateOutline(p.r[eyeRing]!, 3, p.w, p.h);
+      for (let i = 0; i < band.length; i++) if (band[i]) mask[i] = 1;
+    }
+    const { ids } = buildColoringIdMap(p.r, p.w, p.h, mask);
+    for (const eyeRing of eyes) {
+      const pts = subpathsOf(p.r[eyeRing]!).flat();
+      for (let k = 0; k < pts.length; k++) {
+        const [x, y] = pts[k]!;
+        for (const [ox, oy] of [
+          [2, 0],
+          [-2, 0],
+          [0, 2],
+          [0, -2],
+        ] as const) {
+          const px = Math.round(x) + ox;
+          const py = Math.round(y) + oy;
+          if (px < 0 || py < 0 || px >= p.w || py >= p.h) continue;
+          const id = ids[py * p.w + px];
+          expect(id).not.toBe(1); // the reported failure class: ink → base
+          expect(id).not.toBe(0);
         }
       }
     }
