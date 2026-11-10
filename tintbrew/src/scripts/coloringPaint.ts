@@ -70,7 +70,7 @@ class PaintIsland {
   private lineArt: HTMLImageElement;
 
   private payload: Payload | null = null;
-  private bgRing = -1; // payload ring spanning the whole canvas — untappable paper white
+  private bgRings = new Set<number>(); // payload paper rings (rc=0) — untappable
   private ringPaths: Path2D[] = [];
   private idData: Uint32Array | null = null;
   private idW = 0;
@@ -217,8 +217,11 @@ class PaintIsland {
     for (const spec of p.r) {
       this.ringPaths.push(new Path2D(spec.startsWith('M') ? spec : this.toPath(spec)));
     }
-    const { ids, bgRing } = buildColoringIdMap(p.r, p.w, p.h, this.buildInkMask(p.w, p.h));
-    this.bgRing = bgRing;
+    const { ids, bgRings } = buildColoringIdMap(p.r, p.w, p.h, {
+      inkMask: this.buildInkMask(p.w, p.h),
+      rc: p.rc,
+    });
+    this.bgRings = new Set(bgRings);
     this.idData = ids;
     this.idW = p.w;
   }
@@ -354,9 +357,10 @@ class PaintIsland {
   }
 
   private refreshMeta(): void {
-    // bgRing stays permanently null (paper white, untappable) — exclude it
+    // paper rings (rc=0) stay permanently null (untappable) — exclude them
     // from both the filled count and the total so completion is reachable
-    const countable = this.bgRing >= 0 ? this.colors.filter((_, i) => i !== this.bgRing) : this.colors;
+    const countable =
+      this.bgRings.size > 0 ? this.colors.filter((_, i) => !this.bgRings.has(i)) : this.colors;
     const filled = countable.reduce((n, c) => (c !== null ? n + 1 : n), 0);
     this.line = filled;
     this.total = countable.length;
@@ -379,7 +383,7 @@ class PaintIsland {
   }
 
   private maybeComplete(): void {
-    if (this.completeSent || this.colors.some((c, i) => i !== this.bgRing && c === null)) return;
+    if (this.completeSent || this.colors.some((c, i) => !this.bgRings.has(i) && c === null)) return;
     this.completeSent = true;
     this.status(t('col.p.complete'));
     void fetch('/api/coloring/complete', {

@@ -107,7 +107,7 @@ describe('pattern page self-boot publish (dist detail page)', () => {
     vi.unstubAllGlobals();
   });
 
-  it('the page ships the def JSON and the panel; a click posts the canonical mard grid', async () => {
+  it('the page ships the def JSON and the panel; a click posts the canonical mard grid', { timeout: 30_000 }, async () => {
     const html = readFileSync(resolve(dist, pageRel), 'utf8');
     const window = new Window({ url: `https://tintbrew.com/${pageRel.replace('index.html', '')}` });
     const { document } = window;

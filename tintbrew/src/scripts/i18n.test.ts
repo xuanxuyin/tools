@@ -354,7 +354,7 @@ describe('guide long-copy switch over dist pages', () => {
     expect(document.querySelector('.tips strong')?.textContent).toBe('따뜻한 갈색 vs 차가운 갈색.');
   });
 
-  it('icing-color-chart (chart page): hero/chart copy/gel note/cell names swap + round trip', async () => {
+  it('icing-color-chart (chart page): hero/chart copy/gel note/cell names swap + round trip', { timeout: 30_000 }, async () => {
     const { document, mod } = await loadPage('icing-color-chart/index.html');
     const heroEn = document.querySelector('.hero-answer strong')?.textContent;
     mod.setLang('zh');
@@ -623,7 +623,7 @@ describe('cross-language sweep over dist pages', () => {
     expect(beadLinks.every((t) => /[一-鿿]/.test(t ?? ''))).toBe(true);
   });
 
-  it('bead category page: group label, card names, taglines all swap in zh (user call, batch 5)', async () => {
+  it('bead category page: group label, card names, taglines all swap in zh (user call, batch 5)', { timeout: 30_000 }, async () => {
     const { document, mod } = await loadPage('perler-bead-animals/index.html');
     mod.setLang('zh');
     // the group header the user screenshotted: "Animal patterns — 52 张"

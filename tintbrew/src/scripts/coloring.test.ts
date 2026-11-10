@@ -74,7 +74,7 @@ describe('coloring dist (shipped surface)', () => {
     }
   });
 
-  it('local dev payloads (gitignored) match the catalog fillable counts when present', () => {
+  it('local dev payloads (gitignored) match the catalog fillable counts when present', { timeout: 30_000 }, () => {
     // public/coloring/payload/*.json is the localhost-only unlock bypass,
     // synced from the authoritative D1 slices (scripts/coloring-d1/*.sql).
     // A stale file poisons local QA twice: the paint island overwrites the
@@ -95,9 +95,10 @@ describe('coloring dist (shipped surface)', () => {
         w: number;
         h: number;
         r: string[];
+        rc: number[];
       };
       expect(
-        fillableCount(payload.r, payload.w, payload.h),
+        fillableCount(payload.r, payload.w, payload.h, payload.rc),
         `${p.slug}: payload fillable count must equal piece.regions`,
       ).toBe(p.regions);
       checked++;

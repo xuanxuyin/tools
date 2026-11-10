@@ -25,9 +25,19 @@
 export interface IdMapResult {
   /** w*h; 0 = untappable paper, ring index+1 otherwise */
   ids: Uint32Array;
-  /** ring whose outer contour spans the whole canvas (paper white) — its
-   *  pixels stay 0 (untappable) and it is excluded from completion counts */
-  bgRing: number;
+  /** ring indexes that are background (paper white) — their pixels stay 0
+   *  (untappable) and they are excluded from completion counts */
+  bgRings: number[];
+}
+
+/** Options for buildColoringIdMap. */
+export interface IdMapOptions {
+  /** dark pixels of the line art (see the ink pass below) */
+  inkMask?: Uint8Array | null;
+  /** per-ring class from the segmentation pipeline: 0 = background
+   *  (border-touching white, untappable), 1 = regular region. Authoritative
+   *  — the geometric canvas-span test below is only the legacy fallback. */
+  rc?: number[] | null;
 }
 
 const toPts = (s: string): [number, number][] => {
@@ -76,32 +86,36 @@ export function isCanvasSpanning(spec: string, w: number, h: number): boolean {
   return minX <= 1 && minY <= 1 && maxX >= w - 1 && maxY >= h - 1;
 }
 
-/** Fillable ring count: all rings minus the canvas-spanning paper ring when
- *  one exists — the number the paint island shows and requires for done. */
-export function fillableCount(specs: string[], w: number, h: number): number {
+/** Fillable ring count: rings the pipeline marks regular (rc=1); without rc,
+ *  all rings minus canvas-spanning paper rings — the number the paint island
+ *  shows and requires for done. */
+export function fillableCount(specs: string[], w: number, h: number, rc?: number[] | null): number {
+  if (rc && rc.length === specs.length) {
+    let n = 0;
+    for (const v of rc) if (v === 1) n++;
+    return n;
+  }
   let bg = 0;
   for (const spec of specs) if (isCanvasSpanning(spec, w, h)) bg++;
   return specs.length - bg;
 }
 
-export function buildColoringIdMap(
-  specs: string[],
-  w: number,
-  h: number,
-  inkMask?: Uint8Array | null,
-): IdMapResult {
+export function buildColoringIdMap(specs: string[], w: number, h: number, opts?: IdMapOptions): IdMapResult {
+  const inkMask = opts?.inkMask;
+  const rc = opts?.rc;
+  const haveRc = !!rc && rc.length === specs.length;
   const ids = new Uint32Array(w * h); // 0 = "no ring"
-  let bgRing = -1;
+  const bgRings: number[] = [];
   for (let i = 0; i < specs.length; i++) {
     const id = i + 1;
     const subpaths = subpathsOf(specs[i]!);
-    // The page-background ring (outer contour = the whole canvas) spans most
-    // of the page, so one stray tap on any open-curve pocket connected to it
-    // would recolor ~everything at once. It stays pure paper white instead:
-    // not rasterized into the id map (untappable), never filled, and not
-    // counted toward completion downstream.
-    if (isCanvasSpanning(specs[i]!, w, h)) {
-      bgRing = i;
+    // Background rings: the pipeline's border-touching-white verdict (rc=0)
+    // when present, else the geometric canvas-span test. Either way they
+    // stay pure paper white — not rasterized into the id map (untappable),
+    // never filled, and not counted toward completion downstream.
+    const isBg = haveRc ? rc![i] === 0 : isCanvasSpanning(specs[i]!, w, h);
+    if (isBg) {
+      bgRings.push(i);
       continue; // keep ring order aligned; just no id pixels
     }
     // crossings per scanline at pixel centers (y + 0.5); even-odd pairs
@@ -192,5 +206,5 @@ export function buildColoringIdMap(
       }
     }
   }
-  return { ids, bgRing };
+  return { ids, bgRings };
 }

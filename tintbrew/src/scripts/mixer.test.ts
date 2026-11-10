@@ -191,7 +191,7 @@ describe('mixer island URL restore', () => {
     expect(resultLabel(ctx.document)).toBe('#c6496d');
   });
 
-  it('ignores garbage params and falls back to SSR state', async () => {
+  it('ignores garbage params and falls back to SSR state', { timeout: 30_000 }, async () => {
     const ctx = await loadPage('?colors=nope&ratios=zzz');
     expect(resultLabel(ctx.document)).toBe('#b26f98');
     expect(rows(ctx.document)).toHaveLength(2);

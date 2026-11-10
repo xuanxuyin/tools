@@ -34,8 +34,8 @@ const box = (x0: number, y0: number, x1: number, y1: number): string =>
 
 describe('buildColoringIdMap', () => {
   it('maps pixel centers inside each ring to ring index+1', () => {
-    const { ids, bgRing } = buildColoringIdMap([box(10, 10, 90, 90), box(40, 40, 60, 60)], 100, 100);
-    expect(bgRing).toBe(-1);
+    const { ids, bgRings } = buildColoringIdMap([box(10, 10, 90, 90), box(40, 40, 60, 60)], 100, 100);
+    expect(bgRings).toEqual([]);
     expect(ids[55 * 100 + 50]).toBe(2); // inside the detail ring
     expect(ids[20 * 100 + 20]).toBe(1); // inside the base ring only
     expect(ids[5 * 100 + 5]).toBe(0); // outside everything: untappable paper
@@ -63,14 +63,33 @@ describe('buildColoringIdMap', () => {
   });
 
   it('whole-canvas rings become the untappable background', () => {
-    const { ids, bgRing } = buildColoringIdMap([box(0, 0, 100, 100), box(20, 20, 40, 40)], 100, 100);
-    expect(bgRing).toBe(0);
+    const { ids, bgRings } = buildColoringIdMap([box(0, 0, 100, 100), box(20, 20, 40, 40)], 100, 100);
+    expect(bgRings).toEqual([0]);
     expect(ids[10 * 100 + 10]).toBe(0); // bg ring contributes no id pixels
     expect(ids[30 * 100 + 30]).toBe(2); // later ring unaffected
     // the fillable count excludes the paper ring — the number both the
     // catalog (SSR) and the island (completion) must agree on
     expect(fillableCount([box(0, 0, 100, 100), box(20, 20, 40, 40)], 100, 100)).toBe(1);
     expect(fillableCount([box(10, 10, 90, 90), box(40, 40, 60, 60)], 100, 100)).toBe(2);
+  });
+
+  it('pipeline rc=0 marks background rings the geometry test would miss', () => {
+    // the mandala-01 incident (user report): the white webbing between
+    // motifs fragments around a bottom strip, so its outer contour never
+    // spans the whole canvas — the geometric test kept it tappable and one
+    // stray tap flooded 30% of the page. The pipeline already knew: rc=0.
+    const specs = [box(10, 10, 90, 90), box(40, 40, 60, 60)];
+    const rc = [0, 1]; // ring 0 is background though NOT canvas-spanning
+    const { ids, bgRings } = buildColoringIdMap(specs, 100, 100, { rc });
+    expect(bgRings).toEqual([0]);
+    expect(ids[20 * 100 + 20]).toBe(0); // webbing: untappable paper now
+    expect(ids[55 * 100 + 50]).toBe(2); // the real region still fills
+    expect(fillableCount(specs, 100, 100, rc)).toBe(1);
+    // rc wins over geometry in BOTH directions: a canvas-spanning ring with
+    // rc=1 stays a regular region
+    const { bgRings: geo } = buildColoringIdMap([box(0, 0, 100, 100)], 100, 100, { rc: [1] });
+    expect(geo).toEqual([]);
+    expect(fillableCount([box(0, 0, 100, 100)], 100, 100, [1])).toBe(1);
   });
 
   it('even-odd semantics: a self-intersecting bowtie leaves the waist empty', () => {
@@ -103,7 +122,7 @@ describe('buildColoringIdMap', () => {
     // upgrade to the detail ring via the fixpoint pass.
     const specs = [box(10, 10, 90, 90), box(40, 40, 60, 60)];
     const mask = dilateOutline(specs[1]!, 3, 100, 100);
-    const { ids } = buildColoringIdMap(specs, 100, 100, mask);
+    const { ids } = buildColoringIdMap(specs, 100, 100, { inkMask: mask });
     expect(ids[50 * 100 + 37]).toBe(2); // 3px left of the detail edge
     expect(ids[50 * 100 + 63]).toBe(2); // 3px right
     expect(ids[37 * 100 + 50]).toBe(2); // 3px above
@@ -116,7 +135,7 @@ describe('buildColoringIdMap', () => {
     const specs = [box(10, 10, 90, 90)];
     const mask = new Uint8Array(100 * 100);
     mask[5 * 100 + 5] = 1; // a stroke on open paper, far from any ring
-    const { ids } = buildColoringIdMap(specs, 100, 100, mask);
+    const { ids } = buildColoringIdMap(specs, 100, 100, { inkMask: mask });
     expect(ids[5 * 100 + 5]).toBe(0); // no fall-through to the base ring
   });
 
@@ -125,7 +144,7 @@ describe('buildColoringIdMap', () => {
     // must not leak detail ownership across it
     const specs = [box(10, 10, 90, 90), box(40, 40, 60, 60)];
     const mask = dilateOutline(specs[0]!, 3, 100, 100);
-    const { ids } = buildColoringIdMap(specs, 100, 100, mask);
+    const { ids } = buildColoringIdMap(specs, 100, 100, { inkMask: mask });
     expect(ids[10 * 100 + 50]).toBe(1); // base outline band → base ring
     expect(ids[7 * 100 + 50]).toBe(1); // 3px outside the base edge: ink, owned by base
     expect(ids[3 * 100 + 3]).toBe(0); // far paper outside the mask stays paper
@@ -240,7 +259,7 @@ describe('dk019-bee incident regression (real payload when present)', () => {
       const band = dilateOutline(p.r[eyeRing]!, 3, p.w, p.h);
       for (let i = 0; i < band.length; i++) if (band[i]) mask[i] = 1;
     }
-    const { ids } = buildColoringIdMap(p.r, p.w, p.h, mask);
+    const { ids } = buildColoringIdMap(p.r, p.w, p.h, { inkMask: mask });
     for (const eyeRing of eyes) {
       const pts = subpathsOf(p.r[eyeRing]!).flat();
       for (let k = 0; k < pts.length; k++) {
