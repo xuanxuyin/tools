@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import { ZODIAC } from '../../data/zodiac';
+import ZodiacMark from '../../components/ZodiacMark.astro';
+---
+<Base
+  title="Daily Fortune Horoscope — Today's Fortune for Every Zodiac Sign | LuckyShake"
+  description="One hand-written fortune a day, shared by everyone — and read through your sign's temperament. Pick your zodiac sign for today's fortune, lucky numbers, and one small step."
+>
+  <section class="section">
+    <div class="kicker">Daily fortune, by sign</div>
+    <h1>Today’s fortune, through your sign</h1>
+    <p class="tool-sub" style="margin:0 auto 1.4rem">
+      Everyone who visits today draws the same fortune — but an Aries and a Capricorn will use it
+      completely differently. Pick your sign for today’s full reading and how it lands on you.
+    </p>
+    <div class="scene-list">
+      {ZODIAC.map((z) => (
+        <a class="scene" href={`/horoscope/${z.slug}/`}>
+          <span class="glyph"><ZodiacMark slug={z.slug} name={z.name} /></span>
+          <p>
+            <b>{z.name}</b><br />
+            <span class="muted">{z.dates}</span>
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

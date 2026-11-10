@@ -1,0 +1,240 @@
+---
+/**
+ * ZodiacMark — hand-drawn constellation marks for the 12 western zodiac signs.
+ * Each mark is the sign's real asterism (approximate star positions and
+ * connecting lines) rendered as gold stars on a deep-indigo night tile.
+ * Inline SVG, zero external assets, no license dependencies.
+ * 👤 2026-11-08: replaces the bare unicode glyphs (♈…) the user flagged ugly.
+ */
+interface Props {
+  slug: string;
+  name: string;
+  size?: number;
+}
+const { slug, name, size = 42 } = Astro.props;
+
+type Star = { x: number; y: number; r?: number; bright?: boolean };
+type Pattern = { stars: Star[]; edges: [number, number][] };
+
+const PATTERNS: Record<string, Pattern> = {
+  // The Ram: Hamal arc
+  aries: {
+    stars: [
+      { x: 24, y: 72 },
+      { x: 46, y: 56 },
+      { x: 74, y: 40, r: 3, bright: true },
+      { x: 90, y: 32, r: 1.7 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3]],
+  },
+  // The Bull: Hyades V with both horn tips (El Nath, Aldebaran, Zeta)
+  taurus: {
+    stars: [
+      { x: 20, y: 24, r: 2.6 },
+      { x: 44, y: 58 },
+      { x: 62, y: 52, r: 3, bright: true },
+      { x: 82, y: 20, r: 2.4 },
+      { x: 52, y: 68 },
+      { x: 40, y: 74 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [1, 4], [4, 5]],
+  },
+  // The Twins: two wavy chains (Castor & Pollux heads)
+  gemini: {
+    stars: [
+      { x: 34, y: 14, r: 2.8, bright: true },
+      { x: 42, y: 28 },
+      { x: 36, y: 44 },
+      { x: 46, y: 60 },
+      { x: 40, y: 76 },
+      { x: 48, y: 90, r: 1.8 },
+      { x: 62, y: 16, r: 2.8, bright: true },
+      { x: 70, y: 30 },
+      { x: 64, y: 46 },
+      { x: 74, y: 62 },
+      { x: 68, y: 78 },
+      { x: 76, y: 90, r: 1.8 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11]],
+  },
+  // The Crab: inverted Y (Tegmine, the two Asellus, Iota, Acubens)
+  cancer: {
+    stars: [
+      { x: 44, y: 78 },
+      { x: 56, y: 42, r: 2.6 },
+      { x: 46, y: 26, r: 2.6 },
+      { x: 22, y: 84, r: 1.8 },
+      { x: 76, y: 66, r: 2.2 },
+    ],
+    edges: [[0, 1], [1, 2], [0, 3], [1, 4]],
+  },
+  // The Lion: the sickle (backwards question mark) + rear triangle to Denebola
+  leo: {
+    stars: [
+      { x: 30, y: 72, r: 3.1, bright: true },
+      { x: 20, y: 58 },
+      { x: 26, y: 40 },
+      { x: 36, y: 28 },
+      { x: 44, y: 16, r: 1.8 },
+      { x: 58, y: 12, r: 2.2 },
+      { x: 62, y: 42 },
+      { x: 86, y: 34, r: 2.6 },
+      { x: 58, y: 58 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [2, 6], [6, 7], [6, 8], [8, 0]],
+  },
+  // The Maiden: sprawling Y anchored by Spica
+  virgo: {
+    stars: [
+      { x: 40, y: 80, r: 3.1, bright: true },
+      { x: 52, y: 50 },
+      { x: 66, y: 42 },
+      { x: 86, y: 32, r: 2.2 },
+      { x: 56, y: 26 },
+      { x: 32, y: 20 },
+      { x: 24, y: 52 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [1, 4], [4, 5], [5, 6], [6, 1]],
+  },
+  // The Scales: the quadrilateral with α, β and γ above it
+  libra: {
+    stars: [
+      { x: 26, y: 30, r: 2.6 },
+      { x: 52, y: 18, r: 2.6 },
+      { x: 74, y: 48, r: 2.4 },
+      { x: 34, y: 64 },
+      { x: 60, y: 66 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 4], [4, 3], [3, 0]],
+  },
+  // The Scorpion: head trio, red Antares, and the long curling tail to the stinger
+  scorpius: {
+    stars: [
+      { x: 22, y: 16, r: 2.2 },
+      { x: 34, y: 12, r: 2.2 },
+      { x: 46, y: 18, r: 2.4 },
+      { x: 44, y: 40, r: 3.1, bright: true },
+      { x: 54, y: 54 },
+      { x: 62, y: 64 },
+      { x: 58, y: 74 },
+      { x: 50, y: 84 },
+      { x: 44, y: 90, r: 1.8 },
+      { x: 58, y: 92, r: 1.8 },
+      { x: 68, y: 86 },
+      { x: 72, y: 76 },
+      { x: 64, y: 72, r: 2.4 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 12]],
+  },
+  // The Archer: the Teapot (spout γ, lid σ–φ, handle ζ–τ)
+  sagittarius: {
+    stars: [
+      { x: 20, y: 56, r: 2.4 },
+      { x: 38, y: 66 },
+      { x: 56, y: 64 },
+      { x: 64, y: 50, r: 2.6 },
+      { x: 74, y: 62 },
+      { x: 54, y: 40 },
+      { x: 38, y: 42 },
+      { x: 36, y: 52 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 1], [3, 5], [5, 6], [6, 7], [7, 1], [7, 0]],
+  },
+  // The Sea-Goat: the wide loop (α–β head, belly down to Deneb Algedi)
+  capricorn: {
+    stars: [
+      { x: 14, y: 38, r: 2.6 },
+      { x: 22, y: 24, r: 2.4 },
+      { x: 38, y: 26 },
+      { x: 56, y: 40 },
+      { x: 70, y: 54 },
+      { x: 64, y: 70 },
+      { x: 52, y: 76, r: 2.8, bright: true },
+      { x: 42, y: 70 },
+      { x: 28, y: 62 },
+      { x: 18, y: 50 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 0]],
+  },
+  // The Water-Bearer: the jar (β–α–γ–ζ–η) with the spilled stream beneath
+  aquarius: {
+    stars: [
+      { x: 44, y: 20, r: 2.6 },
+      { x: 28, y: 32, r: 2.9, bright: true },
+      { x: 26, y: 46 },
+      { x: 40, y: 62 },
+      { x: 52, y: 76 },
+      { x: 34, y: 88, r: 1.2 },
+      { x: 44, y: 94, r: 1.2 },
+      { x: 54, y: 88, r: 1.2 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4]],
+  },
+  // The Fishes: the western circlet, the ribbon to Alrescha, the northern fish
+  pisces: {
+    stars: [
+      { x: 24, y: 63, r: 1.8 },
+      { x: 33, y: 69, r: 1.8 },
+      { x: 34, y: 79, r: 1.8 },
+      { x: 26, y: 85, r: 1.8 },
+      { x: 16, y: 80, r: 1.8 },
+      { x: 14, y: 70, r: 1.8 },
+      { x: 48, y: 52, r: 1.8 },
+      { x: 66, y: 64, r: 2.8, bright: true },
+      { x: 78, y: 42, r: 1.8 },
+      { x: 84, y: 28, r: 2.2 },
+      { x: 92, y: 20, r: 2.2 },
+      { x: 80, y: 18, r: 2.2 },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0], [1, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 9]],
+  },
+};
+
+const p = PATTERNS[slug] ?? PATTERNS.aries;
+// faint distant stars for texture (fixed positions, deterministic)
+const dust = [
+  { x: 12, y: 18, r: 0.9 },
+  { x: 82, y: 12, r: 1.1 },
+  { x: 90, y: 70, r: 0.9 },
+  { x: 14, y: 46, r: 0.8 },
+  { x: 66, y: 10, r: 0.8 },
+  { x: 72, y: 90, r: 1 },
+  { x: 30, y: 38, r: 0.7 },
+  { x: 88, y: 46, r: 0.8 },
+];
+---
+<svg
+  class="zmark"
+  width={size}
+  height={size}
+  viewBox="0 0 100 100"
+  role="img"
+  aria-label={`${name} constellation`}
+>
+  <rect x="0" y="0" width="100" height="100" rx="16" fill="#241f3d" />
+  {dust.map((d) => (
+    <circle cx={d.x} cy={d.y} r={d.r} fill="#cfc8e0" opacity="0.3" />
+  ))}
+  {p.edges.map(([a, b]) => {
+    const A = p.stars[a]!;
+    const B = p.stars[b]!;
+    return (
+      <line
+        x1={A.x}
+        y1={A.y}
+        x2={B.x}
+        y2={B.y}
+        stroke="#d4a017"
+        stroke-opacity="0.45"
+        stroke-width="1.6"
+        stroke-linecap="round"
+      />
+    );
+  })}
+  {p.stars.map((s) => (
+    <>
+      {s.bright && <circle cx={s.x} cy={s.y} r="6.5" fill="#f2c14e" opacity="0.22" />}
+      <circle cx={s.x} cy={s.y} r={s.r ?? 2.2} fill="#f2c14e" />
+    </>
+  ))}
+</svg>

@@ -1,0 +1,133 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+---
+<Base
+  lang="zh"
+  title="抽签 — 摇签筒，抽一支手写签 | LuckyShake（内部审阅版）"
+  description="心里想着你的问题，摇一摇签筒，让一支签挑中你——每支签都是手写的，附感情、财运、事业三路解读和你的幸运数字。"
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>抽签</h1>
+      <p class="tool-sub">
+        把问题放在心里——先不用打字。摇一摇签筒，看哪支签带着号码跳出来，
+        再告诉签筒你问的是什么事。
+      </p>
+      <div class="stage-visual">
+        <div class="cup-wrap" data-cup>
+          <!-- 3D 签筒（three.js）：待机静止不动，摇时带角度晃动，
+               一支签被甩出筒外、掉在地上翻开号码牌。WebGL 起不来时显示抠图海报兜底 -->
+          <div class="jar3d" data-jar3d>
+            <img
+              class="cup-photo jar-poster"
+              src="/img/fortune-jar.webp"
+              alt="红金庙宇签筒，五支竹签扇形插在筒上"
+              width="420"
+              height="296"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+      <button class="btn" data-shake>摇一摇签筒</button>
+      <p class="hint">签筒里每支都是手写签 · 免费无限次 · 无需注册</p>
+    </div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">怎么玩</div>
+    <h2>三步，一个答案</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · 默念</div><p>想一个真实的问题——你此刻真的卡住的那个决定——先放在心里，别急着说出来。"该接这份工作吗"比"人生是什么"好用。</p></div>
+      <div class="step"><div class="n">2 · 摇</div><p>签筒哗一响，一支签被甩出筒外、掉在地上——号码、签名都摆在眼前。签筒从头到尾不知道你的问题——这正是仪式的重点：它替你打断原地打圈的死循环。</p></div>
+      <div class="step"><div class="n">3 · 点题</div><p>现在说出你问的是哪件事：感情、财运、事业——或者自己写一句。签只答你真正问的那件事，再给你一件具体可做的下一步。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">什么时候抽</div>
+    <h2>最适合抽一支的时刻</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph">💼</span><p><b>offer 摆在桌上。</b>接、砍价、还是走人？签不会替你决定——但它会让你看清，你其实早就决定了哪一半。</p></div>
+      <div class="scene"><span class="glyph">💬</span><p><b>那条改了八遍的消息。</b>发还是不发？抽一支，然后注意你心里是在盼"吉签"还是在找"放手许可"。</p></div>
+      <div class="scene"><span class="glyph">💸</span><p><b>惦记好几天的大额消费。</b>财运判词给你一个"我多想要"之外的角度。</p></div>
+      <div class="scene"><span class="glyph">🧭</span><p><b>安静的岔路口。</b>没什么危机，就是两条路都不错。随机输入最诚实的时刻，恰恰是你自己的分析已经疲掉的时刻。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>抽签 FAQ</h2>
+    <Faq items={[
+      { q: '抽签结果是随机的吗？', a: '是——你抽到哪支签是纯随机。不随机的是文字本身：每支签都在本站手写、编辑过，判词分别对准感情、财运、事业三种处境。' },
+      { q: '为什么抽完才让我选题？', a: '仪式本来就是这么走的：摇签的时候问题只放在你心里——签不该提前知道它。等签带着号码跳出来，你才说出问的是什么，签就答那一面。自己写的问题也不用担心对不上：问感情的事自动看感情判词，问钱的事看财运判词，问工作的事看事业判词，都不沾边的才给整体签文。一事一签：答完即锁定——想问别的，再摇一次开新签。' },
+      { q: '这些签是哪来的？', a: '改编自一个老得多的传统：庙里抽签，每支编号的签配签诗、典故和指引。我们把这个传统重写成贴合现代生活的版本——没有关于收成的谜语，只有把典故留下的、说人话的指引。' },
+      { q: '能替别人问吗？', a: '可以，但最有力的问题永远是你自己的下一步。"我该回他消息吗"比"他想我吗"好用——前者给你一个动作，后者只给你一个心情。' },
+      { q: '三个签级是什么意思？', a: '每支签分为吉签（一路绿灯的能量）、提点（务实、稳着走的指引）、温和提醒（慢下来、护住要紧的东西）。我们不写凶签——扎心的真话可以有，让人绝望的一条不写。' },
+      { q: '同一支签每次意思都一样吗？', a: '文字是固定的，解读是你的。周二为工作抽的 01 签，和周五为感情抽的 01 签，落在心上是不一样的地方——那道缝就是你自己的判断，也是全站最可靠的"神谕"。' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { drawSign, liveRand } from '../../lib/engine';
+  import { trackDraw } from '../../lib/track';
+  import { drawnBanner, renderFocusedReading } from '../../lib/reading';
+  import { focusPanelHTML, wireFocusPanel } from '../../lib/focusFlow';
+  import { focusForQuestion } from '../../lib/classify';
+  import type { Jar3D } from '../../lib/jar3d';
+
+  const cup = document.querySelector<HTMLElement>('[data-cup]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-shake]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+  const jarHost = document.querySelector<HTMLElement>('[data-jar3d]');
+  // 3D 签筒懒加载——three.js 不阻塞页面
+  let jar: Jar3D | null = null;
+  if (jarHost) {
+    void import('../../lib/jar3d').then(({ createJar3D }) => {
+      const made = createJar3D(jarHost);
+      if (made) {
+        jar = made;
+        jarHost.querySelector('.jar-poster')?.remove();
+      }
+    });
+  }
+  if (cup && btn && outcome) {
+    const shake = () => {
+      btn.disabled = true;
+      outcome.innerHTML = '';
+      jar?.reset();
+      jar?.startShake();
+      // 第一段（900ms）：签筒停——随机一支签带着号码弹起，
+      // 签号和签名的展示与动画同时落地
+      window.setTimeout(() => {
+        const sign = drawSign(liveRand());
+        jar?.popStick(`第 ${String(sign.id).padStart(2, '0')} 签`, sign.nameZh);
+        outcome.innerHTML = drawnBanner(sign, 'zh');
+        trackDraw('fortune-stick', sign.id);
+        // 第二段（950ms）：签立住——此时用户才点明问的是哪一件事，
+        // 签只答那一面
+        window.setTimeout(() => {
+          outcome.insertAdjacentHTML('beforeend', focusPanelHTML('zh'));
+          wireFocusPanel(outcome, (focus, own) => {
+            const answer = outcome.querySelector<HTMLElement>('[data-answer]');
+            if (!answer) return;
+            // 自提问题路由到最相近的一面（感情/事业/财运）
+            const lens = focus === 'own' ? focusForQuestion(own) : focus;
+            answer.innerHTML = renderFocusedReading(sign, lens, undefined, {
+              lang: 'zh',
+              echo: own,
+              note: '签筒不会往心里去——想好了，再摇一次。',
+            });
+            answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+          outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          btn.disabled = false;
+        }, 950);
+      }, 900);
+    };
+    btn.addEventListener('click', shake);
+  }
+</script>
