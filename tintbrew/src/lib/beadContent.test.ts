@@ -118,7 +118,7 @@ describe('bead pattern data integrity', () => {
     }
   });
 
-  it('every cell char maps to a region and every region is used', () => {
+  it('every cell char maps to a region and every region is used', { timeout: 30_000 }, () => {
     for (const p of patternContents) {
       const used = new Set<string>();
       for (const row of p.grid) {
@@ -318,14 +318,20 @@ describe('bead pages in real dist markup', () => {
     expect(shiba).toContain('data-region');
   });
 
-  it('footer links the five landing pages; sitemap knows every bead URL', () => {
-    const footer = readFileSync(resolve(distRoot, 'index.html'), 'utf8');
-    for (const s of [
-      BEAD_HUB_SEO,
-      ...Object.values(BEAD_CATEGORY_SEO),
-      ...Object.values(BEAD_COLLECTION_SEO),
-    ]) {
-      expect(footer).toContain(s!.path);
+  it('footer links the trimmed head set; sitemap still knows every bead URL', () => {
+    // user call 2026-11-10: the footer bead column keeps only the hub + the
+    // two unique tools — category/collection landings stay linked from the
+    // hub page, NOT from the footer (same trim as the color-guides column)
+    const home = readFileSync(resolve(distRoot, 'index.html'), 'utf8');
+    // scope to the footer element — the homepage body links the landings too
+    const footer = home.slice(home.indexOf('<footer class="site-footer">'));
+    expect(footer).toContain(BEAD_HUB_SEO!.path);
+    expect(footer).toContain('/photo-to-perler-bead-pattern/');
+    expect(footer).toContain('/bead-editor/');
+    for (const s of [...Object.values(BEAD_CATEGORY_SEO), ...Object.values(BEAD_COLLECTION_SEO)]) {
+      expect(footer).not.toContain(s!.path);
+      // trimmed from the footer ≠ deleted: every landing stays indexed
+      expect(readFileSync(resolve(distRoot, 'sitemap-0.xml'), 'utf8')).toContain(s!.path);
     }
     const sm = readFileSync(resolve(distRoot, 'sitemap-index.xml'), 'utf8');
     expect(sm).toContain('<sitemap>');

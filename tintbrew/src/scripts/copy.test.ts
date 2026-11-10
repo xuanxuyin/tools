@@ -1,7 +1,7 @@
 /**
  * Copy interaction tests against real SSR markup from `astro build`:
  * static [data-copy] buttons, [data-copy-link] share buttons (flagship pages
- * only — syncUrl gate), and the "Copied ✓" feedback.
+ * only — syncUrl gate), and the "Copied" label flash (icon pair survives).
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -91,11 +91,16 @@ describe('copy handler (real SSR markup)', () => {
     await flush();
     expect(copied()).toBe(expected);
     expect(btn.classList.contains('copied')).toBe(true);
-    expect(btn.textContent).toBe('Copied ✓');
+    // 2026-11-10: the label is now a dedicated span between the copy/check
+    // icons — feedback swaps only that span, and the checkmark glyph moved
+    // to the SVG pair
+    const label = btn.querySelector('.copy-label')!;
+    expect(label.textContent).toBe('Copied');
+    expect(btn.querySelectorAll('.copy-ic').length).toBe(2);
     const [revert, delay] = setTimeoutSpy.mock.calls.at(-1)! as [(...a: unknown[]) => unknown, number];
     expect(delay).toBe(1500);
     revert();
-    expect(btn.textContent).not.toBe('Copied ✓');
+    expect(label.textContent).not.toBe('Copied');
     expect(btn.classList.contains('copied')).toBe(false);
   });
 });

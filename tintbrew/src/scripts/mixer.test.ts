@@ -197,3 +197,48 @@ describe('mixer island URL restore', () => {
     expect(rows(ctx.document)).toHaveLength(2);
   });
 });
+
+/**
+ * Regression (2026-11-10): the blend-path strip rendered as an empty white
+ * bar on every live page. The island rebuilds `[data-steps]` spans via
+ * innerHTML, and injected nodes carry no data-astro-cid-* — a SCOPED
+ * `.steps-strip > span { flex: 1 }` matched only the SSR first paint, so
+ * after hydration every span collapsed to width:0. Two-sided pin:
+ *   1. built CSS must style the spans WITHOUT a cid constraint (:global)
+ *   2. the island must leave spans with real inline backgrounds in place
+ */
+describe('mixer steps strip — hydration collapse regression', () => {
+  it('built CSS flexes step spans without a scoped-cid requirement', async () => {
+    const html = readFileSync(htmlPath, 'utf8');
+    // Astro inlines this page's CSS in <style> tags (external bundles would
+    // match the same scan if it ever stops inlining)
+    const inline = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]!).join('\n');
+    const linked = [
+      ...html.matchAll(/<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g),
+    ].map((m) => m[1]!);
+    let css = inline;
+    for (const href of linked) {
+      const file = resolve(htmlPath, '../../../dist' + href);
+      css += '\n' + readFileSync(file, 'utf8');
+    }
+    // every .steps-strip rule that targets child spans must do so without
+    // pinning data-astro-cid-* on the SPAN side (the container may keep its cid)
+    const spanRules = css.match(/[^{}]*\.steps-strip[^{}]*>[^{}]*span[^{}]*\{[^}]*\}/g) ?? [];
+    expect(spanRules.length).toBeGreaterThan(0);
+    for (const rule of spanRules) {
+      const selector = rule.slice(0, rule.indexOf('{'));
+      const spanSide = selector.split('>').at(-1)!;
+      expect(spanSide).not.toMatch(/data-astro-cid/);
+      expect(rule).toMatch(/flex:\s*1/);
+    }
+  });
+
+  it('island recompute leaves every step span with an inline background', async () => {
+    const ctx = await loadPage('?colors=%23ff0000,%230000ff');
+    const spans = [...ctx.document.querySelectorAll('[data-steps] > span')];
+    expect(spans.length).toBeGreaterThanOrEqual(2);
+    for (const span of spans) {
+      expect(span.getAttribute('style')).toMatch(/^background:#[0-9a-f]{6}$/i);
+    }
+  });
+});

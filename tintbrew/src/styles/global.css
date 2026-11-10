@@ -141,9 +141,12 @@ a:hover {
 /* Content sections sit in framed cards on the warm page background — each
    region of a page (how-it-works, FAQ, directory group) gets its own box so
    the structure reads at a glance (user call, 2026-10-29: "每一块内容加一个
-   底框，不然很乱"). Same treatment the photo page's guide cards use. */
+   底框，不然很乱"). Same treatment the photo page's guide cards use.
+   2026-11-10: centered in the container — the 46rem column hugging the left
+   edge left the right ~40% of every content page as dead cream. */
 .prose {
   max-width: 46rem;
+  margin-inline: auto;
   padding: var(--sp-5) var(--sp-5) var(--sp-6);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -165,6 +168,8 @@ a:hover {
   background: var(--surface);
   padding: var(--sp-5) var(--sp-5) var(--sp-6);
   box-shadow: var(--shadow-xs);
+  margin-inline: auto;
+  max-width: 62rem;
 }
 
 .section-card > h2:first-child {
@@ -371,6 +376,24 @@ code {
   color: var(--accent);
 }
 
+/* CopyButton icon pair (official Lucide copy/check, vendored in lib/icons.ts):
+   copy shows by default, check takes over while .copied is set. Icons live in
+   .copy-ic spans OUTSIDE the [data-i18n] label so i18n apply() can't wipe
+   them; copy.ts swaps only the .copy-label text. */
+.btn-copy .copy-ic {
+  display: inline-flex;
+  flex: none;
+}
+.btn-copy .copy-ic-ok {
+  display: none;
+}
+.btn-copy.copied .copy-ic:not(.copy-ic-ok) {
+  display: none;
+}
+.btn-copy.copied .copy-ic-ok {
+  display: inline-flex;
+}
+
 /* --------------------------------------------------------------------------
    Range sliders (used by the mixer)
    -------------------------------------------------------------------------- */
@@ -442,19 +465,24 @@ input[type='range']::-moz-range-thumb {
   display: none;
 }
 
+/* Disclosure marker: official Lucide chevron-down as an inline data URI
+   (same ISC path data as lib/icons.ts — zero requests, no font). Rotates
+   180° while open instead of swapping +/− glyphs. */
 .faq summary::after {
-  content: '+';
+  content: '';
   position: absolute;
   right: 1rem;
   top: 50%;
+  width: 1.05rem;
+  height: 1.05rem;
   transform: translateY(-50%);
-  font-size: 1.2rem;
-  color: var(--accent);
-  font-weight: 400;
+  transition: transform 0.18s ease;
+  background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c3aed' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    no-repeat center / contain;
 }
 
 .faq details[open] summary::after {
-  content: '\2212';
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .faq details > div {
@@ -563,6 +591,20 @@ input[type='range']::-moz-range-thumb {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: #a8a29e;
+}
+
+/* Column heading icon (official Lucide set) — a soft violet mark that makes
+   the five columns scannable at a glance. Sits OUTSIDE the [data-i18n] h3
+   so the language swap can't wipe it. */
+.foot-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.foot-ic {
+  display: inline-flex;
+  color: #c4b5fd;
 }
 
 .footer-grid ul {

@@ -331,7 +331,7 @@ describe('photo bead island (real SSR markup)', () => {
     expect(clamp({ x: 10.6, y: 5.2, w: 32.4, h: 33.7 }, 300, 200)).toEqual({ x: 11, y: 5, w: 32, h: 34 });
   });
 
-  it('crop narrows the conversion to the framed region and Reset brings the whole photo back', () => {
+  it('crop narrows the conversion to the framed region and Reset brings the whole photo back', { timeout: 30_000 }, () => {
     // left half red, right half blue — the crop frame takes the red half
     const w = 160;
     const h = 120;

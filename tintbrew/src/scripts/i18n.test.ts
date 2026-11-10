@@ -598,17 +598,28 @@ describe('cross-language sweep over dist pages', () => {
     const { document, mod } = await loadPage('index.html');
     mod.setLang('zh');
     const footer = document.querySelector('.site-footer')!;
-    // color-guides column: 18 guide links take guide.<slug>
-    const guidesCol = footer.querySelector('[data-i18n="foot.guides"]')?.parentElement;
+    // color-guides column: trimmed to the 3 head terms (user call,
+    // 2026-11-10: "列举的太多了，弄两三个用的多就好了") + the hub link.
+    // The h3 lives inside a .foot-head wrapper (icon sibling), so the column
+    // div is two parents up.
+    const guidesCol = footer
+      .querySelector('[data-i18n="foot.guides"]')
+      ?.closest('.foot-head')?.parentElement;
     const guideLinks = [...(guidesCol?.querySelectorAll('a') ?? [])].map((a) => a.textContent);
+    expect(guideLinks).toHaveLength(4);
     expect(guideLinks).toContain('什么颜色能调出棕色');
-    expect(guideLinks).toContain('酒红色配什么颜色好看');
+    expect(guideLinks).toContain('什么颜色能调出紫色');
+    expect(guideLinks).toContain('什么颜色能调出绿色');
+    expect(guideLinks[guideLinks.length - 1]).toBe('全部指南');
     expect(guideLinks.every((t) => /[一-鿿]/.test(t ?? ''))).toBe(true);
-    // beads column: every link (hub, categories, collections, tools) swaps
-    const beadsCol = footer.querySelector('[data-i18n="foot.beads"]')?.parentElement;
+    // beads column: trimmed to the hub + the two unique tools (user call,
+    // 2026-11-10, same trim as the guides column) — every link swaps
+    const beadsCol = footer
+      .querySelector('[data-i18n="foot.beads"]')
+      ?.closest('.foot-head')?.parentElement;
     const beadLinks = [...(beadsCol?.querySelectorAll('a') ?? [])].map((a) => a.textContent);
+    expect(beadLinks).toHaveLength(3);
     expect(beadLinks).toContain('免费拼豆图纸');
-    expect(beadLinks).toContain('可爱拼豆图纸');
     expect(beadLinks.every((t) => /[一-鿿]/.test(t ?? ''))).toBe(true);
   });
 

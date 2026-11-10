@@ -51,6 +51,8 @@ const jsonLd = {
   <section class="hero home-hero">
     <div class="hero-blob blob-a" aria-hidden="true"></div>
     <div class="hero-blob blob-b" aria-hidden="true"></div>
+    <div class="hero-cols">
+    <div class="hero-copy">
     <h1 data-i18n="home.h1">Mix colors, make perler bead patterns.</h1>
     <p class="lead" data-i18n="home.lead">
       Blend colors in a perceptual color space, convert every format, turn a photo into a perler bead
@@ -62,12 +64,55 @@ const jsonLd = {
       <span class="badge" data-i18n="home.badgeNoSignup">No sign-up</span>
       <span class="badge" data-i18n="home.badgeBrowser">Runs in your browser</span>
     </div>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="/color-mixer">
+        <span aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.mixer} /></svg>
+        </span>
+        <span data-i18n="home.ctaMix">Open the color mixer</span>
+      </a>
+      <a class="btn" href="/perler-bead-patterns/">
+        <span aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.patterns} /></svg>
+        </span>
+        <span data-i18n="home.ctaBeads">Browse bead patterns</span>
+      </a>
+    </div>
+    </div>
+    {/* hero art — every pixel is real engine output (blend path + computed
+        mix answers), the Coolors pattern of "the product IS the visual".
+        Entirely aria-hidden decoration; no text nodes, no data-i18n. */}
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-palette">
+        {blendPath.map((s) => (
+          <span style={`background:${s}`}></span>
+        ))}
+      </div>
+      <div class="art-chips">
+        {['red-blue', 'blue-yellow', 'red-yellow', 'red-green'].map((slug) => {
+          const chip = mixChip.get(slug);
+          if (!chip) return null;
+          return (
+            <span
+              class="art-chip"
+              style={`--a:${chip.a};--b:${chip.b};--r:${chip.r}`}
+            />
+          );
+        })}
+      </div>
+      <div class="art-hexes">
+        <span>#ff0000</span>
+        <span>{blendPath[4]}</span>
+        <span>{blendPath.at(-1)}</span>
+      </div>
+    </div>
+    </div>
   </section>
 
   <ToolNav />
 
   <section aria-label="Color tools" class="tool-grid">
-    <a class="tool-card" href="/color-mixer">
+    <a class="tool-card" href="/color-mixer" style="--tint:#eef4ff;--tint-ink:#1d4ed8">
       <span class="tool-icon" aria-hidden="true">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.mixer} /></svg>
       </span>
@@ -85,7 +130,7 @@ const jsonLd = {
       </div>
       <span class="card-cta" data-i18n="home.mixCta">Mix colors</span>
     </a>
-    <a class="tool-card" href="/color-converter">
+    <a class="tool-card" href="/color-converter" style="--tint:#f3efff;--tint-ink:#6d28d9">
       <span class="tool-icon" aria-hidden="true">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.converter} /></svg>
       </span>
@@ -106,7 +151,7 @@ const jsonLd = {
       </div>
       <span class="card-cta" data-i18n="home.convCta">Convert a color</span>
     </a>
-    <a class="tool-card" href="/photo-to-perler-bead-pattern/">
+    <a class="tool-card" href="/photo-to-perler-bead-pattern/" style="--tint:#fdeef6;--tint-ink:#db2777">
       <span class="tool-icon" aria-hidden="true">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.photo} /></svg>
       </span>
@@ -122,7 +167,7 @@ const jsonLd = {
       </div>
       <span class="card-cta" data-i18n="home.photoCta">Convert a photo</span>
     </a>
-    <a class="tool-card" href="/coloring/">
+    <a class="tool-card" href="/coloring/" style="--tint:#eaf7ee;--tint-ink:#047857">
       <span class="tool-icon" aria-hidden="true">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.coloring} /></svg>
       </span>
@@ -266,14 +311,6 @@ const jsonLd = {
     position: relative;
   }
 
-  .home-hero h1 {
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-  }
-
   .hero-blob {
     position: absolute;
     border-radius: 50%;
@@ -298,11 +335,38 @@ const jsonLd = {
     background: radial-gradient(circle, rgb(219 39 119 / 0.22), transparent 70%);
   }
 
-  .home-hero > h1,
-  .home-hero > p,
-  .home-hero > .hero-badges {
+  .home-hero > .hero-cols,
+  .home-hero > .hero-cols > .hero-copy > * {
     position: relative;
     z-index: 1;
+  }
+
+  /* Two-column hero (2026-11-10 template pass, Coolors/perler teardown):
+     copy on the left, a real-engine palette collage on the right. The old
+     layout left the entire right half of the viewport empty. */
+  .hero-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--sp-6);
+    align-items: center;
+  }
+  @media (max-width: 56rem) {
+    .hero-cols {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .hero-copy {
+    min-width: 0;
+  }
+
+  /* near-black headline (perler/coolors pattern) instead of the old gradient
+     fill — stronger contrast, reads as a tool not a toy; the gradient stays
+     in the CTA, icons and the art panel. Must also reset -webkit-text-fill-
+     color (it outranks `color` in Blink and the old rule sets it transparent). */
+  .home-hero h1 {
+    color: var(--text);
+    -webkit-text-fill-color: currentColor;
   }
 
   .hero-badges {
@@ -310,6 +374,91 @@ const jsonLd = {
     gap: var(--sp-2);
     flex-wrap: wrap;
     margin-top: var(--sp-4);
+  }
+
+  /* primary + secondary CTA row under the badges */
+  .hero-cta {
+    display: flex;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+    margin-top: var(--sp-4);
+  }
+  .hero-cta .btn {
+    padding: 0.55rem 1.2rem;
+  }
+
+  /* --- hero art: engine output as the visual ---------------------------- */
+  .hero-art {
+    display: grid;
+    gap: var(--sp-3);
+    min-width: 0;
+    /* same lift the copy column gets — the decorative blobs are positioned
+       and would otherwise composite over the palette collage */
+    position: relative;
+    z-index: 1;
+  }
+  .art-palette {
+    display: flex;
+    height: 10.5rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+  }
+  .art-palette > span {
+    flex: 1;
+  }
+  .art-chips {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-2);
+  }
+  /* A + B = R chips: input halves ringed by the computed answer (same
+     encoding as the home mix-link tiles, scaled up) */
+  .art-chip {
+    height: 3.4rem;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--a, #ccc) 0 50%, var(--b, #ccc) 50% 100%);
+    box-shadow:
+      0 0 0 2px var(--surface),
+      0 0 0 3.5px var(--r, #999);
+    border: 1px solid rgb(0 0 0 / 0.08);
+  }
+  .art-hexes {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  @media (max-width: 56rem) {
+    .hero-art {
+      max-width: 30rem;
+    }
+  }
+
+  /* --- tool cards: one pastel hue per card (Coolors tool-grid pattern) ---
+     Each card carries --tint / --tint-ink inline; global .tool-card rules
+     keep skeleton + motion, these override only the color surfaces. Scoped
+     so the shared .tool-card on other pages keeps its cream panel look. */
+  .tool-card {
+    background: var(--tint, var(--panel));
+  }
+  .tool-card h2 {
+    color: var(--tint-ink, var(--text));
+  }
+  .tool-card .tool-icon {
+    background: var(--tint-ink, var(--gradient));
+    box-shadow: 0 5px 14px rgb(0 0 0 / 0.18);
+  }
+  .tool-card .card-cta {
+    color: var(--tint-ink, var(--accent));
+  }
+  /* hover keeps the tint (global :hover swaps to --surface — reassert) and
+     deepens the border toward the card's own ink */
+  .tool-card:hover {
+    background: var(--tint, var(--panel));
+    border-color: color-mix(in srgb, var(--tint-ink, #1c1917) 35%, var(--border));
   }
 
   .badge {
@@ -335,14 +484,9 @@ const jsonLd = {
   }
 
   @media print {
-    .home-hero h1 {
-      background: none;
-      color: var(--text);
-      -webkit-text-fill-color: currentColor;
-    }
-
     .hero-blob,
-    .hero-badges {
+    .hero-badges,
+    .hero-art {
       display: none !important;
     }
   }

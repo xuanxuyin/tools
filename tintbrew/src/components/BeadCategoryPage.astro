@@ -108,7 +108,9 @@ const jsonLd = [
           const tag = parseTagline(p.def.tagline);
           return (
             <a class="pattern-card" href={p.url}>
-              <BeadFigure view={p} mode="reference" thumb />
+              <span class="card-thumb">
+                <BeadFigure view={p} mode="reference" thumb />
+              </span>
               <span class="card-name" data-i18n="bs.nameT" data-i18n-args={JSON.stringify({ n: p.def.name })}>
                 {p.def.name}
               </span>
@@ -163,8 +165,8 @@ const jsonLd = [
     margin-top: var(--sp-3);
   }
   .pattern-card {
-    display: grid;
-    gap: 6px;
+    display: flex;
+    flex-direction: column;
     padding: var(--sp-3);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -173,7 +175,27 @@ const jsonLd = [
     background: var(--bg, #fff);
   }
   .pattern-card:hover { border-color: var(--accent, #7c3aed); }
-  .card-name { font-weight: 600; }
-  .card-tag { font-size: 0.8rem; color: var(--ink-soft, #666); line-height: 1.35; }
-  .card-meta { font-size: 0.75rem; color: var(--ink-soft, #999); font-variant-numeric: tabular-nums; }
+  /* 2026-11-10 alignment pass: boards vary in aspect, so the figure lives in
+     a uniform 1:1 frame (gallery-thumb treatment) and the meta row pins to
+     the card foot regardless of tagline length. */
+  .card-thumb {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    background: #f7f5f1;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  .card-thumb :global(.bead-fig),
+  .card-thumb :global(.bead-thumb-img) {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+  }
+  .card-name { font-weight: 600; margin-top: 8px; }
+  .card-tag { font-size: 0.8rem; color: var(--ink-soft, #666); line-height: 1.35; margin-top: 2px; flex: 1; }
+  .card-meta { font-size: 0.75rem; color: var(--ink-soft, #999); font-variant-numeric: tabular-nums; margin-top: 6px; }
 </style>

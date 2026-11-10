@@ -6,6 +6,7 @@ import TintsShades from '../../components/TintsShades.astro';
 import RelatedMixes from '../../components/RelatedMixes.astro';
 import { buildMixContent } from '../../lib/mixContent';
 import { mixes } from '../../data/mixes';
+import { ICONS } from '../../lib/icons';
 import { SITE } from '../../consts';
 
 export function getStaticPaths() {
@@ -66,15 +67,20 @@ const jsonLd = [
     <div class="hero-answer" aria-label="The answer at a glance" data-i18n-aria="a11y.answer">
       <span class="hero-swatches" aria-hidden="true">
         <span style={`background:${c.a.hex}`}></span>
-        <span style={`background:${c.b.hex}`}></span>
         <span class="hero-plus">+</span>
-        <span style={`background:${c.resultHex}`}></span>
+        <span style={`background:${c.b.hex}`}></span>
+        <span class="hero-arrow" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><Fragment set:html={ICONS.arrowRight} /></svg>
+        </span>
+      </span>
+      <span class="ha-result" aria-hidden="true">
+        <span class="ha-chip" style={`background:${c.resultHex}`}></span>
+        <code>{c.resultHex}</code>
       </span>
       <strong
         data-i18n="mix.heroEq"
         data-i18n-args={JSON.stringify({ a: c.a.name, b: c.b.name, result: def.resultName })}
       >{c.a.name} + {c.b.name} = {c.resultName}</strong>
-      <code>{c.resultHex}</code>
     </div>
   </section>
 
@@ -190,13 +196,16 @@ const jsonLd = [
 </BaseLayout>
 
 <style>
+  /* Answer banner (2026-11-10 template pass): inputs + arrow + the computed
+     result as the biggest object in the row — the answer reads in one glance
+     before the equation text. */
   .hero-answer {
     display: flex;
     align-items: center;
     gap: var(--sp-3);
     flex-wrap: wrap;
     margin-top: var(--sp-3);
-    padding: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: color-mix(in oklab, var(--accent) 4%, transparent);
@@ -208,9 +217,9 @@ const jsonLd = [
     gap: 0.4rem;
   }
 
-  .hero-swatches > span {
-    width: 2rem;
-    height: 2rem;
+  .hero-swatches > span:not(.hero-plus):not(.hero-arrow) {
+    width: 2.1rem;
+    height: 2.1rem;
     border-radius: 50%;
     border: 1px solid var(--border);
     display: inline-block;
@@ -222,13 +231,40 @@ const jsonLd = [
     border: 0 !important;
     background: none !important;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .hero-arrow {
+    width: auto !important;
+    height: auto !important;
+    border: 0 !important;
+    background: none !important;
+    color: var(--accent);
+    display: inline-flex;
+    margin-left: 0.2rem;
+  }
+
+  /* the computed answer — oversized chip so the eye lands here first */
+  .ha-result {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .ha-chip {
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgb(0 0 0 / 0.12);
+    box-shadow: var(--shadow-sm);
+    display: inline-block;
   }
 
   .hero-answer code {
     font-family: var(--mono);
-    font-size: 0.95rem;
-    padding: 0.15rem 0.5rem;
+    font-size: 1.02rem;
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     background: var(--bg);

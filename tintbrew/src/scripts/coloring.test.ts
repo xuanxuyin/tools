@@ -116,6 +116,19 @@ describe('coloring dist (shipped surface)', () => {
     expect(xml).toContain('/coloring/thumb/axolotl'.replace('axolotl', 'al008-axolotl') + '.webp');
     expect(xml).toContain('<loc>https://tintbrew.com/coloring/</loc>');
   });
+
+  it('paint island renders fills in even-odd (same rule as the hit-test map)', () => {
+    // 2026-11-10: the id map is even-odd; a nonzero canvas fill would paint
+    // over holes/self-intersections the tap map excludes. Pin the shipped
+    // island bundle to the matching fill rule.
+    const html = readFileSync(resolve(dist, 'coloring/dk019-bee/index.html'), 'utf8');
+    const srcs = [...html.matchAll(/<script[^>]*src="(\/_astro\/[^"]+\.js)"/g)].map((m) => m[1]!);
+    const paintChunk = srcs.find((s) => /_slug_/.test(s));
+    expect(paintChunk).toBeTruthy();
+    const js = readFileSync(resolve(dist, paintChunk!.replace(/^\//, '')), 'utf8');
+    expect(js).toContain('"evenodd"');
+    expect(js).toMatch(/\.fill\([^,)]+,\s*"?evenodd/);
+  });
 });
 
 describe('coloring gallery cards', () => {

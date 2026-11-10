@@ -3,8 +3,9 @@
  *
  * Layers: region fills painted on a canvas, the official line art drawn on
  * top with 'multiply' (white = transparent, ink stays). Hit-testing uses an
- * offscreen ID map: each ring rasterized once as a unique RGB color, so a
- * tap is a single pixel lookup — exact, no point-in-polygon loops.
+ * offscreen ID map built by lib/coloringIdMap.ts (scanline even-odd fill +
+ * ink-line attribution), so a tap is a single pixel lookup — exact, no
+ * point-in-polygon loops, and taps on a region's outline select that region.
  *
  * State: one palette index per ring ('.' = empty, gallery kernel encoding),
  * persisted per slug in localStorage. Every fill re-renders, autosaves, and
@@ -16,6 +17,7 @@ import { t, tArgs } from './i18n';
 import type { UiKey } from '../data/uiStrings';
 import { galleryUuid } from './deviceId';
 import { decodeColors, encodeColors } from '../../functions/api/coloring/_kernel';
+import { buildColoringIdMap } from '../lib/coloringIdMap';
 
 interface Payload {
   w: number;
@@ -202,9 +204,9 @@ class PaintIsland {
     });
   }
 
-  /** Rasterize each ring with an exact scanline fill (pixel-center sampling,
-   *  no canvas antialiasing to blend neighbours into wrong ids) into one
-   *  Uint32Array lookup table; build Path2Ds for draws. */
+  /** Rasterize each ring into the id-map lookup table (pure lib: scanline
+   *  even-odd fill + ink-line attribution, see coloringIdMap.ts); build
+   *  Path2Ds for draws. */
   private prepare(): void {
     sweepLegacyKeys();
     const p = this.payload as Payload;
@@ -212,84 +214,11 @@ class PaintIsland {
     this.canvas.height = p.h;
     this.canvas.hidden = false;
 
-    const ids = new Uint32Array(p.w * p.h); // 0 = "no ring"
-    for (let i = 0; i < p.r.length; i++) {
-      this.ringPaths.push(new Path2D(p.r[i].startsWith('M') ? p.r[i] : this.toPath(p.r[i])));
-      const id = i + 1;
-      // current payloads are SVG paths ("M x,y L... Z" per subpath: outer
-      // contour then holes); legacy payloads are a bare "x,y x,y ..." loop.
-      // Guards mirror seg.mjs parseSpec: a bare trailing "Z" token must be
-      // skipped (it would parse as [0,0] and drag every scanline crossing
-      // to the canvas corner → garbage hit-testing), and junk coords dropped.
-      const toPts = (s: string): [number, number][] => {
-        const pts: [number, number][] = [];
-        for (const tok of s.trim().split(/\s+/)) {
-          const t = tok.replace(/^L/, '').replace(/Z$/, '');
-          if (!t) continue;
-          const c = t.split(',');
-          const x = Number(c[0]);
-          const y = Number(c[1]);
-          if (Number.isFinite(x) && Number.isFinite(y)) pts.push([x, y]);
-        }
-        return pts;
-      };
-      const subpaths: [number, number][][] = p.r[i].startsWith('M')
-        ? p.r[i]
-            .split('M')
-            .filter((s) => s.trim())
-            .map(toPts)
-            .filter((pts) => pts.length >= 3)
-        : [p.r[i].split(' ').map((s) => s.split(',').map(Number)) as [number, number][]];
-      // The page-background ring (outer contour = the whole canvas) spans most
-      // of the page, so one stray tap on any open-curve pocket connected to it
-      // would recolor ~everything at once. It stays pure paper white instead:
-      // not rasterized into the id map (untappable), never filled, and not
-      // counted toward completion below.
-      if (subpaths.length >= 1) {
-        const outer = subpaths[0];
-        let minX = Infinity;
-        let minY = Infinity;
-        let maxX = -Infinity;
-        let maxY = -Infinity;
-        for (const [px, py] of outer) {
-          if (px < minX) minX = px;
-          if (py < minY) minY = py;
-          if (px > maxX) maxX = px;
-          if (py > maxY) maxY = py;
-        }
-        if (minX <= 1 && minY <= 1 && maxX >= p.w - 1 && maxY >= p.h - 1) {
-          this.bgRing = i;
-          continue; // keep ringPaths[i] aligned; just no id pixels
-        }
-      }
-      // crossings per scanline at pixel centers (y + 0.5); even-odd pairs
-      // across ALL subpaths, so a hole flips the span off again
-      const xs: number[] = [];
-      for (let y = 0; y < p.h; y++) {
-        const yc = y + 0.5;
-        xs.length = 0;
-        for (const pts of subpaths) {
-          let prev = pts[pts.length - 1];
-          for (let k = 0; k < pts.length; k++) {
-            const cur = pts[k];
-            const y1 = prev[1];
-            const y2 = cur[1];
-            if ((y1 <= yc && y2 > yc) || (y2 <= yc && y1 > yc)) {
-              xs.push(prev[0] + ((yc - y1) / (y2 - y1)) * (cur[0] - prev[0]));
-            }
-            prev = cur;
-          }
-        }
-        if (xs.length < 2) continue;
-        xs.sort((a, b) => a - b);
-        for (let k = 0; k + 1 < xs.length; k += 2) {
-          const x0 = Math.max(0, Math.ceil(xs[k] - 0.5));
-          const x1 = Math.min(p.w - 1, Math.floor(xs[k + 1] - 0.5));
-          const row = y * p.w;
-          for (let x = x0; x <= x1; x++) ids[row + x] = id;
-        }
-      }
+    for (const spec of p.r) {
+      this.ringPaths.push(new Path2D(spec.startsWith('M') ? spec : this.toPath(spec)));
     }
+    const { ids, bgRing } = buildColoringIdMap(p.r, p.w, p.h);
+    this.bgRing = bgRing;
     this.idData = ids;
     this.idW = p.w;
   }
@@ -380,7 +309,10 @@ class PaintIsland {
       const c = this.colors[i];
       if (c === null) continue;
       ctx.fillStyle = p.pal[c] ?? '#cccccc';
-      ctx.fill(this.ringPaths[i]);
+      // even-odd — the same rule the hit-test id map uses, so the painted
+      // area always matches the tappable area (holes/self-intersections
+      // included; nonzero would paint over them)
+      ctx.fill(this.ringPaths[i], 'evenodd');
     }
     ctx.globalCompositeOperation = 'multiply';
     ctx.drawImage(this.lineArt, 0, 0, p.w, p.h);

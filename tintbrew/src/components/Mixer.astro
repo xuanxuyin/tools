@@ -11,6 +11,7 @@ import {
   rgbToHex,
 } from '../lib/color';
 import CopyButton from './CopyButton.astro';
+import { ICONS } from '../lib/icons';
 
 /**
  * Color Mixer — one component, two contexts:
@@ -135,7 +136,7 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
                 data-i18n-args={JSON.stringify({ n: String(i + 1) })}
                 disabled={colors.length <= 2}
               >
-                ✕
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICONS.close} />
               </button>
             </div>
           ))
@@ -148,8 +149,11 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
         data-i18n-args={JSON.stringify({ r: ratios.join(' : '), p: pcts.join(' / ') })}
       >{ratioLine}</p>
       <div class="mixer-actions">
-        <button type="button" class="btn" data-add disabled={colors.length >= 5} data-i18n="mixer.add">
-          + Add color
+        <button type="button" class="btn" data-add disabled={colors.length >= 5}>
+          <span class="mixer-add-ic" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICONS.plus} />
+          </span>
+          <span data-i18n="mixer.add">Add color</span>
         </button>
         <button
           type="button"
@@ -168,11 +172,13 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
           data-shuffle
           aria-label="Shuffle in a random set of colors"
           title="Shuffle in a random set of colors"
-          data-i18n="mixer.shuffle"
           data-i18n-aria="mixer.shuffleT"
           data-i18n-title="mixer.shuffleT"
         >
-          Shuffle
+          <span class="mixer-add-ic" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICONS.shuffle} />
+          </span>
+          <span data-i18n="mixer.shuffle">Shuffle</span>
         </button>
         {
           showModeToggle && (
@@ -278,7 +284,9 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
       <input type="range" min="0" max="10" step="1" value="1" data-ratio aria-label="Mixing ratio" />
       <output class="ratio-val" data-ratio-val>1</output>
     </div>
-    <button type="button" class="btn btn-remove" data-remove aria-label="Remove this color">✕</button>
+    <button type="button" class="btn btn-remove" data-remove aria-label="Remove this color">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICONS.close} />
+    </button>
   </div>
 </template>
 
@@ -405,6 +413,14 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
     padding: 0.35rem 0.6rem;
   }
 
+  /* icon chip inside Add-color / Shuffle buttons — flex row keeps the SVG
+     glued to the label regardless of translated string width */
+  .mixer-add-ic {
+    display: inline-flex;
+    flex: none;
+    opacity: 0.8;
+  }
+
   .mixer-actions {
     display: flex;
     gap: var(--sp-2);
@@ -487,7 +503,12 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
     margin-top: var(--sp-3);
   }
 
-  .steps-strip > span {
+  /* the island REBUILDS these spans at runtime (mixer.ts innerHTML), and
+     injected nodes carry no data-astro-cid-* — a scoped `.steps-strip > span`
+     selector never matched them, so every span collapsed to width:0 and the
+     blend path rendered as an empty white bar after hydration. Keep the child
+     rule global (2026-11-10 regression fix). */
+  .steps-strip > :global(span) {
     flex: 1;
   }
 

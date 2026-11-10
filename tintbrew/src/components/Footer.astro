@@ -2,30 +2,34 @@
 import { SITE } from '../consts';
 import { scenarioContents } from '../lib/scenarioContent';
 import { outfitContents } from '../lib/outfitContent';
-import { BEAD_CATEGORY_SEO, BEAD_COLLECTION_SEO, BEAD_HUB_SEO } from '../data/beadSeo';
+import { BEAD_HUB_SEO } from '../data/beadSeo';
+import { iconSvg } from '../lib/icons';
 
 // V2.1 scenario + V2.2 pairing pages — data-driven so later waves appear here automatically.
 const guides = [...scenarioContents, ...outfitContents].map((s) => s.def);
 
-// V2.2 bead family — landing pages only; the detail pages hang off these.
-// The photo converter and the editor are tool pages rather than BeadSeoDefs,
-// spelled inline.
+// Footer shows only the head terms (user call, 2026-11-10: "列举的太多了，
+// 弄两三个用的多就好了") — brown is the volume king, purple/green are the
+// three-color head cluster; the rest stay linked from /color-guides/ hub.
+const FOOTER_GUIDE_SLUGS = [
+  'what-colors-make-brown',
+  'what-colors-make-purple',
+  'what-colors-make-green',
+];
+const footerGuides = FOOTER_GUIDE_SLUGS.map(
+  (slug) => guides.find((g) => g.slug === slug)!,
+).filter(Boolean);
+
+// V2.2 bead family. Footer shows only the head entries (user call,
+// 2026-11-10, same trim as the color guides column): the hub is the head
+// term and photo/editor are the two unique tools — every category and
+// collection landing stays linked from the hub page itself.
 // (food + christmas galleries retired with the hand-drawn set, 2026-10-28;
 // halloween got its own gallery back 2026-10-29)
 const beadLinks = [
   BEAD_HUB_SEO,
   { path: '/photo-to-perler-bead-pattern/', h1: 'Photo to Bead Pattern' },
   { path: '/bead-editor/', h1: 'Bead Pattern Editor' },
-  BEAD_CATEGORY_SEO.animals!,
-  BEAD_CATEGORY_SEO.characters!,
-  BEAD_CATEGORY_SEO.halloween!,
-  BEAD_CATEGORY_SEO.easy!,
-  // collection landings (2026-10-29 P3 pool expansion) — every BeadSeoDef
-  // entry carries k.h1 (bs.*), so the footer column swaps via the dictionary
-  BEAD_COLLECTION_SEO.cute!,
-  BEAD_COLLECTION_SEO.small!,
-  BEAD_COLLECTION_SEO.fuse!,
-  BEAD_COLLECTION_SEO.letters!,
 ];
 
 // Popular mixes — varied anchor text on purpose (internal-link diversity).
@@ -45,7 +49,10 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="footer-grid">
       <div>
-        <h3 data-i18n="foot.tools">Tools</h3>
+        <div class="foot-head">
+          <span class="foot-ic" aria-hidden="true"><Fragment set:html={iconSvg('palette', 14)} /></span>
+          <h3 data-i18n="foot.tools">Tools</h3>
+        </div>
         <ul>
           <li><a href="/color-mixer" data-i18n="nav.mixer">Color Mixer</a></li>
           <li><a href="/color-converter" data-i18n="nav.converter">Color Converter</a></li>
@@ -56,7 +63,10 @@ const year = new Date().getFullYear();
         </ul>
       </div>
       <div>
-        <h3 data-i18n="foot.popular">Popular mixes</h3>
+        <div class="foot-head">
+          <span class="foot-ic" aria-hidden="true"><Fragment set:html={iconSvg('mixes', 14)} /></span>
+          <h3 data-i18n="foot.popular">Popular mixes</h3>
+        </div>
         <ul>
           {popularMixes.map((m) => (
             <li>
@@ -68,14 +78,20 @@ const year = new Date().getFullYear();
         </ul>
       </div>
       <div>
-        <h3 data-i18n="foot.guides">Color guides</h3>
+        <div class="foot-head">
+          <span class="foot-ic" aria-hidden="true"><Fragment set:html={iconSvg('guides', 14)} /></span>
+          <h3 data-i18n="foot.guides">Color guides</h3>
+        </div>
         <ul>
-          {guides.map((g) => <li><a href={`/${g.slug}`} data-i18n={`guide.${g.slug}`}>{g.h1}</a></li>)}
+          {footerGuides.map((g) => <li><a href={`/${g.slug}`} data-i18n={`guide.${g.slug}`}>{g.h1}</a></li>)}
           <li><a href="/color-guides" data-i18n="foot.allGuides">All guides</a></li>
         </ul>
       </div>
       <div>
-        <h3 data-i18n="foot.beads">Bead patterns</h3>
+        <div class="foot-head">
+          <span class="foot-ic" aria-hidden="true"><Fragment set:html={iconSvg('patterns', 14)} /></span>
+          <h3 data-i18n="foot.beads">Bead patterns</h3>
+        </div>
         <ul>
           {beadLinks.map((b) => {
             const key = 'k' in b && b.k?.h1
@@ -94,7 +110,10 @@ const year = new Date().getFullYear();
         </ul>
       </div>
       <div>
-        <h3 data-i18n="foot.site">Site</h3>
+        <div class="foot-head">
+          <span class="foot-ic" aria-hidden="true"><Fragment set:html={iconSvg('info', 14)} /></span>
+          <h3 data-i18n="foot.site">Site</h3>
+        </div>
         <ul>
           <li><a href="/about" data-i18n="foot.about">About</a></li>
           <li><a href="/privacy" data-i18n="foot.privacy">Privacy Policy</a></li>
