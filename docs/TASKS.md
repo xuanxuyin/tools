@@ -6,6 +6,13 @@
 
 ---
 
+## 今天 · 2026-11-10（周一）
+
+- [x] 🤖 **tintbrew UI 模板对齐批 ✅（四件套一次上车）**：①对标 Coolors/perlerbeadpatterns.org 重排首页 hero（近黑 H1 + 双栏"产品即视觉"：真实混色条带 red→blue + 4 mix chip + HEX 标注）+ 工具卡 pastel 四色 + 串珠卡 1:1 统一框；②全站 Lucide 官方图标内联 vendored（ISC，28 枚，零字体请求）；③**顺手抓出两个真 bug**——mixer 条带 hydration 后塌缩（scoped CSS 对 runtime 注入 DOM 失效，`:global` 修复+回归测试）、涂色页点蜜蜂左眼整只上色（墨线归属修复：环边界像素归细节环 + evenodd 渲染，`lib/coloringIdMap.ts` 纯函数 + 真_payload 实勘回归）；④页脚两列精简（👤 两次点名：Color guides 10→3、Bead patterns 11→3，其余仍挂各自 hub）。**382/382 绿 + 392 页 build**。明细 [tintbrew PLAN 11/10 行](./tintbrew/PLAN.md)
+- [ ] 👤 **tintbrew 本地验收（Ctrl+F5 强刷，旧 CSS 有缓存）**：本地 http://localhost:4321/ 逐项看——①首页：深色大标题 + 右侧混色条带/色块 + 四张 pastel 工具卡 + 页脚 Tools 列图标头、Color guides 只剩 3 条、Bead patterns 只剩 3 条；② http://localhost:4321/coloring/dk019-bee/ 点两只眼睛（含轮廓）应只填眼白不再整蜂变色；③ /mix/black-red/ 顶部结果条带新样式顺手扫一眼。不对的报哪页哪处
+
+---
+
 ## 今天 · 2026-11-09（周日）
 
 - [ ] 👤 **GSC Request Indexing 批（10 条，Claude 11/09 实勘全部 200 后排好优先级）**——11/03 索引批只推了感恩节簇，**圣诞簇 6 页从未手动推过**，11 月正是圣诞词爬排名窗（美区峰值 12 月初，再不进爬就赶不上季）。GSC 顶栏 → 输入 URL → 请求编入索引，按序推（配额 ~10/日，报错重试一次即可，11/03 批 9/10 一次成功先例）：
