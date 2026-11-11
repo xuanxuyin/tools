@@ -745,7 +745,12 @@ export class PhotoStudio {
       sx = px;
       sy = py;
       b0 = { ...this.cropBox };
-      stage.setPointerCapture(e.pointerId);
+      /* capture is an optimization — a throw (dead pointer) must not kill the drag */
+      try {
+        stage.setPointerCapture(e.pointerId);
+      } catch {
+        /* keep dragging without capture */
+      }
       e.preventDefault();
     });
     stage.addEventListener('pointermove', (e) => {

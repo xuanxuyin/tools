@@ -362,12 +362,20 @@ const jsonLd = [
   }
   .ed-body {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
+    /* Sidebar 340px (2026-11-02 widened from 300px — 8 slim swatch columns
+       were unhittable). Lives here, NOT as a trailing override: an unscoped
+       override placed after the media query silently re-applied two columns
+       on phones, squeezing the board column to 0 width (user report
+       2026-11-11: board invisible on mobile). */
+    grid-template-columns: minmax(0, 1fr) 340px;
     gap: var(--sp-4);
     align-items: start;
   }
   @media (max-width: 960px) {
     .ed-body { grid-template-columns: 1fr; }
+    /* 32px shell padding ate 25% of a phone's board width — narrow it so
+       the canvas gets the space (345px content → 313px board, ~+13%/cell). */
+    .tool-shell { padding: var(--sp-3); }
   }
   .ed-canvas-col { min-width: 0; }
   .ed-host {
@@ -476,8 +484,9 @@ const jsonLd = [
 
   /* The color library: the sidebar was 300px wide with 8 slim columns —
      swatches you couldn't see or hit (user report, 2026-11-02). Wider
-     sidebar, 5 columns, tall scroll area. */
-  .ed-body { grid-template-columns: minmax(0, 1fr) 340px; }
+     sidebar, 5 columns, tall scroll area. (Sidebar width itself now lives
+     in the base .ed-body rule above — the trailing override here used to
+     beat the mobile media query and broke phones.) */
 </style>
 
 <style is:global>
@@ -516,6 +525,12 @@ const jsonLd = [
   .ed-library {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+    /* Definite width — without it the library is a width:auto flex item
+       inside .ed-group, the 1fr tracks resolve against the item's own
+       min-content, and every swatch collapses to its 2px border ("swatches
+       you couldn't see", first reported 2026-11-02; root cause found
+       2026-11-11 via mobile report). */
+    width: 100%;
     gap: 8px;
     max-height: 44vh;
     overflow: auto;
