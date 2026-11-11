@@ -9,7 +9,7 @@
 ## 今天 · 2026-11-11（周二）
 
 - [x] 🤖 **tintbrew bead-editor 手机适配修复批 ✅（👤 报：手机上整个拼豆都显示不出来；已真机验收"现在显示了"）**：三个问题叠加——①**手机断点单列规则被文件尾部无媒体查询的 `.ed-body{…340px}` 覆盖规则打掉**（11-02 色板侧栏加宽遗留），手机仍两列，393px 视口画布列分到 0 宽，SVG 被 max-width:100% 压成 0×0；②`.ed-library` 是 flex item 无确定宽度 → `repeat(N,1fr)` 轨道退化 min-content，291 颗色珠全部塌成 2px 边框点——**11-02 👤 "swatches couldn't see or hit" 的真根因，桌面手机同病**，`width:100%` 修复（swatch 2px→62px 桌面 / 32px 手机 8 列）；③三处 island `setPointerCapture` 裸调用包 try-catch（死指针异常会炸掉整个 pointerdown 放珠逻辑）；顺手手机断点 shell padding 32→16px（画布 277→309px）。**388/388 绿 + 392 页 build**；playwright 手机视口（393×852 touch DPR3）实勘：板 309×309、合成 pointer 拖画 16 珠连续落板、无横向溢出。b247108 在 cootie-predev。明细 [tintbrew PLAN 11/11 行](./tintbrew/PLAN.md)
-- [ ] 👤 **tintbrew 部署拍板（手机适配批）**：b247108 未合 main——**线上手机 bug 仍在**（bead-editor 手机上整板不可见 + 色珠 2px 点阵）。本地/局域网已验收 OK → 回复"部署"，Claude 合 main + push.bat + CF Pages 自动发布
+- [x] 🤖 **tintbrew 部署 ✅（11/11 👤 "部署吧" 触发）**：cootie-predev 合 main（merge commit 4ac8896，tools-ui worktree；构建复核卡死后改用 `git diff HEAD cootie-predev -- tintbrew/` = 0 行验证合并树与已测分支逐字节一致，构建等价成立）+ push.bat（`de441d7..4ac8896` Push OK）→ CF Pages 构建约 4 分钟上线。**线上手机视口实勘终验**：bodyCols 1（旧版 2）、板 309×309（旧版 0×0）、色板 311px/珠 32px（旧版 72px/2px）、shell padding 16px、无溢出——与本地实测一致。⚠️ 踩坑：wrangler deployment list 的 Status 列显示相对时间/Active，**不是构建完成信号**——构建中查会误判，认线上内容特征才可靠（后台探针每分钟 grep 新版 CSS 标记直到命中）
 
 ---
 
