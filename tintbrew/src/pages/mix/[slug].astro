@@ -33,6 +33,19 @@ const argsAns = JSON.stringify({
 });
 
 const jsonLd = [
+  // Batch A: these pages carry a live mixer, so Google should classify them as
+  // interactive tools (anti-AI-overview) — same schema block as /color-mixer/.
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TintBrew Color Mixer',
+    url: `${SITE.url}/mix/${c.slug}/`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description: c.metaDescription,
+  },
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -84,7 +97,13 @@ const jsonLd = [
     </div>
   </section>
 
-  <Mixer initialColors={[c.first.hex, c.second.hex]} showModeToggle compact />
+  <Mixer
+    initialColors={[c.first.hex, c.second.hex]}
+    showModeToggle
+    compact
+    title="Color mixer tool — drag the sliders to adjust the ratio, then copy the HEX"
+    titleKey="mix.mixerLive"
+  />
 
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2 data-i18n="mix.ratioH" data-i18n-args={argsPairCap}>{c.first.name} to {c.second.name}: every ratio</h2>

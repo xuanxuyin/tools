@@ -42,9 +42,16 @@ describe('buildMixContent', () => {
     }
   });
 
-  it('titles are the question with brand suffix', () => {
+  it('titles sell the interactive tool (Color Mixer Tool hook, batch A anti-AI-overview)', () => {
     const c = contents.find((x) => x.slug === 'red-blue')!;
-    expect(c.metaTitle).toBe('What color does red and blue make | TintBrew');
+    expect(c.metaTitle).toBe('What color does red and blue make? Color Mixer Tool');
+    // every page: title keeps the full question up front and the hard tool noun;
+    // whole title must fit Google mobile width (~56 chars)
+    for (const x of contents) {
+      expect(x.metaTitle.startsWith(x.question)).toBe(true);
+      expect(x.metaTitle.endsWith('Color Mixer Tool')).toBe(true);
+      expect(x.metaTitle.length).toBeLessThanOrEqual(56);
+    }
   });
 
   it('computes three ratio rows whose hexes differ by direction', () => {
