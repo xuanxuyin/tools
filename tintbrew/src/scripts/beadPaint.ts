@@ -74,7 +74,12 @@ export class PaintCanvas {
 
     this.svg.addEventListener('pointerdown', (e) => {
       e.preventDefault();
-      this.svg.setPointerCapture?.(e.pointerId);
+      /* capture is an optimization — a throw (dead pointer) must not kill the stroke */
+      try {
+        this.svg.setPointerCapture?.(e.pointerId);
+      } catch {
+        /* keep drawing without capture */
+      }
       this.drawing = true;
       this.trackCursor(e);
       const cell = this.cellAt(e);

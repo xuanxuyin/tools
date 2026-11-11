@@ -215,7 +215,14 @@ export class BeadEditor {
 
     svg.addEventListener('pointerdown', (e) => {
       e.preventDefault();
-      svg.setPointerCapture?.(e.pointerId);
+      /* setPointerCapture throws when the pointer is already inactive
+         (synthetic events, cancelled touches, multi-touch races). Capture
+         is an optimization — losing it must not kill the stroke. */
+      try {
+        svg.setPointerCapture?.(e.pointerId);
+      } catch {
+        /* keep drawing without capture */
+      }
       this.drawing = true;
       const cell = this.cellAt(e);
       if (cell) {
