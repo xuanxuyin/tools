@@ -148,9 +148,15 @@ export function buildMixContent(def: MixDef): MixContent {
     },
   ];
 
-  const metaTitle = `${question[0]!.toUpperCase()}${question.slice(1, -1)} | TintBrew`;
+  // Answer-type queries are AI-Overview bait — the SERP snippet must sell the
+  // interactive tool (adjustable ratios, exact HEX) or the click never happens
+  // (CTR was ~0.2% with the plain-question title, 2026-11 batch A). The
+  // question stays (it IS the ranking query); the tail is the hard tool noun
+  // "Color Mixer Tool". Brand suffix dropped: Google renders the site name in
+  // the byline line anyway, and 56 chars keeps the whole title visible on mobile.
+  const metaTitle = `${question} Color Mixer Tool`;
   const metaDescription = trim155(
-    `${a.name} and ${b.name} make ${def.resultName}: a 50/50 mix is ${resultHex} (${nearestName}). See 75/25 and 25/75 blends and mix your own ratio live.`,
+    `${def.resultName[0]!.toUpperCase()}${def.resultName.slice(1)}: 50/50 = ${resultHex} (${nearestName}). Adjust the 75/25, 50/50, 25/75 ratios in the live mixer and copy the exact HEX. Free online tool.`,
   );
 
   return {
