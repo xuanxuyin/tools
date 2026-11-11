@@ -144,7 +144,7 @@ describe('coloring dist (shipped surface)', () => {
 
   it('image sitemap declares every coloring page thumb and detail line art', () => {
     const xml = readFileSync(resolve(dist, 'sitemap-images.xml'), 'utf8');
-    expect((xml.match(/<image:image>/g) ?? []).length).toBeGreaterThanOrEqual(420);
+    expect((xml.match(/<image:image>/g) ?? []).length).toBeGreaterThanOrEqual(460);
     expect(xml).toContain('/coloring/line/ag015-palette.webp');
     expect(xml).toContain('/coloring/thumb/axolotl'.replace('axolotl', 'al008-axolotl') + '.webp');
     expect(xml).toContain('<loc>https://tintbrew.com/coloring/</loc>');

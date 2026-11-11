@@ -18,10 +18,16 @@ import {
   CATEGORY_BASE,
 } from '../lib/beadContent';
 import { COLORING_PIECES } from '../data/coloring';
+import { mixes } from '../data/mixes';
+import { buildMixContent } from '../lib/mixContent';
+import { scenarioContents } from '../lib/scenarioContent';
+import { outfitContents } from '../lib/outfitContent';
 
 export const GET: APIRoute = async () => {
+  const esc = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const img = (loc: string, title?: string) =>
-    `<image:image><image:loc>${loc}</image:loc>${title ? `<image:title>${title}</image:title>` : ''}</image:image>`;
+    `<image:image><image:loc>${esc(loc)}</image:loc>${title ? `<image:title>${esc(title)}</image:title>` : ''}</image:image>`;
 
   const urls: string[] = [];
 
@@ -92,6 +98,40 @@ export const GET: APIRoute = async () => {
       .map((v) => img(`${SITE.url}/pattern-thumbs/${v.def.slug}.webp`, v.def.name))
       .join('')}</url>`,
   );
+
+  // OG-card declarations (2026-11-11, chartglade #37 sibling batch): the mix
+  // matrix, scenario/head-word, outfit and tool pages carry per-page branded
+  // OG cards in public/og/ — 46 images that were the last product pictures on
+  // the site with no sitemap declaration. One <url> per page, card as image.
+  // Titles come from the same defs the page templates render (no drift), and
+  // the parity guard in src/lib/sitemapImages.test.ts re-derives the whole
+  // expectation from built dist HTML so future families cannot slip through.
+  const ogCardUrls = [
+    ...mixes.map((def) => {
+      const c = buildMixContent(def);
+      return {
+        path: `/mix/${def.a}-${def.b}/`,
+        image: `/og/mix-${def.a}-${def.b}.png`,
+        title: `${c.a.name} and ${c.b.name} make ${def.resultName}`,
+      };
+    }),
+    ...scenarioContents.map((s) => ({
+      path: `/${s.def.slug}/`,
+      image: `/og/${s.def.slug}.png`,
+      title: s.def.metaTitle,
+    })),
+    ...outfitContents.map((o) => ({
+      path: `/${o.def.slug}/`,
+      image: `/og/${o.def.slug}.png`,
+      title: o.def.metaTitle,
+    })),
+    { path: '/color-mixer/', image: '/og/color-mixer.png', title: 'Online color mixer — blend two colors' },
+    { path: '/color-mixing-chart/', image: '/og/color-mixing-chart.png', title: 'Color mixing chart' },
+    { path: '/hue-test/', image: '/og/hue-test.png', title: 'Hue test — check your color vision' },
+  ];
+  for (const u of ogCardUrls) {
+    urls.push(`<url><loc>${SITE.url}${u.path}</loc>${img(`${SITE.url}${u.image}`, u.title)}</url>`);
+  }
 
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
