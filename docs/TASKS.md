@@ -8,6 +8,11 @@
 
 ## 今天 · 2026-11-11（周二）
 
+- [ ] 👤 **tintbrew 增长批拉数（三组，AITDK 插件 + GSC）**——batch 全速开工，Claude 侧四线并行（批A CTR改造/圣诞批/批D AI推荐面/批C 词面文案），卡在数据的部分如下：
+  1. **圣诞批选词**【AITDK】：`christmas perler bead patterns`、`santa perler bead patterns`、`snowman perler bead patterns` —— 拉量(US/月) + KD + SERP 前 10 站名/DR
+  2. **批C 缺口词**【AITDK】：`free perler bead patterns`、`perler bead color chart`、`how to make perler bead patterns` —— 同上三样
+  3. **批B 筛词**【GSC】：效果报告 → 查询表 → 按平均排名排序 → **导出排名 5~50 的全部查询**（GSC 顶栏 → 效果 → "导出"按钮 → CSV 给 Claude；这是答案型→工具型火力转移的判据）
+- [x] 🤖 **tintbrew 竞品流量机制拆解 ✅（👤 给 perlerbeadpatterns.org 8月2K/9月1.56K/10月6K + "反链也没做"）**：pbp 6 月底上线（lastmod 实勘 116 条 06-30）一上来 350+ 页满量；SERP 三连实勘**头词/halloween 词/工具词全不在前排**，"cute perler bead patterns easy" 三词长尾排第 5——机制 = 长尾词面广度 × 1,985 图片声明 × 4 语言；10 月 6K = 万圣节季节脉冲，**本底 2K**。tintbrew 词面 90% 已对齐（缺 free/chart/how-to 三词页）；图片通道 889 条在跑（修正此前 333 的误数）；我们 UI 三语 ≠ 它的 URL 级 4 语言，不用下。**核心病灶改判**：color 线主力词全是 AI 截流高危的答案型词（违反仓库纪律"不当主战场"），CTR 0.2% 实锤——批A~D 增长批立项（👤 全批批准），圣诞窗（12 月初峰值，现在动工正好在 4~6 周窗内）插队第一优先
 - [x] 🤖 **tintbrew bead-editor 手机适配修复批 ✅（👤 报：手机上整个拼豆都显示不出来；已真机验收"现在显示了"）**：三个问题叠加——①**手机断点单列规则被文件尾部无媒体查询的 `.ed-body{…340px}` 覆盖规则打掉**（11-02 色板侧栏加宽遗留），手机仍两列，393px 视口画布列分到 0 宽，SVG 被 max-width:100% 压成 0×0；②`.ed-library` 是 flex item 无确定宽度 → `repeat(N,1fr)` 轨道退化 min-content，291 颗色珠全部塌成 2px 边框点——**11-02 👤 "swatches couldn't see or hit" 的真根因，桌面手机同病**，`width:100%` 修复（swatch 2px→62px 桌面 / 32px 手机 8 列）；③三处 island `setPointerCapture` 裸调用包 try-catch（死指针异常会炸掉整个 pointerdown 放珠逻辑）；顺手手机断点 shell padding 32→16px（画布 277→309px）。**388/388 绿 + 392 页 build**；playwright 手机视口（393×852 touch DPR3）实勘：板 309×309、合成 pointer 拖画 16 珠连续落板、无横向溢出。b247108 在 cootie-predev。明细 [tintbrew PLAN 11/11 行](./tintbrew/PLAN.md)
 - [x] 🤖 **tintbrew 部署 ✅（11/11 👤 "部署吧" 触发）**：cootie-predev 合 main（merge commit 4ac8896，tools-ui worktree；构建复核卡死后改用 `git diff HEAD cootie-predev -- tintbrew/` = 0 行验证合并树与已测分支逐字节一致，构建等价成立）+ push.bat（`de441d7..4ac8896` Push OK）→ CF Pages 构建约 4 分钟上线。**线上手机视口实勘终验**：bodyCols 1（旧版 2）、板 309×309（旧版 0×0）、色板 311px/珠 32px（旧版 72px/2px）、shell padding 16px、无溢出——与本地实测一致。⚠️ 踩坑：wrangler deployment list 的 Status 列显示相对时间/Active，**不是构建完成信号**——构建中查会误判，认线上内容特征才可靠（后台探针每分钟 grep 新版 CSS 标记直到命中）
 
