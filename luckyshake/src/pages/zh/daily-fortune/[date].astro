@@ -1,0 +1,64 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { dailyDraw } from '../../../lib/engine';
+import { renderReading } from '../../../lib/reading';
+
+// 今日签日期归档（中文审阅层）。与英文版同一 EPOCH，同一支签。
+export function getStaticPaths() {
+  const days: string[] = [];
+  const start = new Date('2026-11-08' + 'T00:00:00Z').getTime();
+  const end = Date.now();
+  for (let t = start; t <= end; t += 86400000) {
+    days.push(new Date(t).toISOString().slice(0, 10));
+  }
+  if (days.length === 0) days.push(new Date().toISOString().slice(0, 10));
+  return days.map((date) => ({ params: { date }, props: { date, days } }));
+}
+const { date, days } = Astro.props;
+const { sign, digits } = dailyDraw(date);
+const pretty = new Date(date + 'T12:00:00').toLocaleDateString('zh-CN', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const i = days.indexOf(date);
+const prev = i > 0 ? days[i - 1] : null;
+const next = i < days.length - 1 ? days[i + 1] : null;
+---
+<Base
+  lang="zh"
+  title={`今日运势 — ${pretty} | LuckyShake（内部审阅版）`}
+  description={`${pretty}的当日签：一篇手写签文，附感情、财运、事业指引和三个幸运数字。当天所有人同签，永久可查。`}
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <div class="kicker">一天一支 · 归档</div>
+      <h1>今日运势</h1>
+      <p class="date-line">{pretty}</p>
+      <p class="tool-sub">这是这一天所有人共享的那支签——零点抽取，永久在档。</p>
+    </div>
+    <div class="tool-outcome" set:html={renderReading(sign, digits, { lang: 'zh', luckyLabel: '当日幸运数字' })}></div>
+  </section>
+
+  <section class="section">
+    <div class="scene-list">
+      {prev && (
+        <a class="scene" href={`/zh/daily-fortune/${prev}/`}>
+          <span class="glyph">←</span>
+          <p><b>前一天</b><br /><span class="muted">{prev}</span></p>
+        </a>
+      )}
+      <a class="scene" href="/zh/daily-fortune/">
+        <span class="glyph">☀</span>
+        <p><b>看今天</b><br /><span class="muted">零点换新</span></p>
+      </a>
+      {next && (
+        <a class="scene" href={`/zh/daily-fortune/${next}/`}>
+          <span class="glyph">→</span>
+          <p><b>后一天</b><br /><span class="muted">{next}</span></p>
+        </a>
+      )}
+    </div>
+  </section>
+</Base>

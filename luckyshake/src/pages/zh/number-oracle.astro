@@ -1,0 +1,132 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+---
+<Base
+  lang="zh"
+  title="数字神谕 — 三个数字，一支签 | LuckyShake（内部审阅版）"
+  description="想着你的问题，掷出 0–9 之间三个随机数字，读它们指向的那支签。三个数字既定你的签，也是你的幸运数字。"
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>数字神谕</h1>
+      <p class="tool-sub">
+        把问题放在心里，掷出 0–9 三个数字。三个数字会替你选定一支签——同时也是你的幸运数字。
+        数字落定后，再说出你问的是什么事。
+      </p>
+      <div class="stage-visual">
+        <div class="slots">
+          <div class="slot" data-slot="0">–</div>
+          <div class="slot" data-slot="1">–</div>
+          <div class="slot" data-slot="2">–</div>
+        </div>
+      </div>
+      <button class="btn" data-roll>掷出我的数字</button>
+      <p class="hint">3 个数字 · 每一种都指向一支手写签</p>
+    </div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">怎么玩</div>
+    <h2>三个数字变成一支签</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · 默念问题</div><p>数字滚动时，心里只放一个问题。问题要能落到动作上：走还是留，发还是删，现在还是再等等。</p></div>
+      <div class="step"><div class="n">2 · 掷三个数字</div><p>每个格子落一个 0–9 的数字。前两位数字替你定签；三个数字一起成为你这个问题的幸运数字。</p></div>
+      <div class="step"><div class="n">3 · 点题</div><p>数字落定，签号和签名跟着一起亮出来。这时说出你问的是哪件事：感情、财运、事业——或者自己写一句。签只答你真正问的那件，再给一个具体的下一步。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">什么时候掷</div>
+    <h2>适合掷数字的问题</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph">❤️</span><p><b>感情：</b>"这段还值不值得再谈一次认真的？"——感情判词就在那儿等你。</p></div>
+      <div class="scene"><span class="glyph">💰</span><p><b>财运：</b>"现在买，还是接着存？"——下单之前，先看看财运判词怎么说。</p></div>
+      <div class="scene"><span class="glyph">💼</span><p><b>事业：</b>"新岗位我该举手吗？"——事业判词直接给你周一就能用的框架。</p></div>
+      <div class="scene"><span class="glyph">🔢</span><p><b>幸运数字：</b>为这一周掷一把——有人拿三个数字买彩票、破平局、或者决定"三家里吃哪家"。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>数字神谕 FAQ</h2>
+    <Faq items={[
+      { q: '数字是真随机吗？', a: '是——三个数字各自独立、公平地从 0 到 9 中掷出，全部在你浏览器里完成。没有服务器、没有规律、不记得你上次掷了什么。' },
+      { q: '三个数字怎么变成一支签？', a: '前两位数字为你定签，三个数字同时是你的幸运数字。' },
+      { q: '同一个问题能掷两次吗？', a: '能，但神谕没有记性——重掷是一次全新的抽取，不是第二意见。如果你一直掷到满意为止，请注意：那说明你心里已经有答案了。' },
+      { q: '为什么掷完才让我选题？', a: '这个仪式是故意倒着来的：数字滚动时问题只放在你心里——数字不该提前知道它。等它们落定，你才说出问的是什么，签就答那一面。自己写的问题会自动对准最相近的一面：问感情看感情判词，问钱看财运判词，问工作看事业判词，都不沾边的才给整体签文。一事一签：答完即锁定——想问别的，再掷一次。' },
+      { q: '这背后是什么传统？', a: '数字问事是占卜里最古老的门之一：问一个问题，让机缘给出一个小小的征象，再用一本签书去解它。我们建在同一条骨架上——诚实的随机 + 手写的解读。' },
+      { q: '为什么只有 0 到 9？', a: '一位数里 0 到 9 最顺手——随手一掷就是三个。而它们能落成的每一种组合，都通向一支认真写满的手写签，而不是一段通用套话。' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { rollDigits, signForDigits, liveRand } from '../../lib/engine';
+  import { trackDraw } from '../../lib/track';
+  import { drawnBanner, renderFocusedReading } from '../../lib/reading';
+  import { focusPanelHTML, wireFocusPanel } from '../../lib/focusFlow';
+  import { focusForQuestion } from '../../lib/classify';
+
+  const slots = Array.from(document.querySelectorAll<HTMLElement>('[data-slot]'));
+  const btn = document.querySelector<HTMLButtonElement>('[data-roll]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+
+  // 数字落定 → 签号和签名先亮出来，此时用户才点明问的是哪一件事——
+  // 感情 / 财运 / 事业 / 自己写一句
+  const reveal = (digits: [number, number, number], fromCookie = false) => {
+    if (!btn || !outcome) return;
+    const sign = signForDigits(digits);
+    trackDraw('number-oracle', sign.id);
+    outcome.innerHTML =
+      `<p class="center muted" style="margin-bottom:14px">${fromCookie ? '签语饼给你的这三个数字，选中了' : '你的三个数字选中了'} <b>${sign.nameZh}</b></p>` +
+      drawnBanner(sign, 'zh') +
+      focusPanelHTML('zh');
+    wireFocusPanel(outcome, (focus, own) => {
+      const answer = outcome.querySelector<HTMLElement>('[data-answer]');
+      if (!answer) return;
+      // 自提问题路由到最相近的一面（感情/事业/财运）
+      const lens = focus === 'own' ? focusForQuestion(own) : focus;
+      answer.innerHTML = renderFocusedReading(sign, lens, digits, {
+        lang: 'zh',
+        echo: own,
+        note: '这三个数字是你的了——有人带着它们过一周、买一注、或者破一个平局。',
+      });
+      answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    btn.disabled = false;
+  };
+
+  const roll = () => {
+    if (!btn || !outcome) return;
+    btn.disabled = true;
+    outcome.innerHTML = '';
+    const digits = rollDigits(liveRand());
+    slots.forEach((slot) => slot.classList.add('rolling'));
+    const spin = window.setInterval(() => {
+      slots.forEach((slot) => (slot.textContent = String(Math.floor(Math.random() * 10))));
+    }, 70);
+    window.setTimeout(() => {
+      window.clearInterval(spin);
+      slots.forEach((slot, i) => {
+        slot.textContent = String(digits[i]);
+        slot.classList.remove('rolling');
+      });
+      reveal(digits);
+    }, 1400);
+  };
+
+  btn?.addEventListener('click', roll);
+
+  // 深链：/zh/number-oracle/?d=472 —— 自动解析指定数字（签语饼的交接）
+  const params = new URLSearchParams(window.location.search);
+  const d = params.get('d');
+  if (d && /^\d{3}$/.test(d) && btn && outcome) {
+    const dd: [number, number, number] = [Number(d[0]), Number(d[1]), Number(d[2])];
+    btn.disabled = true;
+    slots.forEach((slot, i) => (slot.textContent = String(dd[i])));
+    reveal(dd, true);
+  }
+</script>

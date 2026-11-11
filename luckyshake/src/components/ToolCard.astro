@@ -1,0 +1,16 @@
+---
+interface Props {
+  href: string;
+  glyph: string;
+  name: string;
+  desc: string;
+  go?: string;
+}
+const { href, glyph, name, desc, go = 'Try it →' } = Astro.props;
+---
+<a class="tool-card" href={href}>
+  <span class="glyph">{glyph}</span>
+  <b>{name}</b>
+  <span class="desc">{desc}</span>
+  <span class="go">{go}</span>
+</a>

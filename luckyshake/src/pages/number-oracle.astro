@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+---
+<Base
+  title="Number Oracle — Three Numbers, One Answer | LuckyShake"
+  description="Ask your question, roll three random numbers from 0 to 9, and read the fortune they point to. Three digits become your sign, your lucky numbers, and your next step."
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>Number Oracle</h1>
+      <p class="tool-sub">
+        Hold your question in mind, then roll three numbers from 0–9. Your three digits choose the
+        fortune — and become your lucky numbers. After the roll, tell the oracle what you asked about.
+      </p>
+      <div class="stage-visual">
+        <div class="slots">
+          <div class="slot" data-slot="0">–</div>
+          <div class="slot" data-slot="1">–</div>
+          <div class="slot" data-slot="2">–</div>
+        </div>
+      </div>
+      <button class="btn" data-roll>Roll my numbers</button>
+      <p class="hint">3 digits · every roll resolves to a hand-written fortune</p>
+    </div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">How it works</div>
+    <h2>Three digits become your fortune</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · Ask quietly</div><p>Hold one question in mind while the numbers roll. Keep it binary enough to act on: move or stay, send or delete, now or later.</p></div>
+      <div class="step"><div class="n">2 · Roll three digits</div><p>Each slot lands a number from 0 to 9. The first two digits choose your fortune; all three become your lucky numbers for the question.</p></div>
+      <div class="step"><div class="n">3 · Name your question</div><p>Your digits resolve to one numbered fortune — its number and name show with the roll. Then say what you asked: love, money, career, or your own words. That is the reading you get, plus one concrete next step.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">When people roll</div>
+    <h2>Good questions to roll on</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph">❤️</span><p><b>Love:</b> "Is this worth one more honest conversation?" — the love reading meets you there.</p></div>
+      <div class="scene"><span class="glyph">💰</span><p><b>Money:</b> "Buy now or keep saving?" — check the money verdict before the cart does the deciding.</p></div>
+      <div class="scene"><span class="glyph">💼</span><p><b>Career:</b> "Should I raise my hand for the new role?" — the career reading gives you the framing for Monday.</p></div>
+      <div class="scene"><span class="glyph">🔢</span><p><b>Lucky numbers:</b> rolling for the week — people use their three digits for fantasy picks, bracket tiebreakers, and "which of the three restaurants" energy.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">Questions</div>
+    <h2>Number Oracle FAQ</h2>
+    <Faq items={[
+      { q: 'Are the numbers really random?', a: 'Yes — each of the three digits is an independent fair roll from 0 to 9, generated in your browser. No server, no pattern, no memory of what you rolled before.' },
+      { q: 'How do three numbers become a fortune?', a: 'The first two digits pick your fortune from the numbered library; all three become your lucky numbers.' },
+      { q: 'Can I roll the same question twice?', a: 'You can, but the oracle keeps no memory — a re-roll is a fresh draw, not a second opinion. If you keep rolling until you like the answer, notice that: it means you already have an answer.' },
+      { q: 'Why do I pick a topic after rolling?', a: 'The ritual works backwards on purpose: you hold the question privately while the digits roll — the numbers should not know it. Only after they land do you say what it was about, and that is the part the fortune answers. Type your own words and the oracle routes them: questions of the heart read the love verdict, money questions the money verdict, work questions the career one — anything else gets the sign\'s overall reading. One question, one answer: once revealed, the choice locks — roll again to ask something else.' },
+      { q: 'What is the tradition behind this?', a: 'Number divination is one of the oldest doorways in fortune-telling: ask a question, let chance produce a small sign, then read that sign through a book of interpretations. Ours is built on the same skeleton — honest randomness, hand-written meanings.' },
+      { q: 'Why only 0 to 9?', a: 'Digits 0–9 are the ones your hand already knows — one quick roll gives you three. And every path they can land on leads to a real, fully-written fortune instead of a generic paragraph.' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { rollDigits, signForDigits, liveRand } from '../lib/engine';
+  import { trackDraw } from '../lib/track';
+  import { drawnBanner, renderFocusedReading } from '../lib/reading';
+  import { focusPanelHTML, wireFocusPanel } from '../lib/focusFlow';
+  import { focusForQuestion } from '../lib/classify';
+
+  const slots = Array.from(document.querySelectorAll<HTMLElement>('[data-slot]'));
+  const btn = document.querySelector<HTMLButtonElement>('[data-roll]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+
+  // digits land → the sign's number + name show, then the visitor names
+  // the ONE thing they asked about — love / money / career / own words
+  const reveal = (digits: [number, number, number], fromCookie = false) => {
+    if (!btn || !outcome) return;
+    const sign = signForDigits(digits);
+    trackDraw('number-oracle', sign.id);
+    outcome.innerHTML =
+      `<p class="center muted" style="margin-bottom:14px">${fromCookie ? 'Your fortune cookie gave you these numbers — they chose' : 'Your three digits chose'} <b>${sign.name}</b></p>` +
+      drawnBanner(sign) +
+      focusPanelHTML();
+    wireFocusPanel(outcome, (focus, own) => {
+      const answer = outcome.querySelector<HTMLElement>('[data-answer]');
+      if (!answer) return;
+      // a custom question routes to its nearest lens (love/career/money)
+      const lens = focus === 'own' ? focusForQuestion(own) : focus;
+      answer.innerHTML = renderFocusedReading(sign, lens, digits, {
+        echo: own,
+        note: 'These three digits are yours — people carry them for the week, the pick, or the tiebreaker.',
+      });
+      answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    btn.disabled = false;
+  };
+
+  const roll = () => {
+    if (!btn || !outcome) return;
+    btn.disabled = true;
+    outcome.innerHTML = '';
+    const digits = rollDigits(liveRand());
+    slots.forEach((slot) => slot.classList.add('rolling'));
+    const spin = window.setInterval(() => {
+      slots.forEach((slot) => (slot.textContent = String(Math.floor(Math.random() * 10))));
+    }, 70);
+    window.setTimeout(() => {
+      window.clearInterval(spin);
+      slots.forEach((slot, i) => {
+        slot.textContent = String(digits[i]);
+        slot.classList.remove('rolling');
+      });
+      reveal(digits);
+    }, 1400);
+  };
+
+  btn?.addEventListener('click', roll);
+
+  // deep link: /number-oracle/?d=472 — auto-resolve a specific number (fortune cookie handoff)
+  const params = new URLSearchParams(window.location.search);
+  const d = params.get('d');
+  if (d && /^\d{3}$/.test(d) && btn && outcome) {
+    const dd: [number, number, number] = [Number(d[0]), Number(d[1]), Number(d[2])];
+    btn.disabled = true;
+    slots.forEach((slot, i) => (slot.textContent = String(dd[i])));
+    reveal(dd, true);
+  }
+</script>

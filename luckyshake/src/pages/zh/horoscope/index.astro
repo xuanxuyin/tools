@@ -1,0 +1,30 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { ZODIAC } from '../../../data/zodiac';
+import ZodiacMark from '../../../components/ZodiacMark.astro';
+---
+<Base
+  lang="zh"
+  title="星座今日运势 — 每个星座的今日签 | LuckyShake（内部审阅版）"
+  description="一天一支手写签，所有人共享——再按你的星座读它。选你的星座，看今日签文、幸运数字和一小步行动。"
+>
+  <section class="section">
+    <div class="kicker">今日签 · 按星座</div>
+    <h1>今天的签，用你的星座读</h1>
+    <p class="tool-sub" style="margin:0 auto 1.4rem">
+      今天所有访客抽到同一支签——但白羊和摩羯会用出完全不同的两种方式。
+      选你的星座，看今日完整签文，以及这支签落在你身上的读法。
+    </p>
+    <div class="scene-list">
+      {ZODIAC.map((z) => (
+        <a class="scene" href={`/zh/horoscope/${z.slug}/`}>
+          <span class="glyph"><ZodiacMark slug={z.slug} name={z.nameZh} /></span>
+          <p>
+            <b>{z.nameZh}</b><br />
+            <span class="muted">{z.datesZh}</span>
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

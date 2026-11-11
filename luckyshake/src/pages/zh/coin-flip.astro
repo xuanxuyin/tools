@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+---
+<Base
+  lang="zh"
+  title="抛硬币 — 正面还是反面，在线掷 | LuckyShake（内部审阅版）"
+  description="抛一枚虚拟硬币，立刻得到正面或反面。正面为是、反面为否——史上最古老的裁决器，现在口袋里一枚钢镚都不用掏。"
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>抛硬币</h1>
+      <p class="tool-sub">
+        最古老的决策工具。正面为"是"，反面为"否"——为任何二选一的问题，
+        抛一次公平、即时的答案。
+      </p>
+      <div class="stage-visual">
+        <div class="coin" data-coin>
+          <div class="coin-face front">正面</div>
+          <div class="coin-face back">反面</div>
+        </div>
+      </div>
+      <input class="q-input" data-q type="text" maxlength="40" placeholder="可填可不填——你想问什么？" aria-label="你的问题（可选）" />
+      <button class="btn" data-flip>抛硬币</button>
+      <p class="hint">问题可填可不填，只留在你的设备里 · 直接点硬币也可以 · 正面 = 是，反面 = 否</p>
+    </div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">怎么玩</div>
+    <h2>每一次都是公平的一抛</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · 先定输赢</div><p>抛之前说清楚：正面代表这个，反面代表那个。落地之后才定输赢，是抛硬币名声变坏的原因。</p></div>
+      <div class="step"><div class="n">2 · 抛</div><p>浏览器里真正的五五开。不加权、没有连击规律、不记得前十次的结果。</p></div>
+      <div class="step"><div class="n">3 · 摸一下直觉</div><p>硬币落地那一瞬，你会有感觉。松一口气还是心里一沉——那个感觉才是真答案；硬币只是把它捞上来。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">什么时候抛</div>
+    <h2>两个选项，零进展</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph">🍽️</span><p><b>两家餐厅，一群饿急的人。</b>各认一家，一抛定胜负——争论 1.2 秒终结。</p></div>
+      <div class="scene"><span class="glyph">🧹</span><p><b>今天该谁打扫？</b>硬币不偏心，所以室友们一直留着它。</p></div>
+      <div class="scene"><span class="glyph">🎬</span><p><b>清单上两部片子。</b>抛一次先看哪部——落地的瞬间你忽然就知道自己想看哪部了。</p></div>
+      <div class="scene"><span class="glyph">🏋️</span><p><b>现在还是等会儿？</b>正面是现在。硬币没法让你去健身房，但它能终结这场辩论。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>抛硬币 FAQ</h2>
+    <Faq items={[
+      { q: '公平吗？', a: '公平——精确五五开，你点击的一瞬由浏览器的随机数发生器决定。实体硬币还有一点点偏心；这一枚连那点偏心都没有。' },
+      { q: '正面是"是"？', a: '这是本页的约定：正面 = 是，反面 = 否。如果你们那伙人习惯反过来，硬币不会介意——抛之前说好就行。' },
+      { q: '同一个问题能抛两次吗？', a: '可以重抛，但老规矩还在：第一次算数，三局两胜是给冰球季后赛的。如果你一直抛下去，说明你要的不是硬币的答案，是自己的——而它多半已经有了。' },
+      { q: '为什么还要抛硬币？', a: '因为当两个选项真的不相上下时，"做决定"这件事的成本已经高于两者的差别了。一枚硬币立刻终结循环——而你对结果的反应，会告诉你其实想要哪个。' },
+      { q: '这和"是与非"按钮是同一个东西吗？', a: '同一个公平五五开引擎，不同的仪式。有的决定想要"按一下"，有的想要"一道弧线"。挑一个配此刻心情的仪式——这正是我们做一整个道具家族的意义。' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { liveRand } from '../../lib/engine';
+  import { trackDraw } from '../../lib/track';
+  import { coinFlipZh } from '../../data/i18n-zh';
+  import { readQuestion, youAsked } from '../../lib/ask';
+
+  const coin = document.querySelector<HTMLElement>('[data-coin]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-flip]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+
+  const flip = () => {
+    if (!coin || !outcome) return;
+    const asked = readQuestion();
+    if (btn) btn.disabled = true;
+    outcome.innerHTML = '';
+    coin.classList.remove('flipping');
+    void coin.offsetWidth;
+    coin.classList.add('flipping');
+    window.setTimeout(() => {
+      const r = coinFlipZh(liveRand());
+      trackDraw('coin-flip');
+      // 落到对应面：正面朝上 = rotateX(0)
+      coin.style.transform = r.side === '正面' ? 'rotateX(0deg)' : 'rotateX(180deg)';
+      outcome.innerHTML = `
+        ${youAsked(asked, 'zh')}
+        <article class="reading card center" style="padding:20px 26px">
+          <div class="verdict ${r.answer === '是' ? 'yes' : 'no'}" style="font-size:2.6rem;padding:6px 30px">${r.side} — ${r.answer}</div>
+          <p class="muted" style="margin:14px 0 0">${r.answer === '是'
+            ? '正面说：去。注意一下这感觉像不像松了口气——通常都是。'
+            : '反面说：再等等。如果这结果让你刺痛，那你问的其实不是一道公平的题。'}</p>
+        </article>`;
+      outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (btn) btn.disabled = false;
+    }, 1150);
+  };
+
+  btn?.addEventListener('click', flip);
+  coin?.addEventListener('click', flip);
+</script>

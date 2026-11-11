@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import { dailyDraw } from '../../lib/engine';
+import { renderReading } from '../../lib/reading';
+import { ZODIAC } from '../../data/zodiac';
+import ZodiacMark from '../../components/ZodiacMark.astro';
+
+// Same shared fortune as /daily-fortune/, framed through this sign's read of it.
+// SSR renders build-day's draw; the island re-rolls client-side if the
+// visitor's today differs (static hosting freezes the build date).
+export function getStaticPaths() {
+  return ZODIAC.map((z) => ({ params: { zodiac: z.slug }, props: { z } }));
+}
+const { z } = Astro.props;
+const today = new Date().toISOString().slice(0, 10);
+const { sign, digits } = dailyDraw(today);
+const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+<Base
+  title={`Daily Fortune for ${z.name} (${z.dates}) — Today's Reading | LuckyShake`}
+  description={`Today's fortune read for ${z.name}: ${z.intro.slice(0, 90)}… Full reading with love, money, career verdicts and lucky numbers.`}
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <div class="kicker"><ZodiacMark slug={z.slug} name={z.name} size={20} /> {z.name} · {z.dates}</div>
+      <h1>Daily Fortune for {z.name}</h1>
+      <p class="date-line" data-date-title>{pretty}</p>
+      <p class="tool-sub">{z.intro}</p>
+    </div>
+    <div class="tool-outcome" data-outcome data-build-day={today} set:html={renderReading(sign, digits, { luckyLabel: 'Today’s lucky numbers', note: 'One fortune for everyone today — this page is your sign’s read of it.' })}></div>
+  </section>
+
+  <section class="section">
+    <div class="scene-list">
+      {ZODIAC.filter((o) => o.slug !== z.slug).slice(0, 4).map((o) => (
+        <a class="scene" href={`/horoscope/${o.slug}/`}>
+          <span class="glyph"><ZodiacMark slug={o.slug} name={o.name} /></span>
+          <p><b>{o.name}</b><br /><span class="muted">{o.dates}</span></p>
+        </a>
+      ))}
+      <a class="scene" href="/horoscope/">
+        <span class="glyph">☰</span>
+        <p><b>All signs</b><br /><span class="muted">pick another</span></p>
+      </a>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // If the visitor's today differs from build day, re-render client-side.
+  import { dailyDraw } from '../../lib/engine';
+  import { renderReading } from '../../lib/reading';
+
+  const el = document.querySelector<HTMLElement>('[data-outcome]');
+  const titleEl = document.querySelector<HTMLElement>('[data-date-title]');
+  const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+  const buildDay = el?.dataset.buildDay ?? today;
+  if (el && today !== buildDay) {
+    const { sign, digits } = dailyDraw(today);
+    el.innerHTML = renderReading(sign, digits, {
+      luckyLabel: 'Today’s lucky numbers',
+      note: 'One fortune for everyone today — this page is your sign’s read of it.',
+    });
+    if (titleEl) {
+      titleEl.textContent = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    }
+  }
+</script>

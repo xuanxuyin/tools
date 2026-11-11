@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+---
+<Base
+  title="Yes or No — Instant Answer With a Reason | LuckyShake"
+  description="Get an instant yes or no — plus the reason behind it and one thing to do next. Type your question or just hit decide. Free, no sign-up."
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>Yes or No</h1>
+      <p class="tool-sub">
+        One tap, one answer — and unlike every other yes/no button, you also get why, and what to do
+        next. Your question stays in your browser.
+      </p>
+      <div class="stage-visual yesno-stage">
+        <input class="q-input" data-q type="text" maxlength="80" placeholder="Optional — what are you deciding?" aria-label="Your question (optional)" />
+        <button class="btn" data-decide>Decide</button>
+      </div>
+      <div class="tool-outcome" data-outcome style="padding:0"></div>
+      <p class="hint" style="margin-top:18px">A clean 50/50 · the reasoning is the free extra</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">How it works</div>
+    <h2>Answer, reason, next step</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · Ask (or don’t)</div><p>Typing the question is optional — it helps you focus, and it never leaves your device.</p></div>
+      <div class="step"><div class="n">2 · Get a clean answer</div><p>A fair coin-flip between Yes and No. No "maybe", no hedging — a tiebreaker needs to actually break ties.</p></div>
+      <div class="step"><div class="n">3 · Read the layer under it</div><p>Each answer carries one honest reason and one concrete next step — the part other buttons skip.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">When people press</div>
+    <h2>Built for the 40th rewrite</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph">📱</span><p><b>Send the text?</b> You have rewritten it enough times to have written a novel. Press, get a verdict, obey it once.</p></div>
+      <div class="scene"><span class="glyph">🛒</span><p><b>Cart full, finger hovering.</b> The answer comes with a reason that has nothing to do with free shipping.</p></div>
+      <div class="scene"><span class="glyph">🏋️</span><p><b>Gym or couch?</b> Let the button take the blame. (Statistically, it says gym half the time. Those are the rules.)</p></div>
+      <div class="scene"><span class="glyph">🤔</span><p><b>Two good options.</b> When both paths are fine, the fastest way to your real preference is a coin flip you secretly hope lands on one side.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">Questions</div>
+    <h2>Yes or No FAQ</h2>
+    <Faq items={[
+      { q: 'Is it really 50/50?', a: 'Yes — a fair binary draw in your browser, no weighting, no memory. If you get Yes five times in a row, that is randomness being correctly weird, not the button having opinions.' },
+      { q: 'Why does it give a reason?', a: 'A bare answer ends the moment; a reason starts the next one. The "why" line names the decision dynamic you are actually in — sunk cost, asymmetry, missing permission — which is useful long after the coin lands.' },
+      { q: 'Should I trust it for big decisions?', a: 'Use it as a tiebreaker, not an oracle. The honest test: flip, then notice your gut’s reaction to the result. That reaction is your actual answer — the button just took your pulse.' },
+      { q: 'Do you save my question?', a: 'No. The text box never sends anything anywhere — there is no server on the other end of this page’s randomness. Refresh and it is gone.' },
+      { q: 'How is this different from the other yes/no sites?', a: 'Three layers instead of one: the answer, the honest reason, and the next step. Same one-tap simplicity — with something worth reading after the word "Yes".' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { yesNo, liveRand } from '../lib/engine';
+  import { trackDraw } from '../lib/track';
+  import { readQuestion, youAsked } from '../lib/ask';
+
+  const btn = document.querySelector<HTMLButtonElement>('[data-decide]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+
+  btn?.addEventListener('click', () => {
+    if (!outcome) return;
+    const asked = readQuestion();
+    btn.disabled = true;
+    const r = yesNo(liveRand());
+    trackDraw('yes-no');
+    outcome.innerHTML = `
+      ${youAsked(asked)}
+      <div class="center" style="margin-top:26px">
+        <div class="verdict ${r.answer.toLowerCase()}">${r.answer}</div>
+        <p style="max-width:520px;margin:18px auto 6px"><b>Why:</b> ${r.why}</p>
+        <p style="max-width:520px;margin:0 auto 26px"><b>Next:</b> ${r.next}</p>
+      </div>`;
+    window.setTimeout(() => (btn.disabled = false), 600);
+  });
+</script>

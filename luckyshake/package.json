@@ -1,0 +1,28 @@
+{
+  "name": "luckyshake",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Ask, shake, and get a real answer. Fortune sticks, number oracle, magic 8-ball and more.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.1.0",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.187.0",
+    "puppeteer-core": "^25.16.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

@@ -1,0 +1,106 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import { dailyDraw } from '../../lib/engine';
+import { renderReading } from '../../lib/reading';
+
+// SSR 渲染构建日的签；访客当天日期不同则客户端重算（静态托管会冻结构建日期）。
+// 上线版走日期化 URL（/daily-fortune/2026-11-07/），见 PLAYBOOK。
+const today = new Date().toISOString().slice(0, 10);
+const { sign, digits } = dailyDraw(today);
+const pretty = new Date(today + 'T12:00:00').toLocaleDateString('zh-CN', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<Base
+  lang="zh"
+  title={`今日运势 — ${pretty} | LuckyShake（内部审阅版）`}
+  description="每天零点抽一次的今日签：一篇手写签文，附感情、财运、事业指引和三个幸运数字。所有人同签，每天更新。"
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <div class="kicker">一天一支 · 零点换新</div>
+      <h1>今日运势</h1>
+      <p class="date-line" data-date-title>{pretty}</p>
+      <p class="tool-sub">
+        一天一支签，零点抽取，当天所有访客共享同一支——就像"当日签"的老规矩。
+        明天再来，是新的签。
+      </p>
+    </div>
+    <div class="tool-outcome" data-outcome data-build-day={today} set:html={renderReading(sign, digits, { lang: 'zh', luckyLabel: '今日幸运数字', note: '这是今天的签——零点换新。戳中了你，就截个图。' })}></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">归档</div>
+    <h2>往日的签</h2>
+    <div class="scene-list">
+      {Array.from({ length: 7 }, (_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (i + 1));
+        return d.toLocaleDateString('en-CA');
+      }).map((date) => (
+        <a class="scene" href={`/zh/daily-fortune/${date}/`}>
+          <span class="glyph">☀</span>
+          <p><b>{date}</b><br /><span class="muted">那一天的签</span></p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">这个仪式</div>
+    <h2>为什么一天只给一支？</h2>
+    <p>
+      无限重抽，是问事工具变成老虎机的方式。今日运势反着来：你只得到一支，
+      而且是今天所有人共有的那一支。早上读它，揣着那三个数字，
+      让它随着你的一天变换意思——一支好签本来就该这样用。
+    </p>
+    <div class="steps">
+      <div class="step"><div class="n">早晨</div><p>在一天开始抢着说话之前读它。</p></div>
+      <div class="step"><div class="n">中午</div><p>回头看一眼——早八点要紧的那句，到下午两点往往换成了另一句。</p></div>
+      <div class="step"><div class="n">零点</div><p>换新签。一整天都没变的那句话，多半是你的，不是签的。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>今日运势 FAQ</h2>
+    <Faq items={[
+      { q: '全天都是同一支签？', a: '是——日期本身就是种子，同一天所有访客抽到同一支。每晚零点换新，永远如此。不需要账号，也不挂任何追踪。' },
+      { q: '能看昨天的签吗？', a: '今日页永远显示"今天"。日期归档页会随正式上线一起推出——过去的每一支签都能再看、再分享。' },
+      { q: '今日签怎么选出来的？', a: '日期过一个确定性种子——没有人工挑选、没有偏心、也不记得最近出过哪些签。任何人在同一天、用同一个签库，算出的都是同一支。' },
+      { q: '幸运数字怎么用？', a: '随你开心——买彩票、抽奖、"三扇门选哪扇"。这三个数字属于今天：零点和签一起换新。' },
+      { q: '为什么是感情、财运、事业？', a: '因为问事的头三名就是它们。每支今日签都带这三路判词，外加一步具体的行动——哪路配你今天，就取哪路。' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  // 访客当天日期与构建日不同时，客户端重渲染。
+  import { dailyDraw } from '../../lib/engine';
+  import { renderReading } from '../../lib/reading';
+
+  const el = document.querySelector<HTMLElement>('[data-outcome]');
+  const titleEl = document.querySelector<HTMLElement>('[data-date-title]');
+  const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+  const buildDay = el?.dataset.buildDay ?? today;
+  if (el && today !== buildDay) {
+    const { sign, digits } = dailyDraw(today);
+    el.innerHTML = renderReading(sign, digits, {
+      lang: 'zh',
+      luckyLabel: '今日幸运数字',
+      note: '这是今天的签——零点换新。戳中了你，就截个图。',
+    });
+    if (titleEl) {
+      titleEl.textContent = new Date(today + 'T12:00:00').toLocaleDateString('zh-CN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    }
+  }
+</script>

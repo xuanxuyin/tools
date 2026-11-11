@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+---
+<Base
+  lang="zh"
+  title="签语饼 — 在线掰一支 | LuckyShake（内部审阅版）"
+  description="掰开一支虚拟签语饼，得到你的签语和三个幸运数字——这三个数字还能在数字神谕解锁一整篇签文。免费、无限、零卡路里。"
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>签语饼</h1>
+      <p class="tool-sub">
+        掰开一支：签语和三个幸运数字一起出现——而这三个数字，
+        还能在数字神谕解锁一整篇完整签文。
+      </p>
+      <div class="stage-visual">
+        <div class="cookie" data-cookie>
+          <div class="fortune-slip" data-slip></div>
+          <div class="chalf l"></div>
+          <div class="chalf r"></div>
+        </div>
+      </div>
+      <button class="btn" data-crack>掰开它</button>
+      <p class="hint">签语 + 3 个幸运数字 · 附完整签文的入口</p>
+    </div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">怎么玩</div>
+    <h2>掰开 · 读签 · 跟着数字走</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · 掰</div><p>一下掰开，签语滑出来——一句值得揣着过一天的话。</p></div>
+      <div class="step"><div class="n">2 · 收好数字</div><p>0 到 9 之间三个幸运数字随签语一起出现——像真正的签语饼那样。</p></div>
+      <div class="step"><div class="n">3 · 看深一层</div><p>你的三个数字同时是一把钥匙：它们会在数字神谕选出一整篇签文——吉语、典故、感情/财运/事业、下一步。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">什么时候掰</div>
+    <h2>一个十秒钟的仪式</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph">🥠</span><p><b>午休。</b>签语饼的原生场景。九十秒的好运，零 MSG。</p></div>
+      <div class="scene"><span class="glyph">📅</span><p><b>周一早上。</b>打开收件箱之前先掰一支——比"急：回复：回复："更适合当一天的第一句话。</p></div>
+      <div class="scene"><span class="glyph">🎲</span><p><b>数字型人格。</b>彩票号码、抽奖券、"三条路线走哪条"——数字随你花。</p></div>
+      <div class="scene"><span class="glyph">👥</span><p><b>饭桌仪式。</b>一人一支，大声念出来。给签语排名次，乐趣占一半。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>签语饼 FAQ</h2>
+    <Faq items={[
+      { q: '签语是随机的吗？', a: '抽取是随机的，写作不是。每一句都是本站手写——没有那种从外卖盒里刮来的一千条循环段子。' },
+      { q: '幸运数字有什么用？', a: '随你用——或者把它们当钥匙：同样三个数字放到我们的数字神谕里，会选出这支签语从一开始就指向的那篇完整签文。' },
+      { q: '能掰不止一支吗？', a: '无限支，零卡路里。不过老规矩提醒你：一天里的第一支才算数。' },
+      { q: '为什么签语旁边带个"看全文"链接？', a: '因为一句话只是开胃菜。你的数字对应着一篇带感情、财运、事业解读的完整签文——签语饼是门，神谕是房间。' },
+      { q: '每支签都带幸运数字？', a: '是——三个数字，每支都有，完全对标经典外卖格式。要不然人对彩票的想象力从哪来？' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { cookieFortune, liveRand } from '../../lib/engine';
+  import { trackDraw } from '../../lib/track';
+
+  const cookie = document.querySelector<HTMLElement>('[data-cookie]');
+  const slip = document.querySelector<HTMLElement>('[data-slip]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-crack]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+
+  const crack = () => {
+    if (!cookie || !outcome || !slip) return;
+    if (btn) btn.disabled = true;
+    cookie.classList.remove('open');
+    outcome.innerHTML = '';
+    window.setTimeout(() => {
+      const { sign, digits } = cookieFortune(liveRand());
+      trackDraw('fortune-cookie', sign.id);
+      cookie.classList.add('open');
+      slip.textContent = sign.titleZh;
+      const d = digits.join('');
+      outcome.innerHTML = `
+        <article class="reading card">
+          <div class="reading-head"><span class="chip blessing">签语</span></div>
+          <div class="reading-title">${sign.titleZh}</div>
+          <div class="lucky-row"><span class="lbl">幸运数字</span>
+            ${digits.map((n) => `<span class="pill">${n}</span>`).join('')}
+          </div>
+          <p class="again-line">这三个数字会选出你的完整签文——
+            <a href="/zh/number-oracle/?d=${d}">带着它们去数字神谕看全文 →</a>
+          </p>
+        </article>`;
+      outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (btn) btn.disabled = false;
+    }, 350);
+  };
+
+  btn?.addEventListener('click', crack);
+  cookie?.addEventListener('click', crack);
+</script>

@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+---
+<Base
+  title="Fortune Cookie — Crack One Open Online | LuckyShake"
+  description="Crack open a virtual fortune cookie and get your message plus three lucky numbers — the numbers unlock a full fortune reading. Free, unlimited, no calories."
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>Fortune Cookie</h1>
+      <p class="tool-sub">
+        Crack one open: your message appears with three lucky numbers — and those numbers unlock a
+        full fortune reading at the Number Oracle.
+      </p>
+      <div class="stage-visual">
+        <div class="cookie" data-cookie>
+          <div class="fortune-slip" data-slip></div>
+          <div class="chalf l"></div>
+          <div class="chalf r"></div>
+        </div>
+      </div>
+      <button class="btn" data-crack>Crack it open</button>
+      <p class="hint">Message + 3 lucky numbers · links to your full reading</p>
+    </div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">How it works</div>
+    <h2>Crack, read, follow the numbers</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · Crack</div><p>One click splits the cookie and your fortune slides out — a single line worth carrying through the day.</p></div>
+      <div class="step"><div class="n">2 · Take your numbers</div><p>Three lucky digits from 0 to 9 ride along with the message, the way real cookies do it.</p></div>
+      <div class="step"><div class="n">3 · Go deeper</div><p>Your three digits are also a key: they select a full fortune — headline, story, love/money/career, next step — at the Number Oracle.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">When people crack</div>
+    <h2>A ten-second ritual</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph">🥠</span><p><b>Lunch break.</b> The original context. Ninety seconds of fortune, zero MSG.</p></div>
+      <div class="scene"><span class="glyph">📅</span><p><b>Monday morning.</b> Crack one before the inbox opens — a better first sentence than "urgent: re: re:".</p></div>
+      <div class="scene"><span class="glyph">🎲</span><p><b>Numbers people.</b> Fantasy picks, raffle tickets, "which of three routes" — the digits are yours to spend.</p></div>
+      <div class="scene"><span class="glyph">👥</span><p><b>Table ritual.</b> Everyone cracks one and reads theirs out loud. The ranking of fortunes is half the fun.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">Questions</div>
+    <h2>Fortune Cookie FAQ</h2>
+    <Faq items={[
+      { q: 'Are the fortunes random?', a: 'The pick is random; the writing is not. Every line is hand-written for this site — no list of a thousand recycled one-liners scraped from takeout boxes.' },
+      { q: 'What do the lucky numbers do?', a: 'They are yours to use however you like — or treat them as a key: the same three digits at our Number Oracle select the full fortune reading your cookie was pointing at all along.' },
+      { q: 'Can I crack more than one?', a: 'Unlimited cookies, zero calories. Fair warning from tradition, though: the first fortune of the day is the one that counts.' },
+      { q: 'Why is there a "learn more" link with my cookie?', a: 'Because a one-liner is an appetizer. Your numbers map to a complete fortune with love, money, and career readings — the cookie is the doorway, the oracle is the room.' },
+      { q: 'Do you write lucky numbers on every fortune?', a: 'Yes — three digits, every cookie, matching the classic takeout format. Where else would lottery optimism come from?' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { cookieFortune, liveRand } from '../lib/engine';
+  import { trackDraw } from '../lib/track';
+
+  const cookie = document.querySelector<HTMLElement>('[data-cookie]');
+  const slip = document.querySelector<HTMLElement>('[data-slip]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-crack]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+
+  const crack = () => {
+    if (!cookie || !outcome || !slip) return;
+    if (btn) btn.disabled = true;
+    cookie.classList.remove('open');
+    outcome.innerHTML = '';
+    window.setTimeout(() => {
+      const { sign, digits } = cookieFortune(liveRand());
+      trackDraw('fortune-cookie', sign.id);
+      cookie.classList.add('open');
+      slip.textContent = sign.title;
+      const d = digits.join('');
+      outcome.innerHTML = `
+        <article class="reading card">
+          <div class="reading-head"><span class="chip blessing">Fortune</span></div>
+          <div class="reading-title">${sign.title}</div>
+          <div class="lucky-row"><span class="lbl">Lucky numbers</span>
+            ${digits.map((n) => `<span class="pill">${n}</span>`).join('')}
+          </div>
+          <p class="again-line">These three digits select your full reading —
+            <a href="/number-oracle/?d=${d}">follow them to the Number Oracle →</a>
+          </p>
+        </article>`;
+      outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (btn) btn.disabled = false;
+    }, 350);
+  };
+
+  btn?.addEventListener('click', crack);
+  cookie?.addEventListener('click', crack);
+</script>
