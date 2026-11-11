@@ -6,6 +6,13 @@
 
 ---
 
+## 今天 · 2026-11-11（周二）
+
+- [x] 🤖 **tintbrew bead-editor 手机适配修复批 ✅（👤 报：手机上整个拼豆都显示不出来；已真机验收"现在显示了"）**：三个问题叠加——①**手机断点单列规则被文件尾部无媒体查询的 `.ed-body{…340px}` 覆盖规则打掉**（11-02 色板侧栏加宽遗留），手机仍两列，393px 视口画布列分到 0 宽，SVG 被 max-width:100% 压成 0×0；②`.ed-library` 是 flex item 无确定宽度 → `repeat(N,1fr)` 轨道退化 min-content，291 颗色珠全部塌成 2px 边框点——**11-02 👤 "swatches couldn't see or hit" 的真根因，桌面手机同病**，`width:100%` 修复（swatch 2px→62px 桌面 / 32px 手机 8 列）；③三处 island `setPointerCapture` 裸调用包 try-catch（死指针异常会炸掉整个 pointerdown 放珠逻辑）；顺手手机断点 shell padding 32→16px（画布 277→309px）。**388/388 绿 + 392 页 build**；playwright 手机视口（393×852 touch DPR3）实勘：板 309×309、合成 pointer 拖画 16 珠连续落板、无横向溢出。b247108 在 cootie-predev。明细 [tintbrew PLAN 11/11 行](./tintbrew/PLAN.md)
+- [ ] 👤 **tintbrew 部署拍板（手机适配批）**：b247108 未合 main——**线上手机 bug 仍在**（bead-editor 手机上整板不可见 + 色珠 2px 点阵）。本地/局域网已验收 OK → 回复"部署"，Claude 合 main + push.bat + CF Pages 自动发布
+
+---
+
 ## 今天 · 2026-11-10（周一）
 
 - [x] 🤖 **tintbrew UI 模板对齐批 ✅（四件套一次上车）**：①对标 Coolors/perlerbeadpatterns.org 重排首页 hero（近黑 H1 + 双栏"产品即视觉"：真实混色条带 red→blue + 4 mix chip + HEX 标注）+ 工具卡 pastel 四色 + 串珠卡 1:1 统一框；②全站 Lucide 官方图标内联 vendored（ISC，28 枚，零字体请求）；③**顺手抓出两个真 bug**——mixer 条带 hydration 后塌缩（scoped CSS 对 runtime 注入 DOM 失效，`:global` 修复+回归测试）、涂色页点蜜蜂左眼整只上色（墨线归属修复：环边界像素归细节环 + evenodd 渲染，`lib/coloringIdMap.ts` 纯函数 + 真_payload 实勘回归）；④页脚两列精简（👤 两次点名：Color guides 10→3、Bead patterns 11→3，其余仍挂各自 hub）。**382/382 绿 + 392 页 build**。明细 [tintbrew PLAN 11/10 行](./tintbrew/PLAN.md)
