@@ -31,9 +31,17 @@ function* walkIndexHtml(dir: string): Generator<string> {
   }
 }
 
-/** meta content arrives HTML-escaped — mirror the injection script's pipeline exactly */
+/** meta content arrives HTML-escaped (named AND numeric forms) — mirror the injection script's pipeline exactly */
 const unescapeHtml = (s: string) =>
   s
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => {
+      const cp = parseInt(h, 16);
+      return Number.isFinite(cp) && cp > 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : _;
+    })
+    .replace(/&#(\d+);/g, (_, d) => {
+      const cp = parseInt(d, 10);
+      return Number.isFinite(cp) && cp > 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : _;
+    })
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
@@ -109,11 +117,27 @@ describe.skipIf(!sitemapReady)('sitemap image:image declarations (PLAN #37)', ()
 
   it('spot checks: cursive letter matrix and the hand-built teaching calendar are declared', () => {
     const origin = new URL([...blockByLoc.keys()][0]).origin;
+    // title pinned end-to-end: og:title stores "&" as the NUMERIC entity &#38;
+    // (Astro attribute escaper) — the title must decode to a single "&" in XML.
+    // This is the regression test for the 2026-11-11 production bug where the
+    // title went out as literal "&amp;#38;".
     expect(blockByLoc.get(`${origin}/cursive/a/`)).toContain(
       '<image:loc>https://chartglade.com/images/cursive-letter-a-worksheet.png</image:loc>',
+    );
+    expect(blockByLoc.get(`${origin}/cursive/a/`)).toContain(
+      '<image:title>Cursive A — Capital &amp; Lowercase, Free Printable | ChartGlade</image:title>',
     );
     expect(blockByLoc.get(`${origin}/teaching-calendar/`)).toContain(
       '<image:loc>https://chartglade.com/images/teaching-calendar-year-index.png</image:loc>',
     );
+  });
+
+  it('no declaration carries a double-escaped or unresolved entity in its title', () => {
+    for (const b of blocks.filter((x) => x.includes('<image:image>'))) {
+      expect(b).not.toContain('&amp;amp;');
+      expect(b, 'numeric entity leaked through decoding').not.toMatch(/&(?:amp;)?#\d+;/);
+      expect(b).not.toContain('&amp;lt;');
+      expect(b).not.toContain('&amp;gt;');
+    }
   });
 });

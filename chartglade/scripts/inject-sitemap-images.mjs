@@ -32,10 +32,20 @@ if (!existsSync(SITEMAP)) {
 const esc = (s) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-// meta content arrives HTML-escaped (og:title "A &amp; B") — decode before
-// re-escaping as XML, or entities get double-escaped
+// meta content arrives HTML-escaped, in TWO forms: named (title tag style
+// "A &amp; B") and numeric (og: content style "A &#38; B", Astro's attribute
+// escaper) — decode both before re-escaping as XML, or entities get
+// double-escaped. &amp; decodes LAST so it masks nothing after it.
 const unescapeHtml = (s) =>
   s
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => {
+      const cp = parseInt(h, 16);
+      return Number.isFinite(cp) && cp > 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : _;
+    })
+    .replace(/&#(\d+);/g, (_, d) => {
+      const cp = parseInt(d, 10);
+      return Number.isFinite(cp) && cp > 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : _;
+    })
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
