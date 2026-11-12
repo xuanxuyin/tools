@@ -1,15 +1,21 @@
 ---
+/**
+ * Home tool card. icon = a Fluent 3D render filename in /img/icons/
+ * (MIT, microsoft/fluentui-emoji), or 'jar' = the licensed flat jar
+ * illustration (👤 11/11, /img/jar-icon.png).
+ */
 interface Props {
   href: string;
-  glyph: string;
+  icon: string;
   name: string;
   desc: string;
   go?: string;
 }
-const { href, glyph, name, desc, go = 'Try it →' } = Astro.props;
+const { href, icon, name, desc, go = 'Try it →' } = Astro.props;
+const img = icon === 'jar' ? '/img/jar-icon.png' : `/img/icons/${icon}.png`;
 ---
 <a class="tool-card" href={href}>
-  <span class="glyph">{glyph}</span>
+  <span class="glyph"><img src={img} width="30" height="30" alt="" /></span>
   <b>{name}</b>
   <span class="desc">{desc}</span>
   <span class="go">{go}</span>

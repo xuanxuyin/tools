@@ -21,7 +21,7 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('zh-CN', {
 ---
 <Base
   lang="zh"
-  title={`${z.nameZh}今日运势（${z.datesZh}）— 今天的签 | LuckyShake（内部审阅版）`}
+  title={`${z.nameZh}今日运势（${z.datesZh}）— 今天的签 | Fortune Willow（内部审阅版）`}
   description={`${z.nameZh}的今日签：${z.introZh.slice(0, 60)}…完整签文附感情、财运、事业判词与幸运数字。`}
 >
   <section class="tool-shell card">
@@ -31,7 +31,7 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('zh-CN', {
       <p class="date-line" data-date-title>{pretty}</p>
       <p class="tool-sub">{z.introZh}</p>
     </div>
-    <div class="tool-outcome" data-outcome data-build-day={today} set:html={renderReading(sign, digits, { lang: 'zh', luckyLabel: '今日幸运数字', note: '今天所有人同一支签——这一页是你的星座读法。' })}></div>
+    <div class="tool-outcome" data-outcome data-build-day={today} set:html={renderReading(sign, digits, { lang: 'zh', luckyLabel: '今日幸运数字', note: '今日大众同签——这一页，是你的星座读法。' })}></div>
   </section>
 
   <section class="section">
@@ -43,8 +43,8 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('zh-CN', {
         </a>
       ))}
       <a class="scene" href="/zh/horoscope/">
-        <span class="glyph">☰</span>
-        <p><b>全部星座</b><br /><span class="muted">换一个看</span></p>
+        <span class="glyph"><img src="/img/icons/crystal_ball.png" width="24" height="24" alt="" /></span>
+        <p><b>十二星座</b><br /><span class="muted">另择一签之缘</span></p>
       </a>
     </div>
   </section>
@@ -64,7 +64,7 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('zh-CN', {
     el.innerHTML = renderReading(sign, digits, {
       lang: 'zh',
       luckyLabel: '今日幸运数字',
-      note: '今天所有人同一支签——这一页是你的星座读法。',
+      note: '今日大众同签——这一页，是你的星座读法。',
     });
     if (titleEl) {
       titleEl.textContent = new Date(today + 'T12:00:00').toLocaleDateString('zh-CN', {

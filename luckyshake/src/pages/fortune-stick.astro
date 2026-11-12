@@ -1,40 +1,42 @@
 ---
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
+import Jar3d from '../components/Jar3d.astro';
 import { SIGNS } from '../data/signs';
 ---
 <Base
-  title="Fortune Stick — Shake the Jar, Draw Your Fortune | LuckyShake"
+  title="Fortune Stick — Shake the Jar, Draw Your Fortune | Fortune Willow"
   description="Think of your question, shake the jar, and draw one of our hand-written fortune sticks. Every fortune comes with readings for love, money, and career — plus your lucky numbers."
 >
   <section class="tool-shell card">
     <div class="tool-stage">
       <h1>Fortune Stick</h1>
       <p class="tool-sub">
-        Hold your question in mind — don't type it yet. Shake the jar, watch one stick leap out with
-        its number, then tell the jar what you asked about.
+        You don't pick the stick — the stick picks you. Hold your question in mind, no typing yet.
+        Shake the jar: the stick that leaps out already carries the answer. When it lands, tell the
+        jar what you asked about.
       </p>
-      <div class="stage-visual">
-        <div class="cup-wrap" data-cup>
-          <!-- 3D jar (three.js): sits still until shaken — the jar rattles
-               at an angle and one stick tumbles out, landing on the ground
-               with its number tag up. The cut-out photo is the fallback
-               poster if WebGL never boots -->
-          <div class="jar3d" data-jar3d>
-            <img
-              class="cup-photo jar-poster"
-              src="/img/fortune-jar.webp"
-              alt="Red-and-gold temple fortune jar with bamboo sticks fanned above it"
-              width="420"
-              height="296"
-              decoding="async"
-            />
+      <div class="ritual-row">
+        <!-- left column: the incense ritual (claim, light, offer) before the shake -->
+        <div class="ritual-incense" data-incense-root></div>
+        <!-- right column: the draw itself (moved right) -->
+        <div class="ritual-draw">
+          <div class="stage-visual">
+            <div class="cup-wrap" data-cup>
+              <!-- 3D jar (three.js), shared with the homepage (Jar3d.astro):
+                   sits still until shaken — the jar rattles at an angle and one
+                   stick tumbles out, landing on the ground with its number tag
+                   up. The placeholder is the SVG jar (same art): instant paint,
+                   and the no-WebGL fallback -->
+              <Jar3d uid="fs-en" />
+            </div>
           </div>
+          <button class="btn" data-shake>Shake the jar</button>
+          <p class="hint">Hand-written fortunes in the jar · free, no sign-up</p>
         </div>
       </div>
-      <button class="btn" data-shake>Shake the jar</button>
-      <p class="hint">Hand-written fortunes in the jar · free, no sign-up</p>
     </div>
+    <div data-ration-slot></div>
     <div class="tool-outcome" data-outcome></div>
   </section>
 
@@ -52,10 +54,10 @@ import { SIGNS } from '../data/signs';
     <div class="kicker">When people draw</div>
     <h2>The moments a stick helps most</h2>
     <div class="scene-list">
-      <div class="scene"><span class="glyph">💼</span><p><b>Offer on the table.</b> Take it, push back, or walk? A fortune will not decide for you — but it will show you which part you already decided.</p></div>
-      <div class="scene"><span class="glyph">💬</span><p><b>The text you keep rewriting.</b> Send it or let it go? Draw a stick, then notice whether you are hoping for a blessing or permission to let go.</p></div>
-      <div class="scene"><span class="glyph">💸</span><p><b>Big purchase circling your brain.</b> The money verdict gives you a lens that is not "how bad do I want it."</p></div>
-      <div class="scene"><span class="glyph">🧭</span><p><b>A quiet crossroads.</b> No crisis, just two decent paths. Random input is honest exactly where your own analysis is tired.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/briefcase.png" width="24" height="24" alt="" /></span><p><b>Offer on the table.</b> Take it, push back, or walk? A fortune will not decide for you — but it will show you which part you already decided.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/mobile_phone.png" width="24" height="24" alt="" /></span><p><b>The text you keep rewriting.</b> Send it or let it go? Draw a stick, then notice whether you are hoping for a blessing or permission to let go.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/money_with_wings.png" width="24" height="24" alt="" /></span><p><b>Big purchase circling your brain.</b> The money verdict gives you a lens that is not "how bad do I want it."</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/compass.png" width="24" height="24" alt="" /></span><p><b>A quiet crossroads.</b> No crisis, just two decent paths. Random input is honest exactly where your own analysis is tired.</p></div>
     </div>
   </section>
 
@@ -65,7 +67,7 @@ import { SIGNS } from '../data/signs';
     <Faq items={[
       { q: 'Are the fortunes random?', a: 'Yes — the stick you draw is a fair random pick from our library. What is not random is the writing: every fortune is hand-written and edited in-house, with readings tuned to love, money, and career situations.' },
       { q: 'Why do I pick a topic after drawing?', a: 'That is how the ritual works: you hold the question privately while the jar shakes — the stick should not know it. Only after it leaps out do you say what it was about, and that is the part the fortune answers. Type your own words and the jar routes them: questions of the heart read the love verdict, money questions the money verdict, work questions the career one — anything else gets the fortune\'s overall reading. One question, one answer: once revealed, the choice locks — shake again to ask something else.' },
-      { q: 'Where do these fortunes come from?', a: 'They are original adaptations of a much older idea: fortune sticks drawn at temples, where each numbered stick carries a poem, a story, and guidance. We rewrote the tradition for modern American decisions — no riddles about harvests, just clear guidance with the story kept in.' },
+      { q: 'Where do these fortunes come from?', a: 'They are original adaptations of a much older idea: fortune sticks drawn at temples, where each numbered stick carries a poem, a story, and guidance. We rewrote the tradition for modern life — no riddles about harvests, just clear guidance with the story kept in.' },
       { q: 'Can I ask about another person?', a: 'You can, but the strongest questions are about your own next move. "Should I text them back?" beats "does he miss me?" — one gives you an action, the other just gives you a mood.' },
       { q: 'What are the three grades?', a: 'Every stick is graded as a Blessing (green light energy), a Nudge (steady, practical guidance), or a Gentle Warning (slow down and protect what matters). We do not write doom-and-gloom fortunes — a hard truth, yes; despair, never.' },
       { q: 'Does the same stick always mean the same thing?', a: 'The words are fixed; the reading is yours. Sign 01 on a Tuesday about a job and the same sign on a Friday about a relationship will land differently — that gap is where your own judgment lives, and it is the most reliable oracle in this whole site.' },
@@ -76,28 +78,31 @@ import { SIGNS } from '../data/signs';
 <script>
   import { drawSign, liveRand } from '../lib/engine';
   import { trackDraw } from '../lib/track';
+  import { gateDraw } from '../lib/rationUi';
   import { drawnBanner, renderFocusedReading } from '../lib/reading';
   import { focusPanelHTML, wireFocusPanel } from '../lib/focusFlow';
   import { focusForQuestion } from '../lib/classify';
+  import { bootJar } from '../lib/jarBoot';
   import type { Jar3D } from '../lib/jar3d';
 
   const cup = document.querySelector<HTMLElement>('[data-cup]');
   const btn = document.querySelector<HTMLButtonElement>('[data-shake]');
   const outcome = document.querySelector<HTMLElement>('[data-outcome]');
   const jarHost = document.querySelector<HTMLElement>('[data-jar3d]');
-  // the 3D jar loads lazily — three.js never blocks the page
-  let jar: Jar3D | null = null;
-  if (jarHost) {
-    void import('../lib/jar3d').then(({ createJar3D }) => {
-      const made = createJar3D(jarHost);
-      if (made) {
-        jar = made;
-        jarHost.querySelector('.jar-poster')?.remove();
-      }
-    });
+  // the incense widget loads lazily — never blocks the draw
+  const incenseRoot = document.querySelector<HTMLElement>('[data-incense-root]');
+  if (incenseRoot) {
+    const { mountIncense } = await import('../lib/incenseUi');
+    mountIncense(incenseRoot);
   }
+  // the 3D jar loads lazily — three.js never blocks the page; bootJar is
+  // the shared boot (same promise as the component sweep) and fades the
+  // SVG placeholder out only after the canvas has painted
+  let jar: Jar3D | null = null;
+  if (jarHost) void bootJar(jarHost).then((made) => { jar = made; });
   if (cup && btn && outcome) {
     const shake = () => {
+      if (!gateDraw(shake)) return; // ration: one free draw a day — merit buys more
       btn.disabled = true;
       outcome.innerHTML = '';
       jar?.reset();

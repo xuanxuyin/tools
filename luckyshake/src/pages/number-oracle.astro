@@ -3,15 +3,15 @@ import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 ---
 <Base
-  title="Number Oracle — Three Numbers, One Answer | LuckyShake"
+  title="Number Oracle — Three Numbers, One Answer | Fortune Willow"
   description="Ask your question, roll three random numbers from 0 to 9, and read the fortune they point to. Three digits become your sign, your lucky numbers, and your next step."
 >
   <section class="tool-shell card">
     <div class="tool-stage">
       <h1>Number Oracle</h1>
       <p class="tool-sub">
-        Hold your question in mind, then roll three numbers from 0–9. Your three digits choose the
-        fortune — and become your lucky numbers. After the roll, tell the oracle what you asked about.
+        Hold your question in mind, then roll three numbers from 0–9. Your digits pick the fortune —
+        and double as your lucky numbers. After the roll, tell the oracle what you asked about.
       </p>
       <div class="stage-visual">
         <div class="slots">
@@ -23,6 +23,7 @@ import Faq from '../components/Faq.astro';
       <button class="btn" data-roll>Roll my numbers</button>
       <p class="hint">3 digits · every roll resolves to a hand-written fortune</p>
     </div>
+    <div data-ration-slot></div>
     <div class="tool-outcome" data-outcome></div>
   </section>
 
@@ -40,10 +41,10 @@ import Faq from '../components/Faq.astro';
     <div class="kicker">When people roll</div>
     <h2>Good questions to roll on</h2>
     <div class="scene-list">
-      <div class="scene"><span class="glyph">❤️</span><p><b>Love:</b> "Is this worth one more honest conversation?" — the love reading meets you there.</p></div>
-      <div class="scene"><span class="glyph">💰</span><p><b>Money:</b> "Buy now or keep saving?" — check the money verdict before the cart does the deciding.</p></div>
-      <div class="scene"><span class="glyph">💼</span><p><b>Career:</b> "Should I raise my hand for the new role?" — the career reading gives you the framing for Monday.</p></div>
-      <div class="scene"><span class="glyph">🔢</span><p><b>Lucky numbers:</b> rolling for the week — people use their three digits for fantasy picks, bracket tiebreakers, and "which of the three restaurants" energy.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/red_heart.png" width="24" height="24" alt="" /></span><p><b>Love:</b> "Is this worth one more honest conversation?" — the love reading meets you there.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/money_bag.png" width="24" height="24" alt="" /></span><p><b>Money:</b> "Buy it now or keep saving?" — check the money verdict before the cart does the deciding for you.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/briefcase.png" width="24" height="24" alt="" /></span><p><b>Career:</b> "Should I throw my hat in for the new role?" — the career reading gives you the framing for Monday morning.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/input_numbers.png" width="24" height="24" alt="" /></span><p><b>Lucky numbers:</b> rolling for the week — people carry their three digits into fantasy picks, bracket tiebreakers, and the eternal "which of the three restaurants" standoff.</p></div>
     </div>
   </section>
 
@@ -53,7 +54,7 @@ import Faq from '../components/Faq.astro';
     <Faq items={[
       { q: 'Are the numbers really random?', a: 'Yes — each of the three digits is an independent fair roll from 0 to 9, generated in your browser. No server, no pattern, no memory of what you rolled before.' },
       { q: 'How do three numbers become a fortune?', a: 'The first two digits pick your fortune from the numbered library; all three become your lucky numbers.' },
-      { q: 'Can I roll the same question twice?', a: 'You can, but the oracle keeps no memory — a re-roll is a fresh draw, not a second opinion. If you keep rolling until you like the answer, notice that: it means you already have an answer.' },
+      { q: 'Can I roll the same question twice?', a: 'You can, but the oracle keeps no memory — a re-roll is a fresh draw, not a second opinion. If you keep rolling until you like the answer, notice that: it means you already had one.' },
       { q: 'Why do I pick a topic after rolling?', a: 'The ritual works backwards on purpose: you hold the question privately while the digits roll — the numbers should not know it. Only after they land do you say what it was about, and that is the part the fortune answers. Type your own words and the oracle routes them: questions of the heart read the love verdict, money questions the money verdict, work questions the career one — anything else gets the sign\'s overall reading. One question, one answer: once revealed, the choice locks — roll again to ask something else.' },
       { q: 'What is the tradition behind this?', a: 'Number divination is one of the oldest doorways in fortune-telling: ask a question, let chance produce a small sign, then read that sign through a book of interpretations. Ours is built on the same skeleton — honest randomness, hand-written meanings.' },
       { q: 'Why only 0 to 9?', a: 'Digits 0–9 are the ones your hand already knows — one quick roll gives you three. And every path they can land on leads to a real, fully-written fortune instead of a generic paragraph.' },
@@ -64,6 +65,7 @@ import Faq from '../components/Faq.astro';
 <script>
   import { rollDigits, signForDigits, liveRand } from '../lib/engine';
   import { trackDraw } from '../lib/track';
+  import { gateDraw } from '../lib/rationUi';
   import { drawnBanner, renderFocusedReading } from '../lib/reading';
   import { focusPanelHTML, wireFocusPanel } from '../lib/focusFlow';
   import { focusForQuestion } from '../lib/classify';
@@ -89,7 +91,7 @@ import Faq from '../components/Faq.astro';
       const lens = focus === 'own' ? focusForQuestion(own) : focus;
       answer.innerHTML = renderFocusedReading(sign, lens, digits, {
         echo: own,
-        note: 'These three digits are yours — people carry them for the week, the pick, or the tiebreaker.',
+        note: 'These three digits are yours now — people carry them for the week, the pick, or the tiebreaker.',
       });
       answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
@@ -99,6 +101,7 @@ import Faq from '../components/Faq.astro';
 
   const roll = () => {
     if (!btn || !outcome) return;
+    if (!gateDraw(roll)) return; // ration: manual rolls draw from the daily ration (the ?d= cookie handoff stays free)
     btn.disabled = true;
     outcome.innerHTML = '';
     const digits = rollDigits(liveRand());

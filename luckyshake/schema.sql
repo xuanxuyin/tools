@@ -1,5 +1,6 @@
--- LuckyShake D1 schema (global draw counter + Google-OAuth accounts + reading history)
--- Apply: npx wrangler d1 execute luckyshake --file=./schema.sql  (or --local for dev)
+-- Fortune Willow D1 schema (global draw counter + Google-OAuth accounts + reading history + merit box)
+-- Apply: npx wrangler d1 execute fortunewillow --remote --file=./schema.sql  (drop --remote for local dev)
+-- Pages binding: project → Settings → Bindings → D1, binding name `DB` → database `fortunewillow`.
 CREATE TABLE IF NOT EXISTS counters (
   tool  TEXT PRIMARY KEY,
   count INTEGER NOT NULL DEFAULT 0
@@ -30,3 +31,9 @@ CREATE TABLE IF NOT EXISTS history (
 );
 
 CREATE INDEX IF NOT EXISTS idx_history_user ON history (user_id, id DESC);
+
+-- Communal merit-box counter (single row, lifetime total, never reset — 👤 2026-11-11)
+CREATE TABLE IF NOT EXISTS merit_box (
+  id    INTEGER PRIMARY KEY CHECK (id = 1),
+  total INTEGER NOT NULL DEFAULT 0
+);

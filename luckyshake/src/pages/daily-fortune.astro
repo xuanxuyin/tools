@@ -17,7 +17,7 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
 });
 ---
 <Base
-  title={`Daily Fortune — ${pretty} | LuckyShake`}
+  title={`Daily Fortune — ${pretty} | Fortune Willow`}
   description="Today's fortune, drawn fresh every morning: one hand-written reading with love, money, and career guidance plus three lucky numbers. Same fortune for everyone, new every day."
 >
   <section class="tool-shell card">
@@ -26,8 +26,8 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
       <h1>Daily Fortune</h1>
       <p class="date-line" data-date-title>{pretty}</p>
       <p class="tool-sub">
-        One fortune per day, drawn at midnight and shared by everyone who visits — the way a
-        temple’s stick of the day works. Come back tomorrow for a new one.
+        One fortune a day, drawn at midnight and shared by everyone who visits — the way the
+        daily stick at a temple works. Come back tomorrow; it'll be a new one.
       </p>
     </div>
     <div class="tool-outcome" data-outcome data-build-day={today} set:html={renderReading(sign, digits, { luckyLabel: 'Today’s lucky numbers', note: 'This is today’s fortune — it changes at midnight. Screenshot it if it hits.' })}></div>
@@ -43,7 +43,7 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
         return d.toLocaleDateString('en-CA');
       }).map((date) => (
         <a class="scene" href={`/daily-fortune/${date}/`}>
-          <span class="glyph">☀</span>
+          <span class="glyph"><img src="/img/icons/sun.png" width="24" height="24" alt="" /></span>
           <p><b>{date}</b><br /><span class="muted">that day’s fortune</span></p>
         </a>
       ))}
@@ -54,15 +54,15 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
     <div class="kicker">The ritual</div>
     <h2>Why one fortune a day?</h2>
     <p>
-      Endless re-draws are how fortune tools become slot machines. The daily fortune works the other
-      way: you get one, and it is the same one everyone else got today. Read it in the morning, carry
-      the lucky numbers, and let it change meaning as your day does — that is what a good fortune
-      does.
+      Endless re-draws are how fortune tools turn into slot machines. The daily fortune works the
+      other way: you get one, and it's the same one everyone else got today. Read it in the morning,
+      carry the lucky numbers, and let it mean something different as your day changes — that's
+      what a good fortune does.
     </p>
     <div class="steps">
       <div class="step"><div class="n">Morning</div><p>Read it before the day starts talking over it.</p></div>
-      <div class="step"><div class="n">Midday</div><p>Glance back — the line that mattered at 8 a.m. is often a different line at 2 p.m.</p></div>
-      <div class="step"><div class="n">Midnight</div><p>A fresh draw. What stayed true across the whole day was probably yours, not the fortune’s.</p></div>
+      <div class="step"><div class="n">Midday</div><p>Glance back — the line that mattered at 8 a.m. is usually a different line by 2 p.m.</p></div>
+      <div class="step"><div class="n">Midnight</div><p>A fresh draw. Whatever stayed true all day was probably yours, not the fortune's.</p></div>
     </div>
   </section>
 
@@ -70,11 +70,11 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
     <div class="kicker">Questions</div>
     <h2>Daily Fortune FAQ</h2>
     <Faq items={[
-      { q: 'Is the fortune the same all day?', a: 'Yes — the date itself is the seed, so every visitor on the same day gets the same fortune. It re-rolls at midnight, every night, forever. No account needed and no tracking attached.' },
-      { q: 'Can I see yesterday’s fortune?', a: 'The daily page always shows today’s. Dated archive pages ship with the public launch, so every past fortune stays readable and shareable.' },
-      { q: 'How is the daily fortune chosen?', a: 'The date is run through a deterministic seed — no hand-picking, no favoritism, no memory of which fortunes ran recently. Anyone with the same date and the same library would compute the same draw.' },
-      { q: 'What do I do with the lucky numbers?', a: 'Whatever you enjoy — fantasy picks, raffle tickets, picking between three doors. These three belong to today: they re-roll with the fortune at midnight.' },
-      { q: 'Why does it say love, money, and career?', a: 'Because that is the trio most fortunes actually get asked about. Each daily fortune carries all three readings, plus one concrete step — take the one that matches your day.' },
+      { q: 'Is the fortune the same all day?', a: 'Yes — the date itself is the seed, so every visitor on the same day gets the same fortune. It re-rolls at midnight, every night, forever. No account needed, nothing tracked.' },
+      { q: 'Can I see yesterday’s fortune?', a: 'The daily page always shows today’s. Dated archive pages are live now — tap the fortune card or type the URL, and any past day stays readable and shareable.' },
+      { q: 'How is the daily fortune chosen?', a: 'The date runs through a deterministic seed — no hand-picking, no favorites, no memory of which fortunes ran recently. Anyone with the same date and the same library would compute the exact same draw.' },
+      { q: 'What do I do with the lucky numbers?', a: 'Whatever you enjoy — fantasy picks, raffle tickets, picking which of three routes to take. These three belong to today: they re-roll with the fortune at midnight.' },
+      { q: 'Why does it say love, money, and career?', a: 'Because those are the three people actually ask about. Each daily fortune carries all three readings, plus one concrete step — take whichever one matches your day.' },
     ]} />
   </section>
 </Base>

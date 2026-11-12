@@ -1,4 +1,5 @@
 ---
+import { iconSvg } from '../../lib/icons';
 import Base from '../../layouts/Base.astro';
 import { dailyDraw } from '../../lib/engine';
 import { renderReading } from '../../lib/reading';
@@ -30,16 +31,16 @@ const prev = i > 0 ? days[i - 1] : null;
 const next = i < days.length - 1 ? days[i + 1] : null;
 ---
 <Base
-  title={`Daily Fortune — ${pretty} | LuckyShake`}
+  title={`Daily Fortune — ${pretty} | Fortune Willow`}
   description={`The shared daily fortune for ${pretty}: one hand-written reading with love, money, and career guidance plus three lucky numbers. Same fortune everyone got that day, on the record.`}
 >
   <section class="tool-shell card">
     <div class="tool-stage">
-      <div class="kicker">One per day · the archive</div>
+      <div class="kicker">One per day · from the archive</div>
       <h1>Daily Fortune</h1>
       <p class="date-line">{pretty}</p>
       <p class="tool-sub">
-        This is the fortune everyone shared on this date — drawn at midnight, on the record forever.
+        The fortune everyone got on this date — drawn at midnight, on the record for good.
       </p>
     </div>
     <div class="tool-outcome" set:html={renderReading(sign, digits, { luckyLabel: 'That day’s lucky numbers' })}></div>
@@ -49,17 +50,17 @@ const next = i < days.length - 1 ? days[i + 1] : null;
     <div class="scene-list">
       {prev && (
         <a class="scene" href={`/daily-fortune/${prev}/`}>
-          <span class="glyph">←</span>
+          <span class="glyph"><Fragment set:html={iconSvg('arrowLeft', 20)} /></span>
           <p><b>Previous day</b><br /><span class="muted">{prev}</span></p>
         </a>
       )}
       <a class="scene" href="/daily-fortune/">
-        <span class="glyph">☀</span>
+        <span class="glyph"><img src="/img/icons/sun.png" width="24" height="24" alt="" /></span>
         <p><b>Today’s fortune</b><br /><span class="muted">fresh at midnight</span></p>
       </a>
       {next && (
         <a class="scene" href={`/daily-fortune/${next}/`}>
-          <span class="glyph">→</span>
+          <span class="glyph"><Fragment set:html={iconSvg('arrowRight', 20)} /></span>
           <p><b>Next day</b><br /><span class="muted">{next}</span></p>
         </a>
       )}

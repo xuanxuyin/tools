@@ -22,8 +22,8 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
 });
 ---
 <Base
-  title={`Daily Fortune for ${z.name} (${z.dates}) — Today's Reading | LuckyShake`}
-  description={`Today's fortune read for ${z.name}: ${z.intro.slice(0, 90)}… Full reading with love, money, career verdicts and lucky numbers.`}
+  title={`Daily Fortune for ${z.name} (${z.dates}) — Today's Reading | Fortune Willow`}
+  description={`Today's fortune read for ${z.name}: ${z.intro.slice(0, 90).replace(/\s+\S*$/, '')}… Full reading with love, money, career verdicts and lucky numbers.`}
 >
   <section class="tool-shell card">
     <div class="tool-stage">
@@ -32,7 +32,7 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
       <p class="date-line" data-date-title>{pretty}</p>
       <p class="tool-sub">{z.intro}</p>
     </div>
-    <div class="tool-outcome" data-outcome data-build-day={today} set:html={renderReading(sign, digits, { luckyLabel: 'Today’s lucky numbers', note: 'One fortune for everyone today — this page is your sign’s read of it.' })}></div>
+    <div class="tool-outcome" data-outcome data-build-day={today} set:html={renderReading(sign, digits, { luckyLabel: 'Today’s lucky numbers', note: 'One shared fortune today — this page is your sign’s take on it.' })}></div>
   </section>
 
   <section class="section">
@@ -44,8 +44,8 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
         </a>
       ))}
       <a class="scene" href="/horoscope/">
-        <span class="glyph">☰</span>
-        <p><b>All signs</b><br /><span class="muted">pick another</span></p>
+        <span class="glyph"><img src="/img/icons/crystal_ball.png" width="24" height="24" alt="" /></span>
+        <p><b>All signs</b><br /><span class="muted">switch signs</span></p>
       </a>
     </div>
   </section>
@@ -64,7 +64,7 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
     const { sign, digits } = dailyDraw(today);
     el.innerHTML = renderReading(sign, digits, {
       luckyLabel: 'Today’s lucky numbers',
-      note: 'One fortune for everyone today — this page is your sign’s read of it.',
+      note: 'One shared fortune today — this page is your sign’s take on it.',
     });
     if (titleEl) {
       titleEl.textContent = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {

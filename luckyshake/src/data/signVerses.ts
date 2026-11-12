@@ -751,7 +751,7 @@ export const SIGN_VERSES: Record<number, SignVerse> = {
     src: '黄大仙12 下下',
     zh: ['蜃楼海市幻无边', '万丈擎空接上天', '或被狂风忽吹散', '有时仍聚结青烟'],
     en: [
-      'A mirage over the sea, illusion without border,',
+      'A mirage over the sea, illusion without shore,',
       'ten thousand feet of towers propping up the sky.',
       'One gust of wild wind and the whole city scatters —',
       'then regathers, sometimes, as a wisp of blue smoke.',

@@ -660,7 +660,7 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
       // 👤 11/08 (二): 太小 → 放大整牌 + 提字号，落点仍贴签不遮筒
       jar.add(chosen.label);
       chosen.label.scale.set(0, 0, 1);
-      chosen.label.position.set(landX + 0.1, FLOOR_Y + 0.44, landZ + 0.1);
+      chosen.label.position.set(landX + 0.1, FLOOR_Y + 0.62, landZ + 0.1);
     },
     reset() {
       if (chosen) {
@@ -730,7 +730,7 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
   canvas.addEventListener('pointerup', onUp);
   canvas.addEventListener('pointercancel', onUp);
 
-  renderer.setAnimationLoop(() => {
+  const renderLoop = () => {
     const dt = Math.min(clock.getDelta(), 0.05);
     const t = clock.elapsedTime;
 
@@ -794,7 +794,7 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
         const p = Math.min(1, labelT / 0.3);
         const back = 1 + 2.2 * Math.pow(p - 1, 3) + 1.2 * Math.pow(p - 1, 2); // easeOutBack-ish
         const sc = Math.max(0.001, p) * back;
-        s.label.scale.set(1.42 * sc, 0.47 * sc, 1);
+        s.label.scale.set(1.95 * sc, 0.65 * sc, 1);
       } else {
         s.group.rotation.z = s.baseTiltZ + sway + (Math.random() - 0.5) * 0.3 * amp;
         s.group.rotation.x = s.baseTiltX + (Math.random() - 0.5) * 0.24 * amp;
@@ -814,7 +814,7 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
       r.group.rotation.y = r.fromRY + (r.homeSpin - r.fromRY) * k;
       r.group.rotation.z = r.fromRZ + (r.baseTiltZ - r.fromRZ) * k;
       const ls = Math.max(0, 1 - settleT / 0.12); // tag fades fast
-      r.label.scale.set(1.42 * ls, 0.47 * ls, 1);
+      r.label.scale.set(1.95 * ls, 0.65 * ls, 1);
       if (k >= 1) {
         r.group.position.set(r.homeX, BASE_Y, r.homeZ);
         r.group.rotation.set(r.baseTiltX, r.homeSpin, r.baseTiltZ);
@@ -838,7 +838,14 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
     }
 
     renderer.render(scene, camera);
-  });
+  };
+  renderer.setAnimationLoop(renderLoop);
+  // the homepage runs TWO of these canvases on one page — pause the loop
+  // while a jar is scrolled out of view, resume (same loop) on return
+  new IntersectionObserver(
+    ([entry]) => renderer.setAnimationLoop(entry?.isIntersecting ? renderLoop : null),
+    { rootMargin: '120px' },
+  ).observe(host);
 
   return api;
 }

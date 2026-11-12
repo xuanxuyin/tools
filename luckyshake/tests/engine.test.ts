@@ -267,19 +267,20 @@ describe('question-first ritual (ask.ts)', () => {
 describe('focus flow (流程规范 v1.2: draw → name ONE lens → that answer)', () => {
   const s = SIGNS[3];
 
-  it('drawn banner = EN-forward slip (👤 11/09 定版 + 11/10 seal): STICK NO. + grade seal + EN name + translated verdict — no poem, no zh verdict, no gloss', () => {
+  it('drawn banner = EN-forward slip, ZERO Chinese (👤 11/11 "英文下怎么还有中文"): STICK NO. + EN grade seal + EN name + translated verdict — no poem, no zh verdict, no gloss, no zh stamp', () => {
     const html = drawnBanner(s);
     const slip = SIGN_SLIPS[s.id];
     const verse = SIGN_VERSES[s.id];
-    // EN slip: stick number, grade seal (decorative zh stamp, color by grade),
-    // EN name leads, source 典故名 as sub accent, hand-written EN verdict
+    const GRADE_EN = { blessing: 'Blessing', nudge: 'Nudge', 'gentle-warning': 'Gentle Warning' } as const;
+    // EN slip: stick number, ENGLISH grade stamp (colored by grade), EN name,
+    // hand-written EN verdict — no Chinese character renders anywhere
     expect(html).toContain(`STICK NO. ${String(s.id).padStart(2, '0')}`);
-    expect(html).toContain(`seal seal--${s.grade}`);
-    expect(html).toContain(slip.gradeZh);
+    expect(html).toContain(`seal seal--en seal--${s.grade}">${GRADE_EN[s.grade]}</span>`);
     expect(html).toContain(s.name);
-    expect(html).toContain(s.nameZh);
     expect(html).toContain('The verdict');
     expect(html).toContain(slip.verdictEn.slice(0, 24));
+    // 👤 11/11 硬规则: EN 签底不允许出现任何 CJK(典故名/中文印章/断语全灭)
+    expect(html).not.toMatch(/[一-鿿]/);
     // no poem, no zh verdict text, no old gloss on the EN slip
     expect(html).not.toContain(slip.verdictZh);
     expect(html).not.toContain(verse.zh[0]);

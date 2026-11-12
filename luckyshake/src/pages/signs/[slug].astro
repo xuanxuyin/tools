@@ -1,4 +1,5 @@
 ---
+import { iconSvg } from '../../lib/icons';
 import Base from '../../layouts/Base.astro';
 import { SIGNS } from '../../data/signs';
 import { renderReading } from '../../lib/reading';
@@ -16,13 +17,13 @@ const ld = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'LuckyShake', item: '/' },
+    { '@type': 'ListItem', position: 1, name: 'Fortune Willow', item: '/' },
     { '@type': 'ListItem', position: 2, name: 'The 100 fortunes', item: '/signs/' },
     { '@type': 'ListItem', position: 3, name: sign.name },
   ],
 };
 ---
-<Base title={`${sign.name} — Fortune No. ${sign.id} Meaning | LuckyShake`} description={desc}>
+<Base title={`${sign.name} — Fortune No. ${sign.id} Meaning | Fortune Willow`} description={desc}>
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <section class="tool-shell card">
     <div class="tool-stage">
@@ -33,10 +34,10 @@ const ld = {
     <div class="sign-lock" data-sign-lock={sign.id}>
       <div class="tool-outcome" set:html={renderReading(sign)}></div>
       <div class="lock-panel">
-        <span class="lock-ic" aria-hidden="true">🔒</span>
+        <span class="lock-ic" aria-hidden="true"><img src="/img/icons/locked.png" width="28" height="28" alt="" /></span>
         <p class="lock-title">Veiled until it lands in your hands</p>
         <p class="lock-sub">
-          The library opens as you draw: every sign that has come up for you — on any tool —
+          The library opens as you draw: any sign that has come up for you — on any tool —
           reads in full here. No. {sign.id} hasn’t landed for you yet.
         </p>
         <a class="btn" href="/fortune-stick/">Shake the jar</a>
@@ -49,8 +50,8 @@ const ld = {
     <div class="kicker">Draw it yourself</div>
     <h2>Roll these digits at the Number Oracle</h2>
     <p>
-      The first two digits pick this fortune; all three become your lucky numbers for the question
-      you are holding.
+      The first two digits land this exact fortune; all three become your lucky numbers for
+      whatever question you’re holding.
     </p>
     <p style="margin-top:0.9rem">
       <a class="btn" href={`/number-oracle/?d=${digits.join('')}`}>{digits.join(' ')} — ask your question</a>
@@ -60,15 +61,15 @@ const ld = {
   <section class="section">
     <div class="scene-list">
       <a class="scene" href={`/signs/${prev.slug}/`}>
-        <span class="glyph">←</span>
+        <span class="glyph"><Fragment set:html={iconSvg('arrowLeft', 20)} /></span>
         <p><b>{prev.name}</b><br /><span class="muted">No. {String(prev.id).padStart(2, '0')}</span></p>
       </a>
       <a class="scene" href="/signs/">
-        <span class="glyph">☰</span>
+        <span class="glyph"><img src="/img/icons/scroll.png" width="24" height="24" alt="" /></span>
         <p><b>All 100 fortunes</b><br /><span class="muted">the whole library</span></p>
       </a>
       <a class="scene" href={`/signs/${next.slug}/`}>
-        <span class="glyph">→</span>
+        <span class="glyph"><Fragment set:html={iconSvg('arrowRight', 20)} /></span>
         <p><b>{next.name}</b><br /><span class="muted">No. {String(next.id).padStart(2, '0')}</span></p>
       </a>
     </div>

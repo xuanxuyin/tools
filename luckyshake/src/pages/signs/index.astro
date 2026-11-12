@@ -3,16 +3,16 @@ import Base from '../../layouts/Base.astro';
 import { SIGNS } from '../../data/signs';
 ---
 <Base
-  title="The 100 Fortunes — Every Hand-Written Fortune in the Library | LuckyShake"
-  description="The full library of LuckyShake's 100 hand-written fortunes — every sign with its name, story, and readings for love, money, and career. Signs open in full as you draw them."
+  title="The 100 Fortunes — Every Hand-Written Fortune in the Library | Fortune Willow"
+  description="Browse the full library of Fortune Willow's 100 hand-written fortunes — every sign's name, story, and readings for love, money, and career. Signs open in full once you've drawn them."
 >
   <section class="section">
     <div class="kicker">The library</div>
     <h1>The 100 fortunes</h1>
     <p class="tool-sub" style="margin:0 auto 1.4rem">
-      Every fortune in the jar, on the record — and earned, not browsed. Each sign that has
-      landed in your hands (any tool, any day) opens here in full; the rest wait veiled until
-      chance hands them over. Draw, come back, and watch your shelf fill in.
+      All 100 fortunes, on the record — but you can't just browse them. A sign opens up in full
+      once it has landed in your hands (any tool, any day); the rest stay veiled until chance
+      hands them over. Draw, come back, and watch your shelf fill in.
     </p>
     <div class="scene-list">
       {SIGNS.map((s) => (
@@ -22,7 +22,7 @@ import { SIGNS } from '../../data/signs';
             <b>{s.name}</b><br />
             <span class="muted">{s.title}</span>
           </p>
-          <span class="lock-flag" aria-hidden="true">🔒</span>
+          <span class="lock-flag" aria-hidden="true"><img src="/img/icons/locked.png" width="16" height="16" alt="" /></span>
         </a>
       ))}
     </div>

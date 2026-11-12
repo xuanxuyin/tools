@@ -3,15 +3,15 @@ import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 ---
 <Base
-  title="Magic 8-Ball Online — Ask, Shake, Get the Answer | LuckyShake"
-  description="Ask any yes-or-no question and shake the magic 8-ball online. Each classic answer comes with the honest read on what to do next. Free, instant, no sign-up."
+  title="Magic 8-Ball Online — Ask, Shake, Get the Answer | Fortune Willow"
+  description="Shake the magic 8-ball online: ask your yes-or-no question and get one of the 20 classic answers, plus the honest read on what to do next. Free, instant, no sign-up."
 >
   <section class="tool-shell card">
     <div class="tool-stage">
       <h1>Magic 8-Ball</h1>
       <p class="tool-sub">
-        Ask your yes-or-no question, shake the ball, and get a classic answer —
-        plus the straight talk about what to do with it.
+        Ask your yes-or-no question out loud, give the ball a shake, and get a classic answer —
+        plus the straight talk on what to do with it.
       </p>
       <div class="stage-visual">
         <div class="ball" data-ball>
@@ -23,6 +23,7 @@ import Faq from '../components/Faq.astro';
       <button class="btn" data-shake8>Shake the ball</button>
       <p class="hint">Question optional, never leaves your device · click the ball itself works too · free</p>
     </div>
+    <div data-ration-slot></div>
     <div class="tool-outcome" data-outcome></div>
   </section>
 
@@ -31,8 +32,8 @@ import Faq from '../components/Faq.astro';
     <h2>Ask, shake, decide</h2>
     <div class="steps">
       <div class="step"><div class="n">1 · Ask out loud</div><p>One yes-or-no question, phrased so either answer gives you a next move. "Should I book the flight?" — not "travel?"</p></div>
-      <div class="step"><div class="n">2 · Shake</div><p>The window fills with one of the classic answers — the same set the famous toy has dispensed since the 1950s.</p></div>
-      <div class="step"><div class="n">3 · Take the read</div><p>Every answer comes with one honest line of coaching, because "reply hazy" is only useful if you know what to do about the haze.</p></div>
+      <div class="step"><div class="n">2 · Shake</div><p>The window fills with one of the classic answers — the same 20 the toy has been giving out since the 1950s.</p></div>
+      <div class="step"><div class="n">3 · Take the read</div><p>Every answer comes with one honest line of coaching, because "reply hazy" only helps if you know what to do about the haze.</p></div>
     </div>
   </section>
 
@@ -40,10 +41,10 @@ import Faq from '../components/Faq.astro';
     <div class="kicker">When people shake</div>
     <h2>Made for tiebreaker moments</h2>
     <div class="scene-list">
-      <div class="scene"><span class="glyph">🍕</span><p><b>The order-in debate.</b> Two options, four people, zero progress. Let the ball eat the argument.</p></div>
-      <div class="scene"><span class="glyph">✉️</span><p><b>The email you drafted four times.</b> Send tonight or sleep on it? Shake, then notice which answer you were hoping for.</p></div>
-      <div class="scene"><span class="glyph">🎮</span><p><b>One more round?</b> The ball has never once said no. But ask it anyway — the ritual is the fun.</p></div>
-      <div class="scene"><span class="glyph">🤝</span><p><b>Team standoffs.</b> Pass the phone around. When randomness breaks the tie, nobody loses face.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/fork_and_knife_with_plate.png" width="24" height="24" alt="" /></span><p><b>The order-in debate.</b> Two options, four people, zero progress. Let the ball eat the argument.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/envelope.png" width="24" height="24" alt="" /></span><p><b>The email you drafted four times.</b> Send tonight or sleep on it? Shake, then notice which answer you were hoping for.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/video_game.png" width="24" height="24" alt="" /></span><p><b>One more round?</b> The ball has never once said no. But ask it anyway — the ritual is the fun.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/handshake.png" width="24" height="24" alt="" /></span><p><b>Team standoffs.</b> Pass the phone around. When randomness breaks the tie, nobody loses face.</p></div>
     </div>
   </section>
 
@@ -53,7 +54,7 @@ import Faq from '../components/Faq.astro';
     <Faq items={[
       { q: 'Are these the real classic answers?', a: 'Yes — exactly the set the physical toy uses, from "It is certain" to "Very doubtful". Each one carries an extra line of honest guidance, because we are not a plastic ball.' },
       { q: 'Is the answer random?', a: 'Completely — a fair 1-in-20 draw generated in your browser. The ball keeps no memory, so shaking again is a fresh draw, not a negotiation.' },
-      { q: 'Can it actually predict anything?', a: 'No, and neither can the toy — that is the deal. What it reliably does is break decision loops, expose what you were hoping to hear, and hand the tiebreaker to fate so the group can move on with dinner.' },
+      { q: 'Can it actually predict anything?', a: 'No, and neither can the toy — that is the deal. What it reliably does is break decision loops, expose what you were hoping to hear, and hand the tiebreaker to chance so the group can get on with dinner.' },
       { q: 'Why does every answer come with advice?', a: 'Because "outlook not so good" without context is just weather. Our gloss tells you what the answer means for your next step — the layer every other 8-ball site skips.' },
       { q: 'What is the best question to ask?', a: 'One where both answers are survivable and you are just stuck on the swap cost. For questions involving health, safety, or other people’s rights, the ball politely defers to professionals — and so should you.' },
     ]} />
@@ -63,6 +64,7 @@ import Faq from '../components/Faq.astro';
 <script>
   import { eightBall, liveRand } from '../lib/engine';
   import { trackDraw } from '../lib/track';
+  import { gateDraw } from '../lib/rationUi';
   import { readQuestion, youAsked } from '../lib/ask';
 
   const ball = document.querySelector<HTMLElement>('[data-ball]');
@@ -72,6 +74,7 @@ import Faq from '../components/Faq.astro';
 
   const shake = () => {
     if (!ball || !win || !outcome) return;
+    if (!gateDraw(shake)) return; // ration: one free draw a day — merit buys more
     const asked = readQuestion();
     if (btn) btn.disabled = true;
     ball.classList.remove('shaking');
@@ -89,7 +92,7 @@ import Faq from '../components/Faq.astro';
           <div class="reading-head"><span class="chip ${a.tone === 'yes' || a.tone === 'lean-yes' ? 'blessing' : a.tone === 'neutral' ? 'nudge' : 'gentle-warning'}">${a.tone === 'neutral' ? 'Hazy' : a.tone === 'yes' || a.tone === 'lean-yes' ? 'Lean yes' : 'Lean no'}</span></div>
           <div class="reading-title">“${a.text}”</div>
           <p class="overall">${a.gloss}</p>
-          <p class="again-line">Shake again for a fresh draw — but if you are fishing for a different answer, you already have it.</p>
+          <p class="again-line">Shake again for a fresh draw — but if you're fishing for a different answer, you already have yours.</p>
         </article>`;
       outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       if (btn) btn.disabled = false;

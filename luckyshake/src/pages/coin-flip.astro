@@ -3,15 +3,15 @@ import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 ---
 <Base
-  title="Yes or No Coin Flip — Heads or Tails Online | LuckyShake"
+  title="Yes or No Coin Flip — Heads or Tails Online | Fortune Willow"
   description="Flip a virtual coin for an instant heads-or-tails answer. Heads is yes, tails is no — the oldest tiebreaker in history, now with zero pocket change."
 >
   <section class="tool-shell card">
     <div class="tool-stage">
       <h1>Coin Flip</h1>
       <p class="tool-sub">
-        The oldest decision tool there is. Heads means yes, tails means no — flip for a fair,
-        instant answer to any two-way question.
+        Heads is yes, tails is no. When two options won't quit, flip — a fair, instant
+        answer to any two-way question, no pocket change required.
       </p>
       <div class="stage-visual">
         <div class="coin" data-coin>
@@ -21,8 +21,9 @@ import Faq from '../components/Faq.astro';
       </div>
       <input class="q-input" data-q type="text" maxlength="80" placeholder="Optional — what are you asking?" aria-label="Your question (optional)" />
       <button class="btn" data-flip>Flip the coin</button>
-      <p class="hint">Question optional, never leaves your device · click the coin works too · heads = yes, tails = no</p>
+      <p class="hint">Question optional — it never leaves your device · clicking the coin works too · heads = yes, tails = no</p>
     </div>
+    <div data-ration-slot></div>
     <div class="tool-outcome" data-outcome></div>
   </section>
 
@@ -30,9 +31,9 @@ import Faq from '../components/Faq.astro';
     <div class="kicker">How it works</div>
     <h2>A fair flip, every time</h2>
     <div class="steps">
-      <div class="step"><div class="n">1 · Set the stakes</div><p>Decide before you flip: heads means this, tails means that. Deciding after the flip is how coin flipping got a bad reputation.</p></div>
+      <div class="step"><div class="n">1 · Set the stakes</div><p>Decide before you flip: heads means this, tails means that. Assigning meanings after the landing is how coin flips got their sketchy reputation.</p></div>
       <div class="step"><div class="n">2 · Flip</div><p>A true 50/50 draw in your browser. No weighting, no streaks, no memory of the last ten flips.</p></div>
-      <div class="step"><div class="n">3 · Check your gut</div><p>The moment the coin lands, you will feel something. Relief or dread — that feeling is the real answer; the coin just surfaces it.</p></div>
+      <div class="step"><div class="n">3 · Check your gut</div><p>The second the coin lands, you'll feel it — relief or dread. That feeling is the real answer; the coin just surfaced it.</p></div>
     </div>
   </section>
 
@@ -40,10 +41,10 @@ import Faq from '../components/Faq.astro';
     <div class="kicker">When people flip</div>
     <h2>Two options, zero progress</h2>
     <div class="scene-list">
-      <div class="scene"><span class="glyph">🍽️</span><p><b>Two restaurants, one hangry group.</b> Assign, flip, done — argument over in 1.2 seconds.</p></div>
-      <div class="scene"><span class="glyph">🧹</span><p><b>Whose turn is it?</b> The coin does not play favorites, which is why roommates keep it around.</p></div>
-      <div class="scene"><span class="glyph">🎬</span><p><b>Two things on the list.</b> Flip for the first one and suddenly you know which one you wanted.</p></div>
-      <div class="scene"><span class="glyph">🏋️</span><p><b>Now or later?</b> Heads is now. The coin cannot make you go, but it can end the debate.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/fork_and_knife_with_plate.png" width="24" height="24" alt="" /></span><p><b>Two restaurants, one hangry group.</b> Assign, flip, done — argument over in 1.2 seconds.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/house.png" width="24" height="24" alt="" /></span><p><b>Whose turn is it?</b> The coin doesn't play favorites — which is exactly why roommates keep one around.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/film_frames.png" width="24" height="24" alt="" /></span><p><b>Two movies on the list.</b> Flip for which one goes first — and suddenly you know which one you actually wanted.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/dumbbell.png" width="24" height="24" alt="" /></span><p><b>Gym now or later?</b> Heads is now. The coin can't make you go — but it can end the debate.</p></div>
     </div>
   </section>
 
@@ -51,11 +52,11 @@ import Faq from '../components/Faq.astro';
     <div class="kicker">Questions</div>
     <h2>Coin Flip FAQ</h2>
     <Faq items={[
-      { q: 'Is the flip fair?', a: 'Yes — exactly 50/50, decided the instant you click by your browser’s random generator. Physical coins have a slight bias; this one does not even have that.' },
-      { q: 'Heads is yes?', a: 'That is the convention on this page: heads = yes, tails = no. If your group uses the opposite, the coin will not mind — just agree before you flip.' },
-      { q: 'Can I flip the same question twice?', a: 'You can re-flip, but the classic rule stands: first flip counts, two out of three is for playoff hockey. If you keep flipping, you do not want the coin’s answer — you want yours, and you probably already have it.' },
-      { q: 'Why flip a coin at all?', a: 'Because when the options are genuinely close, the deciding cost more than the difference. A coin ends the loop instantly — and your reaction to the result tells you what you actually wanted.' },
-      { q: 'Is this the same as the Yes or No button?', a: 'Same fair 50/50 engine, different ritual. Some decisions want a button press; some want the arc of a coin. Pick the ceremony that fits the moment — that is the whole point of having a family of tools.' },
+      { q: 'Is the flip fair?', a: 'Yes — exactly 50/50, decided the instant you click by your browser’s random number generator. A physical coin has a slight bias; this one doesn’t even have that.' },
+      { q: 'Heads is yes?', a: 'That’s the convention here: heads = yes, tails = no. If your group runs it the other way, the coin won’t mind — just agree before you flip.' },
+      { q: 'Can I flip the same question twice?', a: 'You can re-flip, but the classic rule stands: first flip counts — best of three is for playoff overtime. If you keep flipping, you don’t want the coin’s answer. You want yours, and you probably already have it.' },
+      { q: 'Why flip a coin at all?', a: 'Because when the options are genuinely close, deciding costs more than the difference between them. A coin ends the loop instantly — and your reaction to the result tells you which one you actually wanted.' },
+      { q: 'Is this the same as the Yes or No button?', a: 'Same fair 50/50 engine, different ceremony. Some decisions want a button press; some want the arc of a coin. Pick the ritual that fits the moment — that’s the whole point of having a whole toolbox.' },
     ]} />
   </section>
 </Base>
@@ -64,6 +65,7 @@ import Faq from '../components/Faq.astro';
   import { coinFlip, liveRand } from '../lib/engine';
   import { trackDraw } from '../lib/track';
   import { readQuestion, youAsked } from '../lib/ask';
+  import { gateDraw } from '../lib/rationUi';
 
   const coin = document.querySelector<HTMLElement>('[data-coin]');
   const btn = document.querySelector<HTMLButtonElement>('[data-flip]');
@@ -71,6 +73,7 @@ import Faq from '../components/Faq.astro';
 
   const flip = () => {
     if (!coin || !outcome) return;
+    if (!gateDraw(flip)) return; // ration: one free draw a day — merit buys more
     const asked = readQuestion();
     if (btn) btn.disabled = true;
     outcome.innerHTML = '';
@@ -87,8 +90,8 @@ import Faq from '../components/Faq.astro';
         <article class="reading card center" style="padding:20px 26px">
           <div class="verdict ${r.answer === 'Yes' ? 'yes' : 'no'}" style="font-size:2.6rem;padding:6px 30px">${r.side} — ${r.answer}</div>
           <p class="muted" style="margin:14px 0 0">${r.answer === 'Yes'
-            ? 'Heads says go. Notice whether that feels like relief — it usually does.'
-            : 'Tails says wait. If that stings, you were not actually asking a fair question.'}</p>
+            ? 'Heads says go. Notice whether that lands like relief — it usually does.'
+            : 'Tails says hold on. If that stings a little, you weren’t asking a fair question in the first place.'}</p>
         </article>`;
       outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       if (btn) btn.disabled = false;

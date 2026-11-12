@@ -1,4 +1,6 @@
 ---
+import { jarMarkBareSvg } from '../lib/icons';
+
 interface Props {
   title: string;
   description: string;
@@ -8,26 +10,26 @@ interface Props {
 const { title, description, lang = 'en' } = Astro.props;
 const zh = lang === 'zh';
 const navEn = [
-  { href: '/fortune-stick/', label: 'Fortune Stick' },
-  { href: '/number-oracle/', label: 'Number Oracle' },
-  { href: '/magic-8-ball/', label: 'Magic 8-Ball' },
-  { href: '/yes-no/', label: 'Yes or No' },
-  { href: '/coin-flip/', label: 'Coin Flip' },
-  { href: '/fortune-cookie/', label: 'Cookie' },
-  { href: '/daily-fortune/', label: 'Today' },
-  { href: '/horoscope/', label: 'Horoscope' },
-  { href: '/signs/', label: 'The 100' },
+  { href: '/fortune-stick/', label: 'Fortune Stick', tone: 'red' },
+  { href: '/number-oracle/', label: 'Number Oracle', tone: 'blue' },
+  { href: '/magic-8-ball/', label: 'Magic 8-Ball', tone: 'navy' },
+  { href: '/yes-no/', label: 'Yes or No', tone: 'green' },
+  { href: '/coin-flip/', label: 'Coin Flip', tone: 'gold' },
+  { href: '/fortune-cookie/', label: 'Cookie', tone: 'orange' },
+  { href: '/daily-fortune/', label: 'Today', tone: 'pink' },
+  { href: '/horoscope/', label: 'Horoscope', tone: 'violet' },
+  { href: '/signs/', label: 'The 100', tone: 'teal' },
 ];
 const navZh = [
-  { href: '/zh/fortune-stick/', label: '抽签' },
-  { href: '/zh/number-oracle/', label: '数字神谕' },
-  { href: '/zh/magic-8-ball/', label: '魔力8号球' },
-  { href: '/zh/yes-no/', label: '是与非' },
-  { href: '/zh/coin-flip/', label: '抛硬币' },
-  { href: '/zh/fortune-cookie/', label: '签语饼' },
-  { href: '/zh/daily-fortune/', label: '今日运势' },
-  { href: '/zh/horoscope/', label: '星座' },
-  { href: '/zh/signs/', label: '签库' },
+  { href: '/zh/fortune-stick/', label: '抽签', tone: 'red' },
+  { href: '/zh/number-oracle/', label: '数字神谕', tone: 'blue' },
+  { href: '/zh/magic-8-ball/', label: '魔力8号球', tone: 'navy' },
+  { href: '/zh/yes-no/', label: '是与非', tone: 'green' },
+  { href: '/zh/coin-flip/', label: '抛硬币', tone: 'gold' },
+  { href: '/zh/fortune-cookie/', label: '签语饼', tone: 'orange' },
+  { href: '/zh/daily-fortune/', label: '今日运势', tone: 'pink' },
+  { href: '/zh/horoscope/', label: '星座', tone: 'violet' },
+  { href: '/zh/signs/', label: '签库', tone: 'teal' },
 ];
 const nav = zh ? navZh : navEn;
 ---
@@ -38,7 +40,8 @@ const nav = zh ? navZh : navEn;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>
     {zh && (
@@ -48,10 +51,10 @@ const nav = zh ? navZh : navEn;
     )}
     <header class="nav">
       <div class="nav-inner">
-        <a class="brand" href={zh ? '/zh/' : '/'}><span class="brand-mark">✦</span>LuckyShake</a>
+        <a class="brand" href={zh ? '/zh/' : '/'}><span class="brand-mark"><Fragment set:html={jarMarkBareSvg(17)} /></span>Fortune Willow</a>
+        <a href={zh ? '/' : '/zh/'} class="lang-toggle" data-lang-toggle>{zh ? 'EN' : '中文'}</a>
         <nav class="nav-links">
-          {nav.map((n) => <a href={n.href}>{n.label}</a>)}
-          <a href={zh ? '/' : '/zh/'} class="lang-toggle" data-lang-toggle>{zh ? 'EN' : '中文'}</a>
+          {nav.map((n) => <a class:list={[`tone-${n.tone}`]} href={n.href}>{n.label}</a>)}
         </nav>
       </div>
     </header>
@@ -65,13 +68,13 @@ const nav = zh ? navZh : navEn;
         </div>
         {zh ? (
           <p class="fine">
-            LuckyShake 仅用于娱乐与自我梳理。随机只是工具，替代不了你自己的判断——真正重要的事，请相信你自己。
+            Fortune Willow 仅用于娱乐与观照自心。签是镜子，照见的始终是你自己——真正要紧的事，信你自心的判断。
             所有签文均为本站手写。（此中文版为内部审阅用，上线前移除。）
           </p>
         ) : (
           <p class="fine">
-            LuckyShake is for entertainment and reflection. Randomness is a tool, not a substitute for
-            judgment — trust yourself on anything that matters. All fortunes are hand-written in-house.
+            Fortune Willow is for fun and reflection. The draw is random, the reading is real — but on
+            anything that truly matters, trust yourself. Every fortune here is hand-written in-house.
           </p>
         )}
       </div>

@@ -4,6 +4,12 @@
  * 2026-11-08 (audit: docs/fortune-draw/d02-shen88-linqian-teardown.md,
  * raw pages D:/tmp/crawl/d02/poems/). Rendered by lib/reading slipHTML.
  * terse = hand-written EN quick verdicts (filled in batches, 11/08).
+ * 👤 11/11 idiom audit (EN 判词语感审计): 11 spots polished — lawsuit→dispute,
+ * Lord Liu→a weary lord (role-aliased like the Han Xin note), dropped the
+ * gendered "a boy — brightest news" value judgment, hemp→rough cloth (US
+ * connotation), well-starred→favored by the stars, border→end, authority→fair
+ * hand, Called up→Summoned, first of→first among draws, drawing→approach/asking
+ * (drawing reads as "picture" out of context).
  */
 
 export interface SignSlip {
@@ -100,7 +106,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "上吉",
     label: "仙机",
     verdictZh: "六畜吉。家宅昌。 财可得。病者康。 孕生子。名必扬。 若谋望。皆吉祥。 行人至。婚姻良。 蚕有利。乐无疆。(疆本作疆)",
-    verdictEn: "Household ventures are lucky; the home flourishes. Fortune can be had; the sick recover. A child is born; fame will carry. Whatever you plan turns auspicious. The traveler arrives; marriage looks fine. The season's work pays — joy without border.",
+    verdictEn: "Household ventures are lucky; the home flourishes. Fortune can be had; the sick recover. A child is born; fame will carry. Whatever you plan turns auspicious. The traveler arrives; marriage looks fine. The season's work pays — joy without end.",
     terse: { love: "Grows itself", money: "Steady drip", career: "Show up" },
   },
   11: {
@@ -108,7 +114,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "中平",
     label: "仙机",
     verdictZh: "宅平常。财难求。 蚕禾造。不用忧。 病未愈。行有邮。 养六畜。慎之始。 名难成。婚不利。 孕生男。最欢喜。",
-    verdictEn: "The home runs ordinary; fortune is hard to chase just now. The fields and ventures need no worry. Illness is not yet cleared; word travels with delays. Start the household ventures with caution. Fame is hard to land; marriage sits unfavorable. A child on the way: a boy — the season's brightest news.",
+    verdictEn: "The home runs ordinary; fortune is hard to chase just now. The fields and ventures need no worry. Illness is not yet cleared; word travels with delays. Start the household ventures with caution. Fame is hard to land; marriage sits unfavorable. A child on the way — the season's brightest news.",
     terse: { love: "First to speak", money: "Short window", career: "Ship early" },
   },
   12: {
@@ -132,7 +138,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "中吉",
     label: "注",
     verdictZh: "注：刘皇叔，即刘备，偶遇水镜先生，当时正值夕阳西下，天边的群鸦纷纷回巢。山岗外，传来了阵阵的笛子声，原来是牧童骑着牛犊，优哉悠哉的返家。",
-    verdictEn: "Lord Liu, at dusk, met the hermit sage by chance: crows crowding home on the sunset, a flute drifting from beyond the ridge — a herd boy riding his calf, unhurried, on the way back.",
+    verdictEn: "A weary lord, at dusk, met the hermit sage by chance: crows crowding home on the sunset, a flute drifting from beyond the ridge — a herd boy riding his calf, unhurried, on the way back.",
     terse: { love: "Slow-built", money: "Back half", career: "Later, larger" },
   },
   15: {
@@ -163,7 +169,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "中平",
     label: "仙机",
     verdictZh: "问谋望。不甚宜。 孕与病。当祷禳。 蚕与畜。当慎之。 行未至。财亦微。 问婚姻。不必议。 宅安否。难定时。",
-    verdictEn: "Your plans: not well-starred just now. Health and pregnancy both want rest and watching. Household ventures ask caution; the traveler has not arrived; fortune runs thin. Marriage — leave it undiscussed for now. Whether the home stays settled is hard to time.",
+    verdictEn: "Your plans: not favored by the stars just now. Health and pregnancy both want rest and watching. Household ventures ask caution; the traveler has not arrived; fortune runs thin. Marriage — leave it undiscussed for now. Whether the home stays settled is hard to time.",
   },
   19: {
     src: "观音第69签 中签",
@@ -184,7 +190,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "中吉",
     label: "圣意",
     verdictZh: "财物聚、病即愈、若问讼、必遇主、婚姻合、良朋聚、行人回、事无阻。",
-    verdictEn: "Wealth gathers; illness heals at once. In disputes you meet the authority that settles them. Marriage aligns; good friends convene; the traveler returns; nothing blocks the road.",
+    verdictEn: "Wealth gathers; illness heals at once. In disputes you meet the fair hand that settles them. Marriage aligns; good friends convene; the traveler returns; nothing blocks the road.",
   },
   22: {
     src: "关帝第9签 大吉",
@@ -275,7 +281,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "中吉",
     label: "圣意",
     verdictZh: "病更医、讼改图、名与利、换规模、婚别议、行人迟、神力助、谨修为。",
-    verdictEn: "Illness wants a different doctor; the dispute wants a different drawing. Fame and fortune change their scale — rearrange to fit. Marriage: discuss it separately, later. The traveler is slow. Help shows up from a strong quarter — conduct yourself carefully.",
+    verdictEn: "Illness wants a different doctor; the dispute wants a different approach. Fame and fortune change their scale — rearrange to fit. Marriage: discuss it separately, later. The traveler is slow. Help shows up from a strong quarter — conduct yourself carefully.",
   },
   35: {
     src: "黄大仙第84签 中吉",
@@ -310,7 +316,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "中吉",
     label: "圣意",
     verdictZh: "病可医、讼终平、财寻常、信有准、名将亨、婚可聘、勿强图、随分定。",
-    verdictEn: "Illness is treatable; the dispute ends level. Fortune runs ordinary; word arrives when promised. Fame is about to open; marriage can be matched. Do not force the drawing — settle for what your share assigns.",
+    verdictEn: "Illness is treatable; the dispute ends level. Fortune runs ordinary; word arrives when promised. Fame is about to open; marriage can be matched. Do not force the asking — settle for what your share assigns.",
   },
   40: {
     src: "观音第73签 上签",
@@ -324,7 +330,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "上签",
     label: "解曰",
     verdictZh: "朝帝受职。如贫得宝。谋望从心。卦中第一。",
-    verdictEn: "Called up and given the post — like the poor man handed treasure. Your plans follow the heart's own line: the first of draws.",
+    verdictEn: "Summoned and given the post — like the poor man handed treasure. Your plans follow the heart's own line: the first among draws.",
   },
   42: {
     src: "关帝第99签 上上",
@@ -394,7 +400,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "中吉",
     label: "圣意",
     verdictZh: "名利有、莫躁为、词讼解、婚姻宜、行人远、病瘥迟、富与贵、要待时。",
-    verdictEn: "Fame and fortune exist for you — just not hotly pursued. The lawsuit dissolves; marriage suits. The traveler is far; illness heals slow. Wealth and standing wait on their hour.",
+    verdictEn: "Fame and fortune exist for you — just not hotly pursued. The dispute dissolves; marriage suits. The traveler is far; illness heals slow. Wealth and standing wait on their hour.",
   },
   52: {
     src: "观音第8签 上签",
@@ -583,7 +589,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "中平",
     label: "仙机",
     verdictZh: "宅运滞。多是非。 婚不合。病可医。 蚕与畜。得利微。 孕勿惊。行归迟。 求财难。勿妄为。 问谋望。不甚宜。",
-    verdictEn: "The home's luck is stuck and talk gathers around it. Marriage does not align; illness is treatable. Ventures yield thin. No scares around the pregnancy. The traveler returns late. Money is hard to come by — do not act on impulse. The plan you weigh: not well-starred.",
+    verdictEn: "The home's luck is stuck and talk gathers around it. Marriage does not align; illness is treatable. Ventures yield thin. No scares around the pregnancy. The traveler returns late. Money is hard to come by — do not act on impulse. The plan you weigh: not favored by the stars.",
   },
   79: {
     src: "黄大仙第79签 中平",
@@ -688,7 +694,7 @@ export const SIGN_SLIPS: Record<number, SignSlip> = {
     gradeZh: "上签",
     label: "解曰",
     verdictZh: "换麻得丝。击人双足。要见分明。因灾得福。",
-    verdictEn: "Trade hemp, receive silk; the stumble turns into your footing. See it plainly — the misstep is how the good arrives.",
+    verdictEn: "Trade rough cloth for silk; the stumble turns into your footing. See it plainly — the misstep is how the good arrives.",
   },
   94: {
     src: "观音第1签 上签",

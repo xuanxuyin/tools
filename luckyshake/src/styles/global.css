@@ -11,6 +11,7 @@
   --accent: #b45309;
   --accent-ink: #ffffff;
   --gold: #d4a017;
+  --temple: #f4e4b4; /* 功德箱区浅黄庙墙底(👤 11/12:浅黄+寺庙神圣感) */
   --green: #15803d;
   --blue: #1d4ed8;
   --radius: 14px;
@@ -79,15 +80,34 @@ p { margin: 0 0 0.9rem; }
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 13px;
 }
-.nav-links { display: flex; gap: 2px; flex-wrap: wrap; margin-left: auto; }
+.brand-mark svg { display: block; }
+.nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
 .nav-links a {
-  color: var(--ink-soft); text-decoration: none; font-size: 0.86rem;
-  padding: 5px 9px; border-radius: 8px;
+  text-decoration: none; font-size: 0.86rem; font-weight: 600;
+  padding: 5px 12px; border-radius: 999px;
+  background: var(--pill-bg, #faf5ea); color: var(--pill-ink, var(--ink));
+  border: 1px solid color-mix(in srgb, var(--pill-ink, #5c5470), transparent 78%);
 }
-.nav-links a:hover { color: var(--ink); background: #efe7d8; text-decoration: none; }
-.nav-links a.lang-toggle {
-  color: var(--accent); font-weight: 700; border: 1.5px solid var(--line);
-  margin-left: 6px; padding: 3px 10px;
+.nav-links a:hover { background: color-mix(in srgb, var(--pill-bg, #faf5ea), #000 7%); text-decoration: none; }
+/* 九个工具钮各配一色：pastel 底 + 同系深色字（配 3D 图标的彩色方向） */
+.tone-red    { --pill-bg: #fbe7e2; --pill-ink: #b23a27; }
+.tone-blue   { --pill-bg: #e7eefb; --pill-ink: #1e50b4; }
+.tone-navy   { --pill-bg: #e9edf6; --pill-ink: #3d5183; }
+.tone-green  { --pill-bg: #e5f3e9; --pill-ink: #15803d; }
+.tone-gold   { --pill-bg: #f9eecf; --pill-ink: #8a6a00; }
+.tone-orange { --pill-bg: #fdeada; --pill-ink: #b45309; }
+.tone-pink   { --pill-bg: #fbe7ee; --pill-ink: #b4316b; }
+.tone-violet { --pill-bg: #edeafb; --pill-ink: #5d3fb2; }
+.tone-teal   { --pill-bg: #e2f2ef; --pill-ink: #0d7265; }
+.lang-toggle {
+  color: #b45309; font-weight: 700; margin-left: auto; padding: 3px 11px; border-radius: 999px;
+  text-decoration: none; font-size: 0.86rem; background: #fdf2df;
+  border: 1px solid color-mix(in srgb, #b45309, transparent 72%);
+}
+/* 桌面两行式头部：行1 = 品牌 + 语言切换(右)；行2 = 九钮居中 */
+@media (min-width: 821px) {
+  .nav-links { flex-basis: 100%; justify-content: center; }
+  .nav-inner { row-gap: 7px; }
 }
 .review-banner {
   background: var(--bg-deep); color: var(--gold);
@@ -127,8 +147,6 @@ main { padding: 36px 0 0; }
 html[lang='zh-CN'] .hero h1 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); }
 html[lang='zh-CN'] .verse-attr { font-style: normal; }
 .hero .hero-sub { font-size: 1.02rem; margin-bottom: 1rem; }
-.hero-meta { font-size: 0.9rem; color: var(--ink-soft); letter-spacing: 0.02em; }
-.hero-meta b { color: var(--accent); font-family: var(--serif); font-size: 1.05em; }
 .hero-cta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
 .hero-alt { font-size: 0.88rem; color: var(--ink-soft); }
 .hero-stage {
@@ -155,7 +173,7 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 }
 .feature { padding: 24px 14px 20px; text-align: center; }
 .feature + .feature { border-left: 1px solid var(--line); }
-.feature .fico { color: #8d7f68; opacity: 0.9; }
+.feature .fico { display: block; margin: 0 auto; }
 .feature b { display: block; font-family: var(--serif); font-size: 0.98rem; margin: 10px 0 4px; }
 .feature span { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.5; display: block; }
 
@@ -254,6 +272,7 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
   transform: translateY(-3px); box-shadow: var(--shadow); text-decoration: none;
 }
 .tool-card .glyph { font-size: 1.6rem; line-height: 1; }
+.tool-card .glyph img { display: block; }
 .tool-card b { font-size: 0.98rem; }
 .tool-card span.desc { font-size: 0.84rem; color: var(--ink-soft); }
 .tool-card .go { color: var(--accent); font-weight: 700; font-size: 0.85rem; margin-top: auto; }
@@ -348,6 +367,24 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 .seal--blessing { background: #9e2b22; }
 .seal--nudge { background: #8a6a34; }
 .seal--gentle-warning { background: #5d6153; }
+/* 👤 11/11: EN 页零中文——印章换英文等级词,横排自适应宽(盖在 .seal--* 配色之上) */
+.seal--en {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  width: auto;
+  min-width: 64px;
+  max-width: 132px;
+  height: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.3;
+  white-space: normal;
+}
 .slip-title {
   position: relative;
   font-size: 1.4rem;
@@ -428,19 +465,11 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
   letter-spacing: 0.04em;
 }
 
-/* ---- EN-forward slip (👤 11/09): EN name leads, source name is an accent ---- */
+/* ---- EN-forward slip (👤 11/09 定版, 11/11 零中文: 副行删除、印章英文) ---- */
 .slip-title--en {
   font-family: Georgia, 'Times New Roman', 'Palatino Linotype', serif;
   font-size: 1.5rem;
   letter-spacing: 0.02em;
-}
-.slip-sub {
-  position: relative;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-  letter-spacing: 0.1em;
-  margin: -6px 0 4px;
 }
 .slip-verdict--en p {
   font-family: Georgia, 'Times New Roman', 'Palatino Linotype', serif;
@@ -529,6 +558,9 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 }
 .fchip:hover { border-color: var(--gold); transform: translateY(-1px); }
 .fchip.active { background: var(--gold); border-color: var(--gold); color: #2b1d07; }
+.fchip svg { display: inline-block; vertical-align: -0.16em; margin-right: 3px; color: var(--gold); }
+.fchip.active svg { color: #2b1d07; }
+.fchip img { display: inline-block; vertical-align: -0.28em; margin-right: 4px; }
 .focus-or { margin: 12px 0 10px; font-size: 0.85rem; color: var(--ink-soft); }
 .focus-own { display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; }
 .focus-own .q-input { flex: 1 1 240px; max-width: 340px; margin: 0; }
@@ -586,7 +618,9 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
   display: flex; gap: 12px; align-items: center;
   background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 11px 15px;
 }
-.scene .glyph { font-size: 1.1rem; }
+.scene .glyph { font-size: 1.1rem; flex: 0 0 auto; }
+.scene .glyph svg { display: block; color: var(--gold); }
+.scene .glyph img { display: block; width: 24px; height: 24px; object-fit: contain; }
 /* 👤 11/08: constellation marks (ZodiacMark) — night-tile SVGs replace ♈… */
 .scene .glyph svg.zmark { display: block; flex: 0 0 auto; }
 .kicker svg.zmark { display: inline-block; vertical-align: -0.28em; margin-right: 6px; }
@@ -610,16 +644,20 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 }
 .sign-lock.is-open .lock-panel { display: none; }
 .lock-panel .lock-ic { font-size: 1.5rem; line-height: 1; }
+.lock-panel .lock-ic img { display: block; margin: 0 auto 6px; }
 .lock-panel .lock-title { font-weight: 800; margin: 2px 0 0; }
 .lock-panel .lock-sub { font-size: 0.9rem; color: var(--ink-soft); max-width: 420px; margin: 4px 0; }
 .lock-panel .btn { margin-top: 8px; }
 .scene .lock-flag { margin-left: auto; font-size: 0.95rem; flex: 0 0 auto; }
+.scene .lock-flag img { display: inline-block; vertical-align: -0.2em; }
 .scene p { margin: 0; font-size: 0.93rem; }
 .faq { display: grid; gap: 8px; }
 .faq details {
   background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 4px 16px;
 }
 .faq summary { cursor: pointer; font-weight: 700; padding: 10px 0; font-size: 0.96rem; }
+/* yes-no verdict gesture (Fluent 3D thumbs-up / waving hand) */
+img.gesture { display: block; margin: 0 auto 12px; }
 .faq details p { font-size: 0.92rem; color: var(--ink-soft); margin: 0 0 12px; }
 
 /* ============ today strip (home) ============ */
@@ -635,16 +673,13 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 
 /* ============ fortune stick jar (3D) ============ */
 /* three.js jar: slow turntable at rest, left-right rock on shake,
-   one stick springs up on the draw. The cut-out photo (CC0, Wikimedia)
-   stays as a poster until WebGL boots */
+   one stick springs up on the draw. 无占位无过渡（👤 11/11）：
+   3D 筒起来前盒子留空（aspect-ratio 已预留，零 CLS）；WebGL 失败
+   同样留空（旧照片海报已按 👤 11/11 "太丑"删除） */
 .cup-wrap { position: relative; width: 250px; margin: 0 auto; }
-.jar3d { position: relative; width: 250px; height: 340px; }
+.jar3d { position: relative; aspect-ratio: 25 / 34; }
+.stage-visual .jar3d { width: 250px; height: 340px; }
 .jar3d canvas { display: block; }
-.jar-poster {
-  position: absolute; left: 50%; bottom: 6px;
-  width: 205px; height: auto; transform: translateX(-50%);
-  filter: drop-shadow(0 14px 16px rgba(42, 36, 68, 0.3));
-}
 
 /* ============ number oracle slots ============ */
 .slots { display: flex; gap: 14px; }
@@ -667,12 +702,16 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
   cursor: pointer; user-select: none; position: relative;
 }
 .ball-window {
-  /* lower hemisphere, like the real toy — clear of the white 8 above */
-  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-  width: 86px; height: 72px; background: #2b2b6e;
+  /* lower hemisphere, like the real toy — clear of the white 8 above.
+     👤 11/11: enlarged (was 86×72/0.58rem — answer unreadable);
+     👤 11/12: 112×90@bottom10 的底角出圆 16px（该高度圆弦仅 80px）→ 100×80@bottom20，
+     底角弦宽 109.6px 收进圆内，顶点 y=70 避开白 8 盘（盘底 y=62） */
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  width: 100px; height: 80px; background: #2b2b6e;
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
   display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 9px; color: #cfd6ff; font-size: 0.58rem; font-weight: 700;
+  padding: 0 14px 12px; color: #dfe6ff; font-size: 0.8rem; font-weight: 700;
+  line-height: 1.15; text-align: center;
   text-align: center; line-height: 1.15; overflow: hidden;
 }
 .ball.shaking { animation: ball-shake 0.5s ease 3; }
@@ -776,9 +815,254 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
   .draw-duo { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
+  /* 👤 11/11: 窄屏下英文印章收一档,不挤 STICK NO. 行(375px 实勘 collidesNo) */
+  .seal--en { max-width: 106px; padding: 8px 10px; font-size: 0.66rem; }
+  .q-input { font-size: 0.85rem; }
   .features { grid-template-columns: 1fr; }
   .feature + .feature { border-left: none; border-top: 1px solid var(--line); }
   .feature:nth-child(even) { border-left: none; }
   .feature:nth-child(n + 3) { border-top: none; }
   .feature + .feature { border-top: 1px solid var(--line); }
+}
+
+/* ---- merit box (home widget + tool-page ration panel) ---- */
+.merit-scene {
+  display: flex;
+  gap: 34px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.6rem;
+}
+.merit-stage { flex: 0 0 auto; display: grid; justify-items: center; gap: 10px; min-width: 250px; position: relative; /* merit-float 飘字的定位基准 */ }
+.merit-box-svg { display: block; }
+.merit-box-svg .merit-coin { transform-origin: 158px 66px; }
+.merit-box-svg.dropping { animation: merit-clink 0.65s ease-out; }
+.merit-box-svg.dropping .merit-coin { animation: merit-drop 0.65s cubic-bezier(0.55, 0, 0.8, 0.4) both; }
+@keyframes merit-drop {
+  0% { transform: translateY(-52px) scale(1.1); opacity: 0; }
+  55% { opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes merit-clink {
+  0%, 100% { transform: scale(1); }
+  45% { transform: scale(0.985) rotate(-0.4deg); }
+  70% { transform: scale(1.008) rotate(0.3deg); }
+}
+.merit-panel { flex: 0 1 300px; min-width: 250px; display: grid; gap: 12px; /* 领取/捐献分家后面板只剩余额+领取,收窄一档 */ }
+.merit-balance { display: flex; align-items: center; gap: 10px; /* 数字改币形按钮后垂直居中,baseline 会吊脖子 */ }
+/* 功德数字 = 投币按钮(👤 11/12"把1做成按钮,点击一下少一个,捐赠一个,飘一个功德+1"):
+   金边圆角小币形,点一下投一枚进箱;字号 1.45rem 与"我的功德"文字协调(👤:2.5rem 太大不对齐) */
+.merit-num {
+  appearance: none;
+  font-family: inherit;
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  background: rgba(212, 160, 23, 0.13);
+  border: 2px solid rgba(212, 160, 23, 0.65);
+  border-radius: 12px;
+  padding: 5px 13px;
+  min-width: 52px;
+  cursor: pointer;
+  transition: transform 0.08s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+.merit-num:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: rgba(212, 160, 23, 0.22);
+  box-shadow: 0 2px 0 rgba(164, 117, 15, 0.5);
+}
+.merit-num:active:not(:disabled) { transform: scale(0.92); }
+.merit-num:disabled { opacity: 0.4; cursor: not-allowed; }
+.merit-num.bump { animation: merit-num-bump 0.5s ease; }
+@keyframes merit-num-bump {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.22); color: var(--gold); }
+}
+/* 每投一枚,一枚「功德 +1」从箱口飘起散掉 */
+.merit-float {
+  position: absolute;
+  left: 50%;
+  top: 44px;
+  font-weight: 800;
+  font-size: 1.02rem;
+  color: #a4750f;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: merit-float 0.9s ease-out both;
+}
+@keyframes merit-float {
+  0% { opacity: 0; transform: translate(-50%, 16px); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -42px); }
+}
+.merit-unit { color: var(--ink-soft); font-weight: 600; }
+/* 投币提示小字(👤 11/12:"点击数字没有提示,用户不知道") */
+.merit-hint { color: var(--ink-soft); font-size: 0.8rem; margin-top: -4px; }
+.merit-ready {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+.merit-actions { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.ration-btn { cursor: pointer; width: 100%; }
+.ration-btn:disabled { cursor: not-allowed; }
+/* 捐献 = 金扣奉纳(👤 11/12:领取与捐献要分开——橙=领进自己口袋,金=投进功德箱;
+   主页面板和道具页拦截面板共用 .ration-donate,一处改两处生效) */
+.ration-donate {
+  background: var(--gold);
+  color: var(--ink);
+  box-shadow: 0 2px 0 #a4750f, var(--shadow);
+}
+/* 拦截面板捐献按钮两行:主行动 + 副进度(👤 11/12"我在哪里点击捐赠"——
+   光秃进度文案不像按钮,动作必须永远可见) */
+.donate-main { display: block; }
+.donate-sub { display: block; font-size: 0.78rem; font-weight: 600; opacity: 0.72; margin-top: 2px; }
+.donate-sub:empty { display: none; }
+.merit-banked { color: var(--green); font-weight: 700; font-size: 0.95rem; }
+.merit-banked:empty { display: none; }
+/* 本轮已投 n/8(离下一张加抽票的进度),投满自动存票后归零 */
+.merit-cycle { color: var(--ink-soft); font-weight: 600; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.merit-cycle:empty { display: none; }
+/* communal total sits under the box, separate from the personal panel */
+.merit-communal { justify-items: center; text-align: center; }
+.merit-total { font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+/* tool-page blocked panel */
+.ration-card { max-width: 560px; margin: 1.2rem auto; text-align: center; padding: 1.3rem 1.5rem; }
+.ration-title { font-size: 1.25rem; font-weight: 800; color: var(--ink); }
+.ration-body { color: var(--ink-soft); margin: 0.5rem 0 1rem; }
+.ration-actions { display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 360px; margin: 0 auto; }
+.ration-fine { color: var(--ink-soft); font-size: 0.82rem; margin: 1rem 0 0; }
+.ration-boxlink { margin: 0.5rem 0 0; font-size: 0.9rem; }
+.ration-boxlink a { color: var(--accent); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .merit-scene { gap: 20px; }
+  .merit-stage svg { width: 168px; height: auto; }
+  .merit-panel { flex: 1 1 100%; }
+  .merit-num { font-size: 1.3rem; }
+  .merit-hint { text-align: center; }
+  .merit-stage { width: 100%; /* 捐献按钮与领取按钮同宽,手机端单列齐整 */ }
+  .merit-balance { justify-content: center; }
+}
+
+/* ---- 主页分区(👤 11/12):功德箱 = 浅黄庙墙 stage(👤 定调:浅黄+寺庙神圣感,首版夜色已弃),
+        道具家族留纸底,一黄一纸切开。文字色回到纸面体系,只有 kicker/箱面累计压成深金 ---- */
+.merit-band {
+  margin: 48px -20px;
+  padding: 36px 20px 40px;
+  text-align: center;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(720px 280px at 50% -60px, rgba(212, 160, 23, 0.3), transparent 74%),
+    var(--temple);
+  border: 1px solid rgba(212, 160, 23, 0.5);
+}
+.merit-band .kicker { color: #a4750f; /* 正金在浅黄底上太飘,压深一档(铜钱内方孔同源色) */ }
+.merit-band .merit-total { color: #a4750f; }
+/* 注意:本区块在旧 640px 媒体查询之后追加,移动端覆盖必须跟在其后,否则被同特异性基础规则压掉 */
+@media (max-width: 640px) {
+  /* 手机端不整幅贴边(👤 11/12:贴边时边框看不见,像块没边的色带,和上下卡片不一致)
+     —— 内收成与上下区块一致的圆角金边卡片 */
+  .merit-band { margin: 44px 0; border-radius: var(--radius); }
+}
+
+/* ---- 上香(👤 11/12"每天领取三支香…先点香,然后上香,上完后香就在香炉里面烧着"):
+        抽签页 tool-stage 内两栏——左香右签,问事前先走一段上香流程。
+        香炉为自绘 SVG(功德箱同一画线;图库香炉实拍全带水印/许可不明,emoji 无香炉) ---- */
+.ritual-row {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.ritual-incense { flex: 1 1 0; min-width: 0; }
+.ritual-draw {
+  flex: 1 1 0;
+  min-width: 0;
+  border-left: 1px solid var(--line);
+  padding-left: 30px;
+}
+.incense-censer-svg { width: 270px; height: auto; max-width: 92%; }
+.incense-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.incense-head {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #a4750f;
+}
+.incense-count { color: var(--ink-soft); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.incense-count:empty { display: none; }
+.incense-holder {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  min-height: 96px; /* 三支全敬入后 holder 清空,占位防止下方文字跳位 */
+}
+.incense-stick {
+  appearance: none;
+  font-family: inherit;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 4px 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+}
+.incense-stick:hover {
+  background: rgba(212, 160, 23, 0.13);
+  border-color: rgba(212, 160, 23, 0.5);
+}
+.incense-stick span { font-size: 0.78rem; font-weight: 600; color: var(--ink-soft); }
+.incense-stick.is-lit span { color: #b45309; }
+.incense-actions { display: grid; }
+.incense-actions:empty { display: none; }
+.incense-hint { color: var(--ink-soft); font-size: 0.85rem; max-width: 250px; line-height: 1.5; }
+
+/* 炉中香:烟缕(起止均为透明,5s 重渲染重启无感)+ 火苗摇曳(起止同位姿)+ 上香落定微光 */
+.inc-smoke { animation: incense-smoke 2.6s ease-out infinite; }
+.inc-smoke.s2 { animation-delay: -1.3s; }
+.inc-flame {
+  animation: incense-flame 1.3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+/* 落定微光打在整株 svg 上(照片香炉没有 .inc-censer-body 容器了) */
+.incense-censer-svg.planted { animation: incense-planted 0.7s ease-out; }
+@keyframes incense-smoke {
+  0% { opacity: 0; transform: translate(0, 0); }
+  30% { opacity: 0.7; }
+  60% { opacity: 0.35; }
+  100% { opacity: 0; transform: translate(2px, -10px); }
+}
+@keyframes incense-flame {
+  0%, 100% { transform: scale(1, 1) skewX(0deg); }
+  30% { transform: scale(1.08, 1.14) skewX(2.5deg); }
+  55% { transform: scale(0.94, 0.88) skewX(-2deg); }
+  80% { transform: scale(1.04, 1.06) skewX(1.5deg); }
+}
+@keyframes incense-planted {
+  0%, 100% { filter: brightness(1); }
+  35% { filter: brightness(1.22); }
+}
+
+/* 移动端覆盖必须放在基础规则之后(同特异性后来者胜,见 merit-band 教训) */
+@media (max-width: 640px) {
+  .ritual-row { flex-direction: column; gap: 6px; }
+  .ritual-incense { flex: none; width: 100%; }
+  .ritual-draw { flex: none; width: 100%; border-left: none; padding-left: 0; }
+  .incense-holder { min-height: 88px; }
 }

@@ -4,22 +4,23 @@ import Faq from '../../components/Faq.astro';
 ---
 <Base
   lang="zh"
-  title="是与非 — 秒答，附理由 | LuckyShake（内部审阅版）"
-  description="立刻得到一个「是」或「否」——外加背后的理由和下一步该做的事。问不问都行，直接按。免费、无需注册。"
+  title="是与非 — 秒答，附理由 | Fortune Willow（内部审阅版）"
+  description="一按之间，「是」「否」立判——且附一句实在缘由与下一步当行之事。问不问随心，按下即答。免费、无需注册。"
 >
   <section class="tool-shell card">
     <div class="tool-stage">
       <h1>是与非</h1>
       <p class="tool-sub">
-        一下、一个答案——而且和别的"是/否"按钮不同，这里还给你"为什么"和"接下来干什么"。
-        你的问题只待在你的浏览器里。
+        一按，一答——并且不止于答：还告诉你「为何」，与「接下来」。
+        你的问题，只留在这台设备里。
       </p>
       <div class="stage-visual yesno-stage">
         <input class="q-input" data-q type="text" maxlength="40" placeholder="可填可不填——你在纠结什么？" aria-label="你的问题（可选）" />
         <button class="btn" data-decide>裁决</button>
       </div>
+      <div data-ration-slot></div>
       <div class="tool-outcome" data-outcome style="padding:0"></div>
-      <p class="hint" style="margin-top:18px">干净五五开 · 理由是白送的</p>
+      <p class="hint" style="margin-top:18px">五五开，不含糊 · 理由是白送的</p>
     </div>
   </section>
 
@@ -27,20 +28,20 @@ import Faq from '../../components/Faq.astro';
     <div class="kicker">怎么玩</div>
     <h2>答案 · 理由 · 下一步</h2>
     <div class="steps">
-      <div class="step"><div class="n">1 · 问（或不问）</div><p>把问题打出来是可选的——它能帮你聚焦，而且永远不会离开你的设备。</p></div>
-      <div class="step"><div class="n">2 · 得到干脆的答案</div><p>"是"与"否"之间公平一掷。没有"看情况"、没有和稀泥——裁决器就该真的能裁决。</p></div>
-      <div class="step"><div class="n">3 · 读底下那层</div><p>每个答案配一句实在的理由和一步具体的行动——别的按钮都跳过的那部分。</p></div>
+      <div class="step"><div class="n">1 · 问（或不问）</div><p>问题可写可不写——写，是为凝心；不写，也无妨。无论如何，它不出你的设备。</p></div>
+      <div class="step"><div class="n">2 · 得一个干脆的答案</div><p>是、否之间公平一断。没有「看情况」，没有和稀泥——裁决器，就该真能裁决。</p></div>
+      <div class="step"><div class="n">3 · 读底下那一层</div><p>每个答案底下都有一句实在缘由、一步当下可行——恰是别处按钮省略的那一层。</p></div>
     </div>
   </section>
 
   <section class="section">
-    <div class="kicker">什么时候按</div>
-    <h2>为第 N 次修改而生的按钮</h2>
+    <div class="kicker">何时一按</div>
+    <h2>为你改到第 N 遍而备</h2>
     <div class="scene-list">
-      <div class="scene"><span class="glyph">📱</span><p><b>那条消息发不发？</b>你改的次数都够写一部中篇了。按一下，得个裁决，并且这次照做。</p></div>
-      <div class="scene"><span class="glyph">🛒</span><p><b>购物车满了，手指悬着。</b>答案附带的理由，和"包邮不包邮"一点关系都没有。</p></div>
-      <div class="scene"><span class="glyph">🏋️</span><p><b>去健身房还是躺沙发？</b>让按钮背锅。（按统计，它一半时间会说去。规矩就是这样。）</p></div>
-      <div class="scene"><span class="glyph">🤔</span><p><b>两个都挺好。</b>当两条路都不错时，找到你真实偏好的最快方式，就是掷一次你暗暗希望落在某一面的硬币。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/mobile_phone.png" width="24" height="24" alt="" /></span><p><b>那条消息，发还是不发？</b>你已改到第 N 遍，再改就该出书了。按一下，领个裁决——这一回，照它做。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/shopping_cart.png" width="24" height="24" alt="" /></span><p><b>购物车满了，手指悬着。</b>答案附带的理由，与「包不包邮」毫无干系。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/dumbbell.png" width="24" height="24" alt="" /></span><p><b>去健身，还是瘫着？</b>让按钮背这个锅。（按概率，它一半的时候都说去——规矩如此。）</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/thinking_face.png" width="24" height="24" alt="" /></span><p><b>两条路都好。</b>此时看清真心偏好最快的法子，是掷一枚你暗暗盼望落在某一面的硬币。</p></div>
     </div>
   </section>
 
@@ -48,11 +49,11 @@ import Faq from '../../components/Faq.astro';
     <div class="kicker">常见问题</div>
     <h2>是与非 FAQ</h2>
     <Faq items={[
-      { q: '真是五五开吗？', a: '是——浏览器里公平的二选一，不加权、不记仇。如果你连中五个"是"，那是随机性在正确地犯怪，不是按钮有主意。' },
-      { q: '为什么还要给理由？', a: '光秃秃的答案终结这一刻；理由开启下一刻。"为什么"那一句会点破你真正所处的决策局面——沉没成本、赔率不对称、缺一个许可——硬币落地之后很久，它还有用。' },
-      { q: '大事能信它吗？', a: '当裁决器用，别当神谕用。诚实的测法是：按一下，然后注意你的直觉对结果的反应。那个反应才是你真正的答案——按钮只是替你把了个脉。' },
-      { q: '会保存我的问题吗？', a: '不会。输入框不往任何地方发送任何东西——这页随机数背后根本没有服务器。刷新一下，一切归零。' },
-      { q: '和别的"是/否"站有什么不同？', a: '三层而不是一层：答案、实在的理由、下一步。一样的一键干脆——但"是"这个字后面有值得读的东西。' },
+      { q: '真是五五开吗？', a: '是——浏览器里公平二断，不加权、不记仇。连中五个「是」，那是随机在如实地犯怪，不是按钮起了主意。' },
+      { q: '为什么还要给理由？', a: '光秃秃的答案终结这一刻；缘由开启下一刻。「为何」一句点破你真正身处的决策之局——沉没成本、赔率不对称、缺一个许可——硬币落地良久，它仍在起作用。' },
+      { q: '大事能信它吗？', a: '当裁决器用，莫当神谕用。诚实的测法：按一下，再观你心头对结果那一动。那一动才是真答案——按钮只是替你把了一次脉。' },
+      { q: '会保存我的问题吗？', a: '不会。输入框不向任何地方发送任何东西——这页随机数的背后并没有服务器。一刷新，万缘放下。' },
+      { q: '和别的「是/否」站有什么不同？', a: '三层而非一层：答案、实在缘由、下一步。同样一键干脆——但「是」字之后，有值得细读的东西。' },
     ]} />
   </section>
 </Base>
@@ -60,14 +61,16 @@ import Faq from '../../components/Faq.astro';
 <script>
   import { liveRand } from '../../lib/engine';
   import { trackDraw } from '../../lib/track';
+  import { gateDraw } from '../../lib/rationUi';
   import { yesNoZh } from '../../data/i18n-zh';
   import { readQuestion, youAsked } from '../../lib/ask';
 
   const btn = document.querySelector<HTMLButtonElement>('[data-decide]');
   const outcome = document.querySelector<HTMLElement>('[data-outcome]');
 
-  btn?.addEventListener('click', () => {
+  const ask = () => {
     if (!outcome) return;
+    if (!gateDraw(ask)) return; // ration: one free draw a day — merit buys more
     const asked = readQuestion();
     btn.disabled = true;
     const r = yesNoZh(liveRand());
@@ -80,5 +83,7 @@ import Faq from '../../components/Faq.astro';
         <p style="max-width:520px;margin:0 auto 26px"><b>下一步：</b>${r.next}</p>
       </div>`;
     window.setTimeout(() => (btn.disabled = false), 600);
-  });
+  };
+
+  btn?.addEventListener('click', ask);
 </script>

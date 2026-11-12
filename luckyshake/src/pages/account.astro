@@ -2,15 +2,15 @@
 import Base from '../layouts/Base.astro';
 ---
 <Base
-  title="Your Readings — Optional Account | LuckyShake"
-  description="Every tool on LuckyShake works without an account. Sign in with Google only if you want your reading history to follow you across devices — we store your draws, nothing else."
+  title="Your Readings — Optional Account | Fortune Willow"
+  description="Every tool on Fortune Willow works without an account. Sign in with Google only if you want your reading history to follow you across devices — we store your draws, nothing else."
 >
   <section class="section">
     <div class="kicker">Optional account</div>
     <h1>Your readings</h1>
     <p class="tool-sub" style="margin:0 auto 1.4rem">
-      Every tool here stays free and works without an account. Signing in does exactly one thing:
-      your reading history follows you across devices. We store your draws — no profile, no
+      Every tool stays free and works without an account. Signing in does exactly one thing:
+      it syncs your reading history across devices. We store your draws — no profile, no
       questions, nothing else.
     </p>
     <div class="card" style="padding:1.4rem" id="account-root" data-account-root>
@@ -33,7 +33,7 @@ import Base from '../layouts/Base.astro';
   function signedOut() {
     if (!root) return;
     root.innerHTML = `
-      <p>You are not signed in. The tools don’t care — sign in only to sync your history.</p>
+      <p>You’re not signed in. The tools don’t care — sign in only if you want your history synced.</p>
       <p style="margin-top:1rem"><a class="btn" href="/api/auth/google">Sign in with Google</a></p>
       <p class="hint" style="margin-top:1rem">We receive your Google name, email, and profile picture to create the account — and store your draws. Nothing else is collected.</p>
     `;
@@ -53,7 +53,7 @@ import Base from '../layouts/Base.astro';
             </a>`;
           })
           .join('')}</div>`
-      : '<p class="muted" style="margin-top:1rem">No readings yet — draw a fortune and it lands here.</p>';
+      : '<p class="muted" style="margin-top:1rem">No readings yet — draw your first fortune and it lands here.</p>';
     root.innerHTML = `
       <p>Signed in as <b>${user.name ?? user.email ?? 'you'}</b> ${user.email && user.name ? `<span class="muted">(${user.email})</span>` : ''}</p>
       ${rows}

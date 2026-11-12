@@ -73,7 +73,7 @@ export function digitsForSign(id: number): [number, number, number] {
 
 /** Deterministic daily draw: same date -> same sign + digits, forever. */
 export function dailyDraw(dateStr: string): { sign: Sign; digits: [number, number, number] } {
-  const rand = mulberry32(hashString('luckyshake-daily-' + dateStr));
+  const rand = mulberry32(hashString('fortunewillow-daily-' + dateStr));
   const digits = rollDigits(rand);
   return { sign: signForDigits(digits), digits };
 }

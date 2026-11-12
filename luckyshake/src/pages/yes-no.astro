@@ -3,20 +3,21 @@ import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 ---
 <Base
-  title="Yes or No — Instant Answer With a Reason | LuckyShake"
+  title="Yes or No — Instant Answer With a Reason | Fortune Willow"
   description="Get an instant yes or no — plus the reason behind it and one thing to do next. Type your question or just hit decide. Free, no sign-up."
 >
   <section class="tool-shell card">
     <div class="tool-stage">
       <h1>Yes or No</h1>
       <p class="tool-sub">
-        One tap, one answer — and unlike every other yes/no button, you also get why, and what to do
-        next. Your question stays in your browser.
+        One tap, one answer — and unlike every other yes/no button, you also get the why and
+        the what-next. Your question never leaves your browser.
       </p>
       <div class="stage-visual yesno-stage">
         <input class="q-input" data-q type="text" maxlength="80" placeholder="Optional — what are you deciding?" aria-label="Your question (optional)" />
         <button class="btn" data-decide>Decide</button>
       </div>
+      <div data-ration-slot></div>
       <div class="tool-outcome" data-outcome style="padding:0"></div>
       <p class="hint" style="margin-top:18px">A clean 50/50 · the reasoning is the free extra</p>
     </div>
@@ -36,10 +37,10 @@ import Faq from '../components/Faq.astro';
     <div class="kicker">When people press</div>
     <h2>Built for the 40th rewrite</h2>
     <div class="scene-list">
-      <div class="scene"><span class="glyph">📱</span><p><b>Send the text?</b> You have rewritten it enough times to have written a novel. Press, get a verdict, obey it once.</p></div>
-      <div class="scene"><span class="glyph">🛒</span><p><b>Cart full, finger hovering.</b> The answer comes with a reason that has nothing to do with free shipping.</p></div>
-      <div class="scene"><span class="glyph">🏋️</span><p><b>Gym or couch?</b> Let the button take the blame. (Statistically, it says gym half the time. Those are the rules.)</p></div>
-      <div class="scene"><span class="glyph">🤔</span><p><b>Two good options.</b> When both paths are fine, the fastest way to your real preference is a coin flip you secretly hope lands on one side.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/mobile_phone.png" width="24" height="24" alt="" /></span><p><b>Send the text or not?</b> You've rewritten it enough times to fill a novella. Press, get a verdict, follow it once.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/shopping_cart.png" width="24" height="24" alt="" /></span><p><b>Cart full, finger hovering.</b> The answer comes with a reason that has nothing to do with free shipping.</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/dumbbell.png" width="24" height="24" alt="" /></span><p><b>Gym or couch?</b> Let the button take the blame. (Statistically, it says gym half the time. Those are the rules.)</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/thinking_face.png" width="24" height="24" alt="" /></span><p><b>Two good options.</b> When both paths are fine, the fastest way to find your real preference is a flip you're secretly rooting for.</p></div>
     </div>
   </section>
 
@@ -47,11 +48,11 @@ import Faq from '../components/Faq.astro';
     <div class="kicker">Questions</div>
     <h2>Yes or No FAQ</h2>
     <Faq items={[
-      { q: 'Is it really 50/50?', a: 'Yes — a fair binary draw in your browser, no weighting, no memory. If you get Yes five times in a row, that is randomness being correctly weird, not the button having opinions.' },
-      { q: 'Why does it give a reason?', a: 'A bare answer ends the moment; a reason starts the next one. The "why" line names the decision dynamic you are actually in — sunk cost, asymmetry, missing permission — which is useful long after the coin lands.' },
+      { q: 'Is it really 50/50?', a: 'Yes — a fair binary draw in your browser, no weighting, no memory. If you get Yes five times in a row, that’s randomness being correctly weird, not the button having opinions.' },
+      { q: 'Why does it give a reason?', a: 'A bare answer ends the moment; a reason starts the next one. The “why” line names the decision dynamic you’re actually in — sunk cost, asymmetry, missing permission — which is useful long after the coin lands.' },
       { q: 'Should I trust it for big decisions?', a: 'Use it as a tiebreaker, not an oracle. The honest test: flip, then notice your gut’s reaction to the result. That reaction is your actual answer — the button just took your pulse.' },
-      { q: 'Do you save my question?', a: 'No. The text box never sends anything anywhere — there is no server on the other end of this page’s randomness. Refresh and it is gone.' },
-      { q: 'How is this different from the other yes/no sites?', a: 'Three layers instead of one: the answer, the honest reason, and the next step. Same one-tap simplicity — with something worth reading after the word "Yes".' },
+      { q: 'Do you save my question?', a: 'Nope. The text box never sends anything anywhere — there’s no server on the other end of this page’s randomness. Refresh and it’s gone.' },
+      { q: 'How is this different from the other yes/no sites?', a: 'Three layers instead of one: the answer, the honest reason, and the next step. Same one-tap simplicity — with something worth reading after the word “Yes”.' },
     ]} />
   </section>
 </Base>
@@ -59,13 +60,15 @@ import Faq from '../components/Faq.astro';
 <script>
   import { yesNo, liveRand } from '../lib/engine';
   import { trackDraw } from '../lib/track';
+  import { gateDraw } from '../lib/rationUi';
   import { readQuestion, youAsked } from '../lib/ask';
 
   const btn = document.querySelector<HTMLButtonElement>('[data-decide]');
   const outcome = document.querySelector<HTMLElement>('[data-outcome]');
 
-  btn?.addEventListener('click', () => {
+  const ask = () => {
     if (!outcome) return;
+    if (!gateDraw(ask)) return; // ration: one free draw a day — merit buys more
     const asked = readQuestion();
     btn.disabled = true;
     const r = yesNo(liveRand());
@@ -73,10 +76,13 @@ import Faq from '../components/Faq.astro';
     outcome.innerHTML = `
       ${youAsked(asked)}
       <div class="center" style="margin-top:26px">
+        <img class="gesture" src="/img/icons/${r.answer.toLowerCase() === 'yes' ? 'thumbs_up' : 'waving_hand'}.png" width="72" height="72" alt="" />
         <div class="verdict ${r.answer.toLowerCase()}">${r.answer}</div>
         <p style="max-width:520px;margin:18px auto 6px"><b>Why:</b> ${r.why}</p>
         <p style="max-width:520px;margin:0 auto 26px"><b>Next:</b> ${r.next}</p>
       </div>`;
     window.setTimeout(() => (btn.disabled = false), 600);
-  });
+  };
+
+  btn?.addEventListener('click', ask);
 </script>

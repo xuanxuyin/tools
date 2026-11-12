@@ -1,0 +1,24 @@
+---
+/**
+ * 共享 3D 签筒(主页 hero + draw 两处与 fortune-stick 工具页统一用
+ * jar3d.ts 的真 3D 筒)。👤 11/11 拍板"直接渲染,不要过渡":**无占位、
+ * 无淡出**——three.js 起来前盒子里什么都不画(透明 canvas 不可见),
+ * 首帧画出即签筒一次性出现,没有任何换脸过程。布局由 .jar3d 的
+ * aspect-ratio 预留,零 CLS。WebGL 起不来时盒子保持留空(极罕见,
+ * 页面文案与按钮不受影响)——旧照片海报已按 👤 11/11 "太丑"删除。
+ * <script> 是 Astro 组件脚本,每页只执行一次,扫页上全部 [data-jar3d]
+ * 逐个 bootJar;工具页自己的脚本也走 bootJar,WeakMap 保证不重复 boot。
+ */
+interface Props {
+  uid: string;
+  class?: string;
+}
+const { uid, class: className } = Astro.props;
+---
+<div class:list={["jar3d", className]} data-jar3d />
+<script>
+  import { bootJar } from '../lib/jarBoot';
+  for (const host of document.querySelectorAll<HTMLElement>('[data-jar3d]')) {
+    void bootJar(host);
+  }
+</script>

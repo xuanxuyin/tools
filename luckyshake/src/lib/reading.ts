@@ -116,10 +116,11 @@ export function renderReading(
 }
 
 /**
- * Drawn banner — the SLIP (签底) itself, 👤 11/08 定版, 👤 11/09 EN 改版:
- * EN pages = EN-forward slip (STICK NO. + traditional grade seal + EN name +
- * source 典故名 · grade as a small sub line + the classical verdict paragraph
- * hand-rendered in EN) — no poem, no Chinese verdict (👤: "服务英语的,保留中文诗词很尴尬");
+ * Drawn banner — the SLIP (签底) itself, 👤 11/08 定版, 👤 11/09 EN 改版,
+ * 👤 11/11 再改（"英文下怎么还有中文"）：EN 页零中文——典故名副行删除、
+ * 印章从中文等级字（上吉/中吉…）换成英文等级词 stamp（.seal--en 横排）。
+ * EN slip = STICK NO. + EN grade seal + EN name + hand-rendered EN verdict,
+ * no poem, no Chinese anywhere (👤: "服务英语的,保留中文诗词很尴尬");
  * the EN verse still shows in the reading below (verseBlock). The zh review
  * layer keeps the full classical slip: 第X签·等级 + 签诗 + 断语 verbatim.
  */
@@ -150,10 +151,9 @@ export function drawnBanner(sign: Sign, lang: 'en' | 'zh' = 'en'): string {
   <div class="reading card drawn-banner slip slip--en">
     <div class="slip-head">
       <span class="slip-no">STICK NO. ${String(sign.id).padStart(2, '0')}</span>
-      ${slip ? `<span class="seal seal--${sign.grade}" title="traditional grade">${slip.gradeZh}</span>` : ''}
+      ${slip ? `<span class="seal seal--en seal--${sign.grade}">${GRADE_LABEL[sign.grade]}</span>` : ''}
     </div>
     <div class="slip-title slip-title--en">${sign.name}</div>
-    <div class="slip-sub">${sign.nameZh} · ${GRADE_LABEL[sign.grade]}</div>
     ${verdict}
   </div>`;
 }

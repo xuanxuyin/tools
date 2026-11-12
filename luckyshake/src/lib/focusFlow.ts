@@ -14,15 +14,15 @@ export function focusPanelHTML(lang: 'en' | 'zh' = 'en'): string {
   <div class="focus-panel" data-focus-panel data-lang="${lang}">
     <p class="focus-q">${zh ? '现在——你问的是哪件事？' : 'Now — what did you ask about?'}</p>
     <div class="focus-chips">
-      <button type="button" class="fchip" data-focus="love">❤️ ${zh ? '感情' : 'Love'}</button>
-      <button type="button" class="fchip" data-focus="money">💰 ${zh ? '财运' : 'Money'}</button>
-      <button type="button" class="fchip" data-focus="career">💼 ${zh ? '事业' : 'Career'}</button>
+      <button type="button" class="fchip" data-focus="love"><img src="/img/icons/red_heart.png" width="18" height="18" alt=""> ${zh ? '感情' : 'Love'}</button>
+      <button type="button" class="fchip" data-focus="money"><img src="/img/icons/money_bag.png" width="18" height="18" alt=""> ${zh ? '财运' : 'Money'}</button>
+      <button type="button" class="fchip" data-focus="career"><img src="/img/icons/briefcase.png" width="18" height="18" alt=""> ${zh ? '事业' : 'Career'}</button>
     </div>
     <p class="focus-or">${zh ? '或者自己写一句——只能选一样' : 'or ask in your own words — just one'}</p>
     <div class="focus-own">
       <input class="q-input" data-q type="text" maxlength="80"
-        placeholder="${zh ? '写下你的问题——只留在你的设备里' : 'Type your question — it stays on your device'}"
-        aria-label="${zh ? '你的问题' : 'Your question'}" />
+        placeholder="${zh ? '写下你的问题——只留在这台设备' : 'Your question — kept on this device'}"
+        aria-label="${zh ? '你的问题（只留在你的设备里）' : 'Your question (stays on your device)'}" />
       <button type="button" class="btn small" data-reveal>${zh ? '揭示答案' : 'Reveal my answer'}</button>
     </div>
     <div class="focus-answer" data-answer></div>

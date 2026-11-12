@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 import ToolCard from '../components/ToolCard.astro';
-import JarSvg from '../components/JarSvg.astro';
+import Jar3d from '../components/Jar3d.astro';
 import { dailyDraw } from '../lib/engine';
 import { SIGN_VERSES } from '../data/signVerses';
 
@@ -16,7 +16,7 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
 };
 ---
 <Base
-  title="LuckyShake — Ask Anything, Get a Real Answer"
+  title="Fortune Willow — Ask Anything, Get a Real Answer"
   description="Fortune sticks, a number oracle, magic 8-ball, coin flips and more — every tool answers your question and tells you what to do next. Hand-written fortunes, free, no sign-up."
 >
   <!-- hero:左文案右签筒(👤 11/10 参考 1.jpg 主页效果图布局) -->
@@ -25,54 +25,40 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
       <div class="kicker">Ask. Shake. Get a real answer.</div>
       <h1>Shake the jar.<br />Get an answer worth reading.</h1>
       <p class="hero-sub">
-        Fortune sticks with hand-written readings for love, money and work — an old ritual pointed
-        at modern decisions.
+        Fortune sticks with hand-written readings for love, money and work.
       </p>
-      <p class="hero-meta"><b>100</b> hand-written fortunes · Free · No sign-up</p>
       <div class="hero-cta">
         <a class="btn" href="/fortune-stick/">Draw your fortune →</a>
         <a class="hero-alt" href="/daily-fortune/">or read today’s shared fortune</a>
       </div>
     </div>
     <div class="hero-stage">
-      <JarSvg uid="hero" class="hero-jar" />
+      <Jar3d uid="hero" class="hero-jar" />
       <div class="hero-vert">Ask · Shake · Read</div>
     </div>
   </section>
 
   <!-- features:四栏细线分隔(参考稿中部) -->
-  <section class="features" aria-label="What makes a LuckyShake draw different">
+  <section class="features" aria-label="What makes a Fortune Willow draw different">
     <div class="feature">
-      <svg class="fico" width="30" height="30" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
-        <path d="M10 4v7M18 4v7" />
-        <rect x="6" y="11" width="16" height="13" rx="3" />
-        <path d="M10 16.5h8" opacity=".5" />
-      </svg>
+      <img class="fico" src="/img/jar-icon.png" width="30" height="30" alt="" />
       <b>A real shake</b>
       <span>The jar tilts, the sticks rattle, one rises. No instant-reveal button.</span>
     </div>
     <div class="feature">
-      <svg class="fico" width="30" height="30" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
-        <path d="M9 4h10M9 9h10M9 14h6M9 19h8" />
-      </svg>
+      <img class="fico" src="/img/icons/scroll.png" width="30" height="30" alt="" />
       <b>A verse on every stick</b>
       <span>Each draw carries its four-line poem — the artifact, not a one-liner.</span>
     </div>
     <div class="feature">
-      <svg class="fico" width="30" height="30" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M14 7c-2-1.7-4.8-2.2-8-2.2v16.4c3.2 0 6 .5 8 2.2 2-1.7 4.8-2.2 8-2.2V4.8c-3.2 0-6 .5-8 2.2v16.2" />
-      </svg>
+      <img class="fico" src="/img/icons/crystal_ball.png" width="30" height="30" alt="" />
       <b>Plain-language readings</b>
       <span>Love, money and career in sentences you can actually use before dinner.</span>
     </div>
     <div class="feature">
-      <svg class="fico" width="30" height="30" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="4" y="6" width="20" height="17" rx="3" />
-        <path d="M4 11.5h20M9.5 3v5M18.5 3v5" />
-        <path d="M10 18l3 3 5.5-5.5" />
-      </svg>
-      <b>Come back daily</b>
-      <span>A fresh shared fortune every day, and your draws unlock the full library.</span>
+      <img class="fico" src="/img/icons/calendar.png" width="30" height="30" alt="" />
+      <b>Come back tomorrow</b>
+      <span>A fresh shared fortune every morning, and every draw unlocks more of the library.</span>
     </div>
   </section>
 
@@ -80,7 +66,7 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
   <section class="draw-duo">
     <div class="card draw-left">
       <p class="draw-q">Hold the question in mind.<br />Then shake — once, properly.</p>
-      <JarSvg uid="draw" class="draw-jar" />
+      <Jar3d uid="draw" class="draw-jar" />
       <a class="shake-ring" href="/fortune-stick/">SHAKE</a>
       <p class="hint">One deliberate draw beats ten quick clicks.</p>
     </div>
@@ -99,17 +85,30 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     </div>
   </section>
 
+  <!-- merit box:每日一次免费抽取 + 功德经济(👤 2026-11-11) -->
+  <section class="section merit-band" id="merit-box">
+    <div class="kicker">The merit box</div>
+    <h2>One draw a day. Merit buys more.</h2>
+    <p style="max-width:640px;margin:0 auto">
+      Every tool in the family shares one free draw a day — it keeps each reading deliberate.
+      Merit collects an extra point every hour; drop 8 in the box and bank a draw for
+      whichever tool you want next.
+    </p>
+    <div class="merit-scene" data-merit-root></div>
+  </section>
+
   <section class="section">
     <div class="kicker">The whole family</div>
+    <h2>Pick a tool, ask your question.</h2>
     <div class="grid-tools">
-      <ToolCard href="/fortune-stick/" glyph="🥢" name="Fortune Stick" desc="Shake the jar, draw one hand-written fortune with love, money and career readings." />
-      <ToolCard href="/number-oracle/" glyph="🔢" name="Number Oracle" desc="Roll three digits 0–9 — they pick your fortune and become your lucky numbers." />
-      <ToolCard href="/magic-8-ball/" glyph="🎱" name="Magic 8-Ball" desc="The classic answers — each with the honest read on what to do about it." />
-      <ToolCard href="/yes-no/" glyph="✅" name="Yes or No" desc="A clean 50/50 plus the why and the next step. No hedging, no 'maybe'." />
-      <ToolCard href="/coin-flip/" glyph="🪙" name="Coin Flip" desc="Heads is yes, tails is no. The oldest tiebreaker in history, zero pocket change." />
-      <ToolCard href="/fortune-cookie/" glyph="🥠" name="Fortune Cookie" desc="Crack one open: your message plus three lucky numbers that unlock a full reading." />
-      <ToolCard href="/horoscope/" glyph="♈" name="Horoscope" desc="Today's shared fortune read through your zodiac sign — same draw, your sign's take on it." />
-      <ToolCard href="/signs/" glyph="📜" name="The 100 Fortunes" desc="The whole hand-written library on the record: every sign's name, story, and readings." />
+      <ToolCard href="/fortune-stick/" icon="jar" name="Fortune Stick" desc="Shake the jar, draw one hand-written fortune with love, money and career readings." />
+      <ToolCard href="/number-oracle/" icon="input_numbers" name="Number Oracle" desc="Roll three digits 0–9 — they pick your fortune and become your lucky numbers." />
+      <ToolCard href="/magic-8-ball/" icon="pool_8_ball" name="Magic 8-Ball" desc="The classic answers — each with the honest read on what to do about it." />
+      <ToolCard href="/yes-no/" icon="check_mark_button" name="Yes or No" desc="A clean 50/50 plus the why and the next step. No hedging, no 'maybe'." />
+      <ToolCard href="/coin-flip/" icon="coin" name="Coin Flip" desc="Heads is yes, tails is no. The oldest tiebreaker in history, zero pocket change." />
+      <ToolCard href="/fortune-cookie/" icon="fortune_cookie" name="Fortune Cookie" desc="Crack one open: your message plus three lucky numbers that unlock a full reading." />
+      <ToolCard href="/horoscope/" icon="crystal_ball" name="Horoscope" desc="Today's shared fortune read through your zodiac sign — same draw, your sign's take on it." />
+      <ToolCard href="/signs/" icon="scroll" name="The 100 Fortunes" desc="The whole hand-written library on the record: every sign's name, story, and readings." />
     </div>
   </section>
 
@@ -132,10 +131,10 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     <div class="kicker">Questions</div>
     <h2>FAQ</h2>
     <Faq items={[
-      { q: 'Is this free?', a: 'Completely — every tool, unlimited use, no account. The site is supported by keeping your attention, not your email address.' },
+      { q: 'Is this free?', a: 'Yes — no account, no card. Each day brings one free draw shared across every tool; collect merit (a point an hour, up to 24) and donate 8 to the merit box whenever you want another. The site is supported by keeping your attention, not your email address.' },
       { q: 'Which tool should I use?', a: 'Got a decision right now? Yes/No or the coin. A bigger question about work, love or money? The Fortune Stick. Feel like letting numbers choose? The Number Oracle. Just want a ten-second ritual? The cookie.' },
-      { q: 'Are these fortunes serious?', a: 'The randomness is real and so is the writing — but LuckyShake is for entertainment and reflection, not medical, legal, or financial advice. For decisions about health, safety, or other people’s rights, talk to a professional, not an 8-ball.' },
-      { q: 'Where do the fortunes come from?', a: 'They are original adaptations of the fortune-stick tradition — numbered sticks with a poem, a story, and guidance — rewritten for modern American decisions: job offers, group chats, savings goals, second dates.' },
+      { q: 'Are these fortunes serious?', a: 'The randomness is real and so is the writing — but Fortune Willow is for entertainment and reflection, not medical, legal, or financial advice. For decisions about health, safety, or other people’s rights, talk to a professional, not an 8-ball.' },
+      { q: 'Where do the fortunes come from?', a: 'They are original adaptations of the fortune-stick tradition — numbered sticks with a poem, a story, and guidance — rewritten for the decisions you actually face: job offers, group chats, savings goals, second dates.' },
       { q: 'Can I get the same fortune twice?', a: 'Yes — the draws are fair and independent, so repeats happen exactly as often as probability says. If the same fortune keeps finding you, that is between you and the universe.' },
     ]} />
   </section>
@@ -148,3 +147,9 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     </svg>
   </div>
 </Base>
+
+<script>
+  import { mountMeritBox } from '../lib/rationUi';
+  const root = document.querySelector<HTMLElement>('[data-merit-root]');
+  if (root) mountMeritBox(root);
+</script>
