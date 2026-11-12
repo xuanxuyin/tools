@@ -38,3 +38,7 @@ payload
 
 # luckyshake 开发期 headless 截图（同 **/tmp/ 性质，验证完即弃）
 luckyshake/.shots/
+
+# 本地运行状态：D1 本地库/workerd 锁（.wrangler）、性能基准临时目录（.bench-tmp）
+.wrangler/
+.bench-tmp/
