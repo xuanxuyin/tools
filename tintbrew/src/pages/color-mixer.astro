@@ -88,6 +88,11 @@ const jsonLd = [
 
   <Mixer syncUrl showModeToggle />
 
+  <section class="print-bar no-print" aria-label="Print this page">
+    <span data-i18n="cmx.printNote">Print this page — the mixer result, its ratio readout and the blend strip print with it.</span>
+    <button type="button" class="btn" data-print data-i18n="mix.printBtn">Print</button>
+  </section>
+
   <section class="prose" style="margin-top: var(--sp-8);">
     <h2 data-i18n="cmx.howH">How this color mixer works</h2>
     <p data-i18n="cmx.p1">
@@ -140,3 +145,37 @@ const jsonLd = [
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* paper keeps the hero and the mixer's color result — the in-site mix
+     tiles and FAQ are screen-only (same print-scope rule as mix pages) */
+  @media print {
+    .prose,
+    .print-bar {
+      display: none;
+    }
+  }
+
+  /* print toolbar — screen only, same pattern as mix pages' recipe bar */
+  .print-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-top: var(--sp-6);
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: color-mix(in oklab, var(--accent) 4%, transparent);
+  }
+
+  .print-bar span {
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+</style>
+
+<script>
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>

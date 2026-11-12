@@ -6,6 +6,7 @@ import TintsShades from '../../components/TintsShades.astro';
 import RelatedMixes from '../../components/RelatedMixes.astro';
 import { buildMixContent } from '../../lib/mixContent';
 import { mixes } from '../../data/mixes';
+import { nearestBead } from '../../lib/beadPalette';
 import { ICONS } from '../../lib/icons';
 import { SITE } from '../../consts';
 
@@ -18,6 +19,9 @@ export function getStaticPaths() {
 
 const { def } = Astro.props;
 const c = buildMixContent(def);
+// 2026-11-12 engagement batch: crafters mixing paint colors are often headed
+// for fuse beads too — name the closest buyable bead for the computed result.
+const bead = nearestBead(c.resultHex);
 
 // i18n argument packs shared by the tagged nodes below. Color ids flow
 // through the color.* dictionary at swap time; {result} through MIX_RESULTS.
@@ -94,6 +98,13 @@ const jsonLd = [
         data-i18n="mix.heroEq"
         data-i18n-args={JSON.stringify({ a: c.a.name, b: c.b.name, result: def.resultName })}
       >{c.a.name} + {c.b.name} = {c.resultName}</strong>
+      <span class="ha-bead">
+        <span data-i18n="mix.bead">Closest fuse bead:</span>
+        <a class="bead-match" href="/fuse-bead-patterns/">
+          <span class="bead-chip" style={`background:${bead.hex}`} aria-hidden="true"></span>
+          <span>{bead.name} {bead.code}</span>
+        </a>
+      </span>
     </div>
   </section>
 
@@ -101,9 +112,51 @@ const jsonLd = [
     initialColors={[c.first.hex, c.second.hex]}
     showModeToggle
     compact
+    syncUrl
     title="Color mixer tool — drag the sliders to adjust the ratio, then copy the HEX"
     titleKey="mix.mixerLive"
   />
+
+  <section class="recipe-bar no-print" aria-label="Print this mix page">
+    <span data-i18n="mix.printNote">Print this page as a one-page craft sheet — answer, ratios, tints and the bead match.</span>
+    <button type="button" class="btn" data-print data-i18n="mix.printBtn">Print</button>
+  </section>
+
+  {/* Print-only recipe card (2026-11-12 engagement batch): the computed answer,
+      the three ratios, the tint/shade palette and the bead match on one sheet
+      ahead of the article. Screen users never see it. */}
+  <div class="recipe-card">
+    <h2 data-i18n="mix.rcH" data-i18n-args={argsPairCap}>{c.a.name} + {c.b.name} — mixing recipe card</h2>
+    <p data-i18n="mix.rcResult" data-i18n-args={JSON.stringify({ hex: c.resultHex, name: c.nearestName })}>
+      Result: {c.resultHex} ({c.nearestName})
+    </p>
+    <h3 data-i18n="mix.rcRatios">Ratios</h3>
+    {c.ratioRows.map((r) => (
+      <div class="rc-row">
+        <span class="rc-chip" style={`background:${r.hex}`} aria-hidden="true"></span>
+        <code>{r.hex}</code>
+        <span
+          data-i18n="mix.rcRow"
+          data-i18n-args={JSON.stringify({ a: c.first.name, b: c.second.name, pa: r.pctA, pb: r.pctB })}
+        >{r.pctA}% {c.first.name} + {r.pctB}% {c.second.name}</span>
+      </div>
+    ))}
+    <h3 data-i18n="mix.rcTints">Tints and shades</h3>
+    <div class="rc-tints-row">
+      {c.tintsShades.map((s) => (
+        <span class="rc-tint">
+          <span class="rc-chip" style={`background:${s.hex}`} aria-hidden="true"></span>
+          <code>{s.hex}</code>
+        </span>
+      ))}
+    </div>
+    <p class="rc-bead">
+      <span data-i18n="mix.bead">Closest fuse bead:</span>{' '}
+      <span class="rc-chip" style={`background:${bead.hex}`} aria-hidden="true"></span>
+      {bead.name} {bead.code}
+    </p>
+    <p class="rc-foot">tintbrew.com/mix/{c.slug}/</p>
+  </div>
 
   <section class="prose" style="margin-top: var(--sp-6);">
     <h2 data-i18n="mix.ratioH" data-i18n-args={argsPairCap}>{c.first.name} to {c.second.name}: every ratio</h2>
@@ -121,7 +174,7 @@ const jsonLd = [
     <TintsShades steps={c.tintsShades} />
   </section>
 
-  <section class="prose" style="margin-top: var(--sp-6);">
+  <section class="prose print-hide" style="margin-top: var(--sp-6);">
     <h2 data-i18n="mix.mediumH">Paint vs. screen: why the medium matters</h2>
     {def.additiveNote ? (
       <p data-i18n={`mn.${def.a}-${def.b}`}>{def.additiveNote}</p>
@@ -141,17 +194,27 @@ const jsonLd = [
     {def.synonymNote && (
       <p data-i18n={`syn.${def.a}-${def.b}`}>{def.synonymNote}</p>
     )}
+    {def.pairsWith && (
+      <p>
+        <span data-i18n="mix.goA">Making something with this color?</span>{' '}
+        <a
+          href={`/what-colors-go-with-${def.pairsWith}/`}
+          data-i18n="mix.goLink"
+          data-i18n-args={JSON.stringify({ family: def.pairsWith })}
+        >See what colors go with {def.pairsWith} — hand-picked pairs with exact HEX codes.</a>
+      </p>
+    )}
     <p>
       <span data-i18n="mix.mixerA">Want to blend these with different colors entirely? Open the</span><a
         href="/color-mixer"
         data-i18n="mix.lMixer">full color mixer</a><span data-i18n="mix.mixerB">, or</span><a
-        href="/color-converter"
+        href={`/color-converter?color=${encodeURIComponent(c.resultHex)}`}
         data-i18n="mix.lConv"
         data-i18n-args={JSON.stringify({ hex: c.resultHex })}>convert {c.resultHex}</a><span data-i18n="mix.period">.</span>
     </p>
   </section>
 
-  <section class="prose" style="margin-top: var(--sp-6);">
+  <section class="prose print-hide" style="margin-top: var(--sp-6);">
     <h2 data-i18n="mix.relH">Related mixes</h2>
     <RelatedMixes related={c.related.slice(0, 3)} />
     <p style="margin-top: var(--sp-3);">
@@ -161,7 +224,7 @@ const jsonLd = [
     </p>
   </section>
 
-  <section class="prose" style="margin-top: var(--sp-6);">
+  <section class="prose print-hide" style="margin-top: var(--sp-6);">
     <h2 data-i18n="pg.faqTitle">Frequently asked questions</h2>
     <div class="faq">
       {c.faqs.map((f, i) => (
@@ -214,6 +277,10 @@ const jsonLd = [
   </section>
 </BaseLayout>
 
+<script>
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>
+
 <style>
   /* Answer banner (2026-11-10 template pass): inputs + arrow + the computed
      result as the biggest object in the row — the answer reads in one glance
@@ -242,6 +309,8 @@ const jsonLd = [
     border-radius: 50%;
     border: 1px solid var(--border);
     display: inline-block;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .hero-plus {
@@ -277,6 +346,8 @@ const jsonLd = [
     border: 1px solid rgb(0 0 0 / 0.12);
     box-shadow: var(--shadow-sm);
     display: inline-block;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .hero-answer code {
@@ -295,5 +366,138 @@ const jsonLd = [
     padding: 0.1rem 0.4rem;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
+  }
+
+  /* Fuse-bead match line (2026-11-12 batch) */
+  .ha-bead {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .bead-match {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .bead-chip {
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Print toolbar — screen only */
+  .recipe-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-top: var(--sp-6);
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: color-mix(in oklab, var(--accent) 4%, transparent);
+  }
+
+  .recipe-bar span {
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  /* Recipe card — print only */
+  .recipe-card {
+    display: none;
+  }
+
+  @media print {
+    /* the island is sliders and buttons — useless on paper. :global() is
+       required: the .mixer node carries Mixer.astro's scope id, not this
+       page's, so a scoped selector never matches it. */
+    :global(.mixer) {
+      display: none !important;
+    }
+
+    /* paper keeps only the craft sheet: hero answer, recipe card, ratio
+       table, tints/shades. Long prose, related links and FAQ stay screen-only. */
+    .print-hide {
+      display: none;
+    }
+
+    .recipe-bar {
+      display: none;
+    }
+
+    .recipe-card {
+      display: block;
+      border: 1.5px solid #000;
+      border-radius: 4pt;
+      padding: 12pt 14pt;
+      margin: 12pt 0;
+      break-inside: avoid;
+    }
+
+    .recipe-card h2 {
+      margin: 0 0 4pt;
+      font-size: 14pt;
+    }
+
+    .recipe-card h3 {
+      margin: 8pt 0 4pt;
+      font-size: 11pt;
+    }
+
+    .recipe-card p {
+      margin: 0 0 4pt;
+    }
+
+    .rc-row,
+    .rc-tint {
+      display: flex;
+      align-items: center;
+      gap: 6pt;
+      margin-bottom: 3pt;
+    }
+
+    .rc-tints-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8pt;
+    }
+
+    .rc-chip {
+      width: 11pt;
+      height: 11pt;
+      border-radius: 50%;
+      border: 1px solid #999;
+      display: inline-block;
+      flex: none;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .recipe-card code {
+      font-family: var(--mono);
+      font-size: 10pt;
+    }
+
+    .rc-bead {
+      margin-top: 6pt;
+    }
+
+    .rc-foot {
+      margin-top: 8pt;
+      font-size: 9pt;
+      color: #555;
+    }
   }
 </style>

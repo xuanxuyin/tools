@@ -85,8 +85,10 @@ describe('outfit pages in real dist markup', () => {
         expect(html).toContain(`data-part="${part}"`);
       }
       // chips are real buttons with the per-item hooks apply() reads
-      // (10 combos + the 4-piece "style it yourself" studio card)
-      const swaps = html.match(/data-swap/g) ?? [];
+      // (10 combos + the 4-piece "style it yourself" studio card).
+      // Strip inline <style> first: the print block's [data-swap] selector
+      // must not inflate the count.
+      const swaps = html.replace(/<style[\s\S]*?<\/style>/g, '').match(/data-swap/g) ?? [];
       const itemCount = v.combos.reduce((n, c) => n + c.items.length, 0);
       expect(swaps.length, `${v.def.slug} swap chips`).toBe(itemCount + 4);
       expect(html).toContain('data-index=');

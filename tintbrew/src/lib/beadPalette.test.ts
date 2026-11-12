@@ -12,7 +12,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { hexToRgb, rgbToOklab, type Oklab } from './color';
-import { BEAD_COLORS, nearestBead } from './beadPalette';
+import { BEAD_COLORS, beadListFrom, beadShoppingRows, nearestBead } from './beadPalette';
 
 const lab = (hex: string): Oklab => rgbToOklab(hexToRgb(hex));
 
@@ -107,3 +107,30 @@ describe('bead palette', () => {
     }
   });
 });
+describe('beadShoppingRows (2026-11-12 engagement batch)', () => {
+  it('adds 10% spares and rounds bags up to the 1,000-ct unit', () => {
+    const entries = beadListFrom([
+      { hex: '#ffffff', count: 64 }, // exact White bead
+      { hex: '#1c1917', count: 1995 }, // near-black, merges to one bead
+    ]);
+    const rows = beadShoppingRows(entries);
+    expect(rows).toHaveLength(2);
+    for (const r of rows) {
+      expect(r.spares).toBe(Math.ceil(r.count * 0.1));
+      expect(r.total).toBe(r.count + r.spares);
+      expect(r.bags).toBe(Math.ceil(r.total / 1000));
+      expect(r.bags).toBeGreaterThanOrEqual(1);
+    }
+    // the pinned cases: 64 → 7 spares (6.4 up) → 1 bag; 1995 → 200 spares → 2195 → 3 bags
+    const byCount = [...rows].sort((a, b) => a.count - b.count);
+    expect(byCount[0]).toMatchObject({ count: 64, spares: 7, total: 71, bags: 1 });
+    expect(byCount[1]).toMatchObject({ count: 1995, spares: 200, total: 2195, bags: 3 });
+  });
+
+  it('tiny counts still buy one bag; ordering follows the materials list', () => {
+    const entries = beadListFrom([{ hex: '#ff0000', count: 3 }]);
+    const [row] = beadShoppingRows(entries);
+    expect(row).toMatchObject({ count: 3, spares: 1, total: 4, bags: 1 });
+  });
+});
+

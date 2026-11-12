@@ -728,8 +728,12 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
   @media print {
     .site-header,
     .site-footer,
-    .mixer,
     .no-print {
+      display: none !important;
+    }
+    /* the mixer island is sliders — useless on paper. This block is
+       is:global, so a bare selector reaches into Mixer.astro's markup. */
+    .mixer {
       display: none !important;
     }
     body {
@@ -744,6 +748,16 @@ const studioLadder = ladderFrom(studioItems.map((it) => it.hex));
     .decor-grid,
     .avoid-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    /* the swatches ARE the palette card's content — force-print backgrounds
+       even with the browser's "background graphics" box off */
+    .hero-swatches > span,
+    [data-swap],
+    .combo-ladder span,
+    .decor-swatch,
+    .avoid-swatch {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
   }
 </style>

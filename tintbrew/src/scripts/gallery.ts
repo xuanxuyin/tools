@@ -218,10 +218,16 @@ class GalleryIsland {
         // card showing the old number.
         const piece = this.pieces.find((p) => p.id === pieceId);
         if (piece) piece.likes += 1;
-        if (this.mine && this.mine.id === pieceId) {
-          this.mine.likes = piece ? piece.likes : this.mine.likes + 1;
-        }
-        const total = piece ? piece.likes : this.mine && this.mine.id === pieceId ? this.mine.likes : null;
+        // `mine` is an array since the 2026-11-03 multi-piece payload; the
+        // pre-multi payload carried a single object and normalize() keeps
+        // handling that shape — support both here.
+        const minePiece = Array.isArray(this.mine)
+          ? this.mine.find((p) => p.id === pieceId)
+          : this.mine && this.mine.id === pieceId
+            ? this.mine
+            : undefined;
+        if (minePiece) minePiece.likes = piece ? piece.likes : minePiece.likes + 1;
+        const total = piece ? piece.likes : minePiece ? minePiece.likes : null;
         if (total !== null) {
           this.root.querySelectorAll<HTMLElement>('[data-piece]').forEach((card) => {
             if (card.getAttribute('data-piece') !== pieceId) return;

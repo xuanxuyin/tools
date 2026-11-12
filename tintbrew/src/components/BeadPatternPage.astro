@@ -9,7 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BeadCanvas from './BeadCanvas.astro';
 import BeadFigure from './BeadFigure.astro';
 import GalleryPublishPanel from './GalleryPublishPanel.astro';
-import { beadById } from '../lib/beadPalette';
+import { beadById, beadShoppingRows } from '../lib/beadPalette';
 import { nearestMardId } from '../lib/mardNearest';
 import {
   CATEGORY_LABEL,
@@ -108,6 +108,7 @@ const galDef = JSON.stringify({
       <div class="studio-head">
         <h2 data-i18n="pat.pickZone">Pick a zone, pick a bead</h2>
         <div class="studio-actions no-print">
+          <button type="button" class="btn" data-open-editor data-i18n="pat.openEditor">Open in editor</button>
           <button type="button" class="btn" data-reset data-i18n="pat.reset">Reset to reference</button>
           <button type="button" class="btn" data-print-zone="reference" data-i18n="pat.printRef">Print reference</button>
           <button type="button" class="btn" data-print-zone="blank" data-i18n="pat.printBlank">Print to color</button>
@@ -165,6 +166,32 @@ const galDef = JSON.stringify({
           </li>
         ))}
       </ul>
+      <div class="shop-math" data-shop-math>
+        <h3 data-i18n="pat.shopH">Shopping list</h3>
+        <p class="side-note" data-i18n="pat.shopNote">
+          10% extra for strays and miscounts, rounded up to 1,000-count bags —
+          the base single-color bag of the Perler line.
+        </p>
+        <ul>
+          {beadShoppingRows(view.beadList).map((r) => (
+            <li class="shop-row">
+              <span class="list-swatch" style={`background:${r.bead.hex}`}></span>
+              <span class="shop-line">
+                <strong class="bead-code">{r.bead.code}</strong>{' '}
+                <span data-i18n="bs.colT" data-i18n-args={JSON.stringify({ c: r.bead.name })}>{r.bead.name}</span>
+                <span class="shop-nums">
+                  <span data-i18n="pat.shopNeed" data-i18n-args={JSON.stringify({ count: r.count, spares: r.spares })}>
+                    {r.count} needed · +{r.spares} spares
+                  </span>
+                  <span data-i18n="pat.shopBuy" data-i18n-args={JSON.stringify({ bags: r.bags })}>
+                    → {r.bags} × 1,000-ct bag
+                  </span>
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -529,10 +556,59 @@ const galDef = JSON.stringify({
   }
   .list-approx { font-style: normal; font-size: 0.75rem; color: var(--ink-soft, #666); margin-left: 6px; }
 
+  /* Shopping-math block (2026-11-12 engagement batch): the SSR shell renders
+     it and the island rebuilds the rows on every recolor, so the rules live
+     in the global block just like the bead list above. */
+  .shop-math {
+    margin-top: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .shop-math h3 { margin: 0 0 4px; font-size: 1rem; }
+  .shop-math ul {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .shop-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .shop-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .shop-nums {
+    display: inline-flex;
+    gap: 10px;
+    color: var(--ink-soft, #666);
+    margin-left: auto;
+  }
+  @media print {
+    .shop-math { break-inside: avoid; }
+  }
+
   /* The page is the printable: template + bead list on letter paper. */
   @media print {
     .site-header, .site-footer, .no-print, .studio-actions, .bead-picker, .keep-reading,
     .related-grid, .crumbs { display: none !important; }
+    /* the bead dots ARE the reference — survive "background graphics" off.
+       Global on purpose: the island rebuilds .list-swatch rows (no cid). */
+    .zone-swatch,
+    .list-swatch {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
     .studio, .studio-grid { display: block; }
     .fig-card { break-inside: avoid; border: none; padding: 0; page-break-after: always; }
     .studio-side h2, .studio-list h2 { font-size: 1rem; }

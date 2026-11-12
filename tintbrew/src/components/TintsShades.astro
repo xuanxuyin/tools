@@ -1,5 +1,6 @@
 ---
 import type { MixContent } from '../lib/mixContent';
+import CopyButton from './CopyButton.astro';
 
 interface Props {
   steps: MixContent['tintsShades'];
@@ -16,7 +17,13 @@ const { steps } = Astro.props;
     {steps.map((s) => (
       <span>
         <span class="tints-dot" style={`background:${s.hex}`} aria-hidden="true"></span>
-        <span data-i18n={s.labelKey}>{s.label}</span> <code>{s.hex}</code>
+        <span data-i18n={s.labelKey}>{s.label}</span>{' '}
+        <a
+          class="tints-hex"
+          href={`/color-converter?color=${encodeURIComponent(s.hex)}`}
+          title={`Open ${s.hex} in the color converter`}
+        ><code>{s.hex}</code></a>
+        <CopyButton value={s.hex} label={s.label} />
       </span>
     ))}
   </div>
@@ -37,6 +44,9 @@ const { steps } = Astro.props;
 
   .tints-strip > span {
     flex: 1;
+    /* the strip IS the palette — force-print backgrounds */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .tints-labels {
@@ -60,6 +70,8 @@ const { steps } = Astro.props;
     border-radius: 50%;
     border: 1px solid var(--border);
     display: inline-block;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .tints-labels code {

@@ -18,6 +18,10 @@ export interface MixDef {
   synonymNote?: string;
   /** Shown in footer + home popular lists */
   popular?: boolean;
+  /** Result-family pairing page: renders a "what colors go with X" link when
+   *  the computed result clearly belongs to that family. Only set where the
+   *  match is honest (purple/brown/green/burgundy) — no blanket cross-links. */
+  pairsWith?: string;
 }
 
 export const mixes: MixDef[] = [
@@ -25,6 +29,7 @@ export const mixes: MixDef[] = [
     a: 'red',
     b: 'blue',
     resultName: 'purple (a muted violet)',
+    pairsWith: 'purple',
     popular: true,
     additiveNote:
       'Red and blue are both primaries of light. Add them on a screen and the blend leans magenta-purple; mix red and blue paint and you get a murkier violet, because pigments subtract light instead of adding it — the more paint you combine, the darker and grayer the result.',
@@ -49,6 +54,7 @@ export const mixes: MixDef[] = [
     a: 'red',
     b: 'green',
     resultName: 'yellow in light, brown in paint',
+    pairsWith: 'brown',
     popular: true,
     additiveNote:
       'Shine red and green light on the same spot and a screen adds them toward yellow — that is literally how your TV makes yellow, since it has no yellow pixel. Mix red and green paint and each pigment absorbs the other’s light, leaving brown or olive.',
@@ -65,6 +71,7 @@ export const mixes: MixDef[] = [
     a: 'yellow',
     b: 'green',
     resultName: 'chartreuse',
+    pairsWith: 'green',
     popular: true,
     additiveNote:
       'Yellow and green are neighbors on the wheel, so they produce a clean yellow-green — chartreuse, halfway between grass and lemon. In light the result is brighter; in paint slightly deeper.',
@@ -87,6 +94,7 @@ export const mixes: MixDef[] = [
     a: 'blue',
     b: 'purple',
     resultName: 'violet (a blue-purple)',
+    pairsWith: 'purple',
     additiveNote:
       'Blue plus purple moves toward blue-violet — closer to indigo than to royal purple. In light the blend stays luminous; in paint it deepens quickly because purple paint already contains red.',
     synonymNote:
@@ -140,6 +148,7 @@ export const mixes: MixDef[] = [
     a: 'brown',
     b: 'white',
     resultName: 'tan',
+    pairsWith: 'brown',
     additiveNote:
       'Brown is really dark orange. Add white and you get tan — the tint of orange — which is why tan, beige, and brown all belong to the same family no matter how different they look side by side.',
   },
@@ -147,11 +156,13 @@ export const mixes: MixDef[] = [
     a: 'green',
     b: 'white',
     resultName: 'sage green',
+    pairsWith: 'green',
   },
   {
     a: 'black',
     b: 'red',
     resultName: 'maroon',
+    pairsWith: 'burgundy',
     additiveNote:
       'Any color plus black makes a shade — darker and slightly warmer. Red plus black deepens into maroon or oxblood; a perceptual mix keeps more of the red than a straight channel average would.',
   },
@@ -185,11 +196,13 @@ export const mixes: MixDef[] = [
     a: 'green',
     b: 'black',
     resultName: 'forest green',
+    pairsWith: 'green',
   },
   {
     a: 'yellow',
     b: 'brown',
     resultName: 'gold (a rich amber)',
+    pairsWith: 'brown',
     popular: true,
     additiveNote:
       'Gold the color is simply yellow deepened with brown — no shine required. In paint this is the classic "old gold" recipe; on a screen the blend reads as a warm amber because screens cannot render metallic luster, only the underlying hue.',

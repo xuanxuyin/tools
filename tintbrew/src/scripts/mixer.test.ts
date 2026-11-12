@@ -222,15 +222,17 @@ describe('mixer steps strip — hydration collapse regression', () => {
       css += '\n' + readFileSync(file, 'utf8');
     }
     // every .steps-strip rule that targets child spans must do so without
-    // pinning data-astro-cid-* on the SPAN side (the container may keep its cid)
+    // pinning data-astro-cid-* on the SPAN side (the container may keep its
+    // cid); the print-color-adjust rule shares the selector tail without
+    // layout, so flex is asserted as "at least one layout rule exists"
     const spanRules = css.match(/[^{}]*\.steps-strip[^{}]*>[^{}]*span[^{}]*\{[^}]*\}/g) ?? [];
     expect(spanRules.length).toBeGreaterThan(0);
     for (const rule of spanRules) {
       const selector = rule.slice(0, rule.indexOf('{'));
       const spanSide = selector.split('>').at(-1)!;
       expect(spanSide).not.toMatch(/data-astro-cid/);
-      expect(rule).toMatch(/flex:\s*1/);
     }
+    expect(spanRules.some((rule) => /flex:\s*1/.test(rule))).toBe(true);
   });
 
   it('island recompute leaves every step span with an inline background', async () => {

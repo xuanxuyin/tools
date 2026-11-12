@@ -72,9 +72,9 @@ describe('copy handler (real SSR markup)', () => {
     expect(ctx.document.querySelector('[data-copy-link]')).not.toBeNull();
   });
 
-  it('matrix pages have no share-row (syncUrl gate)', async () => {
+  it('matrix pages carry a share-row too (2026-11-12 engagement batch: the embedded mixer syncs the URL so an adjusted mix can be shared/revisited)', async () => {
     const ctx = await loadPage('mix/black-red/index.html');
-    expect(ctx.document.querySelector('[data-copy-link]')).toBeNull();
+    expect(ctx.document.querySelector('[data-copy-link]')).not.toBeNull();
     // static copy buttons still present on matrix pages
     expect(ctx.document.querySelector('[data-copy]')).not.toBeNull();
   });

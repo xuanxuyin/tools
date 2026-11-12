@@ -474,4 +474,18 @@ const heroMix = c.methods.length > 0 ? c.methods[0]!.mix : null;
     display: grid;
     gap: var(--sp-1);
   }
+
+  /* palette swatches are the answer on these pages — survive printing even
+     with the browser's "background graphics" box off (default) */
+  @media print {
+    .hero-swatches > span,
+    .chip-swatch,
+    .result-swatch-sm,
+    .base-swatch,
+    .gel-dot,
+    .cell-swatch {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
 </style>

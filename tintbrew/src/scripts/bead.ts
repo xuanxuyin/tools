@@ -8,7 +8,8 @@
  * every count comes from the DOM it renders.
  */
 import { normalizeHex } from '../lib/color';
-import { BEAD_COLORS, beadById, beadListFrom, nearestBead } from '../lib/beadPalette';
+import { BEAD_COLORS, beadById, beadListFrom, beadShoppingRows, nearestBead } from '../lib/beadPalette';
+import { nearestMardId } from '../lib/mardNearest';
 import { printZone } from './printZone';
 import { t, tArgs } from './i18n';
 
@@ -19,6 +20,11 @@ interface ZoneState {
 }
 
 let openPicker: { chip: HTMLButtonElement; root: HTMLElement; picker: HTMLElement } | null = null;
+
+/** Same key the editor island reads on init (and the photo converter writes).
+ *  One shared literal, three scripts — the payload shape is
+ *  { width, height, grid } with Mardiy bead ids, validated by the editor. */
+const EDITOR_HANDOFF_KEY = 'bead-editor:handoff';
 
 function closePicker() {
   if (!openPicker) return;
@@ -140,6 +146,13 @@ class BeadStudio {
       return;
     }
 
+    // Pattern → editor (2026-11-12 engagement batch): carry the template and
+    // every recolor the visitor has made into the full bead editor.
+    if (target.closest('[data-open-editor]')) {
+      this.openInEditor();
+      return;
+    }
+
     if (!target.closest('.bead-picker')) closePicker();
   }
 
@@ -223,6 +236,46 @@ class BeadStudio {
     chip.setAttribute('aria-expanded', 'true');
     chip.classList.add('zone-open');
     openPicker = { chip, root: this.root, picker };
+  }
+
+  /** Pattern → editor handoff (2026-11-12 engagement batch): serialize the
+   *  blank template with the LIVE zone state (recolors included) into the
+   *  sessionStorage payload the editor reads on init. The editor palette is
+   *  Mardiy (291) while pattern zones carry Perler ids (103), so every zone
+   *  color snaps to its nearest Mardiy id — the same Oklab rule the editor
+   *  applies to custom hexes, so the board shows the colors the visitor chose
+   *  as closely as the editor's palette can express them. */
+  private openInEditor() {
+    const fig = this.fig;
+    if (!fig) return;
+    const U = 10; // viewBox units per bead cell — BeadFigure's geometry
+    const vb = fig.viewBox.baseVal;
+    const cols = Math.round(vb.width / U);
+    const rows = Math.round(vb.height / U);
+    if (cols < 1 || rows < 1 || cols > 200 || rows > 200) return;
+    const grid: (string | null)[][] = Array.from({ length: rows }, () =>
+      Array<string | null>(cols).fill(null),
+    );
+    let filled = 0;
+    for (const cell of fig.querySelectorAll<SVGElement>('.bd-blank[data-region]')) {
+      const rect = cell.querySelector('rect');
+      const key = cell.dataset.region;
+      if (!rect || !key) continue;
+      const col = Math.round(Number(rect.getAttribute('x')) / U);
+      const row = Math.round(Number(rect.getAttribute('y')) / U);
+      if (!Number.isInteger(col) || !Number.isInteger(row)) continue;
+      if (row < 0 || row >= rows || col < 0 || col >= cols) continue;
+      const zone = this.zones.get(key);
+      if (!zone) continue;
+      grid[row]![col] = nearestMardId(zone.hex);
+      filled++;
+    }
+    if (!filled) return;
+    window.sessionStorage.setItem(
+      EDITOR_HANDOFF_KEY,
+      JSON.stringify({ width: cols, height: rows, grid }),
+    );
+    window.location.href = '/bead-editor/';
   }
 
   /** Color one zone and recompute everything derived from the zone colors. */
@@ -315,6 +368,53 @@ class BeadStudio {
       li.appendChild(swatch);
       li.appendChild(text);
       this.list.appendChild(li);
+    }
+
+    this.renderShopMath(entries);
+  }
+
+  /** Rebuild the shopping-math block from the live list — same shared math
+   *  (beadShoppingRows) and same DOM shape as the SSR shell, so the numbers
+   *  track every recolor (2026-11-12 engagement batch). */
+  private renderShopMath(entries: ReturnType<typeof beadListFrom>) {
+    const shop = this.root.querySelector<HTMLElement>('[data-shop-math] ul');
+    if (!shop) return;
+    shop.innerHTML = '';
+    for (const r of beadShoppingRows(entries)) {
+      const li = document.createElement('li');
+      li.className = 'shop-row';
+      const swatch = document.createElement('span');
+      swatch.className = 'list-swatch';
+      swatch.style.background = r.bead.hex;
+      const line = document.createElement('span');
+      line.className = 'shop-line';
+      const code = document.createElement('strong');
+      code.className = 'bead-code';
+      code.textContent = r.bead.code;
+      line.appendChild(code);
+      line.appendChild(document.createTextNode(' '));
+      // i18n attrs so a later language switch re-swaps rebuilt rows
+      const name = document.createElement('span');
+      name.dataset.i18n = 'bs.colT';
+      name.dataset.i18nArgs = JSON.stringify({ c: r.bead.name });
+      name.textContent = r.bead.name;
+      line.appendChild(name);
+      const nums = document.createElement('span');
+      nums.className = 'shop-nums';
+      const need = document.createElement('span');
+      need.dataset.i18n = 'pat.shopNeed';
+      need.dataset.i18nArgs = JSON.stringify({ count: r.count, spares: r.spares });
+      need.textContent = `${r.count} needed · +${r.spares} spares`;
+      nums.appendChild(need);
+      const buy = document.createElement('span');
+      buy.dataset.i18n = 'pat.shopBuy';
+      buy.dataset.i18nArgs = JSON.stringify({ bags: r.bags });
+      buy.textContent = `→ ${r.bags} × 1,000-ct bag`;
+      nums.appendChild(buy);
+      line.appendChild(nums);
+      li.appendChild(swatch);
+      li.appendChild(line);
+      shop.appendChild(li);
     }
   }
 }

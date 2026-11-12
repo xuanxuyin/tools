@@ -3,10 +3,13 @@
  * pipeline (user call, 2026-10-29: same settings must land the same fidelity
  * as theirs). Pure functions, no DOM.
  *
- *  1. Identify-first quantization (smooth mode): up to 32 k-means clusters
- *     group the photo's real colors, each cluster snaps to its nearest
- *     palette bead, every pixel inherits its cluster's bead. Transparent
- *     pixels (alpha < 32) carry no bead.
+ *  1. Identify-first quantization (smooth mode): adaptive bisecting
+ *     k-means (up to 64 clusters, one bead basin radius) group the photo's
+ *     real colors — a flat field stays one cluster, distinct colors always
+ *     split apart, blur bands absorb into their flanks; each cluster snaps
+ *     to the bead minimizing its members' TOTAL match distance, and every
+ *     pixel inherits its cluster's bead. Transparent pixels (alpha < 32)
+ *     carry no bead.
  *  2. Area-weighted resample: every board cell covers a float rectangle of
  *     source pixels; each pixel contributes by its exact intersecting area,
  *     weighted by alpha. Smooth mode takes the cell's MAJORITY bead —
@@ -156,12 +159,28 @@ const LINEAR = (() => {
 
 /* --------------------- identify-first quantization --------------------- */
 
-/** Quantization budget: k-means centers over a sampled pixel subset, and
- *  the serpentine cap on iterations. 32 clusters absorb real photos' color
- *  variety while staying far below the 291-bead palette. */
-const QUANT_K = 32;
-const QUANT_SAMPLES = 24000;
-const QUANT_ITERS = 16;
+/** Quantization budget: spatially-uniform stride samples feed the bisecting
+ *  k-means; the stamp pass still walks every pixel. */
+const QUANT_SAMPLES = 32000;
+/** Hard cap on clusters. Simple photos stop far below it (a flat field plus
+ *  camera noise is one cluster); complex ones get room for every color. */
+const K_MAX = 64;
+/** Cluster radius (max member distance to its center, Oklab) under which a
+ *  cluster is one bead basin — camera noise lands far inside, so flat
+ *  fields never fragment into sibling-shade speckle, while two fields that
+ *  map to different beads always split apart. */
+const SPLIT_R = 0.035;
+/** Child-center separation that marks a genuinely distinct color: such a
+ *  split is accepted even for a single-member child (a stray vivid pixel
+ *  keeps its own bead at native grid) or a marginal SSE gain. */
+const REAL_COLOR_D = 0.12;
+/** SSE fraction a split must save to survive (real-color splits exempt). */
+const SPLIT_GAIN = 0.02;
+const SPLIT_ITERS = 6;
+/** Final global Lloyd passes — every sample into its nearest cluster. */
+const POLISH_ITERS = 6;
+/** Members sampled per cluster for the member-weighted bead vote. */
+const COST_MEMBERS = 96;
 
 /** Sentinel palette index: pixel too transparent to carry a bead. */
 const NO_BEAD = 0xffff;
@@ -187,28 +206,48 @@ function pixelLab(data: ArrayLike<number>, i: number, o: Float64Array, oi: numbe
 const IDX_OF_BEAD = new Map(PALETTE.map((b, i) => [b, i]));
 
 /**
- * Identify-first quantization (user call, 2026-11-02: "依然会有杂色…
- * 识别的区域和原图有差异…颜色也有误差 — 寻找更精确的解决方案").
+ * Identify-first quantization (user call, 2026-11-12: "识别算法不精细 —
+ * 更精细的实现"; first pass 2026-11-02 fixed stray colors, this pass fixes
+ * lost colors and sibling-shade mis-votes).
  *
  * Averaging colors across a cell INVENTS colors the picture never had; the
- * precise order is identify first, count second. Up to 32 k-means clusters
- * (Oklab space, deterministic farthest-point init — no RNG, so the same
- * photo always converts to the same board) group the photo's real colors;
- * every cluster snaps to its nearest palette bead; every pixel inherits
- * its cluster's bead identity. The resampler then takes each cell's
- * MAJORITY bead — a discrete count of real identifications — so a seam
- * cell can't birth a third color, and a region's beads are the beads its
- * pixels actually are. Transparent pixels (alpha < 32) carry NO_BEAD and
- * drop out of every tally.
+ * precise order is identify first, count second. The engine:
+ *
+ *  1. samples opaque pixels on a spatially-uniform stride into an Oklab pool;
+ *  2. runs BISECTING k-means — start from one cluster, repeatedly split the
+ *     highest-SSE cluster whose radius exceeds one bead basin, until nothing
+ *     qualifies or K_MAX is hit. The cluster count ADAPTS: a flat field plus
+ *     noise stays one cluster (no sibling speckle), a 30-swatch checker gets
+ *     one cluster per swatch (no lost colors), a stray vivid pixel keeps its
+ *     own single-member cluster (real-color split). Fully deterministic —
+ *     farthest-pair seeding, no RNG, so the same photo always converts to
+ *     the same board;
+ *  3. polishes with global Lloyd passes so every sample sits in its nearest
+ *     cluster;
+ *  4. absorbs blur bands: a small cluster whose center lies ON the segment
+ *     between its two nearest clusters is the camera's transition band, not
+ *     a color — it drops out and its pixels go to the nearer flank;
+ *  5. snaps each surviving cluster to the bead minimizing its members' TOTAL
+ *     match distance — member-weighted, not center-only, so a cluster whose
+ *     center noise or blur dragged between two sibling shades still picks
+ *     the shade its pixels actually are;
+ *  6. stamps every opaque pixel with its nearest surviving cluster's bead.
+ *
+ * The resampler then takes each cell's MAJORITY bead — a discrete count of
+ * real identifications — so a seam cell can't birth a third color.
+ * Transparent pixels (alpha < 32) carry NO_BEAD and drop out of every tally.
  */
 function quantizeBeads(img: SampleImage): Uint16Array {
   const { data, width, height } = img;
   const n = width * height;
   const out = new Uint16Array(n).fill(NO_BEAD);
 
-  // sample opaque pixels (stride-subsampled) into a flat Oklab pool
+  // sample opaque pixels (spatially-uniform stride) into a flat Oklab pool,
+  // remembering each sample's pixel index — the spatial contact map below
+  // needs the grid layout
   const step = Math.max(1, Math.floor(n / QUANT_SAMPLES));
   const pool = new Float64Array(Math.ceil(n / step) * 3);
+  const pxIdx = new Int32Array(Math.ceil(n / step));
   let m = 0;
   const scratch = new Float64Array(3);
   for (let i = 0; i < n; i += step) {
@@ -217,119 +256,260 @@ function quantizeBeads(img: SampleImage): Uint16Array {
     pool[m * 3] = scratch[0]!;
     pool[m * 3 + 1] = scratch[1]!;
     pool[m * 3 + 2] = scratch[2]!;
+    pxIdx[m] = i;
     m++;
   }
   if (m === 0) return out;
-  const k = Math.min(QUANT_K, m);
 
-  const centers = new Float64Array(k * 3);
-  // farthest-point init: c0 is sample 0; each next center is the sample
-  // whose distance to its nearest chosen center is largest. Fully
-  // deterministic (a seeded RNG could wobble the whole board).
-  centers[0] = pool[0]!;
-  centers[1] = pool[1]!;
-  centers[2] = pool[2]!;
-  const near = new Float64Array(m).fill(Infinity);
-  for (let c = 1; c < k; c++) {
-    const p = (c - 1) * 3;
-    let best = -1;
-    let bestD = -1;
+  /* ── 2. bisecting k-means ──────────────────────────────────────────── */
+  const centers = new Float64Array(K_MAX * 3);
+  const dead = new Uint8Array(K_MAX); // clusters whose split was rejected
+  const assign = new Int32Array(m);
+  let k = 1;
+  {
+    let sL = 0;
+    let sa = 0;
+    let sb = 0;
     for (let i = 0; i < m; i++) {
-      const dL = pool[i * 3]! - centers[p]!;
-      const da = pool[i * 3 + 1]! - centers[p + 1]!;
-      const db = pool[i * 3 + 2]! - centers[p + 2]!;
-      const d = dL * dL + da * da + db * db;
-      if (d < near[i]!) near[i] = d;
-      if (near[i]! > bestD) {
-        bestD = near[i]!;
-        best = i;
-      }
+      sL += pool[i * 3]!;
+      sa += pool[i * 3 + 1]!;
+      sb += pool[i * 3 + 2]!;
     }
-    const q = c * 3;
-    if (best < 0 || bestD <= 0) {
-      // degenerate (identical samples): reuse center 0 — the empty-cluster
-      // guard below keeps the extra centers from stealing pixels
-      centers[q] = centers[0]!;
-      centers[q + 1] = centers[1]!;
-      centers[q + 2] = centers[2]!;
-    } else {
-      centers[q] = pool[best * 3]!;
-      centers[q + 1] = pool[best * 3 + 1]!;
-      centers[q + 2] = pool[best * 3 + 2]!;
-    }
+    centers[0] = sL / m;
+    centers[1] = sa / m;
+    centers[2] = sb / m;
   }
 
-  // Lloyd iterations
-  const sums = new Float64Array(k * 3);
-  const counts = new Uint32Array(k);
-  for (let it = 0; it < QUANT_ITERS; it++) {
-    sums.fill(0);
-    counts.fill(0);
+  const cnt = new Int32Array(K_MAX);
+  const sse = new Float64Array(K_MAX);
+  const rad2 = new Float64Array(K_MAX); // max member SQUARED distance
+  const far = new Int32Array(K_MAX);
+  const SPLIT_R2 = SPLIT_R * SPLIT_R;
+  for (;;) {
+    if (k >= K_MAX) break;
+    cnt.fill(0);
+    sse.fill(0);
+    rad2.fill(0);
+    far.fill(-1);
+    for (let i = 0; i < m; i++) {
+      const c = assign[i]!;
+      const dL = pool[i * 3]! - centers[c * 3]!;
+      const da = pool[i * 3 + 1]! - centers[c * 3 + 1]!;
+      const db = pool[i * 3 + 2]! - centers[c * 3 + 2]!;
+      const d2 = dL * dL + da * da + db * db;
+      cnt[c]++;
+      sse[c] += d2;
+      if (d2 > rad2[c]) {
+        rad2[c] = d2;
+        far[c] = i;
+      }
+    }
+    // worst splittable cluster: largest SSE among those spanning more than
+    // one bead basin (ties → lowest index — deterministic)
+    let pick = -1;
+    for (let c = 0; c < k; c++) {
+      if (dead[c] || cnt[c] < 2 || rad2[c]! <= SPLIT_R2) continue;
+      if (pick < 0 || sse[c]! > sse[pick]!) pick = c;
+    }
+    if (pick < 0) break;
+
+    // members of the picked cluster, in deterministic sample order
+    const members: number[] = [];
+    for (let i = 0; i < m; i++) if (assign[i]! === pick) members.push(i);
+    const seedA = far[pick]!;
+
+    // seed B: the member farthest from seed A (deterministic farthest pair)
+    let seedB = seedA;
+    let bestD2 = -1;
+    for (const i of members) {
+      const dL = pool[i * 3]! - pool[seedA * 3]!;
+      const da = pool[i * 3 + 1]! - pool[seedA * 3 + 1]!;
+      const db = pool[i * 3 + 2]! - pool[seedA * 3 + 2]!;
+      const d2 = dL * dL + da * da + db * db;
+      if (d2 > bestD2) {
+        bestD2 = d2;
+        seedB = i;
+      }
+    }
+
+    // 2-means over the members
+    let cAL = pool[seedA * 3]!;
+    let cAa = pool[seedA * 3 + 1]!;
+    let cAb = pool[seedA * 3 + 2]!;
+    let cBL = pool[seedB * 3]!;
+    let cBa = pool[seedB * 3 + 1]!;
+    let cBb = pool[seedB * 3 + 2]!;
+    const side = new Uint8Array(members.length);
+    let nA = 0;
+    let nB = 0;
+    for (let it = 0; it < SPLIT_ITERS; it++) {
+      let sAL = 0;
+      let sAa = 0;
+      let sAb = 0;
+      let sBL = 0;
+      let sBa = 0;
+      let sBb = 0;
+      nA = 0;
+      nB = 0;
+      for (let j = 0; j < members.length; j++) {
+        const i = members[j]!;
+        const pL = pool[i * 3]!;
+        const pa = pool[i * 3 + 1]!;
+        const pb = pool[i * 3 + 2]!;
+        const dAL = pL - cAL;
+        const dAa = pa - cAa;
+        const dAb = pb - cAb;
+        const dBL = pL - cBL;
+        const dBa = pa - cBa;
+        const dBb = pb - cBb;
+        if (dAL * dAL + dAa * dAa + dAb * dAb <= dBL * dBL + dBa * dBa + dBb * dBb) {
+          side[j] = 0;
+          nA++;
+          sAL += pL;
+          sAa += pa;
+          sAb += pb;
+        } else {
+          side[j] = 1;
+          nB++;
+          sBL += pL;
+          sBa += pa;
+          sBb += pb;
+        }
+      }
+      if (nA === 0 || nB === 0) break;
+      const moved =
+        sAL / nA !== cAL ||
+        sAa / nA !== cAa ||
+        sAb / nA !== cAb ||
+        sBL / nB !== cBL ||
+        sBa / nB !== cBa ||
+        sBb / nB !== cBb;
+      cAL = sAL / nA;
+      cAa = sAa / nA;
+      cAb = sAb / nA;
+      cBL = sBL / nB;
+      cBa = sBa / nB;
+      cBb = sBb / nB;
+      if (!moved) break;
+    }
+
+    // child stats against the final centers
+    let sseA = 0;
+    let sseB = 0;
+    for (let j = 0; j < members.length; j++) {
+      const i = members[j]!;
+      const pL = pool[i * 3]!;
+      const pa = pool[i * 3 + 1]!;
+      const pb = pool[i * 3 + 2]!;
+      if (side[j] === 0) {
+        sseA += (pL - cAL) ** 2 + (pa - cAa) ** 2 + (pb - cAb) ** 2;
+      } else {
+        sseB += (pL - cBL) ** 2 + (pa - cBa) ** 2 + (pb - cBb) ** 2;
+      }
+    }
+    const sep = Math.hypot(cAL - cBL, cAa - cBa, cAb - cBb);
+    const realColor = sep > REAL_COLOR_D;
+    const ok =
+      Math.min(nA, nB) >= 1 &&
+      (Math.min(nA, nB) >= 2 || realColor) &&
+      (realColor || sseA + sseB < sse[pick]! * (1 - SPLIT_GAIN));
+    if (!ok) {
+      dead[pick] = 1;
+      continue;
+    }
+    // commit: child A takes the picked slot, child B gets a new cluster
+    centers[pick * 3] = cAL;
+    centers[pick * 3 + 1] = cAa;
+    centers[pick * 3 + 2] = cAb;
+    centers[k * 3] = cBL;
+    centers[k * 3 + 1] = cBa;
+    centers[k * 3 + 2] = cBb;
+    for (let j = 0; j < members.length; j++) {
+      assign[members[j]!] = side[j] === 0 ? pick : k;
+    }
+    k++;
+  }
+
+  /* ── 3. global Lloyd polish — every sample into its nearest cluster,
+   *       empty clusters compacted out ────────────────────────────────── */
+  for (let it = 0; it < POLISH_ITERS; it++) {
+    const sums = new Float64Array(k * 3);
+    const cntP = new Int32Array(k);
+    let moved = false;
     for (let i = 0; i < m; i++) {
       let best = 0;
-      let bestD = Infinity;
+      let bestD2 = Infinity;
       for (let c = 0; c < k; c++) {
         const dL = pool[i * 3]! - centers[c * 3]!;
         const da = pool[i * 3 + 1]! - centers[c * 3 + 1]!;
         const db = pool[i * 3 + 2]! - centers[c * 3 + 2]!;
-        const d = dL * dL + da * da + db * db;
-        if (d < bestD) {
-          bestD = d;
+        const d2 = dL * dL + da * da + db * db;
+        if (d2 < bestD2) {
+          bestD2 = d2;
           best = c;
         }
       }
+      if (assign[i]! !== best) moved = true;
+      assign[i] = best;
       sums[best * 3] += pool[i * 3]!;
       sums[best * 3 + 1] += pool[i * 3 + 1]!;
       sums[best * 3 + 2] += pool[i * 3 + 2]!;
-      counts[best]++;
+      cntP[best]++;
     }
+    const remap = new Int32Array(k).fill(-1);
+    let k2 = 0;
     for (let c = 0; c < k; c++) {
-      if (counts[c] === 0) {
-        // re-seed an empty cluster on the sample farthest from its center
-        let far = 0;
-        let farD = -1;
-        for (let i = 0; i < m; i++) {
-          let nd = Infinity;
-          for (let c2 = 0; c2 < k; c2++) {
-            const dL = pool[i * 3]! - centers[c2 * 3]!;
-            const da = pool[i * 3 + 1]! - centers[c2 * 3 + 1]!;
-            const db = pool[i * 3 + 2]! - centers[c2 * 3 + 2]!;
-            const d = dL * dL + da * da + db * db;
-            if (d < nd) nd = d;
-          }
-          if (nd > farD) {
-            farD = nd;
-            far = i;
-          }
-        }
-        centers[c * 3] = pool[far * 3]!;
-        centers[c * 3 + 1] = pool[far * 3 + 1]!;
-        centers[c * 3 + 2] = pool[far * 3 + 2]!;
-      } else {
-        centers[c * 3] = sums[c * 3]! / counts[c]!;
-        centers[c * 3 + 1] = sums[c * 3 + 1]! / counts[c]!;
-        centers[c * 3 + 2] = sums[c * 3 + 2]! / counts[c]!;
-      }
+      if (cntP[c] === 0) continue;
+      centers[k2 * 3] = sums[c * 3]! / cntP[c]!;
+      centers[k2 * 3 + 1] = sums[c * 3 + 1]! / cntP[c]!;
+      centers[k2 * 3 + 2] = sums[c * 3 + 2]! / cntP[c]!;
+      remap[c] = k2++;
     }
+    for (let i = 0; i < m; i++) assign[i] = remap[assign[i]!]!;
+    const converged = !moved && k2 === k;
+    k = k2;
+    if (converged) break;
   }
 
-  /**
-   * Blend-band absorption, the cluster-level twin of refineBlendCells.
-   * Real photos never have hard seams — the lens blurs every boundary into
-   * a few rows of genuinely mixed pixels, and k-means faithfully gives that
-   * blur its own cluster, which snaps to a bead the picture never contained
-   * (user call, 2026-11-02: "颜色界限还是识别还是不对"). A small cluster whose
-   * center sits ON the segment between its two nearest surviving clusters
-   * is exactly such a blur: d(c,a)+d(c,b) ≤ d(a,b)·ABSORB_T means collinear,
-   * and it only qualifies when it's markedly smaller than both flanks — a
-   * real middle color (an orange block between red and blue) is as big as
-   * its neighbors and stays. The stamp pass below re-points absorbed
-   * clusters' pixels to whichever flank is nearer.
-   */
+  /* ── 4. blur-band absorption: a small cluster whose center sits ON the
+   *       segment between its two nearest clusters AND is spatially
+   *       sandwiched between them (its grid neighbors are those flanks, not
+   *       other fields) is the camera's transition band — its pixels rejoin
+   *       the nearer flank below. The spatial test is what keeps real
+   *       fields alive: a light wall caught collinearly between two shades
+   *       of a sky gradient only touches them along one edge, while a blur
+   *       band's every neighbor IS one of its flanks. ──────────────────── */
   const ABSORB_T = 1.15;
   const ABSORB_RATIO = 0.5;
-  const absorbA = new Int16Array(k).fill(-1);
-  const absorbB = new Int16Array(k).fill(-1);
+  /** Fraction of a cluster's cross-cluster grid contacts that must be with
+   *  its two flanks for it to count as sandwiched between them. */
+  const SANDWICH_FRAC = 0.5;
+  const counts = new Int32Array(k);
+  for (let i = 0; i < m; i++) counts[assign[i]!]++;
+  // grid adjacency between samples (stride-stable: sample grids keep the
+  // photo's spatial layout at stride resolution)
+  const contacts = new Uint32Array(k * k);
+  {
+    const sOfPx = new Map<number, number>();
+    for (let s = 0; s < m; s++) sOfPx.set(pxIdx[s]!, s);
+    for (let s = 0; s < m; s++) {
+      const idx = pxIdx[s]!;
+      const x = idx % width;
+      const y = (idx - x) / width;
+      const c = assign[s]!;
+      const touch = (t: number | undefined): void => {
+        if (t === undefined) return;
+        const o = assign[t]!;
+        if (o === c) return;
+        contacts[c * k + o]!++;
+        contacts[o * k + c]!++;
+      };
+      if (x + step < width) touch(sOfPx.get(idx + step));
+      if (y + step < height) touch(sOfPx.get(idx + step * width));
+    }
+  }
+  const absorbA = new Int8Array(k).fill(-1);
+  const absorbB = new Int8Array(k).fill(-1);
   const cdist = (c: number, o: number): number => {
     const dL = centers[c * 3]! - centers[o * 3]!;
     const da = centers[c * 3 + 1]! - centers[o * 3 + 1]!;
@@ -360,37 +540,81 @@ function quantizeBeads(img: SampleImage): Uint16Array {
       da + db <= cdist(a, b) * ABSORB_T &&
       counts[c]! <= Math.min(counts[a]!, counts[b]!) * ABSORB_RATIO
     ) {
+      // c must actually TOUCH both flanks — a blur band is pressed between
+      // its two fields, while a gradient's end shade only ever touches the
+      // next shade inward (the image edge is its other neighbor)
+      if (contacts[c * k + a]! === 0 || contacts[c * k + b]! === 0) continue;
+      // spatial sandwich: most of c's cross-cluster contacts are with a/b
+      let tot = 0;
+      for (let o = 0; o < k; o++) if (o !== c) tot += contacts[c * k + o]!;
+      const frac = tot > 0 ? (contacts[c * k + a]! + contacts[c * k + b]!) / tot : 0;
+      if (frac < SANDWICH_FRAC) continue;
       absorbA[c] = a;
       absorbB[c] = b;
     }
   }
 
-  // snap each center to its bead, then stamp every pixel with it
+  /* ── 5. member-weighted bead snap: the bead minimizing the TOTAL match
+   *       distance of the cluster's members (subsampled for cost) ────── */
+  const memberLists: number[][] = Array.from({ length: k }, () => []);
+  for (let i = 0; i < m; i++) memberLists[assign[i]!]!.push(i);
   const centerBead = new Uint16Array(k);
   for (let c = 0; c < k; c++) {
-    const bead = nearestBead({ L: centers[c * 3]!, a: centers[c * 3 + 1]!, b: centers[c * 3 + 2]! }, null);
-    centerBead[c] = IDX_OF_BEAD.get(bead)!;
+    const list = memberLists[c]!;
+    if (!list.length) {
+      centerBead[c] = 0;
+      continue;
+    }
+    const stride = Math.max(1, Math.floor(list.length / COST_MEMBERS));
+    const votes = Math.min(list.length, COST_MEMBERS);
+    let best = -1;
+    let bestCost = Infinity;
+    for (let bi = 0; bi < PALETTE.length; bi++) {
+      const bead = PALETTE[bi]!;
+      let cost = 0;
+      for (let v = 0; v < votes; v++) {
+        const i = list[v * stride]!;
+        const L = pool[i * 3]!;
+        const a = pool[i * 3 + 1]!;
+        const b = pool[i * 3 + 2]!;
+        cost += matchDistance({ L, a, b }, Math.hypot(a, b), bead);
+      }
+      if (cost < bestCost) {
+        bestCost = cost;
+        best = bi;
+      }
+    }
+    centerBead[c] = IDX_OF_BEAD.get(PALETTE[best]!)!;
+    if (process.env.QUANT_DEBUG) {
+      const bead = PALETTE[best]!;
+      console.error(
+        `cluster ${c}: n=${list.length} center=(${centers[c * 3]!.toFixed(3)},${centers[c * 3 + 1]!.toFixed(3)},${centers[c * 3 + 2]!.toFixed(3)}) -> ${bead.id} #${bead.rgb.map((v) => v.toString(16).padStart(2, '0')).join('')} cost=${bestCost.toFixed(2)}${absorbA[c] >= 0 ? ' ABSORBED' : ''}`,
+      );
+    }
   }
+
+  /* ── 6. stamp every opaque pixel with its nearest surviving cluster's
+   *       bead (absorbed blur clusters aren't candidates, so the band
+   *       splits back into the two fields it came from) ───────────────── */
   for (let i = 0; i < n; i++) {
     if (data[i * 4 + 3]! < 32) continue;
     pixelLab(data, i * 4, scratch, 0);
-    // blur clusters (absorbA set) aren't candidates, so a blur-band pixel
-    // lands on whichever flank center is genuinely nearest — the whole band
-    // splits back into the two fields it came from
-    let best = 0;
-    let bestD = Infinity;
+    let best = -1;
+    let bestD2 = Infinity;
     for (let c = 0; c < k; c++) {
       if (absorbA[c] >= 0) continue;
       const dL = scratch[0]! - centers[c * 3]!;
+      // cheap prune: L gap alone already exceeds the best distance
+      if (dL * dL >= bestD2) continue;
       const da = scratch[1]! - centers[c * 3 + 1]!;
       const db = scratch[2]! - centers[c * 3 + 2]!;
-      const d = dL * dL + da * da + db * db;
-      if (d < bestD) {
-        bestD = d;
+      const d2 = dL * dL + da * da + db * db;
+      if (d2 < bestD2) {
+        bestD2 = d2;
         best = c;
       }
     }
-    out[i] = centerBead[best]!;
+    out[i] = centerBead[best < 0 ? 0 : best]!;
   }
   return out;
 }
@@ -404,10 +628,11 @@ function quantizeBeads(img: SampleImage): Uint16Array {
  * Two flavors:
  *  • smooth (`beadIdx` given): the cell takes the MAJORITY bead of its
  *    pixels — discrete identification beats averaging, which invents
- *    colors. A dead-even tie falls to the left neighbor's bead (then the
- *    top's), so a hard seam snaps to one side instead of sprouting a
- *    phantom band; the linear-light mean decides only where no neighbor
- *    exists. Cells averaging under 24 alpha are empty.
+ *    colors. A dead-even tie is settled among the tied candidates by the
+ *    cell's linear-light mean (sub-bead shade info survives the vote), so a
+ *    hard seam snaps to one of its two field beads instead of sprouting a
+ *    phantom band, and a gradient cell straddling two shades leans to the
+ *    side it overlaps more. Cells averaging under 24 alpha are empty.
  *  • dither (no `beadIdx`): the classic linear-light mean — gamma-plain
  *    sRGB numbers average dark and muddy (half white + half black is
  *    #BCBCBC in light, not #808080) — because Floyd–Steinberg wants a
@@ -467,7 +692,8 @@ function resampleCells(img: SampleImage, cols: number, rows: number, beadIdx?: U
         continue;
       }
       if (beadIdx) {
-        // majority bead, tie → left neighbor, tie → top neighbor, tie → mean
+        // majority bead; a dead-even tie is settled among the tied
+        // candidates by the cell's linear-light mean (below)
         let best = -1;
         let bestN = 0;
         for (let c = 0; c < HIST.length; c++) {
@@ -494,22 +720,35 @@ function resampleCells(img: SampleImage, cols: number, rows: number, beadIdx?: U
               break;
             }
           }
-          const left = x > 0 ? row[x - 1] : undefined;
-          const top = y > 0 ? grid[y - 1]![x] : undefined;
-          const neighbor = left && !left.empty ? left : top && !top.empty ? top : null;
           if (!tied) {
             bead = PALETTE[best]!;
-          } else if (neighbor) {
-            // a neighbor cell's lab IS a bead's lab (majority cells carry
-            // their bead's color), so nearest match returns that same bead
-            bead = nearestBead(neighbor.lab, null);
           } else {
+            // A dead-even vote (a gradient cell straddling two shades when
+            // cluster spans don't align to cell borders) must NOT inherit the
+            // left neighbor's bead — the neighbor may not even be a tied
+            // candidate, and the inheritance cascades, eating the whole ramp
+            // cell by cell. The cell's linear-light mean still carries
+            // sub-bead shade info, so among the TIED candidates only, the one
+            // closest to the mean wins. Hard seams stay safe: the choice is
+            // restricted to the tied field beads, so no phantom third color
+            // can ever sprout from a tie.
             const rgb: [number, number, number] = [
               Math.round(linearToSrgb(lr / aWeight) * 255),
               Math.round(linearToSrgb(lg / aWeight) * 255),
               Math.round(linearToSrgb(lb / aWeight) * 255),
             ];
-            bead = nearestBead(rgbToOklab({ r: rgb[0], g: rgb[1], b: rgb[2] }), null);
+            const meanLab = rgbToOklab({ r: rgb[0], g: rgb[1], b: rgb[2] });
+            const meanChroma = Math.hypot(meanLab.a, meanLab.b);
+            bead = PALETTE[best]!;
+            let bestCost = Infinity;
+            for (let c = 0; c < HIST.length; c++) {
+              if (HIST[c] !== bestN) continue;
+              const cost = matchDistance(meanLab, meanChroma, PALETTE[c]!);
+              if (cost < bestCost) {
+                bestCost = cost;
+                bead = PALETTE[c]!;
+              }
+            }
           }
         }
         row.push({ rgb: bead.rgb, lab: bead.lab, empty: false });
@@ -771,6 +1010,11 @@ function refineBlendCells(grid: (BeadEntry | null)[][], cols: number, rows: numb
       }
       if (!p1 || !p2 || p1.n < 2 || p2.n < 1) continue;
       if (cur.id === p1.bead.id || cur.id === p2.bead.id) continue;
+      // cur's own shade appearing anywhere in the neighborhood means this
+      // is a run inside a gradient, not a phantom island — folding it would
+      // eat the ramp cell by cell (bisecting gives shades real cell runs,
+      // unlike the old singleton-per-shade boards)
+      if (counts.has(cur.id)) continue;
       const d1 = beadDist(cur, p1.bead);
       const d2 = beadDist(cur, p2.bead);
       if (d1 + d2 > beadDist(p1.bead, p2.bead) * SEG_T) continue;

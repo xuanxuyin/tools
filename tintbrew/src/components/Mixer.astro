@@ -530,4 +530,21 @@ const ratioLine = `Ratio ${ratios.join(' : ')} · ${pcts.join(' / ')}`;
   .snippet-block[hidden] {
     display: none;
   }
+
+  /* if a page prints the mixer (/color-mixer/ keeps it on paper), its color
+     surfaces must not drop out: swatches/strip are background-colored and
+     browsers skip backgrounds by default. :global() for the strip's spans —
+     runtime rebuilds carry no scope id (same trap as .mixer in mix pages). */
+  @media print {
+    .mixer-swatch,
+    .result-swatch {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .steps-strip > :global(span) {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
 </style>

@@ -188,3 +188,43 @@ export function beadListFrom(
   }
   return [...map.values()].sort((a, b) => b.count - a.count);
 }
+
+/** Fuse beads ship as 1,000-count single-color bags (the base purchasable
+ *  unit of the Perler line — 2,000/6,000 tubs exist, but 1,000 is what one
+ *  color starts at). */
+export const BEAD_BAG_SIZE = 1000;
+
+export interface BeadShoppingRow {
+  bead: BeadColor;
+  hex: string;
+  /** beads the pattern itself needs */
+  count: number;
+  /** +10% for strays, miscounts and ironing misfires */
+  spares: number;
+  /** count + spares */
+  total: number;
+  /** 1,000-ct bags to buy (rounded up) */
+  bags: number;
+}
+
+/**
+ * Turn a materials list into purchase math (2026-11-12 engagement batch).
+ * Shared by the SSR shell and the live recolor script so both sides of the
+ * studio show the same numbers. Pure — no DOM, no imports beyond this file.
+ */
+export function beadShoppingRows(
+  entries: readonly BeadListEntry[],
+): BeadShoppingRow[] {
+  return entries.map((e) => {
+    const spares = Math.ceil(e.count * 0.1);
+    const total = e.count + spares;
+    return {
+      bead: e.bead,
+      hex: e.hex,
+      count: e.count,
+      spares,
+      total,
+      bags: Math.ceil(total / BEAD_BAG_SIZE),
+    };
+  });
+}

@@ -84,6 +84,10 @@ const { rows, a, b } = Astro.props;
     border-radius: 50%;
     border: 1px solid var(--border);
     flex: none;
+    /* swatches ARE the content — force-print them even with the browser's
+       "background graphics" box off (default) */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .mix-cell-hex {

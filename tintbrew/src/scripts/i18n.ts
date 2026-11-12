@@ -40,8 +40,11 @@ export function t(key: UiKey): string {
  *  capitalized after resolution. */
 function fillArgs(s: string, args: Record<string, string>): string {
   return s.replace(/\{(\w+)\}/g, (_, k: string) => {
-    const v = args[k];
-    if (v === undefined) return `{${k}}`;
+    // String() first: numeric args are legitimate ({pa}, {count}, {bags} in
+    // the recipe card and shopping list) and the dictionary chain below
+    // assumes string values. Raw pass-through is the fallback anyway.
+    const v = String(args[k]);
+    if (args[k] === undefined) return `{${k}}`;
     const lower = v.toLowerCase();
     const resolved =
       UI_STRINGS[lang][`color.${lower}` as UiKey] ??
