@@ -2200,39 +2200,53 @@ const LETTER_DEFS: CursiveLetterDef[] = [
  * sheetImages.test.ts.
  */
 const LETTER_PNG_HEIGHT: Record<string, number> = {
-  a: 1410,
-  b: 1410,
-  c: 1322,
-  d: 1366,
-  e: 1366,
-  f: 1322,
-  g: 1366,
-  h: 1366,
-  i: 1322,
-  j: 1322,
-  k: 1366,
-  l: 1322,
-  m: 1322,
-  n: 1322,
-  o: 1322,
-  p: 1366,
-  q: 1366,
-  r: 1322,
-  s: 1322,
-  t: 1322,
-  u: 1322,
-  v: 1322,
-  w: 1322,
-  x: 1322,
-  y: 1322,
-  z: 1322,
+  a: 1916,
+  b: 1916,
+  c: 1828,
+  d: 1872,
+  e: 1872,
+  f: 1828,
+  g: 1872,
+  h: 1872,
+  i: 1828,
+  j: 1828,
+  k: 1872,
+  l: 1828,
+  m: 1828,
+  n: 1828,
+  o: 1828,
+  p: 1872,
+  q: 1872,
+  r: 1828,
+  s: 1828,
+  t: 1828,
+  u: 1828,
+  v: 1828,
+  w: 1826,
+  x: 1826,
+  y: 1828,
+  z: 1828,
 };
+
+/**
+ * The teaching ladder lives one level up from single letters: once a letter
+ * is shaped, the next skills are connecting it into words, writing whole
+ * sentences, and free-choice practice (2026-11-12 engagement batch — every
+ * letter page now routes to the next rung instead of dead-ending on one
+ * glyph; the join drills themselves live on the how-to page, step 4).
+ */
+const LADDER_RELATED = [
+  { href: '/how-to-write-in-cursive/', label: 'How to write in cursive — the stroke-by-stroke teaching sequence' },
+  { href: '/cursive-sentences/', label: 'Cursive sentences — 8 quotable lines to trace and copy' },
+  { href: '/name-tracing/', label: 'Name tracing generator — any name, print-ready' },
+];
 
 export const cursiveLetters: CursiveLetterDef[] = LETTER_DEFS.map((def) => ({
   ...def,
+  related: [...def.related.slice(0, -1), ...LADDER_RELATED, ...def.related.slice(-1)],
   sheetImage: {
     src: `/images/cursive-letter-${def.slug}-worksheet.png`,
-    alt: `Free printable cursive ${def.sheet.capital} worksheet — capital ${def.sheet.capital} and lowercase ${def.sheet.lower} in cursive with numbered stroke steps and trace-and-write rows, on one letter-size page.`,
+    alt: `Free printable cursive ${def.sheet.capital} worksheet — capital ${def.sheet.capital} and lowercase ${def.sheet.lower} in cursive with numbered stroke steps, trace-and-write rows, join drills and first words, on one letter-size page.`,
     width: 2016,
     height: LETTER_PNG_HEIGHT[def.slug]!,
   },

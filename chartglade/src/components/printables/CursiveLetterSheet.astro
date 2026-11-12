@@ -1,14 +1,20 @@
 ---
 import type { LetterSheet } from '../../data/cursiveLetters';
+import type { LetterConnections } from '../../data/cursiveConnections';
 
 interface Props {
   sheet: LetterSheet;
+  /** Join-teaching data for the connect + words rows (2026-11-12 batch).
+   *  Optional so older call sites keep working without it. */
+  connections?: LetterConnections;
 }
 
-const { sheet } = Astro.props;
+const { sheet, connections } = Astro.props;
 ---
 
 <div class="letter-sheet">
+  <p class="sheet-name">Name: ____________________ &nbsp;&nbsp; Date: ____________</p>
+
   <div class="big-glyphs" aria-hidden="true">
     <span class="big-cap">{sheet.capital}</span>
     <span class="big-low">{sheet.lower}</span>
@@ -36,6 +42,7 @@ const { sheet } = Astro.props;
     {[...Array(6)].map(() => (
       <div class="trace-cell">
         <div class="glyph">{sheet.lower}</div>
+        <div class="midline"></div>
         <div class="baseline"></div>
       </div>
     ))}
@@ -45,6 +52,7 @@ const { sheet } = Astro.props;
     {[...Array(6)].map(() => (
       <div class="trace-cell">
         <div class="glyph">{sheet.capital}</div>
+        <div class="midline"></div>
         <div class="baseline"></div>
       </div>
     ))}
@@ -54,8 +62,32 @@ const { sheet } = Astro.props;
     {[...Array(6)].map(() => (
       <div class="trace-cell">
         <div class="glyph"></div>
+        <div class="midline"></div>
         <div class="baseline"></div>
       </div>
     ))}
   </div>
+
+  {
+    connections && (
+      <>
+        <h3 class="trace-heading">Connect it</h3>
+        <div class="trace-strip">
+          {connections.drills.map((d) => (
+            <div class="trace-cell">
+              <div class="glyph glyph-sm">{d}</div>
+              <div class="midline"></div>
+              <div class="baseline"></div>
+            </div>
+          ))}
+        </div>
+        <h3 class="trace-heading">{connections.wordsLabel ?? 'First words'}</h3>
+        <div class="words-model">
+          {connections.words.map((w) => (
+            <span class="word-model">{w}</span>
+          ))}
+        </div>
+      </>
+    )
+  }
 </div>

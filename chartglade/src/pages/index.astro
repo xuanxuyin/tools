@@ -48,6 +48,27 @@ const popular = [
   { href: '/number-line-printable/', label: 'Number line 0-20' },
 ];
 
+// Pages that make other worksheets — the interactive layer, surfaced on the
+// homepage as of the 2026-11-12 engagement batch (they used to be reachable
+// only through their topic hubs or the footer).
+const generators = [
+  { href: '/name-tracing/', label: 'Name tracing generator', body: 'Type any name — trace rows, hollow letters, a wipe-away strip. Print-ready, any name up to 12 letters.' },
+  { href: '/graph-paper/', label: 'Graph paper maker', body: 'Square, dot and isometric grids in 7 sizes — pick the style and color, print true-size on letter paper.' },
+  { href: '/multiplication-chart/', label: 'Mad minute & math quiz', body: 'Generate timed drill sheets with answer keys in any operation, or run the 10-topic quiz that saves progress on this device.' },
+];
+
+// Whole families that live only in the footer — one row so a first-time
+// visitor can see the full shelf without scrolling the footer.
+const library = [
+  { href: '/times-table/', label: 'Times tables 1-12 — one printable page each' },
+  { href: '/sign-in-sheets/', label: 'Sign-in sheets for every classroom event' },
+  { href: '/cootie-catcher/', label: 'Cootie catchers & fortune tellers' },
+  { href: '/teaching-calendar/', label: 'The teaching year at a glance' },
+  { href: '/states-that-require-cursive/', label: 'State cursive requirements, all 50 states' },
+  { href: '/halloween/', label: 'Halloween printables' },
+  { href: '/thanksgiving-printables/', label: 'Thanksgiving printables' },
+];
+
 // Seasonal slot — swap this block per season (current: winter holidays; next: 100th Day, late Jan).
 const seasonal = {
   heading: 'Christmas printables for December',
@@ -138,6 +159,24 @@ const jsonLd = [
     </ul>
   </section>
 
+  <section class="section">
+    <h2>Pages that make worksheets for you</h2>
+    <ul class="related-list">
+      {generators.map((g) => (
+        <li><a href={g.href}>{g.label}</a> — {g.body}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>The whole library</h2>
+    <ul class="related-list">
+      {library.map((l) => (
+        <li><a href={l.href}>{l.label}</a></li>
+      ))}
+    </ul>
+  </section>
+
   <section class="prose section">
     <h2>Why another printables site?</h2>
     <p>
@@ -149,6 +188,11 @@ const jsonLd = [
       Every chart ships with the teaching notes that make it work — the order facts are memorized in, the routine
       that turns a hundred chart into a year of warm-ups, why fraction strips beat circles. A chart without a
       routine is decoration; the notes are half the product.
+    </p>
+    <p>
+      Start with <a href="/charts/">the math charts</a>, run the <a href="/name-tracing/">name tracing
+      generator</a>, or work through <a href="/cursive/">the cursive alphabet, letter by letter</a> — every page
+      prints the same way, and nothing needs an account.
     </p>
   </section>
 </BaseLayout>

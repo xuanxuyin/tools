@@ -709,6 +709,67 @@ svg {
   margin: 0 var(--sp-2) var(--sp-1);
 }
 
+/* Letter-sheet head line + dashed midline + join teaching rows
+   (2026-11-12 engagement batch) */
+
+.sheet-name {
+  margin: 0 0 var(--sp-2);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.trace-cell .midline {
+  border-bottom: 1.5px dashed var(--line-strong);
+  margin: 0 var(--sp-2);
+}
+
+.trace-cell .glyph-sm {
+  font-size: 1.6rem;
+}
+
+.words-model {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--sp-5);
+  row-gap: var(--sp-1);
+  margin: var(--sp-3) 0 var(--sp-2);
+}
+
+.word-model {
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  color: #b9b5a8;
+}
+
+.connect-groups {
+  margin: var(--sp-3) 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.connect-groups li {
+  padding-left: var(--sp-1);
+}
+
+/* Print: keep the new rows inside the sheet, tighten them for one page */
+@media print {
+  .sheet-name {
+    font-size: 11pt;
+    color: var(--ink-soft);
+  }
+
+  .words-model {
+    margin-top: 6pt;
+    column-gap: 16pt;
+  }
+
+  .word-model {
+    font-size: 13pt;
+  }
+}
+
 /* Cursive single-letter practice sheet */
 
 .big-glyphs {

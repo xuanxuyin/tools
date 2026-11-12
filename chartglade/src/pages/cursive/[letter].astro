@@ -3,6 +3,7 @@ import ChartPage from '../../components/ChartPage.astro';
 import CursiveLetterSheet from '../../components/printables/CursiveLetterSheet.astro';
 import CursiveAZ from '../../components/CursiveAZ.astro';
 import { cursiveLetters } from '../../data/cursiveLetters';
+import { connections } from '../../data/cursiveConnections';
 
 export function getStaticPaths() {
   return cursiveLetters.map((def) => ({
@@ -14,9 +15,28 @@ export function getStaticPaths() {
 const { def } = Astro.props;
 // slug stays flat ('a') for find-by-slug lookups; the route nests under /cursive/
 const pageDef = { ...def, path: `/cursive/${def.slug}` };
+const conn = connections[def.slug];
 ---
 
 <ChartPage def={pageDef}>
-  <CursiveLetterSheet sheet={def.sheet} />
-  <CursiveAZ slot="after" current={def.slug} />
+  <CursiveLetterSheet sheet={def.sheet} connections={conn} />
+  <Fragment slot="after">
+    <section class="section no-print" aria-labelledby="connect-h">
+      <h2 id="connect-h">How lowercase {def.sheet.lower} connects</h2>
+      <p>{conn.summary}</p>
+      <ul class="connect-groups">
+        {conn.groups.map((g) => (
+          <li>
+            <strong>Into {g.letters}:</strong> {g.note}
+          </li>
+        ))}
+      </ul>
+      <p>
+        The printout carries the same lesson: a connect-it row with the joins to drill
+        ({conn.drills.join(', ')}), then first words to write in cursive — {conn.words.join(', ')}.
+        Trace the pairs until the hand-off is one motion, then write the words without stopping.
+      </p>
+    </section>
+    <CursiveAZ current={def.slug} />
+  </Fragment>
 </ChartPage>

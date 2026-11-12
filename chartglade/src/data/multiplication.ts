@@ -116,7 +116,8 @@ export const multiplicationPages: PageDef[] = [
       'The quiet power of the multiplication chart is symmetry: 7 × 8 and 8 × 7 are the same fact, so the grid is a mirror along the diagonal. Of the 144 cells on this chart, kids only need to learn a little more than half — the diagonal (perfect squares, shaded above) plus one triangle of the mirror. Pointing that out on day one turns a wall of numbers into a visibly smaller job.',
       'Grade 3 is when multiplication facts get serious in US schools — fluency within the 1-10 grid is a grade 3 standard — but the 11s and 12s on this chart earn their keep for telling time (12 hours, 60 minutes) and for the dozen-based arithmetic that still shows up everywhere. Most curricula sequence the facts 2s, 5s and 10s first (they have the friendliest patterns), then 9s and 4s, and save 6s, 7s and 8s for last.',
     ],
-    printNote: 'Fits one letter page, portrait. Diagonal prints as light gray.',
+    printNote:
+      'Prints three pages: the chart, then a Mad Minute drill sheet, then its answer key — pick pages in the print dialog if you only want the chart. The chart itself fits one letter page, portrait; the diagonal prints as light gray.',
     sheetImage: {
       src: '/images/multiplication-chart-1-12-printable.png',
       alt: 'Free printable multiplication chart 1-12 — a filled 12 by 12 grid with the perfect-square diagonal shaded, on one letter-size page.',
