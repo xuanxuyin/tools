@@ -45,3 +45,9 @@ luckyshake/.shots/
 
 # luckyshake scripts/dev-server.mjs 的本地库（十方功德/计数演示数据）
 luckyshake/.fw-dev.db
+
+# Claude Code 本地 worktree 状态（只含运行态，无共享配置）
+.claude/
+
+# 签卡生成器的临时渲染页（make-sign-cards.mjs 中间产物）
+luckyshake/scripts/.card-tmp.html

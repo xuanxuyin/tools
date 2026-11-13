@@ -141,6 +141,7 @@ export function drawnBanner(sign: Sign, lang: 'en' | 'zh' = 'en'): string {
     <div class="slip-title">${sign.nameZh}</div>
     <div class="slip-poem">${poem}</div>
     ${verdict}
+    <div class="slip-share"><button type="button" class="btn small" data-share-card="${sign.id}">分享签卡</button></div>
   </div>`;
   }
   const label = slip ? (slip.label === '注' ? 'The note' : 'The verdict') : '';
@@ -155,6 +156,7 @@ export function drawnBanner(sign: Sign, lang: 'en' | 'zh' = 'en'): string {
     </div>
     <div class="slip-title slip-title--en">${sign.name}</div>
     ${verdict}
+    <div class="slip-share"><button type="button" class="btn small" data-share-card="${sign.id}">Share this card</button></div>
   </div>`;
 }
 

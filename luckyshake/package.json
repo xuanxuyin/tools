@@ -16,6 +16,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "astro": "^5.1.0",
     "three": "^0.187.0"
   },
@@ -24,7 +25,7 @@
     "@types/three": "^0.187.0",
     "happy-dom": "^21.0.4",
     "lucide-static": "^1.72.0",
-    "puppeteer-core": "^25.16.0",
+    "puppeteer-core": "^25.17.0",
     "satori": "^0.63.2",
     "satori-html": "^0.3.2",
     "typescript": "^5.7.0",

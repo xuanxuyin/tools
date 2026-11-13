@@ -1,0 +1,654 @@
+---
+/**
+ * 观音灵签 — production zh head page for 观音灵签 (5,400 US/mo, KD 14 【实测】
+ * 2026-09 batch). Batch B, 2026-11-13. Rendered from the traditional corpus
+ * in src/data/guanyin100.ts (batch A — Taipei Longshan Temple edition,
+ * cross-verified; NOT our own hand-written deck, which stays untouched on
+ * /fortune-stick/). Model: draw or look up — a random-draw button over the
+ * in-page lookup, every lot SSR'd as a native <details> so the full 签谱
+ * works with zero JS.
+ * Prose is simplified Chinese (how the keyword is searched); the classical
+ * corpus text stays traditional, verbatim. Lives at the site root, NOT under
+ * src/pages/zh/ (that layer is deleted at launch).
+ * 👤 11-13 二次裁定：①两模式同一道闸（推翻批次 D 初版"传统签免费随摇"——
+ * 都走 fw_ration 一日一缘，功德续缘）；②传统签抽取 = fortune-stick 同款仪式
+ * （摇筒→签落→签底落在按钮下方，不再跳页开卡），签底的诗/诗意/解曰直接克隆
+ * 签谱卡里 SSR 好的节点（自带 scoped 样式，客户端零语料），圣意条目做成对题
+ * chips——点哪一类，签谱里那条断语高亮（传统签原生的参与感）。
+ */
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Jar3d from '../components/Jar3d.astro';
+import { GUANYIN_LOTS, guanyinNumZh, type GuanyinLot } from '../data/guanyin100';
+
+const GRADE_META: Record<GuanyinLot['grade'], { label: string; tone: string }> = {
+  上: { label: '上签', tone: 'green' },
+  中: { label: '中签', tone: 'gold' },
+  下: { label: '下签', tone: 'red' },
+};
+// hero copy cites these counts — asserted against the corpus in tests
+const gradeCount: Record<GuanyinLot['grade'], number> = { 上: 0, 中: 0, 下: 0 };
+for (const l of GUANYIN_LOTS) gradeCount[l.grade]++;
+
+const faqItems = [
+  {
+    q: '观音灵签一共有多少支签？',
+    a: '一百支。本页所录《观音一百签》（龙山寺版）从第一签排到第一百签，其中上签 24 支、中签 58 支、下签 18 支。每支签各配签诗与解曰，多数另附一至三则典故。',
+  },
+  {
+    q: '观音灵签怎么求？',
+    a: '先在心里默想一件具体的事（一事一问），再点上方「摇一支签」：签筒摇定后，签底落在按钮下方——签诗、诗意、解曰随签可见；心里问的事还能对到圣意里的一类，点开看那条断语。传统观音签与「时运灵签」同一道门：每日一缘（与英文签筒同库同缘），功德可续缘。抽到过的签都在下方签谱里全开，随时按签号重读。',
+  },
+  {
+    q: '上签、中签、下签是什么意思？',
+    a: '是签的吉凶等次：上签主顺遂，所谋多成；中签主平稳，事在人为；下签主阻滞，多作提点。一百签里上签 24 支、中签 58 支、下签 18 支。下签不是判决——传统解签把它读作提醒：时机未到，宜守不宜进。',
+  },
+  {
+    q: '为什么我看到的签诗和别处不一样？',
+    a: '观音灵签流传版本很多，同一支签在不同庙版、刻本里常有一两个字的出入。本页以龙山寺版为底本，并录「版本一／版本二」两版签诗，原书校注（异体字、读音）也一并保留，便于对照。',
+  },
+  {
+    q: '圣意里的「家宅、自身、求财」是什么？',
+    a: '圣意是这支签按所问之事分类的断语：家宅问家庭，自身问本人，求财问生意买卖，婚姻问婚恋，六甲问孕产，出行、寻人、疾病各有其项。查签时先找你问的那一项，再回头看签诗与解曰印证。',
+  },
+];
+
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Fortune Willow', item: '/' },
+      { '@type': 'ListItem', position: 2, name: '观音灵签', item: '/guanyin-lingqian/' },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+<Base
+  lang="zh-live"
+  title="观音灵签全谱 · 在线求签与解签 | Fortune Willow"
+  description="观音灵签共一百支：上签 24、中签 58、下签 18。全谱收录两版签诗、诗意、解曰、圣意与典故，在线摇签或按签号查阅，逐支对照。"
+>
+  {ld.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
+
+  <!-- hero：求签入口(双签库:传统观音签 / 时运灵签) -->
+  <section class="gy-hero card">
+    <div class="kicker">观音一百签 · 龙山寺版 · 在线求签</div>
+    <h1>观音灵签</h1>
+    <p class="gy-lead">
+      观音灵签共一百支，分上、中、下三等——上签 24、中签 58、下签 18。本页收录《观音一百签》全谱：每支签两版签诗、诗意、解曰、圣意与典故俱全。在线摇签，抽到哪支哪支全开；抽过的签都收在下方签谱，随时重读。
+    </p>
+    <div class="gy-modes">
+      <button class="gy-mode is-on" data-mode="trad" type="button" aria-pressed="true">传统观音签</button>
+      <button class="gy-mode" data-mode="deck" type="button" aria-pressed="false">时运灵签</button>
+    </div>
+    <div class="stage-visual">
+      <Jar3d uid="gy" />
+    </div>
+    <div class="hero-cta">
+      <button class="btn" data-gy-draw>摇一支签</button>
+      <a class="hero-alt" href="#qianpu">下方签谱 ↓</a>
+    </div>
+    <p class="hint" data-gy-hint>一日一缘 · 心里存一件事再摇 · 功德可续缘</p>
+    <div class="gy-deck-out" data-gy-outcome></div>
+    <div data-ration-slot></div>
+  </section>
+
+  <!-- 认识观音灵签 -->
+  <section class="section">
+    <div class="kicker">什么是观音灵签</div>
+    <h2>从庙里的签筒，到这一页</h2>
+    <div class="gy-prose">
+      <p>
+        观音灵签是流传最广的百签系统之一：签筒里放一百支竹签，编号一至一百，求问的人默念所事、摇筒抽签，按签号取出一首签诗和一段解曰。因为这套签挂在观音名下，通称观音灵签，也作观音一百签。各地庙宇刊行的文本略有出入，其中台北龙山寺刊行的版本流传最广，本页全谱即以此为底本。
+      </p>
+      <p>
+        一百支签分上、中、下三等（24／58／18），各配十二宫位之一（子宮到亥宮）。每支签读四层：签诗（四句，讲意象）、诗意（一句断此签总体）、解曰（具体的断语）、圣意（按家宅、求财、婚姻等所问分类的判词）。多数签还附一至三则典故，取自历史人物故事——看懂典故，签诗的意思也就落地了。
+      </p>
+    </div>
+    <h2>怎么求，怎么读</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1 · 心里存一件事</div>
+        <p>问具体的事：换工作、搬家、一段感情、一门生意。「这件事该不该现在做」比「我运势如何」答得更准，也更准对到圣意里的条目。</p>
+      </div>
+      <div class="step">
+        <div class="n">2 · 摇签取号</div>
+        <p>点上方「摇一支签」，随机落定一支；抽到的签自动在下方签谱里全开，以后随时重读。</p>
+      </div>
+      <div class="step">
+        <div class="n">3 · 诗意、解曰、圣意对看</div>
+        <p>先读签诗的意象，再读诗意与解曰的断语；最后到圣意表里找你问的那一项（家宅／求财／婚姻……）。三处对看，签意自明。</p>
+      </div>
+    </div>
+    <div class="gy-asides">
+      <div class="gy-aside">
+        <b>为什么有两版签诗</b>
+        <p>观音灵签各庙版本文字略有出入，同一签常见一两字之差。本页以龙山寺版为底本，把原书并录的两版签诗与校注全部保留：版本一是正文，版本二是另一流传文本，原书夹注（如「櫝：音同独」）附在诗后。</p>
+      </div>
+      <div class="gy-aside">
+        <b>求到下签怎么办</b>
+        <p>传统解签从不把下签读成死局：它说的是此时此势，不是终身判定。宜守、宜缓、宜修——时机变了，签势也跟着变。事在人为，签是参照。</p>
+      </div>
+      <div class="gy-aside">
+        <b>想走完整仪式</b>
+        <p>两个签库与英文签筒 <a href="/fortune-stick/">Fortune Stick</a> 同库同缘：每日一缘，功德可续缘。想要点签、上香那套完整仪式，去英文页；判词两边一样。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 签谱：100 签全录，原生 details，无 JS 也可读 -->
+  <section class="section" id="qianpu">
+    <div class="kicker">一百签全谱</div>
+    <h2>观音灵签签谱 · 第一签至第一百签</h2>
+    <p class="gy-qianpu-sub">
+      抽到过的签，点开就是两版签诗、诗意、解曰、圣意与典故；没抽到的先蒙着——缘份到了自然全开。<span class="tone-green gy-legend">上签 × {gradeCount.上}</span>
+      <span class="tone-gold gy-legend">中签 × {gradeCount.中}</span>
+      <span class="tone-red gy-legend">下签 × {gradeCount.下}</span>
+    </p>
+    <div class="gy-list">
+      {GUANYIN_LOTS.map((l) => (
+        <article class="gy-lot" id={`lot-${l.n}`}>
+          <details>
+            <summary>
+              <span class="gy-num">第{guanyinNumZh(l.n)}签</span>
+              <span class={`gy-badge tone-${GRADE_META[l.grade].tone}`}>{GRADE_META[l.grade].label}</span>
+              <span class="gy-first">{l.poemA[0]}</span>
+              <span class="gy-chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="gy-body">
+              <div class="gy-poems">
+                <div class="gy-poem">
+                  <div class="gy-poem-label">签诗 · 版本一</div>
+                  {l.poemA.map((line) => <p>{line}</p>)}
+                  {l.noteA && <p class="gy-note">{l.noteA}</p>}
+                </div>
+                {l.poemB.length === 4 && (
+                  <div class="gy-poem">
+                    <div class="gy-poem-label">签诗 · 版本二</div>
+                    {l.poemB.map((line) => <p>{line}</p>)}
+                    {l.noteB && <p class="gy-note">{l.noteB}</p>}
+                  </div>
+                )}
+              </div>
+              <div class="gy-sec">
+                <span class="gy-sec-label">诗意</span>
+                <p>{l.shiyi}</p>
+              </div>
+              <div class="gy-sec">
+                <span class="gy-sec-label">解曰</span>
+                <p>{l.jieyue}</p>
+              </div>
+              {l.shengyi ? (
+                <div class="gy-sec">
+                  <span class="gy-sec-label">圣意</span>
+                  <dl class="gy-shengyi">
+                    {l.shengyi.map((s) => (
+                      <div class="gy-sy-row">
+                        <dt>{s.item}</dt>
+                        <dd>{s.verdict}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ) : l.shengyiProse ? (
+                <div class="gy-sec">
+                  <span class="gy-sec-label">圣意</span>
+                  <p>{l.shengyiProse}</p>
+                </div>
+              ) : (
+                <div class="gy-sec">
+                  <span class="gy-sec-label">圣意</span>
+                  <p class="gy-missing">原书此栏从缺。</p>
+                </div>
+              )}
+              {l.stories.map((s) => (
+                <div class="gy-sec gy-story">
+                  <span class="gy-sec-label">典故 · {s.title}</span>
+                  {s.text.split('\n').filter((p) => p.trim()).map((p) => <p>{p}</p>)}
+                </div>
+              ))}
+              <p class="gy-palace">宫位 · {l.palace}</p>
+            </div>
+          </details>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>关于观音灵签</h2>
+    <Faq items={faqItems} />
+  </section>
+</Base>
+
+<style>
+  .gy-hero {
+    max-width: 720px;
+    margin: 36px auto 0;
+    padding: 40px 32px 30px;
+    text-align: center;
+  }
+  .gy-hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 4vw, 2.5rem);
+    margin: 10px 0 14px;
+  }
+  .gy-lead { color: var(--ink-soft); max-width: 560px; margin: 0 auto 18px; }
+  .gy-hero .hint { margin-top: 14px; }
+  .gy-hero .hero-cta { justify-content: center; }
+
+  /* 双签库切换 */
+  .gy-modes {
+    display: inline-flex;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink), transparent 94%);
+    margin-bottom: 8px;
+  }
+  .gy-mode {
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    padding: 7px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .gy-mode.is-on { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .gy-mode:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .gy-deck-out { padding: 0 6px; }
+  .gy-deck-out:empty { display: none; }
+  .gy-hero .stage-visual { margin: 10px 0 18px; }
+
+  /* 传统签签底(抽签 runtime 生成,须 :global;印章/签头复用全局 .slip 家族) */
+  :global(.seal-gy-up) { background: #2f7d4f; }
+  :global(.seal-gy-mid) { background: #8a6a34; }
+  :global(.seal-gy-down) { background: #9e2b22; }
+  :global(.gy-slip-ask) {
+    position: relative;
+    text-align: center;
+    font-size: 0.92rem;
+    color: var(--ink);
+    margin: 6px 0 10px;
+  }
+  :global(.gy-slip-chips) { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  :global(.gy-chip) {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font: inherit;
+    font-size: 0.85rem;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  :global(.gy-chip.is-on) { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  :global(.gy-chip:focus-visible) { outline: 2px solid var(--gold); outline-offset: 2px; }
+  :global(.gy-slip-more) {
+    display: block;
+    margin: 12px auto 0;
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 0.85rem;
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  /* 圣意对题命中行(签谱卡里那一条断语) */
+  :global(.gy-sy-row.gy-row-hit) {
+    background: color-mix(in srgb, var(--gold), transparent 84%);
+    border-radius: 6px;
+    padding: 2px 6px;
+  }
+
+  .gy-prose { max-width: 720px; }
+  .gy-prose p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.75; margin: 0 0 10px; }
+  .section h2 { margin-top: 6px; }
+
+  .gy-asides { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 16px; }
+  .gy-aside { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .gy-aside b { font-size: 0.92rem; color: var(--ink); }
+  .gy-aside p { margin: 6px 0 0; font-size: 0.88rem; color: var(--ink-soft); line-height: 1.65; }
+
+  .gy-qianpu-sub { color: var(--ink-soft); font-size: 0.92rem; margin: 4px 0 16px; }
+  .gy-legend {
+    display: inline-block;
+    border: 1px solid color-mix(in srgb, var(--pill-ink, var(--ink)), transparent 72%);
+    background: var(--pill-bg, var(--card));
+    color: var(--pill-ink, var(--ink));
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+    margin: 0 4px 0 8px;
+  }
+
+  .gy-list { display: grid; gap: 8px; max-width: 720px; }
+  .gy-lot {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .gy-lot.flash { animation: gy-flash 1.6s ease; }
+  @keyframes gy-flash {
+    0%, 60% { border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold), transparent 72%); }
+    100% { border-color: var(--line); box-shadow: none; }
+  }
+  .gy-lot summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .gy-lot summary::-webkit-details-marker { display: none; }
+  .gy-num { font-weight: 600; font-size: 0.94rem; white-space: nowrap; }
+  .gy-badge {
+    flex: none;
+    border: 1px solid color-mix(in srgb, var(--pill-ink, var(--ink)), transparent 72%);
+    background: var(--pill-bg, var(--card));
+    color: var(--pill-ink, var(--ink));
+    border-radius: 999px;
+    padding: 1px 9px;
+    font-size: 0.76rem;
+    white-space: nowrap;
+  }
+  .gy-first {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    font-family: var(--serif);
+  }
+  .gy-chev { flex: none; color: var(--ink-soft); font-size: 0.8rem; transition: transform 0.15s ease; }
+  .gy-lot details[open] .gy-chev { transform: rotate(180deg); }
+
+  .gy-body { border-top: 1px solid var(--line); padding: 18px 20px 14px; }
+  .gy-poems { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 14px; }
+  .gy-poem { text-align: center; background: color-mix(in srgb, var(--temple), transparent 55%); border-radius: 10px; padding: 14px 10px 10px; }
+  .gy-poem p {
+    font-family: var(--serif);
+    font-size: 1.06rem;
+    letter-spacing: 0.14em;
+    margin: 2px 0;
+    color: var(--ink);
+  }
+  .gy-poem-label { font-size: 0.74rem; color: var(--ink-soft); margin-bottom: 6px; letter-spacing: 0.08em; }
+  .gy-note { font-size: 0.78rem !important; color: var(--ink-soft) !important; letter-spacing: 0 !important; font-family: var(--font) !important; margin-top: 8px !important; }
+
+  .gy-sec { margin: 12px 0; }
+  .gy-sec-label {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent), transparent 78%);
+    border-radius: 6px;
+    padding: 1px 8px;
+    margin-bottom: 6px;
+  }
+  .gy-sec p { margin: 0; font-size: 0.92rem; color: var(--ink); line-height: 1.7; }
+  .gy-missing { color: var(--ink-soft); }
+
+  .gy-shengyi { margin: 0; display: grid; gap: 4px 18px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .gy-sy-row { display: flex; gap: 8px; font-size: 0.88rem; line-height: 1.5; }
+  .gy-sy-row dt { flex: none; color: var(--ink-soft); min-width: 2.2em; }
+  .gy-sy-row dd { margin: 0; color: var(--ink); }
+
+  .gy-story p { color: var(--ink-soft); }
+
+  .gy-palace { margin: 14px 0 0; font-size: 0.78rem; color: var(--ink-soft); }
+
+  /* 签谱解锁制(👤 11-13):抽到才开——SSR 全谱照旧(SEO/无 JS 完整),JS 给未
+     抽到的卡蒙锁;卡与 body 都是 SSR 节点(带 cid),scoped 规则可直接命中 */
+  .gy-lot.is-locked .gy-body > * { display: none; }
+  .gy-lot.is-locked .gy-body::after {
+    content: '缘份未到 —— 抽到此签，此处全开';
+    display: block;
+    text-align: center;
+    padding: 16px 0 6px;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 560px) {
+    .gy-hero { padding: 30px 18px 24px; }
+    .gy-first { display: none; } /* 手机上签号+吉凶已够定位，诗句进卡片看 */
+    .gy-body { padding: 14px 14px 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gy-lot.flash { animation: none; }
+    .gy-chev { transition: none; }
+  }
+</style>
+
+<script>
+  /**
+   * 摇一支签(双签库)。👤 11-13 二次裁定:两模式同一道闸——都走 fw_ration
+   * 一日一缘(gateDraw 自过闸,house 模式),功德续缘;签筒只有一只(竹签筒是
+   * kau cim 原型,对两套签都成立)。抽取都是 fortune-stick 同款仪式:
+   * 摇筒 900ms → 签落 → 签底落在按钮下方(+950ms 补参与层)。
+   * 传统签签底 = 克隆签谱卡里 SSR 好的诗/诗意/解曰节点(带 scoped 样式,
+   * 客户端零语料)+ 圣意对题 chips(点哪类 → 签谱里那条断语高亮);
+   * 签谱 = 解锁制(fw_gy_drawn,抽到才开;SSR 全谱照旧保 SEO,JS 蒙锁)。
+   * 时运灵签 = 两段式揭示 zh 管线(drawnBanner/focusPanelHTML/
+   * renderFocusedReading 的 lang 参数;功德面板按 html[lang=zh-CN]
+   * 自动中文)。
+   */
+  import { drawSign, liveRand } from '../lib/engine';
+  import { trackDraw } from '../lib/track';
+  import { gateDraw } from '../lib/rationUi';
+  import { drawnBanner, renderFocusedReading } from '../lib/reading';
+  import { wireShareButtons } from '../lib/shareCard';
+  import { focusPanelHTML, wireFocusPanel } from '../lib/focusFlow';
+  import { focusForQuestion } from '../lib/classify';
+  import { bootJar } from '../lib/jarBoot';
+  import type { Jar3D } from '../lib/jar3d';
+
+  const btn = document.querySelector<HTMLButtonElement>('[data-gy-draw]');
+  const outcome = document.querySelector<HTMLElement>('[data-gy-outcome]');
+  const jarHost = document.querySelector<HTMLElement>('[data-jar3d]');
+  // hint 两模式同一句(机制说明不进 hint;判词内容用户自己会看,👤 11-13 撤词)
+  let mode: 'trad' | 'deck' = 'trad';
+  let jar: Jar3D | null = null;
+  if (jarHost) void bootJar(jarHost).then((made) => { jar = made; });
+  wireShareButtons(); // 时运灵签揭示 banner 里的 [data-share-card]
+
+  // ---- 签谱解锁制(👤 11-13:抽到才开,同英文签库姿态) ----
+  // 传统百签与英文 deck 是两套内容,单独存 fw_gy_drawn——不进 ls_drawn,
+  // 否则传统签 N 号会把英文 deck N 号一起解锁(交叉污染)。
+  // SSR 全谱照旧(SEO/无 JS 完整),JS 给未抽到的卡蒙锁(.is-locked,纯 CSS)。
+  const GY_KEY = 'fw_gy_drawn';
+  const gyDrawn = (): Set<number> => {
+    try {
+      const arr: unknown = JSON.parse(localStorage.getItem(GY_KEY) ?? '[]');
+      return new Set(Array.isArray(arr) ? arr.filter((n): n is number => typeof n === 'number') : []);
+    } catch {
+      return new Set();
+    }
+  };
+  const applyGyLocks = () => {
+    const drawn = gyDrawn();
+    for (const el of document.querySelectorAll<HTMLElement>('.gy-lot')) {
+      const n = Number(el.id.slice(4));
+      el.classList.toggle('is-locked', Number.isFinite(n) && !drawn.has(n));
+    }
+  };
+  const markGyDrawn = (n: number) => {
+    try {
+      const set = gyDrawn();
+      if (!set.has(n)) localStorage.setItem(GY_KEY, JSON.stringify([...set, n].sort((a, b) => a - b)));
+    } catch { /* 存储不可用:本次蒙锁态照旧,不影响抽取 */ }
+    applyGyLocks();
+  };
+  applyGyLocks();
+
+  for (const m of document.querySelectorAll<HTMLButtonElement>('[data-mode]')) {
+    m.addEventListener('click', () => {
+      mode = (m.dataset.mode as 'trad' | 'deck') ?? 'trad';
+      for (const x of document.querySelectorAll<HTMLButtonElement>('[data-mode]')) {
+        const on = x === m;
+        x.classList.toggle('is-on', on);
+        x.setAttribute('aria-pressed', String(on));
+      }
+      if (outcome) outcome.innerHTML = ''; // 换库清上次结果
+      // 功德面板残留一并清掉(两模式共用经济,面板在下一次被拦时重新挂)
+      const slot = document.querySelector<HTMLElement>('[data-ration-slot]');
+      if (slot) slot.innerHTML = '';
+    });
+  }
+
+  const smoothScroll = () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 打开签谱对应卡并定位(chips 对题 / 签底「展开」钮共用):
+  // 签谱卡仍是全量内容的家——签底是摘要,圣意全表/典故/版本二都在卡里
+  const openLot = (n: number, row?: Element) => {
+    const card = document.getElementById('lot-' + n);
+    const det = card?.querySelector('details');
+    if (det) det.open = true;
+    if (!card) return;
+    card.classList.remove('flash');
+    void card.offsetWidth;
+    card.classList.add('flash');
+    card.addEventListener('animationend', () => card.classList.remove('flash'), { once: true });
+    if (row) {
+      for (const r of card.querySelectorAll('.gy-sy-row.gy-row-hit')) r.classList.remove('gy-row-hit');
+      row.classList.add('gy-row-hit');
+      row.scrollIntoView({ behavior: smoothScroll() ? 'smooth' : 'auto', block: 'center' });
+    } else {
+      card.scrollIntoView({ behavior: smoothScroll() ? 'smooth' : 'auto', block: 'start' });
+    }
+  };
+
+  // 传统签:同闸同缘 + fortune-stick 同款仪式。签底内容直接从签谱卡克隆
+  // (SSR 节点自带 scoped 样式,客户端不背语料);圣意条目做成对题 chips。
+  const drawTrad = () => {
+    if (!btn || !outcome) return;
+    if (!gateDraw(drawTrad)) return;
+    btn.disabled = true;
+    outcome.innerHTML = '';
+    jar?.reset();
+    jar?.startShake();
+    window.setTimeout(() => {
+      const n = 1 + Math.floor(Math.random() * 100);
+      const card = document.getElementById('lot-' + n);
+      const grade = card?.querySelector('.gy-badge')?.textContent ?? '';
+      jar?.popStick(`第 ${String(n).padStart(2, '0')} 签`, grade);
+      markGyDrawn(n); // 签谱解锁:抽到哪支,哪支在签谱里全开(👤 11-13 解锁制)
+      trackDraw('guanyin-trad', n);
+      const poem = card?.querySelector('.gy-poem')?.cloneNode(true);
+      const secByLabel = (label: string) =>
+        [...(card?.querySelectorAll('.gy-sec') ?? [])].find(
+          (el) => el.querySelector('.gy-sec-label')?.textContent === label,
+        )?.cloneNode(true);
+      const rows = [...(card?.querySelectorAll('.gy-sy-row') ?? [])];
+      const sealCls = grade.includes('上') ? 'seal-gy-up' : grade.includes('中') ? 'seal-gy-mid' : 'seal-gy-down';
+      outcome.innerHTML = `
+        <div class="reading card drawn-banner slip">
+          <div class="slip-head">
+            <span class="slip-no">第 ${String(n).padStart(2, '0')} 签</span>
+            ${grade ? `<span class="seal ${sealCls}">${grade}</span>` : ''}
+          </div>
+        </div>`;
+      const slip = outcome.firstElementChild as HTMLElement;
+      if (poem) slip.append(poem);
+      for (const sec of [secByLabel('诗意'), secByLabel('解曰')]) if (sec) slip.append(sec);
+      // 圣意对题(chips 从 SSR 卡读取;從缺/散文圣意的签没有条目,跳过)
+      if (rows.length) {
+        const ask = document.createElement('div');
+        ask.className = 'gy-slip-ask';
+        ask.innerHTML = '<div class="slip-orn">❖</div>心里存的事，对到圣意哪一项？';
+        const chips = document.createElement('div');
+        chips.className = 'gy-slip-chips';
+        for (const row of rows) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'gy-chip';
+          b.textContent = row.querySelector('dt')?.textContent ?? '';
+          b.addEventListener('click', () => {
+            for (const x of chips.querySelectorAll('.gy-chip')) x.classList.toggle('is-on', x === b);
+            openLot(n, row);
+          });
+          chips.append(b);
+        }
+        slip.append(ask, chips);
+      }
+      const more = document.createElement('button');
+      more.type = 'button';
+      more.className = 'gy-slip-more';
+      more.textContent = '圣意全表与典故 · 在签谱中展开 ↓';
+      more.addEventListener('click', () => openLot(n));
+      slip.append(more);
+      window.setTimeout(() => {
+        outcome.scrollIntoView({ behavior: smoothScroll() ? 'smooth' : 'auto', block: 'nearest' });
+        btn.disabled = false;
+      }, 950);
+    }, 900);
+  };
+
+  // 本站签:两段式揭示,与英文签筒同一仪式节奏。
+  // gateDraw 合约:放行返回 true 且不调用 proceed;proceed 只给 blocked 面板的
+  // 捐献完成回调——所以这里自己过 gate、把自己传进去(与 fortune-stick 同款)。
+  const drawDeck = () => {
+    if (!btn || !outcome) return;
+    // 无缘时弹功德面板(自动中文),续缘后自动续抽
+    if (!gateDraw(drawDeck)) return;
+    btn.disabled = true;
+    outcome.innerHTML = '';
+    jar?.reset();
+    jar?.startShake();
+    window.setTimeout(() => {
+      const sign = drawSign(liveRand());
+      jar?.popStick(`第 ${String(sign.id).padStart(2, '0')} 签`, sign.nameZh);
+      trackDraw('guanyin-lingqian', sign.id);
+      outcome.innerHTML = drawnBanner(sign, 'zh');
+      window.setTimeout(() => {
+        outcome.insertAdjacentHTML('beforeend', focusPanelHTML('zh'));
+        wireFocusPanel(outcome, (focus, own) => {
+          const answer = outcome.querySelector<HTMLElement>('[data-answer]');
+          if (!answer) return;
+          const lens = focus === 'own' ? focusForQuestion(own) : focus;
+          answer.innerHTML = renderFocusedReading(sign, lens, undefined, {
+            lang: 'zh',
+            echo: own,
+            note: '签无喜怒，事在人为——想再问时，签筒还在。',
+          });
+          answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+        outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        btn.disabled = false;
+      }, 950);
+    }, 900);
+  };
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      if (mode === 'deck') drawDeck();
+      else drawTrad();
+    });
+  }
+</script>

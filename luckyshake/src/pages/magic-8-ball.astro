@@ -1,6 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
+import { EIGHT_BALL } from '../data/eightball';
+
+// classic toy categorization: 10 affirmative / 5 non-committal / 5 negative
+const yesAnswers = EIGHT_BALL.filter((a) => a.tone === 'yes' || a.tone === 'lean-yes');
+const hazyAnswers = EIGHT_BALL.filter((a) => a.tone === 'neutral');
+const noAnswers = EIGHT_BALL.filter((a) => a.tone === 'lean-no' || a.tone === 'no');
+const GROUPS = [
+  { label: 'Yes · 10 answers', tone: 'yes' as const, items: yesAnswers },
+  { label: 'Hazy · 5 answers', tone: 'neutral' as const, items: hazyAnswers },
+  { label: 'No · 5 answers', tone: 'no' as const, items: noAnswers },
+];
 ---
 <Base
   title="Magic 8-Ball Online — Ask, Shake, Get the Answer | Fortune Willow"
@@ -45,6 +56,24 @@ import Faq from '../components/Faq.astro';
       <div class="scene"><span class="glyph"><img src="/img/icons/envelope.png" width="24" height="24" alt="" /></span><p><b>The email you drafted four times.</b> Send tonight or sleep on it? Shake, then notice which answer you were hoping for.</p></div>
       <div class="scene"><span class="glyph"><img src="/img/icons/video_game.png" width="24" height="24" alt="" /></span><p><b>One more round?</b> The ball has never once said no. But ask it anyway — the ritual is the fun.</p></div>
       <div class="scene"><span class="glyph"><img src="/img/icons/handshake.png" width="24" height="24" alt="" /></span><p><b>Team standoffs.</b> Pass the phone around. When randomness breaks the tie, nobody loses face.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">The full list</div>
+    <h2>All 20 classic answers</h2>
+    <p class="answers-lead">The same set the toy has used since the 1950s — 10 yes, 5 hazy, 5 no. Each one here carries an extra line: what the answer is telling you to do.</p>
+    <div class="answer-groups">
+      {GROUPS.map((g) => (
+        <div class="answer-group">
+          <div class="answer-group-head"><span class={`chip ${g.tone === 'yes' ? 'blessing' : g.tone === 'neutral' ? 'nudge' : 'gentle-warning'}`}>{g.label}</span></div>
+          <ul class="answer-list">
+            {g.items.map((a) => (
+              <li><b>{a.text}</b><span>{a.gloss}</span></li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   </section>
 
@@ -102,3 +131,23 @@ import Faq from '../components/Faq.astro';
   btn?.addEventListener('click', shake);
   ball?.addEventListener('click', shake);
 </script>
+
+<style>
+  /* answers list — mobile-first single column, 3-up from tablet */
+  .answers-lead { color: color-mix(in srgb, var(--ink), transparent 30%); margin: 6px 0 0; }
+  .answer-groups { display: grid; gap: 12px; margin-top: 14px; }
+  @media (min-width: 760px) {
+    .answer-groups { grid-template-columns: repeat(3, 1fr); align-items: start; }
+  }
+  .answer-group {
+    border: 1px solid color-mix(in srgb, var(--ink), transparent 86%);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--ink), transparent 96%);
+    padding: 12px 14px;
+  }
+  .answer-group-head { margin-bottom: 8px; }
+  .answer-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .answer-list li { display: grid; gap: 1px; }
+  .answer-list b { font-size: 0.92rem; }
+  .answer-list span { font-size: 0.82rem; color: color-mix(in srgb, var(--ink), transparent 35%); }
+</style>

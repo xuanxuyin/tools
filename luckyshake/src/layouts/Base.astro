@@ -4,11 +4,17 @@ import { jarMarkBareSvg } from '../lib/icons';
 interface Props {
   title: string;
   description: string;
-  /** 'zh' renders the review-only Chinese layer (/zh/ pages, deleted at launch) */
-  lang?: 'en' | 'zh';
+  /** 'zh-live' renders a production zh page: zh-CN html, EN nav, no lang toggle
+      (the /zh/ review mirror this once served was retired 2026-11-13, backup in
+      docs/luckyshake/zh-mirror-backup-2026-11-13/) */
+  lang?: 'en' | 'zh-live';
+  /** 404 only — keep the error page out of the index (repo discipline: the one noindex page) */
+  noindex?: boolean;
+  /** og:image path (site-relative) — sign archive pages pass their share card */
+  image?: string;
 }
-const { title, description, lang = 'en' } = Astro.props;
-const zh = lang === 'zh';
+const { title, description, lang = 'en', noindex = false, image } = Astro.props;
+const zhLive = lang === 'zh-live';
 const navEn = [
   { href: '/fortune-stick/', label: 'Fortune Stick', tone: 'red' },
   { href: '/number-oracle/', label: 'Number Oracle', tone: 'blue' },
@@ -20,44 +26,37 @@ const navEn = [
   { href: '/horoscope/', label: 'Horoscope', tone: 'violet' },
   { href: '/signs/', label: 'The 100', tone: 'teal' },
 ];
-const navZh = [
-  { href: '/zh/fortune-stick/', label: '抽签', tone: 'red' },
-  { href: '/zh/number-oracle/', label: '数字神谕', tone: 'blue' },
-  { href: '/zh/magic-8-ball/', label: '魔力8号球', tone: 'navy' },
-  { href: '/zh/yes-no/', label: '是与非', tone: 'green' },
-  { href: '/zh/coin-flip/', label: '抛硬币', tone: 'gold' },
-  { href: '/zh/fortune-cookie/', label: '签语饼', tone: 'orange' },
-  { href: '/zh/daily-fortune/', label: '今日运势', tone: 'pink' },
-  { href: '/zh/horoscope/', label: '星座', tone: 'violet' },
-  { href: '/zh/signs/', label: '签库', tone: 'teal' },
-];
-const nav = zh ? navZh : navEn;
 // 👤 11/12 unslop:导航安静化 —— 当前页 pill 保留工具身份色,其余纸底墨字
 const here = Astro.url.pathname.replace(/index\.html$/, '').replace(/(?!^|\/)$/, '/');
 const isActive = (href: string) => (href === '/' ? here === '/' : here.startsWith(href));
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
 <!doctype html>
-<html lang={zh ? 'zh-CN' : 'en'}>
+<html lang={zhLive ? 'zh-CN' : 'en'}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {canonical && !noindex && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {canonical && !noindex && <meta property="og:url" content={canonical} />}
+    {image && <meta property="og:image" content={new URL(image, Astro.site).href} />}
+    {image && <meta name="twitter:card" content="summary_large_image" />}
+    {image && <meta name="twitter:image" content={new URL(image, Astro.site).href} />}
+    <meta property="og:site_name" content="Fortune Willow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>
-    {zh && (
-      <div class="review-banner">
-        🛠 内部审阅版（中文对照）· 仅供本地看效果，上线前整站移除 —— 正式版为英文。
-      </div>
-    )}
     <header class="nav">
       <div class="nav-inner">
-        <a class="brand" href={zh ? '/zh/' : '/'}><span class="brand-mark"><Fragment set:html={jarMarkBareSvg(17)} /></span>Fortune Willow</a>
-        <a href={zh ? '/' : '/zh/'} class="lang-toggle" data-lang-toggle>{zh ? 'EN' : '中文'}</a>
+        <a class="brand" href="/"><span class="brand-mark"><Fragment set:html={jarMarkBareSvg(17)} /></span>Fortune Willow</a>
         <nav class="nav-links">
-          {nav.map((n) => <a class:list={[`tone-${n.tone}`]} href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+          {navEn.map((n) => <a class:list={[`tone-${n.tone}`]} href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
         </nav>
       </div>
     </header>
@@ -67,12 +66,13 @@ const isActive = (href: string) => (href === '/' ? here === '/' : here.startsWit
     <footer class="footer">
       <div class="wrap">
         <div class="footer-links">
-          {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+          {navEn.map((n) => <a href={n.href}>{n.label}</a>)}
+          {/* 站级入口:传统观音百签(zh 生产页,无导航位——页脚全站带出,锚文本带 zh 关键词) */}
+          <a href="/guanyin-lingqian/">观音灵签 · Guanyin Oracle</a>
         </div>
-        {zh ? (
+        {zhLive ? (
           <p class="fine">
             Fortune Willow 仅用于娱乐与观照。签是镜，照见的是你——要紧的事，信自心的判断。
-            签文皆本站手写。（上线前移除）
           </p>
         ) : (
           <p class="fine">
@@ -87,14 +87,3 @@ const isActive = (href: string) => (href === '/' ? here === '/' : here.startsWit
 <style is:global>
   @import '../styles/global.css';
 </style>
-<script>
-  // Language toggle: flip the /zh prefix of the current path (runtime-known).
-  // EN-only pages (e.g. /account/) have no /zh mirror — toggle falls back home.
-  const t = document.querySelector<HTMLAnchorElement>('[data-lang-toggle]');
-  if (t) {
-    const p = window.location.pathname;
-    const isZh = p === '/zh' || p === '/zh/' || p.startsWith('/zh/');
-    if (!isZh && p.startsWith('/account')) t.href = '/';
-    else t.href = isZh ? p.replace(/^\/zh\/?/, '/') || '/' : '/zh' + (p === '/' ? '' : p);
-  }
-</script>

@@ -5,8 +5,8 @@ import Jar3d from '../components/Jar3d.astro';
 import { SIGNS } from '../data/signs';
 ---
 <Base
-  title="Fortune Stick — Shake the Jar, Draw Your Fortune | Fortune Willow"
-  description="Think of your question, shake the jar, and draw one of our hand-written fortune sticks. Every fortune comes with readings for love, money, and career — plus your lucky numbers."
+  title="Fortune Stick — Chinese Fortune Sticks (Kau Cim) | Fortune Willow"
+  description="Draw a Chinese fortune stick, kau cim style: shake the jar, draw one of 100 hand-written fortunes — readings for love, money, and career, plus lucky numbers."
 >
   <section class="tool-shell card">
     <div class="tool-stage">
@@ -63,12 +63,40 @@ import { SIGNS } from '../data/signs';
   </section>
 
   <section class="section">
+    <div class="kicker">The tradition</div>
+    <h2>An old jar, a new deck</h2>
+    <div class="tradition">
+      <p>
+        This jar is our take on <b>kau cim</b> — the bamboo-stick oracle you will find in Chinese
+        temples anywhere in the world, and one of the quiet fixtures of Chinese fortune telling. A
+        tall cylinder holds a hundred numbered sticks. You hold one question, shake until a stick
+        leaps out on its own, and read the verse that matches its number. That is the whole
+        machine: no fee, no appointment — just a jar and a question, the same way it has run for
+        centuries.
+      </p>
+      <p>
+        We kept the machine and rewrote every word. The form is unchanged — a hundred sticks, one
+        question, the jar decides — but each verse here is written in-house in plain English, for
+        decisions you actually face this week: the offer, the lease, the text you keep rewriting.
+        Temple verses lean on classical poems and dynasty-old stories; ours keep the story and
+        drop the riddles.
+      </p>
+      <p>
+        Want the temple texts themselves? The traditional set most temples carry — the Guanyin
+        hundred, with two editions of every poem, classical verdicts, and the old stories — lives
+        on our site too, in Chinese: <a href="/guanyin-lingqian/">browse the full Guanyin
+        oracle</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="kicker">Questions</div>
     <h2>Fortune Stick FAQ</h2>
     <Faq items={[
       { q: 'Are the fortunes random?', a: 'Yes — the stick you draw is a fair random pick from our library. What is not random is the writing: every fortune is hand-written and edited in-house, with readings tuned to love, money, and career situations.' },
-      { q: 'Why do I pick a topic after drawing?', a: 'That is how the ritual works: you hold the question privately while the jar shakes — the stick should not know it. Only after it leaps out do you say what it was about, and that is the part the fortune answers. Type your own words and the jar routes them: questions of the heart read the love verdict, money questions the money verdict, work questions the career one — anything else gets the fortune\'s overall reading. One question, one answer: once revealed, the choice locks — shake again to ask something else.' },
-      { q: 'Where do these fortunes come from?', a: 'They are original adaptations of a much older idea: fortune sticks drawn at temples, where each numbered stick carries a poem, a story, and guidance. We rewrote the tradition for modern life — no riddles about harvests, just clear guidance with the story kept in.' },
+      { q: 'Why do I pick a topic after drawing?', a: 'That is how the ritual works: hold the question privately while the jar shakes, then say what it was about — that is what the fortune answers. Your words route the reading to love, money, or career; anything else gets the fortune’s overall reading. One question, one answer: shake again to ask something else.' },
+      { q: 'Where do these fortunes come from?', a: 'They are original adaptations of kau cim, the temple tradition of numbered fortune sticks: each stick carries a poem, a story, and guidance. We rewrote the tradition for modern life — no riddles about harvests, just clear guidance with the story kept in. The unrewritten temple texts (the Guanyin hundred, in Chinese) have their own page here too.' },
       { q: 'Can I ask about another person?', a: 'You can, but the strongest questions are about your own next move. "Should I text them back?" beats "does he miss me?" — one gives you an action, the other just gives you a mood.' },
       { q: 'What are the three grades?', a: 'Every stick is graded as a Blessing (green light energy), a Nudge (steady, practical guidance), or a Gentle Warning (slow down and protect what matters). We do not write doom-and-gloom fortunes — a hard truth, yes; despair, never.' },
       { q: 'Does the same stick always mean the same thing?', a: 'The words are fixed; the reading is yours. Sign 01 on a Tuesday about a job and the same sign on a Friday about a relationship will land differently — that gap is where your own judgment lives, and it is the most reliable oracle in this whole site.' },
@@ -76,11 +104,18 @@ import { SIGNS } from '../data/signs';
   </section>
 </Base>
 
+<style>
+  .tradition { max-width: 720px; }
+  .tradition p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.75; margin: 0 0 10px; }
+  .tradition a { font-weight: 600; }
+</style>
+
 <script>
   import { drawSign, liveRand } from '../lib/engine';
   import { trackDraw } from '../lib/track';
   import { gateDraw } from '../lib/rationUi';
   import { drawnBanner, renderFocusedReading } from '../lib/reading';
+  import { wireShareButtons } from '../lib/shareCard';
   import { focusPanelHTML, wireFocusPanel } from '../lib/focusFlow';
   import { focusForQuestion } from '../lib/classify';
   import { bootJar } from '../lib/jarBoot';
@@ -101,6 +136,7 @@ import { SIGNS } from '../data/signs';
   // SVG placeholder out only after the canvas has painted
   let jar: Jar3D | null = null;
   if (jarHost) void bootJar(jarHost).then((made) => { jar = made; });
+  wireShareButtons(); // 揭示 banner 里的 [data-share-card](分享带日期签卡)
   if (cup && btn && outcome) {
     // 👤 11/12 无抽签机会:按钮保持原样可点(不变暗)——点击弹功德面板换机会
     const shake = () => {

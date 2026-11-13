@@ -15,7 +15,6 @@ import {
   SIGN_COUNT,
 } from '../src/lib/engine';
 import { EIGHT_BALL } from '../src/data/eightball';
-import { EIGHT_BALL_ZH, YES_WHY_ZH, NO_WHY_ZH, YES_NEXT_ZH, NO_NEXT_ZH } from '../src/data/i18n-zh';
 import { renderReading, drawnBanner, renderFocusedReading } from '../src/lib/reading';
 import { focusPanelHTML } from '../src/lib/focusFlow';
 import { focusForQuestion } from '../src/lib/classify';
@@ -216,25 +215,6 @@ describe('sign pages deep links', () => {
   it('digitsForSign selects exactly that sign for all 100', () => {
     for (const s of SIGNS) {
       expect(signForDigits(digitsForSign(s.id)).id).toBe(s.id);
-    }
-  });
-});
-
-describe('review-only zh data layer', () => {
-  it('8-ball zh mirrors the 20 classics with glosses', () => {
-    expect(EIGHT_BALL_ZH.length).toBe(20);
-    const texts = new Set(EIGHT_BALL_ZH.map((a) => a.text));
-    expect(texts.size).toBe(20);
-    for (const a of EIGHT_BALL_ZH) expect(a.gloss.length).toBeGreaterThan(10);
-  });
-
-  it('yes-no zh arrays mirror the english shape', () => {
-    expect(YES_WHY_ZH.length).toBe(4);
-    expect(NO_WHY_ZH.length).toBe(4);
-    expect(YES_NEXT_ZH.length).toBe(3);
-    expect(NO_NEXT_ZH.length).toBe(3);
-    for (const x of [...YES_WHY_ZH, ...NO_WHY_ZH, ...YES_NEXT_ZH, ...NO_NEXT_ZH]) {
-      expect(x.length).toBeGreaterThan(8);
     }
   });
 });

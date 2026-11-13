@@ -21,6 +21,9 @@
 }
 
 * { box-sizing: border-box; }
+/* 👤 11/13:移动端点按的原生高亮是矩形灰块,压在圆角胶囊/按钮上穿帮 —— 全局关掉,
+   按压反馈交给各控件自己的 :active(胶囊按下去还是胶囊) */
+a, button, [role='button'], label, summary { -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -88,6 +91,8 @@ p { margin: 0 0 0.9rem; }
   border: 1px solid color-mix(in srgb, var(--ink), transparent 84%);
 }
 .nav-links a:hover { background: color-mix(in srgb, var(--ink), transparent 94%); text-decoration: none; }
+/* 👤 11/13:手机按压态(原生矩形高亮已全局关掉)——胶囊底加深一档,按下仍是胶囊 */
+.nav-links a:active { background: color-mix(in srgb, var(--ink), transparent 90%); }
 .nav-links a[aria-current='page'] {
   background: var(--pill-bg, #faf5ea); color: var(--pill-ink, var(--ink));
   border-color: color-mix(in srgb, var(--pill-ink, #5c5470), transparent 72%);
@@ -102,20 +107,10 @@ p { margin: 0 0 0.9rem; }
 .tone-pink   { --pill-bg: #fbe7ee; --pill-ink: #b4316b; }
 .tone-violet { --pill-bg: #edeafb; --pill-ink: #5d3fb2; }
 .tone-teal   { --pill-bg: #e2f2ef; --pill-ink: #0d7265; }
-.lang-toggle {
-  color: #b45309; font-weight: 600; margin-left: auto; padding: 3px 11px; border-radius: 999px;
-  text-decoration: none; font-size: 0.86rem; background: transparent;
-  border: 1px solid color-mix(in srgb, #b45309, transparent 84%);
-}
-/* 桌面两行式头部：行1 = 品牌 + 语言切换(右)；行2 = 九钮居中 */
+/* 桌面两行式头部：行1 = 品牌；行2 = 九钮居中 */
 @media (min-width: 821px) {
   .nav-links { flex-basis: 100%; justify-content: center; }
   .nav-inner { row-gap: 7px; }
-}
-.review-banner {
-  background: var(--bg-deep); color: var(--gold);
-  text-align: center; font-size: 0.78rem; padding: 7px 14px;
-  letter-spacing: 0.02em;
 }
 .footer {
   border-top: 1px solid var(--line); margin-top: 64px; padding: 32px 0 40px;
@@ -441,6 +436,19 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
   display: flex;
   gap: 12px;
   align-items: baseline;
+}
+/* 签卡分享行(drawn-banner 尾部,👤 11-13 分享功能):居中窄按钮 */
+.slip-share {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px dashed color-mix(in srgb, #b3452e, transparent 78%);
+}
+.stage-share {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
 }
 .slip-label {
   flex: 0 0 auto;

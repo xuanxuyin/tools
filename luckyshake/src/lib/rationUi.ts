@@ -40,7 +40,6 @@ const COPY = {
     blockedDonate: (n: number) => `Donate ${n} merit, draw again`,
     fine: `Merit accrues at 1 per hour, up to ${MERIT_CAP} — kept in your browser, no account. The free draw refills tomorrow.`,
     boxLink: 'Visit the merit box →',
-    short: (n: number) => `${n} more to go`,
   },
   zh: {
     yourMerit: '我的功德',
@@ -58,7 +57,6 @@ const COPY = {
     blockedDonate: (n: number) => `捐 ${n} 点 · 续一缘`,
     fine: `功德每小时聚一点，上限 ${MERIT_CAP}——只存于你的浏览器，无需注册。明日缘再至。`,
     boxLink: '去功德箱看看 →',
-    short: (n: number) => `尚缺 ${n} 点`,
   },
 } as const;
 
@@ -333,7 +331,7 @@ function mountBlockedPanel(slot: HTMLElement, proceed?: () => void): void {
         <button type="button" class="btn ration-btn ration-donate" data-ration-donate><span class="donate-main"></span><span class="donate-sub"></span></button>
       </div>
       <p class="ration-fine">${t.fine}</p>
-      <p class="ration-boxlink"><a href="${document.documentElement.lang.startsWith('zh') ? '/zh/' : '/'}#merit-box">${t.boxLink}</a></p>
+      <p class="ration-boxlink"><a href="/#merit-box">${t.boxLink}</a></p>
     </article>`;
 
   startTick();
@@ -354,14 +352,14 @@ function mountBlockedPanel(slot: HTMLElement, proceed?: () => void): void {
       // The button completes the CURRENT ticket: merit already dropped at the home
       // box counts (👤 11-12: 在家投了 1 枚,这里却显示 0/8) — so the price shown
       // is the remainder, and the sub-line shows the shared cycle progress.
+      // 👤 11-13 两连裁定:副行只留循环进度「已投 n/8」——主行已示差额,
+      // 尚缺尾缀整个退役("后面的尚缺4点就不需要了"),手里余额也不进票面。
       const need = MERIT_COST - raw.donated;
       const can = st.merit >= need;
       const main = don.querySelector('.donate-main');
       const sub = don.querySelector('.donate-sub');
       if (main) main.textContent = t.blockedDonate(need);
-      let subText = raw.donated > 0 ? t.offered(raw.donated) : '';
-      if (!can) subText = subText ? `${subText} · ${t.short(need - st.merit)}` : t.short(need - st.merit);
-      if (sub) sub.textContent = subText;
+      if (sub) sub.textContent = raw.donated > 0 ? t.offered(raw.donated) : '';
       don.disabled = !can;
     }
   };

@@ -13,6 +13,7 @@ const digits = digitsForSign(sign.id);
 const prev = SIGNS[sign.id === 1 ? SIGNS.length - 1 : sign.id - 2];
 const next = SIGNS[sign.id % SIGNS.length];
 const desc = `${sign.name} — fortune No. ${sign.id}: ${sign.title}`.slice(0, 158);
+const cardImage = `/img/sticks/sign-${sign.id}.png`;
 const ld = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -23,13 +24,16 @@ const ld = {
   ],
 };
 ---
-<Base title={`${sign.name} — Fortune No. ${sign.id} Meaning | Fortune Willow`} description={desc}>
+<Base title={`${sign.name} — Fortune No. ${sign.id} Meaning | Fortune Willow`} description={desc} image={cardImage}>
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <section class="tool-shell card">
     <div class="tool-stage">
       <div class="kicker">The 100 fortunes · No. {String(sign.id).padStart(2, '0')}</div>
       <h1>{sign.name}</h1>
       <p class="date-line">{sign.title}</p>
+      <div class="stage-share">
+        <button type="button" class="btn small" data-share-card={sign.id}>Share this card</button>
+      </div>
     </div>
     <div class="sign-lock" data-sign-lock={sign.id}>
       <div class="tool-outcome" set:html={renderReading(sign)}></div>
@@ -76,6 +80,8 @@ const ld = {
   </section>
   <script>
     import { applyGating } from '../../lib/unlock';
+    import { wireShareButtons } from '../../lib/shareCard';
     applyGating();
+    wireShareButtons();
   </script>
 </Base>
