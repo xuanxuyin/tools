@@ -10,7 +10,9 @@ import { renderReading } from '../../lib/reading';
 // NOTE: getStaticPaths is hoisted by Astro — keep literals inline, no consts.
 export function getStaticPaths() {
   const days: string[] = [];
-  const start = new Date('2026-11-08' + 'T00:00:00Z').getTime();
+  // 11-06: the list page links build-day minus 7 days; epoch must sit at or
+  // before that window's floor or the oldest two archive links 404.
+  const start = new Date('2026-11-06' + 'T00:00:00Z').getTime();
   const end = Date.now();
   for (let t = start; t <= end; t += 86400000) {
     days.push(new Date(t).toISOString().slice(0, 10));
