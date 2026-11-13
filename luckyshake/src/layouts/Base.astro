@@ -36,6 +36,9 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google tag (GA4) — single gtm.js line; the container is bound to the
+         GA4 web stream in Google's admin, so no gtag('js'/'config') needed -->
+    <script is:inline async src="https://www.googletagmanager.com/gtm.js?id=GTM-T8D28VJC"></script>
     <title>{title}</title>
     <meta name="description" content={description} />
     {canonical && !noindex && <link rel="canonical" href={canonical} />}
