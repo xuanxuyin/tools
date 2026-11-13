@@ -61,6 +61,7 @@ async function handle(btn: HTMLButtonElement): Promise<void> {
       btn.textContent = L.saved;
       setTimeout(() => {
         btn.textContent = orig;
+        btn.disabled = false; // 降级路径也要还按键——否则 Firefox 等无系统分享的浏览器按钮永久卡死
       }, 2600);
       return;
     }
