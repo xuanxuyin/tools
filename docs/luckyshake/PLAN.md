@@ -49,12 +49,14 @@
 
 ## 上线清单（域名买好后）
 
-1. 👤 Spaceship 买 fortunewillow.com（RDAP 11-11 未注册）→ DNS 托 Cloudflare
-2. Cloudflare Pages 项目 Root directory = `luckyshake`；绑定 D1：binding 名 **DB** → 库 `fortunewillow`（已建好，5 表已应用）
-3. 环境变量 GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET；Google Cloud Console 注册回调 `https://{域名}/api/auth/callback`
+1. ~~👤 Spaceship 买 fortunewillow.com（RDAP 11-11 未注册）→ DNS 托 Cloudflare~~ **✅ 11-13 执行完毕**（域名已购 + zone Connect 全流程 + NS chin/rocco 委派生效）
+2. ~~Cloudflare Pages 项目 Root directory = `luckyshake`；绑定 D1：binding 名 **DB** → 库 `fortunewillow`~~ **✅ 11-13 执行完毕**（Pages 项目 `fortunewillow` 建成 + 首部部署 296 文件 + schema 远程灌入 5 表 + DB 绑定生效 + Retry 后 API 通）
+3. 环境变量 GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET；Google Cloud Console 注册回调 `https://fortunewillow.com/api/auth/callback`（⬜ 待做，账户/历史功能的登录用，不挡收录）
 4. ~~删 `src/pages/zh/` + `i18n-zh.ts` + Base 的 `'zh'` 审阅分支（zh 审阅层退役）~~ **✅ 11-13 提前执行**（备份 `docs/luckyshake/zh-mirror-backup-2026-11-13/`）——**`zh-live` 分支与 guanyin-lingqian.astro 保留**（生产 zh 页）；signs/signVerses 的 zh 字段**保留**（今制灵签模式的生产依赖，勿删）
 5. ~~`astro.config` 补 site URL → canonical/sitemap 生效~~ **✅ 11-13 提前执行**（site + @astrojs/sitemap 已落，canonical/og:url/sitemap-index.xml 全生效）
-6. GSC 验证值填 `src/consts.ts`；提交 sitemap
+6. ⬜ GSC 验证值填 `src/consts.ts`；提交 sitemap（**域名已活，可立即做**：域属性 + DNS TXT 验证——zone 在 CF 加记录一键；sitemap = `https://fortunewillow.com/sitemap-index.xml`）
+
+**🎉 11-13 上线**：`https://fortunewillow.com` 全链路探针 7/7 绿（首页 44KB 证书过 / 观音页 / 签谱页 / API total 读写 / OG 图 / sitemap / canonical 主域）。Custom domain 绑定当轮 Verifying→活（首次轮询即 200）。遗留两件：③OAuth env vars（不挡收录）、⑥GSC 验证+sitemap 提交。**文件夹名 luckyshake 与域名 fortunewillow.com 的映射是 👤 裁定的永久例外**（改名方案铺开后被叫停："不改就这样，省的出bug"），勿再提议重命名；D1 库名 `fortunewillow` 是 schema.sql 头部口径。测试功德 +1 在十方功德箱（total=1，👤 可择时清零）
 
 ## 技术备忘
 
