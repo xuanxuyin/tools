@@ -1282,7 +1282,11 @@ input[type='range']::-moz-range-thumb {
   .site-header,
   .site-footer,
   .tool-nav,
-  .skip-link {
+  .skip-link,
+  /* utility class: screen-only chrome (print toolbars, pickers, buttons).
+     Was page-scoped before, so it silently did nothing on pages without
+     their own .no-print rule (color-mixer print bar printed its hint). */
+  .no-print {
     display: none !important;
   }
 }

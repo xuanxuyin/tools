@@ -147,15 +147,6 @@ const jsonLd = [
 </BaseLayout>
 
 <style>
-  /* paper keeps the hero and the mixer's color result — the in-site mix
-     tiles and FAQ are screen-only (same print-scope rule as mix pages) */
-  @media print {
-    .prose,
-    .print-bar {
-      display: none;
-    }
-  }
-
   /* print toolbar — screen only, same pattern as mix pages' recipe bar */
   .print-bar {
     display: flex;
@@ -173,6 +164,17 @@ const jsonLd = [
   .print-bar span {
     color: var(--muted);
     font-size: 0.92rem;
+  }
+
+  /* paper keeps the hero and the mixer's color result — the in-site mix
+     tiles and FAQ are screen-only (same print-scope rule as mix pages).
+     Keep this AFTER the .print-bar screen rule above: equal specificity,
+     so the later display:none is what wins on paper. */
+  @media print {
+    .prose,
+    .print-bar {
+      display: none;
+    }
   }
 </style>
 
