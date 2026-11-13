@@ -108,7 +108,7 @@ export const SIGNS: Sign[] = [
     overallZh: '签纸是一句刻进木头的告诫：牛山之美，毁于滥斧；大材无用，只因规矩不准。木匠的天赋从来不是重点，规矩才是。此刻要的是复核过的尺寸、无聊的清单。差不多对，是最贵的一种错——先稳住手，再往前推。',
     loveZh: '「规矩不准怎为搓」——木匠之问即感情之问：把话说准。精确只冷一瞬，立起的信任能存多年。慢下来，直说。',
     moneyZh: '「独惜斧工尽伐他」——账目歪处即是漏处。此签要你落笔前把条款量两遍：量得住，财才守得住。',
-    careerZh: '「大器大材无足用」——没有规矩的天赋会被砍掉弃置。口碑长在署名的直活上。把那个"差不多"的角重做一遍——这就是全部动作。',
+    careerZh: '「大器大材无足用」——没有规矩的天赋会被砍掉弃置。口碑长在署名的直活上。把那个「差不多」的角重做一遍——这就是全部动作。',
     actionZh: '找出那件一直停在 80 分的事，今天就把它做满。',
   },
   // 源: 黄大仙第4签 中吉 董永遇仙 — help arrives for those who keep their word
@@ -155,7 +155,7 @@ export const SIGNS: Sign[] = [
     loveZh: '「幸有惜花人早起」——感情的园子过了风雨，倒下的可以重新站起，前提是先护根。别在碎土上急着栽新苗；稳而早的照料，就是整支签的解。',
     moneyZh: '「万紫千红亦尽倾」——财的损失已经发生；这一季是守住，不是扩张。先盖刚需，让恢复循照料而来，不循强求。风卷走的别追——去护根。',
     careerZh: '「培回根本复栽生」——事业上的挫折只要还早就救得回来。此运里默默修补功效加倍；捂着才是唯一会让它坐大的事。稳住节奏，早说。',
-    actionZh: '挑一件还救得回来的受损的事，今天给它三十分钟的"护根"。',
+    actionZh: '挑一件还救得回来的受损的事，今天给它三十分钟的「护根」。',
   },
   // 源: 黄大仙第6签 上吉 王勃游滕王阁 — celebration, friends, wind at your back
   {
@@ -201,7 +201,7 @@ export const SIGNS: Sign[] = [
     loveZh: '「秋来征雁向南归」——这一季感情的赢，是守住平常的夜晚，不是再一场大动干戈。此签结算的地方是家；在家，别出征。',
     moneyZh: '「江枫如火在渔矶」——刚到手的收益要先固化，再谈投出。此签旺守线的一方，不旺新下的注：落袋、点清、让它安静待着。',
     careerZh: '「砧捣城头声切耳」——现在的工作是记录，不是开新战：趁热写下什么成了、为什么成。休整属于策略本身，不是策略里的漏。',
-    actionZh: '趁热写一页"刚成的事 + 为什么成"——今天写。',
+    actionZh: '趁热写一页「刚成的事 + 为什么成」——今天写。',
   },
   // 源: 黄大仙第9签 上吉 陶渊明赏菊 — harvest and enjoyment
   {
@@ -247,7 +247,7 @@ export const SIGNS: Sign[] = [
     loveZh: '「一轮月镜挂空中」——你们彼此喜欢的东西没有变暗，只是被天气盖住了。浮云是境遇：日程、距离、紧绷的一周。稳住——回温不会均匀，它先回到沉得住气、仍在轻轻照看的人身上。',
     moneyZh: '「玉匣何时光气吐」——诚实的答案是「还没到」，签诗这么说，不带戏剧性。这一季读的是守线，不是新注：天阴时护住基本盘，因为此刻守住的，正是等风来时要扬的那张帆。本事先被证明，进项随后到。',
     careerZh: '「谁人借我一狂风」——这支签的事业线，是一位已在途中的引路人：一次聘用、一个贵人、一个替你说话的名字。拨云者找的是作品找得到的人，不只是准备好了的人——刀要在人前磨；可被找到，胜过完美。',
-    actionZh: '今天花 30 分钟，练"大机会明天就来"时你需要的那个技能。',
+    actionZh: '今天花 30 分钟，练「大机会明天就来」时你需要的那个技能。',
   },
   // 源: 黄大仙第11签 上吉 汉文帝赏柳 — easy season, effortlessness
   {
@@ -287,13 +287,13 @@ export const SIGNS: Sign[] = [
     money: '“Its bright petals fall one by one into the wine cup” — the favorable price behaves like those petals: it holds for a few beats, then pours out to whoever showed up. This is the short-window fortune — it rewards moving over circling, and hesitation itself is the entire cost.',
     career: '“Carrying the first honor of spring home on his back” — ship before flawless: the first credible version beats the best late one, and the honor in this verse goes to the one who claimed the season early. Visibility compounds into position — put your name on the bloom while it is still the first.',
     action: 'Do the one first-mover step today — the message, the offer, the deposit, the draft sent.',
-    titleZh: '你发现得早。而"早"，只属于动手也早的人。',
+    titleZh: '你发现得早。而「早」，只属于动手也早的人。',
     storyZh: '看见今年第一枝梅的旅人——和抢在他前头把花摘走的孩子。',
     overallZh: '签纸是南国初绽的第一枝梅——而骑驴的人已在路上，正把春天的头一份彩头背回家。你在某件事上比人群早了一步：一个点子、一个标的、一个人、一个细分。「我看见了」到「大家都看见了」之间的窗口很短，诗里那位早到的骑驴人就是证明：「早」只属于动手也早的人。这支签一半是先手，另一半是把先手用掉。',
     loveZh: '「却遇骑驴人早至」——诗里先到的人摘得头枝，感情同理：先手属于还在头茬花期就把心意说出口的人。等完美时机，等来的是别人替你摘花——枝还开着的时候，就说。',
     moneyZh: '「片片晶莹入酒杯」——友好的价格就像那些花瓣：只多留几拍，然后倒进先到场人的杯子。这是短窗之象——旺动手的，不旺绕圈的；犹豫本身就是全部成本。',
     careerZh: '「如意背负占春魁」——先发者得位：第一个可信的版本，胜过最完美的迟到版本；诗里的彩头，归那个趁季节还是「第一」就把名字挂上去的人。可见度会滚成身位。',
-    actionZh: '今天就走"先手"那一步——那条消息、那个报价、那笔定金、那份发出去的草稿。',
+    actionZh: '今天就走「先手」那一步——那条消息、那个报价、那笔定金、那份发出去的草稿。',
   },
   // 源: 黄大仙第14签 中吉 陶渊明醉酒 — rest well, but mind the gossip
   {
@@ -333,13 +333,13 @@ export const SIGNS: Sign[] = [
     money: '“A single raft floats free in midstream” — the money in this verse moves because somebody asked the water for passage: the number spoken is the number negotiable, and terms loosen in response to articulation. The distance between wanting and having is voice-length — name the figure out loud.',
     career: '“Silk-skirt music fills your ears, pauses —” — whispered vacancies: roles circulate by word of mouth before they are posted, and the wish told to the right person arrives by bridge rather than by application. Ride it — send the ask to the one who can say yes, and let the invitation do the paperwork.',
     action: 'Write the ask you have been swallowing, and send it to one person who can say yes.',
-    titleZh: '那个你从没说出口的"离谱"愿望？说出来。门为开口的人而开。',
+    titleZh: '那个你从没说出口的「离谱」愿望？说出来。门为开口的人而开。',
     storyZh: '对月亮许愿的皇帝——被递来一座通往月亮的桥。',
     overallZh: '签纸是一叶仙槎泛在中流，月殿就开在前方——不可能的距离，变成了能散步走完的距离。就像那位对月亮许愿、被递来一座桥的皇帝，你正处在「想要」和「拥有」罕见变近的窗口。机制简单得不好意思：把愿望讲给能实现它的人听。上船吧——水正为你停着；月殿还远的唯一原因，是愿望还没说出口。',
     loveZh: '「月殿蟾宫任尔游」——清晰本身就是这一季的魅力：桥只朝说出口的愿望铺过去。说出口的才有得应答，含糊则一直悬着耗神。把一直绕着走的那个意思说出来——诗里那扇门是朝外开的，从你这一侧。',
     moneyZh: '「仙槎一叶泛中流」——诗里的钱之所以动，是因为有人开口向水讨了渡：说出口的数字才是可谈的数字，条款随表述而松动。想要与拥有之间，隔着一次开口——把那个数说出来。',
     careerZh: '「盈耳霓裳声暂歇」——耳语职位：位置在挂出告示之前，先经口碑流转；讲给对的人听的愿望，走的是桥，不是申请表。顺势而为——把请求发给那个能说「行」的人，让邀请自己走完流程。',
-    actionZh: '把咽回去的那个请求写下来，发给一个能说"行"的人。',
+    actionZh: '把咽回去的那个请求写下来，发给一个能说「行」的人。',
   },
   // 源: 黄大仙第16签 中吉 皇叔遇水镜 — late-blooming success; steadiness pays
   {
@@ -385,7 +385,7 @@ export const SIGNS: Sign[] = [
     loveZh: '「清风吹动马铃响」——声音先上路：一直单方扛着的分量，即将被另一方亲口承认。这支签旺诚实的那场对话，不旺悄悄的退场——铃声动起来的时候，让人追得到你。',
     moneyZh: '「响接晨钟不断声」——公道已经在路上：反报价、补上的奖金、自己摆正的条款，不靠人逼。这支签把这一注定得不大——数目谈不上大，胜在公道自己送上门；小而正的进项，收下即是妙处。',
     careerZh: '「秋水蒹葭白露盈」——从灰区里面看，认可比看起来近：月光其实一直浸着台阶，那场连夜追赶是为你安排的。最灰的那一周别急着写结局——这是吉签，它走夜路。',
-    actionZh: '把"走人"的决定睡一个星期。记下这一周里到底发生了什么。',
+    actionZh: '把「走人」的决定睡一个星期。记下这一周里到底发生了什么。',
   },
   // 源: 黄大仙第19签 中吉 伏羲画八卦 — learn the pattern; fortune follows understanding
   {
@@ -454,7 +454,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主结局勿裱——这段情看着像终章，可能只是句子读到一半；哀悼可以，别急着装订成册，故事还在改稿。',
     moneyZh: '诫贴标签勿急——丢掉的「稳的」与新来的「险的」都在剧情中段；慢慢下的结论不花钱，抢跑的结论最贵。',
     careerZh: '此签言关上的门或在给更好的墙承重——近期一切判分都不作数；两周的耐心，胜过一场仓促的重组。',
-    actionZh: '把今天的损失说出口，然后补完这句："……而它最终可能变成——"',
+    actionZh: '把今天的损失说出口，然后补完这句：「……而它最终可能变成——」',
   },
   // 源: 观音第69签 中签 梅开二度 — the second bloom is stronger
   {
@@ -565,7 +565,7 @@ export const SIGNS: Sign[] = [
     action: 'Release one finished thing into a public stream today — a post, a photo, a page, a hello.',
     titleZh: '把你的话放进溪流。对的读者在下游。',
     storyZh: '题了诗的红叶顺水漂走——回信的陌生人成了她的一生。',
-    overallZh: '这支签乘着"小小的发布"旅行：那张便条、那条帖子、那份简介、那个当众提出的问题。你控制不了谁会捡到——你只能控制它已经发出去了。放。',
+    overallZh: '这支签乘着「小小的发布」旅行：那张便条、那条帖子、那份简介、那个当众提出的问题。你控制不了谁会捡到——你只能控制它已经发出去了。放。',
     loveZh: '是红叶题诗之象——心意发出，缘分才有下文；草稿箱里的情书谁也收不到，有缘人坐在一次诚实表白的下游。',
     moneyZh: '主小发布得利——挂出的那件、报出的那个价、可见的那份活；发送者唯一能控制的，是它已经发出。',
     careerZh: '此签言观众在下游——留在硬盘里的作品遇不到他们；这支签的速度是发布的速度，不是打磨的速度。',
@@ -592,7 +592,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主远不为绝——固定那通电话、两个人都信的倒计时，就是桥本身；此签把距离读作天气，不读作判决，桥为守约的人按时搭起。',
     moneyZh: '主管道保温——远处的机会按节奏联络，便有到账的一日；这支签存的是日程，不是热情。',
     careerZh: '此签旺稳定的打卡，不旺英雄式的登门——远程的角色、远方的导师，都靠日历活着；桥就是仪式，守住它。',
-    actionZh: '现在就打开日历，把下一个"搭桥日"填进去。',
+    actionZh: '现在就打开日历，把下一个「搭桥日」填进去。',
   },
   // 源: 黄大仙第90签 中平 红拂女私奔 — 隐忍让人，方逢凶化吉
   {
@@ -777,7 +777,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主走进对方的世界——见朋友、学习惯，归属本身就是这支签祝福的亲密；情分随着走近而加深。',
     moneyZh: '主先货后利——价钱、客户、门路，都在一件拿得出手的成套作品之后打开；财路为真有贡献的人留着座位。',
     careerZh: '此为登岛之签——邀请落在那个早已像个成员一样在贡献的人头上；像被期待那样走进去，因为确实是。',
-    actionZh: '锁定你想进的那个厅。今天就发一份申请、提案或请求——不是"改天"。',
+    actionZh: '锁定你想进的那个厅。今天就发一份申请、提案或请求——不是「改天」。',
   },
   // 源: 关帝第15签 中平 王羲之坦腹(东床坦腹) — authenticity wins
   {
@@ -934,7 +934,7 @@ export const SIGNS: Sign[] = [
     action: 'Refresh the résumé and one skill this week — quietly. Be recallable.',
     titleZh: '他们以为你的黄金期过了。召回的电话快来了。',
     storyZh: '被政治冷落的老将军——局势一紧张，立刻被召回。',
-    overallZh: '经验正在迎来二次定价。市场此前折价处理的"过季"，恰是下一场危机需要的：判断力、伤疤、镇定。保持状态、保持更新；召回通知来得急，它不等人。',
+    overallZh: '经验正在迎来二次定价。市场此前折价处理的「过季」，恰是下一场危机需要的：判断力、伤疤、镇定。保持状态、保持更新；召回通知来得急，它不等人。',
     loveZh: '主重返为强——离开过的那段时光，变成了清楚什么能谈、什么不谈；此签偏爱带着说清楚、想明白回来的那颗心。',
     moneyZh: '主旧值回归——被折价的过季会在下一周期被想起，只是关帝断此签财寻常：价目平实、不惊人；随分而定那份收下就稳，不强图高价。',
     careerZh: '此为召回复用之象——判断力、伤疤与镇定，都会在局势变紧时被急着要回；这支签迎接的，是保持状态、持续长进的人。',
@@ -957,7 +957,7 @@ export const SIGNS: Sign[] = [
     action: 'Accept one responsibility this week that scares you slightly — publicly, without deflecting.',
     titleZh: '你没有去追王冠。它正在披到你身上——郑重地接住。',
     storyZh: '一觉醒来发现军队已经决定了的军官——披风上肩时他还没来得及说好。',
-    overallZh: '认可正在从侧面抵达：那个角色、那份所有权、别人用信任投出来的"你来吧"。庄重地接受，别假谦虚。按他们已经相信的那个样子去带。',
+    overallZh: '认可正在从侧面抵达：那个角色、那份所有权、别人用信任投出来的「你来吧」。庄重地接受，别假谦虚。按他们已经相信的那个样子去带。',
     loveZh: '主信任披肩——这一季的亲密，以对方为你投入的形式到来；优雅地接住不是被动，是这段关系正式落定。',
     moneyZh: '主座位递到——主导那笔交易、持有那份权益、接管那个账户；没求而来的，也要郑重地坐上去。',
     careerZh: '此为黄袍加身之象——角色先于点头落在肩上，是信任投出来的票；此签要的是庄重接住，按他们已相信的样子去带。',
@@ -984,7 +984,7 @@ export const SIGNS: Sign[] = [
     loveZh: '是走运的时辰——心仪的话直接有回音，真正想要的现在就值得说出口；连胜窗口里许的情愿，此签接。',
     moneyZh: '主大胆一段——报价、出价、发布，都在势头正盛时落得更响；胜利爱扎堆，这一堆里写着你的名字。',
     careerZh: '此签主同时去面所有想面的地方——几家同时来抢，才是横扫的期末考；此刻的自信不是自大，是读数准确。',
-    actionZh: '今天把三件"加码"排进日程——更大的请求、更大的舞台、更难的版本。',
+    actionZh: '今天把三件「加码」排进日程——更大的请求、更大的舞台、更难的版本。',
   },
   // 源: 关帝第99签 上上 百里奚投秦 — value has no expiry
   {
@@ -1072,7 +1072,7 @@ export const SIGNS: Sign[] = [
     action: 'This week, do the unglamorous caring thing the flashy ones skip — once, well, without announcing it.',
     titleZh: '喧闹的对手来了又走。留下来的那个，才是赢的那个。',
     storyZh: '攒了一整年才走近一次的卖油郎——在花魁最狼狈的那夜悉心照料她，而豪客们都在门外等着。',
-    overallZh: '这一章的奖品归"在场"，不归"排场"。嗓门更大、出场更亮的对手会来了又走；被记住的，是那个稳定、体贴的人。慢慢走，仔细选，持续出现——安静的人终将戴上花冠。',
+    overallZh: '这一章的奖品归「在场」，不归「排场」。嗓门更大、出场更亮的对手会来了又走；被记住的，是那个稳定、体贴的人。慢慢走，仔细选，持续出现——安静的人终将戴上花冠。',
     loveZh: '主在场胜过排场——出手更亮的来了又走，选定落在留下来的那个身上；稳定就是这支签加冕的告白。',
     moneyZh: '主小注细选、反复出手——熬得过喧闹的稳健玩家拿走大奖；此签偏爱耐心，不爱铺张。',
     careerZh: '此签言高声者早衰——决定落地时，被说出口的名字是有准备、有耐心的那个；加冕归在场，不归排场。',
@@ -1122,7 +1122,7 @@ export const SIGNS: Sign[] = [
     loveZh: '诫催开不易——压力最多催出紧张的芽，对花如此，对心也如此；此签把焐热的房间变成让人成熟的那个东西。',
     moneyZh: '主仓有花期——每小时刷看就是击鼓，鼓声改变不了花，只改变击鼓的人；这支签给耐心付息，像温室养花，不催花。',
     careerZh: '此签言上线、晋升、回音，都到被准备好的环境里来，不到被施压的环境里来；把鼓换成温室，就是此签的全部嘱咐。',
-    actionZh: '今天把一次"催"换成一次"焐"：搬掉一个障碍，加一点舒适，然后等。',
+    actionZh: '今天把一次「催」换成一次「焐」：搬掉一个障碍，加一点舒适，然后等。',
   },
   // 源: 黄大仙第29签 中吉 张翰思鲈 — know when to head home
   {
@@ -1145,7 +1145,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主思念真生活——此签偏爱建在真心喜欢之上的感情，而非拍照好看的那种；这份渴望是掉头回家，不是退缩。',
     moneyZh: '主够了是一个数——说出那个数字，活在它之下，买回的是时间；这支签付的是从容的年份，不是利润率。',
     careerZh: '此签主回家的横移——头衔小些、生活好些，越少拖延得分越高；那碗汤是指南针，此签要的是设计回归。',
-    actionZh: '写下你的"那碗秋汤"——值得回去的那个东西——和朝它走的一步。',
+    actionZh: '写下你的「那碗秋汤」——值得回去的那个东西——和朝它走的一步。',
   },
   // 源: 关帝第2签 上吉 韩蕲王西湖骑驴 — the simple exit
   {
@@ -1168,7 +1168,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主从容下半场——趁勋章还亮，选那个能一起快乐地打发无聊的人；此签祝福的，是两个人共享的那段从容时光。',
     moneyZh: '主从容收割——先锁住收益，再把转速降下来；趁健康与名声还能花，把巅峰兑成更安静、更丰盛的季节。',
     careerZh: '此签为体面交接之象——传奇按自己的日历退场，被敬仰着走，而不是被榨干着走；湖和驴，不需要崩溃作前奏。',
-    actionZh: '这个月起草你的"顶点退出"计划：数字、日期、第一个慢年。',
+    actionZh: '这个月起草你的「顶点退出」计划：数字、日期、第一个慢年。',
   },
   // 源: 观音第50签 中签 陶朱归五湖 — take the profit and go
   {
@@ -1187,7 +1187,7 @@ export const SIGNS: Sign[] = [
     action: 'Name your exit number for one holding — investment, role, or grind — and act on it this month.',
     titleZh: '你已经赢了。最后一门本事，是带着赢利离席。',
     storyZh: '重建了王国的谋士——在掌声到达顶点的那一周，带着财富泛舟而去。',
-    overallZh: '这支签讲落袋：情绪的、财务的、声誉的。多留一轮，就是赢家变成警示故事的方式。在市场替你决定之前，先决定你的"够了"——然后体面离席，去享受湖。',
+    overallZh: '这支签讲落袋：情绪的、财务的、声誉的。多留一轮，就是赢家变成警示故事的方式。在市场替你决定之前，先决定你的「够了」——然后体面离席，去享受湖。',
     loveZh: '主好聚好散——好好告别之后真的走，把这段感情最好的部分带走；此签付的是体面的退场。',
     moneyZh: '是落袋之签——卖掉一块、锁住收益、再平衡；多留一轮，正是赢家变成警示故事的那条路。',
     careerZh: '此签言趁杠杆最高时谈退出——峰顶起草的离场落得最漂亮；早一点定下的够了，就是全部本事。',
@@ -1279,7 +1279,7 @@ export const SIGNS: Sign[] = [
     career: 'Be someone’s break: the person lifted becomes the hand that pulls later. Goodwill bought in the surplus years is the only roof standing in the storm.',
     action: 'Pick one person to back this week — referral, shoutout, paid invoice — with zero expected return.',
     titleZh: '在看起来没用的时候为人花钱。那才是救你的账户。',
-    storyZh: '替主人"挥霍"钱去免除债务的门客——买回来的民心，多年后成了唯一还站着的屋顶。',
+    storyZh: '替主人「挥霍」钱去免除债务的门客——买回来的民心，多年后成了唯一还站着的屋顶。',
     overallZh: '投人，不投工具：你带的实习生、你提前付款的供应商、你不留收据就接济的朋友。这些是慢资产——多年不能变现，然后在你最糟的那个季度里价值连城。给善意留预算，像留一项开支。',
     loveZh: '主予于不能报时——对方还不起时存进去的那笔，定义了这段关系；别人眼里的挥霍，此签记作储蓄。',
     moneyZh: '主慷慨有收益率——免掉的小账、给手艺人的小费、留下的客户；慢资产多年不动，然后在你最糟的季度里价值连城。',
@@ -1324,13 +1324,13 @@ export const SIGNS: Sign[] = [
     money: 'The timed-conversation sign: big spends and money disputes belong on a daylight agenda, not raised at an emotional peak. Patience here is not surrender — it is scheduling.',
     career: 'Budgets conflict deliberately: the small let slide on purpose, the real issue raised at the calm hour. Teams survive on timed disagreement, not forced agreement.',
     action: 'Pick tonight’s irritant and schedule it instead: "tomorrow, 10 a.m., with coffee."',
-    titleZh: '这个家靠一个字运转——"忍"。而忍的诀窍是择时：多数争吵是时机问题，不是对错问题。',
+    titleZh: '这个家靠一个字运转——「忍」。而忍的诀窍是择时：多数争吵是时机问题，不是对错问题。',
     storyZh: '九代人同住一个屋檐——被问秘诀时，老人把同一个字写了一百遍。',
     overallZh: '这是忍字签，但有个拧劲：忍耐不是投降，是排序。现在把刻薄话咽下去，冷静的时辰再谈真正的问题。家和团队能活下去，靠的不是一致，而是错峰表达的不一致。',
     loveZh: '主争吵多是时机而非对错——同一句话，早上十点说结局就不同；此签旺懂得错峰开口的那两个人。',
     moneyZh: '主钱事择时——大的支出与账目争议，要摆上日程在明处谈，不在气头上翻账；此处的忍是排期，不是认亏。',
     careerZh: '此签主冲突要预算——小的故意放过，要紧的挑冷静时辰谈；团队靠错峰的分歧活，不靠强求的一致。',
-    actionZh: '把今晚的火气改成预约："明早十点，配咖啡谈。"',
+    actionZh: '把今晚的火气改成预约：「明早十点，配咖啡谈。」',
   },
   // 源: 关帝第74签 上吉 窦禹钧折桂(五子登科) — raise them well
   {
@@ -1399,7 +1399,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主一言分而树枯——在把分手提上台面之前，先试一次诚意的重修；同根相连的感情砍断俱枯，此签的生机在补种。',
     moneyZh: '主解绑宜同宜善——护住关系的分割，比开战便宜；根留住、枝修掉，账还是整的。',
     careerZh: '此签言重组角色、不拆名册——保住共根、修剪枝叶的结构，扛得住桌上每一份分家提案；花会回到补种的树上。',
-    actionZh: '这周取消一场"怎么分"的谈话，换成一场"怎么过"的谈话。',
+    actionZh: '这周取消一场「怎么分」的谈话，换成一场「怎么过」的谈话。',
   },
   // 源: 关帝第37签 中吉 周孝侯射虎斩蛟(周处除三害) — the third villain
   {
@@ -1445,7 +1445,7 @@ export const SIGNS: Sign[] = [
     loveZh: '问人还是问故事——爱的是这个人，还是关于这个人的故事；把两者看清分开的那一刻，此签就放行，心里的次序随之重排。',
     moneyZh: '主审视掌声——那笔面子消费，等七十二小时便知是真快乐还是梦里的喝彩；从别人那里继承来的欲望，是最贵的梦。',
     careerZh: '此签追问头衔归属——是你的想要，还是观众的？说出观众是谁，就是这支签的全部；之后优先级自会重排。',
-    actionZh: '写下你最大的三个目标。每个旁边标注："我的"还是"继承来的"。诚实一次。',
+    actionZh: '写下你最大的三个目标。每个旁边标注：「我的」还是「继承来的」。诚实一次。',
   },
   // 源: 关帝第88签 上吉 周庙观欹器 — the tipping vessel
   {
@@ -1464,7 +1464,7 @@ export const SIGNS: Sign[] = [
     action: 'Remove one commitment from this week — and pour that space into rest or study.',
     titleZh: '满则覆，空则倚。半，才是站得住的姿势。',
     storyZh: '王庙里那只只有半满才立得正的器皿——每个加冕前的君王都要被领去看它。',
-    overallZh: '功课是平衡，不是拉满。过满的日历、塞爆的组合、填满期待的亲密关系——都会翻。空着也会歪。刻意瞄准"刚好"：比你拎得动的少一样。',
+    overallZh: '功课是平衡，不是拉满。过满的日历、塞爆的组合、填满期待的亲密关系——都会翻。空着也会歪。刻意瞄准「刚好」：比你拎得动的少一样。',
     loveZh: '主器立半满——给关系留空气，两个半满的人站得住，两个过满的人会洒；刚好，才是立得住的姿势。',
     moneyZh: '主取中间仓位——一些风险、一些现金，极端会把器皿打翻；刻意不满，是功课，不是妥协。',
     careerZh: '此签言少排一档——半满的日历才是交付得了的日历；满则覆，空则倚，庙里那只器皿给每个君王都看过。',
@@ -1602,11 +1602,11 @@ export const SIGNS: Sign[] = [
     action: 'Write your "spring bath" answer: the life scene that is actually enough. Read it monthly.',
     titleZh: '被问到志向时，说那个小而真的答案。它一直是对的。',
     storyZh: '三个学生许诺了王国与军队——第四个描述了春天洗个澡、唱着歌走回家。老师叹道：我赞成他。',
-    overallZh: '成功的文化嗓门更大；知足的文化寿命更长。这支签支持那个谦卑的想要——平常的夜晚、合身的工作、一臂之内的朋友。宣布"够了"不是小志向——它是最稀有的一种。',
+    overallZh: '成功的文化嗓门更大；知足的文化寿命更长。这支签支持那个谦卑的想要——平常的夜晚、合身的工作、一臂之内的朋友。宣布「够了」不是小志向——它是最稀有的一种。',
     loveZh: '主平常周二的奖——让普通夜晚也变好的那个人，就是全部的奖品；此签把谦卑的想要认作最稀有的志向。',
     moneyZh: '主说出够了的数——没有这个数字的追逐，既无终点也无兑现；在此签里宣布够了不是小志，是胜出的答案。',
     careerZh: '此签以余力为币——夜里还留得出力气的那份工，是没人打广告的晋升；老师投的，是春浴那一票。',
-    actionZh: '写下你的"春浴"答案：那个其实已经足够的生活场景。每月读一遍。',
+    actionZh: '写下你的「春浴」答案：那个其实已经足够的生活场景。每月读一遍。',
   },
   // 源: 关帝第17签 下下→改编 虞芮让田(无凶) — drop the petty fight
   {
@@ -1629,7 +1629,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主所争之地只长怨气——故意地赢了关系、输了论点，正是此签背书的让步；旁观者读出的会是气度。',
     moneyZh: '主公道数胜过篱笆——讼费长得比争议的界桩还高，这场仗的成本早已超过奖品；一次体面的让步即可收兵。',
     careerZh: '此签言让出署名、分出功劳，反而开了宽路——下一个机会经由看过这场体面的观众而来；缠斗显小，相让显大。',
-    actionZh: '说出你正在争的那块"田"——然后这周先开出让步。',
+    actionZh: '说出你正在争的那块「田」——然后这周先开出让步。',
   },
   // 源: 观音第17签 中签 曹操话梅止渴(望梅止渴) — morale is fuel
   {
@@ -1652,7 +1652,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主以期待解渴、梅不是水——观音断此签多虚少实：一起订下的那趟同行是路上的梅林，望梅止得一时之渴，真水还在井边；盼望要落到出发那一天。',
     moneyZh: '主朝画面行军——把数字贴在每天目光会落的地方；鲜活可信的终点，拉力大过纪律的推力。',
     careerZh: '此签主先讲鲜活的终局、再配上补给点——愿景加里程碑；渴听图景指挥，士气是真实资源，不是装饰。',
-    actionZh: '今晚写下明天的"梅林"——具体到感官的奖励——以及它之前一个真实的补给点。',
+    actionZh: '今晚写下明天的「梅林」——具体到感官的奖励——以及它之前一个真实的补给点。',
   },
   // 源: 关帝第23签 下下→改编 殷浩书空(无凶) — stop writing on air
   {
@@ -1717,7 +1717,7 @@ export const SIGNS: Sign[] = [
     action: 'Timebox the absorbing thing today — one timer, one hard stop — and spend the reclaimed hour on the real.',
     titleZh: '棋局只是一下午，斧柄已经朽了。查一查那件让你入迷的事在偷走什么。',
     storyZh: '看两位仙人下了一盘棋的樵夫——下山时发现人间已过百年。',
-    overallZh: '某件让你入迷的事正在无形地吃掉时间：信息流、游戏、"就看一眼"。山上很美；一百年也是真的。趁日历还没生锈，给入迷的小时立好边界——你看棋盘的时候，世界移动了。',
+    overallZh: '某件让你入迷的事正在无形地吃掉时间：信息流、游戏、「就看一眼」。山上很美；一百年也是真的。趁日历还没生锈，给入迷的小时立好边界——你看棋盘的时候，世界移动了。',
     loveZh: '主在场即字面——人在心不在就是缺席；山上只一盘棋，人间已一百年。趁斧柄未朽，此签先赎回那一个小时。',
     moneyZh: '主注意力为最稀缺之资——把最好机会的小时与收入算一算；有件可爱的东西，正在悄悄吃掉你其余的进项。',
     careerZh: '此签言安逸期市场已移——每月留一个下午更新技能，斧刃才不钝；你看棋盘的时候，世界在走。',
@@ -1767,7 +1767,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主旧情已泼出——新的缘分、新的杯；未来在水壶里，不在水洼里。此签准你哀悼一次，然后重新倒。',
     moneyZh: '主困资无息——亏损的仓位，平掉并记取是学费，捧着不放只是供奉；别再数洒掉的那部分。',
     careerZh: '此签言沉没的年月证明该转、不证明该留——技能带得走，时间回不来；唯一真实的问题是下一杯。',
-    actionZh: '给洒掉的水写一段诚实的话——再写一行"下一杯是什么"。倒它。',
+    actionZh: '给洒掉的水写一段诚实的话——再写一行「下一杯是什么」。倒它。',
   },
   // 源: 黄大仙第51签 中平 成王剪桐封弟 — careless promises bind
   {
@@ -1785,8 +1785,8 @@ export const SIGNS: Sign[] = [
     career: 'The hallway yes needs its proper follow-up: scope, timeline, or a polite uncommit. The court held the boy-king to the leaf; calendars hold you to the offhand.',
     action: 'List your three offhand promises. Honor one, renegotiate one, retire one — today.',
     titleZh: '玩笑时的承诺被盖了章。现在它生效了。笑着签字的时候要小心。',
-    storyZh: '把桐叶剪成玉圭形状"封"了弟弟的小国王——朝廷认定此诺必须兑现。',
-    overallZh: '随口的承诺有约束力："放心我来""开玩笑地说要送""酒桌上的行"。这个月审计一下那些已经在给你的日历和钱包盖章的即兴承诺。诚实重谈一个——并且别再在树叶上签字。',
+    storyZh: '把桐叶剪成玉圭形状「封」了弟弟的小国王——朝廷认定此诺必须兑现。',
+    overallZh: '随口的承诺有约束力：「放心我来」「开玩笑地说要送」「酒桌上的行」。这个月审计一下那些已经在给你的日历和钱包盖章的即兴承诺。诚实重谈一个——并且别再在树叶上签字。',
     loveZh: '主戏言亦盖印——那句「我们哪天一定要」要么当真，要么体面收回；笑着签的字，照样管着日历。',
     moneyZh: '主戏约亦计价——玩笑的「我请」、含糊的「合作一把」，要么标价、要么作废；随口的承诺对钱包的约束，与正式的毫无二致。',
     careerZh: '此签言走廊里的应承要正式跟进——范围、时间，或礼貌地撤回；朝廷认那片桐叶，日历认你的随口一诺。',
@@ -1836,7 +1836,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主笑点即爱点——旧房间里招笑的那个特质，恰是对的人会爱上的那个；此签说留住棱角，换场地。',
     moneyZh: '主小技有市——办公室定不了价的技能，互联网定得了；此签搭的是侧边渠道，观众齐了，错位就散了。',
     careerZh: '此签诫再自我翻译成大众款——说你的方言的团队存在，古怪的长处在那边就是履历；一间房里的怪，是另一间房里的天才。',
-    actionZh: '说出你的"鸟语"——那个古怪的长处——这周把它写进简介。',
+    actionZh: '说出你的「鸟语」——那个古怪的长处——这周把它写进简介。',
   },
   // 源: 黄大仙第79签 中平 锺馗得道 — rejection redirects
   {
@@ -1855,11 +1855,11 @@ export const SIGNS: Sign[] = [
     action: 'Reread your last rejection notice once — then write where that exact skill IS wanted. Apply there.',
     titleZh: '有扇门以貌拒了你。去撞另一扇——这世界正需要你防的那种祸。',
     storyZh: '因长相在宫门前被拒的才子——后来成了专门收服那些以貌取人的鬼的传奇。',
-    overallZh: '那次拒绝关的是门，不是你的成色。这支签把冷遇变成任务：对你说"不"的地方，暴露了你生来要纠正的是哪种错。把才华带到别处，瞄准它最懂的那个问题。',
+    overallZh: '那次拒绝关的是门，不是你的成色。这支签把冷遇变成任务：对你说「不」的地方，暴露了你生来要纠正的是哪种错。把才华带到别处，瞄准它最懂的那个问题。',
     loveZh: '主拒的是型不是人——相反的那一型一直在等；此签要的是重新校准，不是自我缩小；错的是门，不是脸。',
     moneyZh: '主婉拒即改道——肯为这类生意出钱的，就在别处；冷遇指出的，恰是你能纠正的那处错，照着它重新讲。',
     careerZh: '此签言没看懂你的面试官只是过滤器——绕过去，到需要这份背景的团队去；宫门被拒的才子，后来专收以貌取人的鬼。',
-    actionZh: '把上一封拒信重读一遍——然后写下这门手艺在哪儿"正是被需要的"。投那里。',
+    actionZh: '把上一封拒信重读一遍——然后写下这门手艺在哪儿「正是被需要的」。投那里。',
   },
   // 源: 黄大仙第73签 上上 孙霖中状元 — the late exam
   {
@@ -1922,13 +1922,13 @@ export const SIGNS: Sign[] = [
     money: 'The venture kept like a hobby turns business the day it is held like one: the fortune commits the pretense to structure, and structure pays like the real thing.',
     career: 'The role acted seriously grows into the face: the mask is absorbed — and the fortune says promotion follows the committed player, never the ironic one.',
     action: 'Choose the half-in commitment you’re upgrading. Tell one person you’re all in.',
-    titleZh: '它从假开始——但"认真"自会把事弄真。往前靠。',
+    titleZh: '它从假开始——但「认真」自会把事弄真。往前靠。',
     storyZh: '本设为圈套的一桩婚事——因为认真经营，变成了真的。',
-    overallZh: '你半心半意进入的那段安排——"先干着"的工作、将就的搭配、先装后会的角色——正在变成真的。运势偏爱投入的人：认真演一个季度，假戏长成结构，结构长成实体。',
+    overallZh: '你半心半意进入的那段安排——「先干着」的工作、将就的搭配、先装后会的角色——正在变成真的。运势偏爱投入的人：认真演一个季度，假戏长成结构，结构长成实体。',
     loveZh: '主弄假成真——以「先这样」开始的缘分，在全身投入之下正准备变成真的；让它转正的，是那句明说出口的承诺。',
     moneyZh: '主当真则真——当爱好摆的营生，从按生意对待的那天起照生意付钱；签意把虚摆升为实体，实体就照实体回报。',
     careerZh: '此签言认真演的角色会长成脸——面具被吸收；晋升跟着入戏的人走，不跟着旁观的人走。',
-    actionZh: '选定你要升级的那段"半投入"。告诉一个人：我全押了。',
+    actionZh: '选定你要升级的那段「半投入」。告诉一个人：我全押了。',
   },
   // 源: 观音第92签 上签 蔡卿报恩(蔡邕报恩) — the returned favor
   {
@@ -1974,7 +1974,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主怀璧护璧——外部压力之下护住这段良缘；这个季节以感情完好到家来计功，不以路上赢了几回合来计功。',
     moneyZh: '是守物之签——在谈判中守住本金；观音断此签虚多少实：要点全赢是意外之喜，本金完好带回，已是此签认的赢法。',
     careerZh: '此签主任务为完整交付——范围、质量、期限，一样不缺；观音断此签声名莫望：此季先不论功名，璧全即是功，好时自有贵人识得。',
-    actionZh: '认出你这个月抱着的"璧"和最危险的一个压力点——现在就想好你在那里的一句话。',
+    actionZh: '认出你这个月抱着的「璧」和最危险的一个压力点——现在就想好你在那里的一句话。',
   },
   // 源: 观音第22签 上签 六郎逢救 — help breaks through
   {
@@ -2016,11 +2016,11 @@ export const SIGNS: Sign[] = [
     action: 'At the next wobble — meeting or group chat — be first to type: "I’ll handle it."',
     titleZh: '出事的时候，只有一个人先动了。这支签要你做那个人。',
     storyZh: '路上的伏兵——和那个一步挡在危险与要保护对象之间的孤胆武人。',
-    overallZh: '一个大家面面相觑的时刻正在到来。先动：那句平静的宣布、那面盾、那句"我来"。危机里的先动者，会被永远记在晋升时刻。现在就练这个反射——小急情，小跨步。',
+    overallZh: '一个大家面面相觑的时刻正在到来。先动：那句平静的宣布、那面盾、那句「我来」。危机里的先动者，会被永远记在晋升时刻。现在就练这个反射——小急情，小跨步。',
     loveZh: '主点破大象者胜——那件没人敢提的事就是眼前的「驾」；敢先开口的那个伴侣，签意记住，且值得留下。',
     moneyZh: '是救场之签——交易晃动时稳住局面的那只手，事后就是客户的主人；签意把功劳记在稳局者名下，不记在旁观者名下。',
     careerZh: '此签言看得见的危机是看不见的试镜——先举的手被晋升；挡在危险与要保护对象之间的那一步，就是履历。',
-    actionZh: '下一次晃动——会议或群聊——第一个打字："我来处理。"',
+    actionZh: '下一次晃动——会议或群聊——第一个打字：「我来处理。」',
   },
   // 源: 关帝第62签 中吉 李愬雪夜入蔡州 — bold at the right hour
   {
@@ -2043,7 +2043,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主寒夜为掩护——人人又忙又冷的季节，一次温暖而真诚的表示无人抢场；签意偏爱的正是没人料到的时机。',
     moneyZh: '是逆行之签——风暴里没人要的资产正在打折；小心的胆量，买到的正是人群抛下的便宜。',
     careerZh: '此签主安静的那几周是发布窗口——作品集与点子投进满格的注意力、零噪音；不合常规的时机，胜过常规时机加希望。',
-    actionZh: '这周计划一个逆周期动作——那件所有人都说"再等等"的事。准备足了去做。',
+    actionZh: '这周计划一个逆周期动作——那件所有人都说「再等等」的事。准备足了去做。',
   },
   // 源: 关帝第40签 上吉 汉光武陷昆阳 — the outnumbered win
   {
@@ -2112,7 +2112,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主就绪随行不设闸——更深的承诺要在感到之前进入：先有甲，后有身份；签意会把你长进你接下的东西里。',
     moneyZh: '是大账之签——接下那个体量，小心地管；签意用体量教体量，这身甲穿一季就不再是借的。',
     careerZh: '此签主往上高一级去投——那个竞技场里也没人生来就绪；胜任在岗位上到，比自我画像相信的更快。',
-    actionZh: '今天做一件"这超我级别了"的事——认真、完整，当它已经是你的。现在它就是了。',
+    actionZh: '今天做一件「这超我级别了」的事——认真、完整，当它已经是你的。现在它就是了。',
   },
   // 源: 黄大仙第95签 中平 女娲炼石补天 — repair the broken
   {
@@ -2204,7 +2204,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主那份条件清单已完成使命——签意支持从此为知心而遇；第二人生要的是安宁的同伴，不是又一轮掌声。',
     moneyZh: '是换汇之签——资本够了，把一部分换成时间：第二人生的通货；那个古怪的转向，签意支持，不加罚。',
     careerZh: '此签言转去热爱的手艺就是那次晋升——签意以精通换意义；将军走出军帐，学徒期开始。',
-    actionZh: '说出你的"剑"——那件赢了但要放下的东西——和你改拿的安静工具。',
+    actionZh: '说出你的「剑」——那件赢了但要放下的东西——和你改拿的安静工具。',
   },
   // 源: 黄大仙第35签 中吉 唐僧取经 — the long walk
   {
@@ -2250,7 +2250,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主稳定即浪漫——对方忘了，签意要你平静地说，而不是演得更响；王国运转，靠的是每次都到的那位。',
     moneyZh: '是守盘之签——穿过每场风暴守住的分散基本盘，正是这个季节要保护和回报的那件东西；可靠正在加冕。',
     careerZh: '此签言晋升委员会读的是暴风雨里的出勤率——安静记下的交付就是被掂量的那份记录；从这里起，荣誉只是流程。',
-    actionZh: '今天把那件事按时、安静地交付——然后写下"做到了"。账本会赢。',
+    actionZh: '今天把那件事按时、安静地交付——然后写下「做到了」。账本会赢。',
   },
   // 源: 关帝第98签 中吉 张骞泛斗牛(张骞乘槎) — beyond the map
   {
@@ -2273,7 +2273,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主惯常地图已到头——签意把缘分从惯常的类型、城市、场景之外送来；源头，在上游。',
     moneyZh: '是先占之签——新平台、外埠市场、奇怪细分；签意把条款留给探索者，木筏显薄，恰因它去船不去的地方。',
     careerZh: '此签主接下没人画过地图的任务——蓝海晋升得快；地图结束的地方，正是运气开始的地方。',
-    actionZh: '这周做一件"图外"的事：没去过的场合、不熟的平台、一次冷启动的接触。',
+    actionZh: '这周做一件「图外」的事：没去过的场合、不熟的平台、一次冷启动的接触。',
   },
   // 源: 黄大仙第34签 中吉 虞舜耕田 — the quiet fields
   {
@@ -2313,13 +2313,13 @@ export const SIGNS: Sign[] = [
     money: 'The clean-returns sign: the tainted upside and the misaligned money are passed — the fortune notes that clean returns outlast rich ones.',
     career: 'The poisoned promotion is declined politely: the sign says the right-sized role arrives for available hands — refusal is how they stay free.',
     action: 'Practice the graceful no today — one sentence, no essay — on anything that doesn’t fit.',
-    titleZh: '有些奖品是系着缎带的陷阱。你可以说"谢谢，不要"。',
+    titleZh: '有些奖品是系着缎带的陷阱。你可以说「谢谢，不要」。',
     storyZh: '出于原则拒绝继承王国的两位继承人——王朝之后很久，人们仍记得他们的名字。',
     overallZh: '一个奉承你但不合身的邀约正在到来——带灵魂碾压条款的加薪、带引线的交易。这支签支持那个罕见动作：拒绝。对错的王冠说不，你的手才腾得出来接对的那个——而对的通常来得很快。',
     loveZh: '主拒非其配——条件很好但价值观不对的追求者，是顶不合身的王冠；拒绝不是失败，是过滤，而让国之名，比王朝活得久。',
     moneyZh: '是干净回报之签——带脏的上行、不对路的钱，签意说不接；干净的回报，比肥的活得久。',
     careerZh: '此签言带毒的晋升可礼貌回绝——尺寸正确的角色只降临在腾得出手的人身上；拒绝，正是让手保持空着的方式。',
-    actionZh: '今天练一次优雅的"不"——一句话，不写作文——用在一件不合身的事上。',
+    actionZh: '今天练一次优雅的「不」——一句话，不写作文——用在一件不合身的事上。',
   },
   // 源: 关帝第60签 上上 郊祁同科 — the double win
   {
@@ -2342,7 +2342,7 @@ export const SIGNS: Sign[] = [
     loveZh: '主名册即浪漫——签意要你为对方的成功鼓掌和为自己一样响；一张金榜两个名字，正是签意偏爱的爱的形状。',
     moneyZh: '是成双之签——这个季节的钱两手同来：合资的项目、共同的进项；签意裁定，上行归两个名字共有。',
     careerZh: '此签拒独享的荣耀——带上你的同侪，引荐、同台；顶端的盟友，活得比顶端的对手久。',
-    actionZh: '选出你的"共同赢家"，这周花二十分钟也为他的赢做准备。',
+    actionZh: '选出你的「共同赢家」，这周花二十分钟也为他的赢做准备。',
   },
 ];
 

@@ -32,6 +32,9 @@ const navZh = [
   { href: '/zh/signs/', label: '签库', tone: 'teal' },
 ];
 const nav = zh ? navZh : navEn;
+// 👤 11/12 unslop:导航安静化 —— 当前页 pill 保留工具身份色,其余纸底墨字
+const here = Astro.url.pathname.replace(/index\.html$/, '').replace(/(?!^|\/)$/, '/');
+const isActive = (href: string) => (href === '/' ? here === '/' : here.startsWith(href));
 ---
 <!doctype html>
 <html lang={zh ? 'zh-CN' : 'en'}>
@@ -54,7 +57,7 @@ const nav = zh ? navZh : navEn;
         <a class="brand" href={zh ? '/zh/' : '/'}><span class="brand-mark"><Fragment set:html={jarMarkBareSvg(17)} /></span>Fortune Willow</a>
         <a href={zh ? '/' : '/zh/'} class="lang-toggle" data-lang-toggle>{zh ? 'EN' : '中文'}</a>
         <nav class="nav-links">
-          {nav.map((n) => <a class:list={[`tone-${n.tone}`]} href={n.href}>{n.label}</a>)}
+          {nav.map((n) => <a class:list={[`tone-${n.tone}`]} href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
         </nav>
       </div>
     </header>
@@ -68,8 +71,8 @@ const nav = zh ? navZh : navEn;
         </div>
         {zh ? (
           <p class="fine">
-            Fortune Willow 仅用于娱乐与观照自心。签是镜子，照见的始终是你自己——真正要紧的事，信你自心的判断。
-            所有签文均为本站手写。（此中文版为内部审阅用，上线前移除。）
+            Fortune Willow 仅用于娱乐与观照。签是镜，照见的是你——要紧的事，信自心的判断。
+            签文皆本站手写。（上线前移除）
           </p>
         ) : (
           <p class="fine">

@@ -18,15 +18,15 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
 <Base
   lang="zh"
   title="Fortune Willow — 问一件事，摇一支签（内部审阅版）"
-  description="抽签、数字神谕、魔力8号球、抛硬币、签语饼——每个工具都回答你的问题，还告诉你下一步怎么做。全部签文手写，免费，无需注册。"
+  description="抽签、数字神谕、魔力8号球、抛硬币、签语饼——每个工具都回答你的问题，还告诉你下一步怎么做。一百支签，一签三读。"
 >
   <!-- hero:左文案右签筒(与 EN 主页同版式,👤 11/10) -->
   <section class="hero">
     <div class="hero-copy">
-      <div class="kicker">澄心一问 · 摇筒见签</div>
-      <h1>摇一摇签筒。<br />让答案自己现前。</h1>
+      <div class="kicker">诚心一问 · 摇筒见签</div>
+      <h1>摇一摇签筒<br />让答案自己现前</h1>
       <p class="hero-sub">
-        手写签文库，配感情、财运、事业三路解读。
+        一百支签，支支有签诗——感情、财运、事业，一签三读。
       </p>
       <div class="hero-cta">
         <a class="btn" href="/zh/fortune-stick/">抽一支签 →</a>
@@ -43,17 +43,17 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
   <section class="features" aria-label="这里的抽取有什么不同">
     <div class="feature">
       <img class="fico" src="/img/jar-icon.png" width="30" height="30" alt="" />
-      <b>真实的摇签</b>
+      <b>摇筒抽签</b>
       <span>签筒会倾、签会哗啦作响、一支自己立起来。没有「立即揭晓」按钮。</span>
     </div>
     <div class="feature">
       <img class="fico" src="/img/icons/scroll.png" width="30" height="30" alt="" />
-      <b>每签一首签诗</b>
+      <b>一首签诗</b>
       <span>每支签都带着四句签诗——签这个物件本身，不是一句话。</span>
     </div>
     <div class="feature">
       <img class="fico" src="/img/icons/crystal_ball.png" width="30" height="30" alt="" />
-      <b>三路判词</b>
+      <b>一签三读</b>
       <span>感情、财运、事业，句句落在当下——晚饭前就用得上。</span>
     </div>
     <div class="feature">
@@ -68,7 +68,7 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     <div class="card draw-left">
       <p class="draw-q">心里存着所问之事。<br />再摇——一念诚，一签应。</p>
       <Jar3d uid="draw-zh" class="draw-jar" />
-      <a class="shake-ring" href="/zh/fortune-stick/">摇签</a>
+      <a class="shake-ring" href="/zh/fortune-stick/">抽签</a>
       <p class="hint">诚则灵：认真摇一次，胜过乱点十下。</p>
     </div>
     <div class="card draw-right" data-today-card data-build-day={today}>
@@ -89,10 +89,9 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
   <!-- 功德箱:每日一次免费抽取 + 功德经济(👤 2026-11-11) -->
   <section class="section merit-band" id="merit-box">
     <div class="kicker">功德箱</div>
-    <h2>每天一次免费机会，功德换加抽</h2>
+    <h2>一日一缘，功德可续</h2>
     <p style="max-width:640px;margin:0 auto">
-      全站道具共用每天一次的免费机会——诚心这一次才灵。功德每小时聚一点，
-      捐 8 点进功德箱，就能存一次加抽，想用哪个道具都行。
+      机缘一日一缘，六道具共之——问得诚，签才应。欲再问，聚功德：每小时一点，捐 8 点入箱，即续一缘。
     </p>
     <div class="merit-scene" data-merit-root></div>
   </section>
@@ -101,27 +100,27 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     <div class="kicker">完整道具家族</div>
     <h2>挑一个道具，把问题问出来</h2>
     <div class="grid-tools">
-      <ToolCard href="/zh/fortune-stick/" icon="jar" name="抽签" desc="摇签筒抽一支手写签，附感情、财运、事业三路解读。" go="去用 →" />
+      <ToolCard href="/zh/fortune-stick/" icon="jar" name="抽签" desc="摇签筒抽一签——感情、财运、事业，一签三读。" go="去用 →" />
       <ToolCard href="/zh/number-oracle/" icon="input_numbers" name="数字神谕" desc="掷出 0–9 三个数字——数字定签，同时成为你的幸运数字。" go="去用 →" />
       <ToolCard href="/zh/magic-8-ball/" icon="pool_8_ball" name="魔力8号球" desc="经典答案——每个都附一句实话：这答案该怎么用。" go="去用 →" />
       <ToolCard href="/zh/yes-no/" icon="check_mark_button" name="是与非" desc="干净的五五开，附理由和下一步。不含糊，不搞「再想想」。" go="去用 →" />
       <ToolCard href="/zh/coin-flip/" icon="coin" name="抛硬币" desc="正面为是，反面为否。史上最古老的裁决器，现在不用掏口袋。" go="去用 →" />
       <ToolCard href="/zh/fortune-cookie/" icon="fortune_cookie" name="签语饼" desc="掰开一支：一句签语 + 三个幸运数字，数字还能解锁完整签文。" go="去用 →" />
       <ToolCard href="/zh/horoscope/" icon="crystal_ball" name="星座今日签" desc="今天的签，用你的星座来读——同一支签，你的星座读法。" go="去用 →" />
-      <ToolCard href="/zh/signs/" icon="scroll" name="百签签库" desc="整个手写签库全部在列：每支签的名字、典故与三路判词。" go="去用 →" />
+      <ToolCard href="/zh/signs/" icon="scroll" name="百签签库" desc="一百支签全部在列：签名、典故与判词。" go="去用 →" />
     </div>
   </section>
 
   <section class="section">
     <div class="kicker">为什么这样做</div>
-    <h2>随机是天成，判词是人写</h2>
+    <h2>随机是天成，签文有来处</h2>
     <p>
       抛一次硬币能终结一场争论，但它不会告诉你周一该干什么。这里的每个工具都把「诚实的随机」
-      和「一层真写作」配成一对：一个理由、一个典故、针对感情/财运/事业的一句判词，
+      和「有来处的文字」配成一对：一个理由、一个典故、针对感情/财运/事业的一句判词，
       和一件晚饭前就能动手做的具体小事。
     </p>
     <div class="steps">
-      <div class="step"><div class="n">手写签文库</div><p>每支签都有吉语、典故、三路判词和一个行动——本站自己写、自己编。没有回收来的段子堆。</p></div>
+      <div class="step"><div class="n">百签文库</div><p>每支签都有吉语、典故、判词和一个行动——承老签之制，为今日之事重裁。没有回收来的段子堆。</p></div>
       <div class="step"><div class="n">三档分级，不造口业</div><p>吉签、提点、温和提醒。扎心的真话可以有，绝人希望的口业，一句不造。</p></div>
       <div class="step"><div class="n">万事不出你的浏览器</div><p>一切都在本地跑。你输入的问题不会离开你的设备——因为它根本没有地方可去。</p></div>
     </div>
@@ -131,9 +130,9 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     <div class="kicker">常见问题</div>
     <h2>FAQ</h2>
     <Faq items={[
-      { q: '免费吗？', a: '免费——无需账号，不收钱。每天有一次免费机会，全站道具共用；功德每小时聚一点（上限 24 点），随时捐 8 点进功德箱换加抽。本站靠留住你的注意力活着，不靠你的邮箱。' },
+      { q: '免费吗？', a: '免费——无需账号。一天一缘，全站道具共用；功德每小时聚一点（上限 24），捐 8 点入箱即续一缘。本站靠你的注意力活着，不靠你的邮箱。' },
       { q: '我该用哪个工具？', a: '手头要拍板的小事？用「是与非」或抛硬币。工作/感情/钱上的大问题？用抽签。想让数字替你选？用数字神谕。只想来个十秒的仪式？掰支签语饼。' },
-      { q: '这些签文是认真的吗？', a: '随机是真的，写作也是真的——但 Fortune Willow 只用于娱乐和自我梳理，不是医疗、法律或财务建议。涉及健康、安全和他人的事，请找专业人士，别问 8 号球。' },
+      { q: '签文可以当生活参考吗？', a: '可以参考——随机是真的，写作也是真的。但 Fortune Willow 只用于娱乐和自我梳理，不是医疗、法律或财务建议；涉及健康、安全和他人的事，请找专业人士，别问 8 号球。' },
       { q: '签文是哪来的？', a: '改编自抽签这个老传统——编号的签，配一首签诗、一个典故、一段指引——改写成今天真会遇到的那些事：offer、群聊、存钱目标、第二次约会。' },
       { q: '会抽到重复的签吗？', a: '会——抽取是公平且独立的，重复的概率该多少就多少。但如果同一支签一再现前，那多半不是概率：是它在等你把那句话读懂。' },
     ]} />

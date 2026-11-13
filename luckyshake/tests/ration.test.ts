@@ -30,40 +30,38 @@ describe('accrual', () => {
     expect(pendingMerit(s, T0)).toBe(1);
   });
 
-  it('accrues 1 per full hour', () => {
+  it('caps at 1 until claimed — unclaimed hours do not bank (👤 11/12)', () => {
     // claim away the grace hour first so the accrual window starts exactly at T0
     const s = claim(freshState(T0), T0).state;
-    expect(pendingMerit(s, hoursLater(2.5))).toBe(2);
-    expect(pendingMerit(s, hoursLater(10))).toBe(10);
+    expect(pendingMerit(s, hoursLater(0.5))).toBe(0);
+    // one hour in: exactly one waiting — and it STAYS one, never +2/+3,
+    // because the next countdown only starts at the claim moment
+    expect(pendingMerit(s, hoursLater(1))).toBe(1);
+    expect(pendingMerit(s, hoursLater(2.5))).toBe(1);
+    expect(pendingMerit(s, hoursLater(10))).toBe(1);
   });
 
-  it('never exceeds the cap', () => {
-    const s = freshState(T0);
-    expect(pendingMerit(s, hoursLater(500))).toBe(MERIT_CAP);
+  it('a full box stops accruing; spending reopens it', () => {
+    const s: RationState = { ...freshState(T0), merit: MERIT_CAP };
+    expect(pendingMerit(s, hoursLater(30))).toBe(0); // full — nothing waits
+    const spent = donateRest(s).state;
+    expect(spent.merit).toBe(MERIT_CAP - MERIT_COST);
+    // below cap again: the one landed hour is claimable right away,
+    // and it stays exactly one until claimed
+    expect(pendingMerit(spent, hoursLater(30.1))).toBe(1);
+    expect(pendingMerit(spent, hoursLater(31.5))).toBe(1);
   });
 
-  it('claim banks accrued merit and restarts the window', () => {
+  it('claim banks the one waiting merit and restarts the window', () => {
     let s: RationState = claim(freshState(T0), T0).state;
     const r1 = claim(s, hoursLater(3));
     s = r1.state;
-    expect(r1.claimed).toBe(3);
-    expect(s.merit).toBe(4); // 3 accrued + the 1h grace banked during normalization
+    expect(r1.claimed).toBe(1); // capped at 1 — hours don't bank while unclaimed
+    expect(s.merit).toBe(2); // 1 grace + 1 waited
     // right after claiming: nothing pending
     expect(pendingMerit(s, hoursLater(3.2))).toBe(0);
     // one hour later: one more
     expect(pendingMerit(s, hoursLater(4.2))).toBe(1);
-  });
-
-  it('hours while the box sits full are not kept', () => {
-    let s: RationState = freshState(T0);
-    s = claim(s, hoursLater(30)).state;
-    expect(s.merit).toBe(MERIT_CAP);
-    // a day passes while full, then user spends 8 on a ticket
-    s = donateRest(s).state;
-    expect(s.merit).toBe(MERIT_CAP - MERIT_COST);
-    // accrual resumes from the last full-box claim, not the idle day
-    expect(pendingMerit(s, hoursLater(30.5))).toBe(0);
-    expect(pendingMerit(s, hoursLater(31.5))).toBe(1);
   });
 });
 
@@ -171,7 +169,7 @@ describe('status', () => {
     const norm = claim(freshState(T0), T0).state;
     const s: RationState = { ...norm, merit: 6, extras: 1 };
     const st = status(s, hoursLater(2.5));
-    expect(st).toEqual({ merit: 6, extras: 1, pending: 2, canFree: true, canDonate: true });
+    expect(st).toEqual({ merit: 6, extras: 1, pending: 1, canFree: true, canDonate: true });
     // one click drops one merit — any balance above zero can donate
     const broke: RationState = { ...norm, day: todayLocal(T0), merit: 0, extras: 0 };
     expect(status(broke, hoursLater(1)).canDonate).toBe(false);

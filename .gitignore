@@ -42,3 +42,6 @@ luckyshake/.shots/
 # 本地运行状态：D1 本地库/workerd 锁（.wrangler）、性能基准临时目录（.bench-tmp）
 .wrangler/
 .bench-tmp/
+
+# luckyshake scripts/dev-server.mjs 的本地库（十方功德/计数演示数据）
+luckyshake/.fw-dev.db

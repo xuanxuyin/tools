@@ -46,11 +46,12 @@ export function freshState(now: Date): RationState {
   return { day: '', merit: 0, accrueTs: now.getTime() - HOUR_MS, extras: 0, donated: 0 };
 }
 
-/** Merit waiting to be claimed right now (0 when the box is full). */
+/** Merit waiting to be claimed right now (0 when the box is full).
+ *  👤 11/12 倒计时模型定稿:满 1 小时 → 恰好 1 枚待领;不领取,下一枚的倒计时
+ *  不开始(停在 1,不会攒成 +2/+3)——领取那一刻(accrueTs=now)才重开 1 小时。 */
 export function pendingMerit(s: RationState, now: Date): number {
   if (s.merit >= MERIT_CAP) return 0;
-  const hours = Math.floor((now.getTime() - s.accrueTs) / HOUR_MS);
-  return Math.max(0, Math.min(MERIT_CAP - s.merit, hours));
+  return now.getTime() - s.accrueTs >= HOUR_MS ? 1 : 0;
 }
 
 /** Bank whatever has accrued. Hours while the box sits full are not kept. */

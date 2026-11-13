@@ -25,7 +25,7 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
       <div class="kicker">Ask. Shake. Get a real answer.</div>
       <h1>Shake the jar.<br />Get an answer worth reading.</h1>
       <p class="hero-sub">
-        Fortune sticks with hand-written readings for love, money and work.
+        Fortune sticks with hand-written readings for love, money, and work.
       </p>
       <div class="hero-cta">
         <a class="btn" href="/fortune-stick/">Draw your fortune →</a>
@@ -34,7 +34,6 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     </div>
     <div class="hero-stage">
       <Jar3d uid="hero" class="hero-jar" />
-      <div class="hero-vert">Ask · Shake · Read</div>
     </div>
   </section>
 
@@ -48,7 +47,7 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     <div class="feature">
       <img class="fico" src="/img/icons/scroll.png" width="30" height="30" alt="" />
       <b>A verse on every stick</b>
-      <span>Each draw carries its four-line poem — the artifact, not a one-liner.</span>
+      <span>Each draw carries its four-line poem — a keepsake, not a one-liner.</span>
     </div>
     <div class="feature">
       <img class="fico" src="/img/icons/crystal_ball.png" width="30" height="30" alt="" />
@@ -88,11 +87,11 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
   <!-- merit box:每日一次免费抽取 + 功德经济(👤 2026-11-11) -->
   <section class="section merit-band" id="merit-box">
     <div class="kicker">The merit box</div>
-    <h2>One draw a day. Merit buys more.</h2>
+    <h2>One draw a day. Merit gets you more.</h2>
     <p style="max-width:640px;margin:0 auto">
       Every tool in the family shares one free draw a day — it keeps each reading deliberate.
-      Merit collects an extra point every hour; drop 8 in the box and bank a draw for
-      whichever tool you want next.
+      Merit builds on its own — a point an hour, up to 24. Drop 8 in the box and bank a draw
+      for whichever tool you want next.
     </p>
     <div class="merit-scene" data-merit-root></div>
   </section>
@@ -101,14 +100,14 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     <div class="kicker">The whole family</div>
     <h2>Pick a tool, ask your question.</h2>
     <div class="grid-tools">
-      <ToolCard href="/fortune-stick/" icon="jar" name="Fortune Stick" desc="Shake the jar, draw one hand-written fortune with love, money and career readings." />
+      <ToolCard href="/fortune-stick/" icon="jar" name="Fortune Stick" desc="Shake the jar, draw one hand-written fortune with love, money, and career readings." />
       <ToolCard href="/number-oracle/" icon="input_numbers" name="Number Oracle" desc="Roll three digits 0–9 — they pick your fortune and become your lucky numbers." />
-      <ToolCard href="/magic-8-ball/" icon="pool_8_ball" name="Magic 8-Ball" desc="The classic answers — each with the honest read on what to do about it." />
-      <ToolCard href="/yes-no/" icon="check_mark_button" name="Yes or No" desc="A clean 50/50 plus the why and the next step. No hedging, no 'maybe'." />
+      <ToolCard href="/magic-8-ball/" icon="pool_8_ball" name="Magic 8-Ball" desc="The classic answers — each with an honest read on what to do about it." />
+      <ToolCard href="/yes-no/" icon="check_mark_button" name="Yes or No" desc="A clean 50/50 plus the why and the next step. No hedging, no ‘maybe’." />
       <ToolCard href="/coin-flip/" icon="coin" name="Coin Flip" desc="Heads is yes, tails is no. The oldest tiebreaker in history, zero pocket change." />
       <ToolCard href="/fortune-cookie/" icon="fortune_cookie" name="Fortune Cookie" desc="Crack one open: your message plus three lucky numbers that unlock a full reading." />
       <ToolCard href="/horoscope/" icon="crystal_ball" name="Horoscope" desc="Today's shared fortune read through your zodiac sign — same draw, your sign's take on it." />
-      <ToolCard href="/signs/" icon="scroll" name="The 100 Fortunes" desc="The whole hand-written library on the record: every sign's name, story, and readings." />
+      <ToolCard href="/signs/" icon="scroll" name="The 100 Fortunes" desc="All 100 hand-written fortunes on the record — every sign's name, story, and readings." />
     </div>
   </section>
 
@@ -118,10 +117,10 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     <p>
       A coin flip ends an argument; it does not tell you what to do Monday. Every tool here pairs an
       honest random draw with a layer of real writing: a reason, a story, a verdict for love or money
-      or work, and a single step you can actually take before dinner.
+      or work, and a single step you can actually take tonight.
     </p>
     <div class="steps">
-      <div class="step"><div class="n">Hand-written library</div><p>Our fortunes are written and edited in-house — every sign has a headline, a story, three life-area readings and one action. No recycled one-liner dumps.</p></div>
+      <div class="step"><div class="n">Hand-written library</div><p>Our fortunes are written and edited in-house — every sign has a headline, a story, three life-area readings, and one action. No recycled one-liners.</p></div>
       <div class="step"><div class="n">Three grades, no doom</div><p>Blessings, nudges, and gentle warnings. A hard truth, yes — we do not write fortunes designed to ruin your week.</p></div>
       <div class="step"><div class="n">Private by design</div><p>Everything runs in your browser. The question you type never leaves your device, because there is nowhere for it to go.</p></div>
     </div>
@@ -131,7 +130,7 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     <div class="kicker">Questions</div>
     <h2>FAQ</h2>
     <Faq items={[
-      { q: 'Is this free?', a: 'Yes — no account, no card. Each day brings one free draw shared across every tool; collect merit (a point an hour, up to 24) and donate 8 to the merit box whenever you want another. The site is supported by keeping your attention, not your email address.' },
+      { q: 'Is this free?', a: 'Yes — no account, no card. Each day brings one free draw shared across every tool; collect merit (a point an hour, up to 24) and donate 8 to the merit box whenever you want another. The site runs on your attention, not your email address.' },
       { q: 'Which tool should I use?', a: 'Got a decision right now? Yes/No or the coin. A bigger question about work, love or money? The Fortune Stick. Feel like letting numbers choose? The Number Oracle. Just want a ten-second ritual? The cookie.' },
       { q: 'Are these fortunes serious?', a: 'The randomness is real and so is the writing — but Fortune Willow is for entertainment and reflection, not medical, legal, or financial advice. For decisions about health, safety, or other people’s rights, talk to a professional, not an 8-ball.' },
       { q: 'Where do the fortunes come from?', a: 'They are original adaptations of the fortune-stick tradition — numbered sticks with a poem, a story, and guidance — rewritten for the decisions you actually face: job offers, group chats, savings goals, second dates.' },

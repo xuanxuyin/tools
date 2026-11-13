@@ -12,7 +12,7 @@ import { SIGNS } from '../data/signs';
     <div class="tool-stage">
       <h1>Fortune Stick</h1>
       <p class="tool-sub">
-        You don't pick the stick — the stick picks you. Hold your question in mind, no typing yet.
+        Let the jar do the picking. Hold your question in mind — no typing yet.
         Shake the jar: the stick that leaps out already carries the answer. When it lands, tell the
         jar what you asked about.
       </p>
@@ -21,6 +21,7 @@ import { SIGNS } from '../data/signs';
         <div class="ritual-incense" data-incense-root></div>
         <!-- right column: the draw itself (moved right) -->
         <div class="ritual-draw">
+          <div class="ritual-head">The draw</div>
           <div class="stage-visual">
             <div class="cup-wrap" data-cup>
               <!-- 3D jar (three.js), shared with the homepage (Jar3d.astro):
@@ -31,8 +32,8 @@ import { SIGNS } from '../data/signs';
               <Jar3d uid="fs-en" />
             </div>
           </div>
-          <button class="btn" data-shake>Shake the jar</button>
-          <p class="hint">Hand-written fortunes in the jar · free, no sign-up</p>
+          <button class="btn" data-shake>Draw a stick</button>
+          <p class="hint">A hundred sticks in the jar · one draw a day</p>
         </div>
       </div>
     </div>
@@ -101,6 +102,7 @@ import { SIGNS } from '../data/signs';
   let jar: Jar3D | null = null;
   if (jarHost) void bootJar(jarHost).then((made) => { jar = made; });
   if (cup && btn && outcome) {
+    // 👤 11/12 无抽签机会:按钮保持原样可点(不变暗)——点击弹功德面板换机会
     const shake = () => {
       if (!gateDraw(shake)) return; // ration: one free draw a day — merit buys more
       btn.disabled = true;

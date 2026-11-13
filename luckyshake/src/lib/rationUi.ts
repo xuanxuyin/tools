@@ -27,8 +27,7 @@ const COPY = {
   en: {
     yourMerit: 'My merit',
     tapHint: 'Tap the number — one merit drops in the box',
-    nextOne: (c: string) => `Next in ${c}`,
-    collect: (n: number) => `Collect +${n} merit`,
+    collect: 'Collect',
     nothingYet: (c: string) => `Next in ${c}`,
     full: 'Merit full',
     dropAria: 'Drop one merit in the box',
@@ -37,30 +36,29 @@ const COPY = {
     banked: (n: number) => (n === 1 ? '1 banked draw' : `${n} banked draws`),
     communal: (n: string) => `Total: ${n}`,
     blockedTitle: 'Today’s free draw is spent.',
-    blockedBody: 'One draw a day, shared by every tool — it keeps the reading honest. The merit box can buy you another.',
+    blockedBody: 'One draw a day, shared by every tool — it keeps the reading honest. The merit box can get you another.',
     blockedDonate: (n: number) => `Donate ${n} merit, draw again`,
-    fine: `Merit collects 1 per hour, up to ${MERIT_CAP} — kept in your browser, no account. The free draw refills tomorrow.`,
+    fine: `Merit accrues at 1 per hour, up to ${MERIT_CAP} — kept in your browser, no account. The free draw refills tomorrow.`,
     boxLink: 'Visit the merit box →',
     short: (n: number) => `${n} more to go`,
   },
   zh: {
     yourMerit: '我的功德',
-    tapHint: '点击数字，投一枚功德进箱',
-    nextOne: (c: string) => `下一枚 ${c}`,
-    collect: (n: number) => `领取 +${n} 功德`,
+    tapHint: '点击数字，捐功德',
+    collect: '领取',
     nothingYet: (c: string) => `${c} 后可领`,
     full: '功德已满',
-    dropAria: '投一枚功德进箱',
+    dropAria: '捐一点功德进箱',
     floatOne: '功德 +1',
     offered: (n: number) => `已投 ${n}/${MERIT_COST}`,
-    banked: (n: number) => `存了 ${n} 次加抽`,
-    communal: (n: string) => `全站累计：${n}`,
-    blockedTitle: '今天的免费机会用完啦。',
-    blockedBody: '每天一次机会，全站道具共用——诚心这一次才灵。功德箱可以为你再换一次。',
-    blockedDonate: (n: number) => `捐 ${n} 功德 · 再来一次`,
-    fine: `功德每小时聚 1 点，上限 ${MERIT_CAP} 点——存在你自己浏览器里，不用注册。免费机会明天刷新。`,
+    banked: (n: number) => `已续 ${n} 缘`,
+    communal: (n: string) => `十方功德：${n}`,
+    blockedTitle: '今日机缘已用',
+    blockedBody: '一天一缘，全站道具共之——问得诚，签才应。功德箱可为你续缘。',
+    blockedDonate: (n: number) => `捐 ${n} 点 · 续一缘`,
+    fine: `功德每小时聚一点，上限 ${MERIT_CAP}——只存于你的浏览器，无需注册。明日缘再至。`,
     boxLink: '去功德箱看看 →',
-    short: (n: number) => `还差 ${n} 点`,
+    short: (n: number) => `尚缺 ${n} 点`,
   },
 } as const;
 
@@ -165,12 +163,21 @@ async function fetchCommunal(): Promise<number | null> {
   }
 }
 
-function postDonation(amount: number): void {
-  fetch('/api/merit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount }),
-  }).catch(() => {});
+/** POST one donation; resolves to the new communal total, or null where the
+ *  API is missing (astro preview / offline) so the caller can fold the row. */
+async function postDonation(amount: number): Promise<number | null> {
+  try {
+    const res = await fetch('/api/merit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount }),
+    });
+    if (!res.ok) return null;
+    const o = (await res.json()) as { total?: number };
+    return typeof o.total === 'number' ? o.total : null;
+  } catch {
+    return null;
+  }
 }
 
 const fmt = (n: number) => n.toLocaleString('en-US');
@@ -196,10 +203,12 @@ function startTick(): void {
   setInterval(refreshAll, 1000);
 }
 
-/** Shared collect-button state: claimable / counting down / box full. */
+/** Shared collect-button state: claimable / counting down / box full.
+ *  👤 11/13 定稿:倒计时全站只留按钮这一处(可领=领取 / 聚集中=mm:ss 后可领 / 满箱);
+ *  旁侧行"下一枚 mm:ss"删除——同状态两处显示既是重复也是量词错位(功德论点不论枚)。 */
 function collectState(raw: RationState, now: number): { text: string; disabled: boolean } {
   const st = status(raw, new Date(now));
-  if (st.pending > 0) return { text: COPY[lang()].collect(st.pending), disabled: false };
+  if (st.pending > 0) return { text: COPY[lang()].collect, disabled: false };
   if (raw.merit >= MERIT_CAP) return { text: COPY[lang()].full, disabled: true };
   return { text: COPY[lang()].nothingYet(mmss(nextDropAt(now, raw.accrueTs) - now)), disabled: true };
 }
@@ -218,10 +227,10 @@ export function mountMeritBox(root: HTMLElement): void {
       <div class="merit-banked" data-merit-banked></div>
     </div>
     <div class="merit-panel">
-      <div class="merit-balance"><span class="merit-unit">${t.yourMerit}</span><button type="button" class="merit-num" data-merit-num data-merit-drop aria-label="${t.dropAria}" title="${t.dropAria}">0</button><span class="merit-ready" data-merit-ready></span></div>
+      <div class="merit-balance"><span class="merit-unit">${t.yourMerit}</span><button type="button" class="merit-num" data-merit-num data-merit-drop aria-label="${t.dropAria}" title="${t.dropAria}">0</button></div>
       <div class="merit-hint">${t.tapHint}</div>
       <div class="merit-actions">
-        <button type="button" class="btn ration-btn" data-ration-collect></button>
+        <button type="button" class="btn small ration-btn" data-ration-collect></button>
       </div>
     </div>`;
   startTick();
@@ -231,22 +240,12 @@ export function mountMeritBox(root: HTMLElement): void {
     const raw = loadRation(now);
     const st = status(raw, now);
     const num = root.querySelector<HTMLButtonElement>('[data-merit-num]');
-    const ready = root.querySelector('[data-merit-ready]');
     const collect = root.querySelector<HTMLButtonElement>('[data-ration-collect]');
     const cycle = root.querySelector('[data-merit-cycle]');
     const banked = root.querySelector('[data-merit-banked]');
     if (num) {
       num.textContent = String(st.merit);
       num.disabled = st.merit < 1; // the number IS the donate button
-    }
-    // pending>0 → the +N on the button grows every full hour while unclaimed;
-    // keep a live "next in mm:ss" beside it so the accumulation is VISIBLE
-    // (👤 11-12: 到点不领像冻结——按钮停 +1 一小时不动，不知道还在累计)
-    if (ready) {
-      ready.textContent =
-        st.pending > 0 && raw.merit < MERIT_CAP
-          ? t.nextOne(mmss(nextDropAt(now.getTime(), raw.accrueTs) - now.getTime()))
-          : '';
     }
     if (collect) {
       const cs = collectState(raw, now.getTime());
@@ -275,17 +274,23 @@ export function mountMeritBox(root: HTMLElement): void {
     }
   });
 
-  // communal counter — always visible: real number from /api/merit, an em dash
-  // placeholder where the API is missing (static preview / offline). Never hide
-  // the row: an invisible counter reads as "not built".
+  // communal counter — real number from /api/merit where Functions run (prod,
+  // wrangler dev). Where they don't (astro preview / offline) the row folds
+  // away instead of dangling an em dash that reads as broken (👤 11/13).
+  const communalRow = root.querySelector('.merit-communal');
   const totalEl = root.querySelector('[data-merit-total]');
-  fetchCommunal().then((n) => {
-    if (totalEl) totalEl.textContent = t.communal(n !== null ? fmt(n) : '—');
-  });
-  (root as HTMLElement & { _communal?: () => void })._communal = async () => {
-    const n = await fetchCommunal();
-    const el = root.querySelector('[data-merit-total]');
-    if (n !== null && el) el.textContent = t.communal(fmt(n));
+  const applyTotal = (n: number | null): void => {
+    if (!totalEl || !communalRow) return;
+    if (n === null) {
+      communalRow.classList.add('is-hidden');
+      return;
+    }
+    totalEl.textContent = t.communal(fmt(n));
+    communalRow.classList.remove('is-hidden');
+  };
+  fetchCommunal().then(applyTotal);
+  (root as HTMLElement & { _communal?: (total?: number | null) => void })._communal = async (total) => {
+    applyTotal(total ?? (await fetchCommunal()));
   };
 }
 
@@ -294,7 +299,9 @@ function doDropOne(root: HTMLElement): void {
   const r = donateOne(loadRation(new Date()));
   if (!r.ok) return;
   saveRation(r.state);
-  postDonation(1);
+  postDonation(1).then((total) => {
+    (root as HTMLElement & { _communal?: (total?: number | null) => void })._communal?.(total);
+  });
   const svg = root.querySelector('.merit-box-svg');
   if (svg) {
     svg.classList.remove('dropping');
@@ -311,7 +318,6 @@ function doDropOne(root: HTMLElement): void {
     stage.appendChild(float);
   }
   refreshAll();
-  (root as HTMLElement & { _communal?: () => void })._communal?.();
 }
 
 /* ---- tool-page blocked panel ---- */
@@ -372,7 +378,7 @@ function mountBlockedPanel(slot: HTMLElement, proceed?: () => void): void {
       if (!d.ok) return;
       saveRation(d.state); // bank the ticket — the gate below spends it on this draw
       // only the remainder enters the box now — the drops already POSTed 1-per-click
-      postDonation(MERIT_COST - s.donated);
+      void postDonation(MERIT_COST - s.donated);
       proceed?.(); // gateDraw consumes the ticket, clears the panel, runs the draw
     }
   });
