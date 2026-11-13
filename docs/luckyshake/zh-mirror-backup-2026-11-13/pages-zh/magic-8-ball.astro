@@ -1,0 +1,106 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+---
+<Base
+  lang="zh"
+  title="魔力8号球 — 诚心一问，摇球现答 | Fortune Willow（内部审阅版）"
+  description="诚心一问，摇球现答——在线魔力8号球，每个经典答案都附一句实话：这个答案该怎么用。"
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>魔力8号球</h1>
+      <p class="tool-sub">
+        把问题放在心里，摇一摇球——窗口里现前的，是一个经典答案，
+        外加一句大实话：这个答案该怎么用。
+      </p>
+      <div class="stage-visual">
+        <div class="ball" data-ball>
+          <span class="eight-note">8</span>
+          <div class="ball-window" data-window>问&nbsp;·&nbsp;摇</div>
+        </div>
+      </div>
+      <input class="q-input" data-q type="text" maxlength="40" placeholder="可填可不填——你想问什么？" aria-label="你的问题（可选）" />
+      <button class="btn" data-shake8>摇一摇球</button>
+      <p class="hint">问题可填可不填 · 直接点球也可以</p>
+    </div>
+    <div data-ration-slot></div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">摇球三步</div>
+    <h2>一问，一摇，一定</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · 存问</div><p>把「是与非」的问题放在心里，措辞要让两个答案都接得住你——「该订这趟机票吗？」，而不是「旅行？」</p></div>
+      <div class="step"><div class="n">2 · 摇</div><p>窗口里现前一个经典答案——五十年代那颗著名的球给的就是这一套，缘起不虚。</p></div>
+      <div class="step"><div class="n">3 · 接住指引</div><p>每个答案都配一句实在的指引——「有点模糊」唯有落在行动上，模糊才不算白模糊。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">何时摇球</div>
+    <h2>为僵局而生</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph"><img src="/img/icons/fork_and_knife_with_plate.png" width="24" height="24" alt="" /></span><p><b>「今晚点哪家」辩论。</b>两个选项、四个人、零进展。让球把这场争论吃掉。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/envelope.png" width="24" height="24" alt="" /></span><p><b>写了四遍的邮件。</b>今晚发还是睡一觉？摇一下，然后注意你其实在盼哪个答案。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/video_game.png" width="24" height="24" alt="" /></span><p><b>再来一局？</b>球从来没说过「不」。但还是会问它——仪式感就是乐趣本身。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/handshake.png" width="24" height="24" alt="" /></span><p><b>团队僵持。</b>把手机传着摇。随机来破局，谁都不丢面子。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>魔力8号球 FAQ</h2>
+    <Faq items={[
+      { q: '是经典的那 20 个答案吗？', a: '是——从「毫无疑问」到「十分可疑」，和实体玩具用的是同一套。每个都多配一句实在的指引，因为我们不是一颗塑料球。' },
+      { q: '答案是随机的吗？', a: '完全随机——在你浏览器里公平地 20 选 1。球无记性，亦无偏私；再摇一次是全新一抽，不是讨价还价。' },
+      { q: '它擅长的是什么？', a: '不能预言，实体球也不能——这点彼此彼此。它稳定擅长的是：打断决策的死循环、照见你其实盼着哪个答案、把裁决交给机缘，让大伙赶紧点外卖。' },
+      { q: '为什么每个答案都带建议？', a: '因为不带语境的「前景不太妙」，只是一句天气预报。解读告诉你这个答案对你下一步意味着什么——这一层，别家 8 号球都跳过了。' },
+      { q: '什么问题最适合问它？', a: '两个答案都承受得起、你只是卡在切换成本上的问题最好。涉及健康、安全或他人权益的事，球会请你去找专业人士——你也真该去。' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { liveRand } from '../../lib/engine';
+  import { trackDraw } from '../../lib/track';
+  import { gateDraw } from '../../lib/rationUi';
+  import { eightBallZh } from '../../data/i18n-zh';
+  import { readQuestion, youAsked } from '../../lib/ask';
+
+  const ball = document.querySelector<HTMLElement>('[data-ball]');
+  const win = document.querySelector<HTMLElement>('[data-window]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-shake8]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+
+  const shake = () => {
+    if (!ball || !win || !outcome) return;
+    if (!gateDraw(shake)) return; // ration: one free draw a day — merit buys more
+    const asked = readQuestion();
+    if (btn) btn.disabled = true;
+    ball.classList.remove('shaking');
+    void ball.offsetWidth;
+    ball.classList.add('shaking');
+    outcome.innerHTML = '';
+    win.textContent = '…';
+    window.setTimeout(() => {
+      const a = eightBallZh(liveRand());
+      trackDraw('magic-8-ball');
+      win.textContent = a.text;
+      outcome.innerHTML = `
+        ${youAsked(asked, 'zh')}
+        <article class="reading card">
+          <div class="reading-head"><span class="chip ${a.tone === 'yes' || a.tone === 'lean-yes' ? 'blessing' : a.tone === 'neutral' ? 'nudge' : 'gentle-warning'}">${a.tone === 'neutral' ? '含糊' : a.tone === 'yes' || a.tone === 'lean-yes' ? '偏是' : '偏否'}</span></div>
+          <div class="reading-title">「${a.text}」</div>
+          <p class="overall">${a.gloss}</p>
+          <p class="again-line">再摇一次是全新一抽——可若你心里已在等某个特定答案，那答案其实早已现前。</p>
+        </article>`;
+      outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (btn) btn.disabled = false;
+    }, 1500);
+  };
+
+  btn?.addEventListener('click', shake);
+  ball?.addEventListener('click', shake);
+</script>

@@ -1,0 +1,105 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+---
+<Base
+  lang="zh"
+  title="抛硬币 — 正面还是反面，在线掷 | Fortune Willow（内部审阅版）"
+  description="心有二疑，一掷而决。虚拟硬币抛出正面或反面——正面为是、反面为否，最古老的裁决之器替你分晓，连一枚钢镚都不必掏。"
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>抛硬币</h1>
+      <p class="tool-sub">
+        两念相持不下，就把裁断交给一枚硬币——正面为「是」，反面为「否」。
+        一掷即分晓：公平，即时，不留情面。
+      </p>
+      <div class="stage-visual">
+        <div class="coin" data-coin>
+          <div class="coin-face front">正面</div>
+          <div class="coin-face back">反面</div>
+        </div>
+      </div>
+      <input class="q-input" data-q type="text" maxlength="40" placeholder="可填可不填——你想问什么？" aria-label="你的问题（可选）" />
+      <button class="btn" data-flip>抛硬币</button>
+      <p class="hint">问题可填可不填，只留在此设备 · 直接点硬币亦可起掷 · 正面 = 是，反面 = 否</p>
+    </div>
+    <div data-ration-slot></div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">怎么玩</div>
+    <h2>一掷一公平，不欺不昧</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · 先立其约</div><p>掷前说定：正面主此，反面主彼。落地之后才改口定输赢——掷硬币背上「不信」的名声，就是这么来的。</p></div>
+      <div class="step"><div class="n">2 · 掷</div><p>此掷即真五五开：不加重、无连击之律，前十次落于何处，它一概不记。</p></div>
+      <div class="step"><div class="n">3 · 观心一动</div><p>硬币落地一瞬，心头必有一动——松一口，或沉一下。那一动才是真答案；硬币只是替你把它捞出水面。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">何时一掷</div>
+    <h2>两选项悬而不决，正宜一掷</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph"><img src="/img/icons/fork_and_knife_with_plate.png" width="24" height="24" alt="" /></span><p><b>两家餐厅，一群饿急的人。</b>各认一面，一掷定胜负——1.2 秒终结一场争论。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/house.png" width="24" height="24" alt="" /></span><p><b>今天轮到谁收拾？</b>硬币不偏不倚，所以室友们一直留着一枚。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/film_frames.png" width="24" height="24" alt="" /></span><p><b>清单上两部片子。</b>掷定先后——落地那瞬，你忽然就知道自己想看哪部了。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/dumbbell.png" width="24" height="24" alt="" /></span><p><b>现在去，还是等会儿？</b>正面是「现在」。它推不动你出门，但推得动这场辩论收场。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>抛硬币 FAQ</h2>
+    <Faq items={[
+      { q: '公平吗？', a: '公平——精确五五开，落掷的一瞬由浏览器随机数定。实体硬币尚有毫厘之偏；这一枚，连毫厘也无。' },
+      { q: '正面是「是」？', a: '这是本页的约定：正面 = 是，反面 = 否。若你们另有旧例，硬币并无我执——掷前说好即可。' },
+      { q: '同一个问题能掷两次吗？', a: '可以重掷，但老规矩还在：头掷为定，三局两胜是留给冰球季后赛的。一再重掷，说明你要的并非硬币之答，而是自己心里那一个——它多半早已在了。' },
+      { q: '两个选项难分高下时，硬币能做什么？', a: '当两个选项实难分高下，「做决定」这件事的花费已高过两者之差。一掷立断循环——而你望向结果那一眼的心动，会告诉你真正想要哪个。' },
+      { q: '这和「是与非」按钮是同一个东西吗？', a: '同一部五五开引擎，两种仪式。有的裁决想「按一下」，有的想「看一道弧线落定」。挑一个合于此刻的仪式——这正是做一整个道具家族的本意。' },
+    ]} />
+  </section>
+</Base>
+
+<script>
+  import { liveRand } from '../../lib/engine';
+  import { trackDraw } from '../../lib/track';
+  import { gateDraw } from '../../lib/rationUi';
+  import { coinFlipZh } from '../../data/i18n-zh';
+  import { readQuestion, youAsked } from '../../lib/ask';
+
+  const coin = document.querySelector<HTMLElement>('[data-coin]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-flip]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+
+  const flip = () => {
+    if (!coin || !outcome) return;
+    if (!gateDraw(flip)) return; // ration: one free draw a day — merit buys more
+    const asked = readQuestion();
+    if (btn) btn.disabled = true;
+    outcome.innerHTML = '';
+    coin.classList.remove('flipping');
+    void coin.offsetWidth;
+    coin.classList.add('flipping');
+    window.setTimeout(() => {
+      const r = coinFlipZh(liveRand());
+      trackDraw('coin-flip');
+      // 落到对应面：正面朝上 = rotateX(0)
+      coin.style.transform = r.side === '正面' ? 'rotateX(0deg)' : 'rotateX(180deg)';
+      outcome.innerHTML = `
+        ${youAsked(asked, 'zh')}
+        <article class="reading card center" style="padding:20px 26px">
+          <div class="verdict ${r.answer === '是' ? 'yes' : 'no'}" style="font-size:2.6rem;padding:6px 30px">${r.side} — ${r.answer}</div>
+          <p class="muted" style="margin:14px 0 0">${r.answer === '是'
+            ? '正面说：行。留意此刻心头是松是紧——多半，是松的。'
+            : '反面说：缓一缓。若这一记让你心头一刺，你问的原本就不是一道公平的题。'}</p>
+        </article>`;
+      outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (btn) btn.disabled = false;
+    }, 1150);
+  };
+
+  btn?.addEventListener('click', flip);
+  coin?.addEventListener('click', flip);
+</script>

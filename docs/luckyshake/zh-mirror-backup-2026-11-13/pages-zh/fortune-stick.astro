@@ -1,0 +1,160 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import Jar3d from '../../components/Jar3d.astro';
+---
+<Base
+  lang="zh"
+  title="抽签 — 摇签筒，抽一支签 | Fortune Willow（内部审阅版）"
+  description="诚心一念，摇筒问缘——让签挑中你。感情、财运、事业，一签三读，另有幸运数字。"
+>
+  <section class="tool-shell card">
+    <div class="tool-stage">
+      <h1>抽签</h1>
+      <p class="tool-sub">
+        把问题放在心里，先不必言明。签不拣人，缘来自应——跃出的那一支，早已载着你心头之事的答案；
+        待签落定，再言所问何事。心诚则灵，所愿即所得。
+      </p>
+      <div class="ritual-row">
+        <!-- 左栏:上香(问事前先点香、敬入炉中,再摇签) -->
+        <div class="ritual-incense" data-incense-root></div>
+        <!-- 右栏:抽签(原 stage-visual + 摇签按钮原样右移) -->
+        <div class="ritual-draw">
+          <div class="ritual-head">抽签</div>
+          <div class="stage-visual">
+            <div class="cup-wrap" data-cup>
+              <!-- 3D 签筒（three.js），与主页共用 Jar3d.astro：待机静止不动，
+                   摇时带角度晃动，一支签被甩出筒外、掉在地上翻开号码牌。
+                   占位是 SVG 筒（同一画风）：秒出，WebGL 起不来时就是终态 -->
+              <Jar3d uid="fs-zh" />
+            </div>
+          </div>
+          <button class="btn" data-shake>抽签</button>
+          <p class="hint">筒中百签 · 一日一缘</p>
+        </div>
+      </div>
+    </div>
+    <div data-ration-slot></div>
+    <div class="tool-outcome" data-outcome></div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">问签三步</div>
+    <h2>诚心三步，一签一答</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1 · 诚心</div><p>想一个真实困住你的问题，放在心里，不必出口。问得越实，签应得越明——「该不该接这份工作」，胜过「人生是什么」。</p></div>
+      <div class="step"><div class="n">2 · 摇筒</div><p>签筒一响，百签攒动，跃出者唯有一支——哪支现前，皆是缘起。签筒不知你所问，这正是仪式的深意：它替你斩断原地打转的念头。</p></div>
+      <div class="step"><div class="n">3 · 点题</div><p>此刻再言所问何事：感情、财运、事业，或自己写下一句。签只应你真正所问的那一面，再赠一件当下可行的下一步。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">何时问签</div>
+    <h2>最宜问签的时刻</h2>
+    <div class="scene-list">
+      <div class="scene"><span class="glyph"><img src="/img/icons/briefcase.png" width="24" height="24" alt="" /></span><p><b>offer 摆在桌上。</b>接、议价、还是转身？签不替你决断——它只是照见你心里早已倾向的那一半。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/mobile_phone.png" width="24" height="24" alt="" /></span><p><b>那条改了八遍的消息。</b>发，还是不发？抽一支，看看自己是在盼一个「吉」，还是在等一句「可以放下」。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/money_with_wings.png" width="24" height="24" alt="" /></span><p><b>惦记数日的大额支出。</b>财运判词给你一个「想要」之外的视角——念头起处，即是观照处。</p></div>
+      <div class="scene"><span class="glyph"><img src="/img/icons/compass.png" width="24" height="24" alt="" /></span><p><b>安静的岔路口。</b>并无危机，只是两路皆好。当思虑已竭、分析疲掉，一签之缘，反而最诚实。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">签筒的来历</div>
+    <h2>一只老签筒，一套新签文</h2>
+    <div class="tradition">
+      <p>
+        本站签筒是<b>求签</b>这个老传统的英文版：竹筒里放一百支编号竹签，默念所问、摇筒出签、按号取诗——庙里千百年就是这么走的，不收费、不预约，一只筒、一个问题而已。
+      </p>
+      <p>
+        机器照旧，文字全新：形式不变——百签、一问、筒说了算——但每一支签文皆本站手写，写的是你这周真会撞上的决定：offer、租约、那条改了八遍的消息。庙里的签诗倚仗古诗古事，我们留住故事、拆掉谜语。
+      </p>
+      <p>
+        想看庙里的原文？各庙通行的《观音一百签》全谱也在本站：<a href="/guanyin-lingqian/">观音灵签 · 百签全谱</a>——两版签诗、诗意、解曰、圣意与典故逐支俱全。
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">常见问题</div>
+    <h2>抽签 FAQ</h2>
+    <Faq items={[
+      { q: '抽签结果是随机的吗？', a: '是——抽到哪支，纯随机。佛家管这个叫缘起：哪支签现前，自有它的因缘，不按人的算计来。不随机的，是文字本身：每支签都在本站手写、编辑过，判词分别对准感情、财运、事业三种处境。' },
+      { q: '抽完签才选题，有什么讲究？', a: '仪式本来就是这么走的：摇筒时，问题只放在心里——签不应未问之问。待签落定，你再言所问何事，签便只答那一面。自己写的问题也不必担心对不上：问感情看感情判词，问钱看财运判词，问工作看事业判词，都不沾边的才给整体签文。一签一问，问毕即结——想问他事，再抽一次，另结新缘。' },
+      { q: '这些签是哪来的？', a: '改编自庙里求签的老传统（kau cim）：每支编号的签，配签诗、典故和指引。我们把这个传统重写进今天的生活——没有关于收成的谜语，只有留住了签诗风骨、说得明白的指引。未改写的庙版原文（《观音一百签》）在本站另有专页。' },
+      { q: '能替别人问吗？', a: '可以，但问人不如问己——最有力的问题，永远是你自己的下一步。「我该回他消息吗」，胜过「他想我吗」：前者给你一件可做的事，后者只给你一缕闲愁。' },
+      { q: '三个签级是什么意思？', a: '吉签（一路通明的能量）、提点（务实稳进的指引）、温和提醒（慢下来，护住要紧的东西）。本站不写凶签——扎心的真话可以有，绝人希望的口业，一句不造。' },
+      { q: '同一支签每次意思都一样吗？', a: '文字是定的，解读是活的——万法唯心，签落谁心，便随谁开。周二为工作抽的 01 签，与周五为感情抽的 01 签，落在心上不是同一处；那道缝，就是你自己的判断，也是全站最可靠的「神谕」。' },
+    ]} />
+  </section>
+</Base>
+
+<style>
+  .tradition { max-width: 720px; }
+  .tradition p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.75; margin: 0 0 10px; }
+  .tradition a { font-weight: 600; }
+</style>
+
+<script>
+  import { drawSign, liveRand } from '../../lib/engine';
+  import { trackDraw } from '../../lib/track';
+  import { gateDraw } from '../../lib/rationUi';
+  import { drawnBanner, renderFocusedReading } from '../../lib/reading';
+  import { focusPanelHTML, wireFocusPanel } from '../../lib/focusFlow';
+  import { focusForQuestion } from '../../lib/classify';
+  import { bootJar } from '../../lib/jarBoot';
+  import type { Jar3D } from '../../lib/jar3d';
+
+  const cup = document.querySelector<HTMLElement>('[data-cup]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-shake]');
+  const outcome = document.querySelector<HTMLElement>('[data-outcome]');
+  const jarHost = document.querySelector<HTMLElement>('[data-jar3d]');
+  // 上香挂件懒加载——不阻塞摇签主链路
+  const incenseRoot = document.querySelector<HTMLElement>('[data-incense-root]');
+  if (incenseRoot) {
+    const { mountIncense } = await import('../../lib/incenseUi');
+    mountIncense(incenseRoot);
+  }
+  // 3D 签筒懒加载——three.js 不阻塞页面；bootJar 与组件扫描共用同一
+  // Promise（不重复 boot），SVG 占位等 canvas 画完首帧才淡出
+  let jar: Jar3D | null = null;
+  if (jarHost) void bootJar(jarHost).then((made) => { jar = made; });
+  if (cup && btn && outcome) {
+    // 👤 11/12 无抽签机会:按钮保持原样可点(不变暗)——点击弹功德面板换机会
+    const shake = () => {
+      if (!gateDraw(shake)) return; // ration: one free draw a day — merit buys more
+      btn.disabled = true;
+      outcome.innerHTML = '';
+      jar?.reset();
+      jar?.startShake();
+      // 第一段（900ms）：签筒停——随机一支签带着号码弹起，
+      // 签号和签名的展示与动画同时落地
+      window.setTimeout(() => {
+        const sign = drawSign(liveRand());
+        jar?.popStick(`第 ${String(sign.id).padStart(2, '0')} 签`, sign.nameZh);
+        outcome.innerHTML = drawnBanner(sign, 'zh');
+        trackDraw('fortune-stick', sign.id);
+        // 第二段（950ms）：签立住——此时用户才点明问的是哪一件事，
+        // 签只答那一面
+        window.setTimeout(() => {
+          outcome.insertAdjacentHTML('beforeend', focusPanelHTML('zh'));
+          wireFocusPanel(outcome, (focus, own) => {
+            const answer = outcome.querySelector<HTMLElement>('[data-answer]');
+            if (!answer) return;
+            // 自提问题路由到最相近的一面（感情/事业/财运）
+            const lens = focus === 'own' ? focusForQuestion(own) : focus;
+            answer.innerHTML = renderFocusedReading(sign, lens, undefined, {
+              lang: 'zh',
+              echo: own,
+              note: '签无喜怒，事在人为——想再问时，签筒还在。',
+            });
+            answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+          outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          btn.disabled = false;
+        }, 950);
+      }, 900);
+    };
+    btn.addEventListener('click', shake);
+  }
+</script>

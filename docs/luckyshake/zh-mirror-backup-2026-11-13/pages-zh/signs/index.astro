@@ -1,0 +1,34 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { SIGNS } from '../../../data/signs';
+---
+<Base
+  lang="zh"
+  title="百签签库 — 一百支签全文 | Fortune Willow（内部审阅版）"
+  description="Fortune Willow 全部一百支签：签名、典故与判词——感情、财运、事业，各有一读。机缘所至，全文在此打开。"
+>
+  <section class="section">
+    <div class="kicker">签库</div>
+    <h1>一百支签</h1>
+    <p class="tool-sub" style="margin:0 auto 1.4rem">
+      百签皆在此列——但签库是修来的，不是翻来的。落到你手里的签（任何工具抽到的）在此全文打开；
+      其余的先蒙着，待机缘把它们递到你手上。常来常抽，看自己的架子一签一签摆满。
+    </p>
+    <div class="scene-list">
+      {SIGNS.map((s) => (
+        <a class="scene" href={`/zh/signs/${s.slug}/`} data-sign-card={s.id}>
+          <span class="glyph">第{String(s.id).padStart(2, '0')}</span>
+          <p>
+            <b>{s.nameZh}</b><br />
+            <span class="muted">{s.titleZh}</span>
+          </p>
+          <span class="lock-flag" aria-hidden="true"><img src="/img/icons/locked.png" width="16" height="16" alt="" /></span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <script>
+    import { applyGating } from '../../../lib/unlock';
+    applyGating();
+  </script>
+</Base>
