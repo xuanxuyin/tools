@@ -1,7 +1,9 @@
 /**
- * POST /api/coloring/complete {slug, d} — mark a piece done (every ring
- * filled, verified client-side against the payload the device already has).
- * The done set gates unlocking the next piece. Idempotent.
+ * POST /api/coloring/complete {slug, d} — legacy completion endpoint from
+ * the tap-to-fill era: old clients still running cached JS call it when
+ * every ring was filled. Since 2026-11-13 publish.ts marks pieces done on
+ * publish, so new clients never POST here; both paths stay idempotent.
+ * The done set gates unlocking the next piece.
  */
 import { deviceHash, json, readJson } from './_shared';
 import type { Ctx } from './_shared';

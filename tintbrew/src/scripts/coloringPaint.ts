@@ -1,23 +1,27 @@
 /**
- * Coloring paint island — takes over the canvas on /coloring/[slug]/.
+ * Coloring paint island — freehand brush edition (user call 2026-11-13):
+ * no region hit-testing, no fill counter, no completion gate. Pick a color
+ * and a brush size, then drag across the picture; Publish is always armed —
+ * the player decides when the page is done. A publish now marks the piece
+ * done server-side (functions/api/coloring/publish.ts), which is what
+ * feeds the daily unlock chain.
  *
- * Layers: region fills painted on a canvas, the official line art drawn on
- * top with 'multiply' (white = transparent, ink stays). Hit-testing uses an
- * offscreen ID map built by lib/coloringIdMap.ts (scanline even-odd fill +
- * ink-line attribution), so a tap is a single pixel lookup — exact, no
- * point-in-polygon loops, and taps on a region's outline select that region.
+ * Layers: strokes live on an offscreen paint canvas (transparent); the
+ * visible canvas composites bg + paint + the official line art with
+ * 'multiply' (white = transparent, ink stays visible), so paint always
+ * sits UNDER the ink no matter how a stroke crosses lines.
  *
- * State: one palette index per ring ('.' = empty, gallery kernel encoding),
- * persisted per slug in localStorage. Every fill re-renders, autosaves, and
- * checks completion; a completed piece POSTs /api/coloring/complete once and
- * unlocks Publish (dialog → POST publish with a client-rendered WebP
- * preview, stored server-side so the gallery never needs the payload).
+ * State: nothing persists (user call 2026-11-14) — painting is a
+ * single-visit activity and Publish is the only save. Undo/redo are
+ * in-memory full-resolution dataURL snapshots (20 deep). The unlock-gated
+ * payload still supplies bg + palette; its ring count is only needed
+ * because the publish schema validates a per-ring colors string — the
+ * island ships dots (the gallery renders the client-made WebP preview,
+ * never the ring encoding).
  */
 import { t, tArgs } from './i18n';
 import type { UiKey } from '../data/uiStrings';
 import { galleryUuid } from './deviceId';
-import { decodeColors, encodeColors } from '../../functions/api/coloring/_kernel';
-import { buildColoringIdMap } from '../lib/coloringIdMap';
 
 interface Payload {
   w: number;
@@ -28,22 +32,29 @@ interface Payload {
   rc: number[];
 }
 
-// v2 (2026-11-04): payloads were fully re-segmented, so every pre-v2 save is
-// stale even when its ring count happens to match — new prefix + a one-time
-// sweep of unversioned keys gives returning visitors a clean slate.
-const STORE_V = 'v4'; // v4: speck/crack merges (2026-11-06 二轮) — ring indices shifted again, old saves misalign
-function saveKey(slug: string): string {
-  return `tb-coloring:${STORE_V}:save:${slug}`;
-}
+// No paint persistence (user call 2026-11-14): with region tracking gone a
+// half-painted page is no longer worth storing — painting is a single-visit
+// activity and publishing is the only way a page survives. localStorage now
+// keeps exactly one coloring key: the re-publish piece id below (unlock
+// progress lives server-side in coloring_progress/coloring_done). The sweep
+// clears every older tb-coloring:* key — v4 ring-encoded saves, v4 published
+// ids (migrated on boot first), and yesterday's v5 raster saves.
+const PUB_KEY = 'tb-coloring:pub:';
 function pubKey(slug: string): string {
-  return `tb-coloring:${STORE_V}:published:${slug}`;
+  return `${PUB_KEY}${slug}`;
+}
+/** The tap-to-fill era (production, v4) kept the piece id under a versioned
+ *  key — read it back once so visitors who published then still get
+ *  in-place re-publishes after this deploy. */
+function legacyPubKey(slug: string): string {
+  return `tb-coloring:v4:published:${slug}`;
 }
 function sweepLegacyKeys(): void {
   try {
     const legacy: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (k && k.startsWith('tb-coloring:') && !k.includes(`:${STORE_V}:`)) legacy.push(k);
+      if (k && k.startsWith('tb-coloring:') && !k.startsWith(PUB_KEY)) legacy.push(k);
     }
     legacy.forEach((k) => localStorage.removeItem(k));
   } catch {
@@ -51,66 +62,70 @@ function sweepLegacyKeys(): void {
   }
 }
 
+const UNDO_DEPTH = 20; // full-res dataURLs — deep enough for a session, bounded memory
+
+type Pt = { x: number; y: number };
+
 class PaintIsland {
   private root: HTMLElement;
   private slug: string;
-  private regions: number;
   private canvas: HTMLCanvasElement;
   private frame: HTMLElement;
   private toolbar: HTMLElement;
   private paletteEl: HTMLElement;
-  private filledEl: HTMLElement;
   private statusEl: HTMLElement;
   private loadNote: HTMLElement | null;
   private undoBtn: HTMLButtonElement;
   private redoBtn: HTMLButtonElement;
   private resetBtn: HTMLButtonElement;
   private pubBtn: HTMLButtonElement;
-  private donePill: HTMLElement | null;
   private lineArt: HTMLImageElement;
 
   private payload: Payload | null = null;
-  private bgRings = new Set<number>(); // payload paper rings (rc=0) — untappable
-  private ringPaths: Path2D[] = [];
-  private idData: Uint32Array | null = null;
-  private idW = 0;
-  private colors: (number | null)[] = [];
+  private paint = document.createElement('canvas'); // the visitor's strokes only
+  private pctx = this.paint.getContext('2d') as CanvasRenderingContext2D;
   private undoStack: string[] = [];
   private redoStack: string[] = [];
   private tool: 'brush' | 'erase' = 'brush';
+  private size: 's' | 'm' | 'l' = 'm';
   private selected = 1;
-  private completeSent = false;
   private publishedId: string | null = null;
-  private line: number = 0;
-  private total: number = 0;
   private loadNoteKey: UiKey | null = null;
+  private painting = false;
+  private last: Pt | null = null;
+  private raf = 0;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.slug = root.dataset.slug ?? '';
-    this.regions = Number(root.dataset.regions ?? '0');
     this.canvas = root.querySelector('[data-col-canvas]') as HTMLCanvasElement;
     this.frame = root.querySelector('.col-frame') as HTMLElement;
     this.toolbar = root.querySelector('[data-col-toolbar]') as HTMLElement;
     this.paletteEl = root.querySelector('[data-col-palette]') as HTMLElement;
-    this.filledEl = root.querySelector('[data-col-filled]') as HTMLElement;
     this.statusEl = root.querySelector('[data-col-status]') as HTMLElement;
     this.loadNote = root.querySelector('[data-col-loadnote]');
     this.undoBtn = root.querySelector('[data-col-undo]') as HTMLButtonElement;
     this.redoBtn = root.querySelector('[data-col-redo]') as HTMLButtonElement;
     this.resetBtn = root.querySelector('[data-col-reset]') as HTMLButtonElement;
     this.pubBtn = root.querySelector('[data-col-publish]') as HTMLButtonElement;
-    this.donePill = document.querySelector('[data-col-donepill]');
     this.lineArt = root.querySelector('.col-lineart') as HTMLImageElement;
 
     // restore the last gallery piece id for this base page (re-publish path)
     try {
-      this.publishedId = localStorage.getItem(pubKey(this.slug));
+      this.publishedId =
+        localStorage.getItem(pubKey(this.slug)) ?? localStorage.getItem(legacyPubKey(this.slug));
     } catch {
       this.publishedId = null;
     }
 
-    this.frame.addEventListener('click', (e) => this.onTap(e as MouseEvent));
+    // freehand strokes — pointer events + capture keep the stroke alive
+    // across the element edge; touch-action:none (page CSS) makes touch
+    // drags paint instead of scrolling
+    this.canvas.addEventListener('pointerdown', (e) => this.strokeStart(e));
+    this.canvas.addEventListener('pointermove', (e) => this.strokeMove(e));
+    this.canvas.addEventListener('pointerup', () => this.strokeEnd());
+    this.canvas.addEventListener('pointercancel', () => this.strokeEnd());
+    this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
     this.paletteEl.addEventListener('click', (e) => this.onPick(e));
     this.undoBtn.addEventListener('click', () => this.undo());
     this.redoBtn.addEventListener('click', () => this.redo());
@@ -121,6 +136,18 @@ class PaintIsland {
       btn.addEventListener('click', () => {
         this.tool = btn.dataset.colTool === 'erase' ? 'erase' : 'brush';
         root.querySelectorAll('[data-col-tool]').forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-pressed', String(active));
+        });
+      });
+    });
+    // small / medium / large brush width
+    root.querySelectorAll<HTMLButtonElement>('[data-col-size]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const s = btn.dataset.colSize;
+        this.size = s === 's' || s === 'l' ? s : 'm';
+        root.querySelectorAll('[data-col-size]').forEach((b) => {
           const active = b === btn;
           b.classList.toggle('is-active', active);
           b.setAttribute('aria-pressed', String(active));
@@ -172,21 +199,7 @@ class PaintIsland {
       }
     }
 
-    // saved fills — but never trust a stale save with a different ring count
-    let saved: (number | null)[] | null = null;
-    try {
-      const raw = localStorage.getItem(saveKey(this.slug));
-      if (raw) {
-        const decoded = decodeColors(raw);
-        if (decoded.length === this.payload.r.length) saved = decoded;
-      }
-    } catch {
-      saved = null;
-    }
-    this.colors = saved ?? this.payload.r.map(() => null);
-    this.completeSent = this.colors.every((c) => c !== null); // don't re-POST
-
-    await this.warmLineArt(); // ink mask below needs the decoded line art
+    await this.warmLineArt(); // the multiply layer below needs the decoded image
     this.prepare();
     this.buildPalette();
     this.render();
@@ -194,73 +207,26 @@ class PaintIsland {
     this.loadNoteKey = null;
     if (this.loadNote) this.loadNote.hidden = true;
     this.toolbar.hidden = false;
-    this.refreshMeta();
-    // filled counter / regions line are runtime t() text — repaint on switch
+    this.syncButtons();
+    this.regionsLine();
+    // the regions line is runtime t() text — repaint on language switch
     document.addEventListener('tb:langchange', () => {
-      if (this.payload) this.refreshMeta();
+      if (this.payload) this.regionsLine();
       if (this.loadNoteKey && this.loadNote && !this.loadNote.hidden) {
         this.loadNote.textContent = t(this.loadNoteKey);
       }
     });
   }
 
-  /** Rasterize each ring into the id-map lookup table (pure lib: scanline
-   *  even-odd fill + ink-line attribution, see coloringIdMap.ts); build
-   *  Path2Ds for draws. */
+  /** Size both canvases; the paint layer always matches the art resolution. */
   private prepare(): void {
     sweepLegacyKeys();
     const p = this.payload as Payload;
     this.canvas.width = p.w;
     this.canvas.height = p.h;
+    this.paint.width = p.w;
+    this.paint.height = p.h;
     this.canvas.hidden = false;
-
-    for (const spec of p.r) {
-      this.ringPaths.push(new Path2D(spec.startsWith('M') ? spec : this.toPath(spec)));
-    }
-    const { ids, bgRings } = buildColoringIdMap(p.r, p.w, p.h, {
-      inkMask: this.buildInkMask(p.w, p.h),
-      rc: p.rc,
-    });
-    this.bgRings = new Set(bgRings);
-    this.idData = ids;
-    this.idW = p.w;
-  }
-
-  /** Dark pixels of the line art at payload resolution → 1 in the mask.
-   *  Feeds the ink-line ownership pass of the id map (taps on a drawn line
-   *  select the shape it belongs to). Null-safe: if the image or canvas
-   *  2D context is unavailable we degrade to boundary stamps only. */
-  private buildInkMask(w: number, h: number): Uint8Array | null {
-    const img = this.lineArt;
-    if (!img.complete || !img.naturalWidth) return null;
-    try {
-      const c = document.createElement('canvas');
-      c.width = w;
-      c.height = h;
-      const ctx = c.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D | null;
-      if (!ctx) return null;
-      ctx.drawImage(img, 0, 0, w, h);
-      const d = ctx.getImageData(0, 0, w, h).data;
-      const mask = new Uint8Array(w * h);
-      for (let i = 0; i < w * h; i++) {
-        const lum = 0.299 * d[i * 4]! + 0.587 * d[i * 4 + 1]! + 0.114 * d[i * 4 + 2]!;
-        if (lum < 140) mask[i] = 1;
-      }
-      return mask;
-    } catch {
-      return null; // tainted canvas or stubbed DOM — stamps-only behavior
-    }
-  }
-
-  /** "x,y x,y ..." → SVG path data (payload coords are already canvas space). */
-  private toPath(spec: string): string {
-    const pts = spec.split(' ');
-    const d: string[] = [];
-    for (let i = 0; i < pts.length; i++) {
-      const [x, y] = pts[i].split(',');
-      d.push(`${i === 0 ? 'M' : 'L'}${x} ${y}`);
-    }
-    return d.join(' ') + ' Z';
   }
 
   /** Decode the line art WebP (also fires the printable <img> above). */
@@ -270,6 +236,21 @@ class PaintIsland {
       if (this.lineArt.complete) return resolve();
       this.lineArt.addEventListener('load', () => resolve(), { once: true });
       this.lineArt.addEventListener('error', () => resolve(), { once: true });
+    });
+  }
+
+  /** Load a raster dataURL (save or undo snapshot) into the paint layer. */
+  private loadRaster(url: string): Promise<void> {
+    const p = this.payload as Payload;
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        this.pctx.clearRect(0, 0, p.w, p.h);
+        this.pctx.drawImage(img, 0, 0, p.w, p.h);
+        resolve();
+      };
+      img.onerror = () => resolve(); // unreadable snapshot → keep what's there
+      img.src = url;
     });
   }
 
@@ -308,135 +289,156 @@ class PaintIsland {
     });
   }
 
-  /** Canvas tap → id lookup → fill + repaint + persist + completion check. */
-  private onTap(e: MouseEvent): void {
-    if (!this.payload || !this.idData) return;
-    const rect = this.canvas.getBoundingClientRect();
-    const x = Math.floor(((e.clientX - rect.left) / rect.width) * this.canvas.width);
-    const y = Math.floor(((e.clientY - rect.top) / rect.height) * this.canvas.height);
-    if (x < 0 || y < 0 || x >= this.canvas.width || y >= this.canvas.height) return;
-    const id = this.idData[y * this.idW + x];
-    if (id === 0) return;
-    const ring = id - 1;
-    const next = this.tool === 'erase' ? null : this.selected; // eraser clears
-    if (this.colors[ring] === next) return;
+  // ---- freehand painting ---------------------------------------------------
 
-    this.pushUndo();
-    this.colors[ring] = next;
-    this.render();
-    this.persist();
-    this.refreshMeta();
-    this.maybeComplete();
+  private pt(e: PointerEvent): Pt {
+    const rect = this.canvas.getBoundingClientRect();
+    return {
+      x: ((e.clientX - rect.left) / rect.width) * this.canvas.width,
+      y: ((e.clientY - rect.top) / rect.height) * this.canvas.height,
+    };
   }
 
+  /** Brush width in art pixels, scaled off the payload width so sizes are
+   *  consistent across 768-wide story art and ~1100-wide mandalas. */
+  private brushWidth(): number {
+    const w = (this.payload as Payload).w;
+    const f = this.size === 's' ? 0.016 : this.size === 'l' ? 0.085 : 0.038;
+    return Math.max(8, Math.round(w * f));
+  }
+
+  /** One round-capped segment on the paint layer (a==b stamps a dot).
+   *  The eraser runs destination-out so it only ever removes paint. */
+  private dab(a: Pt, b: Pt): void {
+    const p = this.payload as Payload;
+    this.pctx.save();
+    if (this.tool === 'erase') this.pctx.globalCompositeOperation = 'destination-out';
+    this.pctx.strokeStyle = p.pal[this.selected] ?? '#cccccc';
+    this.pctx.lineWidth = this.brushWidth();
+    this.pctx.lineCap = 'round';
+    this.pctx.lineJoin = 'round';
+    this.pctx.beginPath();
+    this.pctx.moveTo(a.x, a.y);
+    this.pctx.lineTo(b.x, b.y);
+    this.pctx.stroke();
+    this.pctx.restore();
+  }
+
+  private strokeStart(e: PointerEvent): void {
+    if (!this.payload || this.painting) return;
+    e.preventDefault();
+    try {
+      this.canvas.setPointerCapture(e.pointerId);
+    } catch {
+      /* dead pointer (synthetic events) — paint the segment anyway */
+    }
+    this.pushUndo();
+    this.painting = true;
+    this.last = this.pt(e);
+    this.dab(this.last, this.last);
+    this.scheduleRender();
+  }
+
+  private strokeMove(e: PointerEvent): void {
+    if (!this.painting || !this.last) return;
+    // coalesced events keep fast strokes smooth on browsers that queue them
+    const evs =
+      typeof e.getCoalescedEvents === 'function' && e.getCoalescedEvents().length
+        ? e.getCoalescedEvents()
+        : [e];
+    for (const ev of evs) {
+      const p = this.pt(ev);
+      this.dab(this.last, p);
+      this.last = p;
+    }
+    this.scheduleRender();
+  }
+
+  private strokeEnd(): void {
+    if (!this.painting) return;
+    this.painting = false;
+    this.last = null;
+    this.syncButtons();
+  }
+
+  private scheduleRender(): void {
+    if (this.raf) return;
+    this.raf = requestAnimationFrame(() => {
+      this.raf = 0;
+      this.render();
+    });
+  }
+
+  /** bg + paint + ink: 'multiply' keeps the line art visible over strokes. */
   private render(): void {
     const p = this.payload as Payload;
     const ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     ctx.fillStyle = p.bg;
     ctx.fillRect(0, 0, p.w, p.h);
-    for (let i = 0; i < this.ringPaths.length; i++) {
-      const c = this.colors[i];
-      if (c === null) continue;
-      ctx.fillStyle = p.pal[c] ?? '#cccccc';
-      // even-odd — the same rule the hit-test id map uses, so the painted
-      // area always matches the tappable area (holes/self-intersections
-      // included; nonzero would paint over them)
-      ctx.fill(this.ringPaths[i], 'evenodd');
-    }
+    ctx.drawImage(this.paint, 0, 0);
     ctx.globalCompositeOperation = 'multiply';
     ctx.drawImage(this.lineArt, 0, 0, p.w, p.h);
     ctx.globalCompositeOperation = 'source-over';
   }
 
-  private persist(): void {
-    try {
-      localStorage.setItem(saveKey(this.slug), encodeColors(this.colors));
-    } catch {
-      /* private mode — fills last for the session only */
-    }
-  }
+  // ---- history (session only — nothing persists; publish is the save) ------
 
-  private refreshMeta(): void {
-    // paper rings (rc=0) stay permanently null (untappable) — exclude them
-    // from both the filled count and the total so completion is reachable
-    const countable =
-      this.bgRings.size > 0 ? this.colors.filter((_, i) => !this.bgRings.has(i)) : this.colors;
-    const filled = countable.reduce((n, c) => (c !== null ? n + 1 : n), 0);
-    this.line = filled;
-    this.total = countable.length;
-    this.filledEl.textContent = tArgs('col.p.filled' as UiKey, {
-      n: String(filled),
-      total: String(this.total),
-    });
-    this.undoBtn.disabled = this.undoStack.length === 0;
-    this.redoBtn.disabled = this.redoStack.length === 0;
-    const done = filled === this.total;
-    this.pubBtn.disabled = !done;
-    if (this.regions && filled !== this.regions) {
-      // SSR count disagrees with the payload (edge drift) — payload wins
-      this.regions = this.total;
-    }
-    const regionsEl = document.querySelector('[data-col-regions]');
-    if (regionsEl && this.total) {
-      regionsEl.textContent = tArgs('col.regions' as UiKey, { n: String(this.total) });
-    }
-  }
-
-  private maybeComplete(): void {
-    if (this.completeSent || this.colors.some((c, i) => !this.bgRings.has(i) && c === null)) return;
-    this.completeSent = true;
-    this.status(t('col.p.complete'));
-    void fetch('/api/coloring/complete', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ slug: this.slug, d: galleryUuid() }),
-    }).catch(() => {
-      /* completion is also implied by a publish; stay quiet on failure */
-    });
-    if (this.donePill) this.donePill.hidden = false;
+  /** Full-resolution snapshot for undo/redo (1:1 restore, no resampling). */
+  private snapshot(): string {
+    return this.paint.toDataURL('image/webp', 0.85);
   }
 
   private pushUndo(): void {
-    this.undoStack.push(encodeColors(this.colors));
-    if (this.undoStack.length > 50) this.undoStack.shift();
+    this.undoStack.push(this.snapshot());
+    if (this.undoStack.length > UNDO_DEPTH) this.undoStack.shift();
     this.redoStack.length = 0; // a new edit kills the redo branch
   }
 
+  private syncButtons(): void {
+    this.undoBtn.disabled = this.undoStack.length === 0;
+    this.redoBtn.disabled = this.redoStack.length === 0;
+  }
+
   private undo(): void {
-    const prev = this.undoStack.pop();
-    if (!prev) return;
-    this.redoStack.push(encodeColors(this.colors));
-    this.colors = decodeColors(prev);
-    this.render();
-    this.persist();
-    this.refreshMeta();
+    const snap = this.undoStack.pop();
+    if (!snap) return;
+    this.redoStack.push(this.snapshot());
+    void this.applyRaster(snap);
   }
 
   private redo(): void {
-    const nxt = this.redoStack.pop();
-    if (!nxt) return;
-    this.undoStack.push(encodeColors(this.colors));
-    this.colors = decodeColors(nxt);
+    const snap = this.redoStack.pop();
+    if (!snap) return;
+    this.undoStack.push(this.snapshot());
+    void this.applyRaster(snap);
+  }
+
+  private async applyRaster(url: string): Promise<void> {
+    await this.loadRaster(url);
     this.render();
-    this.persist();
-    this.refreshMeta();
+    this.syncButtons();
   }
 
   private reset(): void {
-    if (!window.confirm(t('col.p.resetConfirm'))) return;
+    const p = this.payload as Payload;
+    if (!p || !window.confirm(t('col.p.resetConfirm'))) return;
     this.pushUndo();
-    this.colors = this.colors.map(() => null);
-    this.completeSent = false;
+    this.pctx.clearRect(0, 0, p.w, p.h);
     this.render();
-    this.persist();
-    this.refreshMeta();
+    this.syncButtons();
     this.status('');
+  }
+
+  /** The "{n} areas to color" hero line, localized (SSR ships English). */
+  private regionsLine(): void {
+    const n = this.root.dataset.regions ?? '';
+    const el = document.querySelector('[data-col-regions]');
+    if (el && n) el.textContent = tArgs('col.regions', { n });
   }
 
   // ---- publish ------------------------------------------------------------
 
   private openPublish(): void {
-    if (this.pubBtn.disabled) return;
     const dlg = document.createElement('div');
     dlg.className = 'col-dialog';
     dlg.innerHTML =
@@ -499,6 +501,7 @@ class PaintIsland {
   }
 
   private async submitPublish(dlg: HTMLElement, submit: HTMLButtonElement): Promise<void> {
+    const p = this.payload as Payload;
     const name = (dlg.querySelector('[data-col-pubname]') as HTMLInputElement).value.trim();
     const nick = (dlg.querySelector('[data-col-pubnick]') as HTMLInputElement).value.trim();
     if (!nick) {
@@ -516,7 +519,10 @@ class PaintIsland {
           slug: this.slug,
           name: name || t('gal.pubNamePh'),
           nick,
-          colors: encodeColors(this.colors),
+          // the schema validates one char per ring; with freehand painting
+          // there are no ring colors any more — dots are the honest value,
+          // the gallery renders the preview image above
+          colors: '.'.repeat(p.r.length),
           preview,
           ...(this.publishedId ? { pieceId: this.publishedId } : {}),
         }),
@@ -550,9 +556,6 @@ class PaintIsland {
     }
   }
 }
-
-// formatColDate lives in coloringCards (the gallery is the only consumer);
-// the paint page itself shows no dates.
 
 document
   .querySelectorAll<HTMLElement>('[data-coloring-paint]')

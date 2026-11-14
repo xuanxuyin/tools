@@ -2,7 +2,14 @@
  * POST /api/coloring/publish — save a colored piece into the coloring
  * gallery. Body: { uuid, slug, name, nick, colors, pieceId? }.
  * colors = one base36 char per ring (palette index, '.' = empty), length
- * must equal the piece's ring count in coloring_assets.
+ * must equal the piece's ring count in coloring_assets. Since the paint
+ * island went freehand (2026-11-13) the island ships dots-only — the
+ * artwork itself travels as the client-rendered WebP preview; the ring
+ * encoding is kept only for schema compatibility.
+ *
+ * A publish also marks the piece done (coloring_done): with no fill
+ * counter any more, publishing IS the completion event that gates
+ * unlocking the next page.
  *
  * Same slot economy as the perler gallery but a separate pool
  * (authors.coloring_slots): 1 slot to start, likes-from-others credit the
@@ -63,6 +70,15 @@ export async function onRequestPost(ctx: Ctx): Promise<Response> {
   if ((lim.meta?.changes ?? 0) === 0) return json({ error: 'rate-limited' }, 429);
 
   const now = Date.now();
+  // publish = done (2026-11-13): the freehand-brush island no longer counts
+  // filled regions, so this insert is what lets the next page unlock —
+  // only on successful paths (a 409/429 must not mark the piece done)
+  const markDone = () =>
+    db
+      .prepare('INSERT INTO coloring_done (device_hash, slug, done_at) VALUES (?, ?, ?) ON CONFLICT DO NOTHING')
+      .bind(hash, slug, now)
+      .run();
+
   const repieceId = typeof body.pieceId === 'string' ? body.pieceId : '';
   if (repieceId && /^[0-9a-z]{4,24}$/.test(repieceId)) {
     // re-publish: refresh the artwork in place, keep the original date
@@ -73,7 +89,10 @@ export async function onRequestPost(ctx: Ctx): Promise<Response> {
       )
       .bind(parsed.name, parsed.nick, parsed.colors, preview, now, repieceId, hash)
       .run();
-    if ((upd.meta?.changes ?? 0) > 0) return json({ id: repieceId, updated: true });
+    if ((upd.meta?.changes ?? 0) > 0) {
+      await markDone();
+      return json({ id: repieceId, updated: true });
+    }
   }
 
   const slotRow = await db
@@ -96,6 +115,7 @@ export async function onRequestPost(ctx: Ctx): Promise<Response> {
     )
     .bind(hash, id, slug, parsed.name, parsed.nick, parsed.colors, preview, now, now)
     .run();
+  await markDone();
 
   return json({ id, likes: 0, used: (used?.n ?? 0) + 1, slots });
 }

@@ -1,6 +1,13 @@
 /**
  * Hit-test id map for coloring paint pages — pure functions, no DOM.
  *
+ * 2026-11-13: the paint island went freehand-brush (coloringPaint.ts) and
+ * no longer hit-tests at runtime. The module stays because fillableCount
+ * is the authority that keeps data/coloring.ts regions in lockstep with
+ * the payloads (coloring.test.ts guards all 210), and the id map + ink
+ * attribution below pin the ring-segmentation contract the payloads were
+ * built against.
+ *
  * Each ring rasterized with an exact scanline fill (pixel-center sampling,
  * even-odd across all subpaths, no canvas antialiasing to blend neighbours
  * into wrong ids) into one Uint32Array: 0 = untappable paper, ring i = i+1.

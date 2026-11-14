@@ -150,17 +150,24 @@ describe('coloring dist (shipped surface)', () => {
     expect(xml).toContain('<loc>https://tintbrew.com/coloring/</loc>');
   });
 
-  it('paint island renders fills in even-odd (same rule as the hit-test map)', () => {
-    // 2026-11-10: the id map is even-odd; a nonzero canvas fill would paint
-    // over holes/self-intersections the tap map excludes. Pin the shipped
-    // island bundle to the matching fill rule.
+  it('paint island is a freehand brush (pointer events, no fill counter)', () => {
+    // 2026-11-13: the island went freehand — no tap-to-fill hit-testing, no
+    // "filled 2 / 13" counter, publish enabled from the first stroke. Pin the
+    // shipped detail page + island bundle to that shape: the counter/pill
+    // hooks must be gone, the publish button never disabled, and the bundle
+    // must paint via pointer events with a destination-out eraser.
     const html = readFileSync(resolve(dist, 'coloring/dk019-bee/index.html'), 'utf8');
+    expect(html).not.toContain('data-col-filled');
+    expect(html).not.toContain('data-col-donepill');
+    const pub = html.match(/<button[^>]*data-col-publish[^>]*>/);
+    expect(pub).toBeTruthy();
+    expect(pub![0]).not.toContain('disabled');
     const srcs = [...html.matchAll(/<script[^>]*src="(\/_astro\/[^"]+\.js)"/g)].map((m) => m[1]!);
     const paintChunk = srcs.find((s) => /_slug_/.test(s));
     expect(paintChunk).toBeTruthy();
     const js = readFileSync(resolve(dist, paintChunk!.replace(/^\//, '')), 'utf8');
-    expect(js).toContain('"evenodd"');
-    expect(js).toMatch(/\.fill\([^,)]+,\s*"?evenodd/);
+    expect(js).toContain('pointerdown');
+    expect(js).toContain('destination-out');
   });
 });
 
@@ -263,11 +270,11 @@ describe('coloring hub language switch', () => {
     await vi.waitFor(() => expect(badges[2].textContent).toBe('Locked'));
     const progressText = doc.querySelector('[data-col-progress-text]') as HTMLElement;
     expect(progressText.textContent).toContain('1 of 1');
-    expect(badges[2].title).toContain('finish the page before this one');
+    expect(badges[2].title).toContain('publish the page before this one');
 
     setLang('zh');
     expect(badges[2].textContent).toBe('未解锁');
-    expect(badges[2].title).toContain('先完成前面一页');
+    expect(badges[2].title).toContain('先发布前面一页');
     expect(progressText.textContent).toContain('已解锁 1 页');
 
     setLang('en');

@@ -33,24 +33,24 @@ function tierCopy(n: number): { h: string; p: string; tier: number } {
     return {
       tier: 2,
       h: 'An easy, relaxing page',
-      p: `“${piece.title}” has ${piece.regions} regions to fill — enough variety to stay interesting, small enough to finish in one sitting. A good everyday coloring page.`,
+      p: `“${piece.title}” has ${piece.regions} regions to color — enough variety to stay interesting, small enough to finish in one sitting. A good everyday coloring page.`,
     };
   if (n < 150)
     return {
       tier: 3,
       h: 'A step up in detail',
-      p: `${piece.regions} regions make “${piece.title}” a proper project: half an hour or more of steady tapping, with plenty of small areas that reward a careful color choice.`,
+      p: `${piece.regions} regions make “${piece.title}” a proper project: half an hour or more of steady brushwork, with plenty of small areas that reward a careful color choice.`,
     };
   if (n < 400)
     return {
       tier: 4,
       h: 'A detailed picture',
-      p: `With ${piece.regions} separate regions, “${piece.title}” is for the dedicated colorist. Take it a section at a time — every fill saves automatically, so you can leave and come back.`,
+      p: `With ${piece.regions} separate regions, “${piece.title}” is for the dedicated colorist. Take it a section at a time — the page doesn’t keep your painting between visits, so publish the parts you love.`,
     };
   return {
     tier: 5,
     h: 'A marathon page',
-    p: `“${piece.title}” packs ${piece.regions} regions into one picture — one of the most detailed pages in the collection. Spread it over a few sittings; your progress is saved in your browser after every tap.`,
+    p: `“${piece.title}” packs ${piece.regions} regions into one picture — one of the most detailed pages in the collection. Spread it over a few sittings; your progress is saved in your browser after every stroke.`,
   };
 }
 const tier = tierCopy(ord);
@@ -60,7 +60,7 @@ const prev = ord > 0 ? COLORING_PIECES[ord - 1] : null;
 const next = ord < total - 1 ? COLORING_PIECES[ord + 1] : null;
 
 const title = `${piece.title} Coloring Page — Free Online, ${piece.regions} Regions | TintBrew`;
-const description = `Color “${piece.title}” online for free. ${piece.regions} tap-to-fill regions, automatic saving, and a new coloring page unlocked every day. Publish your finished art to the community gallery.`;
+const description = `Color “${piece.title}” online for free. Paint with a real brush — pick a color and drag with your finger or mouse. Automatic saving, a new coloring page unlocked every day, and publish to the community gallery whenever you like.`;
 
 const jsonLd = [
   {
@@ -106,7 +106,6 @@ const jsonLd = [
         of {total} ·</span
       >
       <span class="col-regions" data-col-regions>{piece.regions} areas to color</span>
-      <span class="col-done-pill" data-col-donepill data-i18n="col.done" hidden>Completed</span>
     </p>
   </section>
 
@@ -123,12 +122,12 @@ const jsonLd = [
         height={piece.h}
         fetchpriority="high"
       />
-      <canvas class="col-canvas" data-col-canvas hidden
-        aria-label="Coloring canvas — tap a region to fill it with the selected color"></canvas>
+      <canvas class="col-canvas" data-col-canvas hidden data-i18n-aria="col.p.canvasAria"
+        aria-label="Coloring canvas — paint freehand with your finger or mouse"></canvas>
     </div>
 
     <div class="col-toolbar" data-col-toolbar hidden>
-      <p class="col-hint" data-i18n="col.p.hint">Pick a color, then tap a region to fill it.</p>
+      <p class="col-hint" data-i18n="col.p.hint">Pick a color, then drag on the picture to paint.</p>
       <div class="col-tools">
         <div class="col-toolgroup" role="group" aria-label="Tool">
           <button
@@ -150,10 +149,20 @@ const jsonLd = [
             <span data-i18n="col.p.eraser">Eraser</span>
           </button>
         </div>
+        <div class="col-toolgroup" role="group" data-i18n-aria="col.p.sizeGroup" aria-label="Brush size">
+          <button type="button" class="col-tool" data-col-size="s" aria-pressed="false">
+            <span data-i18n="col.p.sizeS">Small</span>
+          </button>
+          <button type="button" class="col-tool is-active" data-col-size="m" aria-pressed="true">
+            <span data-i18n="col.p.sizeM">Medium</span>
+          </button>
+          <button type="button" class="col-tool" data-col-size="l" aria-pressed="false">
+            <span data-i18n="col.p.sizeL">Large</span>
+          </button>
+        </div>
       </div>
       <div class="col-palette" data-col-palette role="listbox" aria-label="Colors"></div>
       <div class="col-actions">
-        <span class="col-filled" data-col-filled></span>
         <button
           type="button"
           class="btn btn-sm col-iconbtn"
@@ -175,12 +184,12 @@ const jsonLd = [
         <button type="button" class="btn btn-sm" data-col-reset data-i18n="col.p.reset">
           Start over
         </button>
-        <button type="button" class="btn btn-primary" data-col-publish data-i18n="col.p.pub" disabled>
+        <button type="button" class="btn btn-primary" data-col-publish data-i18n="col.p.pub">
           Publish
         </button>
       </div>
       <p class="col-autonote" data-i18n="col.p.autoNote">
-        Your fills save automatically in this browser.
+        Your painting isn’t saved between visits — publish it to keep it.
       </p>
     </div>
 
@@ -239,22 +248,6 @@ const jsonLd = [
     color: var(--muted);
     font-weight: 500;
   }
-  .col-done-pill {
-    display: inline-block;
-    /* the island toggles the `hidden` attribute — author display would
-       otherwise defeat the UA's [hidden] { display: none } and the pill
-       would sit visible on every page from load */
-  }
-  .col-done-pill[hidden] {
-    display: none;
-    margin-left: var(--sp-2);
-    padding: 0.1rem 0.6rem;
-    border-radius: 999px;
-    background: #178a50;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
   .col-app {
     margin-top: var(--sp-5);
     display: grid;
@@ -287,7 +280,9 @@ const jsonLd = [
     position: absolute;
     inset: 0;
     cursor: crosshair;
-    touch-action: manipulation;
+    /* freehand brush: a touch drag paints — scrolling is handled by the
+       page around the canvas, never by dragging across the picture */
+    touch-action: none;
   }
   .col-frame.is-live .col-lineart {
     display: none; /* visibility:hidden keeps layout space → blank gap above canvas */
@@ -374,11 +369,6 @@ const jsonLd = [
     align-items: center;
     gap: var(--sp-2);
     flex-wrap: wrap;
-  }
-  .col-filled {
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin-right: auto;
   }
   /* publish dialog — same form the bead editor uses. Built at RUNTIME by
      coloringPaint.ts (no Astro scope id): every selector must stay :global,
