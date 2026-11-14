@@ -300,11 +300,14 @@ class PaintIsland {
   }
 
   /** Brush width in art pixels, scaled off the payload width so sizes are
-   *  consistent across 768-wide story art and ~1100-wide mandalas. */
+   *  consistent across 768-wide story art and ~1100-wide mandalas.
+   *  2026-11-14 user call "最细都有点粗": ladder brought down — fine ≈ a
+   *  thin marker (detail eyes/small areas), medium ≈ a crayon, large stays
+   *  a wash brush. */
   private brushWidth(): number {
     const w = (this.payload as Payload).w;
-    const f = this.size === 's' ? 0.016 : this.size === 'l' ? 0.085 : 0.038;
-    return Math.max(8, Math.round(w * f));
+    const f = this.size === 's' ? 0.008 : this.size === 'l' ? 0.06 : 0.024;
+    return Math.max(4, Math.round(w * f));
   }
 
   /** One round-capped segment on the paint layer (a==b stamps a dot).
