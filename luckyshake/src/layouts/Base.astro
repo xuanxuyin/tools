@@ -59,6 +59,9 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
     <meta property="og:site_name" content="Fortune Willow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- 11-14 设计批:展示衬线 Fraunces 自托管(latin 子集 ~41KB),预加载首屏标题 -->
+    <link rel="preload" href="/fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/fraunces-italic-500.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <header class="nav">

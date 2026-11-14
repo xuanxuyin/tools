@@ -1,6 +1,22 @@
 /* ============ tokens ============ */
 /* 👤 11/10:只采纳参考稿(D:\new\build\build + 1.jpg)的界面背景 —— 米白纸底
    + 纸纹 + 微光;其余配色/按钮/芯片等保持原样(👤:其他的暂时不换) */
+/* 11-14 设计批:自托管 Fraunces(展示衬线,latin 子集共 ~41KB,GS OFL)——
+   替换 Georgia 系统脸;zh 字形沿字体栈落到 Noto Serif SC 不受影响 */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/fraunces-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/fraunces-italic-500.woff2') format('woff2');
+}
 :root {
   --bg: #f3eee3;
   --bg-deep: #241f3d;
@@ -17,7 +33,7 @@
   --radius: 14px;
   --shadow: 0 1px 2px rgba(42, 36, 68, 0.06), 0 8px 24px -12px rgba(42, 36, 68, 0.18);
   --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --serif: Georgia, 'Times New Roman', 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
 }
 
 * { box-sizing: border-box; }
@@ -48,11 +64,13 @@ body::before {
   opacity: 0.5;
 }
 img { max-width: 100%; }
-a { color: var(--accent); }
+::selection { background: rgba(180, 83, 9, 0.2); }
+a { color: var(--accent); text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--accent), transparent 55%); }
 a:hover { text-decoration: underline; }
 h1, h2, h3 { line-height: 1.25; color: var(--ink); }
-h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: 0; margin: 0 0 0.5rem; }
-h2 { font-size: 1.35rem; margin: 0 0 0.6rem; }
+/* 11-14 设计批:标题层换 Fraunces(展示衬线) —— 纸庙世界的主字voice */
+h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.6rem); letter-spacing: -0.01em; margin: 0 0 0.5rem; }
+h2 { font-family: var(--serif); font-weight: 600; font-size: 1.4rem; margin: 0 0 0.6rem; }
 h3 { font-size: 1.05rem; margin: 0 0 0.4rem; }
 p { margin: 0 0 0.9rem; }
 .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
@@ -71,8 +89,8 @@ p { margin: 0 0 0.9rem; }
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
 }
 .brand {
-  font-weight: 600; font-size: 1.05rem; color: var(--ink);
-  text-decoration: none; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px;
+  font-family: var(--serif); font-weight: 600; font-size: 1.12rem; color: var(--ink);
+  text-decoration: none; letter-spacing: 0; display: flex; align-items: center; gap: 8px;
 }
 .brand:hover { text-decoration: none; }
 .brand-mark {
@@ -140,35 +158,36 @@ main { padding: 40px 0 0; }
   display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 32px;
   align-items: center; padding: 48px 0 32px;
 }
-.hero h1 { font-family: var(--serif); font-size: clamp(2rem, 4.6vw, 3rem); letter-spacing: 0; margin-bottom: 0.7rem; }
+.hero h1 { font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 3.4rem); line-height: 1.08; letter-spacing: -0.015em; margin-bottom: 0.8rem; }
 /* zh 主页:h1 字号收一档(汉字宽,同栏宽下折行难看);出处行斜体只对拉丁字自然 */
 html[lang='zh-CN'] .hero h1 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); }
 html[lang='zh-CN'] .verse-attr { font-style: normal; }
-.hero .hero-sub { font-size: 1.02rem; margin-bottom: 1rem; }
+.hero .hero-sub { font-size: 1.12rem; margin-bottom: 1rem; }
 .hero-cta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
 .hero-alt { font-size: 0.88rem; color: var(--ink-soft); }
 .hero-stage {
   position: relative; display: flex; justify-content: center; align-items: flex-end;
-  min-height: 330px;
+  min-height: 350px;
 }
 .jar-svg { display: block; height: auto; }
 .hero-jar {
-  width: min(235px, 62%);
+  width: min(265px, 68%);
   filter: drop-shadow(0 12px 18px rgba(120, 70, 30, 0.16));
 }
 /* 👤 11/12 unslop:hero-vert 右缘竖排大写装饰字已删(贴边尴尬,非产品信息) */
 
-/* ---- features row: 四栏细线分隔(参考稿中部) ---- */
-.features {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+/* ---- stat line: 一行安静的数字行(11-14 设计批:四栏 icon 卡是模板脚手架,收成一行) ---- */
+.stat-line {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
+  gap: 8px 28px;
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  margin: 32px 0 8px;
+  margin: 30px 0 8px; padding: 16px 8px;
 }
-.feature { padding: 24px 16px 20px; text-align: center; }
-.feature + .feature { border-left: 1px solid var(--line); }
-.feature .fico { display: block; margin: 0 auto; }
-.feature b { display: block; font-family: var(--serif); font-size: 0.98rem; font-weight: 600; margin: 8px 0 4px; }
-.feature span { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.5; display: block; }
+.stat-line span { font-size: 0.92rem; color: var(--ink-soft); white-space: nowrap; }
+.stat-line b {
+  font-family: var(--serif); font-weight: 600; font-size: 1.3rem;
+  color: var(--ink); margin-right: 5px;
+}
 
 /* ---- draw duo: 左仪式卡 + 右今日签文卡(参考稿下部两栏) ---- */
 .draw-duo { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 16px; margin: 32px 0; }
@@ -189,7 +208,21 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 }
 .shake-ring:hover { background: rgba(158, 43, 34, 0.05); border-color: var(--accent); text-decoration: none; }
 .draw-left .hint { margin: 0; }
-.draw-right { padding: 28px 32px; }
+/* 11-14 设计批:今日签文卡改"夜签"——全页唯一深色锚点(纸与夜的一对),
+   金字系沿用 --bg-deep + --gold 的既有语言(today-strip/pill 同源) */
+.draw-right {
+  padding: 28px 32px;
+  background: linear-gradient(180deg, #2b2549 0%, var(--bg-deep) 100%);
+  border-color: rgba(212, 160, 23, 0.4);
+  box-shadow: 0 12px 32px -16px rgba(36, 31, 61, 0.55);
+}
+.draw-right .grade-pill { border-color: rgba(212, 160, 23, 0.6); color: #e3b93f; }
+.draw-right .verse-hero p { color: #f6efdb; font-style: italic; }
+.draw-right .verse-attr { color: rgba(243, 238, 222, 0.6); }
+.draw-right .hairline { border-top-color: rgba(212, 160, 23, 0.26); }
+.draw-right .verse-mean b { color: var(--gold); }
+.draw-right .verse-mean p { color: #cfc8e0; }
+.draw-right .verse-link { color: #e3b93f; }
 .grade-pill {
   display: inline-block; border: 1px solid rgba(185, 139, 60, 0.55);
   color: #8a6722; border-radius: 999px; padding: 3px 14px;
@@ -209,8 +242,8 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 .verse-mean p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 12px; }
 .verse-link { font-weight: 600; font-size: 0.9rem; }
 
-/* ---- 水墨山影 footer band(参考稿页尾) ---- */
-.mountains { margin: 44px -20px -64px; line-height: 0; }
+/* ---- 水墨山影 footer band(参考稿页尾; 11-14 加深出形) ---- */
+.mountains { margin: 56px -20px -64px; line-height: 0; }
 .mountains svg { display: block; width: 100%; height: auto; }
 
 /* ============ tool stage ============ */
@@ -275,6 +308,13 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 .tool-card b { font-size: 0.98rem; }
 .tool-card span.desc { font-size: 0.84rem; color: var(--ink-soft); }
 .tool-card .go { color: var(--accent); font-weight: 600; font-size: 0.85rem; margin-top: auto; }
+/* 11-14 设计批:首卡 = 旗舰(摇签)金边庙纸底 + 衬线名 —— 网格里给出层级 */
+.grid-tools .tool-card:first-child {
+  background: linear-gradient(180deg, #fdf6e0 0%, #faf0d6 100%);
+  border-color: rgba(212, 160, 23, 0.55);
+}
+.grid-tools .tool-card:first-child b { font-family: var(--serif); font-weight: 600; font-size: 1.06rem; }
+.grid-tools .tool-card:first-child .go { color: #8a6a00; }
 
 /* ============ reading card (six-piece) ============ */
 .reading { animation: fade-up 0.45s ease both; }
@@ -304,7 +344,7 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: #8a6a00; /* 11-14 对比度修复:正金 #d4a017 在纸底 ~2.4:1 不达标,压深 */
   text-align: center;
   margin-bottom: 9px;
 }
@@ -519,7 +559,7 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: #8a6a00; /* 同 verse-label:小金字对比度修复 */
   margin: 0;
 }
 .reading p.overall { font-size: 1.02rem; }
@@ -820,23 +860,17 @@ img.gesture { display: block; margin: 0 auto 12px; }
 /* ============ responsive ============ */
 @media (max-width: 820px) {
   .hero { grid-template-columns: 1fr; gap: 18px; padding-top: 30px; }
-  .hero-stage { min-height: 260px; }
+  .hero-stage { min-height: 280px; }
   .hero-vert { display: none; }
-  .features { grid-template-columns: 1fr 1fr; }
-  .feature + .feature { border-left: none; }
-  .feature:nth-child(even) { border-left: 1px solid var(--line); }
-  .feature:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .stat-line { gap: 8px 20px; }
   .draw-duo { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   /* 👤 11/11: 窄屏下英文印章收一档,不挤 STICK NO. 行(375px 实勘 collidesNo) */
   .seal--en { max-width: 106px; padding: 8px 10px; font-size: 0.66rem; }
   .q-input { font-size: 0.85rem; }
-  .features { grid-template-columns: 1fr; }
-  .feature + .feature { border-left: none; border-top: 1px solid var(--line); }
-  .feature:nth-child(even) { border-left: none; }
-  .feature:nth-child(n + 3) { border-top: none; }
-  .feature + .feature { border-top: 1px solid var(--line); }
+  .stat-line { gap: 6px 16px; }
+  .stat-line b { font-size: 1.15rem; }
 }
 
 /* ---- merit box (home widget + tool-page ration panel) ---- */

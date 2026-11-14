@@ -18,8 +18,8 @@ const ld = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Fortune Willow', item: '/' },
-    { '@type': 'ListItem', position: 2, name: 'The 100 fortunes', item: '/signs/' },
+    { '@type': 'ListItem', position: 1, name: 'Fortune Willow', item: `${Astro.site}/` },
+    { '@type': 'ListItem', position: 2, name: 'The 100 fortunes', item: `${Astro.site}/signs/` },
     { '@type': 'ListItem', position: 3, name: sign.name },
   ],
 };

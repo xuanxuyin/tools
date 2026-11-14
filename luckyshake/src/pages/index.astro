@@ -19,10 +19,9 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
   title="Fortune Willow — Ask Anything, Get a Real Answer"
   description="Fortune sticks, a number oracle, magic 8-ball, coin flips and more — every tool answers your question and tells you what to do next. Hand-written fortunes, free, no sign-up."
 >
-  <!-- hero:左文案右签筒(👤 11/10 参考 1.jpg 主页效果图布局) -->
+  <!-- hero:左文案右签筒(👤 11/10 参考 1.jpg 主页效果图布局; 11-14 设计批去 kicker,H1 自己说话) -->
   <section class="hero">
     <div class="hero-copy">
-      <div class="kicker">Ask. Shake. Get a real answer.</div>
       <h1>Shake the jar.<br />Get an answer worth reading.</h1>
       <p class="hero-sub">
         Fortune sticks with hand-written readings for love, money, and work.
@@ -37,28 +36,12 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     </div>
   </section>
 
-  <!-- features:四栏细线分隔(参考稿中部) -->
-  <section class="features" aria-label="What makes a Fortune Willow draw different">
-    <div class="feature">
-      <img class="fico" src="/img/jar-icon.png" width="30" height="30" alt="" />
-      <b>A real shake</b>
-      <span>The jar tilts, the sticks rattle, one rises. No instant-reveal button.</span>
-    </div>
-    <div class="feature">
-      <img class="fico" src="/img/icons/scroll.png" width="30" height="30" alt="" />
-      <b>A verse on every stick</b>
-      <span>Each draw carries its four-line poem — a keepsake, not a one-liner.</span>
-    </div>
-    <div class="feature">
-      <img class="fico" src="/img/icons/crystal_ball.png" width="30" height="30" alt="" />
-      <b>Plain-language readings</b>
-      <span>Love, money and career in sentences you can actually use before dinner.</span>
-    </div>
-    <div class="feature">
-      <img class="fico" src="/img/icons/calendar.png" width="30" height="30" alt="" />
-      <b>Come back tomorrow</b>
-      <span>A fresh shared fortune every morning, and every draw unlocks more of the library.</span>
-    </div>
+  <!-- stat line:一行数字行(11-14 设计批:原四栏 icon 卡收成一行安静的清单) -->
+  <section class="stat-line" aria-label="What makes a Fortune Willow draw different">
+    <span><b>100</b>hand-written fortunes</span>
+    <span><b>9</b>ways to ask</span>
+    <span><b>1</b>free draw a day</span>
+    <span><b>0</b>accounts, ever</span>
   </section>
 
   <!-- draw duo:左仪式卡 + 右今日签文卡(参考稿下部两栏) -->
@@ -138,11 +121,11 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
     ]} />
   </section>
 
-  <!-- 水墨山影收尾(参考稿页尾带) -->
+  <!-- 水墨山影收尾(参考稿页尾带; 11-14 加深出形) -->
   <div class="mountains" aria-hidden="true">
     <svg viewBox="0 0 1200 150" preserveAspectRatio="none">
-      <path d="M0 150 L0 92 Q140 34 300 76 T580 60 T860 86 T1100 54 L1200 78 L1200 150 Z" fill="#3d3628" opacity="0.055" />
-      <path d="M0 150 L0 118 Q180 72 380 106 T720 94 T1020 116 L1200 100 L1200 150 Z" fill="#3d3628" opacity="0.09" />
+      <path d="M0 150 L0 92 Q140 34 300 76 T580 60 T860 86 T1100 54 L1200 78 L1200 150 Z" fill="#3d3628" opacity="0.1" />
+      <path d="M0 150 L0 118 Q180 72 380 106 T720 94 T1020 116 L1200 100 L1200 150 Z" fill="#3d3628" opacity="0.17" />
     </svg>
   </div>
 </Base>
