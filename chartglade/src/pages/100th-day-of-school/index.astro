@@ -1,0 +1,104 @@
+---
+/**
+ * 100th Day of School hub (hundred-day cluster). Hand-built like the
+ * Halloween/Christmas hubs: card wall of the four printables + a
+ * when-is-it section that answers the informational head word honestly
+ * (district-dependent, late Jan-Feb) + the classroom scene prose.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+
+const pages = [
+  {
+    href: '/100th-day-glasses/',
+    h2: '100th Day of School Glasses',
+    blurb:
+      'The "100" frame kids color, cut and wear — circle lenses for the zeros, dashed fold tabs, arm strips that tape to fit. The photo of the day.',
+  },
+  {
+    href: '/roll-to-100/',
+    h2: 'Roll to 100',
+    blurb:
+      'One hundred chart, two games: color one box a day all year and the board becomes the countdown to the 100th day, then a two-dice addition race for the party.',
+  },
+  {
+    href: '/when-i-am-100-writing-prompt/',
+    h2: 'When I Am 100 Years Old',
+    blurb:
+      'Draw the face you will make at 100, then finish five sentence starters about the century ahead — the classic 100th day writing page.',
+  },
+  {
+    href: '/100th-day-certificate/',
+    h2: '100th Day of School Certificate',
+    blurb:
+      'The ceremony piece: a "100 Days Smarter" award with rainbow lettering and star confetti, handed out one per student at the morning assembly.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: '100th Day', item: `${SITE.url}/100th-day-of-school/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="100th Day of School Printables (Free, No Sign-Up) | ChartGlade"
+  description="Free printable 100th day of school activities: a 100-shaped glasses template, a Roll to 100 hundred-chart game, the When I Am 100 writing prompt, and a 100 Days Smarter certificate. Print from any browser."
+  path="/100th-day-of-school"
+  jsonLd={jsonLd}
+>
+  <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">100th Day</span>
+  </nav>
+
+  <section class="hero">
+    <h1>100th Day of School Printables</h1>
+    <p class="lead">
+      Four classroom-ready activities for the 100th day — the "100" glasses to wear, a
+      hundred-chart game that doubles as the all-year countdown, the classic writing prompt,
+      and the award for the ceremony. Each prints straight from the browser on letter paper.
+      No sign-up, no download, and every one carries its own teaching notes.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="card-grid">
+      {pages.map((p) => (
+        <a class="card" href={p.href}>
+          <h2>{p.h2}</h2>
+          <p>{p.blurb}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="prose section">
+    <h2>When is the 100th day of school?</h2>
+    <p>
+      There is no national date — the 100th day is the one hundredth <em>instructional</em> day,
+      so it moves with your district's start. Classrooms that began in mid-to-late August reach
+      it in <strong>late January</strong>; Labor-Day-start districts land in <strong>February</strong>.
+      Snow days push it later, so count your own days on a calendar rather than trusting a
+      neighboring school's date. Kindergarten teams usually start planning right after winter
+      break: pick the activities, print the class set, and run the countdown on our
+      <a href="/roll-to-100/">Roll to 100 board</a> so the chart fills exactly on time.
+    </p>
+    <p>
+      New to the day itself? The standard K-2 rotation: a hundred-collection station (100
+      pennies, 100 linking cubes), a movement break (100 jumping jacks, ten sets of ten),
+      the <a href="/100th-day-glasses/">glasses</a> or a
+      <a href="/100th-day-certificate/">certificate</a> ceremony, and quiet seatwork like the
+      <a href="/when-i-am-100-writing-prompt/">writing prompt</a>. For the rest of the year, the
+      same engine runs our <a href="/charts/">math charts</a>, <a href="/sight-words/">sight
+      words</a> and <a href="/cursive/">cursive worksheets</a> — the 100th day is just the
+      mid-winter celebration wing.
+    </p>
+  </section>
+</BaseLayout>

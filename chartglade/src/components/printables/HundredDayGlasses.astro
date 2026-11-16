@@ -1,0 +1,147 @@
+---
+/**
+ * 100th Day glasses (hundred-day cluster): a "100" frame kids color, cut and
+ * wear — the numeral 1 is the left end piece, two circle lenses are the
+ * zeros. Solid lines = cut, dashed = fold; two arm strips print below the
+ * frame (tape to the side tabs, fold the excess back to fit the wearer).
+ * Pure black outlines on white — the color arrives via crayons.
+ */
+---
+<div class="glasses-sheet">
+  <p class="sheet-title">100th Day Glasses — color, cut &amp; wear</p>
+  <ol class="glasses-steps">
+    <li><strong>Color</strong> the frame and the strips first — flat paper colors best.</li>
+    <li><strong>Cut</strong> every solid line, including inside the two lens circles.</li>
+    <li><strong>Fold</strong> the dashed side tabs back, tape on the strips, bend to fit.</li>
+  </ol>
+  <div class="glasses-legend" aria-hidden="true">
+    <span class="legend-cut"></span> cut along
+    <span class="legend-fold"></span> fold back
+  </div>
+  <svg class="glasses-frame" viewBox="0 0 1000 430" role="img" aria-label='A "100" shaped glasses frame: the numeral 1 on the left, two circle lenses as the zeros, dashed fold tabs on both sides.'>
+    <!-- side tabs (fold back); dashed line marks where tab meets its arm bar -->
+    <rect x="8" y="180" width="70" height="120" rx="6" class="cut-fill" />
+    <line x1="84" y1="196" x2="84" y2="294" class="fold-line" />
+    <rect x="922" y="180" width="70" height="120" rx="6" class="cut-fill" />
+    <line x1="916" y1="196" x2="916" y2="294" class="fold-line" />
+    <!-- the numeral 1 -->
+    <path class="cut-fill" d="M 244,88 L 244,352 L 258,352 L 258,392 L 130,392 L 130,352 L 200,352 L 200,150 L 168,170 L 168,126 Z" />
+    <!-- lens one (the first zero) -->
+    <circle cx="424" cy="245" r="146" class="cut-fill" />
+    <circle cx="424" cy="245" r="90" class="hole-cut" />
+    <!-- bridge over the nose -->
+    <rect x="566" y="213" width="36" height="64" rx="10" class="cut-fill" />
+    <!-- lens two (the second zero) -->
+    <circle cx="744" cy="245" r="146" class="cut-fill" />
+    <circle cx="744" cy="245" r="90" class="hole-cut" />
+    <!-- arm bars, drawn last so edges coincide with the neighbouring strokes:
+         tab→stem, stem→lens1, lens2→tab — the frame cuts as ONE piece -->
+    <rect x="76" y="213" width="124" height="64" class="cut-fill" />
+    <rect x="244" y="213" width="34" height="64" class="cut-fill" />
+    <rect x="890" y="213" width="32" height="64" class="cut-fill" />
+  </svg>
+  <div class="glasses-strips">
+    <div class="glasses-strip">
+      <span class="strip-label">ARM STRIP — cut, tape to a side tab</span>
+      <span class="strip-body" aria-hidden="true"></span>
+    </div>
+    <div class="glasses-strip">
+      <span class="strip-label">ARM STRIP — cut, tape to a side tab</span>
+      <span class="strip-body" aria-hidden="true"></span>
+    </div>
+  </div>
+  <p class="glasses-note">Color before you cut. Cardstock lasts all day; tape reinforces copy-paper arms.</p>
+</div>
+
+<style>
+  .glasses-sheet {
+    text-align: center;
+  }
+  .glasses-steps {
+    display: inline-block;
+    text-align: left;
+    margin: 0 auto;
+    padding-left: 1.4rem;
+    font-size: 0.95rem;
+    max-width: 34rem;
+  }
+  .glasses-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.1rem;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #444;
+    margin: 0.4rem 0 0.2rem;
+  }
+  .legend-cut,
+  .legend-fold {
+    display: inline-block;
+    width: 2.2rem;
+    height: 0;
+    vertical-align: middle;
+  }
+  .legend-cut {
+    border-top: 3px solid #111;
+  }
+  .legend-fold {
+    border-top: 3px dashed #111;
+  }
+  .glasses-frame {
+    width: 100%;
+    max-width: 8.2in;
+    height: auto;
+  }
+  .cut-fill {
+    fill: #fff;
+    stroke: #111;
+    stroke-width: 9;
+    stroke-linejoin: round;
+  }
+  .hole-cut {
+    fill: #fff;
+    stroke: #111;
+    stroke-width: 9;
+  }
+  .fold-line {
+    stroke: #111;
+    stroke-width: 4;
+    stroke-dasharray: 14 10;
+  }
+  .glasses-strips {
+    display: grid;
+    gap: 0.45rem;
+    max-width: 8.2in;
+    margin: 0.5rem auto 0;
+  }
+  .glasses-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 3px solid #111;
+    border-radius: 4px;
+  }
+  .strip-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: #444;
+    padding: 0.15rem 0.4rem 0;
+    text-align: center;
+  }
+  .strip-body {
+    display: block;
+    height: 0.52in;
+    margin: 0.2rem 0.25rem 0.25rem;
+    border: 3px solid #111;
+    border-radius: 999px;
+  }
+  .glasses-note {
+    font-size: 0.8rem;
+    color: #444;
+    margin: 0.5rem 0 0;
+  }
+  @media print {
+    .glasses-sheet {
+      text-align: center;
+    }
+  }
+</style>

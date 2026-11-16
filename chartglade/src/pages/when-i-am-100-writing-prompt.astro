@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import WhenIAm100 from '../components/printables/WhenIAm100.astro';
+import { hundredDayPages } from '../data/hundredDay';
+
+const def = hundredDayPages.find((p) => p.slug === 'when-i-am-100-writing-prompt')!;
+---
+
+<ChartPage def={def}>
+  <WhenIAm100 />
+</ChartPage>

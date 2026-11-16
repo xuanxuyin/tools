@@ -1,0 +1,76 @@
+---
+/**
+ * "When I am 100 years old" writing prompt (hundred-day cluster): a portrait
+ * box for the face you will make at 100, then five sentence starters on
+ * dotted baselines. Same design language as the Letter to Santa sheet —
+ * printed model line, dotted writing line below.
+ */
+
+interface FrameSpec {
+  label: string;
+}
+
+const frames: FrameSpec[] = [
+  { label: 'By the time I am 100, I will have learned' },
+  { label: 'I will have traveled to' },
+  { label: 'The biggest change will be' },
+  { label: 'I will still love' },
+  { label: 'My advice to young people will be' },
+];
+---
+<div class="w100-sheet">
+  <p class="sheet-title">When I am 100 years old…</p>
+  <div class="signin-meta">
+    <span class="signin-meta-field">Name<span class="write-line write-line-long" aria-hidden="true"></span></span>
+    <span class="signin-meta-field">Date<span class="write-line" aria-hidden="true"></span></span>
+  </div>
+  <section class="w100-portrait" aria-label="Draw yourself at 100">
+    <h3>Draw yourself at 100</h3>
+    <div class="w100-draw-box"></div>
+  </section>
+  <div class="w100-frames">
+    {frames.map((f) => (
+      <div class="w100-frame">
+        <p class="w100-model">{f.label}</p>
+        <p class="w100-line" aria-hidden="true"></p>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .w100-sheet {
+    text-align: center;
+  }
+  .w100-portrait {
+    margin: 0.5rem auto 0.7rem;
+    max-width: 3.4in;
+  }
+  .w100-portrait h3 {
+    font-size: 0.95rem;
+    margin: 0 0 0.3rem;
+  }
+  .w100-draw-box {
+    border: 3px solid #111;
+    border-radius: 10px;
+    height: 2.5in;
+    background: #fff;
+  }
+  .w100-frames {
+    max-width: 7.4in;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .w100-frame {
+    margin-bottom: 0.42rem;
+  }
+  .w100-model {
+    font-size: 0.98rem;
+    margin: 0 0 0.28rem;
+  }
+  .w100-line {
+    height: 0;
+    border-top: 2.5px dotted #555;
+    margin: 0;
+  }
+</style>

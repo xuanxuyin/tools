@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import HundredDayCertificate from '../components/printables/HundredDayCertificate.astro';
+import { hundredDayPages } from '../data/hundredDay';
+
+const def = hundredDayPages.find((p) => p.slug === '100th-day-certificate')!;
+---
+
+<ChartPage def={def}>
+  <HundredDayCertificate />
+</ChartPage>

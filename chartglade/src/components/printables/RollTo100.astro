@@ -1,0 +1,105 @@
+---
+/**
+ * Roll to 100 board (hundred-day cluster): the hundred chart wearing two
+ * printed rule sets — the all-year countdown (one roll a day fills the chart
+ * by the 100th day) and the two-dice addition race (shade the sum, five in a
+ * row wins). Same grid as the reference HundredChart component; the game is
+ * the rules printed above it.
+ */
+import { hundredNumbers } from '../../lib/mathCharts';
+import { chunk } from '../../lib/sightWords';
+
+const rows = chunk(hundredNumbers(), 10);
+---
+<div class="r100-sheet">
+  <p class="sheet-title">Roll to 100 — the 100th day countdown board</p>
+  <p class="r100-materials">You need: two dice, one crayon per player, this board.</p>
+  <div class="r100-rules">
+    <section class="r100-rule">
+      <h3>Version A — The countdown (all year, whole class)</h3>
+      <p>
+        Roll one die every school day. Color in that many more boxes, counting the running
+        total out loud as you go. The chart fills to 100 right around the 100th day of
+        school — give the last ten boxes their own ceremony.
+      </p>
+    </section>
+    <section class="r100-rule">
+      <h3>Version B — Dice race (pairs, on the day)</h3>
+      <p>
+        Partners share one board and take turns rolling two dice, adding the dots, and
+        shading the sum. Sum already shaded? Roll again next turn. First to shade five in a
+        row — across, down or diagonal — calls bingo and reads the row aloud to prove it.
+      </p>
+    </section>
+  </div>
+  <div class="r100-board-wrap">
+    <div class="r100-track-labels" aria-hidden="true">
+      <span>START · 1</span>
+      <span>FINISH · 100</span>
+    </div>
+    <table class="chart-table hundred r100-board">
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            {row.map((n) => <td>{n}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="r100-note">Same grid as our hundred chart — the game is the rules printed above it.</p>
+</div>
+
+<style>
+  .r100-sheet {
+    text-align: center;
+  }
+  .r100-materials {
+    font-size: 0.85rem;
+    color: #444;
+    margin: 0 0 0.5rem;
+  }
+  .r100-rules {
+    display: grid;
+    gap: 0.5rem;
+    text-align: left;
+    margin: 0 auto 0.7rem;
+    max-width: 7.6in;
+  }
+  .r100-rule {
+    border: 2.5px solid #111;
+    border-radius: 8px;
+    padding: 0.45rem 0.7rem 0.5rem;
+    background: #fff;
+  }
+  .r100-rule h3 {
+    font-size: 0.92rem;
+    margin: 0 0 0.2rem;
+  }
+  .r100-rule p {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    margin: 0;
+  }
+  .r100-board-wrap {
+    max-width: 7.6in;
+    margin: 0 auto;
+  }
+  .r100-track-labels {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 0.15rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #444;
+  }
+  .r100-board {
+    width: 100%;
+  }
+  .r100-note {
+    font-size: 0.78rem;
+    color: #444;
+    margin: 0.45rem 0 0;
+  }
+</style>

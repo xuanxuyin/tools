@@ -94,6 +94,12 @@ const SHOTS = [
   { page: 'third-grade-sight-words', file: 'third-grade-sight-words-printable' },
   { page: 'geometry-formula-sheet', file: 'geometry-formula-sheet-printable' },
   { page: 'algebra-formula-sheet', file: 'algebra-formula-sheet-printable' },
+  // Wave 8 (2026-11-16, 100th Day of School cluster): glasses, game board,
+  // writing prompt, landscape certificate — the January seasonal wing.
+  { page: '100th-day-glasses', file: '100th-day-glasses-printable' },
+  { page: 'roll-to-100', file: 'roll-to-100-game-printable' },
+  { page: 'when-i-am-100-writing-prompt', file: 'when-i-am-100-writing-prompt' },
+  { page: '100th-day-certificate', file: '100th-day-certificate-printable' },
 ];
 
 const MIME = {
