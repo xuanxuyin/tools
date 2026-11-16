@@ -45,6 +45,13 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
       gtag('js', new Date());
       gtag('config', 'G-5RJKRRX35M');
     </script>
+    <!-- pvuv.ai analytics — site LSdvMNpY, cookieless PV/UV aggregate -->
+    <script
+      is:inline
+      defer
+      src="https://www.pvuv.ai/f.js"
+      data-site="LSdvMNpY"
+      data-api="https://in.pvuv.ai"></script>
     <title>{title}</title>
     <meta name="description" content={description} />
     {canonical && !noindex && <link rel="canonical" href={canonical} />}
