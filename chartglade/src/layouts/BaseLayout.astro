@@ -20,6 +20,8 @@ const { title, description, path, jsonLd, noindex, ogImage } = Astro.props;
 const cfToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN ?? SITE.cfBeaconToken;
 // Google Analytics 4 measurement ID; empty = render nothing
 const gaId = SITE.gaMeasurementId;
+// pvuv.ai analytics site ID; empty = render nothing
+const pvuvId = SITE.pvuvSiteId;
 ---
 
 <!doctype html>
@@ -44,6 +46,15 @@ const gaId = SITE.gaMeasurementId;
         </script>
       )
     }
+    {pvuvId && (
+      <!-- pvuv.ai analytics: cookieless, PV/UV aggregate page views -->
+      <script
+        is:inline
+        defer
+        src="https://www.pvuv.ai/f.js"
+        data-site={pvuvId}
+        data-api="https://in.pvuv.ai"></script>
+    )}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

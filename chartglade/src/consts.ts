@@ -14,6 +14,8 @@ export const SITE = {
   cfBeaconToken: '',
   /** Google Analytics 4 measurement ID — public by design (rendered into gtag.js URL) */
   gaMeasurementId: 'G-EKH9T22FDT',
+  /** pvuv.ai analytics site ID — public by design (rendered into f.js data-site) */
+  pvuvSiteId: 'M8C4LFEb',
 } as const;
 
 /**
