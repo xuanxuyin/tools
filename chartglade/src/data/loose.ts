@@ -128,6 +128,7 @@ export const loosePages: PageDef[] = [
       },
     ],
     related: [
+      { href: '/roll-to-100/', label: 'Roll to 100 — the dice game on this same grid' },
       { href: '/number-line-printable/', label: 'Number line printable 0-20' },
       { href: '/place-value-chart/', label: 'Place value chart (the grade 2+ version)' },
       { href: '/multiplication-chart/', label: 'Multiplication chart (grade 3+)' },

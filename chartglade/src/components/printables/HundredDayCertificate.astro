@@ -1,0 +1,163 @@
+---
+/**
+ * 100th Day certificate (hundred-day cluster): a landscape "100 Days Smarter"
+ * award — double border, four colorable corner stars, a big 100 medallion,
+ * name line, ceremony body copy and teacher/date signature rows. One
+ * certificate per landscape letter page, no cutting: the border is the edge.
+ * Prints black-and-white; the class colors the stars and medallion first.
+ */
+---
+<div class="cert-sheet">
+  <div class="cert-border">
+    <svg class="cert-star cert-star-tl" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 5 L61 38 L95 38 L67 58 L77 92 L50 71 L23 92 L33 58 L5 38 L39 38 Z" /></svg>
+    <svg class="cert-star cert-star-tr" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 5 L61 38 L95 38 L67 58 L77 92 L50 71 L23 92 L33 58 L5 38 L39 38 Z" /></svg>
+    <svg class="cert-star cert-star-bl" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 5 L61 38 L95 38 L67 58 L77 92 L50 71 L23 92 L33 58 L5 38 L39 38 Z" /></svg>
+    <svg class="cert-star cert-star-br" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 5 L61 38 L95 38 L67 58 L77 92 L50 71 L23 92 L33 58 L5 38 L39 38 Z" /></svg>
+
+    <p class="cert-kicker">Certificate of Achievement</p>
+    <h2 class="cert-headline">100 Days Smarter</h2>
+
+    <div class="cert-row cert-row-name">
+      <span class="cert-row-label">This certifies that</span>
+      <span class="cert-name-line" aria-hidden="true"></span>
+    </div>
+
+    <p class="cert-body">
+      has counted, built, puzzled and read their way to the
+      <strong>100th day of school</strong>.
+    </p>
+
+    <div class="cert-medal" aria-hidden="true">
+      <svg viewBox="0 0 200 200" role="presentation">
+        <circle cx="100" cy="100" r="92" class="medal-outer" />
+        <circle cx="100" cy="100" r="74" class="medal-inner" />
+        <text x="100" y="112" class="medal-number" text-anchor="middle">100</text>
+        <text x="100" y="138" class="medal-word" text-anchor="middle">DAYS</text>
+      </svg>
+    </div>
+
+    <div class="cert-signatures">
+      <span class="cert-sig">Teacher<span class="cert-sig-line" aria-hidden="true"></span></span>
+      <span class="cert-sig">Date<span class="cert-sig-line" aria-hidden="true"></span></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cert-sheet {
+    text-align: center;
+  }
+  .cert-border {
+    position: relative;
+    border: 8px solid #111;
+    border-radius: 6px;
+    padding: 1rem 1.6rem 0.9rem;
+    min-height: 5.2in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .cert-star {
+    position: absolute;
+    width: 0.62in;
+    height: 0.62in;
+  }
+  .cert-star path {
+    fill: #fff;
+    stroke: #111;
+    stroke-width: 5;
+    stroke-linejoin: round;
+  }
+  .cert-star-tl { top: 0.28rem; left: 0.35rem; }
+  .cert-star-tr { top: 0.28rem; right: 0.35rem; }
+  .cert-star-bl { bottom: 0.28rem; left: 0.35rem; }
+  .cert-star-br { bottom: 0.28rem; right: 0.35rem; }
+  .cert-kicker {
+    font-size: 1rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #333;
+    margin: 0 0 0.3rem;
+  }
+  .cert-headline {
+    font-size: 2.3rem;
+    margin: 0 0 0.55rem;
+  }
+  .cert-row-name {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: end;
+    gap: 0.5rem;
+    max-width: 6.6in;
+    width: 100%;
+    margin: 0 auto 0.3rem;
+    text-align: left;
+  }
+  .cert-row-label {
+    font-size: 1.02rem;
+    white-space: nowrap;
+    padding-bottom: 0.08rem;
+  }
+  .cert-name-line {
+    border-bottom: 3px solid #111;
+    height: 1.35rem;
+    display: block;
+  }
+  .cert-body {
+    font-size: 1.02rem;
+    max-width: 6.4in;
+    margin: 0 0 0.4rem;
+  }
+  .cert-medal {
+    width: 1.5in;
+    margin: 0 auto 0.45rem;
+  }
+  .cert-medal svg {
+    width: 100%;
+    height: auto;
+  }
+  .medal-outer {
+    fill: #fff;
+    stroke: #111;
+    stroke-width: 7;
+  }
+  .medal-inner {
+    fill: #fff;
+    stroke: #111;
+    stroke-width: 3;
+  }
+  .medal-number {
+    font-size: 3.4rem;
+    font-weight: 700;
+    fill: #111;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+  .medal-word {
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    fill: #111;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+  .cert-signatures {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.2rem;
+    max-width: 6.6in;
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .cert-sig {
+    font-size: 0.95rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: end;
+    gap: 0.45rem;
+  }
+  .cert-sig-line {
+    border-bottom: 2.5px solid #111;
+    height: 1.1rem;
+    display: block;
+  }
+</style>

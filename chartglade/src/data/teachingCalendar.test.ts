@@ -15,6 +15,7 @@ import { nameTracingPage } from './nameTracing';
 import { halloweenPages } from './halloween';
 import { thanksgivingPages } from './thanksgiving';
 import { statesPage } from './cursiveStates';
+import { hundredDayPages } from './hundredDay';
 
 /**
  * Teaching Calendar hub guards (November pre-dev wave 1). The hub is the
@@ -44,9 +45,10 @@ const pageDefs = [
   nameTracingPage,
   ...halloweenPages,
   ...thanksgivingPages,
+  ...hundredDayPages,
   statesPage,
 ];
-const HUBS = ['charts', 'graph-paper', 'sight-words', 'cursive', 'halloween', 'thanksgiving-printables', 'sign-in-sheets'];
+const HUBS = ['charts', 'graph-paper', 'sight-words', 'cursive', 'halloween', 'thanksgiving-printables', 'sign-in-sheets', '100th-day-of-school'];
 
 const allowedHref = (slug: string) => `/${slug}/`;
 const ALLOWED = new Set<string>([

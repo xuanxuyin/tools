@@ -1,0 +1,11 @@
+---
+import ChartPage from '../components/ChartPage.astro';
+import RollTo100 from '../components/printables/RollTo100.astro';
+import { hundredDayPages } from '../data/hundredDay';
+
+const def = hundredDayPages.find((p) => p.slug === 'roll-to-100')!;
+---
+
+<ChartPage def={def}>
+  <RollTo100 />
+</ChartPage>

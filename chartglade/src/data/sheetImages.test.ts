@@ -19,6 +19,7 @@ import { howToCursivePage } from './howToCursive';
 import { cursiveLetters } from './cursiveLetters';
 import { christmasStockingPage } from './christmasColoring';
 import { cootieCatcherPage, christmasCootieCatcherPage } from './cootie';
+import { hundredDayPages } from './hundredDay';
 import type { PageDef } from './pageTypes';
 
 /**
@@ -93,6 +94,14 @@ const WAVE_SEVEN = [
 // Pre-existing PNGs outside the wave lists (their own batches predate this
 // file's exact-list guard): the cootie cluster and the stocking single.
 const PNG_PREEXISTING = ['christmas-stocking-coloring-page', 'cootie-catcher', 'christmas-cootie-catcher'];
+// Wave 8 (2026-11-16, 100th Day of School cluster): glasses, game board,
+// writing prompt, certificate — the January seasonal wing.
+const WAVE_EIGHT = [
+  '100th-day-glasses',
+  'roll-to-100',
+  'when-i-am-100-writing-prompt',
+  '100th-day-certificate',
+];
 
 const all: PageDef[] = [
   ...multiplicationPages,
@@ -111,13 +120,14 @@ const all: PageDef[] = [
   christmasStockingPage,
   cootieCatcherPage,
   christmasCootieCatcherPage,
+  ...hundredDayPages,
 ];
 const withImages = all.filter((d) => d.sheetImage);
 
 describe('sheetImage (Google Images channel)', () => {
   it('exactly the pillar + wave-2 + wave-4 + wave-6 + wave-7 pages carry a sheet image', () => {
     expect(withImages.map((d) => d.slug).sort()).toEqual(
-      [...PILLARS, ...WAVE_TWO, ...WAVE_FOUR, ...WAVE_SIX, ...WAVE_SEVEN, ...PNG_PREEXISTING].sort(),
+      [...PILLARS, ...WAVE_TWO, ...WAVE_FOUR, ...WAVE_SIX, ...WAVE_SEVEN, ...WAVE_EIGHT, ...PNG_PREEXISTING].sort(),
     );
   });
 
@@ -184,6 +194,11 @@ describe('variant gallery cards (image-forward batch, 2026-11-06)', () => {
         'cursive-alphabet',
         'cursive-sentences',
         'how-to-write-in-cursive',
+        // hundred-day cluster (2026-11-16)
+        '100th-day-glasses',
+        'roll-to-100',
+        'when-i-am-100-writing-prompt',
+        '100th-day-certificate',
       ].sort(),
     );
   });

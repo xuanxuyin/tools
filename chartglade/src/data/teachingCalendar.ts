@@ -37,6 +37,11 @@ export const teachingCalendarMonths: CalendarMonth[] = [
     ],
     links: [
       {
+        href: '/100th-day-of-school/',
+        label: '100th Day of School Printables',
+        note: 'August-start districts celebrate this month — glasses, games, writing and the award.',
+      },
+      {
         href: '/hundred-chart/',
         label: 'Hundred Chart',
         note: '100th Day station work: hunt the numbers, skip-count, build 100.',
@@ -61,6 +66,11 @@ export const teachingCalendarMonths: CalendarMonth[] = [
       'Then Valentine’s Day — twenty-five valentines per child, signed. That makes February the month of name practice in K-1 and, in cursive states, signature practice above it.',
     ],
     links: [
+      {
+        href: '/100th-day-of-school/',
+        label: '100th Day of School Printables',
+        note: 'February-start districts hit day 100 now — print the whole set in one morning.',
+      },
       {
         href: '/hundred-chart/',
         label: 'Hundred Chart',
