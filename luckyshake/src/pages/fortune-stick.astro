@@ -3,14 +3,51 @@ import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 import Jar3d from '../components/Jar3d.astro';
 import { SIGNS } from '../data/signs';
+
+// FAQ 数据抽成常量:页面渲染与 FAQPage 结构化数据共用一份
+const faqItems = [
+  { q: 'Are the fortunes random?', a: 'Yes — the stick you draw is a fair random pick from our library. What is not random is the writing: every fortune is hand-written and edited in-house, with readings tuned to love, money, and career situations.' },
+  { q: 'Why do I pick a topic after drawing?', a: 'That is how the ritual works: hold the question privately while the jar shakes, then say what it was about — that is what the fortune answers. Your words route the reading to love, money, or career; anything else gets the fortune’s overall reading. One question, one answer: shake again to ask something else.' },
+  { q: 'Where do these fortunes come from?', a: 'They are original adaptations of kau cim, the temple tradition of numbered fortune sticks: each stick carries a poem, a story, and guidance. We rewrote the tradition for modern life — no riddles about harvests, just clear guidance with the story kept in. The unrewritten temple texts (the Guanyin hundred, in Chinese) have their own page here too.' },
+  { q: 'Can I ask about another person?', a: 'You can, but the strongest questions are about your own next move. "Should I text them back?" beats "does he miss me?" — one gives you an action, the other just gives you a mood.' },
+  { q: 'What are the three grades?', a: 'Every stick is graded as a Blessing (green light energy), a Nudge (steady, practical guidance), or a Gentle Warning (slow down and protect what matters). We do not write doom-and-gloom fortunes — a hard truth, yes; despair, never.' },
+  { q: 'Does the same stick always mean the same thing?', a: 'The words are fixed; the reading is yours. Sign 01 on a Tuesday about a job and the same sign on a Friday about a relationship will land differently — that gap is where your own judgment lives, and it is the most reliable oracle in this whole site.' },
+];
+
+// 结构化数据:工具本体(免费 WebApplication)+ FAQ 块 —— 11/16 SEO 批
+// (工具意图词前置,FAQ schema 照 [slug].astro 的内联 ld+json 形态)
+const toolLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Chinese Fortune Sticks Online',
+  alternateName: 'Fortune Stick — Kau Cim',
+  url: new URL('/fortune-stick/', Astro.site).href,
+  applicationCategory: 'EntertainmentApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  description:
+    'Draw a Chinese fortune stick online, free: shake the jar and draw one of 100 hand-written kau cim fortunes, with readings for love, money, and career.',
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 ---
 <Base
-  title="Fortune Stick — Chinese Fortune Sticks (Kau Cim) | Fortune Willow"
-  description="Draw a Chinese fortune stick, kau cim style: shake the jar, draw one of 100 hand-written fortunes — readings for love, money, and career, plus lucky numbers."
+  title="Chinese Fortune Sticks Online — Draw a Kau Cim Stick Free | Fortune Willow"
+  description="Draw a Chinese fortune stick online, free: shake the jar, draw one of 100 hand-written kau cim fortunes — readings for love, money, and career, plus lucky numbers."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(toolLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
   <section class="tool-shell card">
     <div class="tool-stage">
-      <h1>Fortune Stick</h1>
+      <div class="kicker">Kau cim · 摇签</div>
+      <h1>Draw a Chinese Fortune Stick</h1>
       <p class="tool-sub">
         Let the jar do the picking. Hold your question in mind — no typing yet.
         Shake the jar: the stick that leaps out already carries the answer. When it lands, tell the
@@ -51,7 +88,7 @@ import { SIGNS } from '../data/signs';
     </div>
   </section>
 
-  <section class="section">
+  <section class="section moments-night">
     <div class="kicker">When people draw</div>
     <h2>The moments a stick helps most</h2>
     <div class="scene-list">
@@ -93,21 +130,41 @@ import { SIGNS } from '../data/signs';
   <section class="section">
     <div class="kicker">Questions</div>
     <h2>Fortune Stick FAQ</h2>
-    <Faq items={[
-      { q: 'Are the fortunes random?', a: 'Yes — the stick you draw is a fair random pick from our library. What is not random is the writing: every fortune is hand-written and edited in-house, with readings tuned to love, money, and career situations.' },
-      { q: 'Why do I pick a topic after drawing?', a: 'That is how the ritual works: hold the question privately while the jar shakes, then say what it was about — that is what the fortune answers. Your words route the reading to love, money, or career; anything else gets the fortune’s overall reading. One question, one answer: shake again to ask something else.' },
-      { q: 'Where do these fortunes come from?', a: 'They are original adaptations of kau cim, the temple tradition of numbered fortune sticks: each stick carries a poem, a story, and guidance. We rewrote the tradition for modern life — no riddles about harvests, just clear guidance with the story kept in. The unrewritten temple texts (the Guanyin hundred, in Chinese) have their own page here too.' },
-      { q: 'Can I ask about another person?', a: 'You can, but the strongest questions are about your own next move. "Should I text them back?" beats "does he miss me?" — one gives you an action, the other just gives you a mood.' },
-      { q: 'What are the three grades?', a: 'Every stick is graded as a Blessing (green light energy), a Nudge (steady, practical guidance), or a Gentle Warning (slow down and protect what matters). We do not write doom-and-gloom fortunes — a hard truth, yes; despair, never.' },
-      { q: 'Does the same stick always mean the same thing?', a: 'The words are fixed; the reading is yours. Sign 01 on a Tuesday about a job and the same sign on a Friday about a relationship will land differently — that gap is where your own judgment lives, and it is the most reliable oracle in this whole site.' },
-    ]} />
+    <Faq items={faqItems} />
   </section>
 </Base>
 
 <style>
-  .tradition { max-width: 720px; }
-  .tradition p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.75; margin: 0 0 10px; }
+  /* 11/16 design 批:传统段从裸文本升为庙墙黄面板(--temple,功德箱同源底色),
+     给页中段一个对比面;文字色保持纸面体系(ink-soft 对 temple 实测 5.5:1 过 4.5) */
+  .tradition {
+    max-width: 720px;
+    background: var(--temple);
+    border: 1px solid color-mix(in srgb, var(--gold), transparent 55%);
+    border-radius: var(--radius);
+    padding: 20px 24px 0;
+  }
+  .tradition p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.75; margin: 0 0 14px; }
+  .tradition b { color: var(--ink); }
   .tradition a { font-weight: 600; }
+
+  /* 11/16 design 批二:"moments" 段升为夜庙面板(--bg-deep,today-strip 同源语言)——
+     页中段的视觉锚点;金 kicker + 象牙标题,场景卡改半透明夜砖,
+     象牙字对深底实测 ~9.4:1。彩色 Fluent 图标在深底上反而更跳 */
+  .moments-night {
+    background: var(--bg-deep);
+    border-radius: var(--radius);
+    padding: 30px 28px 24px;
+    box-shadow: var(--shadow);
+  }
+  .moments-night .kicker { color: var(--gold); }
+  .moments-night h2 { color: #f3eede; margin-bottom: 0.3rem; }
+  .moments-night .scene {
+    background: rgba(255, 253, 248, 0.07);
+    border-color: rgba(255, 253, 248, 0.16);
+  }
+  .moments-night .scene b { color: #fff; }
+  .moments-night .scene p { color: #cbc4da; }
 </style>
 
 <script>

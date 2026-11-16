@@ -31,4 +31,11 @@ import { SIGNS } from '../../data/signs';
     import { applyGating } from '../../lib/unlock';
     applyGating();
   </script>
+  <style>
+    /* 11/16 排版批:桌面双列——单列太长(signs 100 卡 9.7 屏 / horo 12 行),
+       scoped 覆盖全局 .scene-list 的单列,不影响其他页的 scene-list */
+    @media (min-width: 900px) {
+      .scene-list { grid-template-columns: 1fr 1fr; align-items: start; }
+    }
+  </style>
 </Base>

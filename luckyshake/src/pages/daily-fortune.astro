@@ -41,12 +41,15 @@ const pretty = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
         const d = new Date();
         d.setDate(d.getDate() - (i + 1));
         return d.toLocaleDateString('en-CA');
-      }).map((date) => (
-        <a class="scene" href={`/daily-fortune/${date}/`}>
-          <span class="glyph"><img src="/img/icons/sun.png" width="24" height="24" alt="" /></span>
-          <p><b>{date}</b><br /><span class="muted">that day’s fortune</span></p>
-        </a>
-      ))}
+      }).map((date) => {
+        const { sign: past } = dailyDraw(date);
+        return (
+          <a class="scene" href={`/daily-fortune/${date}/`}>
+            <span class="glyph"><img src="/img/icons/sun.png" width="24" height="24" alt="" /></span>
+            <p><b>{date} · {past.name}</b><br /><span class="muted">{past.title}</span></p>
+          </a>
+        );
+      })}
     </div>
   </section>
 

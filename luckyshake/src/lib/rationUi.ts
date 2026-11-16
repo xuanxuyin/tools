@@ -64,47 +64,16 @@ function lang(): Lang {
   return document.documentElement.lang.startsWith('zh') ? 'zh' : 'en';
 }
 
-/* ---- the merit box illustration (hand-drawn SVG, site palette) ---- */
+/* ---- the merit box illustration ---- */
+/* 👤 11/16 重做:盒体换 AI 生成的小庙宇(public/img/merit-box.png,GrabCut 透明底,
+   门前乱码金饰已 cv2 inpaint 修掉)。👤 11/16 二剪:"merit 牌匾贴了反而抽象,金币
+   掉落也不要了"——牌匾与金币组整个摘除,捐赠反馈只留庙身抖动 + merit-float 飘 +1 */
 
-export function meritBoxSvg(cls = '', lng?: Lang): string {
-  const l = lng ?? lang();
-  // EN pages carry zero CJK (site discipline) — the plaque reads MERIT there
-  const plaque =
-    l === 'zh'
-      ? `<text x="130" y="158" text-anchor="middle" font-family="'Songti SC','SimSun',serif" font-size="34" font-weight="700" fill="#b8860b" letter-spacing="6">功德</text>`
-      : `<text x="130" y="151" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="20" font-weight="700" fill="#b8860b" letter-spacing="3" textLength="82" lengthAdjust="spacingAndGlyphs">MERIT</text>`;
+export function meritBoxSvg(cls = '', _lng?: Lang): string {
   return `<svg class="merit-box-svg ${cls}" viewBox="0 0 260 240" width="220" height="203" role="img" aria-label="Merit box">
-    <defs>
-      <linearGradient id="mb-lacq" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#b8462f"/><stop offset="1" stop-color="#93321f"/>
-      </linearGradient>
-    </defs>
-    <ellipse cx="132" cy="223" rx="94" ry="12" fill="#2a2444" opacity="0.12"/>
-    <!-- top face -->
-    <polygon points="45,90 75,66 245,66 215,90" fill="#c1512f"/>
-    <!-- side face (right) -->
-    <polygon points="215,90 245,66 245,184 215,208" fill="#8d3020"/>
-    <!-- front face -->
-    <rect x="45" y="90" width="170" height="118" rx="8" fill="url(#mb-lacq)"/>
-    <!-- slot on the top face -->
-    <polygon points="118,84 186,84 199,74 131,74" fill="#3a2418"/>
-    <polygon points="118,84 186,84 186,81 118,81" fill="#241a10"/>
-    <!-- coin mid-drop (animated) -->
-    <g class="merit-coin">
-      <circle cx="158" cy="66" r="11.5" fill="#e8b73a" stroke="#b8860b" stroke-width="2.5"/>
-      <rect x="153" y="61" width="10" height="10" fill="#c98f1d" stroke="#a4750f" stroke-width="1.5"/>
-    </g>
-    <!-- gold trim + rivets -->
-    <rect x="45" y="90" width="170" height="118" rx="8" fill="none" stroke="#d4a017" stroke-width="3"/>
-    <circle cx="58" cy="103" r="2.6" fill="#d4a017"/><circle cx="202" cy="103" r="2.6" fill="#d4a017"/>
-    <circle cx="58" cy="195" r="2.6" fill="#d4a017"/><circle cx="202" cy="195" r="2.6" fill="#d4a017"/>
-    <!-- ivory plaque with gold lettering -->
-    <rect x="76" y="116" width="108" height="62" rx="7" fill="#f7efdd" stroke="#d4a017" stroke-width="2.5"/>
-    <rect x="81" y="121" width="98" height="52" rx="5" fill="none" stroke="#d4a017" stroke-width="1" opacity="0.55"/>
-    ${plaque}
-    <!-- feet -->
-    <rect x="64" y="206" width="20" height="12" rx="3" fill="#6d2817"/>
-    <rect x="176" y="206" width="20" height="12" rx="3" fill="#6d2817"/>
+    <ellipse cx="130" cy="206" rx="86" ry="10" fill="#2a2444" opacity="0.12"/>
+    <!-- the shrine body (AI art, transparent PNG) -->
+    <image href="/img/merit-box.png" x="32" y="30" width="196" height="196"/>
   </svg>`;
 }
 

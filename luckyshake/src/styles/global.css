@@ -41,6 +41,13 @@
    按压反馈交给各控件自己的 :active(胶囊按下去还是胶囊) */
 a, button, [role='button'], label, summary { -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; }
+/* 👤 11/16 a11y:键盘 Tab 第一站直达正文,焦点才现身 */
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--card); color: var(--ink);
+  padding: 10px 18px; border: 1px solid var(--line); border-radius: 0 0 10px 0;
+}
+.skip-link:focus-visible { left: 0; }
 body {
   margin: 0;
   font-family: var(--font);
@@ -662,8 +669,17 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 
 /* ============ how-it-works / scenarios / faq ============ */
 .steps { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 18px 0; }
-.step { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
-.step .n { font-weight: 600; color: var(--accent); font-size: 0.85rem; }
+/* 👤 11/16 design 批:步骤卡升版(九个工具页共用,标记不动、纯 CSS)——
+   金色发丝顶线 + 序号用 ::first-letter 命中 "1 ·" 的数字升为 Fraunces 展示大字 */
+.step {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px;
+  border-top: 3px solid color-mix(in srgb, var(--gold), transparent 45%);
+}
+.step .n { font-weight: 600; color: var(--accent); font-size: 0.85rem; letter-spacing: 0.02em; }
+.step .n::first-letter {
+  font-family: var(--serif); font-size: 2rem; font-weight: 600;
+  line-height: 1; vertical-align: -0.16rem; margin-right: 7px;
+}
 .step p { margin: 4px 0 0; font-size: 0.92rem; color: var(--ink-soft); }
 .scene-list { display: grid; gap: 8px; margin: 16px 0; }
 .scene {
@@ -702,9 +718,26 @@ html[lang='zh-CN'] .verse-attr { font-style: normal; }
 .scene .lock-flag { margin-left: auto; font-size: 0.95rem; flex: 0 0 auto; }
 .scene .lock-flag img { display: inline-block; vertical-align: -0.2em; }
 .scene p { margin: 0; font-size: 0.93rem; }
+/* 👤 11/16 design 批:可点 .scene(a 场景卡,签库翻页在用)的面色反馈 —— 沿 unslop
+   约定不动 transform,边框/底色向金与庙墙黄过渡 */
+a.scene { transition: border-color 0.15s ease, background-color 0.15s ease; }
+a.scene:hover {
+  border-color: color-mix(in srgb, var(--gold), transparent 45%);
+  background: color-mix(in srgb, var(--temple), transparent 55%);
+}
 .faq { display: grid; gap: 8px; }
+/* 👤 11/16 design 批:桌面档 FAQ 双列,密度翻倍(九个工具页共用组件) */
+@media (min-width: 900px) {
+  .faq { grid-template-columns: 1fr 1fr; align-items: start; }
+}
 .faq details {
   background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 4px 16px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.faq details:hover { border-color: color-mix(in srgb, var(--accent), var(--line) 55%); }
+.faq details[open] {
+  border-color: color-mix(in srgb, var(--accent), transparent 40%);
+  background: #fffefa;
 }
 .faq summary { cursor: pointer; font-weight: 600; padding: 10px 0; font-size: 0.96rem; }
 /* yes-no verdict gesture (Fluent 3D thumbs-up / waving hand) */
@@ -817,21 +850,14 @@ img.gesture { display: block; margin: 0 auto 12px; }
 .coin.flipping { animation: coin-flip 1.1s ease both; }
 
 /* ============ fortune cookie ============ */
-.cookie { position: relative; width: 180px; height: 110px; cursor: pointer; }
-.chalf {
-  position: absolute; top: 18px; width: 78px; height: 74px;
-  background: radial-gradient(ellipse at 40% 30%, #e8bd7d, #cf9a52);
-  border-radius: 60% 45% 55% 40%;
-  box-shadow: var(--shadow); transition: transform 0.5s ease;
-}
-.chalf::before, .chalf::after {
-  content: ""; position: absolute; width: 7px; height: 7px; border-radius: 50%;
-  background: rgba(120, 80, 30, 0.35);
-}
-.chalf::before { top: 18px; left: 18px; }
-.chalf::after { bottom: 16px; right: 20px; }
-.chalf.l { left: 6px; transform: rotate(-16deg); }
-.chalf.r { right: 6px; transform: rotate(16deg); }
+.cookie { position: relative; width: 170px; height: 170px; cursor: pointer; }
+/* 👤 11/16:Google Noto Emoji 幸运饼干矢量(Apache-2.0),左右裁剪组
+   绕饼干重心旋开露出 HTML 签纸 */
+.cookie-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cookie-svg .half-l,
+.cookie-svg .half-r { transform-origin: 58px 62px; transition: transform 0.5s ease; }
+.cookie.open .half-l { transform: rotate(-32deg) translateX(-9px); }
+.cookie.open .half-r { transform: rotate(32deg) translateX(9px); }
 .cookie.open .chalf.l { transform: rotate(-58deg) translateX(-26px); }
 .cookie.open .chalf.r { transform: rotate(58deg) translateX(26px); }
 .fortune-slip {
@@ -884,18 +910,22 @@ img.gesture { display: block; margin: 0 auto 12px; }
 }
 .merit-stage { flex: 0 0 auto; display: grid; justify-items: center; gap: 10px; min-width: 250px; position: relative; /* merit-float 飘字的定位基准 */ }
 .merit-box-svg { display: block; }
-.merit-box-svg .merit-coin { transform-origin: 158px 66px; }
-.merit-box-svg.dropping { animation: merit-clink 0.65s ease-out; }
-.merit-box-svg.dropping .merit-coin { animation: merit-drop 0.65s cubic-bezier(0.55, 0, 0.8, 0.4) both; }
-@keyframes merit-drop {
-  0% { transform: translateY(-52px) scale(1.1); opacity: 0; }
-  55% { opacity: 1; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
+/* 👤 11/16 "捐赠的时候抖一下":支点取落地基座(130,206),庙身左右摇摆 ±1.9°;
+   二剪后无金币掉落,反馈 = 抖动 + merit-float 飘 +1 */
+.merit-box-svg.dropping { animation: merit-shake 0.6s ease-in-out; transform-origin: 130px 206px; }
+@keyframes merit-shake {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(-1.8deg); }
+  35% { transform: rotate(1.9deg); }
+  55% { transform: rotate(-1.2deg); }
+  75% { transform: rotate(0.7deg); }
+  100% { transform: rotate(0deg); }
 }
-@keyframes merit-clink {
-  0%, 100% { transform: scale(1); }
-  45% { transform: scale(0.985) rotate(-0.4deg); }
-  70% { transform: scale(1.008) rotate(0.3deg); }
+@media (prefers-reduced-motion: reduce) {
+  .merit-box-svg.dropping {
+    animation-duration: 0.01s;
+    animation-iteration-count: 1;
+  }
 }
 /* 👤 11/13 "我的功德/提示/领取不对齐":三行统一居中轴线,与左侧箱侧"十方功德"行呼应 */
 .merit-panel { flex: 0 1 300px; min-width: 250px; display: grid; gap: 12px; justify-items: center; text-align: center; /* 领取/捐献分家后面板只剩余额+领取,收窄一档 */ }

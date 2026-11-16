@@ -341,6 +341,10 @@ const ld = [
   }
 
   .gy-list { display: grid; gap: 8px; max-width: 720px; }
+  /* 11/16 排版批:桌面双列——100 条折叠摘要单列 6.6 屏太长 */
+  @media (min-width: 900px) {
+    .gy-list { grid-template-columns: 1fr 1fr; max-width: none; }
+  }
   .gy-lot {
     background: var(--card);
     border: 1px solid var(--line);
