@@ -191,6 +191,11 @@ const PATTERNS: Record<string, Pattern> = {
 };
 
 const p = PATTERNS[slug] ?? PATTERNS.aries;
+// 👤 11/16:瓦片底升级为每星座专属 AI 星云图(public/img/zodiac/{slug}.png,
+// pollinations 免费生成,12 张各不相同的亮核星云;星官连线/星点保持代码绘制——
+// AI 直出星座连线三连翻车(圆环/罗盘纹),精确星图仍交给坐标表)
+const known = slug in PATTERNS;
+const sky = `/img/zodiac/${known ? slug : 'aries'}.png`;
 // faint distant stars for texture (fixed positions, deterministic)
 const dust = [
   { x: 12, y: 18, r: 0.9 },
@@ -211,30 +216,42 @@ const dust = [
   role="img"
   aria-label={`${name} constellation`}
 >
-  <rect x="0" y="0" width="100" height="100" rx="16" fill="#241f3d" />
-  {dust.map((d) => (
-    <circle cx={d.x} cy={d.y} r={d.r} fill="#cfc8e0" opacity="0.3" />
-  ))}
-  {p.edges.map(([a, b]) => {
-    const A = p.stars[a]!;
-    const B = p.stars[b]!;
-    return (
-      <line
-        x1={A.x}
-        y1={A.y}
-        x2={B.x}
-        y2={B.y}
-        stroke="#d4a017"
-        stroke-opacity="0.45"
-        stroke-width="1.6"
-        stroke-linecap="round"
-      />
-    );
-  })}
-  {p.stars.map((s) => (
-    <>
-      {s.bright && <circle cx={s.x} cy={s.y} r="6.5" fill="#f2c14e" opacity="0.22" />}
-      <circle cx={s.x} cy={s.y} r={s.r ?? 2.2} fill="#f2c14e" />
-    </>
-  ))}
+  <defs>
+    <clipPath id="ztile"><rect x="0" y="0" width="100" height="100" rx="16" /></clipPath>
+  </defs>
+  <g clip-path="url(#ztile)">
+    <image href={sky} x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid slice" />
+    {dust.map((d) => (
+      <circle cx={d.x} cy={d.y} r={d.r} fill="#cfc8e0" opacity="0.3" />
+    ))}
+    {p.edges.map(([a, b]) => {
+      const A = p.stars[a]!;
+      const B = p.stars[b]!;
+      return (
+        <line
+          x1={A.x}
+          y1={A.y}
+          x2={B.x}
+          y2={B.y}
+          stroke="#d4a017"
+          stroke-opacity="0.6"
+          stroke-width="1.8"
+          stroke-linecap="round"
+        />
+      );
+    })}
+    {p.stars.map((s) => (
+      <>
+        {s.bright && (
+          <>
+            <circle cx={s.x} cy={s.y} r="7" fill="#f2c14e" opacity="0.16" />
+            <circle cx={s.x} cy={s.y} r="3.6" fill="#ffe9a8" opacity="0.5" />
+            <line x1={s.x - 5} y1={s.y} x2={s.x + 5} y2={s.y} stroke="#ffe9a8" stroke-opacity="0.55" stroke-width="0.9" stroke-linecap="round" />
+            <line x1={s.x} y1={s.y - 5} x2={s.x} y2={s.y + 5} stroke="#ffe9a8" stroke-opacity="0.55" stroke-width="0.9" stroke-linecap="round" />
+          </>
+        )}
+        <circle cx={s.x} cy={s.y} r={s.r ?? 2.2} fill="#ffe08a" />
+      </>
+    ))}
+  </g>
 </svg>

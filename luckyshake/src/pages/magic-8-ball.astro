@@ -19,6 +19,7 @@ const GROUPS = [
 >
   <section class="tool-shell card">
     <div class="tool-stage">
+      <div class="kicker">The classic 20 answers</div>
       <h1>Magic 8-Ball</h1>
       <p class="tool-sub">
         Ask your yes-or-no question out loud, give the ball a shake, and get a classic answer —
@@ -137,7 +138,11 @@ const GROUPS = [
   .answers-lead { color: color-mix(in srgb, var(--ink), transparent 30%); margin: 6px 0 0; }
   .answer-groups { display: grid; gap: 12px; margin-top: 14px; }
   @media (min-width: 760px) {
-    .answer-groups { grid-template-columns: repeat(3, 1fr); align-items: start; }
+    /* 👤 11/16 排版批:10/5/5 三等分柱会头重脚轻——YES 柱跨两轨、内部再分两列,
+       三个卡片高度接近,右下不再留大片空白 */
+    .answer-groups { grid-template-columns: repeat(4, 1fr); align-items: start; }
+    .answer-group:first-child { grid-column: span 2; }
+    .answer-group:first-child .answer-list { grid-template-columns: 1fr 1fr; gap: 8px 20px; }
   }
   .answer-group {
     border: 1px solid color-mix(in srgb, var(--ink), transparent 86%);
