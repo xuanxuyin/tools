@@ -180,11 +180,16 @@ describe.skipIf(!hubBuilt)('hundred-day dist guards (real dist)', () => {
     expect((html.match(/w100-model/g) ?? []).length).toBeGreaterThanOrEqual(5);
   });
 
-  it('the certificate ships the medallion and signature rows', () => {
+  it('the certificate ships the rainbow headline, confetti and signature rows', () => {
     const html = readFileSync(pageFiles.get('100th-day-certificate')!, 'utf8');
-    expect(html).toContain('100 Days Smarter');
-    expect(html).toContain('medal-number');
+    expect(html).toContain('100 Days Smarter'); // page lead
+    expect(html).toContain('cert-days'); // rainbow headline block
+    expect(html).toContain('SMARTER'); // spaced caps line
+    expect(html).toContain('cert-congrats');
+    expect((html.match(/cert-confetti/g) ?? []).length).toBeGreaterThanOrEqual(24);
+    expect(html).toContain('#ef4444'); // a rainbow hex survives to the sheet
     expect(html).toContain('cert-sig-line');
+    expect(html).not.toContain('medal-number'); // incumbent recon: no corporate seals
   });
 
   it('zero CJK leakage on the five new pages', () => {

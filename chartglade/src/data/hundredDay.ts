@@ -213,21 +213,21 @@ export const hundredDayPages: PageDef[] = [
     h1: '100th Day of School Certificate',
     metaTitle: '100th Day of School Certificate — Free Printable Award | ChartGlade',
     metaDescription:
-      'Free printable 100th day of school certificate: a "100 Days Smarter" award with a colorable border and a 100 medallion — landscape, one per page, no sign-up.',
+      'Free printable 100th day of school certificate: a "100 Days Smarter" award with rainbow lettering and stars — landscape, one per page, no sign-up.',
     lead:
-      'The award that marks the day: "100 Days Smarter," a colorable star border, and a big 100 medallion the class colors before the ceremony. Print one per student on letter paper (landscape), write names in marker, sign, hand out — the whole ceremony fits inside a morning meeting.',
+      'The award that marks the day: "100 Days Smarter" in chunky rainbow lettering, star confetti around the border, and room for the name every kid is proud to see in marker. Print one per student on letter paper (landscape), sign, hand out — the whole ceremony fits inside a morning meeting.',
     introHeading: 'Running the ceremony',
     intro: [
       'The certificate earns its moment by being handed out, not mailed home. Read the wording aloud once ("has counted, built, puzzled and read their way to the one hundredth day of school"), then call students one by one while the class holds a hundred-applause — ten claps, ten times, which is its own counting exercise and burns exactly enough energy to settle the room afterward. Names in marker beat pens at this age; the teacher signature line and the date line make it official enough to go on the refrigerator, which is the actual venue.',
-      'Print it plain or let the class earn the decoration. The border stars and the medallion print as outlines, so a morning-work session can color certificates for everyone — each student decorates their own, which is faster than thirty unique awards and turns the certificate into a second artifact of the day. Cardstock takes marker without the buckle; copy paper works and reinforces the "this is real paper from real school" feel some families frame. One sheet per student, landscape, no cutting — the border is the edge.',
+      'Print it in color, or let a grayscale copier mumble the rainbow — the certificate reads either way. Teachers without color printers hand out one crayon job with it: color the stars before the assembly, which keeps the craft minute and makes every award theirs. Cardstock takes marker without the buckle and keeps the lettering vivid; copy paper works and reinforces the "this is real paper from real school" feel some families frame. One sheet per student, landscape, no cutting — the frame is the edge.',
     ],
     printNote: 'One letter page, landscape — one certificate per student, no cutting. Cardstock for marker names; copy paper works.',
     landscape: true,
     sheetImage: {
       src: '/images/100th-day-certificate-printable.png',
-      alt: 'Free printable 100th day of school certificate — a 100 Days Smarter award with a colorable star border, a 100 medallion, and name, teacher and date lines, on one landscape letter page.',
+      alt: 'Free printable 100th day of school certificate — a 100 Days Smarter award with rainbow lettering, star confetti around the frame, and name, teacher and date lines, on one landscape letter page.',
       width: 2016,
-      height: 1100,
+      height: 1204,
     },
     tips: [
       {
@@ -239,8 +239,8 @@ export const hundredDayPages: PageDef[] = [
         body: 'Ten sets of ten claps, counted out loud, right before the first name is called. It rehearses skip counting, fills the room with noise, and makes the first certificate feel like a finish line instead of a worksheet with good manners.',
       },
       {
-        title: 'Color a class set in morning work',
-        body: 'The outline-only design means the class can decorate every certificate during morning work. Students color their own or trade — either way the ceremony starts with work they already own, and no two awards look mass-produced.',
+        title: 'No color printer? Still works',
+        body: 'The rainbow prints as gray shades on a black-and-white copier and the certificate still reads. Teachers in that spot staple one crayon job to it — color the stars during morning work — so the award still carries a marker of the day and no two come out identical.',
       },
       {
         title: 'Pair it with the countdown chart',
@@ -250,7 +250,7 @@ export const hundredDayPages: PageDef[] = [
     faqs: [
       {
         q: 'What does the certificate say?',
-        a: 'The headline is "100 Days Smarter." The body reads: "This certifies that ____ has counted, built, puzzled and read their way to the 100th day of school." Teacher and date lines sit at the bottom, and the 100 medallion anchors the corner.',
+        a: 'The headline is "100 Days Smarter" — "100 DAYS" in rainbow letters over spaced "SMARTER." The body reads: "This certifies that ____ has counted, built, puzzled and read their way to the 100th day of school." Date and teacher lines sit at the bottom under a rainbow CONGRATULATIONS.',
       },
       {
         q: 'What grade is the certificate for?',
@@ -258,7 +258,7 @@ export const hundredDayPages: PageDef[] = [
       },
       {
         q: 'Does it print in color or black and white?',
-        a: 'It is designed black-and-white: outline stars, outline medallion, black text. The color arrives via crayons during morning work. A color copier makes the medallion gold, but nothing on the page requires it.',
+        a: 'It is designed in full color — rainbow lettering and star confetti on white. A black-and-white printer still produces a readable certificate (the rainbow becomes gray shades), and coloring the printed stars is the classic fallback decoration job.',
       },
       {
         q: 'Do I need to cut the certificates apart?',
@@ -279,7 +279,7 @@ const HUNDRED_DAY_BLURBS: Record<string, string> = {
   '100th-day-glasses': 'The photo of the day — a "100" frame kids color, cut and tape to fit, worn for the hallway parade.',
   'roll-to-100': 'One hundred chart, two games: the all-year countdown to day 100 and a two-dice addition race for the party.',
   'when-i-am-100-writing-prompt': 'The classic writing page — draw the face, finish the five sentence starters, bind the class book.',
-  '100th-day-certificate': 'The ceremony piece — "100 Days Smarter" award with a colorable border, handed out one per student.',
+  '100th-day-certificate': 'The ceremony piece — "100 Days Smarter" award in rainbow lettering, handed out one per student.',
 };
 for (const p of hundredDayPages) {
   p.variants = familyGallery(hundredDayPages, defHref(p), HUNDRED_DAY_BLURBS);
