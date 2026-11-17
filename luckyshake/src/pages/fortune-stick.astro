@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
-import Jar3d from '../components/Jar3d.astro';
 import { SIGNS } from '../data/signs';
 
 // FAQ 数据抽成常量:页面渲染与 FAQPage 结构化数据共用一份
@@ -53,22 +52,17 @@ const faqLd = {
         Shake the jar: the stick that leaps out already carries the answer. When it lands, tell the
         jar what you asked about.
       </p>
-      <div class="ritual-row">
-        <!-- left column: the incense ritual (claim, light, offer) before the shake -->
-        <div class="ritual-incense" data-incense-root></div>
-        <!-- right column: the draw itself (moved right) -->
-        <div class="ritual-draw">
-          <div class="ritual-head">The draw</div>
-          <div class="stage-visual">
-            <div class="cup-wrap" data-cup>
-              <!-- 3D jar (three.js), shared with the homepage (Jar3d.astro):
-                   sits still until shaken — the jar rattles at an angle and one
-                   stick tumbles out, landing on the ground with its number tag
-                   up. The placeholder is the SVG jar (same art): instant paint,
-                   and the no-WebGL fallback -->
-              <Jar3d uid="fs-en" />
-            </div>
-          </div>
+      <!-- 👤 11/17 "把上香做到 3D 场景里去"：DOM 香炉组件整体下线，上香
+           仪式搬进法堂场景——青铜香炉立在供案上，状态条（领香/点香/敬香）
+           叠在场景左下角；敬香瞬间镜头推近供桌看香点燃。data-cup 守卫随
+           hero 走，页脚本用 incense.ts 原语直接驱动状态 -->
+      <div class="hall-hero" data-cup>
+        <div class="hall-cup" data-hall-cup></div>
+        <div class="incense-strip">
+          <span class="incense-strip-hint" data-incense-hint></span>
+          <button class="btn small" data-incense-btn type="button"></button>
+        </div>
+        <div class="hall-cta">
           <button class="btn" data-shake>Draw a stick</button>
           <p class="hint">A hundred sticks in the jar · one draw a day</p>
         </div>
@@ -135,6 +129,57 @@ const faqLd = {
 </Base>
 
 <style>
+  /* 11/16 M2 二轮"场景太小/不像寺庙"：抽签区整块 = 全宽法堂 hero。
+     相机在 hall3d 内部（院中望门终局 + 摇签推近供桌特写） */
+  .hall-hero {
+    position: relative;
+    height: clamp(380px, 50vw, 540px);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 2px 0 24px;
+    background: var(--bg-deep);
+  }
+  .hall-cup { position: absolute; inset: 0; cursor: pointer; }
+  .hall-cta {
+    position: absolute;
+    left: 0; right: 0; bottom: 18px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    z-index: 5;
+  }
+  .hall-cta .hint {
+    color: rgba(255, 253, 248, 0.8);
+    text-shadow: 0 1px 6px rgba(36, 31, 61, 0.6);
+    margin: 0;
+  }
+  /* 上香状态条（👤 11/17 上香进 3D 场景）：叠在场景左下角的小仪轨面板，
+     按钮状态由页脚本按 incense.ts 状态机驱动（领香→点香→敬香→燃尽） */
+  .incense-strip {
+    position: absolute;
+    left: 16px;
+    bottom: 18px;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    max-width: 250px;
+  }
+  .incense-strip-hint {
+    color: rgba(255, 253, 248, 0.88);
+    font-size: 12px;
+    line-height: 1.5;
+    text-shadow: 0 1px 6px rgba(36, 31, 61, 0.65);
+  }
+  /* 无按钮的状态（燃烧中/已燃尽）也要一眼可见：提示语升级成描边徽章，
+     否则用户以为上香流程没了（👤 11/17 真实踩坑） */
+  .incense-strip.has-no-action .incense-strip-hint {
+    border: 1px solid rgba(255, 253, 248, 0.3);
+    border-radius: 10px;
+    padding: 7px 12px;
+    background: rgba(36, 31, 61, 0.38);
+  }
+  .incense-strip .btn { font-size: 0.85rem; padding: 9px 16px; }
+
   /* 11/16 design 批:传统段从裸文本升为庙墙黄面板(--temple,功德箱同源底色),
      给页中段一个对比面;文字色保持纸面体系(ink-soft 对 temple 实测 5.5:1 过 4.5) */
   .tradition {
@@ -175,31 +220,121 @@ const faqLd = {
   import { wireShareButtons } from '../lib/shareCard';
   import { focusPanelHTML, wireFocusPanel } from '../lib/focusFlow';
   import { focusForQuestion } from '../lib/classify';
-  import { bootJar } from '../lib/jarBoot';
+  // 上香进 3D 场景（👤 11/17）：状态机原语直接进页脚本，场景香炉吃其输出
+  import {
+    loadIncense,
+    saveIncense,
+    claimIncense,
+    lightStick,
+    offerStick,
+    burnRatio,
+    INCENSE_PER_DAY,
+  } from '../lib/incense';
+  import { todayLocal } from '../lib/ration';
+  import type { Hall3D } from '../lib/hall3d';
   import type { Jar3D } from '../lib/jar3d';
 
   const cup = document.querySelector<HTMLElement>('[data-cup]');
   const btn = document.querySelector<HTMLButtonElement>('[data-shake]');
   const outcome = document.querySelector<HTMLElement>('[data-outcome]');
-  const jarHost = document.querySelector<HTMLElement>('[data-jar3d]');
-  // the incense widget loads lazily — never blocks the draw
-  const incenseRoot = document.querySelector<HTMLElement>('[data-incense-root]');
-  if (incenseRoot) {
-    const { mountIncense } = await import('../lib/incenseUi');
-    mountIncense(incenseRoot);
-  }
-  // the 3D jar loads lazily — three.js never blocks the page; bootJar is
-  // the shared boot (same promise as the component sweep) and fades the
-  // SVG placeholder out only after the canvas has painted
+  // 11/16 M2: the draw hero is now the hall scene (wide temple shot) — its
+  // jar rig feeds the SAME draw flow; WebGL-less falls back to standalone jar
+  let hall: Hall3D | null = null;
   let jar: Jar3D | null = null;
-  if (jarHost) void bootJar(jarHost).then((made) => { jar = made; });
+  const hallHost = document.querySelector<HTMLElement>('[data-hall-cup]');
+  if (hallHost) {
+    const { createHall } = await import('../lib/hall3d');
+    hall = createHall(hallHost, {
+      quick: true,
+      // 英文页挂英文匾（中文场景默认「柳寺 / 有求必应」）
+      plaques: { gate: 'WILLOW TEMPLE', hall: 'ANSWERS WITHIN' },
+    });
+    if (hall) {
+      jar = hall.jar;
+      hallHost.addEventListener('click', () => hall?.skipToAltar());
+    } else {
+      const { createJar3D } = await import('../lib/jar3d');
+      jar = createJar3D(hallHost);
+    }
+  }
   wireShareButtons(); // 揭示 banner 里的 [data-share-card](分享带日期签卡)
+
+  // ---- 上香进 3D 场景（👤 11/17 "把上香做到场景里去"）：左下状态条驱动
+  //      incense.ts 状态机，场景青铜香炉（hall.setIncense）吃燃耗输出；
+  //      点香/敬香瞬间推近供桌，看三支香立进炉灰冒青烟 ----
+  const stripHint = document.querySelector<HTMLElement>('[data-incense-hint]');
+  const stripBtn = document.querySelector<HTMLButtonElement>('[data-incense-btn]');
+  const strip = document.querySelector<HTMLElement>('.incense-strip');
+  const INCENSE_HINT = {
+    claimHint: 'Light three sticks of incense before you ask.',
+    claim: 'Claim incense',
+    lightHint: 'Three sticks claimed — light them.',
+    light: 'Light the sticks',
+    offerHint: 'Now offer them into the censer.',
+    offer: 'Offer into the censer',
+    burningHint: 'Incense burning — hold your question and draw.',
+    nudgeHint: 'Almost ash — draw your stick now.',
+    doneHint: 'Burned to ash — fresh incense tomorrow.',
+  } as const;
+  let incenseAction: (() => void) | null = null;
+  const renderIncense = (): void => {
+    const now = new Date();
+    const raw = loadIncense(now);
+    const claimed = raw.day === todayLocal(now) && raw.sticks.length > 0;
+    const burning = claimed ? raw.sticks.filter((s) => s.phase === 'burning') : [];
+    const remaining = claimed ? raw.sticks.filter((s) => s.phase !== 'burning') : [];
+    const ratios = burning.map((s) => burnRatio(s, now));
+    hall?.setIncense(ratios);
+    incenseAction = null;
+    strip?.classList.toggle('has-no-action', false);
+    if (!stripHint || !stripBtn) return;
+    if (!claimed) {
+      stripHint.textContent = INCENSE_HINT.claimHint;
+      stripBtn.textContent = INCENSE_HINT.claim;
+      incenseAction = () => {
+        saveIncense(claimIncense(new Date()));
+      };
+    } else if (remaining.length > 0) {
+      const anyLit = remaining.some((s) => s.phase === 'lit');
+      stripHint.textContent = anyLit ? INCENSE_HINT.offerHint : INCENSE_HINT.lightHint;
+      stripBtn.textContent = anyLit ? INCENSE_HINT.offer : INCENSE_HINT.light;
+      incenseAction = () => {
+        let st = loadIncense(new Date());
+        st.sticks.forEach((s, i) => {
+          if (s.phase === 'raw') st = lightStick(st, i, new Date());
+          else if (s.phase === 'lit') st = offerStick(st, i, new Date()).state;
+        });
+        saveIncense(st);
+        hall?.focusAltar(); // 敬香瞬间推近供桌，看香立进炉灰冒青烟
+        window.setTimeout(() => hall?.unfocusAltar(), 4500);
+      };
+    } else {
+      const allBurned = burning.length === INCENSE_PER_DAY && ratios.every((r) => r >= 1);
+      const nearly = burning.length > 0 && !allBurned && ratios.some((r) => r >= 0.85);
+      stripHint.textContent = allBurned
+        ? INCENSE_HINT.doneHint
+        : nearly
+          ? INCENSE_HINT.nudgeHint
+          : INCENSE_HINT.burningHint;
+      stripBtn.style.display = 'none';
+      strip?.classList.add('has-no-action'); // 无按钮态：提示升级成徽章，别让用户以为流程没了
+    }
+    if (incenseAction) stripBtn.style.display = '';
+  };
+  if (stripBtn) {
+    stripBtn.addEventListener('click', () => incenseAction?.());
+  }
+  renderIncense();
+  const incenseTick = setInterval(renderIncense, 5000);
+  window.addEventListener('pagehide', () => clearInterval(incenseTick), { once: true });
+
   if (cup && btn && outcome) {
     // 👤 11/12 无抽签机会:按钮保持原样可点(不变暗)——点击弹功德面板换机会
     const shake = () => {
       if (!gateDraw(shake)) return; // ration: one free draw a day — merit buys more
       btn.disabled = true;
       outcome.innerHTML = '';
+      hall?.focusAltar(); // 镜头先推近供桌，签动画在特写里才可读
       jar?.reset();
       jar?.startShake();
       // stage 1 (900ms): the jar settles — one random stick springs up
@@ -226,6 +361,8 @@ const faqLd = {
           });
           outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           btn.disabled = false;
+          // 结果读完滑回院中望门（用户盯着解签面板时镜头已悄然归位）
+          window.setTimeout(() => hall?.unfocusAltar(), 4200);
         }, 950);
       }, 900);
     };

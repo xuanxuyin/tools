@@ -17,6 +17,12 @@ import * as THREE from 'three';
  *     the ground, face up, number tag floating above it — that fallen
  *     stick is the draw
  *
+ * 11/16 hall refactor: the jar no longer owns a renderer — buildJar()
+ * returns a scene-agnostic rig (pivot group + api + per-frame update) so
+ * the hall scene (hall3d.ts) can hang the SAME jar on its altar. The
+ * createJar3D() mini-scene that every existing page uses is now a thin
+ * wrapper around buildJar: same canvas, same lights, same motions.
+ *
  * The static cut-out photo in the page markup stays visible as a poster
  * until this module boots; if WebGL fails, createJar3D returns null and
  * the poster remains.
@@ -31,6 +37,24 @@ export interface Jar3D {
   popStick(num: string, title: string): void;
   /** the fallen stick leaps back into the bundle, hide the tag */
   reset(): void;
+}
+
+/** a jar you can hang in any scene: add `pivot` somewhere, call `update` */
+export interface JarRig {
+  /** drag pivot — outermost group; the caller adds it to their scene */
+  pivot: THREE.Group;
+  api: Jar3D;
+  /** advance the shake/draw/settle state machine; call once per frame */
+  update(dt: number, t: number): void;
+  /** drag-to-rotate hooks (the standalone canvas wires these to pointer
+   *  events; the hall leaves them unused — a jar inside a walk-up scene
+   *  must not spin against the camera) */
+  canDrag(): boolean;
+  beginDrag(): void;
+  dragBy(dx: number, dy: number): void;
+  endDrag(): void;
+  /** dispose every geometry/material/texture under the pivot */
+  dispose(): void;
 }
 
 const LACQUER = '#d94a35'; // jar body base — vermilion (朱红) lacquer, bright
@@ -395,37 +419,8 @@ interface Stk {
   height: number;
 }
 
-export function createJar3D(host: HTMLElement): Jar3D | null {
-  let renderer: THREE.WebGLRenderer;
-  try {
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  } catch {
-    return null;
-  }
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.0;
-  const canvas = renderer.domElement;
-  canvas.style.position = 'absolute';
-  canvas.style.inset = '0';
-  host.appendChild(canvas);
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 50);
-  camera.position.set(0, 1.7, 5.05); // nudged closer — the jar shrank 11/07
-  camera.lookAt(0, 0.6, 0); // framed so the fallen stick stays in view
-
-  // warm key from the upper-left + dim ground, echoing the video's
-  // temple-window light; a soft warm rim from the rear right
-  scene.add(new THREE.HemisphereLight(0xffe4c2, 0x3a3050, 0.85));
-  const key = new THREE.DirectionalLight(0xffe6c4, 2.3);
-  key.position.set(-2.8, 4.0, 3.0);
-  scene.add(key);
-  const warm = new THREE.DirectionalLight(0xffc890, 0.75);
-  warm.position.set(3.2, 1.8, -2.6);
-  scene.add(warm);
+export function buildJar(reducedMotion: boolean): JarRig {
+  const reduced = reducedMotion;
 
   const jar = new THREE.Group();
   // the jar never spins on its own — it sits still until shaken. The
@@ -440,7 +435,6 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
   // stick, tag, landing — always plays in the plaque-forward frame
   const pivot = new THREE.Group();
   pivot.add(jar);
-  scene.add(pivot);
 
   const jarTex = makeJarTexture();
   const bodyMat = new THREE.MeshStandardMaterial({
@@ -623,6 +617,11 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
     fromRZ: number;
   } | null = null;
 
+  // drag-to-rotate lives with the state machine because startShake() must
+  // cancel an in-flight drag before snapping the pivot home
+  let dragging = false;
+  const canDrag = () => shakeT < 0 && !chosen;
+
   const api: Jar3D = {
     startShake() {
       // ritual first: cancel any drag and snap the pivot home so the whole
@@ -681,59 +680,7 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
     },
   };
 
-  // ---- render loop ---------------------------------------------------
-  const clock = new THREE.Clock();
-  const fit = () => {
-    const w = Math.max(host.clientWidth, 1);
-    const h = Math.max(host.clientHeight, 1);
-    renderer.setSize(w, h, false);
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  };
-  fit();
-  const ro = new ResizeObserver(fit);
-  ro.observe(host);
-
-  // ---- drag-to-rotate (👤 11/08) -------------------------------------
-  // hold + move spins the jar; release eases it back to plaque-forward.
-  // Locked while a stick is out or the jar is shaking — a fallen stick must
-  // never orbit the floor with the jar.
-  let dragging = false;
-  let lastPX = 0;
-  let lastPY = 0;
-  const canDrag = () => shakeT < 0 && !chosen;
-  canvas.style.cursor = 'grab';
-  canvas.style.touchAction = 'none';
-  const onDown = (e: PointerEvent) => {
-    if (!canDrag()) return;
-    dragging = true;
-    lastPX = e.clientX;
-    lastPY = e.clientY;
-    canvas.setPointerCapture(e.pointerId);
-    canvas.style.cursor = 'grabbing';
-  };
-  const onMove = (e: PointerEvent) => {
-    if (!dragging || !canDrag()) return;
-    pivot.rotation.y += (e.clientX - lastPX) * 0.011;
-    pivot.rotation.x = THREE.MathUtils.clamp(pivot.rotation.x + (e.clientY - lastPY) * 0.005, -0.2, 0.3);
-    lastPX = e.clientX;
-    lastPY = e.clientY;
-  };
-  const onUp = () => {
-    dragging = false;
-    canvas.style.cursor = 'grab';
-  };
-  canvas.addEventListener('pointerdown', onDown);
-  canvas.addEventListener('pointermove', onMove);
-  canvas.addEventListener('pointerup', onUp);
-  canvas.addEventListener('pointercancel', onUp);
-
-  const renderLoop = () => {
-    const dt = Math.min(clock.getDelta(), 0.05);
-    const t = clock.elapsedTime;
-
+  const update = (dt: number, t: number) => {
     let amp = 0;
     if (shakeT >= 0) {
       shakeT += dt;
@@ -836,7 +783,126 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
       pivot.rotation.y = y * 0.86;
       pivot.rotation.x *= 0.86;
     }
+  };
 
+  const dispose = () => {
+    pivot.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (mesh.isMesh) {
+        mesh.geometry.dispose();
+        const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        for (const mat of mats) {
+          mat.map?.dispose();
+          mat.dispose();
+        }
+      } else if ((o as THREE.Sprite).isSprite) {
+        const sp = o as THREE.Sprite;
+        sp.material.map?.dispose();
+        sp.material.dispose();
+      }
+    });
+  };
+
+  return {
+    pivot,
+    api,
+    update,
+    canDrag: () => canDrag(),
+    beginDrag: () => {
+      dragging = true;
+    },
+    dragBy(dx, dy) {
+      if (!dragging || !canDrag()) return;
+      pivot.rotation.y += dx * 0.011;
+      pivot.rotation.x = THREE.MathUtils.clamp(pivot.rotation.x + dy * 0.005, -0.2, 0.3);
+    },
+    endDrag: () => {
+      dragging = false;
+    },
+    dispose,
+  };
+}
+
+export function createJar3D(host: HTMLElement): Jar3D | null {
+  let renderer: THREE.WebGLRenderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  } catch {
+    return null;
+  }
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+  const canvas = renderer.domElement;
+  canvas.style.position = 'absolute';
+  canvas.style.inset = '0';
+  host.appendChild(canvas);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 50);
+  camera.position.set(0, 1.7, 5.05); // nudged closer — the jar shrank 11/07
+  camera.lookAt(0, 0.6, 0); // framed so the fallen stick stays in view
+
+  // warm key from the upper-left + dim ground, echoing the video's
+  // temple-window light; a soft warm rim from the rear right
+  scene.add(new THREE.HemisphereLight(0xffe4c2, 0x3a3050, 0.85));
+  const key = new THREE.DirectionalLight(0xffe6c4, 2.3);
+  key.position.set(-2.8, 4.0, 3.0);
+  scene.add(key);
+  const warm = new THREE.DirectionalLight(0xffc890, 0.75);
+  warm.position.set(3.2, 1.8, -2.6);
+  scene.add(warm);
+
+  const rig = buildJar(reduced);
+  scene.add(rig.pivot);
+
+  // ---- render loop ---------------------------------------------------
+  const clock = new THREE.Clock();
+  const fit = () => {
+    const w = Math.max(host.clientWidth, 1);
+    const h = Math.max(host.clientHeight, 1);
+    renderer.setSize(w, h, false);
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  };
+  fit();
+  const ro = new ResizeObserver(fit);
+  ro.observe(host);
+
+  // ---- drag-to-rotate (👤 11/08) -------------------------------------
+  // hold + move spins the jar; release eases it back to plaque-forward.
+  // Locked while a stick is out or the jar is shaking — a fallen stick must
+  // never orbit the floor with the jar.
+  canvas.style.cursor = 'grab';
+  canvas.style.touchAction = 'none';
+  let lastPX = 0;
+  let lastPY = 0;
+  const onDown = (e: PointerEvent) => {
+    if (!rig.canDrag()) return;
+    rig.beginDrag();
+    lastPX = e.clientX;
+    lastPY = e.clientY;
+    canvas.setPointerCapture(e.pointerId);
+    canvas.style.cursor = 'grabbing';
+  };
+  const onMove = (e: PointerEvent) => rig.dragBy(e.clientX - lastPX, e.clientY - lastPY);
+  const onUp = () => {
+    rig.endDrag();
+    canvas.style.cursor = 'grab';
+  };
+  canvas.addEventListener('pointerdown', onDown);
+  canvas.addEventListener('pointermove', onMove);
+  canvas.addEventListener('pointerup', onUp);
+  canvas.addEventListener('pointercancel', onUp);
+
+  const renderLoop = () => {
+    const dt = Math.min(clock.getDelta(), 0.05);
+    const t = clock.elapsedTime;
+    rig.update(dt, t);
     renderer.render(scene, camera);
   };
   renderer.setAnimationLoop(renderLoop);
@@ -847,5 +913,5 @@ export function createJar3D(host: HTMLElement): Jar3D | null {
     { rootMargin: '120px' },
   ).observe(host);
 
-  return api;
+  return rig.api;
 }

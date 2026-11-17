@@ -184,7 +184,10 @@ function holderStickSvg(phase: 'raw' | 'lit'): string {
 
 /* ---- mount ---- */
 
-export function mountIncense(root: HTMLElement): void {
+export function mountIncense(
+  root: HTMLElement,
+  opts?: { onChange?: (burningRatios: number[]) => void },
+): void {
   const t = COPY[lang()];
   root.innerHTML = `
     <div class="incense-widget">
@@ -237,6 +240,8 @@ export function mountIncense(root: HTMLElement): void {
       && burning.some((s) => burnRatio(s, now) >= 0.85)
       && (rs.canFree || rs.extras > 0);
     if (hint) hint.textContent = !claimed ? t.claimHint : allBurned ? t.done : nearlyAsh ? t.nudge : burning.length > 0 ? t.watching : t.stepHint;
+    // 11/17 M2.2: 把炉香状态推给 3D 场景（hall 香炉的香高/燃点/青烟都吃这个）
+    opts?.onChange?.(burning.map((s) => burnRatio(s, now)));
   };
   render();
 

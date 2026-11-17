@@ -32,7 +32,13 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
       </div>
     </div>
     <div class="hero-stage">
-      <Jar3d uid="hero" class="hero-jar" />
+      <!-- 11/17 M2 铺开：hero 右栏换 hall3d 法堂窗（院中望门，英文匾），
+           点击跳过行进；WebGL 起不来退回独立签筒（同 Jar3d 约定） -->
+      <div
+        class="hall-cup"
+        data-hall-hero
+        style="position:relative;width:min(460px,100%);aspect-ratio:5/4;border-radius:var(--radius);overflow:hidden;background:var(--bg-deep);box-shadow:var(--shadow);cursor:pointer"
+      ></div>
     </div>
   </section>
 
@@ -132,6 +138,23 @@ const GRADE_LABEL: Record<typeof sign.grade, string> = {
 
 <script>
   import { mountMeritBox } from '../lib/rationUi';
+  import type { Hall3D } from '../lib/hall3d';
   const root = document.querySelector<HTMLElement>('[data-merit-root]');
   if (root) mountMeritBox(root);
+
+  // 11/17 M2 铺开：hero 法堂窗（quick 行进 + 英文匾），WebGL 失败退独立签筒
+  const heroHost = document.querySelector<HTMLElement>('[data-hall-hero]');
+  if (heroHost) {
+    const { createHall } = await import('../lib/hall3d');
+    const hall: Hall3D | null = createHall(heroHost, {
+      quick: true,
+      plaques: { gate: 'WILLOW TEMPLE', hall: 'ANSWERS WITHIN' },
+    });
+    if (hall) {
+      heroHost.addEventListener('click', () => hall.skipToAltar());
+    } else {
+      const { createJar3D } = await import('../lib/jar3d');
+      createJar3D(heroHost);
+    }
+  }
 </script>

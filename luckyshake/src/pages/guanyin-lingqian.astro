@@ -18,7 +18,6 @@
  */
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
-import Jar3d from '../components/Jar3d.astro';
 import { GUANYIN_LOTS, guanyinNumZh, type GuanyinLot } from '../data/guanyin100';
 
 const GRADE_META: Record<GuanyinLot['grade'], { label: string; tone: string }> = {
@@ -92,7 +91,13 @@ const ld = [
       <button class="gy-mode" data-mode="deck" type="button" aria-pressed="false">时运灵签</button>
     </div>
     <div class="stage-visual">
-      <Jar3d uid="gy" />
+      <!-- 11/17 M2 铺开：舞台窗换 hall3d 法堂（中文页默认「柳寺/有求必应」匾），
+           摇签仪式同一 jar rig；WebGL 起不来退回独立签筒窗 -->
+      <div
+        class="hall-cup"
+        data-hall-cup
+        style="position:relative;width:min(560px,100%);aspect-ratio:16/10;margin:0 auto;border-radius:var(--radius);overflow:hidden;background:var(--bg-deep);cursor:pointer"
+      ></div>
     </div>
     <div class="hero-cta">
       <button class="btn" data-gy-draw>摇一支签</button>
@@ -470,16 +475,27 @@ const ld = [
   import { wireShareButtons } from '../lib/shareCard';
   import { focusPanelHTML, wireFocusPanel } from '../lib/focusFlow';
   import { focusForQuestion } from '../lib/classify';
-  import { bootJar } from '../lib/jarBoot';
   import type { Jar3D } from '../lib/jar3d';
 
   const btn = document.querySelector<HTMLButtonElement>('[data-gy-draw]');
   const outcome = document.querySelector<HTMLElement>('[data-gy-outcome]');
-  const jarHost = document.querySelector<HTMLElement>('[data-jar3d]');
+  // 11/17 M2 铺开：舞台窗 = 法堂场景（同 jar rig 喂既有摇签流），WebGL 失败退独立签筒
+  let hall: import('../lib/hall3d').Hall3D | null = null;
+  let jar: Jar3D | null = null;
+  const hallHost = document.querySelector<HTMLElement>('[data-hall-cup]');
+  if (hallHost) {
+    const { createHall } = await import('../lib/hall3d');
+    hall = createHall(hallHost, { quick: true });
+    if (hall) {
+      jar = hall.jar;
+      hallHost.addEventListener('click', () => hall?.skipToAltar());
+    } else {
+      const { createJar3D } = await import('../lib/jar3d');
+      jar = createJar3D(hallHost);
+    }
+  }
   // hint 两模式同一句(机制说明不进 hint;判词内容用户自己会看,👤 11-13 撤词)
   let mode: 'trad' | 'deck' = 'trad';
-  let jar: Jar3D | null = null;
-  if (jarHost) void bootJar(jarHost).then((made) => { jar = made; });
   wireShareButtons(); // 时运灵签揭示 banner 里的 [data-share-card]
 
   // ---- 签谱解锁制(👤 11-13:抽到才开,同英文签库姿态) ----

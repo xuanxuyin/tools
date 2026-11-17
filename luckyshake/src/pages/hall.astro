@@ -1,0 +1,193 @@
+---
+/**
+ * 实景法堂 · M1 原型页（👤 11/16 拍板方向，未入导航/sitemap，noindex）。
+ * 石阶→山门→供桌三段镜头 + 真 jar3d 摇签；WebGL 失败退静态海报并引导去
+ * 工具页（与 Jar3d 同一渐进增强约定）。验收后此页的机制迁进首页/工具页。
+ */
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>实景法堂 · 原型 — Fortune Willow</title>
+    <style>
+      :root {
+        --bg: #f3eee3; --bg-deep: #241f3d; --card: #fffdf8; --ink: #2a2444;
+        --ink-soft: #5c5470; --line: #e6ddcc; --accent: #b45309;
+        --gold: #d4a017; --temple: #f4e4b4;
+      }
+      * { margin: 0; box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
+        color: var(--ink); background: var(--bg-deep); overflow: hidden;
+      }
+      .hall-stage { position: fixed; inset: 0; }
+      .hall-stage canvas { display: block; }
+      /* WebGL 兜底：indigo→暖琥珀的静置海报（无 3D 时仍有氛围） */
+      .hall-stage.hall-fallback {
+        background:
+          radial-gradient(120% 80% at 50% 78%, rgba(180, 83, 9, 0.35), rgba(36, 31, 61, 0) 60%),
+          linear-gradient(to bottom, #241f3d, #2e2748 55%, #453154);
+      }
+      .brand { position: fixed; top: 22px; left: 26px; color: var(--card); z-index: 5;
+               text-shadow: 0 1px 8px rgba(36, 31, 61, 0.55); }
+      .brand .mark { font-size: 15px; letter-spacing: 7px; opacity: 0.92; }
+      .brand .sub { margin-top: 5px; font-size: 11px; letter-spacing: 3px; opacity: 0.72; }
+      .seal { display: inline-block; margin-right: 10px; padding: 5px 7px 4px; border-radius: 6px;
+              background: #b03a2a; color: var(--card); font-size: 13px; line-height: 1;
+              box-shadow: 0 1px 6px rgba(36, 31, 61, 0.4); }
+      .journey-hint { position: fixed; left: 0; right: 0; bottom: 30px; text-align: center;
+                      color: rgba(255, 253, 248, 0.72); font-size: 12px; letter-spacing: 3px;
+                      text-shadow: 0 1px 6px rgba(36, 31, 61, 0.6); z-index: 5;
+                      transition: opacity 0.5s; }
+      .journey-hint.off { opacity: 0; }
+      .exit { position: fixed; top: 26px; right: 26px; z-index: 6; color: rgba(255, 253, 248, 0.66);
+              font-size: 12px; letter-spacing: 2px; text-decoration: none;
+              border-bottom: 1px solid rgba(255, 253, 248, 0.35); padding-bottom: 2px;
+              transition: color 0.25s, border-color 0.25s; }
+      .exit:hover { color: var(--card); border-color: var(--card); }
+      .cta-wrap { position: fixed; left: 0; right: 0; bottom: 42px; z-index: 6;
+                  display: flex; flex-direction: column; align-items: center; gap: 10px;
+                  opacity: 0; transition: opacity 0.6s; }
+      .cta-wrap.on { opacity: 1; }
+      .cta { padding: 14px 46px; border-radius: 14px; border: 0; cursor: pointer;
+             background: var(--accent); color: var(--card); font: inherit; font-size: 17px;
+             letter-spacing: 6px; text-decoration: none;
+             box-shadow: 0 1px 2px rgba(42, 36, 68, 0.06), 0 8px 24px -8px rgba(36, 31, 61, 0.55);
+             transition: background-color 0.25s; }
+      .cta:hover { background: #9a4708; }
+      .cta-note { color: rgba(255, 253, 248, 0.75); font-size: 12px; letter-spacing: 2px;
+                  text-shadow: 0 1px 6px rgba(36, 31, 61, 0.6); }
+      /* 结果面板（纸庙 token，与效果图 proto 同款） */
+      .slip { position: fixed; left: 50%; bottom: -360px; transform: translateX(-50%);
+              width: min(430px, calc(100% - 28px)); z-index: 8; background: var(--card);
+              border: 1px solid var(--line); border-radius: 14px;
+              box-shadow: 0 1px 2px rgba(42, 36, 68, 0.06), 0 18px 48px -16px rgba(36, 31, 61, 0.5);
+              padding: 22px 24px 20px; transition: bottom 0.45s cubic-bezier(0.22, 0.9, 0.3, 1); }
+      .slip.on { bottom: 26px; }
+      .slip .head { display: flex; align-items: center; gap: 12px; }
+      .slip .grade { flex: 0 0 auto; width: 52px; height: 52px; border-radius: 10px;
+                     background: #b03a2a; color: var(--card); display: flex; align-items: center;
+                     justify-content: center; font-size: 21px; letter-spacing: 1px;
+                     box-shadow: inset 0 0 0 2px rgba(255, 253, 248, 0.28); }
+      .slip .no { font-size: 13px; letter-spacing: 3px; color: var(--ink-soft); }
+      .slip .src { margin-top: 4px; font-size: 19px; letter-spacing: 2px; }
+      .slip .verse { margin: 14px 0 4px; padding: 12px 14px; background: var(--temple);
+                     border-radius: 10px; font-size: 15px; line-height: 1.9; letter-spacing: 1px; }
+      .slip .verse em { font-style: normal; color: var(--accent); }
+      .slip .lucky { margin-top: 10px; font-size: 12px; letter-spacing: 2px; color: var(--ink-soft); }
+      .slip .row { margin-top: 14px; display: flex; gap: 10px; }
+      .slip .btn { flex: 1; padding: 12px 0; border-radius: 10px; font: inherit; font-size: 15px;
+                   letter-spacing: 4px; text-align: center; cursor: pointer; display: inline-block;
+                   transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+                   text-decoration: none; }
+      .slip .btn.primary { background: var(--accent); color: var(--card); border: 1px solid var(--accent); }
+      .slip .btn.primary:hover { background: #9a4708; }
+      .slip .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
+      .slip .btn.ghost:hover { border-color: var(--accent); }
+      @media (max-width: 640px) {
+        .brand { left: 18px; }
+        .slip { padding: 18px 18px 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="hall-stage" data-hall>
+      <header class="brand">
+        <div class="mark"><span class="seal">柳</span>FORTUNE WILLOW</div>
+        <div class="sub">THE WILLOW ORACLE TEMPLE</div>
+      </header>
+
+      <a class="exit" href="/">← 返回常规站</a>
+      <div class="journey-hint" data-hint>轻触任意处 · 跳过行进</div>
+
+      <div class="cta-wrap" data-cta>
+        <a class="cta" data-shake href="javascript:void(0)">摇 签 问 事</a>
+        <div class="cta-note">轻摇签筒 · 静候一签</div>
+      </div>
+
+      <section class="slip" data-slip>
+        <div class="head">
+          <div class="grade">上上</div>
+          <div>
+            <div class="no">NO. 1 · GUAN YIN ORACLE</div>
+            <div class="src">黄大仙灵签 · 第一签</div>
+          </div>
+        </div>
+        <div class="verse"><em>功名遂。求财丰。</em> 六畜吉。家宅隆。病即愈。若谋望，尽亨通。</div>
+        <div class="lucky">幸运数字 1 · 2 · 3　|　Lucky numbers</div>
+        <div class="row">
+          <a class="btn primary" href="/fortune-stick">解签详情</a>
+          <button class="btn ghost" data-again type="button">再摇一支</button>
+        </div>
+      </section>
+
+      <noscript>
+        <p style="position:fixed;left:0;right:0;bottom:40px;text-align:center;color:#fffdf8;padding:0 24px;">
+          实景法堂需要 JavaScript。常规抽签工具不受影响：<a href="/fortune-stick" style="color:#f4e4b4;">去摇签 →</a>
+        </p>
+      </noscript>
+    </main>
+
+    <script>
+      import { createHall } from '../lib/hall3d';
+
+      const stage = document.querySelector<HTMLElement>('[data-hall]');
+      if (stage) {
+        const cta = stage.querySelector<HTMLElement>('[data-cta]');
+        const hint = stage.querySelector<HTMLElement>('[data-hint]');
+        const slip = stage.querySelector<HTMLElement>('[data-slip]');
+        const shakeBtn = stage.querySelector<HTMLElement>('[data-shake]');
+        const again = stage.querySelector<HTMLElement>('[data-again]');
+        const hall = createHall(stage, new URLSearchParams(location.search).get('lang') === 'en'
+          ? { plaques: { gate: 'WILLOW TEMPLE', hall: 'ANSWERS WITHIN' } }
+          : undefined);
+
+        if (!hall) {
+          // WebGL 起不来：静置海报兜底，CTA 直跳工具页
+          stage.classList.add('hall-fallback');
+          hint?.classList.add('off');
+          if (shakeBtn) {
+            const a = document.createElement('a');
+            a.href = '/fortune-stick';
+            a.className = 'cta';
+            a.textContent = '去 摇 签 →';
+            shakeBtn.replaceWith(a);
+          }
+        } else {
+          let arrived = false;
+          const snap = new URLSearchParams(location.search).get('snap');
+          // 评审钩子：截帧定位（steps/gate 冻结机位；draw 到位后自动演抽签）
+          if (snap === 'steps') hall.seek(0.9);
+          else if (snap === 'gate') hall.seek(3.4);
+          hall.onArrive = () => {
+            arrived = true;
+            hint?.classList.add('off');
+            cta?.classList.add('on');
+            if (snap === 'draw') {
+              hall.jar.startShake();
+              window.setTimeout(() => hall.jar.popStick('1', '黄大仙灵签 · 上上'), 1000);
+              window.setTimeout(() => slip?.classList.add('on'), 2700);
+            }
+          };
+          stage.addEventListener('click', (e) => {
+            if (!arrived && !(e.target as HTMLElement).closest('[data-hint]')) hall.skipToAltar();
+          });
+          shakeBtn?.addEventListener('click', () => {
+            if (!arrived) return;
+            hall.jar.startShake();
+            window.setTimeout(() => hall.jar.popStick('1', '黄大仙灵签 · 上上'), 1000);
+            window.setTimeout(() => slip?.classList.add('on'), 2700);
+          });
+          again?.addEventListener('click', () => {
+            slip?.classList.remove('on');
+            hall.jar.reset();
+          });
+        }
+      }
+    </script>
+  </body>
+</html>
