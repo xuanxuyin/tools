@@ -179,6 +179,16 @@ const faqLd = {
     background: rgba(36, 31, 61, 0.38);
   }
   .incense-strip .btn { font-size: 0.85rem; padding: 9px 16px; }
+  /* 👤 11/17 手机反馈"上香和抽签按钮太近"：小屏上香条挪到场景左上角，
+     抽签按钮独守底部；桌面宽屏才同底分布 */
+  @media (max-width: 640px) {
+    .incense-strip {
+      top: 14px;
+      left: 14px;
+      bottom: auto;
+      max-width: 230px;
+    }
+  }
 
   /* 11/16 design 批:传统段从裸文本升为庙墙黄面板(--temple,功德箱同源底色),
      给页中段一个对比面;文字色保持纸面体系(ink-soft 对 temple 实测 5.5:1 过 4.5) */
