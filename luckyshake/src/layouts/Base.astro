@@ -30,6 +30,18 @@ const navEn = [
 const here = Astro.url.pathname.replace(/index\.html$/, '').replace(/(?!^|\/)$/, '/');
 const isActive = (href: string) => (href === '/' ? here === '/' : here.startsWith(href));
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+// 站级实体 LD —— 11/17 GSC 数据批 GEO:给生成式引擎一个可锚定的
+// WebSite 实体(名称/定位一句话),全站每页带出
+const siteLd = Astro.site
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Fortune Willow',
+      url: Astro.site.href,
+      description:
+        'Free fortune-telling and decision tools — Chinese fortune sticks (kau cim), number oracle, magic 8-ball, yes-or-no and coin flip — every answer hand-written, with readings for love, money, and career.',
+    }
+  : null;
 ---
 <!doctype html>
 <html lang={zhLive ? 'zh-CN' : 'en'}>
@@ -54,6 +66,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
       data-api="https://in.pvuv.ai"></script>
     <title>{title}</title>
     <meta name="description" content={description} />
+    {siteLd && <script type="application/ld+json" set:html={JSON.stringify(siteLd)} />}
     {canonical && !noindex && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex" />}
     <meta property="og:title" content={title} />

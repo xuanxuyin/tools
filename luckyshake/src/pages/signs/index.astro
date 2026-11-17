@@ -1,11 +1,31 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
 import { SIGNS } from '../../data/signs';
+
+// 11/17 GSC 数据批：chinese fortune sticks number meanings 排 #30 —— 标题
+// 与 intro 补 number/meanings 意图词，数字系统说明段全量 SSR（GEO 可抽取）
+const faqItems = [
+  { q: 'How many sticks are in a Chinese fortune stick set?', a: 'The classic temple jar holds 100 numbered sticks — the “Guanyin hundred” is the most widespread set, and ours is modeled on it. Smaller 36- and 60-stick sets exist in regional temples, but 100 is the canonical count.' },
+  { q: 'What do the numbers on fortune sticks mean?', a: 'The number is the stick’s identity, not its score. Each of the 100 numbers maps to exactly one fixed fortune — a verse, a story, and readings for love, money, and career. When your stick leaps out, its number is the address: it tells the reader which slip to pull. Look any number up in the list above to see its name and meaning.' },
+  { q: 'Are higher numbers luckier?', a: 'No — a stick’s luck is its grade, not its number. Every grade from Blessing to Gentle Warning is spread across all 100 numbers, so №88 and №12 carry the same range of fortunes. The number tells you which fortune you got; the grade tells you how to take it.' },
+];
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 ---
 <Base
-  title="The 100 Fortunes — Every Hand-Written Fortune in the Library | Fortune Willow"
-  description="Browse the full library of Fortune Willow's 100 hand-written fortunes — every sign's name, story, and readings for love, money, and career. Signs open in full once you've drawn them."
+  title="Chinese Fortune Stick Numbers 1–100 — Names & Meanings | Fortune Willow"
+  description="All 100 Chinese fortune stick numbers with their names and meanings — the full hand-written kau cim library, each with readings for love, money, and career."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
   <section class="section">
     <div class="kicker">The library</div>
     <h1>The 100 fortunes</h1>
@@ -27,6 +47,37 @@ import { SIGNS } from '../../data/signs';
       ))}
     </div>
   </section>
+
+  <section class="section">
+    <div class="kicker">How the numbers work</div>
+    <h2>What the numbers on Chinese fortune sticks mean</h2>
+    <div class="lore">
+      <p>
+        In a temple jar, every bamboo stick carries a number from 1 to 100 — and the number is not
+        a score or a ranking. It is an address. When your stick leaps out, its number tells the
+        reader which slip to pull from the drawer: that slip holds the fortune, a short verse, the
+        old story behind it, and a verdict for the question you were holding.
+      </p>
+      <p>
+        This library keeps that address system and rewrites the slips in plain English. Each number
+        above opens a page with the sign’s name and meaning — its story, readings for love, money,
+        and career, and the grade to take it with: a Blessing, a Nudge, or a Gentle Warning. Draw
+        first, read in full: a sign unlocks on your shelf once it has landed in your hands on any
+        tool.
+      </p>
+      <p>
+        The temple texts behind this system have their own page here too: the traditional Guanyin
+        hundred, in Chinese with both editions of every poem and the classical verdicts — <a
+          href="/guanyin-lingqian/">browse the full Guanyin oracle</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">Questions</div>
+    <h2>Fortune stick numbers FAQ</h2>
+    <Faq items={faqItems} />
+  </section>
   <script>
     import { applyGating } from '../../lib/unlock';
     applyGating();
@@ -37,5 +88,16 @@ import { SIGNS } from '../../data/signs';
     @media (min-width: 900px) {
       .scene-list { grid-template-columns: 1fr 1fr; align-items: start; }
     }
+    /* 11/17 GSC 数据批:数字系统说明段沿用 fortune-stick .tradition 同源的
+       庙墙黄面板(纸庙 token 体系内),GEO 抽取的正文有实体容器 */
+    .lore {
+      max-width: 720px;
+      background: var(--temple);
+      border: 1px solid color-mix(in srgb, var(--gold), transparent 55%);
+      border-radius: var(--radius);
+      padding: 20px 24px 0;
+    }
+    .lore p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.75; margin: 0 0 14px; }
+    .lore a { font-weight: 600; }
   </style>
 </Base>

@@ -1,11 +1,48 @@
 ---
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
+
+// FAQ 数据抽成常量:页面渲染与 FAQPage 结构化数据共用一份(同 fortune-stick 形态)
+const faqItems = [
+  { q: 'Is the flip fair?', a: 'Yes — exactly 50/50, decided the instant you click by your browser’s random number generator. A physical coin has a slight bias; this one doesn’t even have that.' },
+  { q: 'Should I pick heads or tails?', a: 'It genuinely doesn’t matter — a fair coin has no favorite side, so heads is not luckier than tails. What matters is the ritual around the call: choose your side before the flip, decide what each side means, and accept the first result. If you feel the urge to re-flip, you were rooting for one side all along — and that is your actual answer.' },
+  { q: 'Heads is yes?', a: 'That’s the convention here: heads = yes, tails = no. If your group runs it the other way, the coin won’t mind — just agree before you flip.' },
+  { q: 'Can I flip the same question twice?', a: 'You can re-flip, but the classic rule stands: first flip counts — best of three is for playoff overtime. If you keep flipping, you don’t want the coin’s answer. You want yours, and you probably already have it.' },
+  { q: 'Why flip a coin at all?', a: 'Because when the options are genuinely close, deciding costs more than the difference between them. A coin ends the loop instantly — and your reaction to the result tells you which one you actually wanted.' },
+  { q: 'Why do I keep getting the same side?', a: 'Randomness clumps. A fair coin lands seven heads out of ten often enough that nobody who studies chance blinks — streaks feel meaningful and almost never are. If the same side keeps coming up, the coin isn’t stuck; your question probably is.' },
+];
+
+// 结构化数据:工具本体(免费 WebApplication)+ FAQ 块 —— 11/17 GSC 数据批
+// (heads or tails 排 #9-10.5,原话问题进 FAQ;schema 照 fortune-stick 形态)
+const toolLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Yes or No Coin Flip — Heads or Tails Online',
+  alternateName: 'Heads or Tails',
+  url: new URL('/coin-flip/', Astro.site).href,
+  applicationCategory: 'EntertainmentApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  description:
+    'Flip a virtual coin online, free: a fair 50/50 heads-or-tails answer in one click — heads is yes, tails is no, with zero pocket change required.',
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 ---
 <Base
   title="Yes or No Coin Flip — Heads or Tails Online | Fortune Willow"
   description="Flip a virtual coin for an instant heads-or-tails answer. Heads is yes, tails is no — the oldest tiebreaker in history, now with zero pocket change."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(toolLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
   <section class="tool-shell card">
     <div class="tool-stage">
       <div class="kicker">Heads yes · tails no</div>
@@ -52,13 +89,7 @@ import Faq from '../components/Faq.astro';
   <section class="section">
     <div class="kicker">Questions</div>
     <h2>Coin Flip FAQ</h2>
-    <Faq items={[
-      { q: 'Is the flip fair?', a: 'Yes — exactly 50/50, decided the instant you click by your browser’s random number generator. A physical coin has a slight bias; this one doesn’t even have that.' },
-      { q: 'Heads is yes?', a: 'That’s the convention here: heads = yes, tails = no. If your group runs it the other way, the coin won’t mind — just agree before you flip.' },
-      { q: 'Can I flip the same question twice?', a: 'You can re-flip, but the classic rule stands: first flip counts — best of three is for playoff overtime. If you keep flipping, you don’t want the coin’s answer. You want yours, and you probably already have it.' },
-      { q: 'Why flip a coin at all?', a: 'Because when the options are genuinely close, deciding costs more than the difference between them. A coin ends the loop instantly — and your reaction to the result tells you which one you actually wanted.' },
-      { q: 'Why do I keep getting the same side?', a: 'Randomness clumps. A fair coin lands seven heads out of ten often enough that nobody who studies chance blinks — streaks feel meaningful and almost never are. If the same side keeps coming up, the coin isn’t stuck; your question probably is.' },
-    ]} />
+    <Faq items={faqItems} />
   </section>
 </Base>
 

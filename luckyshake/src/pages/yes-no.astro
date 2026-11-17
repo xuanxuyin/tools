@@ -1,11 +1,46 @@
 ---
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
+
+// FAQ 数据抽成常量:页面渲染与 FAQPage 结构化数据共用一份(同 fortune-stick 形态)
+const faqItems = [
+  { q: 'Is it really 50/50?', a: 'Yes — a fair binary draw in your browser, no weighting, no memory. If you get Yes five times in a row, that’s randomness being correctly weird, not the button having opinions.' },
+  { q: 'Why does it give a reason?', a: 'A bare answer ends the moment; a reason starts the next one. The “why” line names the decision dynamic you’re actually in — sunk cost, asymmetry, missing permission — which is useful long after the coin lands.' },
+  { q: 'Should I trust it for big decisions?', a: 'Use it as a tiebreaker, not an oracle. The honest test: flip, then notice your gut’s reaction to the result. That reaction is your actual answer — the button just took your pulse.' },
+  { q: 'Do you save my question?', a: 'Nope. The text box never sends anything anywhere — there’s no server on the other end of this page’s randomness. Refresh and it’s gone.' },
+  { q: 'What should I ask?', a: 'One concrete, close-call question — “send the email today or tomorrow?” beats “will my life get better?”. The reason line earns its keep on real decisions: it names the dynamic you’re actually stuck in.' },
+];
+
+// 结构化数据:工具本体(免费 WebApplication)+ FAQ 块 —— 11/17 GSC 数据批
+// (schema 照 fortune-stick 形态,工具页全量补齐)
+const toolLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Yes or No Oracle',
+  url: new URL('/yes-no/', Astro.site).href,
+  applicationCategory: 'EntertainmentApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  description:
+    'Ask the yes or no oracle for an instant answer with the reason behind it and one thing to do next — a fair 50/50 verdict, free, no sign-up.',
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 ---
 <Base
   title="Yes or No Oracle — Instant Answer With a Reason | Fortune Willow"
   description="Ask the yes or no oracle for an instant answer — plus the reason behind it and one thing to do next. Type your question or just hit decide. Free, no sign-up."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(toolLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
   <section class="tool-shell card">
     <div class="tool-stage">
       <div class="kicker">One tap · one verdict</div>
@@ -48,13 +83,7 @@ import Faq from '../components/Faq.astro';
   <section class="section">
     <div class="kicker">Questions</div>
     <h2>Yes or No FAQ</h2>
-    <Faq items={[
-      { q: 'Is it really 50/50?', a: 'Yes — a fair binary draw in your browser, no weighting, no memory. If you get Yes five times in a row, that’s randomness being correctly weird, not the button having opinions.' },
-      { q: 'Why does it give a reason?', a: 'A bare answer ends the moment; a reason starts the next one. The “why” line names the decision dynamic you’re actually in — sunk cost, asymmetry, missing permission — which is useful long after the coin lands.' },
-      { q: 'Should I trust it for big decisions?', a: 'Use it as a tiebreaker, not an oracle. The honest test: flip, then notice your gut’s reaction to the result. That reaction is your actual answer — the button just took your pulse.' },
-      { q: 'Do you save my question?', a: 'Nope. The text box never sends anything anywhere — there’s no server on the other end of this page’s randomness. Refresh and it’s gone.' },
-      { q: 'What should I ask?', a: 'One concrete, close-call question — “send the email today or tomorrow?” beats “will my life get better?”. The reason line earns its keep on real decisions: it names the dynamic you’re actually stuck in.' },
-    ]} />
+    <Faq items={faqItems} />
   </section>
 </Base>
 

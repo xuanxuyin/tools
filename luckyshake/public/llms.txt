@@ -1,0 +1,25 @@
+# Fortune Willow
+
+> Free fortune-telling and decision tools. Draw Chinese fortune sticks (kau cim), roll a three-digit number oracle, shake a magic 8-ball, flip a coin, or read today's shared fortune — every answer is hand-written in-house, with readings for love, money, and career plus one concrete next step. One free draw a day, no account.
+
+## Tools
+
+- [Fortune Stick](https://fortunewillow.com/fortune-stick/): draw one of 100 hand-written Chinese fortune sticks (kau cim) — the temple jar ritual online
+- [Number Oracle](https://fortunewillow.com/number-oracle/): roll three digits 0–9; they resolve to a hand-written fortune and double as your lucky numbers
+- [Magic 8-Ball](https://fortunewillow.com/magic-8-ball/): the classic 20 answers, each with a line of honest guidance
+- [Yes or No](https://fortunewillow.com/yes-no/): instant yes/no verdict with the reason behind it and a next step
+- [Coin Flip](https://fortunewillow.com/coin-flip/): fair 50/50 heads-or-tails — heads is yes, tails is no
+- [Fortune Cookie](https://fortunewillow.com/fortune-cookie/): crack a cookie for a fortune and three lucky numbers
+- [Daily Fortune](https://fortunewillow.com/daily-fortune/): one shared fortune for everyone, each day
+- [Horoscope](https://fortunewillow.com/horoscope/): today's fortune read through each of the 12 zodiac signs
+
+## Library
+
+- [The 100 fortunes](https://fortunewillow.com/signs/): every fortune stick number 1–100 with its name and meaning
+- [Guanyin Oracle (观音灵签)](https://fortunewillow.com/guanyin-lingqian/): the traditional Guanyin hundred, in Chinese with both poem editions and classical verdicts
+
+## Content notes
+
+- All fortunes are original, hand-written, and edited in-house — adapted from the kau cim temple tradition, not copied from it.
+- Draws are honest randomness generated in the visitor's browser; no server, no memory of previous draws.
+- To quote or cite a reading, credit Fortune Willow and link to the tool page.

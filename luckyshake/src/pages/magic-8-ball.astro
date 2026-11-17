@@ -12,11 +12,48 @@ const GROUPS = [
   { label: 'Hazy · 5 answers', tone: 'neutral' as const, items: hazyAnswers },
   { label: 'No · 5 answers', tone: 'no' as const, items: noAnswers },
 ];
+
+// FAQ 数据抽成常量:页面渲染与 FAQPage 结构化数据共用一份(同 fortune-stick 形态)
+const faqItems = [
+  { q: 'Are these the real classic answers?', a: 'Yes — exactly the set the physical toy uses, from "It is certain" to "Very doubtful". Each one carries an extra line of honest guidance, because we are not a plastic ball.' },
+  { q: 'Is the answer random?', a: 'Completely — a fair 1-in-20 draw generated in your browser. The ball keeps no memory, so shaking again is a fresh draw, not a negotiation.' },
+  { q: 'Does shaking the 8 ball harder — or more times — change the answer?', a: 'No. Each shake is an independent 1-in-20 draw; the ball has no memory and no mood, so shaking harder, longer, or ten times in a row just re-rolls the same fair dice. The toy was designed for one decisive shake, and this one works the same way: ask once, shake once, read the guidance line that comes with the answer.' },
+  { q: 'Can it actually predict anything?', a: 'No, and neither can the toy — that is the deal. What it reliably does is break decision loops, expose what you were hoping to hear, and hand the tiebreaker to chance so the group can get on with dinner.' },
+  { q: 'Why does every answer come with advice?', a: 'Because "outlook not so good" without context is just weather. Our gloss tells you what the answer means for your next step — the layer every other 8-ball site skips.' },
+  { q: 'What is the best question to ask?', a: 'One where both answers are survivable and you are just stuck on the swap cost. For questions involving health, safety, or other people’s rights, the ball politely defers to professionals — and so should you.' },
+];
+
+// 结构化数据:工具本体(免费 WebApplication)+ FAQ 块 —— 11/17 GSC 数据批
+// (shaking 8 ball 排 #11,shaking 措辞进 FAQ;schema 照 fortune-stick 形态)
+const toolLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Magic 8-Ball Online',
+  alternateName: 'Magic 8 Ball',
+  url: new URL('/magic-8-ball/', Astro.site).href,
+  applicationCategory: 'EntertainmentApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  description:
+    'Shake the magic 8-ball online, free: ask your yes-or-no question, shake the ball, and get one of the 20 classic answers with an honest line on what to do next.',
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 ---
 <Base
   title="Magic 8-Ball Online — Ask, Shake, Get the Answer | Fortune Willow"
   description="Shake the magic 8-ball online: ask your yes-or-no question and get one of the 20 classic answers, plus the honest read on what to do next. Free, instant, no sign-up."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(toolLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
   <section class="tool-shell card">
     <div class="tool-stage">
       <div class="kicker">The classic 20 answers</div>
@@ -81,13 +118,7 @@ const GROUPS = [
   <section class="section">
     <div class="kicker">Questions</div>
     <h2>Magic 8-Ball FAQ</h2>
-    <Faq items={[
-      { q: 'Are these the real classic answers?', a: 'Yes — exactly the set the physical toy uses, from "It is certain" to "Very doubtful". Each one carries an extra line of honest guidance, because we are not a plastic ball.' },
-      { q: 'Is the answer random?', a: 'Completely — a fair 1-in-20 draw generated in your browser. The ball keeps no memory, so shaking again is a fresh draw, not a negotiation.' },
-      { q: 'Can it actually predict anything?', a: 'No, and neither can the toy — that is the deal. What it reliably does is break decision loops, expose what you were hoping to hear, and hand the tiebreaker to chance so the group can get on with dinner.' },
-      { q: 'Why does every answer come with advice?', a: 'Because "outlook not so good" without context is just weather. Our gloss tells you what the answer means for your next step — the layer every other 8-ball site skips.' },
-      { q: 'What is the best question to ask?', a: 'One where both answers are survivable and you are just stuck on the swap cost. For questions involving health, safety, or other people’s rights, the ball politely defers to professionals — and so should you.' },
-    ]} />
+    <Faq items={faqItems} />
   </section>
 </Base>
 
