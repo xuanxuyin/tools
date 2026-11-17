@@ -1,11 +1,65 @@
 ---
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
+import { SIGNS } from '../data/signs';
+
+// 2026-11-17 词战役批（63K fortune cookie 主词加厚）：语料样本按语气分布手选
+// （luck/career/love/money/humor/patience/warmth/caution），slug 锚定不随牌序漂移，
+// 每条内链 /signs/{slug}/ 给 100 单签页喂链接权重。
+const sampleSlugs = [
+  'unplanned-door',
+  'master-carpenter',
+  'the-morning-ritual',
+  'the-honest-merchant',
+  'quiet-joy-guarded',
+  'the-invited-hall',
+  'the-third-visit',
+  'the-returned-favor',
+  'the-playful-seal',
+];
+const samples = sampleSlugs
+  .map((slug) => SIGNS.find((s) => s.slug === slug))
+  .filter((s): s is (typeof SIGNS)[number] => Boolean(s));
+
+// FAQ 数据抽成常量：页面渲染与 FAQPage 结构化数据共用一份（fortune-stick 同款）
+const faqItems = [
+  { q: 'Are the fortunes random?', a: 'The pick is random; the writing is not. Every line is hand-written for this site — none of those thousand recycled one-liners scraped off takeout boxes.' },
+  { q: 'What do the lucky numbers do?', a: 'They are yours to use however you like — or treat them as a key: the same three digits at our Number Oracle pull up the full fortune reading your cookie was pointing at all along.' },
+  { q: 'Can I crack more than one?', a: 'One a day, like every tool here — the free draw is shared across the site. Merit dropped in the box can buy you a second crack. Tradition, for what it’s worth, agrees with the ration: the first fortune of the day is the one that counts.' },
+  { q: 'Why is there a "learn more" link with my cookie?', a: 'Because a one-liner is an appetizer. Your numbers map to a complete fortune with love, money, and career readings — the cookie is the doorway, the oracle is the room.' },
+  { q: 'Do you write lucky numbers on every fortune?', a: 'Yes — three digits, every cookie, matching the classic takeout format. Where else would lottery optimism come from?' },
+  { q: 'Is this a fortune cookie generator?', a: 'That is the honest job description. Click, and the cookie splits: a message plus three lucky numbers, same format as the takeout classic — except this jar holds 100 original fortunes instead of the usual recycled one-liners.' },
+  { q: 'What are fortune cookie messages usually about?', a: 'The classics skew practical: patience, money habits, the people around you, and a nudge to act this week. Ours keep that tradition — every fortune is one or two sentences you can actually use, with a complete reading behind it if the numbers point there.' },
+  { q: 'Where do fortune cookies come from?', a: 'The oldest ancestor is a Kyoto rice cracker with a paper slip folded inside. The modern version took shape in California bakeries — Los Angeles and San Francisco both claim the original, and the paperwork dispute is genuinely unresolved.' },
+  { q: 'Do fortune cookies come true?', a: 'Some do, some don’t — same as advice from a sharp friend. The useful move is treating a fortune as a question worth a second look, not a prophecy with a deadline. Tradition, for what it’s worth, gives the first cookie of the day the edge.' },
+];
+
+const toolLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Fortune Cookie',
+  applicationCategory: 'EntertainmentApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  description:
+    'Crack a virtual fortune cookie online, free: a one-line message plus three lucky numbers, drawn from a jar of 100 original fortunes — with a full reading behind every number.',
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 ---
 <Base
   title="Fortune Cookie — Crack One Open Online | Fortune Willow"
-  description="Crack open a virtual fortune cookie: your message plus three lucky numbers, and the numbers unlock a full fortune reading. Free, zero calories, no sign-up."
+  description="Crack a virtual fortune cookie online: your message plus three lucky numbers, and the numbers unlock a full fortune reading. 100 original fortunes in the jar — free, no sign-up."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(toolLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
   <section class="tool-shell card">
     <div class="tool-stage">
       <div class="kicker">A message · three lucky digits</div>
@@ -79,12 +133,52 @@ import Faq from '../components/Faq.astro';
   </section>
 
   <section class="section">
+    <div class="kicker">Inside the jar</div>
+    <h2>What the cookies say</h2>
+    <p class="msg-lead">
+      A hundred fortunes live in the jar — short, blunt, useful. The kind you read twice: once for
+      you, once out loud for the table. Nine straight from the deck:
+    </p>
+    <div class="msg-grid">
+      {samples.map((s) => (
+        <a class="msg-card" href={`/signs/${s.slug}/`}>
+          <p class="msg-line">“{s.title}”</p>
+          <span class="msg-no">Fortune No. {s.id} →</span>
+        </a>
+      ))}
+    </div>
+    <p class="msg-foot">
+      Browse the full hundred in the <a href="/signs/">fortune archive</a> — every message with its
+      complete reading. Prefer one picked for everyone each morning? The
+      <a href="/daily-fortune/">daily fortune</a> is already on the board.
+    </p>
+  </section>
+
+  <section class="section">
     <div class="kicker">How it works</div>
     <h2>Crack, read, follow the numbers</h2>
     <div class="steps">
       <div class="step"><div class="n">1 · Crack</div><p>One click splits the cookie and your fortune slides out — a single line worth carrying through the day.</p></div>
       <div class="step"><div class="n">2 · Take your numbers</div><p>Three lucky digits, 0 to 9, ride along with the message — same as the real thing at the bottom of a takeout bag.</p></div>
       <div class="step"><div class="n">3 · Go deeper</div><p>Your three digits are also a key: they select a full fortune — headline, story, love/money/career, next step — at the Number Oracle.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">A short history</div>
+    <h2>From Kyoto rice crackers to the takeout bag</h2>
+    <div class="origin card">
+      <p>
+        The fortune cookie’s oldest ancestor is a rice-paper cracker folded around a slip of paper,
+        sold near Kyoto temples centuries ago. The modern version took shape in California —
+        bakeries in Los Angeles and San Francisco both claim the first machine-folded cookie, and
+        the paperwork that would settle the argument has never turned up.
+      </p>
+      <p>
+        What survived every version is the ritual: crack it while it’s warm, pull out the paper,
+        and argue about whether it came true. That argument is the product. We just removed the
+        crumbs.
+      </p>
     </div>
   </section>
 
@@ -102,14 +196,86 @@ import Faq from '../components/Faq.astro';
   <section class="section">
     <div class="kicker">Questions</div>
     <h2>Fortune Cookie FAQ</h2>
-    <Faq items={[
-      { q: 'Are the fortunes random?', a: 'The pick is random; the writing is not. Every line is hand-written for this site — none of those thousand recycled one-liners scraped off takeout boxes.' },
-      { q: 'What do the lucky numbers do?', a: 'They are yours to use however you like — or treat them as a key: the same three digits at our Number Oracle pull up the full fortune reading your cookie was pointing at all along.' },
-      { q: 'Can I crack more than one?', a: 'One a day, like every tool here — the free draw is shared across the site. Merit dropped in the box can buy you a second crack. Tradition, for what it’s worth, agrees with the ration: the first fortune of the day is the one that counts.' },
-      { q: 'Why is there a "learn more" link with my cookie?', a: 'Because a one-liner is an appetizer. Your numbers map to a complete fortune with love, money, and career readings — the cookie is the doorway, the oracle is the room.' },
-      { q: 'Do you write lucky numbers on every fortune?', a: 'Yes — three digits, every cookie, matching the classic takeout format. Where else would lottery optimism come from?' },
-    ]} />
+    <Faq items={faqItems} />
   </section>
+
+  <style>
+    /* 11-17 词战役批：语料段/史段样式 —— 全部走现有纸庙 token，hover 只面色过渡（unslop 纪律） */
+    .msg-lead {
+      color: var(--ink-soft);
+      max-width: 640px;
+      margin: 0 auto 18px;
+    }
+    .msg-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .msg-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      text-decoration: none;
+      transition: border-color 0.18s ease, background-color 0.18s ease;
+    }
+    .msg-card:hover {
+      border-color: var(--gold);
+      background: var(--temple);
+    }
+    .msg-line {
+      font-family: var(--serif);
+      font-style: italic;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .msg-no {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .msg-foot {
+      color: var(--ink-soft);
+      max-width: 640px;
+      margin: 18px auto 0;
+      font-size: 14px;
+    }
+    .msg-foot a,
+    .msg-foot a:visited {
+      color: var(--accent);
+    }
+    .origin {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 22px 26px;
+    }
+    .origin p {
+      color: var(--ink-soft);
+      margin: 0 0 12px;
+    }
+    .origin p:last-child {
+      margin-bottom: 0;
+    }
+    @media (max-width: 760px) {
+      .msg-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (min-width: 761px) and (max-width: 1020px) {
+      .msg-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
 </Base>
 
 <script>
